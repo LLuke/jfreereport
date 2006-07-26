@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NormalFlowRenderBox.java,v 1.5 2006/07/17 16:48:53 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.6 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,9 @@
 package org.jfree.layouting.renderer.model;
 
 import java.util.ArrayList;
+
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * A box that defines its own normal flow. All absolutly positioned or
@@ -61,9 +64,10 @@ public class NormalFlowRenderBox extends BlockRenderBox
   private SpacerRenderNode placeHolder;
   private ArrayList subFlows;
 
-  public NormalFlowRenderBox(final BoxDefinition boxDefinition)
+  public NormalFlowRenderBox(final BoxDefinition boxDefinition,
+                             final CSSValue valign)
   {
-    super(boxDefinition);
+    super(boxDefinition, valign);
     placeHolder = new SpacerRenderNode(0, 0, true);
     subFlows = new ArrayList();
 

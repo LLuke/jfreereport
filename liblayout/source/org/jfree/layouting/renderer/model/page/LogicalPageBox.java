@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.5 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.renderer.model.IndexedRenderBox;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.page.PageGrid;
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 
 /**
  * The logical page box does not have a layout at all. It has collection of
@@ -84,7 +85,7 @@ public class LogicalPageBox extends BlockRenderBox
 
   public LogicalPageBox(final PageGrid pageGrid)
   {
-    super(new EmptyBoxDefinition());
+    super(new EmptyBoxDefinition(), VerticalAlign.TOP);
 
     if (pageGrid == null)
     {
@@ -93,16 +94,17 @@ public class LogicalPageBox extends BlockRenderBox
 
     this.pageGrid = pageGrid;
     this.subFlows = new ArrayList();
-    this.contentArea = new NormalFlowRenderBox(new EmptyBoxDefinition());
-//    this.headerArea = new IndexedRenderBox(new EmptyBoxDefinition());
-//    this.footerArea = new IndexedRenderBox(new EmptyBoxDefinition());
+    this.contentArea = new NormalFlowRenderBox
+            (new EmptyBoxDefinition(), VerticalAlign.TOP);
+    this.headerArea = new IndexedRenderBox(new EmptyBoxDefinition());
+    this.footerArea = new IndexedRenderBox(new EmptyBoxDefinition());
 
 //    addChild(headerArea);
     addChild(contentArea);
 //    addChild(footerArea);
 
-//    footerArea.setElement("footnotes",
-//            new NormalFlowRenderBox(new EmptyBoxDefinition()));
+    footerArea.setElement("footnotes",
+            new NormalFlowRenderBox(new EmptyBoxDefinition(), VerticalAlign.TOP));
 
     setMajorAxis(VERTICAL_AXIS);
     setMinorAxis(HORIZONTAL_AXIS);

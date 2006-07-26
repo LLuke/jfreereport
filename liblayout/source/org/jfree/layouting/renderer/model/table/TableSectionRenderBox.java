@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableSectionRenderBox.java,v 1.4 2006/07/22 15:28:50 taqua Exp $
+ * $Id: TableSectionRenderBox.java,v 1.5 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.renderer.model.table;
 import java.util.ArrayList;
 
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
@@ -71,7 +72,7 @@ public class TableSectionRenderBox extends BlockRenderBox
   public TableSectionRenderBox(final BoxDefinition boxDefinition,
                                final CSSValue displayRole)
   {
-    super(boxDefinition);
+    super(boxDefinition, VerticalAlign.TOP);
     this.displayRole = displayRole;
     this.rowModel = new SeparateRowModel(this);
   }
@@ -397,7 +398,7 @@ public class TableSectionRenderBox extends BlockRenderBox
     setState(RenderNodeState.FINISHED);
   }
 
-  public long getPreferredSize(int axis)
+  protected long getPreferredSize(int axis)
   {
     throw new UnsupportedOperationException
             ("A table section has no preferred size.");

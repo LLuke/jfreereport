@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleStyleRuleMatcher.java,v 1.4 2006/07/17 13:27:24 taqua Exp $
+ * $Id: SimpleStyleRuleMatcher.java,v 1.5 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -131,7 +131,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       {
         continue;
       }
-      Log.debug ("Loaded stylesheet from " + rawKey);
+      Log.debug ("Loaded stylesheet from " + rawKey + " for namespace " + nsDef.getURI());
       addStyleRules(styleSheet, styleRules);
     }
 

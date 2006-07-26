@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Namespaces.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
+ * $Id: Namespaces.java,v 1.2 2006/04/21 17:29:37 taqua Exp $
  *
  * Changes
  * -------
@@ -64,8 +64,9 @@ public final class Namespaces
           "http://www.w3.org/XML/1998/namespace";
 
   /** The XML-Namespace is used for the 'id' attribute. */
-  public static final String HTML_NAMESPACE =
-          "http://www.w3.org/TR/REC-html40";
+// The old HTML namespace is not supported, use XHTML instead.  
+//  public static final String HTML_NAMESPACE =
+//          "http://www.w3.org/TR/REC-html40";
   public static final String XHTML_NAMESPACE =
           "http://www.w3.org/1999/xhtml";
 

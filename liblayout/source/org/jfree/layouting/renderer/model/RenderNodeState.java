@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RenderNodeState.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,32 @@ package org.jfree.layouting.renderer.model;
  */
 public class RenderNodeState
 {
+  /**
+   * The node is new or has undergone some major structural changes. Dont assume
+   * anything.
+   */
   public static final RenderNodeState UNCLEAN = new RenderNodeState("UNCLEAN");
+
+  /**
+   * The node or one of its childs or predecessors has got new childs. The
+   * position is still valid, but all pending or unclean childs have to be
+   * revalidated.
+   *
+   * This may affect the margins of this box, so recompute them.
+   */
   public static final RenderNodeState PENDING = new RenderNodeState("PENDING");
+
+  /**
+   * The box has done at least some layouting and has cached some information.
+   * Layouting is not finished. (Maybe the preferred size has been computed and
+   * stored for later use.)
+   */
   public static final RenderNodeState LAYOUTING = new RenderNodeState("LAYOUTING");
+
+  /**
+   * The box is fully layouted and ready to be painted. An open box should never
+   * reach the finished state.
+   */
   public static final RenderNodeState FINISHED = new RenderNodeState("FINISHED");
 
   private final String myName; // for debug only

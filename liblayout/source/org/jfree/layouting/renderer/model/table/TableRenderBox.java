@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRenderBox.java,v 1.5 2006/07/22 15:28:50 taqua Exp $
+ * $Id: TableRenderBox.java,v 1.6 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.input.style.keys.table.TableLayout;
 import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.border.Border;
@@ -89,7 +90,7 @@ public class TableRenderBox extends BlockRenderBox
 
   public TableRenderBox(final BoxDefinition boxDefinition)
   {
-    super(boxDefinition);
+    super(boxDefinition, VerticalAlign.TOP);
     this.columnModel = new SpearateColumnModel(this);
     this.borderSpacing = RenderLength.EMPTY;
   }
@@ -418,7 +419,7 @@ public class TableRenderBox extends BlockRenderBox
     columnModel.validateSizes();
   }
 
-  public long getPreferredSize(int axis)
+  protected long getPreferredSize(int axis)
   {
     prune();
     buildColumnModel();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,19 +42,21 @@ package org.jfree.layouting.renderer.text;
 
 import java.util.ArrayList;
 
+import org.jfree.fonts.registry.BaselineInfo;
 import org.jfree.fonts.registry.FontMetrics;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.text.TextWrap;
 import org.jfree.layouting.input.style.keys.text.WhitespaceCollapse;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
+import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.output.OutputProcessorMetaData;
-import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.text.breaks.BreakOpportunityProducer;
 import org.jfree.layouting.renderer.text.breaks.LineBreakProducer;
@@ -63,10 +65,10 @@ import org.jfree.layouting.renderer.text.classifier.GlyphClassificationProducer;
 import org.jfree.layouting.renderer.text.classifier.LinebreakClassificationProducer;
 import org.jfree.layouting.renderer.text.classifier.WhitespaceClassificationProducer;
 import org.jfree.layouting.renderer.text.font.FontSizeProducer;
+import org.jfree.layouting.renderer.text.font.GlyphMetrics;
 import org.jfree.layouting.renderer.text.font.KerningProducer;
 import org.jfree.layouting.renderer.text.font.NoKerningProducer;
 import org.jfree.layouting.renderer.text.font.VariableFontSizeProducer;
-import org.jfree.layouting.renderer.text.font.GlyphMetrics;
 import org.jfree.layouting.renderer.text.whitespace.CollapseWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.DiscardWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.PreserveBreaksWhiteSpaceFilter;
@@ -76,7 +78,8 @@ import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 /**
- * Creation-Date: 11.06.2006, 16:05:34
+ * For the sake of completeness, we would now also need a script-type classifier
+ * and from there we would need a BaseLineInfo-factory.
  *
  * @author Thomas Morgner
  */
@@ -94,17 +97,23 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   private CSSValue whitespaceCollapseValue;
   private GlyphClassificationProducer classificationProducer;
   private LayoutContext layoutContext;
+  private LanguageClassifier languageClassifier;
 
   private transient GlyphMetrics dims;
 
   private ArrayList words;
   private ArrayList glyphList;
   private long leadingMargin;
+  private int lastLanguage;
+
+  // todo: This is part of a cheap hack.
+  private FontMetrics fontMetrics;
 
   public DefaultRenderableTextFactory(final LayoutProcess layoutProcess)
   {
     this.layoutProcess = layoutProcess;
     this.clusterProducer = new GraphemeClusterProducer();
+    this.languageClassifier = new DefaultLanguageClassifier();
     this.startText = true;
     this.words = new ArrayList();
     this.glyphList = new ArrayList();
@@ -113,11 +122,11 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
 
   public RenderNode[] createText(final int[] text,
-                                     final int offset,
-                                     final int length,
-                                     final LayoutContext layoutContext)
+                                 final int offset,
+                                 final int length,
+                                 final LayoutContext layoutContext)
   {
-    Log.debug ("Processing text");
+    Log.debug("Processing text");
 
     kerningProducer = createKerningProducer(layoutContext);
     fontSizeProducer = createFontSizeProducer(layoutContext);
@@ -136,12 +145,19 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       produced = false;
     }
 
+    // Todo: This is part of a cheap hack ..
+    final FontSpecification fontSpecification =
+            layoutContext.getFontSpecification();
+    final OutputProcessorMetaData outputMetaData =
+            layoutProcess.getOutputMetaData();
+    fontMetrics = outputMetaData.getFontMetrics(fontSpecification);
+
     return processText(text, offset, length);
   }
 
-  protected RenderNode[] processText (final int[] text,
-                                       final int offset,
-                                       final int length)
+  protected RenderNode[] processText(final int[] text,
+                                     final int offset,
+                                     final int length)
   {
     int clusterStartIdx = -1;
     final int maxLen = Math.min(length + offset, text.length);
@@ -193,9 +209,9 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     }
   }
 
-  protected void addGlyph (int rawCodePoint, int[] extraChars)
+  protected void addGlyph(int rawCodePoint, int[] extraChars)
   {
-  //  Log.debug ("Processing " + rawCodePoint);
+    //  Log.debug ("Processing " + rawCodePoint);
 
     if (rawCodePoint == ClassificationProducer.END_OF_TEXT)
     {
@@ -251,6 +267,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     dims = fontSizeProducer.getCharacterSize(codePoint, dims);
     int width = (dims.getWidth() & 0x7FFFFFFF);
     int height = (dims.getHeight() & 0x7FFFFFFF);
+    lastLanguage = languageClassifier.getScript(codePoint);
 
     for (int i = 0; i < extraChars.length; i++)
     {
@@ -264,7 +281,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
     if (stripWhitespaces)
     {
-    //  Log.debug ("Stripping whitespaces");
+      //  Log.debug ("Stripping whitespaces");
       return;
     }
 
@@ -278,11 +295,10 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
         addWord(forceLinebreak);
       }
 
-
       // This character can be stripped. We increase the leading margin of the
       // next word by the character's width.
       leadingMargin += width;
-   //   Log.debug ("Increasing Margin");
+      //   Log.debug ("Increasing Margin");
       return;
     }
 
@@ -290,7 +306,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
             glyphClassification, spacing, width, height,
             dims.getBaselinePosition(), kerning, extraChars);
     glyphList.add(glyph);
-   // Log.debug ("Adding Glyph");
+    // Log.debug ("Adding Glyph");
 
     // does this finish a word? Check it!
     if (isWordBreak(breakweight) && glyphList.isEmpty() == false)
@@ -309,7 +325,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       if (produced == true)
       {
         words.add(new SpacerRenderNode(leadingMargin, 0, false));
-        Log.debug ("Adding Placeholder");
+        Log.debug("Adding Placeholder");
       }
     }
     else
@@ -320,18 +336,80 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       {
         words.add(new SpacerRenderNode(leadingMargin, 0, false));
       }
+
+      // todo: this is cheating ..
+      final int codePoint = glyphs[0].getCodepoint();
+
       words.add(new RenderableText
-              (layoutContext, glyphs, 0, glyphs.length, true, forceLinebreak));
+              (layoutContext, createBaselineInfo(codePoint), glyphs, 0,
+                      glyphs.length, lastLanguage, forceLinebreak));
       glyphList.clear();
-      Log.debug ("Adding Text: " + glyphs.length);
+      Log.debug("Adding Text: " + glyphs.length);
     }
     leadingMargin = 0;
+  }
+
+  /**
+   * Todo: Cheap hack
+   */
+  private ExtendedBaselineInfo createBaselineInfo(int codepoint)
+  {
+    BaselineInfo baselineInfo = fontMetrics.getBaselines(codepoint, null);
+    DefaultExtendedBaselineInfo extBaselineInfo = new DefaultExtendedBaselineInfo();
+    extBaselineInfo.setDominantBaseline(translateBaselines(baselineInfo.getDominantBaseline()));
+
+    long[] baselines = new long[8];
+    baselines[ExtendedBaselineInfo.ALPHABETHC] =
+            StrictGeomUtility.toInternalValue
+                    (baselineInfo.getBaseline(BaselineInfo.ALPHABETIC));
+    baselines[ExtendedBaselineInfo.CENTRAL] =
+            StrictGeomUtility.toInternalValue
+                    (baselineInfo.getBaseline(BaselineInfo.CENTRAL));
+    baselines[ExtendedBaselineInfo.HANGING] =
+            StrictGeomUtility.toInternalValue
+                    (baselineInfo.getBaseline(BaselineInfo.HANGING));
+    baselines[ExtendedBaselineInfo.IDEOGRAPHIC] =
+            StrictGeomUtility.toInternalValue
+                    (baselineInfo.getBaseline(BaselineInfo.IDEOGRAPHIC));
+    baselines[ExtendedBaselineInfo.MATHEMATICAL] =
+            StrictGeomUtility.toInternalValue
+                    (baselineInfo.getBaseline(BaselineInfo.MATHEMATICAL));
+    baselines[ExtendedBaselineInfo.MIDDLE] =
+            StrictGeomUtility.toInternalValue
+                    (baselineInfo.getBaseline(BaselineInfo.MIDDLE));
+    baselines[ExtendedBaselineInfo.TEXT_BEFORE_EDGE] = 0;
+    baselines[ExtendedBaselineInfo.TEXT_AFTER_EDGE] =
+            StrictGeomUtility.toInternalValue
+              (fontMetrics.getMaxHeight());
+    extBaselineInfo.setBaselines(baselines);
+    return extBaselineInfo;
+  }
+
+  private int translateBaselines(int baseline)
+  {
+    switch (baseline)
+    {
+      case BaselineInfo.HANGING:
+        return ExtendedBaselineInfo.HANGING;
+      case BaselineInfo.ALPHABETIC:
+        return ExtendedBaselineInfo.ALPHABETHC;
+      case BaselineInfo.CENTRAL:
+        return ExtendedBaselineInfo.CENTRAL;
+      case BaselineInfo.IDEOGRAPHIC:
+        return ExtendedBaselineInfo.IDEOGRAPHIC;
+      case BaselineInfo.MATHEMATICAL:
+        return ExtendedBaselineInfo.MATHEMATICAL;
+      case BaselineInfo.MIDDLE:
+        return ExtendedBaselineInfo.MIDDLE;
+    }
+
+    throw new IllegalArgumentException("Invalid baseline");
   }
 
   private boolean isWordBreak(int breakOp)
   {
     if (BreakOpportunityProducer.BREAK_WORD == breakOp ||
-        BreakOpportunityProducer.BREAK_LINE == breakOp)
+            BreakOpportunityProducer.BREAK_LINE == breakOp)
     {
       return true;
     }
@@ -428,7 +506,6 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     final FontMetrics fontMetrics =
             outputMetaData.getFontMetrics(fontSpecification);
     return new VariableFontSizeProducer(fontMetrics);
-//    return new StaticFontSizeProducer(5000, 5000, 4000);
   }
 
   protected KerningProducer createKerningProducer(final LayoutContext layoutContext)
@@ -457,7 +534,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     }
 
     RenderNode[] text = processText
-            (new int[]{ ClassificationProducer.END_OF_TEXT}, 0, 1);
+            (new int[]{ClassificationProducer.END_OF_TEXT}, 0, 1);
     layoutContext = null;
     classificationProducer = null;
     kerningProducer = null;

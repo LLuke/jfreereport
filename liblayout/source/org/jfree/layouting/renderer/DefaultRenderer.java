@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.7 2006/07/20 17:50:52 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.8 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 package org.jfree.layouting.renderer;
 
 import java.awt.BorderLayout;
-import java.awt.Image;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.util.Stack;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -55,11 +55,8 @@ import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.Clear;
-import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
-import org.jfree.layouting.input.style.keys.list.ListStylePosition;
-import org.jfree.layouting.input.style.keys.text.TextAlign;
-import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.layouter.content.ContentToken;
@@ -77,24 +74,19 @@ import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.BoxDefinitionFactory;
 import org.jfree.layouting.renderer.model.DefaultBoxDefinitionFactory;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
+import org.jfree.layouting.renderer.model.MarkerRenderBox;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
-import org.jfree.layouting.renderer.model.MarkerRenderBox;
-import org.jfree.layouting.renderer.model.alignment.Alignment;
-import org.jfree.layouting.renderer.model.alignment.LeadingEdgeAlignment;
-import org.jfree.layouting.renderer.model.alignment.TrailingEdgeAlignment;
-import org.jfree.layouting.renderer.model.alignment.CenterAlignment;
-import org.jfree.layouting.renderer.model.alignment.JustifyAlignment;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
+import org.jfree.layouting.renderer.model.table.TableColumnGroupNode;
+import org.jfree.layouting.renderer.model.table.TableColumnNode;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.layouting.renderer.model.table.TableColumnGroupNode;
-import org.jfree.layouting.renderer.model.table.TableColumnNode;
 import org.jfree.layouting.renderer.page.FastPageGrid;
 import org.jfree.layouting.renderer.page.PageGrid;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
@@ -102,8 +94,8 @@ import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.layouting.util.geom.StrictDimension;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.resourceloader.ResourceKey;
-import org.jfree.ui.DrawablePanel;
 import org.jfree.ui.Drawable;
+import org.jfree.ui.DrawablePanel;
 import org.jfree.ui.ExtendedDrawable;
 import org.jfree.util.Log;
 import org.jfree.util.WaitingImageObserver;
@@ -181,7 +173,9 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    openFlows.push(new NormalFlowRenderBox(definition));
+    final CSSValue valign =
+            context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+    openFlows.push(new NormalFlowRenderBox(definition, valign));
   }
 
   protected RenderBox getInsertationPoint()
@@ -210,7 +204,9 @@ public class DefaultRenderer implements Renderer
       final BoxDefinition definition =
               boxDefinitionFactory.createBlockBoxDefinition
                       (context, layoutProcess.getOutputMetaData());
-      NormalFlowRenderBox newFlow = new NormalFlowRenderBox(definition);
+      final CSSValue valign =
+              context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+      NormalFlowRenderBox newFlow = new NormalFlowRenderBox(definition, valign);
       currentBox.addChild(newFlow.getPlaceHolder());
       currentBox.getNormalFlow().addFlow(newFlow);
       openFlows.push(newFlow);
@@ -342,7 +338,9 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    BlockRenderBox blockBox = new BlockRenderBox(definition);
+    final CSSValue valign =
+            context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+    BlockRenderBox blockBox = new BlockRenderBox(definition, valign);
     applyClear(context, blockBox);
 
     getInsertationPoint().addChild(blockBox);
@@ -356,14 +354,11 @@ public class DefaultRenderer implements Renderer
     Log.debug("<marker>");
     textFactory.startText();
 
-    CSSValue position =
-            context.getStyle().getValue(ListStyleKeys.LIST_STYLE_POSITION);
 
     final BoxDefinition definition =
             boxDefinitionFactory.createInlineBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    MarkerRenderBox markerBox = new MarkerRenderBox(definition,
-            ListStylePosition.OUTSIDE.equals(position));
+    MarkerRenderBox markerBox = new MarkerRenderBox(definition, context);
     getInsertationPoint().addChild(markerBox);
   }
 
@@ -377,36 +372,11 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    CSSValue alignVal = context.getStyle().getValue(TextStyleKeys.TEXT_ALIGN);
-    CSSValue alignLastVal = context.getStyle().getValue(TextStyleKeys.TEXT_ALIGN_LAST);
-    ParagraphRenderBox paragraphBox = new ParagraphRenderBox
-           (definition, createAlignment(alignVal), createAlignment(alignLastVal));
+    ParagraphRenderBox paragraphBox =
+            new ParagraphRenderBox(definition, context);
     applyClear(context, paragraphBox);
 
     getInsertationPoint().addChild(paragraphBox);
-  }
-
-  private Alignment createAlignment (CSSValue value)
-  {
-    if (TextAlign.LEFT.equals(value) ||
-        TextAlign.START.equals(value))
-    {
-      return new LeadingEdgeAlignment();
-    }
-    if (TextAlign.RIGHT.equals(value) ||
-        TextAlign.END.equals(value))
-    {
-      return new TrailingEdgeAlignment();
-    }
-    if (TextAlign.CENTER.equals(value))
-    {
-      return new CenterAlignment();
-    }
-    if (TextAlign.JUSTIFY.equals(value))
-    {
-      return new JustifyAlignment();
-    }
-    return new LeadingEdgeAlignment();
   }
 
   public void startedInline(final LayoutContext context)
@@ -417,7 +387,9 @@ public class DefaultRenderer implements Renderer
     final BoxDefinition definition =
             boxDefinitionFactory.createInlineBoxDefinition
                     (context, layoutProcess.getOutputMetaData());
-    InlineRenderBox inlineBox = new InlineRenderBox(definition);
+    final CSSValue valign =
+            context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+    InlineRenderBox inlineBox = new InlineRenderBox(definition, valign);
     applyClear(context, inlineBox);
 
     getInsertationPoint().addChild(inlineBox);
@@ -513,7 +485,8 @@ public class DefaultRenderer implements Renderer
     buffer = Utf16LE.getInstance().decodeString(str, buffer);
     final int[] data = buffer.getBuffer();
 
-    final RenderNode[] text = textFactory.createText(data, 0, data.length, context);
+    final RenderNode[] text =
+            textFactory.createText(data, 0, data.length, context);
 //
 //    for (int x = 0; x < text.length; x++)
 //    {
@@ -550,7 +523,9 @@ public class DefaultRenderer implements Renderer
             (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
     final StrictDimension dims = StrictGeomUtility.createDimension
             (image.getWidth(null), image.getHeight(null));
-    return new RenderableReplacedContent(image, source, dims, width, height);
+    final CSSValue valign =
+            context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+    return new RenderableReplacedContent(image, source, dims, width, height, valign);
   }
 
 
@@ -577,7 +552,9 @@ public class DefaultRenderer implements Renderer
     final RenderLength height = DefaultBoxDefinitionFactory.computeWidth
             (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
 
-    return new RenderableReplacedContent(image, source, dims, width, height);
+    final CSSValue valign =
+            context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+    return new RenderableReplacedContent(image, source, dims, width, height, valign);
   }
   public void finishedInline()
   {
@@ -682,15 +659,15 @@ public class DefaultRenderer implements Renderer
 
 //    Log.debug("Min  H-Axis: " + rootBox.getMinimumSize(RenderNode.HORIZONTAL_AXIS));
 //    Log.debug("Min  V-Axis: " + rootBox.getMinimumSize(RenderNode.VERTICAL_AXIS));
-    Log.debug("Pref H-Axis: " + rootBox.getPreferredSize(RenderNode.HORIZONTAL_AXIS));
-    Log.debug("Pref V-Axis: " + rootBox.getPreferredSize(RenderNode.VERTICAL_AXIS));
+    Log.debug("Pref H-Axis: " + rootBox.getEffectiveLayoutSize(RenderNode.HORIZONTAL_AXIS));
+    Log.debug("Pref V-Axis: " + rootBox.getEffectiveLayoutSize(RenderNode.VERTICAL_AXIS));
 //    Log.debug("Max  H-Axis: " + rootBox.getMaximumSize(RenderNode.HORIZONTAL_AXIS));
 //    Log.debug("Max  V-Axis: " + rootBox.getMaximumSize(RenderNode.VERTICAL_AXIS));
 
     rootBox.setX(0);
     rootBox.setY(0);
-    rootBox.setWidth(rootBox.getPreferredSize(RenderNode.HORIZONTAL_AXIS));
-    rootBox.setHeight(rootBox.getPreferredSize(RenderNode.VERTICAL_AXIS));
+    rootBox.setWidth(rootBox.getEffectiveLayoutSize(RenderNode.HORIZONTAL_AXIS));
+    rootBox.setHeight(rootBox.getEffectiveLayoutSize(RenderNode.VERTICAL_AXIS));
 
     rootBox.validate();
 

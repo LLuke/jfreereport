@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MarkerRenderBox.java,v 1.1 2006/07/17 13:28:34 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,12 @@
  *
  */
 package org.jfree.layouting.renderer.model;
+
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
+import org.jfree.layouting.input.style.keys.list.ListStylePosition;
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 
 /**
  * A marker box is a special box, which may live outside the normal-flow,
@@ -51,10 +57,13 @@ public class MarkerRenderBox extends InlineRenderBox
   private boolean outside;
 
   public MarkerRenderBox(final BoxDefinition boxDefinition,
-                         final boolean outside)
+                         final LayoutContext layoutContext)
   {
-    super(boxDefinition);
-    this.outside = outside;
+    super(boxDefinition, layoutContext.getStyle().getValue
+            (LineStyleKeys.VERTICAL_ALIGN));
+    CSSValue position =
+            layoutContext.getStyle().getValue(ListStyleKeys.LIST_STYLE_POSITION);
+    this.outside = ListStylePosition.OUTSIDE.equals(position);
   }
 
   public boolean isOutside()

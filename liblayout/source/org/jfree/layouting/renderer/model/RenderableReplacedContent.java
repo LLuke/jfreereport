@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableReplacedContent.java,v 1.1 2006/07/17 16:50:42 taqua Exp $
+ * $Id: RenderableReplacedContent.java,v 1.2 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,9 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.renderer.border.RenderLength;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.util.geom.StrictDimension;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.resourceloader.ResourceKey;
 
 /**
@@ -55,6 +57,7 @@ public class RenderableReplacedContent extends RenderNode
 {
   private Object rawObject;
   private StrictDimension contentSize;
+  private CSSValue verticalAlign;
   private ResourceKey source;
   private RenderLength width;
   private RenderLength height;
@@ -63,13 +66,15 @@ public class RenderableReplacedContent extends RenderNode
                                    final ResourceKey source,
                                    final StrictDimension contentSize,
                                    final RenderLength width,
-                                   final RenderLength height)
+                                   final RenderLength height,
+                                   final CSSValue verticalAlign)
   {
     this.height = height;
     this.width = width;
     this.rawObject = rawObject;
     this.source = source;
     this.contentSize = contentSize;
+    this.verticalAlign = verticalAlign;
   }
 
   public Object getRawObject()
@@ -164,7 +169,10 @@ public class RenderableReplacedContent extends RenderNode
    */
   public long getReferencePoint(int axis)
   {
-    if (axis == HORIZONTAL_AXIS) return 0;
+    if (axis == HORIZONTAL_AXIS)
+    {
+      return 0;
+    }
     return getPreferredSize(axis);
   }
 
@@ -192,5 +200,21 @@ public class RenderableReplacedContent extends RenderNode
   public long getTrailingSpace(int axis)
   {
     return 0;
+  }
+
+  public CSSValue getVerticalAlignment()
+  {
+    return verticalAlign;
+  }
+
+  /**
+   * Returns the baseline info for the given node. This can be null, if the node
+   * does not have any baseline info.
+   *
+   * @return
+   */
+  public ExtendedBaselineInfo getBaselineInfo()
+  {
+    return null;
   }
 }

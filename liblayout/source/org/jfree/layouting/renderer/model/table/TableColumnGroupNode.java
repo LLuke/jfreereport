@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnGroupNode.java,v 1.2 2006/07/18 17:26:32 taqua Exp $
+ * $Id: TableColumnGroupNode.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,14 @@
 package org.jfree.layouting.renderer.model.table;
 
 import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNodeState;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 
 /**
  * Creation-Date: 17.07.2006, 18:32:42
@@ -60,7 +62,7 @@ public class TableColumnGroupNode extends RenderBox
   public TableColumnGroupNode(final BoxDefinition boxDefinition,
                               final LayoutContext context)
   {
-    super(boxDefinition);
+    super(boxDefinition, context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN));
     final CSSValue value = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
     this.colspan = (int) CSSValueResolverUtility.getNumericValue(value, 1);
   }
@@ -98,5 +100,16 @@ public class TableColumnGroupNode extends RenderBox
   public void validate()
   {
     setState(RenderNodeState.FINISHED);
+  }
+
+  /**
+   * Returns the baseline info for the given node. This can be null, if the node
+   * does not have any baseline info.
+   *
+   * @return
+   */
+  public ExtendedBaselineInfo getBaselineInfo()
+  {
+    return null;
   }
 }

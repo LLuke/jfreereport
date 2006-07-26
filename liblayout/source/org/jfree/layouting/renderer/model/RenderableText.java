@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
+ * $Id: RenderableText.java,v 1.4 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,12 @@
  */
 package org.jfree.layouting.renderer.model;
 
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.renderer.text.Spacing;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.breaks.BreakOpportunityProducer;
 import org.jfree.util.Log;
 
@@ -79,6 +82,7 @@ public class RenderableText extends RenderNode
   private int length;
   private LayoutContext layoutContext;
   private boolean ltr;
+  private int script;
 
   private long minimumChunkWidth;
   private long minimumWidth;
@@ -88,12 +92,14 @@ public class RenderableText extends RenderNode
   private long height;
   private long baseLine;
   private boolean forceLinebreak;
+  private ExtendedBaselineInfo baselineInfo;
 
   public RenderableText(final LayoutContext layoutContext,
+                        final ExtendedBaselineInfo baselineInfo,
                         final Glyph[] glyphs,
                         final int offset,
                         final int length,
-                        final boolean ltr,
+                        final int script,
                         final boolean forceLinebreak)
   {
     if (glyphs == null)
@@ -109,7 +115,10 @@ public class RenderableText extends RenderNode
       throw new IllegalArgumentException();
     }
 
-    this.ltr = ltr;
+    this.baselineInfo = baselineInfo;
+    this.ltr = true; // this depends on the script value
+    this.script = script;
+
     this.layoutContext = layoutContext;
     this.glyphs = glyphs;
     this.offset = offset;
@@ -340,8 +349,8 @@ public class RenderableText extends RenderNode
       Glyph g = glyphs[i];
       if (g.getClassification() != Glyph.SPACE_CHAR)
       {
-        target[0] = new RenderableText(getLayoutContext(),
-                glyphs, offset, i - offset + 1, isLtr(), false);
+        target[0] = new RenderableText(getLayoutContext(), baselineInfo,
+                glyphs, offset, i - offset + 1, script, false);
 //        Log.debug("Text[0]: " + getRawText() + " " + pos + " -> " + offset + ":" + (i - offset));
         break;
       }
@@ -355,8 +364,8 @@ public class RenderableText extends RenderNode
       Glyph g = glyphs[i];
       if (g.getClassification() != Glyph.SPACE_CHAR)
       {
-        target[1] = new RenderableText(getLayoutContext(),
-                glyphs, i, length - i, isLtr(), isForceLinebreak());
+        target[1] = new RenderableText(getLayoutContext(), baselineInfo,
+                glyphs, i, length - i, script, isForceLinebreak());
 //        Log.debug("Text[1]: " + getRawText() + " " + pos + " -> " + i + ":" + (length - i));
         break;
 
@@ -626,5 +635,21 @@ public class RenderableText extends RenderNode
     }
 
     return glyphs.length == 0;
+  }
+
+  public CSSValue getVerticalAlignment()
+  {
+    return VerticalAlign.BASELINE;
+  }
+
+  /**
+   * Returns the baseline info for the given node. This can be null, if the node
+   * does not have any baseline info.
+   *
+   * @return
+   */
+  public ExtendedBaselineInfo getBaselineInfo()
+  {
+    return baselineInfo;
   }
 }

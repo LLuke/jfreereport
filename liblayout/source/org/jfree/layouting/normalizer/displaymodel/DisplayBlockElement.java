@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayBlockElement.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id: DisplayBlockElement.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -140,10 +140,10 @@ public class DisplayBlockElement extends DisplayElement
     if (empty)
     {
       // each block element *must* have a linebox to check for pagebreaks.
-      DisplayInlineElement lineBox =
-              new DisplayInlineElement(getLayoutContext().derive());
-      addInternal(lineBox);
-      lineBox.markFinished();
+//      DisplayInlineElement lineBox =
+//              new DisplayInlineElement(getLayoutContext().derive());
+//      addInternal(lineBox);
+//      lineBox.markFinished();
     }
     else
     {

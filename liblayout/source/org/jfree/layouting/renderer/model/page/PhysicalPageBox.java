@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PhysicalPageBox.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
+ * $Id: PhysicalPageBox.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ package org.jfree.layouting.renderer.model.page;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 
 /**
  * This is behaves like a table box (but is none, as the layouting rules
@@ -54,10 +56,10 @@ public class PhysicalPageBox extends RenderBox
 {
   public PhysicalPageBox(final BoxDefinition boxDefinition)
   {
-    super(boxDefinition);
+    super(boxDefinition, VerticalAlign.TOP);
   }
 
-  public long getPreferredSize(int axis)
+  protected long getPreferredSize(int axis)
   {
     return 0;
   }
@@ -83,5 +85,16 @@ public class PhysicalPageBox extends RenderBox
   public long getReferencePoint(int axis)
   {
     return 0;
+  }
+
+  /**
+   * Returns the baseline info for the given node. This can be null, if the node
+   * does not have any baseline info.
+   *
+   * @return
+   */
+  public ExtendedBaselineInfo getBaselineInfo()
+  {
+    return null;
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageContext.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
+ * $Id: PageContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import org.jfree.layouting.renderer.page.PageAreaType;
  * always managed by the layouter itself and *should* reflect the actual
  * physical position (even on spanned pages!)
  */
-public interface PageContext
+public interface PageContext extends StyleContext
 {
   public LayoutStyle getAreaDefinition (PageAreaType name);
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.5 2006/07/18 14:40:28 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.6 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,16 @@
  */
 package org.jfree.layouting.renderer.model;
 
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.keys.text.TextAlign;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.model.alignment.Alignment;
+import org.jfree.layouting.renderer.model.alignment.CenterAlignment;
 import org.jfree.layouting.renderer.model.alignment.JustifyAlignment;
+import org.jfree.layouting.renderer.model.alignment.LeadingEdgeAlignment;
+import org.jfree.layouting.renderer.model.alignment.TrailingEdgeAlignment;
 import org.jfree.util.Log;
 
 /**
@@ -66,9 +74,10 @@ public class ParagraphRenderBox extends BlockRenderBox
   {
     private boolean notify;
 
-    public LineBoxRenderBox(final BoxDefinition boxDefinition)
+    public LineBoxRenderBox(final BoxDefinition boxDefinition,
+                            final CSSValue valign)
     {
-      super(boxDefinition);
+      super(boxDefinition, valign);
     }
 
     public boolean isNotify()
@@ -106,9 +115,10 @@ public class ParagraphRenderBox extends BlockRenderBox
 
   private static class PoolBox extends InlineRenderBox
   {
-    public PoolBox(final BoxDefinition boxDefinition)
+    public PoolBox(final BoxDefinition boxDefinition,
+                            final CSSValue valign)
     {
-      super(boxDefinition);
+      super(boxDefinition, valign);
     }
 
     public void close()
@@ -138,28 +148,54 @@ public class ParagraphRenderBox extends BlockRenderBox
   private Alignment lastLineAlignment;
 
   public ParagraphRenderBox(final BoxDefinition boxDefinition,
-                            final Alignment textAlignment,
-                            final Alignment lastLineAlignment)
+                            final LayoutContext context)
   {
-    super(boxDefinition);
-
-    this.textAlignment = textAlignment;
+    super(boxDefinition,
+            context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN));
+    final CSSValue valign = getVerticalAlignment();
+    CSSValue alignVal = context.getStyle().getValue(TextStyleKeys.TEXT_ALIGN);
+    CSSValue alignLastVal = context.getStyle().getValue(TextStyleKeys.TEXT_ALIGN_LAST);
+    this.textAlignment = createAlignment(alignVal);
     if (textAlignment instanceof JustifyAlignment)
     {
-      this.lastLineAlignment = lastLineAlignment;
+      this.lastLineAlignment = createAlignment(alignLastVal);
     }
     else
     {
       this.lastLineAlignment = textAlignment;
     }
 
-    pool = new PoolBox(new EmptyBoxDefinition());
+    pool = new PoolBox(new EmptyBoxDefinition(), valign);
     pool.setParent(this);
     // yet another helper box. Level 2
-    lineboxContainer = new LineBoxRenderBox(new EmptyBoxDefinition());
+    lineboxContainer = new LineBoxRenderBox(new EmptyBoxDefinition(), valign);
     lineboxContainer.setParent(this);
     // level 3 means: Add all lineboxes to the paragraph
   }
+
+  private Alignment createAlignment (CSSValue value)
+  {
+    if (TextAlign.LEFT.equals(value) ||
+        TextAlign.START.equals(value))
+    {
+      return new LeadingEdgeAlignment();
+    }
+    if (TextAlign.RIGHT.equals(value) ||
+        TextAlign.END.equals(value))
+    {
+      return new TrailingEdgeAlignment();
+    }
+    if (TextAlign.CENTER.equals(value))
+    {
+      return new CenterAlignment();
+    }
+    if (TextAlign.JUSTIFY.equals(value))
+    {
+      return new JustifyAlignment();
+    }
+    return new LeadingEdgeAlignment();
+  }
+
 
   public final void addChild(final RenderNode child)
   {
@@ -419,7 +455,7 @@ public class ParagraphRenderBox extends BlockRenderBox
     return lineboxContainer.getMinimumChunkSize(axis);
   }
 
-  public long getPreferredSize(int axis)
+  protected long getPreferredSize(int axis)
   {
     fillLineboxCollection();
     final long preferredSize = lineboxContainer.getPreferredSize(axis);

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutContext.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
+ * $Id: LayoutContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.layouting.util.AttributeMap;
  *
  * @author Thomas Morgner
  */
-public interface LayoutContext extends Cloneable
+public interface LayoutContext extends Cloneable, StyleContext
 {
   public ContextId getContextId();
 

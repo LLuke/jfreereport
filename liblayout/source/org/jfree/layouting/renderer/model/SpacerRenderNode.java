@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpacerRenderNode.java,v 1.2 2006/07/18 14:40:28 taqua Exp $
+ * $Id: SpacerRenderNode.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,9 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.util.geom.StrictInsets;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 
 /**
  * A spacer reserves space for whitespaces found in the text. When encountered
@@ -128,7 +131,9 @@ public class SpacerRenderNode extends RenderNode
   protected void validateMargins()
   {
     if (isMarginsValidated())
+    {
       return;
+    }
 
     StrictInsets margins = getAbsoluteMarginsInternal();
     margins.setTop(height);
@@ -180,7 +185,8 @@ public class SpacerRenderNode extends RenderNode
 
   public boolean isDiscardable()
   {
-    return preserve == false;
+//    return false;//preserve == false;
+      return preserve == false;
   }
 
   /**
@@ -196,5 +202,21 @@ public class SpacerRenderNode extends RenderNode
   public boolean isIgnorableForRendering()
   {
     return true;
+  }
+
+  public CSSValue getVerticalAlignment()
+  {
+    return VerticalAlign.BASELINE;
+  }
+
+  /**
+   * Returns the baseline info for the given node. This can be null, if the node
+   * does not have any baseline info.
+   *
+   * @return
+   */
+  public ExtendedBaselineInfo getBaselineInfo()
+  {
+    return null;
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InlineRenderBox.java,v 1.7 2006/07/18 14:40:28 taqua Exp $
+ * $Id: InlineRenderBox.java,v 1.8 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@
  */
 package org.jfree.layouting.renderer.model;
 
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.util.Log;
 
 /**
@@ -54,10 +56,12 @@ import org.jfree.util.Log;
  */
 public class InlineRenderBox extends RenderBox
 {
+  private AlignmentCollector alignmentCollector;
 
-  public InlineRenderBox(final BoxDefinition boxDefinition)
+  public InlineRenderBox(final BoxDefinition boxDefinition,
+                         final CSSValue valign)
   {
-    super(boxDefinition);
+    super(boxDefinition, valign);
 
     // hardcoded for now, content forms lines, which flow from top to bottom
     // and each line flows horizontally (later with support for LTR and RTL)
@@ -68,15 +72,24 @@ public class InlineRenderBox extends RenderBox
     setMinorAxis(VERTICAL_AXIS);
   }
 
-//
-//  public long getMinimumChunkSize(int axis)
-//  {
-//    // todo: Adjacent chunks needs to be added or we run into trouble later.
-//    // but as said .. later :)
-//
-//    // maybe we need something like getFirstChunk, getlastChunk or so.
-//    return super.getMinimumChunkSize(axis);
-//  }
+  /**
+   * Propage all changes to all silbling nodes which come after this node and to
+   * all childs.
+   * <p/>
+   * If this node is the last child, make the parent pending again.
+   *
+   * @param state
+   */
+  protected void notifyStateChange(final RenderNodeState oldState,
+                                   final RenderNodeState newState)
+  {
+    if (newState != RenderNodeState.FINISHED &&
+        newState != RenderNodeState.LAYOUTING)
+    {
+      alignmentCollector = null;
+    }
+    super.notifyStateChange(oldState, newState);
+  }
 
   public void validate()
   {
@@ -93,13 +106,13 @@ public class InlineRenderBox extends RenderBox
 
       // For now, I assume a MBP (margin-border-padding) size of 10, just
       // to get some visual appearance..
+      validateBorders();
+      validatePaddings();
       setState(RenderNodeState.PENDING);
     }
 
     if (state == RenderNodeState.PENDING)
     {
-      validateBorders();
-      validatePaddings();
       setState(RenderNodeState.LAYOUTING);
     }
 
@@ -113,17 +126,20 @@ public class InlineRenderBox extends RenderBox
       throw new IllegalStateException("NodePos cannot be negative");
     }
 
-    final long lineHeight = 0; // this needs to be read from the stylesheet ..
+//    final long lineHeight = 0; // this needs to be read from the stylesheet ..
     final long minorInsets = getTrailingInsets(getMinorAxis()) +
             getLeadingInsets(getMinorAxis());
-    long effectiveHeight = Math.max(lineHeight,
-            getPreferredSize(getMinorAxis()) - minorInsets);
+//    final long preferredSize = getPreferredSize(getMinorAxis());
+//    final long effectiveHeight =
+//            Math.max(lineHeight, preferredSize - minorInsets);
 
     final long minorAxisNodePos =
             getPosition(getMinorAxis()) + getLeadingInsets(getMinorAxis());
 
+    final AlignmentCollector alignmentCollector =
+            createtAlignmentCollector();
 
-    final long heightAbove = getReferencePoint(getMinorAxis());
+    // final long heightAbove = getReferencePoint(getMinorAxis());
     long trailingMajor = 0;
     long trailingMinor = 0;
     RenderNode node = getFirstChild();
@@ -133,13 +149,14 @@ public class InlineRenderBox extends RenderBox
       {
         // Ignore all empty childs. However, give it an position.
         node.setPosition(getMajorAxis(), nodePos);
-        node.setPosition(getMinorAxis(), minorAxisNodePos + heightAbove);
+        node.setPosition(getMinorAxis(), minorAxisNodePos);
         node.setDimension(getMinorAxis(), 0);
         node.setDimension(getMajorAxis(), 0);
         node = node.getNext();
         continue;
       }
 
+      final long position = alignmentCollector.add(node);
       if (node instanceof MarkerRenderBox)
       {
         MarkerRenderBox mrb = (MarkerRenderBox) node;
@@ -149,21 +166,16 @@ public class InlineRenderBox extends RenderBox
           // The box is positioned outside of the principal box.
           // Margins do not apply (for now).
 
-          final long nodeHeightAbove =
-                  node.getReferencePoint(getMinorAxis()) +
-                          node.getLeadingSpace(getMinorAxis());
           final long prefSize = node.getEffectiveLayoutSize(getMajorAxis());
           node.setPosition(getMajorAxis(), nodePos - prefSize - node.getTrailingSpace(getMajorAxis()));
-          node.setPosition(getMinorAxis(), minorAxisNodePos + (heightAbove - nodeHeightAbove));
+          node.setPosition(getMinorAxis(), minorAxisNodePos + position);
           node.setDimension(getMajorAxis(), prefSize);
           node.validate();
           node = node.getNext();
           continue;
         }
       }
-      final long nodeHeightAbove =
-              node.getReferencePoint(getMinorAxis()) +
-                      node.getLeadingSpace(getMinorAxis());
+
       final long leadingMinor = Math.max
               (node.getLeadingSpace(getMinorAxis()), trailingMinor);
       final long leadingMajor = Math.max
@@ -171,7 +183,7 @@ public class InlineRenderBox extends RenderBox
       nodePos += leadingMajor;
 
       node.setPosition(getMajorAxis(), nodePos);
-      node.setPosition(getMinorAxis(), minorAxisNodePos + (heightAbove - nodeHeightAbove) + leadingMinor);
+      node.setPosition(getMinorAxis(), minorAxisNodePos + position + leadingMinor);
       node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
       node.setDimension(getMinorAxis(), node.getEffectiveLayoutSize(getMinorAxis()));
       node.validate();
@@ -179,7 +191,6 @@ public class InlineRenderBox extends RenderBox
       trailingMajor = node.getTrailingSpace(getMajorAxis());
       trailingMinor = node.getTrailingSpace(getMinorAxis());
 
-      effectiveHeight = Math.max (effectiveHeight, node.getDimension(getMinorAxis()));
       nodePos += node.getDimension(getMajorAxis());
       node = node.getNext();
     }
@@ -187,10 +198,29 @@ public class InlineRenderBox extends RenderBox
 
     final long trailingInsets = getTrailingInsets(getMajorAxis());
     setDimension(getMajorAxis(), trailingMajor + (nodePos + trailingInsets) - getPosition(getMajorAxis()));
-    setDimension(getMinorAxis(), trailingMinor + effectiveHeight + minorInsets);
+    setDimension(getMinorAxis(), trailingMinor +
+            alignmentCollector.getHeight() + minorInsets);
 
     setState(RenderNodeState.FINISHED);
   }
+
+  protected long getPreferredSize(int axis)
+  {
+    if (axis == getMajorAxis())
+    {
+      return super.getPreferredSize(axis);
+    }
+
+    Log.debug("INLINE MINOR BEGIN : PreferredSize " + this);
+
+    // minor axis means: Drive through all childs and query their size
+    // then find the maximum
+
+    return createtAlignmentCollector().getHeight()
+            + getLeadingInsets(getMinorAxis())
+            + getTrailingInsets(getMinorAxis());
+  }
+
 
   /**
    * search all childs for splittable content. This is something static, we dive
@@ -282,7 +312,7 @@ public class InlineRenderBox extends RenderBox
     InlineRenderBox rb = (InlineRenderBox) derive(false);
     if (prefix != null)
     {
-      rb.addChild(prefix);
+      rb.addChild(prefix.derive(true));
     }
     RenderNode node = first;
     while (node != null)
@@ -304,5 +334,73 @@ public class InlineRenderBox extends RenderBox
       return SOFT_BREAKABLE;
     }
     return UNBREAKABLE;
+  }
+
+  /**
+   * Returns the baseline info for the given node. This can be null, if the node
+   * does not have any baseline info.
+   *
+   * @return
+   */
+  public ExtendedBaselineInfo getBaselineInfo()
+  {
+    // Align the various baselines along the dominant baseline.
+    RenderNode node = getFirstChild();
+    while (node != null)
+    {
+      if (node.isIgnorableForRendering())
+      {
+        node = node.getNext();
+        continue;
+      }
+
+      ExtendedBaselineInfo baseLine = node.getBaselineInfo();
+      if (baseLine != null)
+      {
+        final long shift = getLeadingSpace(getMinorAxis()) + getLeadingInsets(getMinorAxis());
+        return baseLine.shift(shift);
+      }
+      node = node.getNext();
+    }
+    return null;
+  }
+
+  private AlignmentCollector createtAlignmentCollector ()
+  {
+    if (alignmentCollector != null)
+    {
+      return alignmentCollector;
+    }
+
+    // cache me, if you can ...
+    alignmentCollector = new AlignmentCollector(getMinorAxis(), 0);
+
+    RenderNode child = getFirstChild();
+    while (child != null)
+    {
+      if (child.isIgnorableForRendering())
+      {
+        // empty childs may affect the margin computation or cause linebreaks,
+        // but they must not appear here.
+        child = child.getNext();
+        continue;
+      }
+
+      alignmentCollector.add(child);
+
+      if (child instanceof MarkerRenderBox)
+      {
+        MarkerRenderBox mrb = (MarkerRenderBox) child;
+        if (mrb.isOutside())
+        {
+          child = child.getNext();
+          continue;
+        }
+      }
+      child = child.getNext();
+    }
+
+    setState(RenderNodeState.LAYOUTING);
+    return alignmentCollector;
   }
 }

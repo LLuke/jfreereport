@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultPageContext.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
+ * $Id: DefaultPageContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -97,5 +97,10 @@ public class DefaultPageContext implements PageContext
         pseudoPages.add(page);
       }
     }
+  }
+
+  public LayoutStyle getStyle()
+  {
+    return (LayoutStyle) pageStyles.get(PageAreaType.CONTENT);
   }
 }

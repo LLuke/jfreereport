@@ -384,8 +384,8 @@ hr {
   height: 2px;
   border: 1px inset;
   margin: 0.5em auto 0.5em auto;
-  -moz-float-edge: margin-box;
-  -moz-box-sizing: border-box;
+/*  -moz-float-edge: margin-box;
+  -moz-box-sizing: border-box;*/
 }
 
 hr[size="1"] {

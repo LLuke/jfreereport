@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.10 2006/07/22 15:28:50 taqua Exp $
+ * $Id: RenderNode.java,v 1.11 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,9 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.util.geom.StrictInsets;
-import org.jfree.util.Log;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * A node of the rendering model. The renderer model keeps track of the
@@ -465,7 +466,7 @@ public abstract class RenderNode implements Cloneable
    * @param axis
    * @return
    */
-  public abstract long getPreferredSize(int axis);
+  protected abstract long getPreferredSize(int axis);
 
 //  /**
 //   * The maximum size returned here is always a box-size - that is the size from
@@ -612,7 +613,7 @@ public abstract class RenderNode implements Cloneable
     {
       target = new RenderNode[2];
     }
-    target[0] = this;
+    target[0] = derive(true);
     target[1] = null;
     return target;
   }
@@ -679,6 +680,7 @@ public abstract class RenderNode implements Cloneable
    *
    * @param axis
    * @return
+   * @deprecated
    */
   public abstract long getReferencePoint(int axis);
 
@@ -1055,4 +1057,14 @@ public abstract class RenderNode implements Cloneable
     return isEmpty();
   }
 
+  public abstract CSSValue getVerticalAlignment();
+
+  /**
+   * Returns the baseline info for the given node. This can be null, if the
+   * node does not have any baseline info at all. If the element has more than
+   * one set of baselines, the baseline of the first element is returned.
+   *
+   * @return
+   */
+  public abstract ExtendedBaselineInfo getBaselineInfo();
 }

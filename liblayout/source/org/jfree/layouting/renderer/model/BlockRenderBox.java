@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BlockRenderBox.java,v 1.7 2006/07/20 17:50:52 taqua Exp $
+ * $Id: BlockRenderBox.java,v 1.8 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@ package org.jfree.layouting.renderer.model;
 
 import org.jfree.util.Log;
 import org.jfree.layouting.renderer.border.RenderLength;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * A block box behaves according to the 'display:block' layouting rules. In the
@@ -71,10 +73,10 @@ import org.jfree.layouting.renderer.border.RenderLength;
  */
 public class BlockRenderBox extends RenderBox
 {
-
-  public BlockRenderBox(final BoxDefinition boxDefinition)
+  public BlockRenderBox(final BoxDefinition boxDefinition,
+                        final CSSValue valign)
   {
-    super(boxDefinition);
+    super(boxDefinition, valign);
 
     // hardcoded for now, content forms lines, which flow from top to bottom
     // and each line flows horizontally (later with support for LTR and RTL)
@@ -136,8 +138,18 @@ public class BlockRenderBox extends RenderBox
         continue;
       }
 
-      final long nodeSizeMinor = Math.min
-              (defaultNodeWidth, node.getEffectiveLayoutSize(getMinorAxis()));
+//      final long layoutSize = node.getEffectiveLayoutSize(getMinorAxis());
+//
+//      final long nodeSizeMinor;
+//      if (defaultNodeWidth < layoutSize)
+//      {
+//        nodeSizeMinor = layoutSize;
+//      }
+//      else
+//      {
+//        nodeSizeMinor = defaultNodeWidth;
+//      }
+      final long nodeSizeMinor = defaultNodeWidth;
       final long leadingMinor = Math.max
               (node.getLeadingSpace(getMinorAxis()), trailingMinor);
 
@@ -160,9 +172,7 @@ public class BlockRenderBox extends RenderBox
 
     final long trailingInsets = getTrailingInsets(getMajorAxis());
     setDimension(getMajorAxis(), trailingMajor + (nodePos + trailingInsets) - getPosition(getMajorAxis()));
-    setDimension(getMinorAxis(),
-            // todo trailingMinor +
-            defaultNodeWidth + leadingPaddings + trailingPaddings);
+    setDimension(getMinorAxis(), defaultNodeWidth + leadingPaddings + trailingPaddings);
 
     Log.debug("BLOCK: Leave Validate: " + defaultNodeWidth + " " +
             leadingPaddings + " " + trailingPaddings);
@@ -192,4 +202,32 @@ public class BlockRenderBox extends RenderBox
   {
     return SOFT_BREAKABLE;
   }
+
+  /**
+   * Returns the baseline info for the given node. This can be null, if the node
+   * does not have any baseline info.
+   *
+   * @return
+   */
+  public ExtendedBaselineInfo getBaselineInfo()
+  {
+    long shift = getLeadingInsets(getMajorAxis()) + getLeadingSpace(getMajorAxis());
+    RenderNode firstChild = getFirstChild();
+    while (firstChild != null)
+    {
+      if (firstChild.isIgnorableForRendering() == false)
+      {
+        final ExtendedBaselineInfo baselineInfo = firstChild.getBaselineInfo();
+        if (baselineInfo == null)
+        {
+          return null;
+        }
+
+        return baselineInfo.shift(shift);
+      }
+      firstChild = firstChild.getNext();
+    }
+    return null;
+  }
+
 }
