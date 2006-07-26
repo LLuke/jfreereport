@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.7 2006/07/26 11:52:07 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.8 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -135,6 +135,36 @@ public class ParagraphRenderBox extends BlockRenderBox
         parent.close();
       }
     }
+
+    public void trim ()
+    {
+      // remove leading and trailing spacer ...
+      RenderNode node = getFirstChild();
+      while (node != null)
+      {
+        if (node.isIgnorableForRendering() == false)
+        {
+          node.setMarginsValidated(false);
+          node.validateMargins();
+          break;
+        }
+        remove(node);
+        node = getFirstChild();
+      }
+
+      node = getLastChild();
+      while (node != null)
+      {
+        if (node.isIgnorableForRendering() == false)
+        {
+          node.setMarginsValidated(false);
+          node.validateMargins();
+          break;
+        }
+        remove(node);
+        node = getLastChild();
+      }
+    }
   }
 
   public static final int ALIGN_LEFT = 0;
@@ -204,9 +234,12 @@ public class ParagraphRenderBox extends BlockRenderBox
 
   protected void addDirectly(final RenderNode child)
   {
-    setOpen(true);
-    super.addChild(child);
-    setOpen(false);
+    if (child instanceof PoolBox)
+    {
+      PoolBox poolBox = (PoolBox) child;
+      poolBox.trim();
+    }
+    super.addGeneratedChild(child);
   }
 
   public void validate()
@@ -269,6 +302,8 @@ public class ParagraphRenderBox extends BlockRenderBox
         }
         else
         {
+          addDirectly(firstSplitNode);
+
           firstSplitNode.setPosition(getMinorAxis(), x);
           firstSplitNode.setPosition(getMajorAxis(), nodePos);
           firstSplitNode.setDimension(getMinorAxis(), width);
@@ -284,7 +319,6 @@ public class ParagraphRenderBox extends BlockRenderBox
           {
             overflow = textAlignment.align(getMinorAxis(), firstSplitNode, width);
           }
-          addDirectly(firstSplitNode);
         }
 
         if (target[1] != null)

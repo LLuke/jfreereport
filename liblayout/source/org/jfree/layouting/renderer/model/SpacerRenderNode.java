@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpacerRenderNode.java,v 1.4 2006/07/26 11:52:08 taqua Exp $
+ * $Id: SpacerRenderNode.java,v 1.5 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -172,8 +172,7 @@ public class SpacerRenderNode extends RenderNode
 
   public boolean isDiscardable()
   {
-//    return false;//preserve == false;
-      return preserve == false;
+    return false;//preserve == false;
   }
 
   /**

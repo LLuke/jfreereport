@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.12 2006/07/26 11:52:08 taqua Exp $
+ * $Id: RenderNode.java,v 1.13 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -692,7 +692,7 @@ public abstract class RenderNode implements Cloneable
   {
     this.marginsValidated = marginsValidated;
   }
-
+  
   protected void validateMargins()
   {
     if (marginsValidated)

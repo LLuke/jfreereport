@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.11 2006/07/26 11:52:07 taqua Exp $
+ * $Id: RenderBox.java,v 1.12 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -1379,11 +1379,13 @@ public abstract class RenderBox extends RenderNode
 
     long cursor = getLeadingInsets(axis);
     RenderNode child = getFirstChild();
+    long trailingSpace = 0;
     while (child != null)
     {
       long currentSize = child.getPreferredSize(axis);
       final long posAfter = currentSize + cursor;
-      final long bestBreakLocal = child.getFirstBreak(axis);
+      final long bestBreakLocal = child.getFirstBreak(axis) +
+              Math.max (trailingSpace, child.getLeadingSpace(axis));
       if (bestBreakLocal > 0)
       {
         return bestBreakLocal + cursor;
@@ -1405,6 +1407,7 @@ public abstract class RenderBox extends RenderNode
       {
         //       Log.debug("BreakAfter: " + breakAfterAllowed);
       }
+      trailingSpace = child.getTrailingSpace(axis);
       cursor = posAfter;
       child = child.getNext();
     }
@@ -1435,7 +1438,7 @@ public abstract class RenderBox extends RenderNode
       throw new IllegalArgumentException();
     }
 
-    if (splitPoint == 278000)
+    if (splitPoint == 280000)
     {
       Log.debug("BEGIN SPLIT: " + splitPoint);
     }
@@ -1464,8 +1467,8 @@ public abstract class RenderBox extends RenderNode
         continue;
       }
 
-      final long prefSize =
-              firstSplitChild.getEffectiveLayoutSize(axis) +
+      final long layoutSize = firstSplitChild.getEffectiveLayoutSize(axis);
+      final long prefSize = layoutSize +
                       Math.max(firstSplitChild.getLeadingSpace(axis), trailingSpace);
 
       trailingSpace = firstSplitChild.getTrailingSpace(axis);
@@ -1511,7 +1514,8 @@ public abstract class RenderBox extends RenderNode
     }
 
     // now we've reached the split point, make a sanity test.
-    final long splitPos = splitPoint - firstBox.getEffectiveLayoutSize(axis);
+    final long firstBoxEffSize = firstBox.getEffectiveLayoutSize(axis);
+    final long splitPos = splitPoint - firstBoxEffSize;
     if (splitPos < 0)
     {
       throw new IllegalStateException("The selected child split is not valid: " + splitPos);

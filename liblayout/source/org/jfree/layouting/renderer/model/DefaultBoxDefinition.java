@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultBoxDefinition.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id: DefaultBoxDefinition.java,v 1.3 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -228,9 +228,17 @@ public class DefaultBoxDefinition implements BoxDefinition
     this.preferredHeight = preferredHeight;
   }
 
+  /**
+   * Split the box definition for the given major axis. A horizontal axis will
+   * perform vertical splits (resulting in a left and right box definition) and
+   * a given vertical axis will split the box into a top and bottom box.
+   *  
+   * @param axis
+   * @return
+   */
   public BoxDefinition[] split(int axis)
   {
-    if (axis == RenderNode.VERTICAL_AXIS)
+    if (axis == RenderNode.HORIZONTAL_AXIS)
     {
       return splitVertically();
     }
