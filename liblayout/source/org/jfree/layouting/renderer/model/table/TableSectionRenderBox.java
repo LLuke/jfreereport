@@ -53,6 +53,7 @@ import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.model.table.rows.SeparateRowModel;
 import org.jfree.layouting.renderer.model.table.rows.TableRow;
 import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.util.geom.StrictInsets;
 import org.jfree.util.Log;
 
@@ -331,8 +332,17 @@ public class TableSectionRenderBox extends BlockRenderBox
         if (cell instanceof TableCellRenderBox)
         {
           TableCellRenderBox tcb = (TableCellRenderBox) cell;
+          final ExtendedBaselineInfo baselineInfo = tcb.getBaselineInfo();
           final long height = tcb.getHeight();
-          final long refp = tcb.getReferencePoint(VERTICAL_AXIS);
+          final long refp;
+          if (baselineInfo == null)
+          {
+            refp = height;
+          }
+          else
+          {
+            refp = baselineInfo.getBaseline(ExtendedBaselineInfo.ALPHABETHC);
+          }
           final long lead = tcb.getLeadingSpace(VERTICAL_AXIS);
           row.updateValidatedSize(tcb.getRowSpan(),
                   lead + refp, height - lead - refp);

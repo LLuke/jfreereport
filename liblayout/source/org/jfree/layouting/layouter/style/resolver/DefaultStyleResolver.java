@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultStyleResolver.java,v 1.8 2006/07/24 12:18:56 taqua Exp $
+ * $Id: DefaultStyleResolver.java,v 1.9 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -181,10 +181,6 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
 //            layoutContext.getTagName() + ":" +
 //            layoutContext.getPseudoElement());
 
-    if ("hr".equals(layoutContext.getTagName()))
-    {
-      Log.debug ("ER");
-    }
     // Stage 0: Initialize with the built-in defaults
     // Stage 1a: Add the parent styles (but only the one marked as inheritable).
     final LayoutElement parent = element.getParent();

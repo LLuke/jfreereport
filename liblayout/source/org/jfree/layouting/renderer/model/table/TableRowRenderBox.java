@@ -202,14 +202,6 @@ public class TableRowRenderBox extends BlockRenderBox
             columnModel.getPreferredSize() - totalMinChunkSize;
     final long borderSpacing = columnModel.getBorderSpacing();
 
-    final long heightAbove = row.getValidatedLeadingSize();
-    if (!justGuessing)
-    {
-      if (getReferencePoint(getMinorAxis()) != heightAbove)
-      {
-        throw new IllegalStateException();
-      }
-    }
     int cellCounter = 0;
     RenderNode node = getFirstChild();
     boolean worked = false;

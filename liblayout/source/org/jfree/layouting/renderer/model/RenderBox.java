@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.10 2006/07/24 12:18:56 taqua Exp $
+ * $Id: RenderBox.java,v 1.11 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -1122,36 +1122,6 @@ public abstract class RenderBox extends RenderNode
 
   }
 
-  /**
-   * The reference point corresponds to the baseline of an box. For now, we
-   * define only one reference point per box. The reference point of boxes
-   * corresponds to the reference point of the first linebox.
-   *
-   * @param axis
-   * @return
-   */
-  public long getReferencePoint(int axis)
-  {
-//    // we have no horizontal reference point ... (yet)
-//    if (axis == getMajorAxis())
-//    {
-//      return 0;
-//    }
-//
-//    // this gets a bit more complicated. Iterate over all childs and get their
-//    // reference point.
-//    RenderNode child = getFirstChild();
-//    long referencePoint = 0;
-//    while (child != null)
-//    {
-//      final long refPoint = child.getReferencePoint(getMinorAxis());
-//      referencePoint = Math.max(refPoint, referencePoint);
-//      child = child.getNext();
-//    }
-//    return getLeadingInsets(axis) + referencePoint;
-    throw new UnsupportedOperationException();
-  }
-
   private RenderNode getFirstNonEmpty()
   {
     RenderNode firstChild = getFirstChild();
@@ -1425,7 +1395,9 @@ public abstract class RenderBox extends RenderNode
         if (child.getNext() == null)
         {
           // if this is the last child, include the paddings and borders ..
-          return posAfter + getTrailingInsets(axis);
+          //return posAfter + getTrailingInsets(axis);
+          // signal, that there is no break opportinity ..
+          return 0;
         }
         return posAfter;
       }

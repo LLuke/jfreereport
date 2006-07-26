@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.11 2006/07/24 12:18:56 taqua Exp $
+ * $Id: RenderNode.java,v 1.12 2006/07/26 11:52:08 taqua Exp $
  *
  * Changes
  * -------
@@ -672,17 +672,6 @@ public abstract class RenderNode implements Cloneable
     }
     return parentWidth.longValue();
   }
-
-  /**
-   * The reference point corresponds to the baseline of an box. For now,
-   * we define only one reference point per box. The reference point of boxes
-   * corresponds to the reference point of the first linebox.
-   *
-   * @param axis
-   * @return
-   * @deprecated
-   */
-  public abstract long getReferencePoint(int axis);
 
   public boolean isDiscardable()
   {

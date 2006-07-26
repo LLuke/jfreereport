@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.6 2006/07/20 17:50:52 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.7 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -496,20 +496,6 @@ public class ParagraphRenderBox extends BlockRenderBox
   public boolean isEmpty()
   {
     return pool.isEmpty();
-  }
-
-  /**
-   * The reference point corresponds to the baseline of an box. For now, we
-   * define only one reference point per box. The reference point of boxes
-   * corresponds to the reference point of the first linebox.
-   *
-   * @param axis
-   * @return
-   */
-  public long getReferencePoint(int axis)
-  {
-    fillLineboxCollection();
-    return lineboxContainer.getReferencePoint(axis);
   }
 
   public boolean isDiscardable()

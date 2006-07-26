@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableReplacedContent.java,v 1.2 2006/07/18 14:40:28 taqua Exp $
+ * $Id: RenderableReplacedContent.java,v 1.3 2006/07/26 11:52:08 taqua Exp $
  *
  * Changes
  * -------
@@ -157,23 +157,6 @@ public class RenderableReplacedContent extends RenderNode
   public int getBreakability(int axis)
   {
     return HARD_BREAKABLE;
-  }
-
-  /**
-   * The reference point corresponds to the baseline of an box. For now, we
-   * define only one reference point per box. The reference point of boxes
-   * corresponds to the reference point of the first linebox.
-   *
-   * @param axis
-   * @return
-   */
-  public long getReferencePoint(int axis)
-  {
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return 0;
-    }
-    return getPreferredSize(axis);
   }
 
   /**

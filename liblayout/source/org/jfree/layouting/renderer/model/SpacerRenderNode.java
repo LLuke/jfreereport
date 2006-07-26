@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpacerRenderNode.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
+ * $Id: SpacerRenderNode.java,v 1.4 2006/07/26 11:52:08 taqua Exp $
  *
  * Changes
  * -------
@@ -153,19 +153,6 @@ public class SpacerRenderNode extends RenderNode
   public BreakAfterEnum getBreakAfterAllowed(final int axis)
   {
     return BreakAfterEnum.BREAK_DONT_KNOW;
-  }
-
-  /**
-   * The reference point corresponds to the baseline of an box. For now, we
-   * define only one reference point per box. The reference point of boxes
-   * corresponds to the reference point of the first linebox.
-   *
-   * @param axis
-   * @return
-   */
-  public long getReferencePoint(int axis)
-  {
-    return 0;
   }
 
   public boolean isEmpty()

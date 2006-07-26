@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableCellRenderBox.java,v 1.5 2006/07/24 12:18:56 taqua Exp $
+ * $Id: TableCellRenderBox.java,v 1.6 2006/07/26 11:52:08 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
 import org.jfree.layouting.renderer.model.table.rows.TableRow;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.util.geom.StrictInsets;
 import org.jfree.util.Log;
 
@@ -292,8 +293,19 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
 
       if (firstNodeAligned == false)
       {
-        final long nodeHeightAbove = node.getReferencePoint(getMajorAxis());
-        final long nodeMinorPos = (heightAbove - nodeHeightAbove) - getLeadingInsets(getMajorAxis());
+        final ExtendedBaselineInfo baselineInfo = node.getBaselineInfo();
+        final long nodeHeightAbove;
+        if (baselineInfo == null)
+        {
+          nodeHeightAbove = 0;
+        }
+        else
+        {
+          nodeHeightAbove =
+                  baselineInfo.getBaseline(ExtendedBaselineInfo.ALPHABETHC);
+        }
+        final long nodeMinorPos = (heightAbove - nodeHeightAbove) -
+                getLeadingInsets(getMajorAxis());
 
         firstNodeAligned = true;
         nodePos += nodeMinorPos;

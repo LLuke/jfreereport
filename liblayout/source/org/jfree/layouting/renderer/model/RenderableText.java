@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.4 2006/07/18 14:40:28 taqua Exp $
+ * $Id: RenderableText.java,v 1.5 2006/07/26 11:52:08 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,6 @@ public class RenderableText extends RenderNode
   private long maximumWidth;
 
   private long height;
-  private long baseLine;
   private boolean forceLinebreak;
   private ExtendedBaselineInfo baselineInfo;
 
@@ -145,7 +144,6 @@ public class RenderableText extends RenderNode
       Spacing spacing = glyph.getSpacing();
       heightAbove = Math.max(glyph.getBaseLine(), heightAbove);
       heightBelow = Math.max(glyph.getHeight() - glyph.getBaseLine(), heightBelow);
-      baseLine = Math.max(glyph.getBaseLine(), baseLine);
       final int kerning = glyph.getKerning();
       final int width = glyph.getWidth();
       // Log.debug ("Glyph: " + width + " - " + kerning);
@@ -463,10 +461,20 @@ public class RenderableText extends RenderNode
       if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_LINE)
       {
         // ok, we've found a linebreak. Stop poking around and break
+        if (i == lastPos - 1)
+        {
+          // no break opportinity ...
+          return 0;
+        }
         return width;
       }
       if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_WORD)
       {
+        if (i == lastPos - 1)
+        {
+          // no break opportinity ...
+          return 0;
+        }
         return width;
       }
 
@@ -606,25 +614,6 @@ public class RenderableText extends RenderNode
   public boolean isEmpty()
   {
     return length == 0;
-  }
-
-  /**
-   * The reference point corresponds to the baseline of an box. For now, we
-   * define only one reference point per box. The reference point of boxes
-   * corresponds to the reference point of the first linebox.
-   *
-   * @param axis
-   * @return
-   */
-  public long getReferencePoint(int axis)
-  {
-
-    if (getMajorAxis() == axis)
-    {
-      // Log.debug("Queried reference point for major axis");
-      return 0;
-    }
-    return baseLine;
   }
 
   public boolean isDiscardable()
