@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractOutputProcessorMetaData.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -241,6 +241,31 @@ public abstract class AbstractOutputProcessorMetaData
   public PageSize getDefaultPageSize()
   {
     return PageSize.A4;
+  }
+
+  /**
+   * Returns the logical page size, or null, if there is none defined.
+   *
+   * @return
+   */
+  public PageSize getLogicalPageSize()
+  {
+    return null;
+  }
+
+  /**
+   * Returns the vertical page span. If the value is zero or negative, no
+   *
+   * @return
+   */
+  public int getVerticalPageSpan()
+  {
+    return 1;
+  }
+
+  public int getHorizontalPageSpan()
+  {
+    return 1;
   }
 
   public String getMediaType()

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.7 2006/07/20 17:50:52 taqua Exp $
+ * $Id: PageDrawable.java,v 1.8 2006/07/22 15:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -222,11 +222,6 @@ public class PageDrawable implements Drawable
 
   public void printBox(RenderBox box, int level)
   {
-    if (box.isKillMePlease())
-    {
-      throw new IllegalStateException();
-    }
-
     StringBuffer b = new StringBuffer();
     for (int i = 0; i < level; i++)
     {
@@ -334,11 +329,6 @@ public class PageDrawable implements Drawable
 
   private void printText(final RenderableText text, final int level)
   {
-    if (text.isKillMePlease())
-    {
-      throw new IllegalStateException();
-    }
-
     StringBuffer b = new StringBuffer();
     for (int i = 0; i < level; i++)
     {

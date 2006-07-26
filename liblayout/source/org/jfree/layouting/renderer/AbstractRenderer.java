@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractRenderer.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -41,16 +41,6 @@
 package org.jfree.layouting.renderer;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
-import org.jfree.layouting.input.style.keys.page.PageSize;
-import org.jfree.layouting.input.style.keys.page.PageSizeValue;
-import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.context.PageContext;
-import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.renderer.page.PageAreaType;
-import org.jfree.layouting.renderer.page.DefaultPageGrid;
-import org.jfree.layouting.renderer.page.PageGrid;
 import org.jfree.util.Log;
 
 /**
@@ -61,7 +51,6 @@ import org.jfree.util.Log;
 public abstract class AbstractRenderer implements Renderer
 {
   private LayoutProcess layoutProcess;
-  private PageGrid pageGrid;
 
   protected AbstractRenderer(final LayoutProcess layoutProcess)
   {
@@ -71,39 +60,5 @@ public abstract class AbstractRenderer implements Renderer
     }
     Log.debug ("Creating " + getClass());
     this.layoutProcess = layoutProcess;
-  }
-
-  /**
-   * This is called *after* we detected a pagebreak.
-   * @param pageContext
-   */
-  public void handlePageBreak(final PageContext pageContext)
-  {
-    // initialize the page areas
-    // first, grab the core page; this may hold the size.
-    final LayoutStyle style = pageContext.getAreaDefinition
-            (PageAreaType.CONTENT);
-    final CSSValue rawSize = style.getValue(PageStyleKeys.SIZE);
-
-    final PageSize pageSize =
-            layoutProcess.getOutputMetaData().getDefaultPageSize();
-    long pageWidth = StrictGeomUtility.toInternalValue(pageSize.getWidth());
-    long pageHeight = StrictGeomUtility.toInternalValue(pageSize.getHeight());
-
-    if (rawSize instanceof PageSizeValue)
-    {
-      PageSizeValue psv = (PageSizeValue) rawSize;
-      CSSValue width = psv.getWidth();
-      CSSValue height = psv.getWidth();
-      // todo: Parse the @page rules and define what we get here ...
-    }
-
-    pageGrid = new DefaultPageGrid(pageWidth, pageHeight, 1, 1);
-
-  }
-
-  public PageGrid getPageGrid()
-  {
-    return pageGrid;
   }
 }

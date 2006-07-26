@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSNumericValue.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
  *
  * Changes
  * -------
@@ -99,5 +99,9 @@ public class CSSNumericValue extends Number implements CSSValue
   {
     return getCSSText();
   }
-  
+
+  public static CSSNumericValue createPtValue (double value)
+  {
+    return new CSSNumericValue(CSSNumericType.PT,  value); 
+  }
 }

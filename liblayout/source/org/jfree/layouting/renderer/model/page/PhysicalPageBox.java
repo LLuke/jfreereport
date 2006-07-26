@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PhysicalPageBox.java,v 1.4 2006/07/26 11:52:08 taqua Exp $
+ * $Id: PhysicalPageBox.java,v 1.5 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -40,38 +40,70 @@
  */
 package org.jfree.layouting.renderer.model.page;
 
-import org.jfree.layouting.renderer.model.BoxDefinition;
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
+import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderNodeState;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
-import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 
 /**
- * This is behaves like a table box (but is none, as the layouting rules
- * are different).
+ * This is behaves like a table box (but is none, as the layouting rules are
+ * different).
+ * <p/>
+ * This is a empty prototype, the real version should have a couple of page
+ * areas which contain the physical headers and footers.
  *
  * @author Thomas Morgner
  */
 public class PhysicalPageBox extends RenderBox
 {
-  public PhysicalPageBox(final BoxDefinition boxDefinition)
+  private PageContext pageContext;
+  private long width;
+  private long height;
+
+  public PhysicalPageBox(final PageContext pageContext,
+                         final long width,
+                         final long height)
   {
-    super(boxDefinition, VerticalAlign.TOP);
+    super(new EmptyBoxDefinition(), VerticalAlign.TOP);
+    this.pageContext = pageContext;
+    this.width = width;
+    this.height = height;
   }
 
   protected long getPreferredSize(int axis)
   {
-    return 0;
+    if (axis == VERTICAL_AXIS)
+    {
+      return height;
+    }
+    return width;
   }
 
   protected long getEffectiveLayoutSize(int axis, RenderNode node)
   {
-    return 0;
+    if (axis == VERTICAL_AXIS)
+    {
+      return height;
+    }
+    return width;
+  }
+
+  public long getWidth()
+  {
+    return width;
+  }
+
+  public long getHeight()
+  {
+    return height;
   }
 
   public void validate()
   {
-
+    setState(RenderNodeState.FINISHED);
   }
 
   /**

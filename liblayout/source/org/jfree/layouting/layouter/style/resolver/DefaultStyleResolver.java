@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultStyleResolver.java,v 1.9 2006/07/26 11:52:07 taqua Exp $
+ * $Id: DefaultStyleResolver.java,v 1.10 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -46,19 +46,25 @@ import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
+import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleRule;
+import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.CSSPageRule;
+import org.jfree.layouting.input.style.CSSPageAreaRule;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
 import org.jfree.layouting.input.style.selectors.SelectorWeight;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.CSSStyleRuleComparator;
 import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.LayoutStylePool;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.NamespaceDefinition;
 import org.jfree.layouting.namespace.Namespaces;
@@ -412,5 +418,31 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     state.setRuleMatcher(styleRuleMatcher);
     state.setStrictStyleMode(strictStyleMode);
     return state;
+  }
+
+  public LayoutStyle resolvePageStyle(CSSValue pageName,
+                                      PseudoPage[] pseudoPages,
+                                      PageAreaType pageArea)
+  {
+    final LayoutStyle style = LayoutStylePool.getPool().getStyle();
+
+    final CSSPageRule[] pageRule =
+            styleRuleMatcher.getPageRule(pageName, pseudoPages);
+    for (int i = 0; i < pageRule.length; i++)
+    {
+      CSSPageRule cssPageRule = pageRule[i];
+      copyStyleInformation(style, cssPageRule, null);
+
+      final int rc = cssPageRule.getRuleCount();
+      for (int r = 0; r < rc; r++)
+      {
+        final CSSPageAreaRule rule = cssPageRule.getRule(r);
+        if (rule.getPageArea().equals(pageArea))
+        {
+          copyStyleInformation(style, rule, null);
+        }
+      }
+    }
+    return style;
   }
 }

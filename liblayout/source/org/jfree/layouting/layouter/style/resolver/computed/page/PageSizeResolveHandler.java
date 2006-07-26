@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageSizeResolveHandler.java,v 1.1 2006/07/11 13:38:39 taqua Exp $
  *
  * Changes
  * -------
@@ -44,11 +44,12 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.input.style.keys.page.PageSizeFactory;
-import org.jfree.layouting.input.style.keys.page.PageSizeValue;
 import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSValuePair;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
@@ -87,10 +88,6 @@ public class PageSizeResolveHandler implements ResolveHandler
                       StyleKey key)
   {
     CSSValue value = style.getValue(PageStyleKeys.SIZE);
-    if (value instanceof PageSizeValue)
-    {
-      return;
-    }
 
     String name = null;
     if (value instanceof CSSStringValue)
@@ -103,17 +100,20 @@ public class PageSizeResolveHandler implements ResolveHandler
       name = value.toString();
     }
 
+    PageSize ps = null;
     if (name != null)
     {
-      PageSize ps = PageSizeFactory.getInstance().getPageSizeByName(name);
-      if (ps != null)
-      {
-        style.setValue(PageStyleKeys.SIZE, new PageSizeValue(ps));
-        return;
-      }
+      ps = PageSizeFactory.getInstance().getPageSizeByName(name);
     }
 
-    final PageSize pfmt = process.getOutputMetaData().getDefaultPageSize();
-    style.setValue(PageStyleKeys.SIZE, new PageSizeValue(pfmt));
+    if (ps == null)
+    {
+      ps = process.getOutputMetaData().getDefaultPageSize();
+    }
+    // if it is stll null, then the output target is not valid.
+    CSSValue page =
+        new CSSValuePair(CSSNumericValue.createPtValue(ps.getWidth()),
+            CSSNumericValue.createPtValue(ps.getHeight()));
+    style.setValue(PageStyleKeys.SIZE, page);
   }
 }

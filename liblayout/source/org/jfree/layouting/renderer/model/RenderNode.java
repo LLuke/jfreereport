@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.13 2006/07/26 12:09:51 taqua Exp $
+ * $Id: RenderNode.java,v 1.14 2006/07/26 12:41:48 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@
  */
 package org.jfree.layouting.renderer.model;
 
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.util.geom.StrictInsets;
-import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * A node of the rendering model. The renderer model keeps track of the
@@ -118,7 +118,6 @@ public abstract class RenderNode implements Cloneable
   private int majorAxis;
   private int minorAxis;
 
-  private boolean killMePlease;
   private boolean clearRight;
   private boolean clearLeft;
   private Object instanceId;
@@ -141,16 +140,6 @@ public abstract class RenderNode implements Cloneable
   public Object getInstanceId()
   {
     return instanceId;
-  }
-
-  public void performSuicide()
-  {
-    killMePlease = true;
-  }
-
-  public boolean isKillMePlease()
-  {
-    return killMePlease;
   }
 
   public int getMajorAxis()
@@ -240,7 +229,7 @@ public abstract class RenderNode implements Cloneable
     }
   }
 
-  public final void setPosition (int axis, long value)
+  public final void setPosition(int axis, long value)
   {
     if (axis == HORIZONTAL_AXIS)
     {
@@ -252,7 +241,7 @@ public abstract class RenderNode implements Cloneable
     }
   }
 
-  public final long getPosition (int axis)
+  public final long getPosition(int axis)
   {
     if (axis == HORIZONTAL_AXIS)
     {
@@ -264,7 +253,7 @@ public abstract class RenderNode implements Cloneable
     }
   }
 
-  public final void setDimension (int axis, long value)
+  public final void setDimension(int axis, long value)
   {
     if (axis == HORIZONTAL_AXIS)
     {
@@ -276,7 +265,7 @@ public abstract class RenderNode implements Cloneable
     }
   }
 
-  public final long getDimension (int axis)
+  public final long getDimension(int axis)
   {
     if (axis == HORIZONTAL_AXIS)
     {
@@ -511,11 +500,11 @@ public abstract class RenderNode implements Cloneable
   {
     try
     {
-      final RenderNode o = (RenderNode)super.clone();
+      final RenderNode o = (RenderNode) super.clone();
       o.absoluteMargins = (StrictInsets) absoluteMargins.clone();
       o.effectiveMargins = (StrictInsets) effectiveMargins.clone();
       o.parentWidth = null;
-      return  o;
+      return o;
     }
     catch (CloneNotSupportedException e)
     {
@@ -655,9 +644,15 @@ public abstract class RenderNode implements Cloneable
     return parent.getParentBlockContext();
   }
 
+  /**
+   * Returns the computed width of the parent block context. Once this has been
+   * computed, this value does not change anymore. In the real CSS world, this
+   * would have been computed even before the displaymodel had been built.
+   * 
+   * @return
+   */
   protected long getComputedBlockContextWidth()
   {
-    Long parentWidth = null;
     if (parentWidth == null)
     {
       final RenderBox parent = getParentBlockContext();
@@ -678,7 +673,7 @@ public abstract class RenderNode implements Cloneable
     return false;
   }
 
-  public long getEffectiveLayoutSize (int axis)
+  public long getEffectiveLayoutSize(int axis)
   {
     return getPreferredSize(axis);
   }
@@ -692,7 +687,7 @@ public abstract class RenderNode implements Cloneable
   {
     this.marginsValidated = marginsValidated;
   }
-  
+
   protected void validateMargins()
   {
     if (marginsValidated)
@@ -817,6 +812,7 @@ public abstract class RenderNode implements Cloneable
   {
     return absoluteMargins;
   }
+
   protected StrictInsets getEffectiveMarginsInternal()
   {
     return effectiveMargins;
@@ -834,7 +830,7 @@ public abstract class RenderNode implements Cloneable
     return effectiveMargins;
   }
 
-  protected void invalidateMargins ()
+  protected void invalidateMargins()
   {
     this.marginsValidated = false;
   }
@@ -928,7 +924,7 @@ public abstract class RenderNode implements Cloneable
     return collapseMargins(parentMargin, getDefinedTrailingMargin(axis));
   }
 
-  protected long getDefinedTrailingMargin (int axis)
+  protected long getDefinedTrailingMargin(int axis)
   {
     return 0;
   }
@@ -986,7 +982,7 @@ public abstract class RenderNode implements Cloneable
     return collapseMargins(parentMargin, getDefinedLeadingMargin(axis));
   }
 
-  protected long getDefinedLeadingMargin (int axis)
+  protected long getDefinedLeadingMargin(int axis)
   {
     return 0;
   }
@@ -1035,13 +1031,13 @@ public abstract class RenderNode implements Cloneable
    * If that method returns true, the element will not be used for rendering.
    * For the purpose of computing sizes or performing the layouting (in the
    * validate() step), this element will treated as if it is not there.
-   *
+   * <p/>
    * If the element reports itself as non-empty, however, it will affect the
    * margin computation.
-   *  
+   *
    * @return
    */
-  public boolean isIgnorableForRendering ()
+  public boolean isIgnorableForRendering()
   {
     return isEmpty();
   }
@@ -1049,11 +1045,31 @@ public abstract class RenderNode implements Cloneable
   public abstract CSSValue getVerticalAlignment();
 
   /**
-   * Returns the baseline info for the given node. This can be null, if the
-   * node does not have any baseline info at all. If the element has more than
-   * one set of baselines, the baseline of the first element is returned.
+   * Returns the baseline info for the given node. This can be null, if the node
+   * does not have any baseline info at all. If the element has more than one
+   * set of baselines, the baseline of the first element is returned.
    *
    * @return
    */
   public abstract ExtendedBaselineInfo getBaselineInfo();
+
+  /**
+   * Checks, whether a validate run would succeed. Under certain conditions, for
+   * instance if there is a auto-width component open, it is not possible to
+   * perform a layout run, unless that element has been closed.
+   * <p/>
+   * Generally speaking: An element cannot be layouted, if
+   * <ul>
+   * <li>the element contains childs, which cannot be layouted,</li>
+   * <li>the element has auto-width or depends on an auto-width element,</li>
+   * <li>the element is a floating or positioned element, or is a child of an
+   * floating or positioned element.</li>
+   * </ul>
+   *
+   * @return
+   */
+  public boolean isValidatable()
+  {
+    return true;
+  }
 }

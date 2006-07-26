@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageStyleKeys.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
+ * $Id: PageStyleKeys.java,v 1.3 2006/07/11 13:29:47 taqua Exp $
  *
  * Changes
  * -------
@@ -54,12 +54,15 @@ public class PageStyleKeys
   public static final StyleKey SIZE =
           StyleKeyRegistry.getRegistry().createKey
                   ("size", false, false, StyleKey.PAGE_CONTEXT);
+  
+  /** The logical Page Size */
+  public static final StyleKey LOGICAL_SIZE =
+          StyleKeyRegistry.getRegistry().createKey
+                  ("-x-liblayout-logical-size", false, false, StyleKey.PAGE_CONTEXT);
 
   /**
    * A dimension ({length}{2}) that defines how often the page is repeated
    * horizontally and vertically if the content does not fit.
-   *
-   * Todo: Should we allow Auto for the horizontal or vertical pages? 
    */
   public static final StyleKey HORIZONTAL_PAGE_SPAN =
           StyleKeyRegistry.getRegistry().createKey

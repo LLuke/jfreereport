@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageSizeResolveHandler.java,v 1.1 2006/07/11 13:38:39 taqua Exp $
  *
  * Changes
  * -------
@@ -40,16 +40,14 @@
  */
 package org.jfree.layouting.layouter.style.resolver.autovalue.page;
 
-import java.awt.print.PageFormat;
-
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
-import org.jfree.layouting.input.style.keys.page.PageSizeValue;
 import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.LayoutProcess;
 
@@ -86,7 +84,10 @@ public class PageSizeResolveHandler implements ResolveHandler
                       LayoutStyle style,
                       StyleKey key)
   {
-    final PageSize pfmt = process.getOutputMetaData().getDefaultPageSize();
-    style.setValue(PageStyleKeys.SIZE, new PageSizeValue(pfmt));
+    final PageSize ps = process.getOutputMetaData().getDefaultPageSize();
+    CSSValue page =
+        new CSSValuePair(CSSNumericValue.createPtValue(ps.getWidth()),
+            CSSNumericValue.createPtValue(ps.getHeight()));
+    style.setValue(PageStyleKeys.SIZE, page);
   }
 }

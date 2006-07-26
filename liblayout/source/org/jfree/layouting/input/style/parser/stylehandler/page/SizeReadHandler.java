@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SizeReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -45,14 +45,13 @@ import java.awt.print.PageFormat;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.input.style.keys.page.PageSizeFactory;
-import org.jfree.layouting.input.style.keys.page.PageSizeValue;
-import org.jfree.layouting.input.style.keys.page.NamedPageSizeValue;
 import org.jfree.layouting.input.style.parser.CSSValueReadHandler;
 import org.jfree.layouting.input.style.parser.stylehandler.AbstractWidthReadHandler;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -83,8 +82,8 @@ public class SizeReadHandler extends AbstractWidthReadHandler
         return null;
       }
 
-      int pageOrientation = PageFormat.PORTRAIT;
       value = value.getNextLexicalUnit();
+      int pageOrientation = PageFormat.PORTRAIT;
       if (value != null)
       {
         if (value.getLexicalUnitType() != LexicalUnit.SAC_IDENT)
@@ -96,8 +95,7 @@ public class SizeReadHandler extends AbstractWidthReadHandler
         {
           pageOrientation = PageFormat.LANDSCAPE;
         }
-        else
-        if (value.getStringValue().equalsIgnoreCase("reverse-landscape"))
+        else if (value.getStringValue().equalsIgnoreCase("reverse-landscape"))
         {
           pageOrientation = PageFormat.REVERSE_LANDSCAPE;
         }
@@ -111,8 +109,17 @@ public class SizeReadHandler extends AbstractWidthReadHandler
         }
       }
 
-      return new NamedPageSizeValue
-              (new CSSConstant(ident.toLowerCase()), pageOrientation);
+      if (pageOrientation == PageFormat.LANDSCAPE ||
+          pageOrientation == PageFormat.REVERSE_LANDSCAPE)
+      {
+        return new CSSValuePair(CSSNumericValue.createPtValue(ps.getHeight()),
+                CSSNumericValue.createPtValue(ps.getWidth()));
+      }
+      else
+      {
+        return new CSSValuePair(CSSNumericValue.createPtValue(ps.getWidth()),
+                CSSNumericValue.createPtValue(ps.getHeight()));
+      }
     }
     else
     {
@@ -138,7 +145,7 @@ public class SizeReadHandler extends AbstractWidthReadHandler
         }
       }
 
-      return new PageSizeValue (topWidth, rightWidth);
+      return new CSSValuePair (topWidth, rightWidth);
     }
   }
 

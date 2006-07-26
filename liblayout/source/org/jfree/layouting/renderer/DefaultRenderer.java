@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.8 2006/07/22 15:28:50 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.9 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -81,14 +81,15 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.model.page.DefaultPageGrid;
+import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableColumnGroupNode;
 import org.jfree.layouting.renderer.model.table.TableColumnNode;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.layouting.renderer.page.FastPageGrid;
-import org.jfree.layouting.renderer.page.PageGrid;
+import org.jfree.layouting.renderer.page.DefaultPageGridFactory;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
 import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.layouting.util.geom.StrictDimension;
@@ -156,11 +157,7 @@ public class DefaultRenderer implements Renderer
   {
     Log.debug("<document>");
     this.textFactory = new DefaultRenderableTextFactory(layoutProcess);
-
-    // initialize the initial page-grid
-    // for the first try, use a hard-coded page size. We should change that
-    // before we go public ...
-    final PageGrid pageGrid = new FastPageGrid(500000, 500000);
+    final PageGrid pageGrid = new DefaultPageGrid(pageContext, 2,2);
 
     // initialize the logical page. The logical page needs the page grid,
     // as this contains the hints for the physical page sizes.
@@ -487,19 +484,6 @@ public class DefaultRenderer implements Renderer
 
     final RenderNode[] text =
             textFactory.createText(data, 0, data.length, context);
-//
-//    for (int x = 0; x < text.length; x++)
-//    {
-//      StringBuffer b = new StringBuffer();
-//      RenderableText t = text[x];
-//      Glyph[] gs = t.getGlyphs();
-//      for (int i = t.getOffset(); i < t.getLength(); i++)
-//      {
-//        b.append((char) (0xffff & gs[i].getCodepoint()));
-//      }
-//      Log.debug("Generated Text: " + x + ": " + b.toString() +
-//              " [" + gs.length + "]");
-//    }
     return text;
   }
 
@@ -657,12 +641,8 @@ public class DefaultRenderer implements Renderer
     // Ok, lets play a little bit
     LogicalPageBox rootBox = logicalPageBox;
 
-//    Log.debug("Min  H-Axis: " + rootBox.getMinimumSize(RenderNode.HORIZONTAL_AXIS));
-//    Log.debug("Min  V-Axis: " + rootBox.getMinimumSize(RenderNode.VERTICAL_AXIS));
     Log.debug("Pref H-Axis: " + rootBox.getEffectiveLayoutSize(RenderNode.HORIZONTAL_AXIS));
     Log.debug("Pref V-Axis: " + rootBox.getEffectiveLayoutSize(RenderNode.VERTICAL_AXIS));
-//    Log.debug("Max  H-Axis: " + rootBox.getMaximumSize(RenderNode.HORIZONTAL_AXIS));
-//    Log.debug("Max  V-Axis: " + rootBox.getMaximumSize(RenderNode.VERTICAL_AXIS));
 
     rootBox.setX(0);
     rootBox.setY(0);
@@ -694,11 +674,7 @@ public class DefaultRenderer implements Renderer
   public void handlePageBreak(final PageContext pageContext)
   {
     getInsertationPoint().addChilds(textFactory.finishText());
-
-    // initialize the initial page-grid
-    // for the first try, use a hard-coded page size. We should change that
-    // before we go public ...
-    final PageGrid pageGrid = new FastPageGrid(500000, 500000);
+    final PageGrid pageGrid = new DefaultPageGrid(pageContext, 2, 2);
 
     // initialize the logical page. The logical page needs the page grid,
     // as this contains the hints for the physical page sizes.

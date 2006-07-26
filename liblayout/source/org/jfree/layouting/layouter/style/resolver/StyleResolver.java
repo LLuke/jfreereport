@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleResolver.java,v 1.3 2006/05/06 13:02:47 taqua Exp $
+ * $Id: StyleResolver.java,v 1.4 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.ContextId;
-import org.jfree.layouting.renderer.page.PageAreaType;
+import org.jfree.layouting.input.style.PageAreaType;
 
 /**
  * Creation-Date: 05.12.2005, 18:03:52

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.3 2006/07/11 13:29:47 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,8 @@ import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleRule;
 import org.jfree.layouting.input.style.StyleSheet;
+import org.jfree.layouting.input.style.CSSPageAreaRule;
+import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
 import org.jfree.resourceloader.DependencyCollector;
 import org.jfree.resourceloader.Resource;
@@ -258,11 +260,56 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
     {
       parseNamespaceRule(strtok);
     }
+    else if (styleRule instanceof CSSPageRule)
+    {
+      CSSPageRule pageRule = (CSSPageRule) styleRule;
+      if (ruleName.length() <= 1)
+      {
+        return;
+      }
+      String areaName = ruleName.substring(1);
+      final PageAreaType[] pageAreas = PageAreaType.getPageAreas();
+      for (int i = 0; i < pageAreas.length; i++)
+      {
+        PageAreaType pageArea = pageAreas[i];
+        if (areaName.equalsIgnoreCase(pageArea.getName()))
+        {
+          final CSSPageAreaRule areaRule = parsePageRule(pageArea, atRule);
+          if (areaRule != null)
+          {
+            pageRule.addRule(areaRule);
+          }
+          return;
+        }
+      }
+      Log.info ("Did not recognize page @rule: " + atRule);
+    }
     else
     {
       Log.info ("Ignorable @rule: " + atRule);
     }
   }
+
+  private CSSPageAreaRule parsePageRule (PageAreaType areaType, String atRule)
+  {
+    final ResourceManager manager = getResourceManager();
+    final ResourceKey source = this.source;
+    final CSSPageAreaRule areaRule =
+            new CSSPageAreaRule(styleSheet, styleRule, areaType);
+    final int firstBrace = atRule.indexOf('{');
+    final int lastBrace = atRule.indexOf('}');
+    if (firstBrace < 0 || lastBrace < firstBrace)
+    {
+      // cannot parse that ..
+      return null;
+    }
+
+    StyleSheetParserUtil.parseStyleRule
+            (namespaces, atRule.substring(firstBrace + 1, lastBrace - 1),
+                    manager, source, areaRule);
+    return areaRule;
+  }
+
 
   private void parseNamespaceRule(final StringTokenizer strtok)
   {
@@ -432,7 +479,7 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
   {
     // Log.debug ("Page Rule: " + name + " / " + pseudo_page);
     // yes, we have to parse that.
-    styleRule = new CSSPageRule(styleSheet, getParentRule());
+    styleRule = new CSSPageRule(styleSheet, getParentRule(), name, pseudo_page);
     parentRules.push(styleRule);
   }
 

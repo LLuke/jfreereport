@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.2 2006/07/17 13:27:24 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
@@ -77,7 +78,6 @@ import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.renderer.Renderer;
-import org.jfree.layouting.renderer.page.PageAreaType;
 import org.jfree.layouting.util.AttributeMap;
 import org.jfree.util.Log;
 

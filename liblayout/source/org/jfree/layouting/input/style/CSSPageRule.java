@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSPageRule.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
+ * $Id: CSSPageRule.java,v 1.3 2006/07/11 13:29:46 taqua Exp $
  *
  * Changes
  * -------
@@ -50,14 +50,26 @@ import java.util.ArrayList;
 public class CSSPageRule extends CSSDeclarationRule
 {
   private ArrayList rules; // the margin rules ...
+  private String name;
+  private String pseudoPage;
 
-  public CSSPageRule(final StyleSheet parentStyle, final StyleRule parentRule)
+  public CSSPageRule(final StyleSheet parentStyle,
+                     final StyleRule parentRule,
+                     final String name,
+                     final String pseudoPage)
   {
     super(parentStyle, parentRule);
+    this.pseudoPage = pseudoPage;
+    this.name = name;
     this.rules = new ArrayList();
   }
 
-  public void insertRule (final int index, final StyleRule rule)
+  public void addRule (final CSSPageAreaRule rule)
+  {
+    rules.add(rule);
+  }
+
+  public void insertRule (final int index, final CSSPageAreaRule rule)
   {
     rules.add(index, rule);
   }
@@ -72,8 +84,18 @@ public class CSSPageRule extends CSSDeclarationRule
     return rules.size();
   }
 
-  public StyleRule getRule (int index)
+  public CSSPageAreaRule getRule (int index)
   {
-    return (StyleRule) rules.get(index);
+    return (CSSPageAreaRule) rules.get(index);
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+
+  public String getPseudoPage()
+  {
+    return pseudoPage;
   }
 }

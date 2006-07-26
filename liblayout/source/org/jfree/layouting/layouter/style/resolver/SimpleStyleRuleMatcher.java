@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleStyleRuleMatcher.java,v 1.5 2006/07/20 17:50:52 taqua Exp $
+ * $Id: SimpleStyleRuleMatcher.java,v 1.6 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,9 @@ import org.jfree.layouting.input.style.CSSCounterRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleRule;
 import org.jfree.layouting.input.style.StyleSheet;
+import org.jfree.layouting.input.style.CSSPageRule;
+import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.context.DocumentMetaNode;
@@ -92,6 +95,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   private ResourceManager resourceManager;
   private CSSStyleRule[] activeStyleRules;
   private CSSStyleRule[] activePseudoStyleRules;
+  private CSSPageRule[] pageRules;
+  private CSSCounterRule[] counterRules;
   private NamespaceCollection namespaces;
 
   public SimpleStyleRuleMatcher()
@@ -107,6 +112,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     this.layoutProcess = layoutProcess;
     this.resourceManager = layoutProcess.getResourceManager();
 
+    ArrayList pageRules = new ArrayList();
+    ArrayList counterRules = new ArrayList();
     ArrayList styleRules = new ArrayList();
     final DocumentContext dc = this.layoutProcess.getDocumentContext();
 
@@ -133,6 +140,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
       Log.debug ("Loaded stylesheet from " + rawKey + " for namespace " + nsDef.getURI());
       addStyleRules(styleSheet, styleRules);
+      addPageRules(styleSheet, pageRules);
+      addCounterRules(styleSheet, counterRules);
     }
 
     final int metaNodeCount = dc.getMetaNodeCount();
@@ -142,15 +151,19 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       final String type = (String) dmn.getMetaAttribute("type");
       if ("link".equals(type))
       {
-        handleLinkNode(dmn, styleRules);
+        handleLinkNode(dmn, styleRules, pageRules, counterRules);
       }
       else if ("style".equals(type))
       {
-        handleStyleNode(dmn, styleRules);
+        handleStyleNode(dmn, styleRules, pageRules, counterRules);
       }
     }
     activeStyleRules = (CSSStyleRule[])
             styleRules.toArray(new CSSStyleRule[styleRules.size()]);
+    this.pageRules = (CSSPageRule[])
+            pageRules.toArray(new CSSPageRule[pageRules.size()]);
+    this.counterRules = (CSSCounterRule[])
+            counterRules.toArray(new CSSCounterRule[counterRules.size()]);
 
     styleRules.clear();
     for (int i = 0; i < activeStyleRules.length; i++)
@@ -168,7 +181,9 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   }
 
   private void handleLinkNode(final DocumentMetaNode node,
-                              final ArrayList styleRules)
+                              final ArrayList styleRules,
+                              final ArrayList pageRules,
+                              final ArrayList counterRules)
   {
     // do some external parsing
     // (Same as the <link> element of HTML)
@@ -195,6 +210,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
         return;
       }
       addStyleRules(styleSheet, styleRules);
+      addPageRules(styleSheet, pageRules);
+      addCounterRules(styleSheet, counterRules);
     }
     catch (ResourceKeyCreationException e)
     {
@@ -204,7 +221,9 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
 
 
   private void handleStyleNode(final DocumentMetaNode node,
-                               final ArrayList styleRules)
+                               final ArrayList styleRules,
+                              final ArrayList pageRules,
+                              final ArrayList counterRules)
   {
     // do some inline parsing
     // (Same as the <style> element of HTML)
@@ -218,6 +237,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       {
         StyleSheet styleSheet = (StyleSheet) content;
         addStyleRules(styleSheet, styleRules);
+        addPageRules(styleSheet, pageRules);
+        addCounterRules(styleSheet, counterRules);
         return;
       }
     }
@@ -236,7 +257,9 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       {
         return;
       }
-      styleRules.add(styleSheet);
+      addStyleRules(styleSheet, styleRules);
+      addPageRules(styleSheet, pageRules);
+      addCounterRules(styleSheet, counterRules);
     }
     catch (UnsupportedEncodingException e)
     {
@@ -245,6 +268,50 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     catch (ResourceKeyCreationException e)
     {
       e.printStackTrace();
+    }
+  }
+
+
+  private void addCounterRules (final StyleSheet styleSheet,
+                             final ArrayList rules)
+  {
+    final int sc = styleSheet.getStyleSheetCount();
+    for (int i = 0; i < sc; i++)
+    {
+      addCounterRules(styleSheet.getStyleSheet(i), rules);
+    }
+
+    int rc = styleSheet.getRuleCount();
+    for (int i = 0; i < rc; i++)
+    {
+      final StyleRule rule = styleSheet.getRule(i);
+      if (rule instanceof CSSCounterRule)
+      {
+        final CSSCounterRule drule = (CSSCounterRule) rule;
+        rules.add(drule);
+      }
+    }
+  }
+
+
+  private void addPageRules (final StyleSheet styleSheet,
+                             final ArrayList rules)
+  {
+    final int sc = styleSheet.getStyleSheetCount();
+    for (int i = 0; i < sc; i++)
+    {
+      addPageRules(styleSheet.getStyleSheet(i), rules);
+    }
+
+    int rc = styleSheet.getRuleCount();
+    for (int i = 0; i < rc; i++)
+    {
+      final StyleRule rule = styleSheet.getRule(i);
+      if (rule instanceof CSSPageRule)
+      {
+        final CSSPageRule drule = (CSSPageRule) rule;
+        rules.add(drule);
+      }
     }
   }
 
@@ -262,12 +329,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     for (int i = 0; i < rc; i++)
     {
       final StyleRule rule = styleSheet.getRule(i);
-      if (rule instanceof CSSCounterRule)
-      {
-        // todo: Add the counter definition to the document context
-
-      }
-      else if (rule instanceof CSSStyleRule)
+      if (rule instanceof CSSStyleRule)
       {
         final CSSStyleRule drule = (CSSStyleRule) rule;
         activeStyleRules.add(drule);
@@ -636,4 +698,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     return false;
   }
 
+  public CSSPageRule[] getPageRule(CSSValue pageName, PseudoPage[] pseudoPages)
+  {
+    return new CSSPageRule[0];
+  }
 }

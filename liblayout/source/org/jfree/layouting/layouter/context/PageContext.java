@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
+ * $Id: PageContext.java,v 1.2 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ package org.jfree.layouting.layouter.context;
 
 import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.renderer.page.PageAreaType;
+import org.jfree.layouting.input.style.PageAreaType;
 
 /**
  * The page context describes a logical page. The page holds the first and

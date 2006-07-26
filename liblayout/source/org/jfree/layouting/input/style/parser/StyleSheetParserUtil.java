@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetParserUtil.java,v 1.3 2006/04/23 15:18:12 taqua Exp $
+ * $Id: StyleSheetParserUtil.java,v 1.4 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import java.util.StringTokenizer;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
+import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
@@ -210,6 +211,43 @@ public class StyleSheetParserUtil
     return parseStyles(namespaces, key.getName(), value, resourceManager, baseURL);
   }
 
+  public static CSSDeclarationRule parseStyleRule(final Map namespaces,
+                                            final String styleText,
+                                            final ResourceManager resourceManager,
+                                            final ResourceKey baseURL,
+                                            final CSSDeclarationRule baseRule)
+  {
+    if (styleText == null)
+    {
+      throw new NullPointerException("Name is null");
+    }
+
+    try
+    {
+      final Parser parser = CSSParserFactory.getInstance().createCSSParser();
+      final StyleSheetHandler handler = new StyleSheetHandler
+              (resourceManager, baseURL, -1, StyleKeyRegistry.getRegistry(), null);
+
+      setupNamespaces(namespaces, handler);
+      final InputSource source = new InputSource();
+      source.setCharacterStream(new StringReader(styleText));
+
+      handler.init(source);
+      handler.setStyleRule(baseRule);
+      parser.setDocumentHandler(handler);
+      parser.parseStyleDeclaration(source);
+      CSSDeclarationRule rule = handler.getStyleRule();
+      CSSParserContext.getContext().destroy();
+
+      return rule;
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
 
 
   /**
@@ -228,6 +266,18 @@ public class StyleSheetParserUtil
                                          final String value,
                                          final ResourceManager resourceManager,
                                          final ResourceKey baseURL)
+  {
+    return parseStyles(namespaces, name, value, resourceManager,
+            baseURL, new CSSStyleRule(null, null));
+  }
+
+
+  public static CSSStyleRule parseStyles(final Map namespaces,
+                                         final String name,
+                                         final String value,
+                                         final ResourceManager resourceManager,
+                                         final ResourceKey baseURL,
+                                         final CSSDeclarationRule baserule)
   {
     if (name == null)
     {
@@ -249,7 +299,7 @@ public class StyleSheetParserUtil
       source.setCharacterStream(new StringReader(value));
 
       handler.init(source);
-      handler.setStyleRule(new CSSStyleRule(null, null));
+      handler.setStyleRule(baserule);
       parser.setDocumentHandler(handler);
       final LexicalUnit lu = parser.parsePropertyValue(source);
       handler.property(name, lu, false);

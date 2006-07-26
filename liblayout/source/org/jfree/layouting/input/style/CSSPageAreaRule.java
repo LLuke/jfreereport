@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSPageAreaRule.java,v 1.1 2006/07/11 13:33:03 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.input.style;
-
-import org.jfree.layouting.renderer.page.PageAreaType;
 
 /**
  * Creation-Date: 29.05.2006, 18:04:01

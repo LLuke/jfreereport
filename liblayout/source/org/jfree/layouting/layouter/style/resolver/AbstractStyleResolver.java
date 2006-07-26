@@ -28,7 +28,7 @@ import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
 import org.jfree.layouting.layouter.style.functions.values.AttrValueFunction;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.Namespaces;
-import org.jfree.layouting.renderer.page.PageAreaType;
+import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.util.AttributeMap;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceManager;

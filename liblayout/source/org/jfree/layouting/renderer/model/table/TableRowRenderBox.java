@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRowRenderBox.java,v 1.5 2006/07/24 12:18:56 taqua Exp $
+ * $Id: TableRowRenderBox.java,v 1.7 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -307,8 +307,13 @@ public class TableRowRenderBox extends BlockRenderBox
     }
     else
     {
-      return firstColumn.getMinimumChunkSize() +
+      final long l = firstColumn.getMinimumChunkSize() +
               givenExtraSpace * cellExpExtraSpace / expectedExtraSpace;
+      if (l < firstColumn.getMinimumChunkSize())
+      {
+        return firstColumn.getMinimumChunkSize();
+      }
+      return l;
     }
   }
 

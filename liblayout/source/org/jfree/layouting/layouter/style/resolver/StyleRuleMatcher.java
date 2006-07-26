@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleRuleMatcher.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
+ * $Id: StyleRuleMatcher.java,v 1.2 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,9 @@
 package org.jfree.layouting.layouter.style.resolver;
 
 import org.jfree.layouting.input.style.CSSStyleRule;
+import org.jfree.layouting.input.style.CSSPageRule;
+import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
 
@@ -69,5 +72,6 @@ public interface StyleRuleMatcher
    */
   public StyleRuleMatcher deriveInstance();
   public CSSStyleRule[] getMatchingRules (LayoutElement element);
-  public boolean isMatchingPseudoElement (LayoutElement element, String pseudo); 
+  public boolean isMatchingPseudoElement (LayoutElement element, String pseudo);
+  public CSSPageRule[] getPageRule (CSSValue pageName, PseudoPage[] pseudoPages); 
 }
