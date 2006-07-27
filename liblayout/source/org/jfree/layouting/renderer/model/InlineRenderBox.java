@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InlineRenderBox.java,v 1.8 2006/07/24 12:18:56 taqua Exp $
+ * $Id: InlineRenderBox.java,v 1.9 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.renderer.Loggers;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
-import org.jfree.util.Log;
 
 /**
  * An inline box is some floating text that might be broken down into lines. The
@@ -83,15 +83,14 @@ public class InlineRenderBox extends RenderBox
   protected void notifyStateChange(final RenderNodeState oldState,
                                    final RenderNodeState newState)
   {
-    if (newState != RenderNodeState.FINISHED &&
-        newState != RenderNodeState.LAYOUTING)
+    if (newState.getWeight() < RenderNodeState.LAYOUTING.getWeight())
     {
       alignmentCollector = null;
     }
     super.notifyStateChange(oldState, newState);
   }
 
-  public void validate()
+  public void validate(RenderNodeState upTo)
   {
     final RenderNodeState state = getState();
     if (state == RenderNodeState.FINISHED)
@@ -111,12 +110,18 @@ public class InlineRenderBox extends RenderBox
       setState(RenderNodeState.PENDING);
     }
 
-    if (state == RenderNodeState.PENDING)
+    if (reachedState(upTo))
     {
-      setState(RenderNodeState.LAYOUTING);
+      return;
     }
 
     validateMargins();
+    setState(RenderNodeState.LAYOUTING);
+
+    if (reachedState(upTo))
+    {
+      return;
+    }
 
     long nodePos =
             getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis());
@@ -126,12 +131,8 @@ public class InlineRenderBox extends RenderBox
       throw new IllegalStateException("NodePos cannot be negative");
     }
 
-//    final long lineHeight = 0; // this needs to be read from the stylesheet ..
     final long minorInsets = getTrailingInsets(getMinorAxis()) +
             getLeadingInsets(getMinorAxis());
-//    final long preferredSize = getPreferredSize(getMinorAxis());
-//    final long effectiveHeight =
-//            Math.max(lineHeight, preferredSize - minorInsets);
 
     final long minorAxisNodePos =
             getPosition(getMinorAxis()) + getLeadingInsets(getMinorAxis());
@@ -139,7 +140,6 @@ public class InlineRenderBox extends RenderBox
     final AlignmentCollector alignmentCollector =
             createtAlignmentCollector();
 
-    // final long heightAbove = getReferencePoint(getMinorAxis());
     long trailingMajor = 0;
     long trailingMinor = 0;
     RenderNode node = getFirstChild();
@@ -152,6 +152,7 @@ public class InlineRenderBox extends RenderBox
         node.setPosition(getMinorAxis(), minorAxisNodePos);
         node.setDimension(getMinorAxis(), 0);
         node.setDimension(getMajorAxis(), 0);
+        node.validate(RenderNodeState.FINISHED);
         node = node.getNext();
         continue;
       }
@@ -170,7 +171,7 @@ public class InlineRenderBox extends RenderBox
           node.setPosition(getMajorAxis(), nodePos - prefSize - node.getTrailingSpace(getMajorAxis()));
           node.setPosition(getMinorAxis(), minorAxisNodePos + position);
           node.setDimension(getMajorAxis(), prefSize);
-          node.validate();
+          node.validate(RenderNodeState.FINISHED);
           node = node.getNext();
           continue;
         }
@@ -186,7 +187,7 @@ public class InlineRenderBox extends RenderBox
       node.setPosition(getMinorAxis(), minorAxisNodePos + position + leadingMinor);
       node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
       node.setDimension(getMinorAxis(), node.getEffectiveLayoutSize(getMinorAxis()));
-      node.validate();
+      node.validate(RenderNodeState.FINISHED);
 
       trailingMajor = node.getTrailingSpace(getMajorAxis());
       trailingMinor = node.getTrailingSpace(getMinorAxis());
@@ -211,12 +212,17 @@ public class InlineRenderBox extends RenderBox
       return super.getPreferredSize(axis);
     }
 
-    Log.debug("INLINE MINOR BEGIN : PreferredSize " + this);
+    Loggers.VALIDATION.debug("INLINE MINOR BEGIN : PreferredSize " + this);
 
     // minor axis means: Drive through all childs and query their size
     // then find the maximum
 
-    return createtAlignmentCollector().getHeight()
+    final AlignmentCollector alignmentCollector = createtAlignmentCollector();
+    if (alignmentCollector == null)
+    {
+      throw new NullPointerException();
+    }
+    return alignmentCollector.getHeight()
             + getLeadingInsets(getMinorAxis())
             + getTrailingInsets(getMinorAxis());
   }
@@ -367,40 +373,71 @@ public class InlineRenderBox extends RenderBox
 
   private AlignmentCollector createtAlignmentCollector ()
   {
-    if (alignmentCollector != null)
+    if (alignmentCollector == null)
     {
-      return alignmentCollector;
-    }
 
-    // cache me, if you can ...
-    alignmentCollector = new AlignmentCollector(getMinorAxis(), 0);
+      // cache me, if you can ...
+      AlignmentCollector alignmentCollector =
+              new AlignmentCollector(getMinorAxis(), 0);
 
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      if (child.isIgnorableForRendering())
+      RenderNode child = getFirstChild();
+      while (child != null)
       {
-        // empty childs may affect the margin computation or cause linebreaks,
-        // but they must not appear here.
-        child = child.getNext();
-        continue;
-      }
-
-      alignmentCollector.add(child);
-
-      if (child instanceof MarkerRenderBox)
-      {
-        MarkerRenderBox mrb = (MarkerRenderBox) child;
-        if (mrb.isOutside())
+        if (child.isIgnorableForRendering())
         {
+          // empty childs may affect the margin computation or cause linebreaks,
+          // but they must not appear here.
           child = child.getNext();
           continue;
         }
+
+        alignmentCollector.add(child);
+        child = child.getNext();
       }
-      child = child.getNext();
+
+      validate(RenderNodeState.LAYOUTING);
+      this.alignmentCollector = alignmentCollector;
+    }
+    return this.alignmentCollector;
+  }
+
+
+  /**
+   * Checks, whether a validate run would succeed. Under certain conditions, for
+   * instance if there is a auto-width component open, it is not possible to
+   * perform a layout run, unless that element has been closed.
+   * <p/>
+   * Generally speaking: An element cannot be layouted, if <ul> <li>the element
+   * contains childs, which cannot be layouted,</li> <li>the element has
+   * auto-width or depends on an auto-width element,</li> <li>the element is a
+   * floating or positioned element, or is a child of an floating or positioned
+   * element.</li> </ul>
+   *
+   * @return
+   */
+  public boolean isValidatable()
+  {
+    if (isOpen() == false)
+    {
+      return true;
     }
 
-    setState(RenderNodeState.LAYOUTING);
-    return alignmentCollector;
+    // An inline element ignores the width - it is always 'auto'.
+
+    // A floating or positioned element will be placed on a parallel flow
+    // and we can simply test whether that flow is open or not.
+
+    RenderNode child = getLastChild();
+    while (child != null)
+    {
+      if (child.isValidatable() == false)
+      {
+        return false;
+      }
+      child = child.getPrev();
+    }
+
+    return true;
   }
+
 }

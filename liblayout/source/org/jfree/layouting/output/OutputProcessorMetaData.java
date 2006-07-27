@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OutputProcessorMetaData.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
+ * $Id: OutputProcessorMetaData.java,v 1.4 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -98,18 +98,19 @@ public interface OutputProcessorMetaData
   public PageSize getDefaultPageSize();
 
   /**
-   * Returns the logical page size, or null, if there is none defined.
+   * Returns the vertical page span. If the value is less than one, it will
+   * be corrected to one.
    *
-   * @return
-   */
-  public PageSize getLogicalPageSize();
-
-  /**
-   * Returns the vertical page span. If the value is zero or negative, no
    * @return
    */
   public int getVerticalPageSpan ();
 
+  /**
+   * Returns the horizontal page span. If the value is less than one, it will
+   * be corrected to one.
+   *
+   * @return
+   */
   public int getHorizontalPageSpan ();
 
   public boolean isValid (FontSpecification spec);

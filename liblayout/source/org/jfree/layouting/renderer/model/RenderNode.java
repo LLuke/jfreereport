@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.14 2006/07/26 12:41:48 taqua Exp $
+ * $Id: RenderNode.java,v 1.15 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.util.geom.StrictInsets;
+import org.jfree.util.Log;
 
 /**
  * A node of the rendering model. The renderer model keeps track of the
@@ -181,6 +182,7 @@ public abstract class RenderNode implements Cloneable
     if (oldValue != width)
     {
       // someone changed the position, invalidate all childs ..
+      validate(RenderNodeState.PENDING);
       setState(RenderNodeState.PENDING);
     }
   }
@@ -203,6 +205,7 @@ public abstract class RenderNode implements Cloneable
     if (oldValue != height)
     {
       // someone changed the position, invalidate all childs ..
+      validate(RenderNodeState.PENDING);
       setState(RenderNodeState.PENDING);
     }
   }
@@ -298,7 +301,8 @@ public abstract class RenderNode implements Cloneable
   {
     RenderNodeState oldState = this.state;
     this.state = state;
-    if (this.state != oldState)
+    final boolean alwaysPropagateEvents = isAlwaysPropagateEvents();
+    if (oldState != state || alwaysPropagateEvents)
     {
       notifyStateChange(oldState, state);
     }
@@ -307,7 +311,7 @@ public abstract class RenderNode implements Cloneable
   protected void notifyStateChange(final RenderNodeState oldState,
                                    final RenderNodeState newState)
   {
-//    Log.debug("STATE_CHANGE: " + toString() + ": " + oldState + " -> " + newState);
+    Log.debug("STATE_CHANGE: " + toString() + ": " + oldState + " -> " + newState);
     if (newState == RenderNodeState.UNCLEAN)
     {
       parentWidth = null;
@@ -357,14 +361,10 @@ public abstract class RenderNode implements Cloneable
     return parent;
   }
 
-  public void setParent(final RenderBox parent)
+  protected void setParent(final RenderBox parent)
   {
-    Object oldParent = this.parent;
+   // Object oldParent = this.parent;
     this.parent = parent;
-    if (oldParent != parent)
-    {
-      setState(RenderNodeState.PENDING);
-    }
   }
 
   public RenderNode getPrev()
@@ -375,6 +375,7 @@ public abstract class RenderNode implements Cloneable
   public void setPrev(final RenderNode prev)
   {
     this.prev = prev;
+    invalidateMargins();
   }
 
   public RenderNode getNext()
@@ -385,6 +386,7 @@ public abstract class RenderNode implements Cloneable
   public void setNext(final RenderNode next)
   {
     this.next = next;
+    invalidateMargins();
   }
 
   /**
@@ -486,7 +488,20 @@ public abstract class RenderNode implements Cloneable
     return null;
   }
 
-  public abstract void validate();
+  protected boolean reachedState(RenderNodeState state)
+  {
+    if (this.state == state)
+    {
+      return true;
+    }
+    if (this.state.getWeight() >= state.getWeight())
+    {
+      return true;
+    }
+    return false;
+  }
+
+  public abstract void validate(RenderNodeState validateUpTo);
 
   public abstract BreakAfterEnum getBreakAfterAllowed(final int axis);
 
@@ -525,6 +540,7 @@ public abstract class RenderNode implements Cloneable
     node.parent = null;
     node.next = null;
     node.prev = null;
+    node.marginsValidated = false;
     return node;
   }
 
@@ -713,6 +729,7 @@ public abstract class RenderNode implements Cloneable
       return;
     }
 
+    // Cheap hack:
     final StrictInsets parentMargins = parent.getAbsoluteMargins();
     if (parent.getMajorAxis() == HORIZONTAL_AXIS)
     {
@@ -827,12 +844,25 @@ public abstract class RenderNode implements Cloneable
   public StrictInsets getEffectiveMargins()
   {
     validateMargins();
+    if (effectiveMargins.getRight() > 9000000)
+    {
+      marginsValidated = false;
+      validateMargins();
+    }
     return effectiveMargins;
   }
 
   protected void invalidateMargins()
   {
+//    if (marginsValidated && isOpen() == false)
+//    {
+//      new Exception().printStackTrace();
+//    }
     this.marginsValidated = false;
+    if (parent != null)
+    {
+      parent.invalidateMargins();
+    }
   }
 
   protected boolean isIgnorableForMargins()
@@ -1072,4 +1102,10 @@ public abstract class RenderNode implements Cloneable
   {
     return true;
   }
+
+  public boolean isAlwaysPropagateEvents()
+  {
+    return false;
+  }
+
 }

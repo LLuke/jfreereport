@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRowRenderBox.java,v 1.7 2006/07/26 12:09:51 taqua Exp $
+ * $Id: TableRowRenderBox.java,v 1.8 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -156,7 +156,7 @@ public class TableRowRenderBox extends BlockRenderBox
     }
   }
 
-  public void validate()
+  public void validate(RenderNodeState state)
   {
     throw new UnsupportedOperationException
             ("A table-row cannot be validated directly.");

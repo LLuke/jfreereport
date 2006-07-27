@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TrailingEdgeAlignment.java,v 1.1 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.renderer.model.alignment;
 
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderNodeState;
 
 /**
  * The class (despite its name) aligns the element on the leading edge.
@@ -68,7 +69,7 @@ public class TrailingEdgeAlignment implements Alignment
     final long width = box.getDimension(axis);
     final long correction = totalWidth - width;
     box.setPosition(axis, start + correction);
-    box.validate();
+    box.validate(RenderNodeState.FINISHED);
     return false;
   }
 }

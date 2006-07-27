@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableReplacedContent.java,v 1.3 2006/07/26 11:52:08 taqua Exp $
+ * $Id: RenderableReplacedContent.java,v 1.4 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -143,9 +143,9 @@ public class RenderableReplacedContent extends RenderNode
     }
   }
 
-  public void validate()
+  public void validate(RenderNodeState upTo)
   {
-    // who cares about such events at all..
+    validateMargins();
     setState(RenderNodeState.FINISHED);
   }
 

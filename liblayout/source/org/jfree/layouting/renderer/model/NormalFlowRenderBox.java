@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NormalFlowRenderBox.java,v 1.6 2006/07/20 17:50:52 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.7 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,10 @@ package org.jfree.layouting.renderer.model;
 
 import java.util.ArrayList;
 
-import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.renderer.border.RenderLength;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.util.Log;
 
 /**
  * A box that defines its own normal flow. All absolutly positioned or
@@ -148,22 +150,73 @@ public class NormalFlowRenderBox extends BlockRenderBox
     return super.getInsertationPoint();
   }
 
+  /**
+   * Checks, whether a validate run would succeed. Under certain conditions, for
+   * instance if there is a auto-width component open, it is not possible to
+   * perform a layout run, unless that element has been closed.
+   * <p/>
+   * Generally speaking: An element cannot be layouted, if <ul> <li>the element
+   * contains childs, which cannot be layouted,</li> <li>the element has
+   * auto-width or depends on an auto-width element,</li> <li>the element is a
+   * floating or positioned element, or is a child of an floating or positioned
+   * element.</li> </ul>
+   *
+   * @return
+   */
+  public boolean isValidatable()
+  {
+    if (isOpen() == false) return true;
+
+    for (int i = 0; i < subFlows.size(); i++)
+    {
+      NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
+      if (box.isOpen())
+      {
+        return false;
+      }
+    }
+
+    // the root flow always has the width of 100% ..
+    if (getParent() instanceof LogicalPageBox == false)
+    {
+      if (RenderLength.AUTO.equals(getBoxDefinition().getPreferredWidth()))
+      {
+        return false;
+      }
+    }
+
+    RenderNode child = getLastChild();
+    while (child != null)
+    {
+      if (child.isValidatable() == false)
+      {
+        return false;
+      }
+      child = child.getPrev();
+    }
+
+    return true;
+  }
+
   public NormalFlowRenderBox getNormalFlow()
   {
     return this;
   }
 
-  public void validate()
+  public void validate(RenderNodeState upTo)
   {
-    super.validate();
+    super.validate(upTo);
     for (int i = 0; i < subFlows.size(); i++)
     {
       NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
       if (box.isOpen() == false)
       {
-        box.validate();
+        box.validate(upTo);
       }
     }
+
+    Log.debug ("VALIDATE ON NOF " + upTo);
+    setState(upTo);
   }
 
   public long getEffectiveLayoutSize (int axis)

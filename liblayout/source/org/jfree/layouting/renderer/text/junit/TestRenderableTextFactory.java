@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TestRenderableTextFactory.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
+ * $Id: TestRenderableTextFactory.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,17 @@
 package org.jfree.layouting.renderer.text.junit;
 
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.DefaultStreamingLayoutProcess;
+import org.jfree.layouting.LibLayoutBoot;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.junit.DebugLayoutProcess;
+import org.jfree.layouting.output.junit.StageOnePageableOutputProcessor;
 import org.jfree.layouting.layouter.context.ContextId;
 import org.jfree.layouting.layouter.context.DefaultLayoutContext;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
@@ -134,16 +142,25 @@ public class TestRenderableTextFactory extends DefaultRenderableTextFactory
 
   public static void main(String[] args)
   {
+    LibLayoutBoot.getInstance().start();
     DefaultLayoutContext layoutContext =
-            new DefaultLayoutContext(new ContextId(0, 0,0), "Bah", "buh", null, new AttributeMap());
+            new DefaultLayoutContext
+                    (new ContextId(0, 0,0), "Bah", "buh", null, new AttributeMap());
+    layoutContext.getStyle().setValue(FontStyleKeys.FONT_FAMILY, new CSSConstant("helvetica"));
+    final FontSpecification fontSpecification = layoutContext.getFontSpecification();
+    fontSpecification.setFontFamily("Arial");
+    fontSpecification.setFontSize(12);
 
-    TestRenderableTextFactory tr = new TestRenderableTextFactory(null);
+    final StageOnePageableOutputProcessor out = new StageOnePageableOutputProcessor();
+    final DebugLayoutProcess layoutProcess = new DebugLayoutProcess(out);
+    TestRenderableTextFactory tr = new TestRenderableTextFactory(layoutProcess);
 
 
-    int[] text = new int[]{ ' ', 'A',' ', 'B',' '};
-    
+//    int[] text = new int[]{ ' ', 'A',' ', 'B',' '};
+    int[] text = new int[]{ '1'};
+
     RenderNode[] rts = tr.createText(text, 0, text.length, layoutContext);
-    tr.finishText();
+    final RenderNode[] renderNodes = tr.finishText();
 
     RenderableText rt = (RenderableText) rts[1];
     printGlyphs(rt);

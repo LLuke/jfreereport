@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.12 2006/07/26 12:09:51 taqua Exp $
+ * $Id: RenderBox.java,v 1.13 2006/07/26 12:41:48 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.renderer.Loggers;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.util.geom.StrictInsets;
@@ -162,7 +163,7 @@ public abstract class RenderBox extends RenderNode
     }
 
     child.setParent(this);
-    setState(RenderNodeState.PENDING);
+    validate(RenderNodeState.PENDING);
   }
 
   public void addChild(final RenderNode child)
@@ -194,6 +195,7 @@ public abstract class RenderBox extends RenderNode
     }
 
     child.setParent(this);
+    validate(RenderNodeState.PENDING);
     setState(RenderNodeState.PENDING);
   }
 
@@ -347,6 +349,7 @@ public abstract class RenderBox extends RenderNode
     }
 
     replacement.setParent(this);
+    validate(RenderNodeState.PENDING);
     setState(RenderNodeState.PENDING);
   }
 
@@ -429,6 +432,7 @@ public abstract class RenderBox extends RenderNode
       firstChild.setNext(null);
       firstChild.setPrev(null);
       firstChild = first;
+      validate(RenderNodeState.PENDING);
       setState(RenderNodeState.PENDING);
       return;
     }
@@ -440,6 +444,7 @@ public abstract class RenderBox extends RenderNode
       lastChild.setNext(null);
       lastChild.setPrev(null);
       lastChild = last;
+      validate(RenderNodeState.PENDING);
       setState(RenderNodeState.PENDING);
       return;
     }
@@ -459,6 +464,7 @@ public abstract class RenderBox extends RenderNode
       next.setPrev(last);
     }
 
+    validate(RenderNodeState.PENDING);
     setState(RenderNodeState.PENDING);
   }
 
@@ -676,7 +682,7 @@ public abstract class RenderBox extends RenderNode
     }
     setFirstChild(null);
     setLastChild(null);
-    setState(RenderNodeState.UNCLEAN);
+    validate(RenderNodeState.PENDING);
   }
 
   public StrictInsets getPaddings()
@@ -957,7 +963,7 @@ public abstract class RenderBox extends RenderNode
     final long retval;
     if (axis == getMinorAxis())
     {
-      Log.debug("MINOR BEGIN : PreferredSize " + this);
+      Loggers.VALIDATION.debug("MINOR BEGIN : PreferredSize " + this);
 
       // minor axis means: Drive through all childs and query their size
       // then find the maximum
@@ -984,24 +990,16 @@ public abstract class RenderBox extends RenderNode
           }
         }
 
-        //long size = child.getPreferredSize(axis);
         size = Math.max(size, child.getEffectiveLayoutSize(axis));
-//        long refp = child.getReferencePoint(axis);
-//        long lead = child.getLeadingSpace(axis);
-//        long trai = child.getTrailingSpace(axis);
-
-//        sizeAbove = Math.max(sizeAbove, refp + lead);
-//        sizeBelow = Math.max(sizeBelow, (size - refp) + trai);
-//        Log.debug("  P-Size: " + size + " " + refp + " " + lead + " " + trai + " " + child);
         child = child.getNext();
       }
       retval = getLeadingInsets(axis) + size + getTrailingInsets(axis);
-      Log.debug("MINOR END: PreferredSize: " + retval + " " + axis + " " + this);
+      Loggers.VALIDATION.debug("MINOR END: PreferredSize: " + retval + " " + axis + " " + this);
 
     }
     else
     {
-      Log.debug("MAJOR BEGIN : PreferredSize " + this);
+      Loggers.VALIDATION.debug("MAJOR BEGIN : PreferredSize " + this);
 
       long size = getLeadingInsets(axis);
       RenderNode child = getFirstChild();
@@ -1035,11 +1033,11 @@ public abstract class RenderBox extends RenderNode
         trailingSpace = child.getTrailingSpace(axis);
 //        size += trailingSpace;
 
-        Log.debug("  P-Size: " + layoutSize + " " + leadingSpace + " " + trailingSpace + " " + child);
+        Loggers.VALIDATION.debug("  P-Size: " + layoutSize + " " + leadingSpace + " " + trailingSpace + " " + child);
         child = child.getNext();
       }
       retval = size + trailingSpace + getTrailingInsets(axis);
-      Log.debug("MAJOR END: PreferredSize: " + retval + " " + axis + " " + this);
+      Loggers.VALIDATION.debug("MAJOR END: PreferredSize: " + retval + " " + axis + " " + this);
     }
     return retval;
   }
@@ -1100,7 +1098,6 @@ public abstract class RenderBox extends RenderNode
       {
         // todo: At the moment, this fails, as there is no computed block
         // context width at all.
-        Log.debug("Still Empty");
         final long contextWidth = getComputedBlockContextWidth();
         final long width = preferredWidth.resolve(contextWidth);
         if (width < 0)
@@ -1176,8 +1173,7 @@ public abstract class RenderBox extends RenderNode
   {
     if (isOpen() == false)
     {
-      Log.debug("no longer open " + this);
-      return;
+      throw new IllegalStateException("Double close..");
     }
 
     this.open = false;
@@ -1264,7 +1260,7 @@ public abstract class RenderBox extends RenderNode
     if (axis == getMinorAxis())
     {
       // not splitable.
-      Log.debug("The box is not splittable on the minor axis");
+      Loggers.SPLITSTRATEGY.debug("The box is not splittable on the minor axis");
       return 0;
     }
 
@@ -1278,8 +1274,8 @@ public abstract class RenderBox extends RenderNode
     while (child != null)
     {
       final long currentSize =
-              Math.max (trailingSpace, child.getLeadingSpace(axis)) +
-              child.getEffectiveLayoutSize(axis);
+              Math.max(trailingSpace, child.getLeadingSpace(axis)) +
+                      child.getEffectiveLayoutSize(axis);
       //  Log.debug("InlineRenderer: Best Break: Preferred Size: " + currentSize + " " + child);
       trailingSpace = child.getTrailingSpace(axis);
 
@@ -1317,12 +1313,12 @@ public abstract class RenderBox extends RenderNode
         }
         if (bestBreakLocal > 0)
         {
-          Log.debug("InlineRenderer: Best Break(1): " + (cursor + bestBreakLocal));
+          Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(1): " + (cursor + bestBreakLocal));
           return cursor + bestBreakLocal;
         }
         else if (bestBreak > 0)
         {
-          Log.debug("InlineRenderer: Best Break(2): " + (bestBreak));
+          Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(2): " + (bestBreak));
           return bestBreak;
         }
         else
@@ -1331,10 +1327,10 @@ public abstract class RenderBox extends RenderNode
           // return the position before that element.
           if (child.getPrev() == null)
           {
-            Log.debug("InlineRenderer: Best Break(3a): " + (0));
+            Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(3a): " + (0));
             return 0;
           }
-          Log.debug("InlineRenderer: Best Break(3b): " + (cursor));
+          Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(3b): " + (cursor));
           return cursor;
         }
       }
@@ -1347,7 +1343,7 @@ public abstract class RenderBox extends RenderNode
 
       if (posAfter >= splitPosition)
       {
-        Log.debug("InlineRenderer: Best Break(4): " + (bestBreak));
+        Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(4): " + (bestBreak));
         return bestBreak;
       }
 
@@ -1371,7 +1367,7 @@ public abstract class RenderBox extends RenderNode
     if (axis == getMinorAxis())
     {
       // not splitable.
-      Log.debug("No split on the minor axis");
+      Loggers.SPLITSTRATEGY.debug("No split on the minor axis");
       return 0;
     }
 
@@ -1385,7 +1381,7 @@ public abstract class RenderBox extends RenderNode
       long currentSize = child.getPreferredSize(axis);
       final long posAfter = currentSize + cursor;
       final long bestBreakLocal = child.getFirstBreak(axis) +
-              Math.max (trailingSpace, child.getLeadingSpace(axis));
+              Math.max(trailingSpace, child.getLeadingSpace(axis));
       if (bestBreakLocal > 0)
       {
         return bestBreakLocal + cursor;
@@ -1438,11 +1434,6 @@ public abstract class RenderBox extends RenderNode
       throw new IllegalArgumentException();
     }
 
-    if (splitPoint == 280000)
-    {
-      Log.debug("BEGIN SPLIT: " + splitPoint);
-    }
-
     if (target == null || target.length < 2)
     {
       target = new RenderNode[2];
@@ -1469,7 +1460,7 @@ public abstract class RenderBox extends RenderNode
 
       final long layoutSize = firstSplitChild.getEffectiveLayoutSize(axis);
       final long prefSize = layoutSize +
-                      Math.max(firstSplitChild.getLeadingSpace(axis), trailingSpace);
+              Math.max(firstSplitChild.getLeadingSpace(axis), trailingSpace);
 
       trailingSpace = firstSplitChild.getTrailingSpace(axis);
       if ((prefSize + firstSplitSize + trailingSpace) <= splitPoint)
@@ -1486,7 +1477,7 @@ public abstract class RenderBox extends RenderNode
     // we will fit, no split is needed.
     if (firstSplitChild == null)
     {
-      Log.warn("PERFORMANCE: Unnecessarily stupid split detected.");
+      Loggers.SPLITSTRATEGY.warn("PERFORMANCE: Unnecessarily stupid split detected.");
       target[0] = derive(true);
       target[1] = null;
       return target;
@@ -1608,10 +1599,10 @@ public abstract class RenderBox extends RenderNode
       postChild = postChild.getNext();
     }
 
-    Log.debug("Result: " + firstNodeCounter + " " + secondNodeCounter);
+    Loggers.SPLITSTRATEGY.debug("Result: " + firstNodeCounter + " " + secondNodeCounter);
     if (firstNodeCounter == 0)
     {
-      Log.debug("PERFORMANCE: This split is avoidable.");
+      Loggers.SPLITSTRATEGY.debug("PERFORMANCE: This split is avoidable.");
       // correct the second box. The box is not split.
       secondBox.setBoxDefinition(getBoxDefinition());
       target[0] = new SpacerRenderNode();
@@ -1619,7 +1610,7 @@ public abstract class RenderBox extends RenderNode
     }
     else if (secondNodeCounter == 0)
     {
-      Log.warn("PERFORMANCE: Invalid split implementation. Second box should never be empty.");
+      Loggers.SPLITSTRATEGY.warn("PERFORMANCE: Invalid split implementation. Second box should never be empty.");
       firstBox.setBoxDefinition(getBoxDefinition());
       target[0] = firstBox;
       target[1] = null;
@@ -1643,5 +1634,20 @@ public abstract class RenderBox extends RenderNode
   public void setOpen(final boolean open)
   {
     this.open = open;
+  }
+
+  public boolean isAlwaysPropagateEvents()
+  {
+    if (open == false)
+    {
+      return false;
+    }
+
+    final RenderBox parent = getParent();
+    if (parent == null)
+    {
+      return false;
+    }
+    return parent.isAlwaysPropagateEvents();
   }
 }

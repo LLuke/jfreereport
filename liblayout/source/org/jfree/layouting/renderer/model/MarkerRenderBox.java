@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MarkerRenderBox.java,v 1.1 2006/07/17 13:28:34 taqua Exp $
+ * $Id: MarkerRenderBox.java,v 1.2 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,17 @@ public class MarkerRenderBox extends InlineRenderBox
 
   protected boolean isIgnorableForMargins()
   {
-    return true;
+    // if the marker is defined as inside-marker, then it behaves like an
+    // ordinary inline element
+    if (outside)
+    {
+      return outside;
+    }
+    return super.isIgnorableForMargins();
+  }
+
+  protected void invalidateMargins()
+  {
+    super.invalidateMargins();
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BlockRenderBox.java,v 1.8 2006/07/22 15:28:50 taqua Exp $
+ * $Id: BlockRenderBox.java,v 1.9 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.renderer.model;
 import org.jfree.util.Log;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
+import org.jfree.layouting.renderer.Loggers;
 import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
@@ -88,7 +89,7 @@ public class BlockRenderBox extends RenderBox
     setMinorAxis(HORIZONTAL_AXIS);
   }
 
-  public void validate()
+  public void validate(RenderNodeState upTo)
   {
     final RenderNodeState state = getState();
     if (state == RenderNodeState.FINISHED)
@@ -97,18 +98,23 @@ public class BlockRenderBox extends RenderBox
     }
     if (state == RenderNodeState.UNCLEAN)
     {
-      setState(RenderNodeState.PENDING);
-    }
-    if (state == RenderNodeState.PENDING)
-    {
       validateBorders();
       validatePaddings();
-      setState(RenderNodeState.LAYOUTING);
+      setState(RenderNodeState.PENDING);
+    }
+    if (reachedState(upTo))
+    {
+      return;
     }
 
     validateMargins();
+    setState(RenderNodeState.LAYOUTING);
+    if (reachedState(upTo))
+    {
+      return;
+    }
 
-    Log.debug("BLOCK: Begin Validate");
+    Loggers.VALIDATION.debug("BLOCK: Begin Validate");
 
     final long leadingPaddings = getLeadingInsets(getMinorAxis());
     final long trailingPaddings = getTrailingInsets(getMinorAxis());
@@ -134,6 +140,7 @@ public class BlockRenderBox extends RenderBox
         node.setPosition(getMinorAxis(), minorAxisNodePos);
         node.setDimension(getMinorAxis(), 0);
         node.setDimension(getMajorAxis(), 0);
+        node.validate(RenderNodeState.FINISHED);
         node = node.getNext();
         continue;
       }
@@ -159,9 +166,14 @@ public class BlockRenderBox extends RenderBox
 
       node.setPosition(getMajorAxis(), nodePos);
       node.setPosition(getMinorAxis(), minorAxisNodePos + leadingMinor);
-      node.setDimension(getMinorAxis(), nodeSizeMinor);
-      node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
-      node.validate();
+      // A change in the positions above would not allow the node to
+      // maintain its finish-state.
+      if (node.getState() != RenderNodeState.FINISHED)
+      {
+        node.setDimension(getMinorAxis(), nodeSizeMinor);
+        node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
+        node.validate(RenderNodeState.FINISHED);
+      }
 
       trailingMajor = node.getTrailingSpace(getMajorAxis());
       trailingMinor = node.getTrailingSpace(getMinorAxis());
@@ -174,9 +186,18 @@ public class BlockRenderBox extends RenderBox
     setDimension(getMajorAxis(), trailingMajor + (nodePos + trailingInsets) - getPosition(getMajorAxis()));
     setDimension(getMinorAxis(), defaultNodeWidth + leadingPaddings + trailingPaddings);
 
-    Log.debug("BLOCK: Leave Validate: " + defaultNodeWidth + " " +
+    Loggers.VALIDATION.debug("BLOCK: Leave Validate: " + defaultNodeWidth + " " +
             leadingPaddings + " " + trailingPaddings);
     setState(RenderNodeState.FINISHED);
+  }
+
+  public void setHeight(long height)
+  {
+    if (height == 15000 && getState() == RenderNodeState.FINISHED)
+    {
+      Log.debug("HERE");
+    }
+    super.setHeight(height);
   }
 
   protected long getComputedBlockContextWidth()
@@ -230,4 +251,49 @@ public class BlockRenderBox extends RenderBox
     return null;
   }
 
+  /**
+   * Checks, whether a validate run would succeed. Under certain conditions, for
+   * instance if there is a auto-width component open, it is not possible to
+   * perform a layout run, unless that element has been closed.
+   * <p/>
+   * Generally speaking: An element cannot be layouted, if <ul> <li>the element
+   * contains childs, which cannot be layouted,</li> <li>the element has
+   * auto-width or depends on an auto-width element,</li> <li>the element is a
+   * floating or positioned element, or is a child of an floating or positioned
+   * element.</li> </ul>
+   *
+   * @return
+   */
+  public boolean isValidatable()
+  {
+    if (isOpen() == false)
+    {
+      return true;
+    }
+
+    if (RenderLength.AUTO.equals(getBoxDefinition().getPreferredWidth()))
+    {
+      if (getParent() instanceof BlockRenderBox == false)
+      {
+        // if the parent is an inline box, or we have no parent at all..
+        return false;
+      }
+    }
+
+    // A floating or positioned element will be placed on a parallel flow
+    // and we can simply test whether that flow is open or not.
+
+    RenderNode child = getLastChild();
+    while (child != null)
+    {
+      if (child.isValidatable() == false)
+      {
+        return false;
+      }
+      child = child.getPrev();
+    }
+
+    return true;
+
+  }
 }

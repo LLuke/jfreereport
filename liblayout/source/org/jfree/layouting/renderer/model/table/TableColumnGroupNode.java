@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnGroupNode.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
+ * $Id: TableColumnGroupNode.java,v 1.4 2006/07/26 11:52:08 taqua Exp $
  *
  * Changes
  * -------
@@ -97,7 +97,7 @@ public class TableColumnGroupNode extends RenderBox
     return true;
   }
 
-  public void validate()
+  public void validate(RenderNodeState state)
   {
     setState(RenderNodeState.FINISHED);
   }

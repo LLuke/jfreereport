@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingRenderer.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id: ChainingRenderer.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -119,7 +119,6 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
 
   public ChainingRenderer(final Renderer renderer)
   {
-//    Log.debug ("Created new Chaining Renderer " + toString() + "for : " + renderer);
     this.renderer = renderer;
   }
 

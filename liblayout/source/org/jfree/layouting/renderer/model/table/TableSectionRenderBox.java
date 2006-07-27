@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableSectionRenderBox.java,v 1.5 2006/07/24 12:18:56 taqua Exp $
+ * $Id: TableSectionRenderBox.java,v 1.7 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -238,25 +238,32 @@ public class TableSectionRenderBox extends BlockRenderBox
     Log.debug ("Finished size-validation process..");
   }
 
-  public void validate()
+  public void validate(RenderNodeState upTo)
   {
     final RenderNodeState state = getState();
     if (state == RenderNodeState.FINISHED)
     {
       return;
     }
+
     if (state == RenderNodeState.UNCLEAN)
-    {
-      setState(RenderNodeState.PENDING);
-    }
-    if (state == RenderNodeState.PENDING)
     {
       validateBorders();
       validatePaddings();
-      setState(RenderNodeState.LAYOUTING);
+      setState(RenderNodeState.PENDING);
+    }
+
+    if (reachedState(upTo))
+    {
+      return;
     }
 
     validateMargins();
+    setState(RenderNodeState.LAYOUTING);
+    if (reachedState(upTo))
+    {
+      return;
+    }
 
     Log.debug("TABLE-SECTION: Begin Validate");
 
@@ -285,6 +292,7 @@ public class TableSectionRenderBox extends BlockRenderBox
         node.setPosition(getMinorAxis(), minorAxisNodePos);
         node.setDimension(getMinorAxis(), 0);
         node.setDimension(getMajorAxis(), 0);
+        node.validate(RenderNodeState.FINISHED);
         node = node.getNext();
         continue;
       }
@@ -374,6 +382,7 @@ public class TableSectionRenderBox extends BlockRenderBox
         node.setPosition(getMinorAxis(), minorAxisNodePos);
         node.setDimension(getMinorAxis(), 0);
         node.setDimension(getMajorAxis(), 0);
+        node.validate(RenderNodeState.FINISHED);
         node = node.getNext();
         continue;
       }

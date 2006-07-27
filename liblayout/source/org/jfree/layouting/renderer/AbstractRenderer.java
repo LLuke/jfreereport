@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractRenderer.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.2 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,6 @@ public abstract class AbstractRenderer implements Renderer
     {
       throw new NullPointerException();
     }
-    Log.debug ("Creating " + getClass());
     this.layoutProcess = layoutProcess;
   }
 }

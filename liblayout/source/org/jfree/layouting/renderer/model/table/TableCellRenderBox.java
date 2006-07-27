@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableCellRenderBox.java,v 1.6 2006/07/26 11:52:08 taqua Exp $
+ * $Id: TableCellRenderBox.java,v 1.7 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -156,7 +156,7 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
     setMarginsValidated(true);
   }
 
-  public void validate()
+  public void validate(RenderNodeState state)
   {
     throw new UnsupportedOperationException
             ("Table-Cells do not validate this way.");
@@ -210,34 +210,17 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
    *                 alignment works).
    * @param row
    */
-  public void validate(final boolean guessing, final TableRow row)
+  public void validate(final boolean guessing,
+                       final TableRow row)
   {
-//    final long height = getHeight();
-//    super.validate();
-//    if (guessing == false)
-//    {
-//      final RenderNodeState state = getState();
-//      setHeight(height);
-//      Log.debug ("Height: " + height);
-//      setState(state);
-//    }
 
     final RenderNodeState state = getState();
     if (state == RenderNodeState.FINISHED)
     {
       return;
     }
-    if (state == RenderNodeState.UNCLEAN)
-    {
-      setState(RenderNodeState.PENDING);
-    }
-    if (state == RenderNodeState.PENDING)
-    {
-      validateBorders();
-      validatePaddings();
-      setState(RenderNodeState.LAYOUTING);
-    }
-
+    validateBorders();
+    validatePaddings();
     validateMargins();
 
     Log.debug("TABLE-CELL: Begin Validate");
@@ -278,6 +261,7 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
         node.setPosition(getMinorAxis(), minorAxisNodePos);
         node.setDimension(getMinorAxis(), 0);
         node.setDimension(getMajorAxis(), 0);
+        node.validate(RenderNodeState.FINISHED);
         node = node.getNext();
         continue;
       }
@@ -315,7 +299,7 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
       node.setPosition(getMinorAxis(), minorAxisNodePos + leadingMinor);
       node.setDimension(getMinorAxis(), nodeSizeMinor);
       node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
-      node.validate();
+      node.validate(RenderNodeState.FINISHED);
 
       trailingMajor = node.getTrailingSpace(getMajorAxis());
       trailingMinor = node.getTrailingSpace(getMinorAxis());
@@ -381,6 +365,7 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
         node.setPosition(getMinorAxis(), minorAxisNodePos);
         node.setDimension(getMinorAxis(), 0);
         node.setDimension(getMajorAxis(), 0);
+        node.validate(RenderNodeState.FINISHED);
         node = node.getNext();
         continue;
       }
@@ -398,7 +383,7 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
       node.setPosition(getMinorAxis(), minorAxisNodePos + leadingMinor);
       node.setDimension(getMinorAxis(), nodeSizeMinor);
       node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
-      node.validate();
+      node.validate(RenderNodeState.FINISHED);
 
       trailingMajor = node.getTrailingSpace(getMajorAxis());
       trailingMinor = node.getTrailingSpace(getMinorAxis());

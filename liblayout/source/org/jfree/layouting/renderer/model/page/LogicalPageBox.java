@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.6 2006/07/26 11:52:08 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.7 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,10 @@ import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
 import org.jfree.layouting.renderer.model.IndexedRenderBox;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderNodeState;
+import org.jfree.layouting.renderer.border.RenderLength;
+import org.jfree.util.Log;
 
 /**
  * The logical page box does not have a layout at all. It has collection of
@@ -236,5 +240,61 @@ public class LogicalPageBox extends BlockRenderBox
       return (long[]) horizontalBreaks.clone();
     }
     return (long[]) verticalBreaks.clone();
+  }
+
+  public void validate(RenderNodeState state)
+  {
+    if (getState() == RenderNodeState.UNCLEAN)
+    {
+      setX(0);
+      setY(0);
+      setWidth(getEffectiveLayoutSize(RenderNode.HORIZONTAL_AXIS));
+      setHeight(getEffectiveLayoutSize(RenderNode.VERTICAL_AXIS));
+    }
+
+    if (state == RenderNodeState.FINISHED)
+    {
+      Log.debug ("");
+    }
+    super.validate(state);
+  }
+
+  /**
+   * Checks, whether a validate run would succeed. Under certain conditions, for
+   * instance if there is a auto-width component open, it is not possible to
+   * perform a layout run, unless that element has been closed.
+   * <p/>
+   * Generally speaking: An element cannot be layouted, if <ul> <li>the element
+   * contains childs, which cannot be layouted,</li> <li>the element has
+   * auto-width or depends on an auto-width element,</li> <li>the element is a
+   * floating or positioned element, or is a child of an floating or positioned
+   * element.</li> </ul>
+   *
+   * @return
+   */
+  public boolean isValidatable()
+  {
+    if (isOpen() == false) return true;
+
+    for (int i = 0; i < subFlows.size(); i++)
+    {
+      NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
+      if (box.isOpen())
+      {
+        return false;
+      }
+    }
+
+    RenderNode child = getLastChild();
+    while (child != null)
+    {
+      if (child.isValidatable() == false)
+      {
+        return false;
+      }
+      child = child.getPrev();
+    }
+
+    return true;
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRenderBox.java,v 1.6 2006/07/24 12:18:56 taqua Exp $
+ * $Id: TableRenderBox.java,v 1.7 2006/07/26 11:52:08 taqua Exp $
  *
  * Changes
  * -------
@@ -42,13 +42,12 @@ package org.jfree.layouting.renderer.model.table;
 
 import java.util.ArrayList;
 
+import org.jfree.layouting.input.style.keys.box.DisplayRole;
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 import org.jfree.layouting.input.style.keys.table.BorderCollapse;
 import org.jfree.layouting.input.style.keys.table.EmptyCells;
 import org.jfree.layouting.input.style.keys.table.TableLayout;
 import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
-import org.jfree.layouting.input.style.keys.box.DisplayRole;
-import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
-import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.border.Border;
@@ -57,9 +56,9 @@ import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
+import org.jfree.layouting.renderer.model.table.cols.SpearateColumnModel;
 import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnGroup;
-import org.jfree.layouting.renderer.model.table.cols.SpearateColumnModel;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
 import org.jfree.layouting.util.geom.StrictInsets;
@@ -127,15 +126,38 @@ public class TableRenderBox extends BlockRenderBox
     return autoLayout;
   }
 
-  public void validate()
+  public void validate(RenderNodeState upTo)
   {
-    if (RenderNodeState.FINISHED.equals(getState()))
+    final RenderNodeState state = getState();
+    if (RenderNodeState.FINISHED.equals(state))
     {
       return;
     }
 
-    prune();
-    buildColumnModel();
+    if (state == RenderNodeState.UNCLEAN)
+    {
+      validateBorders();
+      validatePaddings();
+      setState(RenderNodeState.PENDING);
+    }
+
+    if (reachedState(upTo))
+    {
+      return;
+    }
+
+    if (state == RenderNodeState.PENDING)
+    {
+      prune();
+      buildColumnModel();
+      validateMargins();
+      setState(RenderNodeState.LAYOUTING);
+    }
+
+    if (reachedState(upTo))
+    {
+      return;
+    }
 
     // The layouting here is rather simple. We do a simple block layouting;
     // and it is guaranteed, that the various sections do not overlap. It
@@ -147,7 +169,7 @@ public class TableRenderBox extends BlockRenderBox
       // we've seen everything.
       if (isOpen())
       {
-        return;
+        throw new IllegalStateException("This box is not yet validatable.");
       }
     }
 
@@ -221,11 +243,11 @@ public class TableRenderBox extends BlockRenderBox
     setState(RenderNodeState.FINISHED);
   }
 
-  private long validateSection (RenderNode[] nodes,
-                                long defaultNodeWidth,
-                                long minorAxisNodePos,
-                                long borderSpacing,
-                                long nodePos)
+  private long validateSection(RenderNode[] nodes,
+                               long defaultNodeWidth,
+                               long minorAxisNodePos,
+                               long borderSpacing,
+                               long nodePos)
   {
     for (int i = 0; i < nodes.length; i++)
     {
@@ -235,7 +257,7 @@ public class TableRenderBox extends BlockRenderBox
       node.setPosition(getMinorAxis(), minorAxisNodePos);
       node.setDimension(getMinorAxis(), defaultNodeWidth);
 //      node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
-      node.validate();
+      node.validate(RenderNodeState.FINISHED);
 
       nodePos += node.getDimension(getMajorAxis());
       nodePos += borderSpacing;
@@ -259,7 +281,7 @@ public class TableRenderBox extends BlockRenderBox
     while (node != null)
     {
       if (node.isIgnorableForRendering() ||
-          node instanceof TableSectionRenderBox == false)
+              node instanceof TableSectionRenderBox == false)
       {
         // Ignore all empty childs. However, give it an position.
         others.add(node);
@@ -270,12 +292,12 @@ public class TableRenderBox extends BlockRenderBox
       TableSectionRenderBox renderBox = (TableSectionRenderBox) node;
       CSSValue displayRole = renderBox.getDisplayRole();
       if (collectState == 0 &&
-          DisplayRole.TABLE_HEADER_GROUP.equals(displayRole))
+              DisplayRole.TABLE_HEADER_GROUP.equals(displayRole))
       {
         headers.add(renderBox);
       }
       else if (collectState <= 1 &&
-          DisplayRole.TABLE_FOOTER_GROUP.equals(displayRole))
+              DisplayRole.TABLE_FOOTER_GROUP.equals(displayRole))
       {
         footers.add(renderBox);
         collectState = 1;
@@ -433,7 +455,7 @@ public class TableRenderBox extends BlockRenderBox
     }
     else
     {
-      return preferredHeight  + insets;
+      return preferredHeight + insets;
     }
   }
 
@@ -610,12 +632,12 @@ public class TableRenderBox extends BlockRenderBox
       }
       else
       {
-        nodeWidth = Math.max (minChunk, contextWidth);
+        nodeWidth = Math.max(minChunk, contextWidth);
       }
     }
     else
     {
-      nodeWidth = Math.max (minChunk, contextWidth);
+      nodeWidth = Math.max(minChunk, contextWidth);
     }
 
     final long margins = getLeadingSpace(axis) + getTrailingSpace(axis);
@@ -629,6 +651,7 @@ public class TableRenderBox extends BlockRenderBox
 
   /**
    * Make this method public, so that the model can access it ..
+   *
    * @return
    */
   public long getComputedBlockContextWidth()
@@ -639,5 +662,31 @@ public class TableRenderBox extends BlockRenderBox
   public long getRowSpacing()
   {
     return rowSpacing.resolve(getComputedBlockContextWidth());
+  }
+
+  /**
+   * Checks, whether a validate run would succeed. Under certain conditions, for
+   * instance if there is a auto-width component open, it is not possible to
+   * perform a layout run, unless that element has been closed.
+   * <p/>
+   * Generally speaking: An element cannot be layouted, if <ul> <li>the element
+   * contains childs, which cannot be layouted,</li> <li>the element has
+   * auto-width or depends on an auto-width element,</li> <li>the element is a
+   * floating or positioned element, or is a child of an floating or positioned
+   * element.</li> </ul>
+   *
+   * @return
+   */
+  public boolean isValidatable()
+  {
+    if (isOpen() == false)
+    {
+      return true;
+    }
+    if (columnModel.isIncrementalModeSupported() == false)
+    {
+      return false;
+    }
+    return super.isValidatable();
   }
 }

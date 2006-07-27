@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNodeState.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: RenderNodeState.java,v 1.2 2006/07/26 11:52:08 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ public class RenderNodeState
    * The node is new or has undergone some major structural changes. Dont assume
    * anything.
    */
-  public static final RenderNodeState UNCLEAN = new RenderNodeState("UNCLEAN");
+  public static final RenderNodeState UNCLEAN = new RenderNodeState("UNCLEAN", 1000);
 
   /**
    * The node or one of its childs or predecessors has got new childs. The
@@ -60,26 +60,33 @@ public class RenderNodeState
    *
    * This may affect the margins of this box, so recompute them.
    */
-  public static final RenderNodeState PENDING = new RenderNodeState("PENDING");
+  public static final RenderNodeState PENDING = new RenderNodeState("PENDING", 3000);
 
   /**
    * The box has done at least some layouting and has cached some information.
    * Layouting is not finished. (Maybe the preferred size has been computed and
    * stored for later use.)
    */
-  public static final RenderNodeState LAYOUTING = new RenderNodeState("LAYOUTING");
+  public static final RenderNodeState LAYOUTING = new RenderNodeState("LAYOUTING", 4000);
 
   /**
    * The box is fully layouted and ready to be painted. An open box should never
    * reach the finished state.
    */
-  public static final RenderNodeState FINISHED = new RenderNodeState("FINISHED");
+  public static final RenderNodeState FINISHED = new RenderNodeState("FINISHED", 5000);
 
   private final String myName; // for debug only
+  private int weight;
 
-  private RenderNodeState(String name)
+  private RenderNodeState(String name, int weight)
   {
+    this.weight = weight;
     myName = name;
+  }
+
+  public int getWeight()
+  {
+    return weight;
   }
 
   public String toString()

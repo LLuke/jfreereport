@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.5 2006/07/26 11:52:08 taqua Exp $
+ * $Id: RenderableText.java,v 1.6 2006/07/26 12:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.renderer.text.Spacing;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.breaks.BreakOpportunityProducer;
+import org.jfree.layouting.renderer.Loggers;
 import org.jfree.util.Log;
 
 /**
@@ -252,13 +253,13 @@ public class RenderableText extends RenderNode
       return target;
     }
 
-    Log.debug("Attempt to split text: " + axis + " - " + position);
+    Loggers.SPLITSTRATEGY.debug("Attempt to split text: " + axis + " - " + position);
 
     if (axis == getMinorAxis())
     {
       // not splitable. By using the invisible render box, we allow the content
       // to move into the next line ..
-      Log.debug("Renderable Text is not spittable on this axis");
+      Loggers.SPLITSTRATEGY.debug("Renderable Text is not spittable on this axis");
       target[0] = new SpacerRenderNode();
       target[1] = derive(true);
       return target;
@@ -331,7 +332,7 @@ public class RenderableText extends RenderNode
     if (pos == glyphs.length)
     {
       // no need to break
-      Log.warn("PERFORMANCE: Incredible stupid operation detected: " + pos);
+      Loggers.SPLITSTRATEGY.warn("PERFORMANCE: Incredible stupid operation detected: " + pos);
       target[0] = derive(true);
       target[1] = null;
       return target;
@@ -372,7 +373,7 @@ public class RenderableText extends RenderNode
 
     if (target[0] == null)
     {
-      Log.debug("This box is not spittable here");
+      Loggers.SPLITSTRATEGY.debug("This box is not spittable here");
       target[0] = new SpacerRenderNode();
       if (target[1] == null)
       {
@@ -519,12 +520,11 @@ public class RenderableText extends RenderNode
 //    return maximumWidth;
 //  }
 
-  public void validate()
+  public void validate(RenderNodeState upTo)
   {
-    // do nothing ...
-    setState(RenderNodeState.FINISHED);
     setHeight(height);
     setWidth(preferredWidth);
+    setState(RenderNodeState.FINISHED);
   }
 
   public BreakAfterEnum getBreakAfterAllowed(final int axis)

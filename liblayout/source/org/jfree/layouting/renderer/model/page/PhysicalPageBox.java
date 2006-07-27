@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PhysicalPageBox.java,v 1.5 2006/07/26 12:09:51 taqua Exp $
+ * $Id: PhysicalPageBox.java,v 1.6 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -101,8 +101,11 @@ public class PhysicalPageBox extends RenderBox
     return height;
   }
 
-  public void validate()
+  public void validate(RenderNodeState state)
   {
+    // todo..
+    setWidth(width);
+    setHeight(height);
     setState(RenderNodeState.FINISHED);
   }
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LengthResolverUtility.java,v 1.1 2006/07/11 13:38:39 taqua Exp $
+ * $Id: CSSValueResolverUtility.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
  *
  * Changes
  * -------
@@ -123,6 +123,14 @@ public class CSSValueResolverUtility
     return CSSNumericType.PX.equals(value.getType());
   }
 
+  /**
+   * Returns the length in point as a double primitive value.
+   *
+   * @param rawValue
+   * @param context
+   * @param metaData
+   * @return
+   */
   public static double convertLengthToDouble(final CSSValue rawValue,
                                              final LayoutContext context,
                                              final OutputProcessorMetaData metaData)
@@ -164,29 +172,32 @@ public class CSSValueResolverUtility
       }
       return value.getValue() * 72d / pixelPerInch;
     }
-    if (CSSNumericType.EM.equals(value.getType()))
-    {
-      final FontSpecification fspec =
-              context.getFontSpecification();
-      final double fontSize = fspec.getFontSize();
-      return (fontSize * value.getValue());
-    }
-    if (CSSNumericType.EX.equals(value.getType()))
-    {
-      final FontSpecification fspec =
-              context.getFontSpecification();
-      final FontMetrics fontMetrics = metaData.getFontMetrics(fspec);
-      if (fontMetrics == null)
-      {
-        final double fontSize = fspec.getFontSize() * DEFAULT_X_HEIGHT_FACTOR;
-        return (value.getValue() * fontSize);
-      }
-      else
-      {
-        return value.getValue() * fontMetrics.getXHeight();
-      }
-    }
 
+    if (context != null)
+    {
+      if (CSSNumericType.EM.equals(value.getType()))
+      {
+        final FontSpecification fspec =
+                context.getFontSpecification();
+        final double fontSize = fspec.getFontSize();
+        return (fontSize * value.getValue());
+      }
+      if (CSSNumericType.EX.equals(value.getType()))
+      {
+        final FontSpecification fspec =
+                context.getFontSpecification();
+        final FontMetrics fontMetrics = metaData.getFontMetrics(fspec);
+        if (fontMetrics == null)
+        {
+          final double fontSize = fspec.getFontSize() * DEFAULT_X_HEIGHT_FACTOR;
+          return (value.getValue() * fontSize);
+        }
+        else
+        {
+          return value.getValue() * fontMetrics.getXHeight();
+        }
+      }
+    }
     return 0;
   }
 

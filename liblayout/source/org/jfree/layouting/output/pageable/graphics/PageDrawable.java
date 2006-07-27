@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.8 2006/07/22 15:28:50 taqua Exp $
+ * $Id: PageDrawable.java,v 1.9 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -239,6 +239,8 @@ public class PageDrawable implements Drawable
     b.append(box.getWidth());
     b.append(", height=");
     b.append(box.getHeight());
+    b.append(", state=");
+    b.append(box.getState());
     b.append(",\n                           borders=");
     b.append(box.getBorderWidths());
     b.append(",\n                           padding=");

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpacerRenderNode.java,v 1.5 2006/07/26 12:09:51 taqua Exp $
+ * $Id: SpacerRenderNode.java,v 1.6 2006/07/26 12:41:48 taqua Exp $
  *
  * Changes
  * -------
@@ -122,7 +122,7 @@ public class SpacerRenderNode extends RenderNode
     return height;
   }
 
-  public void validate()
+  public void validate(RenderNodeState upTo)
   {
     validateMargins();
     setState(RenderNodeState.FINISHED);

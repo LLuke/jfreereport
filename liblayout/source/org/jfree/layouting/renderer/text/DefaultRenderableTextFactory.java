@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.5 2006/07/26 11:52:08 taqua Exp $
  *
  * Changes
  * -------
@@ -126,7 +126,10 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
                                  final int length,
                                  final LayoutContext layoutContext)
   {
-    Log.debug("Processing text");
+    if (layoutContext == null)
+    {
+      throw new NullPointerException();
+    }
 
     kerningProducer = createKerningProducer(layoutContext);
     fontSizeProducer = createFontSizeProducer(layoutContext);
@@ -325,7 +328,6 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       if (produced == true)
       {
         words.add(new SpacerRenderNode(leadingMargin, 0, false));
-        Log.debug("Adding Placeholder");
       }
     }
     else
@@ -344,7 +346,6 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
               (layoutContext, createBaselineInfo(codePoint), glyphs, 0,
                       glyphs.length, lastLanguage, forceLinebreak));
       glyphList.clear();
-      Log.debug("Adding Text: " + glyphs.length);
     }
     leadingMargin = 0;
   }
