@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnGroup.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
+ * $Id: TableColumnGroup.java,v 1.2 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -96,6 +96,7 @@ public class TableColumnGroup
     {
       final TableColumn column = (TableColumn) tableColumns.get(i);
       final long columnWidth = column.getDefinedWidth().resolve(computedParentWidth);
+      column.updateSizes(1, columnWidth, columnWidth);
       column.setInitialWidth(columnWidth);
 
       if (incrementalModeSupported)

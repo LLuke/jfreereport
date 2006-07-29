@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableCellRenderBox.java,v 1.7 2006/07/26 12:09:51 taqua Exp $
+ * $Id: TableCellRenderBox.java,v 1.8 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -158,8 +158,8 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
 
   public void validate(RenderNodeState state)
   {
-    throw new UnsupportedOperationException
-            ("Table-Cells do not validate this way.");
+//    throw new UnsupportedOperationException
+//            ("Table-Cells do not validate this way.");
   }
 
   public int getColSpan()
@@ -237,8 +237,9 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
     final long minorAxisNodePos =
             getPosition(getMinorAxis()) + leadingPaddings;
 
-    final long defaultNodeWidth = Math.max(0,
-            getDimension(getMinorAxis()) - leadingPaddings - trailingPaddings);
+    final long defaultNodeWidth = Math.max
+            (0, getDimension(getMinorAxis()) -
+                    leadingPaddings - trailingPaddings);
 
     long trailingMajor = 0;
     long trailingMinor = 0;
@@ -266,8 +267,7 @@ public class TableCellRenderBox extends BlockRenderBox implements TableCell
         continue;
       }
 
-      final long nodeSizeMinor = Math.min
-              (defaultNodeWidth, node.getEffectiveLayoutSize(getMinorAxis()));
+      final long nodeSizeMinor = defaultNodeWidth;
       final long leadingMinor = Math.max
               (node.getLeadingSpace(getMinorAxis()), trailingMinor);
 

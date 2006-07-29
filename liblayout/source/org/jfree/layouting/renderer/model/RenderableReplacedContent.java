@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableReplacedContent.java,v 1.4 2006/07/26 12:09:51 taqua Exp $
+ * $Id: RenderableReplacedContent.java,v 1.5 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@
  */
 package org.jfree.layouting.renderer.model;
 
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.util.geom.StrictDimension;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.resourceloader.ResourceKey;
 
 /**
@@ -110,8 +110,14 @@ public class RenderableReplacedContent extends RenderNode
    */
   public RenderNode[] split(int axis, long position, RenderNode[] target)
   {
-    // todo how do we handle this? Later ...
-    return new RenderNode[2];
+    if (target == null || target.length < 2)
+    {
+      target = new RenderNode[2];
+    }
+
+    target[0] = derive(true);
+    target[1] = null;
+    return target;
   }
 
   public long getMinimumChunkSize(int axis)
@@ -199,5 +205,25 @@ public class RenderableReplacedContent extends RenderNode
   public ExtendedBaselineInfo getBaselineInfo()
   {
     return null;
+  }
+
+  /**
+   * This is always a split along the document's major axis. Until we have a
+   * really 100% parametrized renderer model, we assume VERTICAL here and are
+   * happy.
+   *
+   * @param position
+   * @param target
+   * @return
+   */
+  public RenderNode[] splitForPrint(long position, RenderNode[] target)
+  {
+    final RenderNode[] renderNodes = split(HORIZONTAL_AXIS, position, target);
+    renderNodes[0].freeze();
+    if (renderNodes[1] != null)
+    {
+      renderNodes[1].freeze();
+    }
+    return renderNodes;
   }
 }

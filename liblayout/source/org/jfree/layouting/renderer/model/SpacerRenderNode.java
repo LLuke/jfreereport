@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpacerRenderNode.java,v 1.6 2006/07/26 12:41:48 taqua Exp $
+ * $Id: SpacerRenderNode.java,v 1.7 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class SpacerRenderNode extends RenderNode
 {
   private long width;
   private long height;
-  private boolean preserve;
+  //private boolean preserve;
 
   public SpacerRenderNode()
   {
@@ -71,7 +71,7 @@ public class SpacerRenderNode extends RenderNode
   {
     this.width = width;
     this.height = height;
-    this.preserve = preserve;
+    //this.preserve = preserve;
   }
 
   /**
@@ -96,8 +96,27 @@ public class SpacerRenderNode extends RenderNode
     {
       target = new RenderNode[2];
     }
-    target[0] = derive(true);
-    target[1] = null;
+
+    final SpacerRenderNode spacer1 = (SpacerRenderNode) derive(true);
+    final SpacerRenderNode spacer2 = (SpacerRenderNode) derive(true);
+
+    if (axis == HORIZONTAL_AXIS)
+    {
+      final long width1 = Math.min (width, position);
+      final long width2 = Math.max (0, position - width);
+      spacer1.width = width1;
+      spacer2.width = width2;
+    }
+    else
+    {
+      final long width1 = Math.min (height, position);
+      final long width2 = Math.max (0, position - height);
+      spacer1.height = width1;
+      spacer2.height = width2;
+    }
+
+    target[0] = spacer1;
+    target[1] = spacer2;
     return target;
   }
 
@@ -204,5 +223,22 @@ public class SpacerRenderNode extends RenderNode
   public ExtendedBaselineInfo getBaselineInfo()
   {
     return null;
+  }
+
+  /**
+   * This is always a split along the document's major axis. Until we have a
+   * really 100% parametrized renderer model, we assume VERTICAL here and are
+   * happy.
+   *
+   * @param position
+   * @param target
+   * @return
+   */
+  public RenderNode[] splitForPrint(long position, RenderNode[] target)
+  {
+    final RenderNode[] renderNodes = split(HORIZONTAL_AXIS, position, target);
+    renderNodes[0].freeze();
+    renderNodes[1].freeze();
+    return renderNodes;
   }
 }

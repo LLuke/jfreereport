@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NormalFlowRenderBox.java,v 1.7 2006/07/26 11:52:07 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.8 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,7 @@ import org.jfree.util.Log;
  */
 public class NormalFlowRenderBox extends BlockRenderBox
 {
+  private Object placeHolderId;
   private SpacerRenderNode placeHolder;
   private ArrayList subFlows;
 
@@ -71,6 +72,7 @@ public class NormalFlowRenderBox extends BlockRenderBox
   {
     super(boxDefinition, valign);
     placeHolder = new SpacerRenderNode(0, 0, true);
+    placeHolderId = getPlaceHolder().getInstanceId();
     subFlows = new ArrayList();
 
     // hardcoded for now, content forms lines, which flow from top to bottom
@@ -120,18 +122,44 @@ public class NormalFlowRenderBox extends BlockRenderBox
       {
         NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
         renderBox.subFlows.add(box.derive(true));
+
+        box.placeHolder = (SpacerRenderNode) findNodeById(box.placeHolderId);
       }
-      renderBox.placeHolder = (SpacerRenderNode)
-              renderBox.findNodeById(placeHolder.getInstanceId());
-      if (renderBox.placeHolder == null)
-      {
-        throw new IllegalStateException
-                ("Cannot reconnect the normal flow. This MUST NOT happen.");
-      }
+      renderBox.placeHolder = null;
     }
     else
     {
       renderBox.placeHolder = (SpacerRenderNode) placeHolder.derive(true);
+      renderBox.subFlows = new ArrayList();
+    }
+    return renderBox;
+  }
+
+  /**
+   * Derive creates a disconnected node that shares all the properties of the
+   * original node. The derived node will no longer have any parent, silbling,
+   * child or any other relationships with other nodes.
+   *
+   * @return
+   */
+  public RenderNode deriveFrozen(boolean deepDerive)
+  {
+    NormalFlowRenderBox renderBox = (NormalFlowRenderBox) super.deriveFrozen(deepDerive);
+    if (deepDerive)
+    {
+      renderBox.subFlows = new ArrayList(subFlows.size());
+      for (int i = 0; i < subFlows.size(); i++)
+      {
+        NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
+        renderBox.subFlows.add(box.deriveFrozen(true));
+
+        box.placeHolder = (SpacerRenderNode) findNodeById(box.placeHolderId);
+      }
+      renderBox.placeHolder = null;
+    }
+    else
+    {
+      renderBox.placeHolder = (SpacerRenderNode) placeHolder.deriveFrozen(true);
       renderBox.subFlows = new ArrayList();
     }
     return renderBox;
@@ -165,22 +193,28 @@ public class NormalFlowRenderBox extends BlockRenderBox
    */
   public boolean isValidatable()
   {
-    if (isOpen() == false) return true;
+    if (isOpen() == false)
+    {
+      return true;
+    }
 
     for (int i = 0; i < subFlows.size(); i++)
     {
       NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
       if (box.isOpen())
       {
+        Log.debug ("Not validatable: Open SubFlow");
         return false;
       }
     }
 
     // the root flow always has the width of 100% ..
-    if (getParent() instanceof LogicalPageBox == false)
+    final RenderBox parent = getParent();
+    if (parent instanceof LogicalPageBox == false)
     {
       if (RenderLength.AUTO.equals(getBoxDefinition().getPreferredWidth()))
       {
+        Log.debug ("Not validatable: NormalFlow is an Auto-Width Box");
         return false;
       }
     }

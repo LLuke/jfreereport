@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRowRenderBox.java,v 1.8 2006/07/26 16:59:47 taqua Exp $
+ * $Id: TableRowRenderBox.java,v 1.9 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -158,8 +158,8 @@ public class TableRowRenderBox extends BlockRenderBox
 
   public void validate(RenderNodeState state)
   {
-    throw new UnsupportedOperationException
-            ("A table-row cannot be validated directly.");
+//    throw new UnsupportedOperationException
+//            ("A table-row cannot be validated directly.");
   }
 
   public void validate(TableRowModel rowModel,
@@ -1133,4 +1133,21 @@ public class TableRowRenderBox extends BlockRenderBox
     return edge;
   }
 
+  /**
+   * Checks, whether a validate run would succeed. Under certain conditions, for
+   * instance if there is a auto-width component open, it is not possible to
+   * perform a layout run, unless that element has been closed.
+   * <p/>
+   * Generally speaking: An element cannot be layouted, if <ul> <li>the element
+   * contains childs, which cannot be layouted,</li> <li>the element has
+   * auto-width or depends on an auto-width element,</li> <li>the element is a
+   * floating or positioned element, or is a child of an floating or positioned
+   * element.</li> </ul>
+   *
+   * @return
+   */
+  public boolean isValidatable()
+  {
+    return isOpen() == false;
+  }
 }

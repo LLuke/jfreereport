@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.9 2006/07/26 12:41:48 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.10 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -546,14 +546,17 @@ public class ParagraphRenderBox extends BlockRenderBox
   public long getEffectiveLayoutSize(int axis)
   {
     validate(RenderNodeState.LAYOUTING);
-    final long layoutSize = lineboxContainer.getEffectiveLayoutSize(axis);
-    Log.debug ("LayoutSize: " + layoutSize);
-    return layoutSize;
+    return lineboxContainer.getEffectiveLayoutSize(axis);
   }
 
   public RenderBox getInsertationPoint()
   {
     return pool.getInsertationPoint();
+  }
+
+  public boolean isAppendable()
+  {
+    return pool.isAppendable();
   }
 
   public RenderNode findNodeById(Object instanceId)

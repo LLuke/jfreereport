@@ -29,6 +29,7 @@ import org.jfree.layouting.layouter.style.functions.values.AttrValueFunction;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.input.style.PageAreaType;
+import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.util.AttributeMap;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceManager;
@@ -173,7 +174,17 @@ public abstract class AbstractStyleResolver implements StyleResolver
       {
         StyleKey key = keys[i];
         CSSValue value = rule.getPropertyCSSValue(key);
-        values[i] = resolveValue(value, element);
+        if (ContentStyleKeys.CONTENT.equals(key) ||
+            ContentStyleKeys.STRING_DEFINE.equals(key) ||
+            ContentStyleKeys.STRING_SET.equals(key))
+        {
+          // dont resolve that one ..
+          values[i] = value;
+        }
+        else
+        {
+          values[i] = resolveValue(value, element);
+        }
       }
 
       for (int i = 0; i < keys.length; i++)

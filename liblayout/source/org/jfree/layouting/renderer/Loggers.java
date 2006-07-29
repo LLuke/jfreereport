@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Loggers.java,v 1.1 2006/07/27 17:57:29 taqua Exp $
  *
  * Changes
  * -------
@@ -50,11 +50,48 @@ import org.jfree.util.Log;
  */
 public class Loggers
 {
+  private static class NullLogContext extends LogContext
+  {
+    public NullLogContext()
+    {
+      super("");
+    }
+
+    /**
+     * Logs a message to the main log stream. All attached logTargets will also
+     * receive this message. If the given log-level is higher than the given
+     * debug-level in the main config file, no logging will be done.
+     * <p/>
+     * The exception's stacktrace will be appended to the log-stream
+     *
+     * @param level   log level of the message.
+     * @param message text to be logged.
+     * @param e       the exception, which should be logged.
+     */
+    public void log(final int level, final Object message, final Exception e)
+    {
+    }
+
+    /**
+     * Logs a message to the main log stream.  All attached log targets will also
+     * receive this message. If the given log-level is higher than the given
+     * debug-level in the main config file, no logging will be done.
+     *
+     * @param level   log level of the message.
+     * @param message text to be logged.
+     */
+    public void log(final int level, final Object message)
+    {
+    }
+  }
+
   private Loggers ()
   {
   }
   
-  public static final LogContext VALIDATION = Log.createContext("Renderer.validation");
-  public static final LogContext STATECHANGE = Log.createContext("Renderer.statechange");
+  public static final LogContext VALIDATION = new NullLogContext();
+          //Log.createContext("Renderer.validation");
+  public static final LogContext STATECHANGE =  new NullLogContext(); 
+                  //Log.createContext("Renderer.statechange");
   public static final LogContext SPLITSTRATEGY = Log.createContext("Renderer.split");
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultBoxDefinition.java,v 1.3 2006/07/18 14:40:28 taqua Exp $
+ * $Id: DefaultBoxDefinition.java,v 1.4 2006/07/26 12:41:48 taqua Exp $
  *
  * Changes
  * -------
@@ -76,6 +76,24 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public DefaultBoxDefinition()
   {
+    marginTop = RenderLength.EMPTY;
+    marginLeft = RenderLength.EMPTY;
+    marginBottom = RenderLength.EMPTY;
+    marginRight = RenderLength.EMPTY;
+
+    paddingTop = RenderLength.EMPTY;
+    paddingLeft = RenderLength.EMPTY;
+    paddingBottom = RenderLength.EMPTY;
+    paddingRight = RenderLength.EMPTY;
+
+    maximumWidth = RenderLength.EMPTY;
+    maximumHeight = RenderLength.EMPTY;
+    minimumWidth = RenderLength.EMPTY;
+    minimumHeight = RenderLength.EMPTY;
+    preferredWidth = RenderLength.EMPTY;
+    preferredHeight = RenderLength.EMPTY;
+
+    border = Border.createEmptyBorder();
   }
 
   public Border getBorder()
@@ -85,6 +103,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setBorder(final Border border)
   {
+    if (border == null)
+    {
+      throw new NullPointerException();
+    }
     this.border = border;
   }
 
@@ -95,6 +117,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setMarginTop(final RenderLength marginTop)
   {
+    if (marginTop == null)
+    {
+      throw new NullPointerException();
+    }
     this.marginTop = marginTop;
   }
 
@@ -105,6 +131,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setMarginBottom(final RenderLength marginBottom)
   {
+    if (marginBottom == null)
+    {
+      throw new NullPointerException();
+    }
     this.marginBottom = marginBottom;
   }
 
@@ -115,6 +145,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setMarginLeft(final RenderLength marginLeft)
   {
+    if (marginLeft == null)
+    {
+      throw new NullPointerException();
+    }
     this.marginLeft = marginLeft;
   }
 
@@ -125,6 +159,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setMarginRight(final RenderLength marginRight)
   {
+    if (marginRight == null)
+    {
+      throw new NullPointerException();
+    }
     this.marginRight = marginRight;
   }
 
@@ -135,6 +173,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setPaddingTop(final RenderLength paddingTop)
   {
+    if (paddingTop == null)
+    {
+      throw new NullPointerException();
+    }
     this.paddingTop = paddingTop;
   }
 
@@ -145,6 +187,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setPaddingLeft(final RenderLength paddingLeft)
   {
+    if (paddingLeft == null)
+    {
+      throw new NullPointerException();
+    }
     this.paddingLeft = paddingLeft;
   }
 
@@ -155,6 +201,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setPaddingBottom(final RenderLength paddingBottom)
   {
+    if (paddingBottom == null)
+    {
+      throw new NullPointerException();
+    }
     this.paddingBottom = paddingBottom;
   }
 
@@ -165,6 +215,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setPaddingRight(final RenderLength paddingRight)
   {
+    if (paddingRight == null)
+    {
+      throw new NullPointerException();
+    }
     this.paddingRight = paddingRight;
   }
 
@@ -175,6 +229,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setMinimumWidth(final RenderLength minimumWidth)
   {
+    if (minimumWidth == null)
+    {
+      throw new NullPointerException();
+    }
     this.minimumWidth = minimumWidth;
   }
 
@@ -185,6 +243,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setMinimumHeight(final RenderLength minimumHeight)
   {
+    if (minimumHeight == null)
+    {
+      throw new NullPointerException();
+    }
     this.minimumHeight = minimumHeight;
   }
 
@@ -195,6 +257,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setMaximumWidth(final RenderLength maximumWidth)
   {
+    if (maximumWidth == null)
+    {
+      throw new NullPointerException();
+    }
     this.maximumWidth = maximumWidth;
   }
 
@@ -205,6 +271,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setMaximumHeight(final RenderLength maximumHeight)
   {
+    if (maximumHeight == null)
+    {
+      throw new NullPointerException();
+    }
     this.maximumHeight = maximumHeight;
   }
 
@@ -215,6 +285,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setPreferredWidth(final RenderLength preferredWidth)
   {
+    if (preferredWidth == null)
+    {
+      throw new NullPointerException();
+    }
     this.preferredWidth = preferredWidth;
   }
 
@@ -225,6 +299,10 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public void setPreferredHeight(final RenderLength preferredHeight)
   {
+    if (preferredHeight == null)
+    {
+      throw new NullPointerException();
+    }
     this.preferredHeight = preferredHeight;
   }
 
@@ -232,7 +310,7 @@ public class DefaultBoxDefinition implements BoxDefinition
    * Split the box definition for the given major axis. A horizontal axis will
    * perform vertical splits (resulting in a left and right box definition) and
    * a given vertical axis will split the box into a top and bottom box.
-   *  
+   *
    * @param axis
    * @return
    */
@@ -258,12 +336,12 @@ public class DefaultBoxDefinition implements BoxDefinition
     first.paddingLeft = paddingLeft;
     first.paddingRight = RenderLength.EMPTY;
     first.border = borders[0];
-    first.preferredHeight = null;
-    first.preferredWidth = null;
-    first.minimumHeight = null;
-    first.minimumWidth = null;
-    first.maximumHeight = null;
-    first.maximumWidth = null;
+    first.preferredHeight = preferredHeight;
+    first.preferredWidth = preferredWidth;
+    first.minimumHeight = minimumHeight;
+    first.minimumWidth = minimumWidth;
+    first.maximumHeight = maximumHeight;
+    first.maximumWidth = maximumWidth;
 
     final DefaultBoxDefinition second = new DefaultBoxDefinition();
     second.marginTop = marginTop;
@@ -275,12 +353,12 @@ public class DefaultBoxDefinition implements BoxDefinition
     second.paddingLeft = RenderLength.EMPTY;
     second.paddingRight = paddingRight;
     second.border = borders[1];
-    second.preferredHeight = null;
-    second.preferredWidth = null;
-    second.minimumHeight = null;
-    second.minimumWidth = null;
-    second.maximumHeight = null;
-    second.maximumWidth = null;
+    second.preferredHeight = preferredHeight;
+    second.preferredWidth = preferredWidth;
+    second.minimumHeight = minimumHeight;
+    second.minimumWidth = minimumWidth;
+    second.maximumHeight = maximumHeight;
+    second.maximumWidth = maximumWidth;
 
     final BoxDefinition[] boxes = new BoxDefinition[2];
     boxes[0] = first;
@@ -302,12 +380,12 @@ public class DefaultBoxDefinition implements BoxDefinition
     first.paddingLeft = paddingLeft;
     first.paddingRight = paddingRight;
     first.border = borders[0];
-    first.preferredHeight = null;
-    first.preferredWidth = null;
-    first.minimumHeight = null;
-    first.minimumWidth = null;
-    first.maximumHeight = null;
-    first.maximumWidth = null;
+    first.preferredHeight = preferredHeight;
+    first.preferredWidth = preferredWidth;
+    first.minimumHeight = minimumHeight;
+    first.minimumWidth = minimumWidth;
+    first.maximumHeight = maximumHeight;
+    first.maximumWidth = maximumWidth;
 
     final DefaultBoxDefinition second = new DefaultBoxDefinition();
     second.marginTop = RenderLength.EMPTY;
@@ -319,12 +397,12 @@ public class DefaultBoxDefinition implements BoxDefinition
     second.paddingLeft = paddingLeft;
     second.paddingRight = paddingRight;
     second.border = borders[1];
-    second.preferredHeight = null;
-    second.preferredWidth = null;
-    second.minimumHeight = null;
-    second.minimumWidth = null;
-    second.maximumHeight = null;
-    second.maximumWidth = null;
+    second.preferredHeight = preferredHeight;
+    second.preferredWidth = preferredWidth;
+    second.minimumHeight = minimumHeight;
+    second.minimumWidth = minimumWidth;
+    second.maximumHeight = maximumHeight;
+    second.maximumWidth = maximumWidth;
 
     final BoxDefinition[] boxes = new BoxDefinition[2];
     boxes[0] = first;

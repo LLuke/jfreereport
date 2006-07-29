@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.7 2006/07/26 16:59:47 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.8 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,8 @@ import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
-import org.jfree.layouting.renderer.border.RenderLength;
+import org.jfree.layouting.util.geom.StrictInsets;
+import org.jfree.layouting.output.pageable.graphics.PageDrawable;
 import org.jfree.util.Log;
 
 /**
@@ -81,9 +82,6 @@ import org.jfree.util.Log;
  */
 public class LogicalPageBox extends BlockRenderBox
 {
-  private NormalFlowRenderBox contentArea;
-  private IndexedRenderBox footerArea;
-  private IndexedRenderBox headerArea;
   private ArrayList subFlows;
   private PageGrid pageGrid;
 
@@ -94,6 +92,8 @@ public class LogicalPageBox extends BlockRenderBox
   private long pageWidth;
   private long pageHeight;
 
+  private long offset;
+  private Object contentAreaId;
 
   public LogicalPageBox(final PageGrid pageGrid)
   {
@@ -107,20 +107,23 @@ public class LogicalPageBox extends BlockRenderBox
     this.pageGrid = pageGrid;
 
     this.subFlows = new ArrayList();
-    this.contentArea = new NormalFlowRenderBox
+    NormalFlowRenderBox contentArea = new NormalFlowRenderBox
             (new EmptyBoxDefinition(), VerticalAlign.TOP);
-    this.headerArea = new IndexedRenderBox(new EmptyBoxDefinition());
-    this.footerArea = new IndexedRenderBox(new EmptyBoxDefinition());
+    contentAreaId = contentArea.getInstanceId();
+//    this.headerArea = new IndexedRenderBox(new EmptyBoxDefinition());
+//    this.footerArea = new IndexedRenderBox(new EmptyBoxDefinition());
     this.pageHeights = new long[pageGrid.getColumnCount()];
     this.pageWidths = new long[pageGrid.getRowCount()];
     this.horizontalBreaks = new long[pageGrid.getColumnCount()];
     this.verticalBreaks = new long[pageGrid.getRowCount()];
     updatePageArea();
 
-    addChild(contentArea);
-
-    footerArea.setElement("footnotes",
-            new NormalFlowRenderBox(new EmptyBoxDefinition(), VerticalAlign.TOP));
+//    addChild(headerArea);
+    super.addChild(contentArea);
+//    addChild(footerArea);
+//
+//    footerArea.setElement("footnotes",
+//            new NormalFlowRenderBox(new EmptyBoxDefinition(), VerticalAlign.TOP));
 
     setMajorAxis(VERTICAL_AXIS);
     setMinorAxis(HORIZONTAL_AXIS);
@@ -136,8 +139,8 @@ public class LogicalPageBox extends BlockRenderBox
       for (int col = 0; col < pageGrid.getColumnCount(); col++)
       {
         PhysicalPageBox box = pageGrid.getPage(row, col);
-        pageHeights[row] = Math.min (pageHeights[row], box.getHeight());
-        pageWidths[col] = Math.min (pageWidths[col], box.getWidth());
+        pageHeights[row] = Math.min(pageHeights[row], box.getHeight());
+        pageWidths[col] = Math.min(pageWidths[col], box.getWidth());
       }
     }
 
@@ -156,21 +159,40 @@ public class LogicalPageBox extends BlockRenderBox
     }
   }
 
+  protected void validatePaddings()
+  {
+    StrictInsets paddings = getPaddingsInternal();
+    paddings.setTop(offset);
+    paddings.setBottom(0);
+    paddings.setLeft(0);
+    paddings.setRight(0);
+  }
+
+  public boolean isLeadingMarginIndependent(int axis)
+  {
+    return true;
+  }
+
+  public boolean isTrailingMarginIndependent(int axis)
+  {
+    return true;
+  }
+
   public NormalFlowRenderBox getContentArea()
   {
-    return contentArea;
+    return (NormalFlowRenderBox) findNodeById(contentAreaId);
   }
 
-  public IndexedRenderBox getFooterArea()
-  {
-    return footerArea;
-  }
-
-  public IndexedRenderBox getHeaderArea()
-  {
-    return headerArea;
-  }
-
+//  public IndexedRenderBox getFooterArea()
+//  {
+//    return footerArea;
+//  }
+//
+//  public IndexedRenderBox getHeaderArea()
+//  {
+//    return headerArea;
+//  }
+//
   public void addAbsoluteFlow(NormalFlowRenderBox flow)
   {
     subFlows.add(flow);
@@ -199,7 +221,7 @@ public class LogicalPageBox extends BlockRenderBox
 
   public NormalFlowRenderBox getNormalFlow()
   {
-    return contentArea;
+    return getContentArea();
   }
 
   public PageGrid getPageGrid()
@@ -209,12 +231,12 @@ public class LogicalPageBox extends BlockRenderBox
 
   public RenderBox getInsertationPoint()
   {
-    return contentArea.getInsertationPoint();
+    return getContentArea().getInsertationPoint();
   }
 
   /**
-   * This changes over time, whenever the outer page areas of the physical
-   * pages get filled.
+   * This changes over time, whenever the outer page areas of the physical pages
+   * get filled.
    *
    * @param axis
    * @return
@@ -254,7 +276,7 @@ public class LogicalPageBox extends BlockRenderBox
 
     if (state == RenderNodeState.FINISHED)
     {
-      Log.debug ("");
+      Log.debug("");
     }
     super.validate(state);
   }
@@ -274,8 +296,185 @@ public class LogicalPageBox extends BlockRenderBox
    */
   public boolean isValidatable()
   {
-    if (isOpen() == false) return true;
+    if (isOpen() == false)
+    {
+      return true;
+    }
 
+    for (int i = 0; i < subFlows.size(); i++)
+    {
+      NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
+      if (box.isOpen())
+      {
+        Log.debug ("Not validatable: Subflow is open");
+        return false;
+      }
+    }
+
+    // the header and footer are ignored, as they cannot be filled directly.
+    return getContentArea().isValidatable();
+  }
+
+  public boolean isOverflow()
+  {
+    if (isValidatable() == false)
+    {
+      throw new IllegalStateException();
+    }
+
+    validate(RenderNodeState.FINISHED);
+    if (getHeight() > pageHeight)
+    {
+      return true;
+    }
+    Log.debug ("Overflow test: " + getHeight() + " <= " + pageHeight);
+    return false;
+  }
+
+  /**
+   * Performs a split on an overly full logical pagebox. The current set of
+   * physical pageboxes will be filled with the content, and that content will
+   * then be removed from the flow.
+   *
+   * It is assumed, that the vertical splits are safe to use - the content
+   * should have been layouted in a safe way already. (If not, its a bug!)
+   *
+   * So the only critical operations will be the horizontal splits.
+   *
+   * @return a result object, which contains the new logical page box and the
+   * generated physical pages.
+   */
+  public PrintSplitResult splitForPrint()
+  {
+    ArrayList physicalPages = new ArrayList();
+    LogicalPageBox splitBox = this;
+    for (int row = 0; row < pageHeights.length; row++)
+    {
+      // this is the height of the content area ...
+      final long height = pageHeights[row];
+
+      final long y;
+      if (row == 0)
+      {
+        y = 0;
+      }
+      else
+      {
+        y = verticalBreaks[row - 1];
+      }
+
+      RenderNode[] targets = splitBox.splitForPrint(height, null);
+      targets[0].freeze();
+      LogicalPageBox oldPage;
+      if (targets[0] instanceof LogicalPageBox == false)
+      {
+        oldPage = (LogicalPageBox) derive(false);
+      }
+      else
+      {
+        oldPage = (LogicalPageBox) targets[0];
+      }
+
+      // The old page contains all content that must be distributed to the
+      // physical pages...
+      for (int col = 0; col < pageWidths.length; col++)
+      {
+        final long width = pageWidths[col];
+
+        final long x;
+        if (col == 0)
+        {
+          x = 0;
+        }
+        else
+        {
+          x = horizontalBreaks[col - 1];
+        }
+
+        final PhysicalPageBox page = (PhysicalPageBox)
+                pageGrid.getPage(row, col).derive(true);
+        physicalPages.add(page);
+
+        page.setContentAreaBounds(x, y, width, height);
+        final RenderBox contentArea = page.getContentArea();
+        // now copy the content from the derived logical page to the physical
+        // page.
+        RenderNode node = oldPage.getFirstChild();
+        while (node != null)
+        {
+          Log.debug ("Adding " + node);
+          contentArea.addChild(node.derive(true));
+          node = node.getNext();
+        }
+      }
+
+
+
+      Log.debug ("HERE");
+      // the second page part contains the content below the split point.
+      if (targets[1] == null)
+      {
+        splitBox = (LogicalPageBox) derive(false);
+      }
+      else
+      {
+        splitBox = (LogicalPageBox) targets[1];
+      }
+    }
+
+    PhysicalPageBox[] pages = (PhysicalPageBox[])
+            physicalPages.toArray(new PhysicalPageBox[physicalPages.size()]);
+
+    for (int i = 0; i < pages.length; i++)
+    {
+      Log.debug ("----------------------------------------------------------");
+      PhysicalPageBox page = pages[i];
+      PageDrawable pd = new PageDrawable(page);
+      pd.print();
+    }
+    splitBox.restore();
+    if (splitBox.getContentArea() == null)
+    {
+      throw new IllegalStateException();
+    }
+
+    splitBox.getInsertationPoint();
+    return new PrintSplitResult(splitBox, pages);
+  }
+
+  /**
+   * Restores a sane state after the split removed the already processed content.
+   * This basicly resets the header/footer area and moves the content window.
+   */
+  private void restore()
+  {
+    offset += pageHeight;
+    if (getContentArea() == null)
+    {
+      NormalFlowRenderBox contentArea = new NormalFlowRenderBox
+              (new EmptyBoxDefinition(), VerticalAlign.TOP);
+      contentAreaId = contentArea.getInstanceId();
+      addGeneratedChild(contentArea);
+    }
+  }
+
+  /**
+   * Clones this node. Be aware that cloning can get you into deep trouble, as
+   * the relations this node has may no longer be valid.
+   *
+   * @return
+   */
+  public Object clone()
+  {
+    final LogicalPageBox o = (LogicalPageBox) super.clone();
+    o.pageHeights = (long[]) pageHeights.clone();
+    o.pageWidths = (long[]) pageWidths.clone();
+    o.pageGrid = pageGrid;
+    return o;
+  }
+
+  public boolean isNormalFlowActive()
+  {
     for (int i = 0; i < subFlows.size(); i++)
     {
       NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
@@ -284,17 +483,6 @@ public class LogicalPageBox extends BlockRenderBox
         return false;
       }
     }
-
-    RenderNode child = getLastChild();
-    while (child != null)
-    {
-      if (child.isValidatable() == false)
-      {
-        return false;
-      }
-      child = child.getPrev();
-    }
-
     return true;
   }
 }

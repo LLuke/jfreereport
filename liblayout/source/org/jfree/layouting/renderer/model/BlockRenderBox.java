@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BlockRenderBox.java,v 1.9 2006/07/26 11:52:07 taqua Exp $
+ * $Id: BlockRenderBox.java,v 1.10 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -208,8 +208,15 @@ public class BlockRenderBox extends RenderBox
     {
       if (RenderLength.AUTO.equals(preferredWidth) == false)
       {
+        try
+        {
         return preferredWidth.resolve
                 (parent.getComputedBlockContextWidth());
+        }
+        catch(NullPointerException npe)
+        {
+          Log.debug ("HERE");
+        }
       }
       else
       {
@@ -276,6 +283,7 @@ public class BlockRenderBox extends RenderBox
       if (getParent() instanceof BlockRenderBox == false)
       {
         // if the parent is an inline box, or we have no parent at all..
+        Log.debug ("Not validatable: Auto-Width Box");
         return false;
       }
     }
@@ -294,6 +302,6 @@ public class BlockRenderBox extends RenderBox
     }
 
     return true;
-
   }
+
 }

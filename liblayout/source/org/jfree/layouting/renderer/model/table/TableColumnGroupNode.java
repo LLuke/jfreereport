@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnGroupNode.java,v 1.4 2006/07/26 11:52:08 taqua Exp $
+ * $Id: TableColumnGroupNode.java,v 1.5 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNodeState;
+import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 
 /**
@@ -111,5 +112,19 @@ public class TableColumnGroupNode extends RenderBox
   public ExtendedBaselineInfo getBaselineInfo()
   {
     return null;
+  }
+
+  /**
+   * This is always a split along the document's major axis. Until we have a
+   * really 100% parametrized renderer model, we assume VERTICAL here and are
+   * happy.
+   *
+   * @param position
+   * @param target
+   * @return
+   */
+  public RenderNode[] splitForPrint(long position, RenderNode[] target)
+  {
+    throw new UnsupportedOperationException("This is a virtual box.");
   }
 }

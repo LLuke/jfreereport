@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FunctionUtilities.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.2 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -221,7 +221,7 @@ public class FunctionUtilities
   {
     if (typeText == null)
     {
-      throw new NullPointerException();
+      return CSSNumericType.NUMBER;
     }
     final String txt = typeText.trim();
     for (int i = 0; i < KNOWN_TYPES.length; i++)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.6 2006/07/26 12:09:51 taqua Exp $
+ * $Id: RenderableText.java,v 1.7 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -640,5 +640,22 @@ public class RenderableText extends RenderNode
   public ExtendedBaselineInfo getBaselineInfo()
   {
     return baselineInfo;
+  }
+
+  /**
+   * This is always a split along the document's major axis. Until we have a
+   * really 100% parametrized renderer model, we assume VERTICAL here and are
+   * happy.
+   *
+   * @param position
+   * @param target
+   * @return
+   */
+  public RenderNode[] splitForPrint(long position, RenderNode[] target)
+  {
+    final RenderNode[] renderNodes = split(HORIZONTAL_AXIS, position, target);
+    renderNodes[0].freeze();
+    renderNodes[1].freeze();
+    return renderNodes;
   }
 }

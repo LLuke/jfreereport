@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRenderBox.java,v 1.7 2006/07/26 11:52:08 taqua Exp $
+ * $Id: TableRenderBox.java,v 1.8 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -685,6 +685,7 @@ public class TableRenderBox extends BlockRenderBox
     }
     if (columnModel.isIncrementalModeSupported() == false)
     {
+      Log.debug ("Not validatable: Table is not incremental.");
       return false;
     }
     return super.isValidatable();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageGrid.java,v 1.1 2006/07/26 17:00:47 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
  *
  * @author Thomas Morgner
  */
-public interface PageGrid
+public interface PageGrid extends Cloneable
 {
   public PhysicalPageBox getPage(int row, int col);
   public int getRowCount ();

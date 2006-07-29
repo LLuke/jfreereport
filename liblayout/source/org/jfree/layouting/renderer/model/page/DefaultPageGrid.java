@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultPageGrid.java,v 1.1 2006/07/26 17:00:47 taqua Exp $
+ * $Id: DefaultPageGrid.java,v 1.2 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class DefaultPageGrid implements PageGrid
     for (int i = 0; i < pages.length; i++)
     {
       pages[i] = new PhysicalPageBox(pageContext,
-              PageSize.A5.getWidth() * 1000, PageSize.A5.getHeight()  * 1000);
+              pageSize.getWidth() * 1000, pageSize.getHeight()  * 1000);
     }
   }
 
@@ -133,5 +133,24 @@ public class DefaultPageGrid implements PageGrid
   public int getColumnCount()
   {
     return columns;
+  }
+
+  public Object clone ()
+  {
+    try
+    {
+      final DefaultPageGrid o = (DefaultPageGrid) super.clone();
+      o.pages = (PhysicalPageBox[]) pages.clone();
+      for (int i = 0; i < pages.length; i++)
+      {
+        PhysicalPageBox page = pages[i];
+        o.pages[i] = (PhysicalPageBox) page.derive(true);
+      }
+      return o;
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalStateException();
+    }
   }
 }

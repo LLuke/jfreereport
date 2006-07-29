@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IndexedRenderBox.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: IndexedRenderBox.java,v 1.2 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class IndexedRenderBox extends BlockRenderBox
     if (node == null)
     {
       // oh, we have no such child at all. Nice! Add as usual.
-      addChild(child);
+      super.addChild(child);
       childs.put (name, child);
     }
     else

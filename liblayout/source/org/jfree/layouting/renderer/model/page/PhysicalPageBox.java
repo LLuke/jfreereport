@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PhysicalPageBox.java,v 1.6 2006/07/26 16:59:47 taqua Exp $
+ * $Id: PhysicalPageBox.java,v 1.7 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,9 @@ import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderNodeState;
+import org.jfree.layouting.renderer.model.BlockRenderBox;
+import org.jfree.layouting.renderer.model.IndexedRenderBox;
+import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 
 /**
@@ -59,6 +62,8 @@ import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
  */
 public class PhysicalPageBox extends RenderBox
 {
+  private BlockRenderBox contentArea;
+
   private PageContext pageContext;
   private long width;
   private long height;
@@ -68,9 +73,18 @@ public class PhysicalPageBox extends RenderBox
                          final long height)
   {
     super(new EmptyBoxDefinition(), VerticalAlign.TOP);
+    freeze();
     this.pageContext = pageContext;
     this.width = width;
     this.height = height;
+
+    this.contentArea = new BlockRenderBox(new EmptyBoxDefinition(), VerticalAlign.TOP);
+    addChild(contentArea);
+  }
+
+  public BlockRenderBox getContentArea()
+  {
+    return contentArea;
   }
 
   protected long getPreferredSize(int axis)
@@ -103,9 +117,9 @@ public class PhysicalPageBox extends RenderBox
 
   public void validate(RenderNodeState state)
   {
-    // todo..
-    setWidth(width);
-    setHeight(height);
+//    // todo..
+//    setWidth(width);
+//    setHeight(height);
     setState(RenderNodeState.FINISHED);
   }
 
@@ -119,4 +133,58 @@ public class PhysicalPageBox extends RenderBox
   {
     return null;
   }
+
+  /**
+   * This is always a split along the document's major axis. Until we have a
+   * really 100% parametrized renderer model, we assume VERTICAL here and are
+   * happy.
+   *
+   * @param position
+   * @param target
+   * @return
+   */
+  public RenderNode[] splitForPrint(long position, RenderNode[] target)
+  {
+    throw new UnsupportedOperationException
+            ("Split is not supported for physical boxes");
+  }
+
+  public void setContentAreaBounds(final long x, final long y,
+                                   final long width, final long height)
+  {
+    // depending on the other area's sizes, we have to adjust our own
+    // origin point ..
+    setX(x);
+    setY(y);
+    setWidth(width);
+    setHeight(height);
+  }
+
+  /**
+   * Derive creates a disconnected node that shares all the properties of the
+   * original node. The derived node will no longer have any parent, silbling,
+   * child or any other relationships with other nodes.
+   *
+   * @return
+   */
+  public RenderNode derive(boolean deepDerive)
+  {
+    final PhysicalPageBox renderNode = (PhysicalPageBox) super.derive(deepDerive);
+    if (deepDerive)
+    {
+      // after the derive, reconnect the header and footer
+      // ok, the structure is known, so that's easy
+      renderNode.contentArea = (BlockRenderBox)
+              renderNode.findNodeById(contentArea.getInstanceId());
+    }
+    else
+    {
+      renderNode.clear();
+      renderNode.contentArea = (NormalFlowRenderBox) contentArea.derive(false);
+      renderNode.addChild(renderNode.contentArea);
+    }
+    return renderNode;
+  }
+
+  
 }

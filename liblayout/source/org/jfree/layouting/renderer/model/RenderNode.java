@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.15 2006/07/26 16:59:47 taqua Exp $
+ * $Id: RenderNode.java,v 1.16 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.renderer.model;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
+import org.jfree.layouting.renderer.page.RenderPageContext;
 import org.jfree.layouting.util.geom.StrictInsets;
 import org.jfree.util.Log;
 
@@ -121,6 +122,7 @@ public abstract class RenderNode implements Cloneable
 
   private boolean clearRight;
   private boolean clearLeft;
+  private boolean frozen;
   private Object instanceId;
 
   private boolean marginsValidated;
@@ -132,10 +134,16 @@ public abstract class RenderNode implements Cloneable
     instanceId = new Object();
     state = RenderNodeState.UNCLEAN;
 
-
     this.absoluteMargins = new StrictInsets();
     this.effectiveMargins = new StrictInsets();
+  }
 
+  public RenderPageContext getRenderPageContext()
+  {
+    final RenderBox parent = getParent();
+    if (parent != null)
+    parent.getRenderPageContext();
+    return null;
   }
 
   public Object getInstanceId()
@@ -179,7 +187,7 @@ public abstract class RenderNode implements Cloneable
     long oldValue = this.width;
     this.width = width;
 
-    if (oldValue != width)
+    if (oldValue != width && !isFrozen())
     {
       // someone changed the position, invalidate all childs ..
       validate(RenderNodeState.PENDING);
@@ -202,7 +210,7 @@ public abstract class RenderNode implements Cloneable
     long oldValue = this.height;
     this.height = height;
 
-    if (oldValue != height)
+    if (oldValue != height && !isFrozen())
     {
       // someone changed the position, invalidate all childs ..
       validate(RenderNodeState.PENDING);
@@ -225,7 +233,7 @@ public abstract class RenderNode implements Cloneable
     long oldValue = this.x;
     this.x = x;
 
-    if (oldValue != x)
+    if (oldValue != x && !isFrozen())
     {
       // someone changed the position, invalidate all childs ..
       setState(RenderNodeState.UNCLEAN);
@@ -290,7 +298,7 @@ public abstract class RenderNode implements Cloneable
     long oldValue = this.y;
     this.y = y;
 
-    if (oldValue != y)
+    if (oldValue != y && !isFrozen())
     {
       // someone changed the position, invalidate all childs ..
       setState(RenderNodeState.UNCLEAN);
@@ -299,10 +307,15 @@ public abstract class RenderNode implements Cloneable
 
   protected final void setState(final RenderNodeState state)
   {
+    if (isFrozen())
+    {
+      return;
+    }
+
     RenderNodeState oldState = this.state;
     this.state = state;
     final boolean alwaysPropagateEvents = isAlwaysPropagateEvents();
-    if (oldState != state || alwaysPropagateEvents)
+    if (oldState != state || alwaysPropagateEvents )
     {
       notifyStateChange(oldState, state);
     }
@@ -311,7 +324,7 @@ public abstract class RenderNode implements Cloneable
   protected void notifyStateChange(final RenderNodeState oldState,
                                    final RenderNodeState newState)
   {
-    Log.debug("STATE_CHANGE: " + toString() + ": " + oldState + " -> " + newState);
+//    Log.debug("STATE_CHANGE: " + toString() + ": " + oldState + " -> " + newState);
     if (newState == RenderNodeState.UNCLEAN)
     {
       parentWidth = null;
@@ -342,14 +355,20 @@ public abstract class RenderNode implements Cloneable
       final RenderNode next = getNext();
       if (next != null)
       {
-        next.setState(RenderNodeState.PENDING);
+        if (next.getState().getWeight() > RenderNodeState.PENDING.getWeight())
+        {
+          next.setState(RenderNodeState.PENDING);
+        }
       }
       else
       {
         final RenderNode parent = getParent();
         if (parent != null)
         {
-          parent.setState(RenderNodeState.PENDING);
+          if (parent.getState().getWeight() > RenderNodeState.PENDING.getWeight())
+          {
+            parent.setState(RenderNodeState.PENDING);
+          }
         }
       }
     }
@@ -541,6 +560,17 @@ public abstract class RenderNode implements Cloneable
     node.next = null;
     node.prev = null;
     node.marginsValidated = false;
+    return node;
+  }
+
+  public RenderNode deriveFrozen (boolean deep)
+  {
+    RenderNode node = (RenderNode) clone();
+    node.parent = null;
+    node.next = null;
+    node.prev = null;
+    node.marginsValidated = false;
+    node.frozen = true;
     return node;
   }
 
@@ -739,7 +769,8 @@ public abstract class RenderNode implements Cloneable
       }
       else
       {
-        effectiveMargins.setTop(parentMargins.getTop() - absoluteMargins.getTop());
+        effectiveMargins.setTop(collapseAbsoluteMargins
+                (parentMargins.getTop(), absoluteMargins.getTop()));
       }
 
       if (parent.isTrailingMarginIndependent(VERTICAL_AXIS))
@@ -748,13 +779,15 @@ public abstract class RenderNode implements Cloneable
       }
       else
       {
-        effectiveMargins.setBottom(parentMargins.getBottom() - absoluteMargins.getBottom());
+        effectiveMargins.setBottom(collapseAbsoluteMargins
+                (parentMargins.getBottom(), absoluteMargins.getBottom()));
       }
 
       if (getNonEmptyPrev() == null &&
               (parent.isLeadingMarginIndependent(HORIZONTAL_AXIS) == false))
       {
-        effectiveMargins.setLeft(parentMargins.getLeft() - absoluteMargins.getLeft());
+        effectiveMargins.setLeft(collapseAbsoluteMargins
+                (parentMargins.getLeft(), absoluteMargins.getLeft()));
       }
       else
       {
@@ -763,14 +796,15 @@ public abstract class RenderNode implements Cloneable
       if (getNonEmptyNext() == null &&
               (parent.isTrailingMarginIndependent(HORIZONTAL_AXIS) == false))
       {
-        effectiveMargins.setRight(parentMargins.getRight() - absoluteMargins.getRight());
+        effectiveMargins.setRight(collapseAbsoluteMargins
+                (parentMargins.getRight(),  absoluteMargins.getRight()));
       }
       else
       {
         effectiveMargins.setRight(absoluteMargins.getRight());
       }
     }
-    else
+    else // Major axis is vertical ..
     {
       if (parent.isLeadingMarginIndependent(HORIZONTAL_AXIS))
       {
@@ -778,7 +812,8 @@ public abstract class RenderNode implements Cloneable
       }
       else
       {
-        effectiveMargins.setLeft(parentMargins.getLeft() - absoluteMargins.getLeft());
+        effectiveMargins.setLeft(collapseAbsoluteMargins
+                (parentMargins.getLeft(), absoluteMargins.getLeft()));
       }
 
       if (parent.isTrailingMarginIndependent(HORIZONTAL_AXIS))
@@ -787,13 +822,15 @@ public abstract class RenderNode implements Cloneable
       }
       else
       {
-        effectiveMargins.setRight(parentMargins.getRight() - absoluteMargins.getRight());
+        effectiveMargins.setRight(collapseAbsoluteMargins
+                (parentMargins.getRight(), absoluteMargins.getRight()));
       }
 
       if (getNonEmptyPrev() == null &&
               (parent.isLeadingMarginIndependent(VERTICAL_AXIS) == false))
       {
-        effectiveMargins.setTop(parentMargins.getTop() - absoluteMargins.getTop());
+        effectiveMargins.setTop(collapseAbsoluteMargins
+                (parentMargins.getTop(), absoluteMargins.getTop()));
       }
       else
       {
@@ -802,15 +839,43 @@ public abstract class RenderNode implements Cloneable
       if (getNonEmptyNext() == null &&
               (parent.isTrailingMarginIndependent(VERTICAL_AXIS) == false))
       {
-        effectiveMargins.setBottom(parentMargins.getBottom() - absoluteMargins.getBottom());
+        effectiveMargins.setBottom(collapseAbsoluteMargins
+                (parentMargins.getBottom(), absoluteMargins.getBottom()));
       }
       else
       {
         effectiveMargins.setBottom(absoluteMargins.getBottom());
       }
     }
+
+    if (effectiveMargins.getBottom() == -12000)
+    {
+      Log.debug ("Hold here");
+    }
     marginsValidated = true;
 
+  }
+
+  private long collapseAbsoluteMargins (long parent, long child)
+  {
+    if (parent < 0)
+    {
+      if (child >= 0)
+      {
+        return child;
+      }
+      // Child is also negative, so the normal collapsing applies ..
+      return Math.abs (parent - child);
+    }
+
+
+    if (child < 0)
+    {
+      return child;
+    }
+
+    // neither child nor parent are null..
+    return Math.abs (parent - child);
   }
 
   protected void validateAbsoluteMargins()
@@ -844,20 +909,11 @@ public abstract class RenderNode implements Cloneable
   public StrictInsets getEffectiveMargins()
   {
     validateMargins();
-    if (effectiveMargins.getRight() > 9000000)
-    {
-      marginsValidated = false;
-      validateMargins();
-    }
     return effectiveMargins;
   }
 
   protected void invalidateMargins()
   {
-//    if (marginsValidated && isOpen() == false)
-//    {
-//      new Exception().printStackTrace();
-//    }
     this.marginsValidated = false;
     if (parent != null)
     {
@@ -1108,4 +1164,41 @@ public abstract class RenderNode implements Cloneable
     return false;
   }
 
+  /**
+   * A frozen element must not be modified anymore (in any way). Do not
+   * perform splits, do not validate, do not allow changes to any properties.
+   *
+   * @return
+   */
+  public boolean isFrozen()
+  {
+    return frozen;
+  }
+
+  public void freeze()
+  {
+    frozen = true;
+  }
+
+  /**
+   * This is always a split along the document's major axis. Until we have a
+   * really 100% parametrized renderer model, we assume VERTICAL here and are
+   * happy.
+   *
+   * @param position
+   * @param target
+   * @return
+   */
+  public abstract RenderNode[] splitForPrint
+          (long position, RenderNode[] target);
+
+  public long getBestPrintBreak(final long splitPos)
+  {
+    return 0;
+  }
+
+  public long getFirstPrintBreak()
+  {
+    return 0;
+  }
 }

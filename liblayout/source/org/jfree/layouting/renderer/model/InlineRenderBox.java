@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InlineRenderBox.java,v 1.9 2006/07/26 11:52:07 taqua Exp $
+ * $Id: InlineRenderBox.java,v 1.10 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -275,6 +275,11 @@ public class InlineRenderBox extends RenderBox
   public RenderNode[] splitForLinebreak(final boolean isEndOfLine,
                                         RenderNode[] target)
   {
+    if (target == null || target.length < 2)
+    {
+      target = new RenderNode[2];
+    }
+
     // never check your own clear properties. We dont know the context of
     // these...
     RenderNode child = getFirstChild();
