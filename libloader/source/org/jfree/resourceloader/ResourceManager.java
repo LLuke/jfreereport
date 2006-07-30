@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceManager.java,v 1.5 2006/05/16 17:13:30 taqua Exp $
+ * $Id: ResourceManager.java,v 1.6 2006/07/11 13:22:07 taqua Exp $
  *
  * Changes
  * -------
@@ -141,8 +141,29 @@ public class ResourceManager
     {
       return createKey(data);
     }
-    ResourceLoader loader = (ResourceLoader) resourceLoaders.get(
-            parent.getSchema());
+
+    // First, try to load the key as absolute value.
+    // This assumes, that we have no catch-all implementation.
+    final Iterator values = resourceLoaders.values().iterator();
+    while (values.hasNext())
+    {
+      final ResourceLoader loader = (ResourceLoader) values.next();
+      if (loader.isSupportedKeyValue(data) == false)
+      {
+        continue;
+      }
+      try
+      {
+        return loader.createKey(data);
+      }
+      catch(Exception e)
+      {
+        // OK, did not work out ..
+      }
+    }
+
+    ResourceLoader loader =
+            (ResourceLoader) resourceLoaders.get(parent.getSchema());
     if (loader == null)
     {
       throw new ResourceKeyCreationException
@@ -291,7 +312,7 @@ public class ResourceManager
         }
         catch(ResourceCreationException rex)
         {
-//          // ignore it, try the next factory ...
+          // ignore it, try the next factory ...
 //          if (Log.isDebugEnabled())
 //          {
 //            Log.debug ("Failed at " + fact.getClass() + ": ",rex);

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ZipResourceLoader.java,v 1.1.1.1 2006/04/17 16:48:33 taqua Exp $
+ * $Id: ZipResourceLoader.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -105,7 +105,8 @@ public class ZipResourceLoader implements ResourceLoader
               ("Key format is not recognized.");
     }
     ZipResourceKey zrk = (ZipResourceKey) parent;
-    final ResourceKey declaredParent = (ResourceKey) values.get(AbstractResourceKey.PARENT_KEY);
+    final ResourceKey declaredParent = (ResourceKey)
+            values.get(AbstractResourceKey.PARENT_KEY);
     final Object entryName = values.get(AbstractResourceKey.CONTENT_KEY);
     if (entryName instanceof String == false)
     {
