@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontMetrics.java,v 1.5 2006/04/30 09:31:14 taqua Exp $
+ * $Id: FontMetrics.java,v 1.6 2006/06/08 18:06:12 taqua Exp $
  *
  * Changes
  * -------
@@ -81,5 +81,14 @@ public interface FontMetrics
   public double getCharWidth(int codePoint);
   public double getKerning(int previous, int codePoint);
 
+  /**
+   * Baselines are defined for scripts, not glyphs. A glyph carries script
+   * information most of the time (unless it is a neutral characters or just
+   * weird).
+   *
+   * @param c
+   * @return
+   */
+  public BaselineInfo getBaselines (int codePoint, BaselineInfo info);
 
 }

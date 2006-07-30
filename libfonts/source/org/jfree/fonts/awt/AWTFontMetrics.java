@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AWTFontMetrics.java,v 1.5 2006/04/30 09:31:13 taqua Exp $
+ * $Id: AWTFontMetrics.java,v 1.6 2006/06/08 18:06:11 taqua Exp $
  *
  * Changes
  * -------
@@ -45,12 +45,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import org.jfree.fonts.encoding.CodePointUtilities;
 import org.jfree.fonts.registry.FontContext;
 import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.fonts.registry.BaselineInfo;
 
 /**
  * Creation-Date: 16.12.2005, 21:09:39
@@ -67,6 +69,7 @@ public class AWTFontMetrics implements FontMetrics
   private double maxCharAdvance;
   private char[] cpBuffer;
   private FontRenderContext frc;
+  private double xheight;
 
   public AWTFontMetrics(final Font font, final FontContext context)
   {
@@ -81,7 +84,13 @@ public class AWTFontMetrics implements FontMetrics
     final Rectangle2D rect = this.font.getMaxCharBounds(frc);
     this.lineHeight = rect.getHeight();
     this.maxCharAdvance = rect.getWidth();
+
+    GlyphVector gv = font.createGlyphVector(frc, "x");
+    Rectangle2D bounds = gv.getVisualBounds();
+    this.xheight = bounds.getHeight();
+
     this.cpBuffer = new char[4];
+
   }
 
   protected Graphics2D getGraphics(final FontRenderContext frc)
@@ -140,7 +149,7 @@ public class AWTFontMetrics implements FontMetrics
    */
   public double getXHeight()
   {
-    return fontMetrics.getAscent() * 0.7;
+    return xheight;
   }
 
   public double getOverlinePosition()
@@ -225,5 +234,95 @@ public class AWTFontMetrics implements FontMetrics
     {
       return 0;
     }
+  }
+
+  /**
+   * Baselines are defined for scripts, not glyphs. A glyph carries script
+   * information most of the time (unless it is a neutral characters or just
+   * weird).
+   *
+   * The baseline info does not take any leading into account.
+   *
+   * @param c the character that is used to select the script type.
+   * @return
+   */
+  public BaselineInfo getBaselines(int c, BaselineInfo info)
+  {
+    LineMetrics lm = font.getLineMetrics(((char) (c & 0xFFFF)) + "", frc);
+    float[] bls = lm.getBaselineOffsets();
+    int idx = lm.getBaselineIndex();
+
+    if (info == null)
+    {
+      info = new BaselineInfo();
+    }
+
+    // The ascent is local - but we need the global baseline, relative to the
+    // MaxAscent.
+    final double delta = getMaxAscent() - lm.getAscent();
+    info.setBaseline(BaselineInfo.MATHEMATICAL,
+            delta + getMaxAscent() - getXHeight());
+    info.setBaseline(BaselineInfo.IDEOGRAPHIC, getMaxHeight());
+    info.setBaseline(BaselineInfo.MIDDLE, getMaxAscent() / 2);
+
+    final double base = delta + lm.getAscent();
+
+    switch (idx)
+    {
+      case Font.CENTER_BASELINE:
+      {
+        info.setBaseline(BaselineInfo.CENTRAL, base);
+        info.setBaseline(BaselineInfo.ALPHABETIC,
+                base + bls[Font.ROMAN_BASELINE]);
+        info.setBaseline(BaselineInfo.HANGING,
+                base + bls[Font.HANGING_BASELINE]);
+        info.setDominantBaseline(BaselineInfo.CENTRAL);
+        break;
+      }
+      case Font.HANGING_BASELINE:
+      {
+        info.setBaseline(BaselineInfo.CENTRAL,
+                base + bls[Font.CENTER_BASELINE]);
+        info.setBaseline(BaselineInfo.ALPHABETIC,
+                base + bls[Font.ROMAN_BASELINE]);
+        info.setBaseline(BaselineInfo.HANGING, base);
+        info.setDominantBaseline(BaselineInfo.HANGING);
+        break;
+      }
+      case Font.ROMAN_BASELINE:
+      {
+        info.setBaseline(BaselineInfo.ALPHABETIC, base);
+        info.setBaseline(BaselineInfo.CENTRAL,
+                base + bls[Font.CENTER_BASELINE]);
+        info.setBaseline(BaselineInfo.HANGING,
+                base + bls[Font.HANGING_BASELINE]);
+        info.setDominantBaseline(BaselineInfo.ALPHABETIC);
+        break;
+      }
+    }
+
+    return info;
+  }
+
+  public static void main(String[] args)
+  {
+    Font f = new Font ("dialog", Font.PLAIN, 10);
+    FontRenderContext frc = new FontRenderContext
+            (null, true, true);
+
+    LineMetrics lm = f.getLineMetrics("\u0915\u092a", frc);
+    System.out.println ("Ascent: " + lm.getAscent());
+    System.out.println ("Leading: " + lm.getLeading());
+    System.out.println ("Descent: " + lm.getDescent());
+
+    float[] bls = lm.getBaselineOffsets();
+    int idx = lm.getBaselineIndex();
+    for (int i = 0; i < bls.length; i++)
+    {
+      float v = bls[i];
+      System.out.println ("BaseLine: " + i + " " + v);
+    }
+
+    System.out.println ("Dominantbaseline: " + idx);
   }
 }

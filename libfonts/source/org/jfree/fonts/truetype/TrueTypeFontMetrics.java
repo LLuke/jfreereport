@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TrueTypeFontMetrics.java,v 1.5 2006/04/30 09:31:14 taqua Exp $
+ * $Id: TrueTypeFontMetrics.java,v 1.6 2006/06/08 18:06:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.fonts.truetype;
 
 import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.fonts.registry.BaselineInfo;
 
 
 /**
@@ -137,5 +138,19 @@ public class TrueTypeFontMetrics implements FontMetrics
   public double getKerning(int previous, int character)
   {
     return 0;
+  }
+
+  /**
+   * Baselines are defined for scripts, not glyphs. A glyph carries script
+   * information most of the time (unless it is a neutral characters or just
+   * weird).
+   *
+   * @param c
+   * @return
+   */
+  public BaselineInfo getBaselines(int c, BaselineInfo info)
+  {
+    // todo
+    return null;
   }
 }

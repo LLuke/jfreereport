@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: EmptyFontMetrics.java,v 1.1 2006/06/08 18:06:56 taqua Exp $
  *
  * Changes
  * -------
@@ -130,5 +130,18 @@ public class EmptyFontMetrics implements FontMetrics
   public double getKerning(int previous, int codePoint)
   {
     return 0;
+  }
+
+  /**
+   * Baselines are defined for scripts, not glyphs. A glyph carries script
+   * information most of the time (unless it is a neutral characters or just
+   * weird).
+   *
+   * @param c
+   * @return
+   */
+  public BaselineInfo getBaselines(int c, BaselineInfo info)
+  {
+    return null;
   }
 }
