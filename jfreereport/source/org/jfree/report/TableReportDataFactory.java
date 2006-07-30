@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableReportDataFactory.java,v 1.1 2006/04/18 11:45:14 taqua Exp $
  *
  * Changes
  * -------
@@ -93,5 +93,15 @@ public class TableReportDataFactory implements ReportDataFactory
     }
 
     return new TableReportData(model);
+  }
+
+  public void open()
+  {
+
+  }
+
+  public void close()
+  {
+
   }
 }

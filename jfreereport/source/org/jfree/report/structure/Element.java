@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.3 2006/04/30 09:47:49 taqua Exp $
+ * $Id: Element.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -83,6 +83,8 @@ public abstract class Element extends Node
   public static final String TYPE_ATTRIBUTE = "type";
   /** See XML-Namespaces for the idea of that one ... */
   public static final String NAMESPACE_ATTRIBUTE = "namespace";
+  public static final String VIRTUAL_ATTRIBUTE = "virtual";
+
 
   /** The name of the element. */
   private AttributeMap attributes;
@@ -92,6 +94,7 @@ public abstract class Element extends Node
   private AttributeMap attributeExpressions;
   private HashMap styleExpressions;
   private boolean enabled;
+  private boolean virtual;
   private Expression displayCondition;
 
   /**
@@ -452,5 +455,15 @@ public abstract class Element extends Node
     }
 
     return null;
+  }
+
+  public boolean isVirtual()
+  {
+    return virtual;
+  }
+
+  public void setVirtual(final boolean virtual)
+  {
+    this.virtual = virtual;
   }
 }

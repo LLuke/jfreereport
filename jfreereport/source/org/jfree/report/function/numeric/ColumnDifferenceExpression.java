@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ColumnDifferenceExpression.java,v 1.2 2006/01/27 20:13:35 taqua Exp $
+ * $Id: ColumnDifferenceExpression.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -58,6 +58,7 @@ public class ColumnDifferenceExpression extends ColumnAggregationExpression
   public Object getValue() throws DataSourceException
   {
     Object[] values = getFieldValues();
+    boolean firstVal = true;
     double computedResult = 0;
     for (int i = 0; i < values.length; i++)
     {
@@ -68,7 +69,15 @@ public class ColumnDifferenceExpression extends ColumnAggregationExpression
       }
 
       Number n = (Number) value;
-      computedResult -= n.doubleValue();
+      if (firstVal)
+      {
+        computedResult = n.doubleValue();
+        firstVal = false;
+      }
+      else
+      {
+        computedResult -= n.doubleValue();
+      }
     }
 
     return new Double(computedResult);

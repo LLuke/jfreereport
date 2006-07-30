@@ -20,35 +20,87 @@
     .bordered {
       background-color: green;
     }
+
+    td {
+      vertical-align: bottom;
+    }
   </report:inline-stylesheet>
 
   <report:configuration>
     <report:property name="org.jfree.report.modules.output.pageable.pdf.Encoding">IDENTITY-H</report:property>
   </report:configuration>
   <report:datasource href="sample.sqlds"/>
-
-  <table>
+<!--
+  <table style="border-spacing: 10pt">
     <colgroup>
       <col style="width:100%" span="2"/>
     </colgroup>
-    <thead>
-      <tr>
-        <td>Header</td>
-        <td>Header</td>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <td>Footer</td>
-        <td>Footer</td>
-      </tr>
-    </tfoot>
     <tbody>
       <tr>
-        <td>Body</td>
-        <td>Body</td>
+        <td colspan="1" rowspan="2">A tale of a table</td>
+        <td>Once there was a table</td>
+        <td colspan="1" rowspan="2">with many spanned cells</td>
+      </tr>
+      <tr>
+        <td colspan="2" rowspan="1">But that table was very depressed</td>
+        <td>as it had no margins, paddings or borders to paint</td>
       </tr>
     </tbody>
   </table>
+
+  <table style="border-spacing: 10pt; border: 1px solid black; border-collapse: collapse">
+    <tbody>
+      <tr>
+        <td colspan="1" rowspan="2" style="border: 0px solid blue">A tale of a table II</td>
+        <td style="border: 0px solid green">But one day, a mage came a long, and offered to help the little table.</td>
+        <td colspan="1" rowspan="2"  style="border: 0px solid yellow">But as we know magicans, each gift has a price attached.</td>
+      </tr>
+      <tr>
+        <td colspan="2" rowspan="2"  style="border: 0px solid red">The table did not listen to the warnings, all it wanted were some borders.</td>
+        <td  style="border: 0px solid brown">and so it promised to do anything as long as it gets some fancy borders for its cells.</td>
+      </tr>
+    </tbody>
+  </table>
+-->
+
+  <h1>Testing, how the collapsing table model works</h1>
+  <table style="border: 1px solid green; border-collapse:separate; border-spacing: 0; vertical-align:baseline;">
+    <tbody>
+      <tr>
+        <td>
+          Cell 3
+        </td>
+        <td>
+          Empty
+        </td>
+        <td style="border: 1pt solid red">
+          Cell 1
+        </td>
+      </tr>
+    <tr style="border: 1pt solid blue">
+      <td style="border: 1pt solid red; vertical-align:baseline">
+        Cell 1
+      </td>
+      <td style="border: 10pt solid green">
+        Cell 2
+      </td>
+      <td style="border: 1pt solid red">
+        Cell 1
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Cell 3
+      </td>
+      <td>
+  dasd
+      </td>
+      <td style="border: 1pt solid red">
+        Cell 1
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <h1>Text</h1>
 
 </report:report>

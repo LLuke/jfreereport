@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextProcessingTest.java,v 1.1 2006/07/18 14:39:32 taqua Exp $
  *
  * Changes
  * -------
@@ -74,15 +74,17 @@ public class TextProcessingTest
           ResourceLoadingException, ReportProcessingException
   {
     JFreeReportBoot.getInstance().start();
-    TextProcessingTest.processFlowReport();
+//    TextProcessingTest.processFlowReport("/complex.xml");
+//    TextProcessingTest.processFlowReport("/baseline.xml");
+    TextProcessingTest.processFlowReport("/tables.xml");
   }
 
-  private static void processFlowReport()
+  private static void processFlowReport(String file)
           throws ResourceLoadingException,
           ResourceCreationException, ResourceKeyCreationException,
           ReportDataFactoryException, DataSourceException, ReportProcessingException
   {
-    URL url = TextProcessingTest.class.getResource("/newreport.xml");
+    URL url = TextProcessingTest.class.getResource(file);
     ResourceManager manager = new ResourceManager();
     manager.registerDefaults();
     Resource res = manager.createDirectly(url, JFreeReport.class);
@@ -91,7 +93,6 @@ public class TextProcessingTest
     ReportJob job = new ReportJob(resource);
     final TableReportDataFactory dataFactory =
             new TableReportDataFactory("default", new CountryDataTableModel());
-    dataFactory.addTable("subreport", new WorldDataTableModel());
     job.setDataFactory(dataFactory);
 
     final StageOnePageableOutputProcessor out = new StageOnePageableOutputProcessor();

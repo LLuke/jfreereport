@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RawReportTarget.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: RawReportTarget.java,v 1.3 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.report.function.ExpressionRuntime;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
+import org.jfree.util.Log;
 
 /**
  * The Raw report processor defines the base for all non-layouting output
@@ -95,6 +96,7 @@ public class RawReportTarget implements ReportTarget
                                     ExpressionRuntime runtime)
           throws DataSourceException
   {
+    Log.debug ("ContentElement: " + value);
   }
 
   public void endElement(final Element node, final ExpressionRuntime runtime)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportDataFactory.java,v 1.1 2006/04/18 11:45:14 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ package org.jfree.report;
  */
 public interface ReportDataFactory
 {
+  public void open();
+
   /**
    * Queries a datasource. The string 'query' defines the name of the query.
    * The Parameterset given here may contain more data than actually needed.
@@ -59,4 +61,6 @@ public interface ReportDataFactory
    */
   public ReportData queryData (final String query, final DataSet parameters)
           throws ReportDataFactoryException;
+
+  public void close();
 }

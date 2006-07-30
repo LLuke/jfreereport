@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ExpressionDataRow.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: ExpressionDataRow.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -161,7 +161,10 @@ public final class ExpressionDataRow implements DataRow
       if (expression instanceof Function)
       {
         Function f = (Function) expression;
+        expression.setRuntime(this);
         expression = f.advance();
+        f.setRuntime(null);
+        expression.setRuntime(null);
       }
       value = null;
       queried = false;
@@ -252,6 +255,8 @@ public final class ExpressionDataRow implements DataRow
     length += 1;
 
     expressionSlot.setDataRow(masterRow.getGlobalView());
+    // A manual advance to initialize the function.
+    expressionSlot.advance();
     if (name != null)
     {
       final Object value = expressionSlot.getValue();
@@ -424,9 +429,10 @@ public final class ExpressionDataRow implements DataRow
 
       // It is defined, that new expressions get evaluated before any older
       // expression.
-      for (int i = edr.length - 1; i > 0; i--)
+      for (int i = edr.length - 1; i >= 0; i--)
       {
         ExpressionSlot expressionSlot = edr.expressions[i];
+        expressionSlot.setDataRow(master.getGlobalView());
         if (deepTraversing && expressionSlot.isDeepTraversal() ||
             deepTraversing == false)
         {

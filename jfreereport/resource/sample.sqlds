@@ -3,14 +3,25 @@
         xmlns="http://jfreereport.sourceforge.net/namespaces/datasources/sql"
         xmlns:html="http://www.w3.org/1999/xhtml">
   <connection>
-    <driver>com.mysql.jdbc.Driver</driver>
-    <url>jdbc:mysql://localhost/database</url>
+    <driver>org.hsqldb.jdbcDriver</driver>
+    <url>jdbc:hsqldb:/home/src/pentaho/pentaho-jfree/sql/sampledata</url>
     <properties>
-      <property name="user">joe</property>
-      <property name="pass">secret</property>
+      <property name="user">sa</property>
+      <property name="pass"></property>
     </properties>
   </connection>
 
-  <query name="default">SELECT * FROM Users</query>
-  <query name="customersByUser">SELECT * FROM Customers WHERE user=${user}</query>
+  <query name="default">
+      SELECT
+           QUADRANT_ACTUALS.REGION,
+           QUADRANT_ACTUALS.DEPARTMENT,
+           QUADRANT_ACTUALS.POSITIONTITLE,
+           QUADRANT_ACTUALS.ACTUAL,
+           QUADRANT_ACTUALS.BUDGET,
+           QUADRANT_ACTUALS.VARIANCE
+      FROM
+           QUADRANT_ACTUALS
+      ORDER BY
+          REGION, DEPARTMENT, POSITIONTITLE
+  </query>
 </sql-datasource>

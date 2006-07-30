@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ElementReadHandler.java,v 1.2 2006/04/30 09:47:49 taqua Exp $
+ * $Id: ElementReadHandler.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,7 @@ import org.xml.sax.SAXException;
  */
 public abstract class ElementReadHandler extends AbstractXmlReadHandler
 {
+  private boolean virtual;
   private boolean enabled;
   private String style;
   private ArrayList expressionHandlers;
@@ -107,6 +108,16 @@ public abstract class ElementReadHandler extends AbstractXmlReadHandler
     else
     {
       enabled = true;
+    }
+
+    final String virtualValue = attrs.getValue(FlowReportFactoryModule.NAMESPACE, "virtual");
+    if (virtualValue != null)
+    {
+      virtual = "true".equals(virtualValue);
+    }
+    else
+    {
+      virtual = false;
     }
   }
 
@@ -220,6 +231,7 @@ public abstract class ElementReadHandler extends AbstractXmlReadHandler
       e.setAttribute(handler.getNamespace(), handler.getName(), handler.getObject());
     }
     e.setEnabled(enabled);
+    e.setVirtual(virtual);
     if (style != null)
     {
       e.setAttribute(FlowReportFactoryModule.NAMESPACE,"style", style);

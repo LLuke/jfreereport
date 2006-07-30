@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentElementReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: ContentElementReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -96,7 +96,7 @@ public class ContentElementReadHandler extends ElementReadHandler
   {
     if (valueExpressionReadHandler == null)
     {
-      throw new NullPointerException();
+      throw new SAXException("No valid value expression.");
     }
 
     super.doneParsing();

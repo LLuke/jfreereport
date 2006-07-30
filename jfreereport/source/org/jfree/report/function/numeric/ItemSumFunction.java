@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.11 2005/10/01 11:48:16 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ package org.jfree.report.function.numeric;
 import java.math.BigDecimal;
 
 import org.jfree.report.DataSourceException;
+import org.jfree.report.DataRow;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.ExpressionDependencyInfo;
@@ -142,7 +143,8 @@ public class ItemSumFunction extends AbstractFunction
    */
   public Function advance() throws DataSourceException
   {
-    final Object fieldValue = getDataRow().get(getField());
+    final DataRow dataRow = getDataRow();
+    final Object fieldValue = dataRow.get(getField());
     if (fieldValue == null)
     {
       return this;

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleSQLReportDataFactory.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
+ * $Id: SimpleSQLReportDataFactory.java,v 1.2 2006/04/18 13:32:51 taqua Exp $
  *
  * Changes
  * -------
@@ -128,7 +128,7 @@ public class SimpleSQLReportDataFactory implements ReportDataFactory
     this.labelMapping = labelMapping;
   }
 
-  private Connection getConnection() throws SQLException
+  private synchronized Connection getConnection() throws SQLException
   {
     if (connection == null)
     {
@@ -236,9 +236,27 @@ public class SimpleSQLReportDataFactory implements ReportDataFactory
     }
   }
 
-  public void close() throws SQLException
+  public void open()
   {
-    getConnection().close();
+
+  }
+
+  public synchronized void close()
+  {
+    if (connection == null)
+    {
+      return;
+    }
+
+    try
+    {
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      // we tried our very best ..
+    }
+    connection = null;
   }
 
   /**

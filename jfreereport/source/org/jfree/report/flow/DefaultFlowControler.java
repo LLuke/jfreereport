@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFlowControler.java,v 1.3 2006/04/22 16:18:14 taqua Exp $
+ * $Id: DefaultFlowControler.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -328,7 +328,8 @@ public class DefaultFlowControler implements FlowControler
   public FlowControler performReturnFromQuery() throws DataSourceException
   {
     DefaultFlowControler fc = new DefaultFlowControler(this, dataRow);
-
+    dataRow.getReportDataRow().getReportData().close();
+    
     ReportContext context = (ReportContext) fc.reportStack.pop();
     fc.dataRow = dataRow.getParentDataRow();
     fc.dataRow = fc.dataRow.derive();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutControler.java,v 1.4 2006/05/15 12:56:56 taqua Exp $
+ * $Id: DefaultLayoutControler.java,v 1.5 2006/07/18 14:39:03 taqua Exp $
  *
  * Changes
  * -------
@@ -101,8 +101,11 @@ public class DefaultLayoutControler implements LayoutControler
   {
     // Step 1: call End Element
     FlowControler fc = pos.getFlowControler();
-    LayoutExpressionRuntime ler = pos.getExpressionRuntime(fc);
-    processor.endElement(e, ler);
+    if (e.isVirtual() == false)
+    {
+      LayoutExpressionRuntime ler = pos.getExpressionRuntime(fc);
+      processor.endElement(e, ler);
+    }
 
     // Step 2: Remove the expressions of this element
     fc = fc.deactivateExpressions();
@@ -173,8 +176,11 @@ public class DefaultLayoutControler implements LayoutControler
     // will work on the queried dataset.
     fc = fc.activateExpressions(e);
 
-    LayoutExpressionRuntime ler = pos.getExpressionRuntime(fc);
-    processor.startElement(e, ler);
+    if (e.isVirtual() == false)
+    {
+      LayoutExpressionRuntime ler = pos.getExpressionRuntime(fc);
+      processor.startElement(e, ler);
+    }
     if (e instanceof ContentElement)
     {
       return processContentElement(pos, fc, processor);

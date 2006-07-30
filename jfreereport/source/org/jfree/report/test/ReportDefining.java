@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDefining.java,v 1.6 2006/07/17 16:47:09 taqua Exp $
+ * $Id: ReportDefining.java,v 1.7 2006/07/18 14:39:03 taqua Exp $
  *
  * Changes
  * -------
@@ -43,26 +43,14 @@ package org.jfree.report.test;
 import java.net.URL;
 
 import org.jfree.layouting.output.junit.StageOnePageableOutputProcessor;
-import org.jfree.layouting.output.streaming.html.HtmlOutputProcessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.TableReportDataFactory;
-import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.flowing.FlowReportProcessor;
-import org.jfree.report.flow.streaming.StreamingReportProcessor;
-import org.jfree.report.function.aggregation.ItemCountFunction;
-import org.jfree.report.function.sys.GetValueExpression;
-import org.jfree.report.function.sys.GroupByExpression;
-import org.jfree.report.structure.ContentElement;
-import org.jfree.report.structure.Group;
-import org.jfree.report.structure.Node;
-import org.jfree.report.structure.Section;
-import org.jfree.report.structure.StaticText;
-import org.jfree.report.structure.SubReport;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKeyCreationException;
@@ -134,7 +122,8 @@ public class ReportDefining
 //    System.out.println("Time: " + delta / 1000f);
   }
 
-  private static void processReport()
+
+  private static void processFlowReport()
           throws ResourceLoadingException,
           ResourceCreationException, ResourceKeyCreationException,
           ReportDataFactoryException, DataSourceException, ReportProcessingException
@@ -145,154 +134,16 @@ public class ReportDefining
     Resource res = manager.createDirectly(url, JFreeReport.class);
     final JFreeReport resource = (JFreeReport) res.getResource();
 
-//    final JFreeReport resource = new JFreeReport();
-//    resource.setQuery("default");
-//    resource.addNode(new StaticText ("Blah"));
-//
-//    final Section sect = new Section();
-//    sect.addNode(new StaticText ("bbbb"));
-//    resource.addNode(sect);
-//    resource.addNode(new StaticText ("Blah2"));
-
     ReportJob job = new ReportJob(resource);
     final TableReportDataFactory dataFactory =
             new TableReportDataFactory("default", new CountryDataTableModel());
-    dataFactory.addTable("subreport", new WorldDataTableModel());
+    dataFactory.addTable("subreport", new CountryDataTableModel());
     job.setDataFactory(dataFactory);
 
-//    final OOWriterOutputProcessor out = new OOWriterOutputProcessor();
-    final HtmlOutputProcessor out = new HtmlOutputProcessor(System.err);
-    //job.setMetaData(out.getMetaData());
-
-    final StreamingReportProcessor rp = new StreamingReportProcessor();
-    rp.setOutputProcessor(out);
-    rp.processReport(job);
-  }
-
-
-  private static void processFlowReport()
-          throws ResourceLoadingException,
-          ResourceCreationException, ResourceKeyCreationException,
-          ReportDataFactoryException, DataSourceException, ReportProcessingException
-  {
-    URL url = ReportDefining.class.getResource("/newreport.xml");
-    ResourceManager manager = new ResourceManager();
-    manager.registerDefaults();
-    Resource res = manager.createDirectly(url, JFreeReport.class);
-    final JFreeReport resource = (JFreeReport) res.getResource();
-
-    ReportJob job = new ReportJob(resource);
-    final TableReportDataFactory dataFactory =
-            new TableReportDataFactory("default", new CountryDataTableModel());
-    dataFactory.addTable("subreport", new WorldDataTableModel());
-    job.setDataFactory(dataFactory);
-
-//    final OOWriterOutputProcessor out = new OOWriterOutputProcessor();
     final StageOnePageableOutputProcessor out = new StageOnePageableOutputProcessor();
-    //job.setMetaData(out.getMetaData());
-
     final FlowReportProcessor rp = new FlowReportProcessor();
     rp.setOutputProcessor(out);
     rp.processReport(job);
   }
 
-
-  private static Group createGroup()
-  {
-    GroupByExpression ge = new GroupByExpression();
-    ge.setField(0, "Continent");
-
-    Group group = new Group();
-    group.setName("Continent Group");
-    group.setGroupingExpression(ge);
-    group.addVariable("iCountDetail");
-
-    ContentElement countryElementH = new ContentElement();
-    countryElementH.setValueExpression(new GetValueExpression("Country"));
-
-    ContentElement countryElementF = new ContentElement();
-    countryElementF.setValueExpression(new GetValueExpression("iCountDetail"));
-
-    Section paragraph = new Section();
-    paragraph.addExpression(new ItemCountFunction("iCountGroup"));
-    paragraph.setType("p");
-    paragraph.setNamespace("http://www.w3c.org/xhtml");
-    paragraph.addNode(new StaticText("Group header: "));
-    paragraph.addNode(countryElementH);
-//    paragraph.addNode(createSubReport());
-    paragraph.addNode(new StaticText("\n"));
-    paragraph.addNode(createDetail());
-    paragraph.addNode(new StaticText("Group Footer: "));
-    paragraph.addNode(countryElementF);
-
-    group.addNode(paragraph);
-    group.setRepeat(true);
-    return group;
-  }
-
-  private static Node createSubReport()
-  {
-    SubReport report = new SubReport();
-    report.setName("subreport");
-    report.setQuery("subreport");
-
-    ContentElement continentElement = new ContentElement();
-    continentElement.setValueExpression(new GetValueExpression("WOCountry"));
-
-    ContentElement countryElement = new ContentElement();
-    countryElement.setValueExpression(new GetValueExpression("WOPopulation"));
-
-    Section detailSection = new Section();
-    detailSection.setType("p");
-    detailSection.setNamespace("http://www.w3c.org/xhtml");
-    detailSection.addOperationAfter(FlowControlOperation.ADVANCE);
-    detailSection.setName("SUBREPORT: Detail Section");
-    detailSection.addNode(continentElement);
-    detailSection.addNode(new StaticText(" - "));
-    detailSection.addNode(countryElement);
-    detailSection.addNode(new StaticText("\n"));
-    detailSection.setRepeat(true);
-    report.addNode(detailSection);
-
-    return report;
-  }
-
-  private static Section createDetail()
-  {
-    ContentElement continentElement = new ContentElement();
-    continentElement.setValueExpression(new GetValueExpression("Continent"));
-
-    ContentElement countryElement = new ContentElement();
-    countryElement.setValueExpression(new GetValueExpression("Country"));
-
-    // this must always return '1', as the function is only valid within
-    // the element's scope. (Stupid example, but shows how it works ...)
-    ContentElement iCountElement = new ContentElement();
-    iCountElement.setValueExpression(new ItemCountFunction());
-
-    ContentElement iCountGroupElement = new ContentElement();
-    iCountGroupElement.setValueExpression
-            (new GetValueExpression("iCountGroup"));
-
-    ContentElement iCountDetailElement = new ContentElement();
-    iCountDetailElement.setValueExpression
-            (new GetValueExpression("iCountDetail"));
-
-    Section detailSection = new Section();
-    detailSection.addExpression(new ItemCountFunction("iCountDetail"));
-    detailSection.addOperationAfter(FlowControlOperation.ADVANCE);
-    detailSection.setName("Detail Section");
-    detailSection.addNode(continentElement);
-    detailSection.addNode(new StaticText(" - "));
-    detailSection.addNode(countryElement);
-    detailSection.addNode(new StaticText(" : "));
-    detailSection.addNode(iCountElement);
-    detailSection.addNode(new StaticText(" : "));
-    detailSection.addNode(iCountGroupElement);
-    detailSection.addNode(new StaticText(" = "));
-    detailSection.addNode(iCountDetailElement);
-    detailSection.addNode(new StaticText("\n"));
-    detailSection.setRepeat(true);
-    return detailSection;
-  }
 }

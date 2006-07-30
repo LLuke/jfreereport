@@ -12,6 +12,7 @@
  * function as function object, which enables us to interpret the type
  * parameter.
  */
+/*
 flow|resource-node {
   content: attr("flow|content", url);
 }
@@ -56,3 +57,4 @@ flow|group, flow|report, flow|section, flow|detail-section {
 flow|out-of-order-section {
   display: none;
 }
+*/

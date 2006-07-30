@@ -16,16 +16,19 @@
  * function as function object, which enables us to interpret the type
  * parameter.
  */
+
 resource-node {
   content: attr("content", url);
+  display: inline;
 }
 
 external-node {
   content: attr("content", raw);
+  display: inline;
 }
 
 content-node {
-  content: "Flow: " attr("content", string);
+  content: attr("content");
   display: inline;
 }
 
@@ -38,7 +41,7 @@ content-node[isDate=true][format] {
 }
 
 content-node[isNumber=true] {
-  content: "Flow: " format(attr("content", number), number, "#,##0.00");
+  content: format(attr("content", number), number, "#,##0.00");
 }
 
 content-node[isNumber=true][format] {

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StaticReportDataFactory.java,v 1.1 2006/07/11 13:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -207,4 +207,13 @@ public class StaticReportDataFactory implements ReportDataFactory
     throw new ReportDataFactoryException("No such Method");
   }
 
+  public void open()
+  {
+
+  }
+
+  public void close()
+  {
+
+  }
 }
