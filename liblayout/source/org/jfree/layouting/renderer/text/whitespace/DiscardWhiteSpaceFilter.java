@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DiscardWhiteSpaceFilter.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -109,10 +109,14 @@ public class DiscardWhiteSpaceFilter implements WhiteSpaceFilter
       }
       return WhiteSpaceFilter.STRIP_WHITESPACE;
     }
-    if (codepoint == ClassificationProducer.START_OF_TEXT ||
-            codepoint == ClassificationProducer.END_OF_TEXT)
+    if (codepoint == ClassificationProducer.START_OF_TEXT)
     {
       lastWasWhiteSpace = true;
+      return WhiteSpaceFilter.STRIP_WHITESPACE;
+    }
+    else if (codepoint == ClassificationProducer.END_OF_TEXT)
+    {
+      // do not modify the whitespace flag ..
       return WhiteSpaceFilter.STRIP_WHITESPACE;
     }
 

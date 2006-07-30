@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.14 2006/07/27 17:56:27 taqua Exp $
+ * $Id: RenderBox.java,v 1.15 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -1337,6 +1337,13 @@ public abstract class RenderBox extends RenderNode
     RenderNode child = getFirstChild();
     while (child != null)
     {
+      if (child.isIgnorableForRendering() ||
+          child.isDiscardable())
+      {
+        child = child.getNext();
+        continue;
+      }
+
       final long currentSize =
               Math.max(trailingSpace, child.getLeadingSpace(axis)) +
                       child.getEffectiveLayoutSize(axis);
@@ -1442,6 +1449,13 @@ public abstract class RenderBox extends RenderNode
     long trailingSpace = 0;
     while (child != null)
     {
+      if (child.isIgnorableForRendering() ||
+          child.isDiscardable())
+      {
+        child = child.getNext();
+        continue;
+      }
+      
       long currentSize = child.getPreferredSize(axis);
       final long posAfter = currentSize + cursor;
       final long bestBreakLocal = child.getFirstBreak(axis) +
@@ -1516,7 +1530,8 @@ public abstract class RenderBox extends RenderNode
     long trailingSpace = 0;
     while (firstSplitChild != null)
     {
-      if (firstSplitChild.isDiscardable())
+      if (firstSplitChild.isIgnorableForRendering() ||
+          firstSplitChild.isDiscardable())
       {
         firstSplitChild = firstSplitChild.getNext();
         continue;

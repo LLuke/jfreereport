@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.5 2006/07/26 11:52:08 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.6 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import org.jfree.fonts.registry.BaselineInfo;
 import org.jfree.fonts.registry.FontMetrics;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.text.TextWrap;
 import org.jfree.layouting.input.style.keys.text.WhitespaceCollapse;
@@ -74,7 +73,7 @@ import org.jfree.layouting.renderer.text.whitespace.DiscardWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.PreserveBreaksWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.PreserveWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.WhiteSpaceFilter;
-import org.jfree.util.Log;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.util.ObjectUtilities;
 
 /**

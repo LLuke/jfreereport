@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.11 2006/07/27 17:56:27 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.12 2006/07/29 18:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -647,9 +647,11 @@ public class DefaultRenderer implements Renderer
 
   public void finishedInline()
   {
-    getInsertationPoint().addChilds(textFactory.finishText());
+    final RenderBox insertationPoint = getInsertationPoint();
+    final RenderNode[] nodes = textFactory.finishText();
+    insertationPoint.addChilds(nodes);
     Log.debug("</inline>");
-    getInsertationPoint().close();
+    insertationPoint.close();
     // currentBox = (RenderBox) currentBox.getParent();
     tryToValidate();
   }

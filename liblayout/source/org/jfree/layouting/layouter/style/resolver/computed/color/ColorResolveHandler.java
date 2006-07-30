@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ColorResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: ColorResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -124,6 +124,7 @@ public class ColorResolveHandler implements ResolveHandler
       if (value instanceof CSSColorValue)
       {
         style.setValue(key, value);
+        return;
       }
     }
 

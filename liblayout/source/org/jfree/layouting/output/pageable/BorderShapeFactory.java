@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BorderShapeFactory.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
+ * $Id: BorderShapeFactory.java,v 1.5 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.util.geom.StrictInsets;
 import org.jfree.layouting.input.style.values.CSSColorValue;
+import org.jfree.layouting.input.style.keys.border.BorderStyle;
 import org.jfree.util.Log;
 
 /**
@@ -193,11 +194,41 @@ public class BorderShapeFactory
     return null;
   }
 
-  private BasicStroke createStroke (BorderEdge edge, long width)
+  private BasicStroke createStroke (BorderEdge edge, long internalWidth)
   {
-    final float extWidth = (float) StrictGeomUtility.toExternalValue(width);
+    final float effectiveWidth = (float) StrictGeomUtility.toExternalValue(internalWidth);
     // todo: depending on the stroke type, we need other strokes instead.
-    return new BasicStroke (extWidth);
+
+
+    if (BorderStyle.DASHED.equals(edge.getBorderStyle()))
+    {
+        return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
+                BasicStroke.JOIN_MITER,
+                10.0f, new float[]
+                {6*effectiveWidth, 6*effectiveWidth}, 0.0f);
+    }
+    if (BorderStyle.DOTTED.equals(edge.getBorderStyle()))
+    {
+        return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
+              BasicStroke.JOIN_MITER,
+              5.0f, new float[]{0.0f, 2*effectiveWidth}, 0.0f);
+    }
+    if (BorderStyle.DOT_DASH.equals(edge.getBorderStyle()))
+    {
+        return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
+                BasicStroke.JOIN_MITER,
+                10.0f, new float[]
+                {0, 2*effectiveWidth, 6*effectiveWidth, 2*effectiveWidth}, 0.0f);
+    }
+    if (BorderStyle.DOT_DOT_DASH.equals(edge.getBorderStyle()))
+    {
+        return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
+                BasicStroke.JOIN_MITER,
+                10.0f, new float[]{0, 2*effectiveWidth,
+                                   0, 2*effectiveWidth,
+                                   6*effectiveWidth, 2*effectiveWidth}, 0.0f);
+    }
+    return new BasicStroke(effectiveWidth);
   }
 
   public void generateBorder (Graphics2D g2)
@@ -245,7 +276,7 @@ public class BorderShapeFactory
     }
     // oh, yeah, I know, there are faster ways than that.
 
-    Log.debug ("Drawing " + globalArea.getBounds() + " with " + backgroundColor);
+    //Log.debug ("Drawing " + globalArea.getBounds() + " with " + backgroundColor);
     g2.setColor(backgroundColor);
     g2.fill(globalArea);
   }
@@ -311,7 +342,7 @@ public class BorderShapeFactory
     final BorderCorner firstCorner = border.getTopLeft();
     final BorderCorner secondCorner = border.getBottomLeft();
 
-    stroke = createStroke(leftEdge, borderSizes.getTop());
+    stroke = createStroke(leftEdge, borderSizes.getLeft());
     color = leftEdge.getColor();
 
     draw(generateCorner

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.10 2006/07/27 17:56:27 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.11 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -350,6 +350,7 @@ public class ParagraphRenderBox extends BlockRenderBox
           firstSplitNode.setDimension(getMinorAxis(), width);
           firstSplitNode.validate(RenderNodeState.FINISHED);
           nodePos += (firstSplitNode.getDimension(getMajorAxis()));
+          Log.debug ("Node: " + firstSplitNode.getDimension(getMinorAxis()));
           final boolean overflow;
           if (target[1] == null)
           {
@@ -365,6 +366,7 @@ public class ParagraphRenderBox extends BlockRenderBox
         if (target[1] != null)
         {
           long prefWidth = target[1].getPreferredSize(getMinorAxis());
+          Log.debug ("Node: " + prefWidth);
           if (prefWidth < progress)
           {
             progress = prefWidth;

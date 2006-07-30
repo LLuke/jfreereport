@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RgbFunction.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
+ * $Id: RgbValueFunction.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -81,11 +81,11 @@ public class RgbValueFunction implements StyleValueFunction
     }
     if (nval.getType().equals(CSSNumericType.NUMBER))
     {
-      return (int) (nval.getValue() % 255);
+      return (int) (nval.getValue() % 256);
     }
     if (nval.getType().equals(CSSNumericType.PERCENTAGE))
     {
-      return (int) (nval.getValue() * 255.0 / 100.0);
+      return (int) (nval.getValue() * 256.0 / 100.0);
     }
     throw new FunctionEvaluationException("Expected a number, not a length");
   }
