@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: FactoryParameterKey.java,v 1.1 2006/05/16 17:14:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -84,5 +84,10 @@ public final class FactoryParameterKey implements Serializable
       hashKey = name.hashCode();
     }
     return hashKey;
+  }
+
+  public String getName()
+  {
+    return name;
   }
 }
