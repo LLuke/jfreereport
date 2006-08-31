@@ -1,8 +1,15 @@
 ---------------
 1.  WHAT's NEW
 ---------------
+
+LibLoader is still in the early development stage. Expect a detailed change log
+once we've reached version 0.2.0.
+
 A list of changes in recent versions:
 
+0.1.4: (31-Aug-2006)
+0.1.3: (30-Jul-2006)
+0.1.2: (30-May-2006)
 0.1.1: (30-Apr-2006)
         * New factory implementation for loading properties.
 
