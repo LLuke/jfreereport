@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.1: (26-Sep-2006)
+        * Libraries updated to latest releases
+
 0.1.9: (29-Jun-2006)
         * [BUG] Oblique and Italics detection was weird and wrong.
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibFontInfo.java,v 1.10 2006/05/30 14:54:06 taqua Exp $
+ * $Id: LibFontInfo.java,v 1.11 2006/07/30 13:20:10 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public class LibFontInfo extends ProjectInfo
   public LibFontInfo()
   {
     setName("LibFonts");
-    setVersion("0.2.0");
+    setVersion("0.2.1");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());
