@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LibLoaderBoot.java,v 1.1.1.1 2006/04/17 16:48:29 taqua Exp $
  *
  * Changes
  * -------
@@ -91,5 +91,4 @@ public class LibLoaderBoot extends AbstractBoot
   {
 
   }
-
 }

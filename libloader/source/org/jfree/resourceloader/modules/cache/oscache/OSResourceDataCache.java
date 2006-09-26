@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OSResourceDataCache.java,v 1.1.1.1 2006/04/17 16:48:42 taqua Exp $
+ * $Id: OSResourceDataCache.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -105,8 +105,8 @@ public class OSResourceDataCache implements ResourceDataCache
   public ResourceData put(ResourceManager caller, ResourceData data)
           throws ResourceLoadingException
   {
+    final ResourceData cdata = CachingResourceData.createCached(data);
     final String ext = data.getKey().toExternalForm();
-    final CachingResourceData cdata = new CachingResourceData(data);
     if (ext == null)
     {
       return cdata;

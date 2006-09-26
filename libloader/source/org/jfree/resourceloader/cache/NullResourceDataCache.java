@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NullResourceDataCache.java,v 1.1.1.1 2006/04/17 16:48:43 taqua Exp $
+ * $Id: NullResourceDataCache.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -59,10 +59,7 @@ public class NullResourceDataCache implements ResourceDataCache
 
   public ResourceData put(ResourceManager caller, ResourceData data)
   {
-    // this relieves the pain of having to re-open the same stream more than
-    // once. This is no real long term caching, but at least a caching during
-    // the current request.
-    return new CachingResourceData(data);
+    return CachingResourceData.createCached(data);
   }
 
   public ResourceDataCacheEntry get(ResourceKey key)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CachingResourceData.java,v 1.1.1.1 2006/04/17 16:48:44 taqua Exp $
+ * $Id: CachingResourceData.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,8 @@ import org.jfree.resourceloader.ResourceManager;
  */
 public class CachingResourceData implements ResourceData, Serializable
 {
+  private static final int CACHE_THRESHOLD = 512*1024;
+
   private ResourceData data;
   private HashMap attributes;
   // The cached raw data. This is stored on the serialized stream as well
@@ -120,5 +122,24 @@ public class CachingResourceData implements ResourceData, Serializable
           throws ResourceLoadingException
   {
     return data.getVersion(caller);
+  }
+
+  public static ResourceData createCached(ResourceData data)
+  {
+    // this relieves the pain of having to re-open the same stream more than
+    // once. This is no real long term caching, but at least a caching during
+    // the current request.
+    final Object rawCl = data.getAttribute(ResourceData.CONTENT_LENGTH);
+    if (rawCl instanceof Number)
+    {
+      Number contentLength = (Number) rawCl;
+      if (contentLength.intValue() < CACHE_THRESHOLD)
+      {
+        // only buffer all data if the content is less than 512kb.
+        // Else, we may run into trouble if we try to load a huge item into memory ..
+        return new CachingResourceData(data);
+      }
+    }
+    return data;
   }
 }
