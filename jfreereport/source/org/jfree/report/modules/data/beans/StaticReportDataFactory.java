@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StaticReportDataFactory.java,v 1.1 2006/07/11 13:25:50 taqua Exp $
+ * $Id: StaticReportDataFactory.java,v 1.2 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import org.jfree.util.ObjectUtilities;
  * This report data factory uses introspection to search for a report data
  * source. The query has the following format:
  *
- * &lt;full-qualified-classname&gr;#methodName(Parameters)
+ * &lt;full-qualified-classname&gt;#methodName(Parameters)
  *
  * @author Thomas Morgner
  */
