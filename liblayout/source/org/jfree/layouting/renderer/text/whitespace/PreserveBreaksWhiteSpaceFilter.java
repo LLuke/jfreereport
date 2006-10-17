@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PreserveBreaksWhiteSpaceFilter.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
+ * $Id: PreserveBreaksWhiteSpaceFilter.java,v 1.4 2006/07/30 13:13:47 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,11 @@
  */
 package org.jfree.layouting.renderer.text.whitespace;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.renderer.text.ClassificationProducer;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 11.06.2006, 20:18:00

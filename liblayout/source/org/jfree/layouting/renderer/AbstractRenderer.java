@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractRenderer.java,v 1.2 2006/07/26 16:59:47 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.3 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package org.jfree.layouting.renderer;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 16.06.2006, 14:10:40

@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Renderer.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id: Renderer.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -36,11 +36,10 @@
 package org.jfree.layouting.renderer;
 
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.normalizer.content.NormalizationException;
-import org.jfree.layouting.normalizer.displaymodel.DisplayRootInlineElement;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.normalizer.content.NormalizationException;
 
 /**
  * The renderer is the last step in the predefined processing chain. The

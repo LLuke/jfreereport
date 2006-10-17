@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: EmptyRenderer.java,v 1.1 2006/07/17 16:50:42 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,14 @@
  */
 package org.jfree.layouting.renderer;
 
-import org.jfree.layouting.layouter.context.PageContext;
-import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.content.ContentToken;
-import org.jfree.layouting.normalizer.content.NormalizationException;
-import org.jfree.layouting.State;
-import org.jfree.layouting.StateException;
 import org.jfree.layouting.InstantiationState;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.State;
+import org.jfree.layouting.StateException;
+import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.normalizer.content.NormalizationException;
 
 /**
  * Creation-Date: 17.07.2006, 17:43:21

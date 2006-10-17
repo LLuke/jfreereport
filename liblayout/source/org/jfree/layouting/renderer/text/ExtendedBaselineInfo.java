@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ExtendedBaselineInfo.java,v 1.1 2006/07/26 12:43:33 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,18 @@ package org.jfree.layouting.renderer.text;
  */
 public interface ExtendedBaselineInfo
 {
-  public static final int TEXT_BEFORE_EDGE = 0;
-  public static final int HANGING = 1;
-  public static final int CENTRAL = 2;
-  public static final int MIDDLE = 3;
-  public static final int MATHEMATICAL = 4;
-  public static final int ALPHABETHC = 5;
-  public static final int IDEOGRAPHIC = 6;
-  public static final int TEXT_AFTER_EDGE = 7;
+  public static final int BASELINE_COUNT = 10;
+
+  public static final int BEFORE_EDGE = 0;
+  public static final int TEXT_BEFORE_EDGE = 1;
+  public static final int HANGING = 2;
+  public static final int CENTRAL = 3;
+  public static final int MIDDLE = 4;
+  public static final int MATHEMATICAL = 5;
+  public static final int ALPHABETHIC = 6;
+  public static final int IDEOGRAPHIC = 7;
+  public static final int TEXT_AFTER_EDGE = 8;
+  public static final int AFTER_EDGE = 9;
 
   public int getDominantBaseline();
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.2 2006/07/17 13:27:24 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.3 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -337,6 +337,10 @@ public class ContentNormalizer implements Normalizer
     currentElement = element;
     currentSilbling = null;
 
+    if ("col".equals(tag))
+    {
+      Log.debug ("COL");
+    }
     styleResolver.resolveStyle(element);
     if (isStringRecordingNeeded(element))
     {
@@ -418,18 +422,18 @@ public class ContentNormalizer implements Normalizer
         if (contentSpec.isInhibitContent() &&
             layoutContext.isPseudoElement())
         {
-          Log.debug("Starting to ignore childs of psuedo element " +
-                  layoutContext.getTagName() + ":" +
-                  layoutContext.getPseudoElement() +
-                  " as it inhibits content creation.");
+//          Log.debug("Starting to ignore childs of psuedo element " +
+//                  layoutContext.getTagName() + ":" +
+//                  layoutContext.getPseudoElement() +
+//                  " as it inhibits content creation.");
           modelBuilder.startElement(currentElement.getLayoutContext());
           ignoreContext += 1;
         }
         else
         {
-          Log.debug("Starting to ignore childs of element " +
-                  layoutContext.getTagName() +
-                  " as it inhibits content creation.");
+//          Log.debug("Starting to ignore childs of element " +
+//                  layoutContext.getTagName() +
+//                  " as it inhibits content creation.");
           generateOutsidePseudoElements(currentElement);
           modelBuilder.startElement(currentElement.getLayoutContext());
           generateBeforePseudoElements(currentElement);
@@ -452,8 +456,8 @@ public class ContentNormalizer implements Normalizer
           // lets generate an 'alternate-element'
           if (generateAlternateContent(currentElement) == false)
           {
-            Log.debug("Starting to ignore childs of element " + currentElement +
-                    " as it does not contain the 'contents' token.");
+//            Log.debug("Starting to ignore childs of element " + currentElement +
+//                    " as it does not contain the 'contents' token.");
             ignoreContext += 1;
           }
           else

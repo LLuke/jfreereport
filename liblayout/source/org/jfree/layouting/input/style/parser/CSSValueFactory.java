@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSValueFactory.java,v 1.5 2006/07/11 13:29:47 taqua Exp $
+ * $Id: CSSValueFactory.java,v 1.6 2006/07/18 17:26:32 taqua Exp $
  *
  * Changes
  * -------
@@ -132,8 +132,9 @@ public class CSSValueFactory
   {
     final CSSValueReadHandler module =
             (CSSValueReadHandler) handlers.get(key.getName());
-    if (module == null)
+    if (module == null || module instanceof CSSCompoundValueReadHandler)
     {
+      // Compund handler are more important than simple handlers ..
       return null;
     }
 

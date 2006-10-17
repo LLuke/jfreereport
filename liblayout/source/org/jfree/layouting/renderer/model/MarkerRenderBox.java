@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MarkerRenderBox.java,v 1.2 2006/07/26 11:52:07 taqua Exp $
+ * $Id: MarkerRenderBox.java,v 1.3 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,11 @@
  */
 package org.jfree.layouting.renderer.model;
 
-import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
 import org.jfree.layouting.input.style.keys.list.ListStylePosition;
-import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
  * A marker box is a special box, which may live outside the normal-flow,
@@ -56,13 +56,16 @@ public class MarkerRenderBox extends InlineRenderBox
 {
   private boolean outside;
 
-  public MarkerRenderBox(final BoxDefinition boxDefinition,
-                         final LayoutContext layoutContext)
+  public MarkerRenderBox(final BoxDefinition boxDefinition)
   {
-    super(boxDefinition, layoutContext.getStyle().getValue
-            (LineStyleKeys.VERTICAL_ALIGN));
+    super(boxDefinition);
+  }
+
+  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  {
+    super.appyStyle(context, metaData);
     CSSValue position =
-            layoutContext.getStyle().getValue(ListStyleKeys.LIST_STYLE_POSITION);
+            context.getStyle().getValue(ListStyleKeys.LIST_STYLE_POSITION);
     this.outside = ListStylePosition.OUTSIDE.equals(position);
   }
 
@@ -71,19 +74,4 @@ public class MarkerRenderBox extends InlineRenderBox
     return outside;
   }
 
-  protected boolean isIgnorableForMargins()
-  {
-    // if the marker is defined as inside-marker, then it behaves like an
-    // ordinary inline element
-    if (outside)
-    {
-      return outside;
-    }
-    return super.isIgnorableForMargins();
-  }
-
-  protected void invalidateMargins()
-  {
-    super.invalidateMargins();
-  }
 }

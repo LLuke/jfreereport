@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WordBreakProducer.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@
  */
 package org.jfree.layouting.renderer.text.breaks;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.LayoutProcess;
 
 /**
  * This is the standard behaviour for HTML.It breaks texts at word boundaries.

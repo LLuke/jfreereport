@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MarginTest.java,v 1.1 2006/07/17 13:28:34 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,13 @@ import org.jfree.layouting.layouter.context.ContextId;
 import org.jfree.layouting.layouter.context.DefaultElementContext;
 import org.jfree.layouting.layouter.context.DefaultLayoutContext;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
+import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.layouting.renderer.text.Spacing;
 import org.jfree.layouting.renderer.text.SpacingProducer;
 import org.jfree.layouting.renderer.text.StaticSpacingProducer;
-import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.layouting.renderer.text.breaks.BreakOpportunityProducer;
 import org.jfree.layouting.renderer.text.breaks.WordBreakProducer;
 import org.jfree.layouting.renderer.text.font.FontSizeProducer;

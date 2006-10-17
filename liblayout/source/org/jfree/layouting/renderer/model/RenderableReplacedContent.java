@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableReplacedContent.java,v 1.5 2006/07/27 17:56:27 taqua Exp $
+ * $Id: RenderableReplacedContent.java,v 1.6 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.util.geom.StrictDimension;
 import org.jfree.resourceloader.ResourceKey;
 
@@ -59,8 +58,8 @@ public class RenderableReplacedContent extends RenderNode
   private StrictDimension contentSize;
   private CSSValue verticalAlign;
   private ResourceKey source;
-  private RenderLength width;
-  private RenderLength height;
+  private RenderLength requestedWidth;
+  private RenderLength requestedHeight;
 
   public RenderableReplacedContent(final Object rawObject,
                                    final ResourceKey source,
@@ -69,8 +68,25 @@ public class RenderableReplacedContent extends RenderNode
                                    final RenderLength height,
                                    final CSSValue verticalAlign)
   {
-    this.height = height;
-    this.width = width;
+    if (rawObject == null)
+    {
+      throw new NullPointerException("Raw-Object for Replaced content must not be null");
+    }
+    if (contentSize == null)
+    {
+      throw new NullPointerException("Content-Size cannot be null");
+    }
+    if (width == null)
+    {
+      throw new NullPointerException("Requested width cannot be null");
+    }
+    if (height == null)
+    {
+      throw new NullPointerException("Requested height cannot be null");
+    }
+
+    this.requestedHeight = height;
+    this.requestedWidth = width;
     this.rawObject = rawObject;
     this.source = source;
     this.contentSize = contentSize;
@@ -92,138 +108,13 @@ public class RenderableReplacedContent extends RenderNode
     return source;
   }
 
-  /**
-   * Splits the render node at the given position. This method returns an array
-   * with the length of two; if the node is not splittable, the first element
-   * should be empty (in the element's behavioural context) and the second
-   * element should contain an independent copy of the original node.
-   * <p/>
-   * If the break position is ambugious, the break should appear *in front of*
-   * the position - where in front-of depends on the reading direction.
-   *
-   * @param axis     the axis on which to break
-   * @param position the break position within that axis.
-   * @param target   the target array that should receive the broken node. If
-   *                 the target array is not null, it must have at least two
-   *                 slots.
-   * @return the broken nodes contained in the target array.
-   */
-  public RenderNode[] split(int axis, long position, RenderNode[] target)
+  public RenderLength getRequestedWidth()
   {
-    if (target == null || target.length < 2)
-    {
-      target = new RenderNode[2];
-    }
-
-    target[0] = derive(true);
-    target[1] = null;
-    return target;
+    return requestedWidth;
   }
 
-  public long getMinimumChunkSize(int axis)
+  public RenderLength getRequestedHeight()
   {
-    return 0;
-  }
-
-  public long getPreferredSize(int axis)
-  {
-    if (axis == HORIZONTAL_AXIS)
-    {
-      if (RenderLength.AUTO.equals(width))
-      {
-        return contentSize.getWidth();
-      }
-      else
-      {
-        return width.resolve(contentSize.getWidth());
-      }
-    }
-
-    if (RenderLength.AUTO.equals(height))
-    {
-      return contentSize.getHeight();
-    }
-    else
-    {
-      return height.resolve(contentSize.getHeight());
-    }
-  }
-
-  public void validate(RenderNodeState upTo)
-  {
-    validateMargins();
-    setState(RenderNodeState.FINISHED);
-  }
-
-  public BreakAfterEnum getBreakAfterAllowed(final int axis)
-  {
-    return BreakAfterEnum.BREAK_DONT_KNOW;
-  }
-
-  public int getBreakability(int axis)
-  {
-    return HARD_BREAKABLE;
-  }
-
-  /**
-   * Defines a spacing, that only applies if the node is not the first node in
-   * the box. This spacing gets later mixed in with the absolute margins and
-   * corresponds to the effective margin of the RenderBox class.
-   *
-   * @param axis
-   * @return
-   */
-  public long getLeadingSpace(int axis)
-  {
-    return 0;
-  }
-
-  /**
-   * Defines a spacing, that only applies, if the node is not the last node in
-   * the box. This spacing gets later mixed in with the absolute margins and
-   * corresponds to the effective margin of the RenderBox class.
-   *
-   * @param axis
-   * @return
-   */
-  public long getTrailingSpace(int axis)
-  {
-    return 0;
-  }
-
-  public CSSValue getVerticalAlignment()
-  {
-    return verticalAlign;
-  }
-
-  /**
-   * Returns the baseline info for the given node. This can be null, if the node
-   * does not have any baseline info.
-   *
-   * @return
-   */
-  public ExtendedBaselineInfo getBaselineInfo()
-  {
-    return null;
-  }
-
-  /**
-   * This is always a split along the document's major axis. Until we have a
-   * really 100% parametrized renderer model, we assume VERTICAL here and are
-   * happy.
-   *
-   * @param position
-   * @param target
-   * @return
-   */
-  public RenderNode[] splitForPrint(long position, RenderNode[] target)
-  {
-    final RenderNode[] renderNodes = split(HORIZONTAL_AXIS, position, target);
-    renderNodes[0].freeze();
-    if (renderNodes[1] != null)
-    {
-      renderNodes[1].freeze();
-    }
-    return renderNodes;
+    return requestedHeight;
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractColumnModel.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
+ * $Id: AbstractColumnModel.java,v 1.2 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@ package org.jfree.layouting.renderer.model.table.cols;
 
 import java.util.ArrayList;
 
+import org.jfree.layouting.renderer.border.Border;
+import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 
 /**
@@ -69,13 +71,17 @@ public abstract class AbstractColumnModel implements TableColumnModel
   public void addColumnGroup(TableColumnGroup column)
   {
     columnGroups.add(column);
+    column.freeze();
     validated = false;
   }
 
   public void addAutoColumn()
   {
     TableColumnGroup autoGroup = new TableColumnGroup();
-    autoGroup.addColumn(new TableColumn());
+    final TableColumn column = new TableColumn
+            (Border.createEmptyBorder(), RenderLength.AUTO, true);
+    autoGroup.addColumn(column);
+    autoGroup.freeze();
     columnGroups.add(autoGroup);
     validated = false;
   }
@@ -97,7 +103,7 @@ public abstract class AbstractColumnModel implements TableColumnModel
 
   public int getColumnCount()
   {
-    validate();
+    buildColumns();
     return columns.length;
   }
 
@@ -106,7 +112,7 @@ public abstract class AbstractColumnModel implements TableColumnModel
     return table;
   }
 
-  public void validate()
+  private void buildColumns()
   {
     if (validated)
     {
@@ -114,24 +120,15 @@ public abstract class AbstractColumnModel implements TableColumnModel
     }
 
     ArrayList cols = new ArrayList();
-    final long contextWidth = table.getComputedBlockContextWidth();
-
     for (int i = 0; i < columnGroups.size(); i++)
     {
       final TableColumnGroup node = (TableColumnGroup) columnGroups.get(i);
-      node.validate(contextWidth);
 
       final int count = node.getColumnCount();
       for (int x = 0; x < count; x++)
       {
         final TableColumn column = node.getColumn(x);
         cols.add(column);
-      }
-
-      if (incrementalModeSupported &&
-              node.isIncrementalModeSupported() == false)
-      {
-        incrementalModeSupported = false;
       }
     }
 
@@ -146,13 +143,13 @@ public abstract class AbstractColumnModel implements TableColumnModel
 
   public TableColumn getColumn(int i)
   {
-    validate();
+    buildColumns();
     return columns[i];
   }
 
   public TableColumn[] getColumns ()
   {
-    validate();
+    buildColumns();
     return columns;
   }
 

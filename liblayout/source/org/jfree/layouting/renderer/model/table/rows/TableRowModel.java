@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRowModel.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
+ * $Id: TableRowModel.java,v 1.2 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,6 @@ public interface TableRowModel
   public void validateActualSizes();
 
   public long getPreferredSize();
-  public long getMinimumChunkSize();
 
   public void clear();
 }

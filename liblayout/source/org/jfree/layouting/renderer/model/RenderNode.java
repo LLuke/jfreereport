@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.16 2006/07/27 17:56:27 taqua Exp $
+ * $Id: RenderNode.java,v 1.17 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,14 @@
  */
 package org.jfree.layouting.renderer.model;
 
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.page.RenderPageContext;
-import org.jfree.layouting.util.geom.StrictInsets;
-import org.jfree.util.Log;
 
 /**
  * A node of the rendering model. The renderer model keeps track of the
@@ -71,43 +73,14 @@ import org.jfree.util.Log;
  */
 public abstract class RenderNode implements Cloneable
 {
-  /**
-   * Never do any breaking. This is the case for any element that does not
-   * support any breaks. A table for instance does not support breaks.
-   */
-  public static final int UNBREAKABLE = 0;
-
-  /**
-   * Allow breaks. The rendernode itself is responsible for placing the elements
-   * in a suitable way, so that unbreakable elements do not cross any breaks.
-   * (This is a strong should - in case of overlong words, there is no choice
-   * sometimes. In that case, the word is broken, and both parts do not cross
-   * the boundary. One lies left, the other right of it.)
-   * <p/>
-   * Boxes are generally soft-breakable. They reserve space for each crossed
-   * pagebreak and enforce the above rule to all childs.
-   */
-  public static final int SOFT_BREAKABLE = 1;
-
-  /**
-   * Hard-Breakable elements do not maintain softbreaks. They need to be split
-   * on softbreaks. Ordinary text is the most famous example on that. By clever
-   * breaking we stay clear of the inner pagebreaks and thus make it easier to
-   * derive the physical pages later *and* to reflow the layout if ever
-   * necessary.
-   */
-  public static final int HARD_BREAKABLE = 2;
-
-  public static final int VALID_MASK = 0x0F;
-
   public static final int HORIZONTAL_AXIS = 0;
   public static final int VERTICAL_AXIS = 1;
-
-  private RenderNodeState state;
 
   private RenderBox parent;
   private RenderNode prev;
   private RenderNode next;
+
+  private long changeTracker;
 
   // The element's positions.
   private long width;
@@ -115,34 +88,89 @@ public abstract class RenderNode implements Cloneable
   private long x;
   private long y;
 
-  private Long parentWidth;
-
   private int majorAxis;
   private int minorAxis;
 
-  private boolean clearRight;
-  private boolean clearLeft;
   private boolean frozen;
   private Object instanceId;
 
-  private boolean marginsValidated;
-  private StrictInsets effectiveMargins;
-  private StrictInsets absoluteMargins;
+  private NodeLayoutProperties layoutProperties;
+  private CSSValue alignmentBaseline;
+  private CSSValue alignmentAdjust;
+  private CSSValue baselineShift;
+  private CSSValue verticalAlignment;
+  private RenderLength baselineShiftResolved;
+  private RenderLength alignmentAdjustResolved;
 
   public RenderNode()
   {
-    instanceId = new Object();
-    state = RenderNodeState.UNCLEAN;
+    this.instanceId = new Object();
+    this.layoutProperties = new NodeLayoutProperties();
+  }
 
-    this.absoluteMargins = new StrictInsets();
-    this.effectiveMargins = new StrictInsets();
+  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  {
+    alignmentBaseline = context.getStyle().getValue(LineStyleKeys.ALIGNMENT_BASELINE);
+    alignmentAdjust = context.getStyle().getValue(LineStyleKeys.ALIGNMENT_ADJUST);
+    if (alignmentAdjust instanceof CSSNumericValue)
+    {
+      alignmentAdjustResolved = RenderLength.convertToInternal
+          (alignmentAdjust, context, metaData);
+    }
+    baselineShift = context.getStyle().getValue(LineStyleKeys.BASELINE_SHIFT);
+    if (baselineShift instanceof CSSNumericValue)
+    {
+      baselineShiftResolved = RenderLength.convertToInternal
+          (baselineShift, context, metaData);
+    }
+
+    verticalAlignment = normalizeAlignment
+        (context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN));
+
+  }
+
+  protected CSSValue normalizeAlignment(CSSValue verticalAlignment)
+  {
+    return verticalAlignment;
+  }
+
+  public CSSValue getVerticalAlignment()
+  {
+    return verticalAlignment;
+  }
+
+  public RenderLength getBaselineShiftResolved()
+  {
+    return baselineShiftResolved;
+  }
+
+  public CSSValue getAlignmentBaseline()
+  {
+    return alignmentBaseline;
+  }
+
+  public CSSValue getBaselineShift()
+  {
+    return baselineShift;
+  }
+
+  public CSSValue getAlignmentAdjust()
+  {
+    return alignmentAdjust;
+  }
+
+  public RenderLength getAlignmentAdjustResolved()
+  {
+    return alignmentAdjustResolved;
   }
 
   public RenderPageContext getRenderPageContext()
   {
     final RenderBox parent = getParent();
     if (parent != null)
-    parent.getRenderPageContext();
+    {
+      parent.getRenderPageContext();
+    }
     return null;
   }
 
@@ -156,7 +184,7 @@ public abstract class RenderNode implements Cloneable
     return majorAxis;
   }
 
-  public void setMajorAxis(final int majorAxis)
+  protected void setMajorAxis(final int majorAxis)
   {
     this.majorAxis = majorAxis;
   }
@@ -166,16 +194,11 @@ public abstract class RenderNode implements Cloneable
     return minorAxis;
   }
 
-  public void setMinorAxis(final int minorAxis)
+  protected void setMinorAxis(final int minorAxis)
   {
     this.minorAxis = minorAxis;
+    this.updateChangeTracker();
   }
-
-  public RenderNodeState getState()
-  {
-    return state;
-  }
-
 
   public void setWidth(long width)
   {
@@ -184,15 +207,8 @@ public abstract class RenderNode implements Cloneable
       throw new IllegalArgumentException("Width cannot be negative: " + width);
     }
 
-    long oldValue = this.width;
     this.width = width;
-
-    if (oldValue != width && !isFrozen())
-    {
-      // someone changed the position, invalidate all childs ..
-      validate(RenderNodeState.PENDING);
-      setState(RenderNodeState.PENDING);
-    }
+    this.updateChangeTracker();
   }
 
   public long getWidth()
@@ -206,16 +222,8 @@ public abstract class RenderNode implements Cloneable
     {
       throw new IllegalArgumentException("Height cannot be negative: " + height);
     }
-
-    long oldValue = this.height;
     this.height = height;
-
-    if (oldValue != height && !isFrozen())
-    {
-      // someone changed the position, invalidate all childs ..
-      validate(RenderNodeState.PENDING);
-      setState(RenderNodeState.PENDING);
-    }
+//    this.updateChangeTracker();
   }
 
   public long getHeight()
@@ -230,14 +238,8 @@ public abstract class RenderNode implements Cloneable
 
   public void setX(final long x)
   {
-    long oldValue = this.x;
     this.x = x;
-
-    if (oldValue != x && !isFrozen())
-    {
-      // someone changed the position, invalidate all childs ..
-      setState(RenderNodeState.UNCLEAN);
-    }
+    this.updateChangeTracker();
   }
 
   public final void setPosition(int axis, long value)
@@ -295,84 +297,7 @@ public abstract class RenderNode implements Cloneable
 
   public void setY(final long y)
   {
-    long oldValue = this.y;
     this.y = y;
-
-    if (oldValue != y && !isFrozen())
-    {
-      // someone changed the position, invalidate all childs ..
-      setState(RenderNodeState.UNCLEAN);
-    }
-  }
-
-  protected final void setState(final RenderNodeState state)
-  {
-    if (isFrozen())
-    {
-      return;
-    }
-
-    RenderNodeState oldState = this.state;
-    this.state = state;
-    final boolean alwaysPropagateEvents = isAlwaysPropagateEvents();
-    if (oldState != state || alwaysPropagateEvents )
-    {
-      notifyStateChange(oldState, state);
-    }
-  }
-
-  protected void notifyStateChange(final RenderNodeState oldState,
-                                   final RenderNodeState newState)
-  {
-//    Log.debug("STATE_CHANGE: " + toString() + ": " + oldState + " -> " + newState);
-    if (newState == RenderNodeState.UNCLEAN)
-    {
-      parentWidth = null;
-      invalidateMargins();
-      final RenderNode next = getNext();
-      if (next != null)
-      {
-        // the y- or x-position may have changed. We have to rebuild
-        // everything from scratch.
-        next.setState(RenderNodeState.UNCLEAN);
-      }
-      else
-      {
-        final RenderNode parent = getParent();
-        if (parent != null)
-        {
-          parent.setState(RenderNodeState.PENDING);
-        }
-      }
-    }
-    else if (newState == RenderNodeState.PENDING)
-    {
-      parentWidth = null;
-      invalidateMargins();
-      // we expect some changes, but for now, these changes have not occured.
-      // if they occur, they may alter the height of this element. Telling the
-      // others about that change is part of the parent's responsibility.
-      final RenderNode next = getNext();
-      if (next != null)
-      {
-        if (next.getState().getWeight() > RenderNodeState.PENDING.getWeight())
-        {
-          next.setState(RenderNodeState.PENDING);
-        }
-      }
-      else
-      {
-        final RenderNode parent = getParent();
-        if (parent != null)
-        {
-          if (parent.getState().getWeight() > RenderNodeState.PENDING.getWeight())
-          {
-            parent.setState(RenderNodeState.PENDING);
-          }
-        }
-      }
-    }
-
   }
 
   public RenderBox getParent()
@@ -382,8 +307,13 @@ public abstract class RenderNode implements Cloneable
 
   protected void setParent(final RenderBox parent)
   {
-   // Object oldParent = this.parent;
+    // Object oldParent = this.parent;
     this.parent = parent;
+    if (parent != null && prev == parent)
+    {
+      throw new IllegalStateException();
+    }
+
   }
 
   public RenderNode getPrev()
@@ -391,10 +321,13 @@ public abstract class RenderNode implements Cloneable
     return prev;
   }
 
-  public void setPrev(final RenderNode prev)
+  protected void setPrev(final RenderNode prev)
   {
     this.prev = prev;
-    invalidateMargins();
+    if (prev != null && prev == parent)
+    {
+      throw new IllegalStateException();
+    }
   }
 
   public RenderNode getNext()
@@ -402,90 +335,10 @@ public abstract class RenderNode implements Cloneable
     return next;
   }
 
-  public void setNext(final RenderNode next)
+  protected void setNext(final RenderNode next)
   {
     this.next = next;
-    invalidateMargins();
   }
-
-  /**
-   * Splits the render node at the given position. This method returns an array
-   * with the length of two; if the node is not splittable, the first element
-   * should be empty (in the element's behavioural context) and the second
-   * element should contain an independent copy of the original node.
-   * <p/>
-   * If the break position is ambugious, the break should appear *in front of*
-   * the position - where in front-of depends on the reading direction.
-   *
-   * @param axis     the axis on which to break
-   * @param position the break position within that axis.
-   * @param target   the target array that should receive the broken node. If
-   *                 the target array is not null, it must have at least two
-   *                 slots.
-   * @return the broken nodes contained in the target array.
-   */
-  public abstract RenderNode[] split(int axis,
-                                     long position,
-                                     RenderNode[] target);
-
-  /**
-   * Returns the nearest break-point that occurrs before that position. If the
-   * position already is a break point, return that point. If there is no break
-   * opportinity at all, return zero (= BREAK_NONE).
-   * <p/>
-   * (This causes the split to behave correctly; this moves all non-splittable
-   * elements down to the next free area.)
-   *
-   * @param axis     the axis.
-   * @param position the maximum position
-   * @return the best break position.
-   */
-  public long getBestBreak(int axis, long position)
-  {
-    return 0;
-  }
-
-  /**
-   * Returns the first break-point in that element. If there is no break
-   * opportinity at all, return zero (= BREAK_NONE).
-   * <p/>
-   *
-   * @param axis the axis.
-   * @return the first break position.
-   */
-  public long getFirstBreak(int axis)
-  {
-    return 0;
-  }
-
-  public abstract long getMinimumChunkSize(int axis);
-
-//  /**
-//   * The minimum size returned here is always a box-size - that is the size from
-//   * one border-edge to the opposite border edge (excluding the margins).
-//   *
-//   * @param axis
-//   * @return
-//   */
-//  public abstract long getMinimumSize(int axis);
-
-  /**
-   * The preferred size returned here is always a box-size - that is the size
-   * from one border-edge to the opposite border edge (excluding the margins).
-   *
-   * @param axis
-   * @return
-   */
-  protected abstract long getPreferredSize(int axis);
-
-//  /**
-//   * The maximum size returned here is always a box-size - that is the size from
-//   * one border-edge to the opposite border edge (excluding the margins).
-//   *
-//   * @param axis
-//   * @return
-//   */
-//  public abstract long getMaximumSize(int axis);
 
   public LogicalPageBox getLogicalPage()
   {
@@ -507,23 +360,6 @@ public abstract class RenderNode implements Cloneable
     return null;
   }
 
-  protected boolean reachedState(RenderNodeState state)
-  {
-    if (this.state == state)
-    {
-      return true;
-    }
-    if (this.state.getWeight() >= state.getWeight())
-    {
-      return true;
-    }
-    return false;
-  }
-
-  public abstract void validate(RenderNodeState validateUpTo);
-
-  public abstract BreakAfterEnum getBreakAfterAllowed(final int axis);
-
   /**
    * Clones this node. Be aware that cloning can get you into deep trouble, as
    * the relations this node has may no longer be valid.
@@ -534,11 +370,7 @@ public abstract class RenderNode implements Cloneable
   {
     try
     {
-      final RenderNode o = (RenderNode) super.clone();
-      o.absoluteMargins = (StrictInsets) absoluteMargins.clone();
-      o.effectiveMargins = (StrictInsets) effectiveMargins.clone();
-      o.parentWidth = null;
-      return o;
+      return (RenderNode) super.clone();
     }
     catch (CloneNotSupportedException e)
     {
@@ -559,98 +391,22 @@ public abstract class RenderNode implements Cloneable
     node.parent = null;
     node.next = null;
     node.prev = null;
-    node.marginsValidated = false;
     return node;
   }
 
-  public RenderNode deriveFrozen (boolean deep)
+  public RenderNode deriveFrozen(boolean deep)
   {
     RenderNode node = (RenderNode) clone();
     node.parent = null;
     node.next = null;
     node.prev = null;
-    node.marginsValidated = false;
     node.frozen = true;
     return node;
   }
 
-  public void setClearLeft(final boolean clearLeft)
+  public boolean isFrozen()
   {
-    this.clearLeft = clearLeft;
-  }
-
-  public boolean isClearLeft()
-  {
-    return clearLeft;
-  }
-
-  public void setClearRight(final boolean clearRight)
-  {
-    this.clearRight = clearRight;
-  }
-
-  public boolean isClearRight()
-  {
-    return clearRight;
-  }
-
-  /**
-   * A forced split is done whenever an text contains forced linebreaks. We
-   * resolve these breaks before the layouting starts; this makes the paragraph
-   * stuff a whole lot easier.
-   * <p/>
-   * If the element is the last in the line, then the last forced linebreak can
-   * be ignored. (The line would have ended anyway.)
-   * <p/>
-   * The TextFactories already perform the linebreaking for us.
-   *
-   * @param isEndOfLine whether the element is the last in the line.
-   * @return
-   */
-  public boolean isForcedSplitNeeded(boolean isEndOfLine)
-  {
-    return false;
-  }
-
-  /**
-   * Checks, whether this node will cause breaks in its parent. While
-   * 'isForcedSplitNeeded' checks, whether an element should be splitted, this
-   * method checks, whether this element would be a valid reason to split.
-   * <p/>
-   * Text, that contains linebreaks at the end of the line, not be split by
-   * itself, but will cause splits in the parent, if it is followed by some more
-   * text.
-   *
-   * @param isEndOfLine
-   * @return
-   */
-  public boolean isForcedSplitRequested(boolean isEndOfLine)
-  {
-    return false;
-  }
-
-  /**
-   * Performs a forced split. That split, unlike the other split-operation does
-   * not take sizes into account. It looks at the 'clear' property and splits,
-   * if either clear-left or clear-right are enabled.
-   *
-   * @param isStartOfLine
-   * @param isEndOfLine
-   * @param target
-   * @return null, if no split is needed, else the splitted nodes in an array.
-   */
-  public RenderNode[] splitForLinebreak(final boolean isEndOfLine,
-                                        RenderNode[] target)
-  {
-    // ok, now it gets dirty. Find the evil one that needs to be split and
-    // do that (*censored*) split.
-    if (target == null || target.length < 2)
-    {
-      target = new RenderNode[2];
-    }
-    target[0] = derive(true);
-    target[1] = null;
-    return target;
+    return frozen;
   }
 
   public RenderNode findNodeById(Object instanceId)
@@ -667,17 +423,12 @@ public abstract class RenderNode implements Cloneable
     return false;
   }
 
-  public int getBreakability(int axis)
-  {
-    return UNBREAKABLE;
-  }
-
   public boolean isEmpty()
   {
     return false;
   }
 
-  protected RenderBox getParentBlockContext()
+  public RenderBox getParentBlockContext()
   {
     if (parent == null)
     {
@@ -690,427 +441,10 @@ public abstract class RenderNode implements Cloneable
     return parent.getParentBlockContext();
   }
 
-  /**
-   * Returns the computed width of the parent block context. Once this has been
-   * computed, this value does not change anymore. In the real CSS world, this
-   * would have been computed even before the displaymodel had been built.
-   * 
-   * @return
-   */
-  protected long getComputedBlockContextWidth()
-  {
-    if (parentWidth == null)
-    {
-      final RenderBox parent = getParentBlockContext();
-      if (parent == null)
-      {
-        parentWidth = new Long(0);
-      }
-      else
-      {
-        parentWidth = new Long(parent.getComputedBlockContextWidth());
-      }
-    }
-    return parentWidth.longValue();
-  }
 
   public boolean isDiscardable()
   {
     return false;
-  }
-
-  public long getEffectiveLayoutSize(int axis)
-  {
-    return getPreferredSize(axis);
-  }
-
-  protected boolean isMarginsValidated()
-  {
-    return marginsValidated;
-  }
-
-  protected void setMarginsValidated(final boolean marginsValidated)
-  {
-    this.marginsValidated = marginsValidated;
-  }
-
-  protected void validateMargins()
-  {
-    if (marginsValidated)
-    {
-      return;
-    }
-
-    validateAbsoluteMargins();
-
-    // now here comes the complex part: Compute effective margins.
-    // We have to deal with two cases: Inner element margins and outer margins
-    // for the outer margins, we compute the parent's margin and substract
-    // our margin from it (in other words: We do the normal collapsing).
-    final RenderBox parent = getParent();
-    if (parent == null || isEmpty())
-    {
-      // nice, no parent means no margins.
-      effectiveMargins.setTop(0);
-      effectiveMargins.setLeft(0);
-      effectiveMargins.setBottom(0);
-      effectiveMargins.setRight(0);
-      marginsValidated = true;
-      return;
-    }
-
-    // Cheap hack:
-    final StrictInsets parentMargins = parent.getAbsoluteMargins();
-    if (parent.getMajorAxis() == HORIZONTAL_AXIS)
-    {
-      if (parent.isLeadingMarginIndependent(VERTICAL_AXIS))
-      {
-        effectiveMargins.setTop(absoluteMargins.getTop());
-      }
-      else
-      {
-        effectiveMargins.setTop(collapseAbsoluteMargins
-                (parentMargins.getTop(), absoluteMargins.getTop()));
-      }
-
-      if (parent.isTrailingMarginIndependent(VERTICAL_AXIS))
-      {
-        effectiveMargins.setBottom(absoluteMargins.getBottom());
-      }
-      else
-      {
-        effectiveMargins.setBottom(collapseAbsoluteMargins
-                (parentMargins.getBottom(), absoluteMargins.getBottom()));
-      }
-
-      if (getNonEmptyPrev() == null &&
-              (parent.isLeadingMarginIndependent(HORIZONTAL_AXIS) == false))
-      {
-        effectiveMargins.setLeft(collapseAbsoluteMargins
-                (parentMargins.getLeft(), absoluteMargins.getLeft()));
-      }
-      else
-      {
-        effectiveMargins.setLeft(absoluteMargins.getLeft());
-      }
-      if (getNonEmptyNext() == null &&
-              (parent.isTrailingMarginIndependent(HORIZONTAL_AXIS) == false))
-      {
-        effectiveMargins.setRight(collapseAbsoluteMargins
-                (parentMargins.getRight(),  absoluteMargins.getRight()));
-      }
-      else
-      {
-        effectiveMargins.setRight(absoluteMargins.getRight());
-      }
-    }
-    else // Major axis is vertical ..
-    {
-      if (parent.isLeadingMarginIndependent(HORIZONTAL_AXIS))
-      {
-        effectiveMargins.setLeft(absoluteMargins.getLeft());
-      }
-      else
-      {
-        effectiveMargins.setLeft(collapseAbsoluteMargins
-                (parentMargins.getLeft(), absoluteMargins.getLeft()));
-      }
-
-      if (parent.isTrailingMarginIndependent(HORIZONTAL_AXIS))
-      {
-        effectiveMargins.setRight(absoluteMargins.getRight());
-      }
-      else
-      {
-        effectiveMargins.setRight(collapseAbsoluteMargins
-                (parentMargins.getRight(), absoluteMargins.getRight()));
-      }
-
-      if (getNonEmptyPrev() == null &&
-              (parent.isLeadingMarginIndependent(VERTICAL_AXIS) == false))
-      {
-        effectiveMargins.setTop(collapseAbsoluteMargins
-                (parentMargins.getTop(), absoluteMargins.getTop()));
-      }
-      else
-      {
-        effectiveMargins.setTop(absoluteMargins.getTop());
-      }
-      if (getNonEmptyNext() == null &&
-              (parent.isTrailingMarginIndependent(VERTICAL_AXIS) == false))
-      {
-        effectiveMargins.setBottom(collapseAbsoluteMargins
-                (parentMargins.getBottom(), absoluteMargins.getBottom()));
-      }
-      else
-      {
-        effectiveMargins.setBottom(absoluteMargins.getBottom());
-      }
-    }
-
-    if (effectiveMargins.getBottom() == -12000)
-    {
-      Log.debug ("Hold here");
-    }
-    marginsValidated = true;
-
-  }
-
-  private long collapseAbsoluteMargins (long parent, long child)
-  {
-    if (parent < 0)
-    {
-      if (child >= 0)
-      {
-        return child;
-      }
-      // Child is also negative, so the normal collapsing applies ..
-      return Math.abs (parent - child);
-    }
-
-
-    if (child < 0)
-    {
-      return child;
-    }
-
-    // neither child nor parent are null..
-    return Math.abs (parent - child);
-  }
-
-  protected void validateAbsoluteMargins()
-  {
-    final long topMargin = getLeadingMargin(VERTICAL_AXIS);
-    final long bottomMargin = getTrailingMargin(VERTICAL_AXIS);
-    final long leftMargin = getLeadingMargin(HORIZONTAL_AXIS);
-    final long rightMargin = getTrailingMargin(HORIZONTAL_AXIS);
-    absoluteMargins.setTop(topMargin);
-    absoluteMargins.setLeft(leftMargin);
-    absoluteMargins.setBottom(bottomMargin);
-    absoluteMargins.setRight(rightMargin);
-  }
-
-  protected StrictInsets getAbsoluteMarginsInternal()
-  {
-    return absoluteMargins;
-  }
-
-  protected StrictInsets getEffectiveMarginsInternal()
-  {
-    return effectiveMargins;
-  }
-
-  public StrictInsets getAbsoluteMargins()
-  {
-    validateMargins();
-    return absoluteMargins;
-  }
-
-  public StrictInsets getEffectiveMargins()
-  {
-    validateMargins();
-    return effectiveMargins;
-  }
-
-  protected void invalidateMargins()
-  {
-    this.marginsValidated = false;
-    if (parent != null)
-    {
-      parent.invalidateMargins();
-    }
-  }
-
-  protected boolean isIgnorableForMargins()
-  {
-    return isEmpty();
-  }
-
-  protected RenderNode getNonEmptyPrev()
-  {
-    RenderNode previous = getPrev();
-    while (previous != null)
-    {
-      if (previous.isIgnorableForMargins() == false)
-      {
-        return previous;
-      }
-      previous = previous.getPrev();
-    }
-    return null;
-  }
-
-  protected RenderNode getNonEmptyNext()
-  {
-    RenderNode next = getNext();
-    while (next != null)
-    {
-      if (next.isIgnorableForMargins() == false)
-      {
-        return next;
-      }
-      next = next.getNext();
-    }
-    return null;
-  }
-
-
-  /**
-   * Queries the absolute margins between to top or left edge of this box and
-   * the bottom or right edge of this boxes neighbour. If there is no neighbour
-   * we assume an infinite margin instead.
-   *
-   * @param axis
-   * @return
-   */
-  protected long getTrailingMargin(int axis)
-  {
-    final long parentMargin;
-    RenderBox parent = getParent();
-    if (parent == null)
-    {
-      // assume an infinite margin ..
-      parentMargin = Long.MAX_VALUE;
-    }
-    else
-    {
-      if (axis == parent.getMajorAxis())
-      {
-        // check, if we are the last item in the parent.
-        RenderNode next = getNonEmptyNext();
-
-        if (next instanceof RenderBox)
-        {
-          RenderBox nextBox = (RenderBox) next;
-          parentMargin = nextBox.getLeadingMarginInternal(axis);
-        }
-        else if (next != null)
-        {
-          parentMargin = next.getDefinedLeadingMargin(axis);
-        }
-        else if (parent.isTrailingMarginIndependent(axis))
-        {
-          parentMargin = 0;
-        }
-        else
-        {
-          parentMargin = parent.getTrailingMargin(axis);
-        }
-      }
-      else if (parent.isTrailingMarginIndependent(axis))
-      {
-        parentMargin = 0;
-      }
-      else
-      {
-        parentMargin = parent.getTrailingMargin(axis);
-      }
-    }
-
-    return collapseMargins(parentMargin, getDefinedTrailingMargin(axis));
-  }
-
-  protected long getDefinedTrailingMargin(int axis)
-  {
-    return 0;
-  }
-
-  /**
-   * Queries the margin between to top or left edge of this box and the bottom
-   * or right edge of this boxes neighbour.
-   *
-   * @param axis
-   * @return
-   */
-  protected long getLeadingMargin(int axis)
-  {
-    final long parentMargin;
-    RenderBox parent = getParent();
-    if (parent == null)
-    {
-      // assume an infinite margin ..
-      parentMargin = Long.MAX_VALUE;
-    }
-    else
-    {
-      if (axis == parent.getMajorAxis())
-      {
-        // check, if we are the first item in the parent.
-        RenderNode previous = getNonEmptyPrev();
-        if (previous instanceof RenderBox)
-        {
-          RenderBox prevBox = (RenderBox) previous;
-          parentMargin = prevBox.getTrailingMarginInternal(axis);
-        }
-        else if (previous != null)
-        {
-          parentMargin = previous.getDefinedTrailingMargin(axis);
-        }
-        else if (parent.isLeadingMarginIndependent(axis))
-        {
-          parentMargin = 0;
-        }
-        else
-        {
-          parentMargin = parent.getLeadingMargin(axis);
-        }
-      }
-      else if (parent.isLeadingMarginIndependent(axis))
-      {
-        parentMargin = 0;
-      }
-      else
-      {
-        parentMargin = parent.getLeadingMargin(axis);
-      }
-    }
-
-    return collapseMargins(parentMargin, getDefinedLeadingMargin(axis));
-  }
-
-  protected long getDefinedLeadingMargin(int axis)
-  {
-    return 0;
-  }
-
-  protected long collapseMargins(long parentMargin, long myMargin)
-  {
-    return Math.max(parentMargin, myMargin);
-  }
-
-
-  /**
-   * Defines a spacing, that only applies, if the node is not the last node in
-   * the box. This spacing gets later mixed in with the absolute margins and
-   * corresponds to the effective margin of the RenderBox class.
-   *
-   * @param axis
-   * @return
-   */
-  public long getTrailingSpace(int axis)
-  {
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return getEffectiveMargins().getRight();
-    }
-    return getEffectiveMargins().getBottom();
-  }
-
-  /**
-   * Defines a spacing, that only applies if the node is not the first node in
-   * the box. This spacing gets later mixed in with the absolute margins and
-   * corresponds to the effective margin of the RenderBox class.
-   *
-   * @param axis
-   * @return
-   */
-  public long getLeadingSpace(int axis)
-  {
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return getEffectiveMargins().getLeft();
-    }
-    return getEffectiveMargins().getTop();
   }
 
   /**
@@ -1128,8 +462,6 @@ public abstract class RenderNode implements Cloneable
     return isEmpty();
   }
 
-  public abstract CSSValue getVerticalAlignment();
-
   /**
    * Returns the baseline info for the given node. This can be null, if the node
    * does not have any baseline info at all. If the element has more than one
@@ -1137,42 +469,10 @@ public abstract class RenderNode implements Cloneable
    *
    * @return
    */
-  public abstract ExtendedBaselineInfo getBaselineInfo();
-
-  /**
-   * Checks, whether a validate run would succeed. Under certain conditions, for
-   * instance if there is a auto-width component open, it is not possible to
-   * perform a layout run, unless that element has been closed.
-   * <p/>
-   * Generally speaking: An element cannot be layouted, if
-   * <ul>
-   * <li>the element contains childs, which cannot be layouted,</li>
-   * <li>the element has auto-width or depends on an auto-width element,</li>
-   * <li>the element is a floating or positioned element, or is a child of an
-   * floating or positioned element.</li>
-   * </ul>
-   *
-   * @return
-   */
-  public boolean isValidatable()
+//  public abstract ExtendedBaselineInfo getBaselineInfo();
+  public NodeLayoutProperties getNodeLayoutProperties()
   {
-    return true;
-  }
-
-  public boolean isAlwaysPropagateEvents()
-  {
-    return false;
-  }
-
-  /**
-   * A frozen element must not be modified anymore (in any way). Do not
-   * perform splits, do not validate, do not allow changes to any properties.
-   *
-   * @return
-   */
-  public boolean isFrozen()
-  {
-    return frozen;
+    return layoutProperties;
   }
 
   public void freeze()
@@ -1180,25 +480,23 @@ public abstract class RenderNode implements Cloneable
     frozen = true;
   }
 
-  /**
-   * This is always a split along the document's major axis. Until we have a
-   * really 100% parametrized renderer model, we assume VERTICAL here and are
-   * happy.
-   *
-   * @param position
-   * @param target
-   * @return
-   */
-  public abstract RenderNode[] splitForPrint
-          (long position, RenderNode[] target);
 
-  public long getBestPrintBreak(final long splitPos)
+  public boolean isDirectionLTR()
   {
-    return 0;
+    return true;
   }
 
-  public long getFirstPrintBreak()
+  public synchronized void updateChangeTracker()
   {
-    return 0;
+    changeTracker += 1;
+    if (parent != null)
+    {
+      parent.updateChangeTracker();
+    }
+  }
+
+  public synchronized long getChangeTracker()
+  {
+    return changeTracker;
   }
 }

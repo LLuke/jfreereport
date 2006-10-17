@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetHandler.java,v 1.3 2006/07/11 13:29:47 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.4 2006/07/26 16:59:46 taqua Exp $
  *
  * Changes
  * -------
@@ -621,7 +621,7 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    */
   public void warning(CSSParseException exception) throws CSSException
   {
-    Log.warn("Warning: ", exception);
+    Log.warn("Warning: " + exception.getMessage());
   }
 
   /**

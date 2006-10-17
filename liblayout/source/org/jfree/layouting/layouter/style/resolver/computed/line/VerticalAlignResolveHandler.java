@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: VerticalAlignResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: VerticalAlignResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -60,5 +60,5 @@ public class VerticalAlignResolveHandler extends ConstantsResolveHandler
     // we do not detect scripts right now ...
     setFallback(VerticalAlign.BASELINE);
   }
-
+  
 }

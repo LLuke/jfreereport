@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableColumnModelTest.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,6 @@
 package org.jfree.layouting.renderer.model.table.cols.junit;
 
 import junit.framework.TestCase;
-import org.jfree.layouting.renderer.model.table.cols.SpearateColumnModel;
-import org.jfree.layouting.renderer.model.table.cols.TableColumnGroup;
-import org.jfree.layouting.renderer.model.table.cols.TableColumn;
-import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
-import org.jfree.layouting.renderer.model.table.TableRenderBox;
-import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
 
 /**
  * Creation-Date: 21.07.2006, 16:45:30
@@ -59,30 +53,30 @@ public class TableColumnModelTest extends TestCase
   {
     super(string);
   }
-
-  public void testTableColumnModel ()
-  {
-    TableRenderBox table = new TableRenderBox(new EmptyBoxDefinition());
-    TableColumnModel model = new SpearateColumnModel(table);
-
-    final TableColumn column1 = new TableColumn();
-    final TableColumn column2 = new TableColumn();
-
-    TableColumnGroup tg = new TableColumnGroup();
-    tg.addColumn(column1);
-    tg.addColumn(column2);
-    model.addColumnGroup(tg);
-    model.addAutoColumn();
-    model.addAutoColumn();
-
-    model.getColumn(0).setSizes(1, 16000, 16000);
-    model.getColumn(1).setSizes(1, 16000, 16000);
-    model.getColumn(1).setSizes(2, 15000, 15000);
-    model.getColumn(2).setSizes(1, 16000, 16000);
-    model.getColumn(3).setSizes(1, 15000, 15000);
-
-    model.validateSizes();
-    assertEquals(63000, model.getPreferredSize());
-    assertEquals(63000, model.getMinimumChunkSize());
-  }
+//
+//  public void testTableColumnModel ()
+//  {
+//    TableRenderBox table = new TableRenderBox(new EmptyBoxDefinition());
+//    TableColumnModel model = new SpearateColumnModel(table);
+//
+//    final TableColumn column1 = new TableColumn();
+//    final TableColumn column2 = new TableColumn();
+//
+//    TableColumnGroup tg = new TableColumnGroup();
+//    tg.addColumn(column1);
+//    tg.addColumn(column2);
+//    model.addColumnGroup(tg);
+//    model.addAutoColumn();
+//    model.addAutoColumn();
+//
+//    model.getColumn(0).setSizes(1, 16000, 16000);
+//    model.getColumn(1).setSizes(1, 16000, 16000);
+//    model.getColumn(1).setSizes(2, 15000, 15000);
+//    model.getColumn(2).setSizes(1, 16000, 16000);
+//    model.getColumn(3).setSizes(1, 15000, 15000);
+//
+//    model.validateSizes();
+//    assertEquals(63000, model.getPreferredSize());
+//    assertEquals(63000, model.getMinimumChunkSize());
+//  }
 }

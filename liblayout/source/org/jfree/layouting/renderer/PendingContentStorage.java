@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PendingContentStorage.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.renderer;
 
-import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * This class holds pending content. Pending content is all content that has

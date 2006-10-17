@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderLength.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
+ * $Id: RenderLength.java,v 1.4 2006/07/29 18:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,14 @@
  */
 package org.jfree.layouting.renderer.border;
 
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSNumericType;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 09.07.2006, 21:03:12
@@ -127,6 +128,28 @@ public class RenderLength
     }
   }
 
+  public RenderLength resolveToRenderLength (final long parent)
+  {
+    if (isPercentage())
+    {
+      if (parent <= 0)
+      {
+        // An unresolvable parent ...
+        return RenderLength.AUTO;
+      }
+      // This may resolve to zero - which is valid
+      return new RenderLength((value * parent) / (100 * 1000), false);
+    }
+    else if (value <= 0)
+    {
+      return RenderLength.AUTO;
+    }
+    else
+    {
+      return new RenderLength(value, false);
+    }
+  }
+
 
   public static RenderLength convertToInternal(final CSSValue value,
                                                final LayoutContext layoutContext,
@@ -148,8 +171,8 @@ public class RenderLength
                 (nval.getValue()) * 100, true);
       }
 
-      final CSSNumericValue cssNumericValue = CSSValueResolverUtility.convertLength
-              ((CSSNumericValue) value, layoutContext, metaData);
+      final CSSNumericValue cssNumericValue =
+          CSSValueResolverUtility.convertLength(value, layoutContext, metaData);
       // the resulting nvalue is guaranteed to have the unit PT
 
       return new RenderLength(StrictGeomUtility.toInternalValue
@@ -158,4 +181,24 @@ public class RenderLength
     return RenderLength.EMPTY;
   }
 
+
+  public String toString()
+  {
+    if (value == Long.MIN_VALUE)
+    {
+      return "RenderLength{value=AUTO}";
+    }
+    if (isPercentage())
+    {
+      return "RenderLength{" +
+            "value=" + value +
+            "% }";
+    }
+    else
+    {
+      return "RenderLength{" +
+            "value=" + value +
+            "pt }";
+    }
+  }
 }

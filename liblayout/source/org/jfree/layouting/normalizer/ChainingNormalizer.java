@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ChainingNormalizer.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -46,14 +46,15 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.renderer.ChainingRenderer;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.util.AttributeMap;
+import org.jfree.layouting.util.ChainingCallException;
 
 /**
  * Creation-Date: 16.06.2006, 14:34:44
@@ -125,14 +126,21 @@ public class ChainingNormalizer implements Normalizer
     commitCalls();
   }
 
-  public synchronized void commitCalls()
+  public synchronized void commitCalls() throws NormalizationException
   {
     // now we need access to the chained normalizer's model-builder.
     ChainingRenderer renderer = (ChainingRenderer) chainedNormalizer.getRenderer();
     if (renderer != null)
     {
       //Log.debug("Committing calls to Renderer: " + renderer);
-      renderer.replay();
+      try
+      {
+        renderer.replay();
+      }
+      catch (ChainingCallException e)
+      {
+        throw new NormalizationException("Failed to dispatch calls", e);
+      }
     }
   }
 

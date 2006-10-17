@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.7 2006/07/27 17:56:27 taqua Exp $
+ * $Id: RenderableText.java,v 1.8 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -40,15 +40,11 @@
  */
 package org.jfree.layouting.renderer.model;
 
-import org.jfree.layouting.input.style.keys.line.VerticalAlign;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.renderer.text.Spacing;
-import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.breaks.BreakOpportunityProducer;
-import org.jfree.layouting.renderer.Loggers;
-import org.jfree.util.Log;
 
 /**
  * The renderable text is a text chunk, enriched with layouting information,
@@ -85,12 +81,8 @@ public class RenderableText extends RenderNode
   private boolean ltr;
   private int script;
 
-  private long minimumChunkWidth;
   private long minimumWidth;
   private long preferredWidth;
-  private long maximumWidth;
-
-  private long height;
   private boolean forceLinebreak;
   private ExtendedBaselineInfo baselineInfo;
 
@@ -135,16 +127,17 @@ public class RenderableText extends RenderNode
     long wordPrefWidth = 0;
     long wordMaxWidth = 0;
 
-    long heightAbove = 0;
-    long heightBelow = 0;
+//    long heightAbove = 0;
+//    long heightBelow = 0;
+    long minimumChunkWidth = 0;
 
     final int lastPos = Math.min(glyphs.length, offset + length);
     for (int i = offset; i < lastPos; i++)
     {
       Glyph glyph = glyphs[i];
       Spacing spacing = glyph.getSpacing();
-      heightAbove = Math.max(glyph.getBaseLine(), heightAbove);
-      heightBelow = Math.max(glyph.getHeight() - glyph.getBaseLine(), heightBelow);
+//      heightAbove = Math.max(glyph.getBaseLine(), heightAbove);
+//      heightBelow = Math.max(glyph.getHeight() - glyph.getBaseLine(), heightBelow);
       final int kerning = glyph.getKerning();
       final int width = glyph.getWidth();
       // Log.debug ("Glyph: " + width + " - " + kerning);
@@ -178,16 +171,19 @@ public class RenderableText extends RenderNode
       }
     }
 
-    height = heightAbove + heightBelow;
     minimumChunkWidth = Math.max(minimumChunkWidth, wordMinChunkWidth);
     minimumWidth = Math.max(minimumWidth, wordMinWidth);
     preferredWidth = Math.max(preferredWidth, wordPrefWidth);
-    maximumWidth = Math.max(maximumWidth, wordMaxWidth);
+    final long maximumWidth = Math.max(minimumWidth, wordMaxWidth);
 
-    setHeight(height);
     // Log.debug ("Text: " + minimumWidth + ", " + preferredWidth + ", " + maximumWidth);
 
+    NodeLayoutProperties nlp = getNodeLayoutProperties();
+    nlp.setMaximumBoxWidth(maximumWidth);
+    nlp.setMinimumChunkWidth(minimumChunkWidth);
+    nlp.setMetricsAge(1);
   }
+
 
   public boolean isForceLinebreak()
   {
@@ -217,314 +213,6 @@ public class RenderableText extends RenderNode
   public int getLength()
   {
     return length;
-  }
-
-
-  /**
-   * Splits the render node at the given position. This method returns an array
-   * with the length of two; if the node is not splittable, the first element
-   * should be empty (in the element's behavioural context) and the second
-   * element should contain an independent copy of the original node.
-   * <p/>
-   * If the break position is ambugious, the break should appear *in front of*
-   * the position - where in front-of depends on the reading direction.
-   * <p/>
-   * Todo: This does not yet support syllable breaks; we would have to insert
-   * that special '-' glyph for that, which is too much work for now.
-   *
-   * @param axis     the axis on which to break
-   * @param position the break position within that axis.
-   * @param target   the target array that should receive the broken node. If
-   *                 the target array is not null, it must have at least two
-   *                 slots.
-   * @return the broken nodes contained in the target array.
-   */
-  public RenderNode[] split(int axis, long position, RenderNode[] target)
-  {
-    if (target == null || target.length < 2)
-    {
-      target = new RenderNode[2];
-    }
-
-    if (position == 0)
-    {
-      target[0] = new SpacerRenderNode();
-      target[1] = derive(true);
-      return target;
-    }
-
-    Loggers.SPLITSTRATEGY.debug("Attempt to split text: " + axis + " - " + position);
-
-    if (axis == getMinorAxis())
-    {
-      // not splitable. By using the invisible render box, we allow the content
-      // to move into the next line ..
-      Loggers.SPLITSTRATEGY.debug("Renderable Text is not spittable on this axis");
-      target[0] = new SpacerRenderNode();
-      target[1] = derive(true);
-      return target;
-    }
-
-    long width = 0;
-    int optimumBreakPos = 0;
-    int forcedBreakPos = 0;
-    boolean seekForcedBreak = true;
-
-    final int lastPos = Math.min(glyphs.length, offset + length);
-    for (int i = offset; i < lastPos; i++)
-    {
-      Glyph glyph = glyphs[i];
-      Spacing spacing = glyph.getSpacing();
-
-      if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_NEVER)
-      {
-        continue;
-      }
-      if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_LINE)
-      {
-        // ok, we've found a linebreak. Stop poking around and break
-        return breakOnPosition(i, target);
-      }
-      if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_WORD)
-      {
-        optimumBreakPos = i;
-        if (seekForcedBreak)
-        {
-          forcedBreakPos = i;
-        }
-      }
-      else // must be - break-char
-      {
-        if (seekForcedBreak)
-        {
-          forcedBreakPos = i;
-        }
-      }
-
-      width += glyph.getWidth() + spacing.getMinimum() - glyph.getKerning();
-      if (width <= position)
-      {
-        continue;
-      }
-      else
-      {
-        seekForcedBreak = false;
-        if (optimumBreakPos == 0)
-        {
-          continue;
-        }
-      }
-      break;
-    }
-
-    if (optimumBreakPos > 0)
-    {
-      return breakOnPosition(optimumBreakPos, target);
-    }
-    else
-    {
-      return breakOnPosition(forcedBreakPos, target);
-    }
-  }
-
-  private RenderNode[] breakOnPosition(int pos, RenderNode[] target)
-  {
-    if (pos == glyphs.length)
-    {
-      // no need to break
-      Loggers.SPLITSTRATEGY.warn("PERFORMANCE: Incredible stupid operation detected: " + pos);
-      target[0] = derive(true);
-      target[1] = null;
-      return target;
-    }
-
-    target[0] = null;
-    target[1] = null;
-
-    // From the break position, move backward unless you come accross the first
-    // non-space char. This is our end-point for the first chunk.
-    for (int i = pos - 1; i >= 0; i--)
-    {
-      Glyph g = glyphs[i];
-      if (g.getClassification() != Glyph.SPACE_CHAR)
-      {
-        target[0] = new RenderableText(getLayoutContext(), baselineInfo,
-                glyphs, offset, i - offset + 1, script, false);
-//        Log.debug("Text[0]: " + getRawText() + " " + pos + " -> " + offset + ":" + (i - offset));
-        break;
-      }
-    }
-
-    // From the break position, move forward unless you come accross the first
-    // non-space char. This is our start-point for the second chunk.
-    final int length = offset + this.length;
-    for (int i = pos; i < length; i++)
-    {
-      Glyph g = glyphs[i];
-      if (g.getClassification() != Glyph.SPACE_CHAR)
-      {
-        target[1] = new RenderableText(getLayoutContext(), baselineInfo,
-                glyphs, i, length - i, script, isForceLinebreak());
-//        Log.debug("Text[1]: " + getRawText() + " " + pos + " -> " + i + ":" + (length - i));
-        break;
-
-      }
-    }
-
-    if (target[0] == null)
-    {
-      Loggers.SPLITSTRATEGY.debug("This box is not spittable here");
-      target[0] = new SpacerRenderNode();
-      if (target[1] == null)
-      {
-        target[1] = derive(true);
-        return target;
-      }
-    }
-    return target;
-  }
-
-  /**
-   * Returns the nearest break-point that occurrs before that position. If the
-   * position already is a break point, return that point. If there is no break
-   * opportinity at all, return zero (= BREAK_NONE).
-   * <p/>
-   * (This causes the split to behave correctly; this moves all non-splittable
-   * elements down to the next free area.)
-   *
-   * @param axis     the axis.
-   * @param position the maximum position
-   * @return the best break position.
-   */
-  public long getBestBreak(int axis, long position)
-  {
-    if (axis == getMinorAxis())
-    {
-      return 0;
-    }
-
-    long width = 0;
-    long optimumWidth = 0;
-
-    final int lastPos = Math.min(glyphs.length, offset + length);
-    for (int i = offset; i < lastPos; i++)
-    {
-      Glyph glyph = glyphs[i];
-      Spacing spacing = glyph.getSpacing();
-
-      if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_NEVER)
-      {
-        width += glyph.getWidth() + spacing.getMinimum() - glyph.getKerning();
-        continue;
-      }
-      if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_LINE)
-      {
-        // ok, we've found a linebreak. Stop poking around and break
-        return width;
-      }
-      if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_WORD)
-      {
-        optimumWidth = width;
-      }
-
-      width += glyph.getWidth() + spacing.getMinimum() - glyph.getKerning();
-      if (width <= position)
-      {
-        continue;
-      }
-      break;
-    }
-    return optimumWidth;
-  }
-
-  /**
-   * Returns the first break-point in that element. If there is no break
-   * opportinity at all, return zero (= BREAK_NONE).
-   * <p/>
-   *
-   * @param axis the axis.
-   * @return the first break position.
-   */
-  public long getFirstBreak(int axis)
-  {
-    if (axis == getMinorAxis())
-    {
-      return 0;
-    }
-
-    long width = 0;
-
-    final int lastPos = Math.min(glyphs.length, offset + length);
-    for (int i = offset; i < lastPos; i++)
-    {
-      Glyph glyph = glyphs[i];
-      Spacing spacing = glyph.getSpacing();
-      if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_LINE)
-      {
-        // ok, we've found a linebreak. Stop poking around and break
-        if (i == lastPos - 1)
-        {
-          // no break opportinity ...
-          return 0;
-        }
-        return width;
-      }
-      if (glyph.getBreakWeight() == BreakOpportunityProducer.BREAK_WORD)
-      {
-        if (i == lastPos - 1)
-        {
-          // no break opportinity ...
-          return 0;
-        }
-        return width;
-      }
-
-      width += glyph.getWidth() + spacing.getMinimum() - glyph.getKerning();
-    }
-    return 0;
-  }
-
-  public long getMinimumChunkSize(int axis)
-  {
-    if (axis == getMinorAxis())
-    {
-      return height;
-    }
-    return minimumChunkWidth;
-  }
-
-//  public long getMinimumSize(int axis)
-//  {
-//    if (axis == getMinorAxis())
-//    {
-//      return height;
-//    }
-//    return minimumWidth;
-//  }
-
-  public long getPreferredSize(int axis)
-  {
-    if (axis == getMinorAxis())
-    {
-      return height;
-    }
-    return preferredWidth;
-  }
-//
-//  public long getMaximumSize(int axis)
-//  {
-//    if (axis == getMinorAxis())
-//    {
-//      return height;
-//    }
-//    return maximumWidth;
-//  }
-
-  public void validate(RenderNodeState upTo)
-  {
-    setHeight(height);
-    setWidth(preferredWidth);
-    setState(RenderNodeState.FINISHED);
   }
 
   public BreakAfterEnum getBreakAfterAllowed(final int axis)
@@ -581,36 +269,6 @@ public class RenderableText extends RenderNode
     return (RenderableText) super.derive(deep);
   }
 
-  public int getBreakability(int axis)
-  {
-    if (axis == getMajorAxis())
-    {
-      return HARD_BREAKABLE;
-    }
-    return UNBREAKABLE;
-  }
-
-  /**
-   * Checks, whether this node will cause breaks in its parent. While
-   * 'isForcedSplitNeeded' checks, whether an element should be splitted, this
-   * method checks, whether this element would be a valid reason to split.
-   * <p/>
-   * Text, that contains linebreaks at the end of the line, not be split by
-   * itself, but will cause splits in the parent, if it is followed by some more
-   * text.
-   *
-   * @param isEndOfLine
-   * @return
-   */
-  public boolean isForcedSplitRequested(boolean isEndOfLine)
-  {
-    if (isEndOfLine)
-    {
-      return false;
-    }
-    return forceLinebreak;
-  }
-
   public boolean isEmpty()
   {
     return length == 0;
@@ -626,11 +284,6 @@ public class RenderableText extends RenderNode
     return glyphs.length == 0;
   }
 
-  public CSSValue getVerticalAlignment()
-  {
-    return VerticalAlign.BASELINE;
-  }
-
   /**
    * Returns the baseline info for the given node. This can be null, if the node
    * does not have any baseline info.
@@ -642,20 +295,64 @@ public class RenderableText extends RenderNode
     return baselineInfo;
   }
 
-  /**
-   * This is always a split along the document's major axis. Until we have a
-   * really 100% parametrized renderer model, we assume VERTICAL here and are
-   * happy.
-   *
-   * @param position
-   * @param target
-   * @return
-   */
-  public RenderNode[] splitForPrint(long position, RenderNode[] target)
+  public int getScript()
   {
-    final RenderNode[] renderNodes = split(HORIZONTAL_AXIS, position, target);
-    renderNodes[0].freeze();
-    renderNodes[1].freeze();
-    return renderNodes;
+    return script;
+  }
+
+  public long getMinimumWidth()
+  {
+    return minimumWidth;
+  }
+
+  public long getPreferredWidth()
+  {
+    return preferredWidth;
+  }
+
+  /**
+   * Splits the text along its major axis (horizontal for roman text) at the
+   * given position (relative to the element's origin!)
+   *
+   * Split sizes are relative to the text's minimum size.
+   *
+   * @param position the split position.
+   * @return the split elements.
+   */
+  public RenderableText[] split (long position)
+  {
+//    final Glyph[] glyphs,
+//    final int offset,
+//    final int length,
+
+    int breakPos = offset;
+    long size = 0;
+    final int maxPos = (offset + length);
+    for (int i = offset; i < maxPos; i++)
+    {
+      Glyph glyph = glyphs[i];
+      size += glyph.getWidth();
+      size += glyph.getSpacing().getMinimum();
+
+      if (size >= position)
+      {
+        breakPos = i;
+        break;
+      }
+    }
+
+    final RenderableText[] result = new RenderableText[2];
+    if (breakPos == offset || breakPos == maxPos)
+    {
+      result[0] = (RenderableText) derive(false);
+      result[1] = null;
+      return result;
+    }
+
+    result[0] = new RenderableText(layoutContext, baselineInfo, glyphs,
+            offset, breakPos - offset, script, false);
+    result[1] = new RenderableText(layoutContext, baselineInfo, glyphs,
+            breakPos, length - (breakPos - offset), script, forceLinebreak);
+    return result;
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BoxDefinitionUtility.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.model;
-
-import org.jfree.layouting.renderer.border.Border;
 
 /**
  * Creation-Date: 25.06.2006, 15:50:14

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BlockRenderBox.java,v 1.10 2006/07/27 17:56:27 taqua Exp $
+ * $Id: BlockRenderBox.java,v 1.11 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -39,12 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.model;
-
-import org.jfree.util.Log;
-import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
-import org.jfree.layouting.renderer.Loggers;
-import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * A block box behaves according to the 'display:block' layouting rules. In the
@@ -74,10 +68,9 @@ import org.jfree.layouting.input.style.values.CSSValue;
  */
 public class BlockRenderBox extends RenderBox
 {
-  public BlockRenderBox(final BoxDefinition boxDefinition,
-                        final CSSValue valign)
+  public BlockRenderBox(final BoxDefinition boxDefinition)
   {
-    super(boxDefinition, valign);
+    super(boxDefinition);
 
     // hardcoded for now, content forms lines, which flow from top to bottom
     // and each line flows horizontally (later with support for LTR and RTL)
@@ -88,220 +81,31 @@ public class BlockRenderBox extends RenderBox
     // to do some text alignment
     setMinorAxis(HORIZONTAL_AXIS);
   }
-
-  public void validate(RenderNodeState upTo)
-  {
-    final RenderNodeState state = getState();
-    if (state == RenderNodeState.FINISHED)
-    {
-      return;
-    }
-    if (state == RenderNodeState.UNCLEAN)
-    {
-      validateBorders();
-      validatePaddings();
-      setState(RenderNodeState.PENDING);
-    }
-    if (reachedState(upTo))
-    {
-      return;
-    }
-
-    validateMargins();
-    setState(RenderNodeState.LAYOUTING);
-    if (reachedState(upTo))
-    {
-      return;
-    }
-
-    Loggers.VALIDATION.debug("BLOCK: Begin Validate");
-
-    final long leadingPaddings = getLeadingInsets(getMinorAxis());
-    final long trailingPaddings = getTrailingInsets(getMinorAxis());
-
-    long nodePos =
-            getPosition(getMajorAxis()) + getLeadingInsets(getMajorAxis());
-    final long minorAxisNodePos =
-            getPosition(getMinorAxis()) + leadingPaddings;
-
-
-    final long defaultNodeWidth = Math.max(0,
-            getDimension(getMinorAxis()) - leadingPaddings - trailingPaddings);
-
-    long trailingMajor = 0;
-    long trailingMinor = 0;
-    RenderNode node = getFirstChild();
-    while (node != null)
-    {
-      if (node.isIgnorableForRendering())
-      {
-        // Ignore all empty childs. However, give it an position.
-        node.setPosition(getMajorAxis(), nodePos);
-        node.setPosition(getMinorAxis(), minorAxisNodePos);
-        node.setDimension(getMinorAxis(), 0);
-        node.setDimension(getMajorAxis(), 0);
-        node.validate(RenderNodeState.FINISHED);
-        node = node.getNext();
-        continue;
-      }
-
-//      final long layoutSize = node.getEffectiveLayoutSize(getMinorAxis());
 //
-//      final long nodeSizeMinor;
-//      if (defaultNodeWidth < layoutSize)
+//  /**
+//   * Returns the baseline info for the given node. This can be null, if the node
+//   * does not have any baseline info.
+//   *
+//   * @return
+//   */
+//  public ExtendedBaselineInfo getBaselineInfo()
+//  {
+//    long shift = getLeadingInsets(getMajorAxis()) + getLeadingSpace(getMajorAxis());
+//    RenderNode firstChild = getFirstChild();
+//    while (firstChild != null)
+//    {
+//      if (firstChild.isIgnorableForRendering() == false)
 //      {
-//        nodeSizeMinor = layoutSize;
+//        final ExtendedBaselineInfo baselineInfo = firstChild.getBaselineInfo();
+//        if (baselineInfo == null)
+//        {
+//          return null;
+//        }
+//
+//        return baselineInfo.shift(shift);
 //      }
-//      else
-//      {
-//        nodeSizeMinor = defaultNodeWidth;
-//      }
-      final long nodeSizeMinor = defaultNodeWidth;
-      final long leadingMinor = Math.max
-              (node.getLeadingSpace(getMinorAxis()), trailingMinor);
-
-      final long leadingMajor = Math.max
-              (node.getLeadingSpace(getMajorAxis()), trailingMajor);
-      nodePos += leadingMajor;
-
-      node.setPosition(getMajorAxis(), nodePos);
-      node.setPosition(getMinorAxis(), minorAxisNodePos + leadingMinor);
-      // A change in the positions above would not allow the node to
-      // maintain its finish-state.
-      if (node.getState() != RenderNodeState.FINISHED)
-      {
-        node.setDimension(getMinorAxis(), nodeSizeMinor);
-        node.setDimension(getMajorAxis(), node.getEffectiveLayoutSize(getMajorAxis()));
-        node.validate(RenderNodeState.FINISHED);
-      }
-
-      trailingMajor = node.getTrailingSpace(getMajorAxis());
-      trailingMinor = node.getTrailingSpace(getMinorAxis());
-
-      nodePos += node.getDimension(getMajorAxis());
-      node = node.getNext();
-    }
-
-    final long trailingInsets = getTrailingInsets(getMajorAxis());
-    setDimension(getMajorAxis(), trailingMajor + (nodePos + trailingInsets) - getPosition(getMajorAxis()));
-    setDimension(getMinorAxis(), defaultNodeWidth + leadingPaddings + trailingPaddings);
-
-    Loggers.VALIDATION.debug("BLOCK: Leave Validate: " + defaultNodeWidth + " " +
-            leadingPaddings + " " + trailingPaddings);
-    setState(RenderNodeState.FINISHED);
-  }
-
-  public void setHeight(long height)
-  {
-    if (height == 15000 && getState() == RenderNodeState.FINISHED)
-    {
-      Log.debug("HERE");
-    }
-    super.setHeight(height);
-  }
-
-  protected long getComputedBlockContextWidth()
-  {
-    final RenderBox parent = getParent();
-    final RenderLength preferredWidth = getBoxDefinition().getPreferredWidth();
-    if (parent != null)
-    {
-      if (RenderLength.AUTO.equals(preferredWidth) == false)
-      {
-        try
-        {
-        return preferredWidth.resolve
-                (parent.getComputedBlockContextWidth());
-        }
-        catch(NullPointerException npe)
-        {
-          Log.debug ("HERE");
-        }
-      }
-      else
-      {
-        return parent.getComputedBlockContextWidth();
-      }
-    }
-    return preferredWidth.resolve(0);
-  }
-
-  public int getBreakability(int axis)
-  {
-    return SOFT_BREAKABLE;
-  }
-
-  /**
-   * Returns the baseline info for the given node. This can be null, if the node
-   * does not have any baseline info.
-   *
-   * @return
-   */
-  public ExtendedBaselineInfo getBaselineInfo()
-  {
-    long shift = getLeadingInsets(getMajorAxis()) + getLeadingSpace(getMajorAxis());
-    RenderNode firstChild = getFirstChild();
-    while (firstChild != null)
-    {
-      if (firstChild.isIgnorableForRendering() == false)
-      {
-        final ExtendedBaselineInfo baselineInfo = firstChild.getBaselineInfo();
-        if (baselineInfo == null)
-        {
-          return null;
-        }
-
-        return baselineInfo.shift(shift);
-      }
-      firstChild = firstChild.getNext();
-    }
-    return null;
-  }
-
-  /**
-   * Checks, whether a validate run would succeed. Under certain conditions, for
-   * instance if there is a auto-width component open, it is not possible to
-   * perform a layout run, unless that element has been closed.
-   * <p/>
-   * Generally speaking: An element cannot be layouted, if <ul> <li>the element
-   * contains childs, which cannot be layouted,</li> <li>the element has
-   * auto-width or depends on an auto-width element,</li> <li>the element is a
-   * floating or positioned element, or is a child of an floating or positioned
-   * element.</li> </ul>
-   *
-   * @return
-   */
-  public boolean isValidatable()
-  {
-    if (isOpen() == false)
-    {
-      return true;
-    }
-
-    if (RenderLength.AUTO.equals(getBoxDefinition().getPreferredWidth()))
-    {
-      if (getParent() instanceof BlockRenderBox == false)
-      {
-        // if the parent is an inline box, or we have no parent at all..
-        Log.debug ("Not validatable: Auto-Width Box");
-        return false;
-      }
-    }
-
-    // A floating or positioned element will be placed on a parallel flow
-    // and we can simply test whether that flow is open or not.
-
-    RenderNode child = getLastChild();
-    while (child != null)
-    {
-      if (child.isValidatable() == false)
-      {
-        return false;
-      }
-      child = child.getPrev();
-    }
-
-    return true;
-  }
-
+//      firstChild = firstChild.getNext();
+//    }
+//    return null;
+//  }
 }

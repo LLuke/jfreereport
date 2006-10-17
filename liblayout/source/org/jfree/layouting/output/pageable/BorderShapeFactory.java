@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BorderShapeFactory.java,v 1.5 2006/07/24 12:18:56 taqua Exp $
+ * $Id: BorderShapeFactory.java,v 1.6 2006/07/30 13:13:47 taqua Exp $
  *
  * Changes
  * -------
@@ -45,20 +45,20 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Arc2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Area;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import org.jfree.layouting.input.style.keys.border.BorderStyle;
+import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.BorderCorner;
 import org.jfree.layouting.renderer.border.BorderEdge;
+import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.util.geom.StrictInsets;
-import org.jfree.layouting.input.style.values.CSSColorValue;
-import org.jfree.layouting.input.style.keys.border.BorderStyle;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 11.07.2006, 13:32:31
@@ -143,8 +143,12 @@ public class BorderShapeFactory
     drawOps = new ArrayList();
     fillOps = new ArrayList();
 
+    border = box.getBorder();
+    final BoxLayoutProperties layoutProperties = box.getBoxLayoutProperties();
+    final StrictInsets bWidths = new StrictInsets
+            (layoutProperties.getBorderTop(), layoutProperties.getBorderLeft(),
+             layoutProperties.getBorderBottom(), layoutProperties.getBorderRight());
 
-    final StrictInsets bWidths = box.getBorderWidths();
     x = StrictGeomUtility.toExternalValue
             (box.getX() + (bWidths.getLeft() / 2));
     y = StrictGeomUtility.toExternalValue
@@ -153,8 +157,6 @@ public class BorderShapeFactory
             (box.getWidth() - (bWidths.getLeft() + bWidths.getRight())/2);
     height = StrictGeomUtility.toExternalValue
             (box.getHeight() - (bWidths.getTop() + bWidths.getBottom())/2);
-
-    border = box.getBorder();
     borderSizes = bWidths;
 
     // todo: Change this to the real background ..

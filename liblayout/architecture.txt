@@ -1,4 +1,4 @@
-$Id: architecture.txt,v 1.1 2006/02/12 22:17:40 taqua Exp $
+$Id: architecture.txt,v 1.2 2006/04/17 20:50:58 taqua Exp $
 
 {This document is a scapbook of all architecture related questions;
  it may or may not evolve into a final document.}
@@ -272,3 +272,45 @@ From now all processing is performed as usual.
 [1] The CSS3 specifications draft. We 'reuse' ideas but do not yet attemp a
     standards-conforming implementation.
     http://www.w3.org/Style/CSS/current-work
+
+
+-----------------------------------------------------------------------------
+The Infinite-Canvas-Model
+
+The render-model is built by the preceeding steps. It is assumed, that it is
+sufficiently normalized.
+
+Static Computations: (Only once per node)
+
+1) Check, whether the node is layoutable. A node is only layoutable, if all
+   of its childs are layoutable. This is a tri-state; a node that received new
+   childs recently, is in an undefined state and has to be validated.
+
+   A closed node is always in an valid state. A closed node cannot be
+   non-layoutable.
+
+2) Compute margins, paddings and borders for the given nodes. Margins of
+   inline-elements do not apply, if they are not in flow-direction.
+
+
+Pseudo-Static computations:
+(May happen more than once, but do not depend on the current page layout)
+
+3) Compute the infinite-canvas model. This model describes the preferred layout,
+   when no size-restrictions apply and no user-defined sizes are given. (Any
+   manual size definitions are ignored for the purpose of computing the model.)
+
+4) Based on the ICM, compute the base-ratios for table columns.
+
+5) Compute the effective margins.
+
+
+Finally:
+
+6) Compute the layout. This process is iterative, the same node may be touched
+   more than once during a single layouting run.
+
+   Page breaks are taken into account during the run. Breaks in the minor
+   flow-direction (vertical breaks in the roman system) are taken into account
+   when performing linebreaks. In the same way, alignments are done during the
+   layouting process.

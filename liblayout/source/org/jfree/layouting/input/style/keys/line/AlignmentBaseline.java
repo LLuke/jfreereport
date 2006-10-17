@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AlignmentBaseline.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
+ * $Id: AlignmentBaseline.java,v 1.3 2006/07/11 13:29:46 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class AlignmentBaseline
   public static final CSSConstant IDEOGRAPHIC =
           new CSSConstant("ideographic");
   public static final CSSConstant MATHEMATICAL =
-          new CSSConstant("alphabetic");
+          new CSSConstant("mathematical");
   public static final CSSConstant CENTRAL =
           new CSSConstant("central");
   public static final CSSConstant MIDDLE =

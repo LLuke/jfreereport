@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BaseLineAlignment.java,v 1.1 2006/07/26 12:43:33 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package org.jfree.layouting.renderer.model.inlines;
 
 import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
  * Creation-Date: 24.07.2006, 15:06:57

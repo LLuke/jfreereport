@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TestRenderableTextFactory.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
+ * $Id: TestRenderableTextFactory.java,v 1.4 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,17 +41,15 @@
 package org.jfree.layouting.renderer.text.junit;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.DefaultStreamingLayoutProcess;
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.junit.DebugLayoutProcess;
-import org.jfree.layouting.output.junit.StageOnePageableOutputProcessor;
 import org.jfree.layouting.layouter.context.ContextId;
 import org.jfree.layouting.layouter.context.DefaultLayoutContext;
-import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.FontSpecification;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.junit.StageOnePageableOutputProcessor;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;

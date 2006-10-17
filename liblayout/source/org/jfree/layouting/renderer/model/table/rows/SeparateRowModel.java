@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SeparateRowModel.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
+ * $Id: SeparateRowModel.java,v 1.2 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -51,8 +51,6 @@ import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 public class SeparateRowModel extends AbstractRowModel
 {
   private long preferredSize;
-  private long minimumChunkSize;
-  private long validateSize;
   private boolean validatedSize;
   private long rowSpacing;
 
@@ -65,12 +63,6 @@ public class SeparateRowModel extends AbstractRowModel
   {
     validateSizes();
     return preferredSize;
-  }
-
-  public long getMinimumChunkSize()
-  {
-    validateSizes();
-    return minimumChunkSize;
   }
 
   public long getRowSpacing()
@@ -101,33 +93,27 @@ public class SeparateRowModel extends AbstractRowModel
     final TableRenderBox table = getTableSection().getTable();
     rowSpacing = table.getRowSpacing();
 
-    minimumChunkSize = (rowCount - 1) * rowSpacing;
     preferredSize = (rowCount - 1) * rowSpacing;
 
     // first, find out how much space is already used.
-    final long[] minChunkSizes = new long[rowCount];
     final long[] preferredSizes = new long[rowCount];
     // For each rowspan ...
     for (int rowspan = 1; rowspan <= maxRowSpan; rowspan += 1)
     {
-      for (int rowIdx = 0; rowIdx < minChunkSizes.length; rowIdx++)
+      for (int rowIdx = 0; rowIdx < rowCount; rowIdx++)
       {
         final TableRow row = rows[rowIdx];
-        final long minimumChunkSize = row.getMinimumChunkSize(rowspan);
         final long preferredSize = row.getPreferredSize(rowspan);
 
-        distribute(minimumChunkSize, minChunkSizes, rowIdx, rowspan);
         distribute(preferredSize, preferredSizes, rowIdx, rowspan);
       }
     }
 
-    for (int i = 0; i < minChunkSizes.length; i++)
+    for (int i = 0; i < rowCount; i++)
     {
-      minimumChunkSize += minChunkSizes[i];
       preferredSize += preferredSizes[i];
 
       final TableRow row = rows[i];
-      row.setMinimumChunkSize(minChunkSizes[i]);
       row.setPreferredSize(preferredSizes[i]);
     }
 
@@ -137,6 +123,8 @@ public class SeparateRowModel extends AbstractRowModel
 
   public void validateActualSizes()
   {
+    validateSizes();
+
     int maxRowSpan = 0;
     final TableRow[] rows = getRows();
     final int rowCount = rows.length;
@@ -151,6 +139,8 @@ public class SeparateRowModel extends AbstractRowModel
     }
 
     // first, find out how much space is already used.
+    // This follows the classical model.
+
     final long[] trailingSizes = new long[rowCount];
     // For each rowspan ...
     for (int rowspan = 1; rowspan <= maxRowSpan; rowspan += 1)
@@ -167,7 +157,8 @@ public class SeparateRowModel extends AbstractRowModel
     for (int i = 0; i < trailingSizes.length; i++)
     {
       final TableRow row = rows[i];
-      row.setValidateSize(trailingSizes[i] + row.getValidatedLeadingSize());
+      final long validateSize = trailingSizes[i] + row.getValidatedLeadingSize();
+      row.setValidateSize(Math.max (row.getPreferredSize(), validateSize));
     }
   }
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BoxDefinition.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id: BoxDefinition.java,v 1.3 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
  */
 package org.jfree.layouting.renderer.model;
 
+import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.input.style.values.CSSColorValue;
 
 /**
  * A box definition.

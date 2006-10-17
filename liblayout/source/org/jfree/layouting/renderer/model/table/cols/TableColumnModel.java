@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnModel.java,v 1.2 2006/07/22 15:28:50 taqua Exp $
+ * $Id: TableColumnModel.java,v 1.3 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public interface TableColumnModel
 
   public int getColumnCount();
 
-  public void validate();
+//  public void validate();
 
   public void validateSizes();
 

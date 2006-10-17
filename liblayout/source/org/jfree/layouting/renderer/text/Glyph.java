@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Glyph.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
+ * $Id: Glyph.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.text;
-
-import org.jfree.util.Log;
 
 /**
  * A glyph represents a printable textual item. It can span more than one

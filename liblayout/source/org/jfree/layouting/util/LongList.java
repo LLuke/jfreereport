@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LongList.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
+ * $Id: LongList.java,v 1.2 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import java.io.Serializable;
 public class LongList implements Serializable, Cloneable
 {
   /** An empty array used to avoid object creation. */
-  private static final int[] EMPTY_ARRAY = new int[0];
+  private static final long[] EMPTY_ARRAY = new long[0];
   /** The array holding the list data. */
   private long[] data;
   /** The size of the list. */
@@ -164,14 +164,14 @@ public class LongList implements Serializable, Cloneable
    *
    * @return the list contents as array.
    */
-  public int[] toArray ()
+  public long[] toArray ()
   {
     if (size == 0)
     {
       return LongList.EMPTY_ARRAY;
     }
 
-    return (int[]) data.clone();
+    return (long[]) data.clone();
   }
 
   public Object clone() throws CloneNotSupportedException

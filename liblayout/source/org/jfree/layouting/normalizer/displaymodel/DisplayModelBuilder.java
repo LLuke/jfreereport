@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayModelBuilder.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id: DisplayModelBuilder.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,28 +41,27 @@
 
 package org.jfree.layouting.normalizer.displaymodel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
-import java.io.IOException;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.util.AttributeMap;
-import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayModel;
-import org.jfree.layouting.input.style.keys.box.Floating;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
+import org.jfree.layouting.input.style.keys.box.Floating;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.namespace.Namespaces;
+import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.normalizer.generator.ContentGenerator;
 import org.jfree.layouting.renderer.Renderer;
-import org.jfree.util.Log;
+import org.jfree.layouting.util.AttributeMap;
 
 /**
  * Builds the display model. The display model guarantees, that block and inline
@@ -233,7 +232,7 @@ public class DisplayModelBuilder implements ModelBuilder
       return;
     }
 
-    Log.debug ("Start element " + layoutContext.getTagName());
+//    Log.debug ("Start element " + layoutContext.getTagName());
 
     DisplayElement currentBox = getCurrentContext();
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StaticFontSizeProducer.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,10 @@
 package org.jfree.layouting.renderer.text.font;
 
 import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.util.geom.StrictDimension;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 
 /**

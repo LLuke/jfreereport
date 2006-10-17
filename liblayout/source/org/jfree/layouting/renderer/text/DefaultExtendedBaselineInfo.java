@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultExtendedBaselineInfo.java,v 1.1 2006/07/26 12:43:33 taqua Exp $
  *
  * Changes
  * -------
@@ -50,13 +50,9 @@ public class DefaultExtendedBaselineInfo implements ExtendedBaselineInfo
   private long[] baselines;
   private int dominantBaseline;
 
-  public DefaultExtendedBaselineInfo()
+  public DefaultExtendedBaselineInfo(int dominantBaseline)
   {
-    this.baselines = new long[8];
-  }
-
-  public void setDominantBaseline(final int dominantBaseline)
-  {
+    this.baselines = new long[ExtendedBaselineInfo.BASELINE_COUNT];
     this.dominantBaseline = dominantBaseline;
   }
 
@@ -72,11 +68,11 @@ public class DefaultExtendedBaselineInfo implements ExtendedBaselineInfo
 
   public void setBaselines(final long[] baselines)
   {
-    if (baselines.length != 8)
+    if (baselines.length != ExtendedBaselineInfo.BASELINE_COUNT)
     {
       throw new IllegalArgumentException();
     }
-    System.arraycopy(baselines, 0, this.baselines, 0, 8);
+    System.arraycopy(baselines, 0, this.baselines, 0, ExtendedBaselineInfo.BASELINE_COUNT);
   }
 
   public long getBaseline(int baseline)
@@ -86,9 +82,9 @@ public class DefaultExtendedBaselineInfo implements ExtendedBaselineInfo
 
   public ExtendedBaselineInfo shift(long s)
   {
-    DefaultExtendedBaselineInfo info = new DefaultExtendedBaselineInfo();
+    DefaultExtendedBaselineInfo info =
+        new DefaultExtendedBaselineInfo(dominantBaseline);
     info.baselines = (long[]) baselines.clone();
-    info.dominantBaseline = dominantBaseline;
     for (int i = 0; i < baselines.length; i++)
     {
       info.baselines[i] += s;

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnModel.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
+ * $Id: SpearateColumnModel.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.renderer.model.table.cols;
 
 import org.jfree.layouting.renderer.border.RenderLength;
+import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 
 /**
@@ -48,11 +49,14 @@ import org.jfree.layouting.renderer.model.table.TableRenderBox;
  *
  * @author Thomas Morgner
  */
-public class SpearateColumnModel extends AbstractColumnModel implements TableColumnModel
+public class SpearateColumnModel extends AbstractColumnModel
 {
-  private boolean validatedSize;
+  private long validationTrack;
+
   private long preferredSize;
+  private long maxBoxSize;
   private long minimumChunkSize;
+
   private long borderSpacing;
 
   public SpearateColumnModel(final TableRenderBox table)
@@ -63,12 +67,12 @@ public class SpearateColumnModel extends AbstractColumnModel implements TableCol
 
   public void validateSizes()
   {
-    if (isValidated() && validatedSize)
+    final TableRenderBox table = getTable();
+    if (isValidated() && (validationTrack == table.getChangeTracker()))
     {
       return;
     }
 
-    validate();
 
     int maxColSpan = 0;
     final TableColumn[] columns = getColumns();
@@ -76,23 +80,36 @@ public class SpearateColumnModel extends AbstractColumnModel implements TableCol
     for (int i = 0; i < colCount; i++)
     {
       final TableColumn column = columns[i];
-      final int cs = column.getMaximumColspan();
+      final int cs = column.getMaxColspan();
       if (cs > maxColSpan)
       {
         maxColSpan = cs;
       }
     }
 
-    final RenderLength borderSpacingLength = getTable().getBorderSpacing();
-    borderSpacing = borderSpacingLength.resolve
-            (getTable().getComputedBlockContextWidth());
+    if (colCount == 0)
+    {
+      throw new IllegalStateException
+              ("Not layoutable; A table cannot be completely empty.");
+    }
 
-    minimumChunkSize = (colCount - 1) * borderSpacing;
-    preferredSize = (colCount - 1) * borderSpacing;
+    final NodeLayoutProperties nlp = table.getNodeLayoutProperties();
+    final RenderLength blockContextWidth = nlp.getBlockContextWidth();
+    final long bcw = blockContextWidth.resolve(0);
+
+    final RenderLength borderSpacingLength = table.getBorderSpacing();
+    borderSpacing = borderSpacingLength.resolve(bcw);
+
+    final long totalBorderSpacing = (colCount - 1) * borderSpacing;
+    minimumChunkSize = totalBorderSpacing;
+    maxBoxSize = totalBorderSpacing;
+    preferredSize = totalBorderSpacing;
 
     // first, find out how much space is already used.
     final long[] minChunkSizes = new long[colCount];
+    final long[] maxBoxSizes = new long[colCount];
     final long[] preferredSizes = new long[colCount];
+
     // For each colspan ...
     for (int colspan = 1; colspan <= maxColSpan; colspan += 1)
     {
@@ -100,24 +117,67 @@ public class SpearateColumnModel extends AbstractColumnModel implements TableCol
       {
         final TableColumn column = columns[colIdx];
         final long minimumChunkSize = column.getMinimumChunkSize(colspan);
-        final long preferredSize = column.getPreferredSize(colspan);
+        final long maxBoxSize = column.getMaximumBoxWidth(colspan);
+        final long preferredSize = column.getPreferredWidth(colspan);
 
         distribute(minimumChunkSize, minChunkSizes, colIdx, colspan);
         distribute(preferredSize, preferredSizes, colIdx, colspan);
+        distribute(maxBoxSize, maxBoxSizes, colIdx, colspan);
       }
     }
 
     for (int i = 0; i < minChunkSizes.length; i++)
     {
-      minimumChunkSize += minChunkSizes[i];
-      preferredSize += preferredSizes[i];
-
       final TableColumn column = columns[i];
-      column.setMinimumChunkSize(minChunkSizes[i]);
-      column.setPreferredSize(preferredSizes[i]);
+
+      final long cmin = minChunkSizes[i];
+      final long cpref = preferredSizes[i];
+      final long cmax = maxBoxSizes[i];
+      final long width = Math.max(cmin, cpref);
+
+      minimumChunkSize += cmin;
+      preferredSize += width;
+      maxBoxSize += cmax;
+
+      if (column.isValidated())
+      {
+        continue;
+      }
+
+      column.setComputedPreferredSize(cpref);
+      column.setComputedMinChunkSize(cmin);
+      column.setComputedMaximumWidth(cmax);
+      column.setEffectiveSize(width);
+      column.setValidated(true);
     }
 
-    validatedSize = true;
+    // Table-AutoWidth means, the tables width is based on the content of the
+    // cells. The minimum chunk size and the preferred sizes are the only
+    // metrics used in that computation.
+    //
+    // If the table's width is fixed, then we have to shrink or expand the
+    // columns to fit that additional requirement.
+    final RenderLength tableCWidth = table.getNodeLayoutProperties().getComputedWidth();
+    if (tableCWidth != RenderLength.AUTO)
+    {
+      final long tableSize = Math.max(tableCWidth.resolve(0), minimumChunkSize);
+      // the space we are able to distribute .. (This can be negative, if we
+      // have to remove space to get to the defined table size!)
+      // The space that is available for the content from the cells. The
+      // border-spacing eats some space as well (already in the pref-size-value)
+      final long extraSpace = tableSize - preferredSize;
+      final long extraSpacePerCol = extraSpace / minChunkSizes.length;
+      for (int i = 0; i < minChunkSizes.length; i++)
+      {
+        final TableColumn column = columns[i];
+        final long colSize = column.getEffectiveSize() + extraSpacePerCol;
+        column.setEffectiveSize(colSize);
+      }
+
+      preferredSize = tableSize;
+    }
+
+    validationTrack = table.getChangeTracker();
   }
 
   public long getPreferredSize()
@@ -125,17 +185,28 @@ public class SpearateColumnModel extends AbstractColumnModel implements TableCol
     return preferredSize;
   }
 
+  public long getMaximumBoxSize()
+  {
+    return maxBoxSize;
+  }
+
   public long getMinimumChunkSize()
   {
     return minimumChunkSize;
   }
 
-  private void distribute (long usedSpace, long[] allSpaces,
-                           int colIdx, int colspanX)
+  private void distribute(final long usedSpace,
+                          final long[] allSpaces,
+                          final int colIdx,
+                          final int colspan)
   {
-    int maxColspan = Math.min (colIdx + colspanX, allSpaces.length) - colIdx;
-    long usedPrev = 0;
+    final int maxColspan = Math.min(colIdx + colspan, allSpaces.length) - colIdx;
     final int maxSize = Math.min(allSpaces.length, colIdx + maxColspan);
+
+    // compute the space occupied by all columns of the range.
+    // That has been computed earlier (for 'colspan - 1') and is zero if
+    // there is no colspan at all
+    long usedPrev = 0;
     for (int i = colIdx; i < maxSize; i++)
     {
       usedPrev += allSpaces[i];
@@ -143,7 +214,8 @@ public class SpearateColumnModel extends AbstractColumnModel implements TableCol
 
     if (usedSpace <= usedPrev)
     {
-      // no need to expand the cells.
+      // no need to expand the cells, as the requested size for the whole
+      // span will be less than the size occupied by all the columns ..
       return;
     }
 

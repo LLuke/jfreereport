@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CollapseTest.java,v 1.1 2006/07/17 13:28:34 taqua Exp $
  *
  * Changes
  * -------
@@ -41,29 +41,28 @@
 package org.jfree.layouting.renderer.text.junit;
 
 import junit.framework.TestCase;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.LibLayoutBoot;
+import org.jfree.layouting.layouter.context.ContextId;
+import org.jfree.layouting.layouter.context.DefaultElementContext;
+import org.jfree.layouting.layouter.context.DefaultLayoutContext;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
+import org.jfree.layouting.renderer.text.RenderableTextFactory;
+import org.jfree.layouting.renderer.text.Spacing;
 import org.jfree.layouting.renderer.text.SpacingProducer;
 import org.jfree.layouting.renderer.text.StaticSpacingProducer;
-import org.jfree.layouting.renderer.text.Spacing;
-import org.jfree.layouting.renderer.text.RenderableTextFactory;
-import org.jfree.layouting.renderer.text.whitespace.WhiteSpaceFilter;
-import org.jfree.layouting.renderer.text.whitespace.PreserveWhiteSpaceFilter;
-import org.jfree.layouting.renderer.text.whitespace.CollapseWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.breaks.BreakOpportunityProducer;
 import org.jfree.layouting.renderer.text.breaks.WordBreakProducer;
 import org.jfree.layouting.renderer.text.font.FontSizeProducer;
-import org.jfree.layouting.renderer.text.font.StaticFontSizeProducer;
 import org.jfree.layouting.renderer.text.font.KerningProducer;
 import org.jfree.layouting.renderer.text.font.NoKerningProducer;
-import org.jfree.layouting.renderer.model.RenderableText;
-import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.LibLayoutBoot;
+import org.jfree.layouting.renderer.text.font.StaticFontSizeProducer;
+import org.jfree.layouting.renderer.text.whitespace.CollapseWhiteSpaceFilter;
+import org.jfree.layouting.renderer.text.whitespace.WhiteSpaceFilter;
 import org.jfree.layouting.util.AttributeMap;
-import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.context.DefaultElementContext;
-import org.jfree.layouting.layouter.context.DefaultLayoutContext;
-import org.jfree.layouting.layouter.context.ContextId;
 
 /**
  * Creation-Date: 14.07.2006, 14:12:02

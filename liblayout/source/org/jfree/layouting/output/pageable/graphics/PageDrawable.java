@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.9 2006/07/26 16:59:47 taqua Exp $
+ * $Id: PageDrawable.java,v 1.10 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -54,12 +54,16 @@ import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.output.pageable.BorderShapeFactory;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.RenderNodeState;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
+import org.jfree.layouting.renderer.model.ParagraphRenderBox;
+import org.jfree.layouting.renderer.model.ParagraphPoolBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
-import org.jfree.layouting.renderer.model.table.TableCell;
+import org.jfree.layouting.renderer.model.table.TableRowInfoStructure;
+import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
+import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
+import org.jfree.layouting.renderer.model.table.cells.TableCell;
 import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.text.Glyph;
@@ -104,16 +108,48 @@ public class PageDrawable implements Drawable
     drawBox(g2, rootBox, 0);
   }
 
+  private void drawDebugBox (Graphics2D g2, RenderBox box)
+  {
+    if (box instanceof TableCellRenderBox)
+    {
+      g2.setPaint(Color.yellow);
+    }
+    else if (box instanceof TableRowRenderBox)
+    {
+      g2.setPaint(Color.green);
+    }
+    else if (box instanceof TableSectionRenderBox)
+    {
+      g2.setPaint(Color.red);
+    }
+    else if (box instanceof TableRenderBox)
+    {
+      g2.setPaint(Color.blue);
+    }
+    else if (box instanceof ParagraphRenderBox)
+    {
+      g2.setPaint(Color.magenta);
+    }
+    else if (box instanceof ParagraphPoolBox)
+    {
+      g2.setPaint(Color.orange);
+    }
+    else
+    {
+      g2.setPaint(Color.lightGray);
+    }
+    final int x = (int) (box.getX() / 1000);
+    final int y = (int) (box.getY() / 1000);
+    final int w = (int) (box.getWidth() / 1000);
+    final int h = (int) (box.getHeight() / 1000);
+    g2.drawRect(x, y, w, h);
+  }
 
   public void drawBox(Graphics2D g2, RenderBox box, int level)
   {
-    if (box.getState() == RenderNodeState.UNCLEAN)
-    {
-      Log.warn("Box is unclean: " + level + ": " + box + " (" + box.getParent() + ")");
-    }
-
-    BorderShapeFactory borderShapeFactory = new BorderShapeFactory(box);
-    borderShapeFactory.generateBorder(g2);
+    //BorderShapeFactory borderShapeFactory = new BorderShapeFactory(box);
+    //borderShapeFactory.generateBorder(g2);
+    drawDebugBox(g2, box);
 
     RenderNode childs = box.getFirstChild();
     while (childs != null)
@@ -239,27 +275,35 @@ public class PageDrawable implements Drawable
     b.append(box.getWidth());
     b.append(", height=");
     b.append(box.getHeight());
-    b.append(", state=");
-    b.append(box.getState());
-    b.append(",\n                           borders=");
-    b.append(box.getBorderWidths());
-    b.append(",\n                           padding=");
-    b.append(box.getPaddings());
-    b.append(",\n                           absolute-margin=");
-    b.append(box.getAbsoluteMargins());
-    b.append(",\n                           effective-margin=");
-    b.append(box.getEffectiveMargins());
     b.append("}");
+    Log.debug(b.toString());
 
+    b = new StringBuffer();
+    for (int i = 0; i < level; i++)
+    {
+      b.append("   ");
+    }
+    b.append("- nodeLayoutProperties=");
+    b.append(box.getNodeLayoutProperties());
+    Log.debug(b.toString());
+
+    b = new StringBuffer();
+    for (int i = 0; i < level; i++)
+    {
+      b.append("   ");
+    }
+    b.append("- boxLayoutProperties=");
+    b.append(box.getBoxLayoutProperties());
     Log.debug(b.toString());
 
     if (box instanceof TableRowRenderBox)
     {
       TableRowRenderBox row = (TableRowRenderBox) box;
-      final TableCell[] cells = row.getCells();
-      for (int i = 0; i < cells.length; i++)
+      final TableRowInfoStructure rowInfoStructure = row.getRowInfoStructure();
+
+      for (int i = 0; i < rowInfoStructure.getCellCount(); i++)
       {
-        TableCell cell = cells[i];
+        TableCell cell = rowInfoStructure.getCellAt(i);
         Log.debug ("CELL: " + i + " = " + cell.getRowSpan() + " " + cell.getColSpan() + " " + cell);
       }
     }
@@ -270,18 +314,34 @@ public class PageDrawable implements Drawable
       for (int i = 0; i < columnModel.getColumnCount(); i++)
       {
         final TableColumn col = columnModel.getColumn(i);
-        for (int cs = 1; cs < 3; cs++)
-        {
-          Log.debug ("* COLUMN: " + i + "(" + cs + ") " +
-                  col.getPreferredSize(cs) + " " +
-                  col.getMinimumChunkSize(cs));
-        }
-        Log.debug ("COLUMN: " + i + " " +
-                col.getPreferredSize() + " " +
-                col.getMinimumChunkSize());
+        Log.debug ("COLUMN: EffectiveSize: " + col.getEffectiveSize() +  " Computed Max Width: " + col.getComputedMaximumWidth() + " Computed ChunkSize: " + col.getComputedMinChunkSize());
+//        for (int cs = 1; cs < 3; cs++)
+//        {
+//          Log.debug ("* COLUMN: " + i + "(" + cs + ") " +
+//                  col.getPreferredSize(cs) + " " +
+//                  col.getMinimumChunkSize(cs));
+//        }
+//        Log.debug ("COLUMN: " + i + " " +
+//                col.getPreferredSize() + " " +
+//                col.getMinimumChunkSize());
       }
     }
+    else if (box instanceof TableCellRenderBox)
+    {
+      TableCellRenderBox cellBox = (TableCellRenderBox) box;
+      Log.debug ("CELL: Position: " + cellBox.getColumnIndex());
+    }
+//    else if (box instanceof ParagraphRenderBox)
+//    {
+//      ParagraphRenderBox paraBox = (ParagraphRenderBox) box;
+//      printBox(paraBox.getLineboxContainer(), level + 1);
+//    }
 
+    printChilds(box, level);
+  }
+
+  private void printChilds(final RenderBox box, final int level)
+  {
     RenderNode childs = box.getFirstChild();
     while (childs != null)
     {
@@ -320,13 +380,18 @@ public class PageDrawable implements Drawable
     b.append(node.getWidth());
     b.append(", height=");
     b.append(node.getHeight());
-    b.append("',\n                           absolute-margin=");
-    b.append(node.getAbsoluteMargins());
-    b.append(",\n                           effective-margin=");
-    b.append(node.getEffectiveMargins());
     b.append("}");
     Log.debug(b.toString());
 
+
+    b = new StringBuffer();
+    for (int i = 0; i < level; i++)
+    {
+      b.append("   ");
+    }
+    b.append("- nodeLayoutProperties=");
+    b.append(node.getNodeLayoutProperties());
+    Log.debug(b.toString());
   }
 
   private void printText(final RenderableText text, final int level)
@@ -349,19 +414,17 @@ public class PageDrawable implements Drawable
     b.append(", height=");
     b.append(text.getHeight());
     b.append(", text='");
+    b.append(text.getRawText());
+    b.append("'}");
+    Log.debug(b.toString());
 
-    Glyph[] gs = text.getGlyphs();
-    int length = text.getOffset() + text.getLength();
-    for (int i = text.getOffset(); i < length; i++)
+    b = new StringBuffer();
+    for (int i = 0; i < level; i++)
     {
-      Glyph g = gs[i];
-      b.append(glpyhToString(g));
+      b.append("   ");
     }
-    b.append("',\n                           absolute-margin=");
-    b.append(text.getAbsoluteMargins());
-    b.append(",\n                           effective-margin=");
-    b.append(text.getEffectiveMargins());
-    b.append("}");
+    b.append("- nodeLayoutProperties=");
+    b.append(text.getNodeLayoutProperties());
     Log.debug(b.toString());
   }
 

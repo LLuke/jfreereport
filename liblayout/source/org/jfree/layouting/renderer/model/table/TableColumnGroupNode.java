@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnGroupNode.java,v 1.5 2006/07/27 17:56:27 taqua Exp $
+ * $Id: TableColumnGroupNode.java,v 1.6 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -40,16 +40,14 @@
  */
 package org.jfree.layouting.renderer.model.table;
 
-import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.renderer.model.RenderNodeState;
-import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
  * Creation-Date: 17.07.2006, 18:32:42
@@ -60,10 +58,14 @@ public class TableColumnGroupNode extends RenderBox
 {
   private int colspan;
 
-  public TableColumnGroupNode(final BoxDefinition boxDefinition,
-                              final LayoutContext context)
+  public TableColumnGroupNode(final BoxDefinition boxDefinition)
   {
-    super(boxDefinition, context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN));
+    super(boxDefinition);
+  }
+
+  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  {
+    super.appyStyle(context, metaData);
     final CSSValue value = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
     this.colspan = (int) CSSValueResolverUtility.getNumericValue(value, 1);
   }
@@ -93,38 +95,4 @@ public class TableColumnGroupNode extends RenderBox
     return true;
   }
 
-  protected boolean isIgnorableForMargins()
-  {
-    return true;
-  }
-
-  public void validate(RenderNodeState state)
-  {
-    setState(RenderNodeState.FINISHED);
-  }
-
-  /**
-   * Returns the baseline info for the given node. This can be null, if the node
-   * does not have any baseline info.
-   *
-   * @return
-   */
-  public ExtendedBaselineInfo getBaselineInfo()
-  {
-    return null;
-  }
-
-  /**
-   * This is always a split along the document's major axis. Until we have a
-   * really 100% parametrized renderer model, we assume VERTICAL here and are
-   * happy.
-   *
-   * @param position
-   * @param target
-   * @return
-   */
-  public RenderNode[] splitForPrint(long position, RenderNode[] target)
-  {
-    throw new UnsupportedOperationException("This is a virtual box.");
-  }
 }

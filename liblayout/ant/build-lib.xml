@@ -108,7 +108,7 @@
       <!-- import all java files for compilation -->
       <copy todir="${builddir}/src/@{module-path}/">
         <fileset dir="@{source-dir}/@{module-path}">
-          <exclude name="**/junit/**"/>
+<!--          <exclude name="**/junit/**"/> -->
           <include name="*.java"/>
         </fileset>
       </copy>
@@ -176,7 +176,7 @@
       <!-- import all java files for compilation -->
       <copy todir="${builddir}/src">
         <fileset dir="@{source-dir}">
-          <exclude name="**/junit/**"/>
+<!--          <exclude name="**/junit/**"/> -->
           <exclude name="@{module-path}/**"/>
           <include name="**/*.java"/>
         </fileset>
@@ -241,7 +241,7 @@
       <!-- import all java files for compilation -->
       <copy todir="${builddir}/src">
         <fileset dir="@{source-dir}">
-          <exclude name="**/junit/**"/>
+<!--          <exclude name="**/junit/**"/> -->
           <include name="**/*.java"/>
         </fileset>
       </copy>

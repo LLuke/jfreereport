@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageGrid.java,v 1.1 2006/07/26 17:00:47 taqua Exp $
+ * $Id: PageGrid.java,v 1.2 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.model.page;
-
-import org.jfree.layouting.renderer.model.RenderBox;
 
 /**
  * The page grid describes the logical page. That grid consists of PageGridAreas,

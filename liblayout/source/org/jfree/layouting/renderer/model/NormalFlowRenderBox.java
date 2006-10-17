@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NormalFlowRenderBox.java,v 1.8 2006/07/27 17:56:27 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.9 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,6 @@ package org.jfree.layouting.renderer.model;
 import java.util.ArrayList;
 
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.util.Log;
 
 /**
  * A box that defines its own normal flow. All absolutly positioned or
@@ -67,10 +64,9 @@ public class NormalFlowRenderBox extends BlockRenderBox
   private SpacerRenderNode placeHolder;
   private ArrayList subFlows;
 
-  public NormalFlowRenderBox(final BoxDefinition boxDefinition,
-                             final CSSValue valign)
+  public NormalFlowRenderBox(final BoxDefinition boxDefinition)
   {
-    super(boxDefinition, valign);
+    super(boxDefinition);
     placeHolder = new SpacerRenderNode(0, 0, true);
     placeHolderId = getPlaceHolder().getInstanceId();
     subFlows = new ArrayList();
@@ -178,84 +174,9 @@ public class NormalFlowRenderBox extends BlockRenderBox
     return super.getInsertationPoint();
   }
 
-  /**
-   * Checks, whether a validate run would succeed. Under certain conditions, for
-   * instance if there is a auto-width component open, it is not possible to
-   * perform a layout run, unless that element has been closed.
-   * <p/>
-   * Generally speaking: An element cannot be layouted, if <ul> <li>the element
-   * contains childs, which cannot be layouted,</li> <li>the element has
-   * auto-width or depends on an auto-width element,</li> <li>the element is a
-   * floating or positioned element, or is a child of an floating or positioned
-   * element.</li> </ul>
-   *
-   * @return
-   */
-  public boolean isValidatable()
-  {
-    if (isOpen() == false)
-    {
-      return true;
-    }
-
-    for (int i = 0; i < subFlows.size(); i++)
-    {
-      NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
-      if (box.isOpen())
-      {
-        Log.debug ("Not validatable: Open SubFlow");
-        return false;
-      }
-    }
-
-    // the root flow always has the width of 100% ..
-    final RenderBox parent = getParent();
-    if (parent instanceof LogicalPageBox == false)
-    {
-      if (RenderLength.AUTO.equals(getBoxDefinition().getPreferredWidth()))
-      {
-        Log.debug ("Not validatable: NormalFlow is an Auto-Width Box");
-        return false;
-      }
-    }
-
-    RenderNode child = getLastChild();
-    while (child != null)
-    {
-      if (child.isValidatable() == false)
-      {
-        return false;
-      }
-      child = child.getPrev();
-    }
-
-    return true;
-  }
-
   public NormalFlowRenderBox getNormalFlow()
   {
     return this;
-  }
-
-  public void validate(RenderNodeState upTo)
-  {
-    super.validate(upTo);
-    for (int i = 0; i < subFlows.size(); i++)
-    {
-      NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
-      if (box.isOpen() == false)
-      {
-        box.validate(upTo);
-      }
-    }
-
-    Log.debug ("VALIDATE ON NOF " + upTo);
-    setState(upTo);
-  }
-
-  public long getEffectiveLayoutSize (int axis)
-  {
-    return getPreferredSize(axis);
   }
 
 }

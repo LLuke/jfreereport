@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: VerticalAlignReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,21 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.line;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import org.jfree.layouting.input.style.keys.line.VerticalAlign;
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.keys.line.AlignmentBaseline;
+import org.jfree.layouting.input.style.keys.line.BaselineShift;
 import org.jfree.layouting.input.style.parser.CSSValueFactory;
+import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSAutoValue;
+import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**
@@ -55,6 +64,7 @@ import org.w3c.css.sac.LexicalUnit;
  * @author Thomas Morgner
  */
 public class VerticalAlignReadHandler extends OneOfConstantsReadHandler
+  implements CSSCompoundValueReadHandler
 {
   public VerticalAlignReadHandler()
   {
@@ -85,6 +95,95 @@ public class VerticalAlignReadHandler extends OneOfConstantsReadHandler
     }
 
     return CSSValueFactory.createLengthValue(value);
+  }
 
+  /**
+   * Parses the LexicalUnit and returns a map of (StyleKey, CSSValue) pairs.
+   *
+   * @param unit
+   * @return
+   */
+  public Map createValues(LexicalUnit unit)
+  {
+    CSSValue value = lookupValue(unit);
+    HashMap map = new HashMap();
+    map.put(LineStyleKeys.VERTICAL_ALIGN, value);
+    map.put(LineStyleKeys.ALIGNMENT_ADJUST, CSSAutoValue.getInstance());
+    map.put(LineStyleKeys.DOMINANT_BASELINE, CSSAutoValue.getInstance());
+
+    if (CSSAutoValue.getInstance().equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.BASELINE);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.BASELINE);
+    }
+    else if (VerticalAlign.BASELINE.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.USE_SCRIPT);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.BASELINE);
+    }
+    else if (VerticalAlign.BOTTOM.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.AFTER_EDGE);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.BASELINE);
+    }
+    else if (VerticalAlign.CENTRAL.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.CENTRAL);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.BASELINE);
+    }
+    else if (VerticalAlign.MIDDLE.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.MIDDLE);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.BASELINE);
+    }
+    else if (VerticalAlign.SUB.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.USE_SCRIPT);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.SUB);
+    }
+    else if (VerticalAlign.SUPER.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.USE_SCRIPT);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.SUPER);
+    }
+    else if (VerticalAlign.TEXT_BOTTOM.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.TEXT_AFTER_EDGE);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.BASELINE);
+    }
+    else if (VerticalAlign.TEXT_TOP.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.TEXT_BEFORE_EDGE);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.BASELINE);
+    }
+    else if (VerticalAlign.TOP.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.BEFORE_EDGE);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.BASELINE);
+    }
+    else if (VerticalAlign.USE_SCRIPT.equals(value))
+    {
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.USE_SCRIPT);
+      map.put(LineStyleKeys.BASELINE_SHIFT, CSSAutoValue.getInstance());
+    }
+    else
+    {
+      // Todo: handle the case when valign is a length or percentage
+      map.put(LineStyleKeys.ALIGNMENT_BASELINE, AlignmentBaseline.BASELINE);
+      map.put(LineStyleKeys.BASELINE_SHIFT, BaselineShift.BASELINE);
+      map.put(LineStyleKeys.ALIGNMENT_ADJUST, value);
+    }
+    return map;
+  }
+
+  public StyleKey[] getAffectedKeys()
+  {
+    return new StyleKey[] {
+        LineStyleKeys.VERTICAL_ALIGN,
+        LineStyleKeys.ALIGNMENT_BASELINE,
+        LineStyleKeys.DOMINANT_BASELINE,
+        LineStyleKeys.ALIGNMENT_ADJUST,
+        LineStyleKeys.BASELINE_SHIFT
+    };
   }
 }

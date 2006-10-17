@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnNode.java,v 1.2 2006/07/18 17:26:32 taqua Exp $
+ * $Id: TableColumnNode.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public class TableColumnNode extends SpacerRenderNode
     return colspan;
   }
 
-  public BoxDefinition getDefinition()
+  public BoxDefinition getBoxDefinition()
   {
     return definition;
   }

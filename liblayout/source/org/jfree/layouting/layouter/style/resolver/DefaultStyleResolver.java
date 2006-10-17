@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultStyleResolver.java,v 1.10 2006/07/26 12:09:51 taqua Exp $
+ * $Id: DefaultStyleResolver.java,v 1.11 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -46,15 +46,14 @@ import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
-import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.input.style.CSSDeclarationRule;
+import org.jfree.layouting.input.style.CSSPageAreaRule;
+import org.jfree.layouting.input.style.CSSPageRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
+import org.jfree.layouting.input.style.PageAreaType;
+import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleRule;
-import org.jfree.layouting.input.style.PseudoPage;
-import org.jfree.layouting.input.style.CSSPageRule;
-import org.jfree.layouting.input.style.CSSPageAreaRule;
-import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
 import org.jfree.layouting.input.style.selectors.SelectorWeight;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
@@ -237,8 +236,6 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
       performCompleteStyleAttr(element, style);
     }
 
-    Log.debug ("Vertical Align: " + style.getValue(LineStyleKeys.VERTICAL_ALIGN) + " on Element " + layoutContext.getTagName());
-
     // Stage 2: Compute the 'specified' set of values.
     // Find all explicitly inherited styles and add them from the parent.
     final CSSInheritValue inheritInstance = CSSInheritValue.getInstance();
@@ -252,12 +249,9 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
       }
     }
 
-    Log.debug ("Vertical Align: " + style.getValue(LineStyleKeys.VERTICAL_ALIGN) + " on Element " + layoutContext.getTagName());
-
     // Stage 3:  Compute the computed value set.
     ResolverFactory.getInstance().performResolve
             (getLayoutProcess(), element, style);
-
   }
 
   /**

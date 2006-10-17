@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IndexedRenderBox.java,v 1.2 2006/07/26 11:52:07 taqua Exp $
+ * $Id: IndexedRenderBox.java,v 1.3 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -42,11 +42,9 @@ package org.jfree.layouting.renderer.model;
 
 import java.util.HashMap;
 
-import org.jfree.layouting.input.style.keys.line.VerticalAlign;
-
 /**
  * A renderbox, that maintains the build-order and allows to replace elements
- * by its name.
+ * by their name.
  *
  * @author Thomas Morgner
  */
@@ -56,8 +54,13 @@ public class IndexedRenderBox extends BlockRenderBox
 
   public IndexedRenderBox(final BoxDefinition boxDefinition)
   {
-    super(boxDefinition, VerticalAlign.TOP);
+    super(boxDefinition);
     childs = new HashMap();
+  }
+
+  public RenderNode getElement (String name)
+  {
+    return (RenderNode) childs.get(name);
   }
 
   public void setElement (String name, RenderNode child)

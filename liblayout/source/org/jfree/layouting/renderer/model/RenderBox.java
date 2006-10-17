@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.15 2006/07/29 18:57:13 taqua Exp $
+ * $Id: RenderBox.java,v 1.16 2006/07/30 13:13:47 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,18 @@
  */
 package org.jfree.layouting.renderer.model;
 
+import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.keys.text.WhitespaceCollapse;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.renderer.Loggers;
+import org.jfree.layouting.layouter.context.FontSpecification;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.border.Border;
-import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.page.RenderPageContext;
-import org.jfree.layouting.util.geom.StrictInsets;
-import org.jfree.util.Log;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
+import org.jfree.layouting.renderer.text.TextUtility;
 
 /**
  * A render-box corresponds to elements in a DOM tree.
@@ -71,54 +76,71 @@ public abstract class RenderBox extends RenderNode
   private RenderNode firstChild;
   private RenderNode lastChild;
 
-  private StrictInsets paddings;
-  private StrictInsets borderWidths;
-
-  private boolean paddingsValidated;
-  private boolean bordersValidated;
   private boolean open;
-  private CSSValue verticalAlignment;
+  private boolean preserveSpace;
   private RenderPageContext renderPageContext;
+  private BoxLayoutProperties boxLayoutProperties;
 
-  public RenderBox(final BoxDefinition boxDefinition,
-                   final CSSValue verticalAlign)
+  private long contentAreaX1;
+  private long contentAreaX2;
+
+  private CSSValue dominantBaseline;
+  private ExtendedBaselineInfo nominalBaselineInfo;
+  private ExtendedBaselineInfo baselineInfo;
+
+  public RenderBox(final BoxDefinition boxDefinition)
   {
     if (boxDefinition == null)
     {
       throw new NullPointerException();
     }
-    if (verticalAlign == null)
-    {
-      throw new NullPointerException();
-    }
     this.boxDefinition = boxDefinition;
-    this.paddings = new StrictInsets();
-    this.borderWidths = new StrictInsets();
     this.open = true;
-    this.verticalAlignment = verticalAlign;
-
+    this.boxLayoutProperties = new BoxLayoutProperties();
   }
 
-  public CSSValue getVerticalAlignment()
+  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
   {
-    return verticalAlignment;
+    super.appyStyle(context, metaData);
+
+    this.preserveSpace = WhitespaceCollapse.PRESERVE.equals
+        (context.getStyle().getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE));
+    this.dominantBaseline =
+        context.getStyle().getValue(LineStyleKeys.DOMINANT_BASELINE);
+
+    final FontSpecification fontSpecification = context.getFontSpecification();
+    final FontMetrics fontMetrics = metaData.getFontMetrics(fontSpecification);
+    nominalBaselineInfo = TextUtility.createBaselineInfo('x', fontMetrics);
+  }
+
+  public ExtendedBaselineInfo getBaselineInfo()
+  {
+    return baselineInfo;
+  }
+
+  public void setBaselineInfo(final ExtendedBaselineInfo baselineInfo)
+  {
+    this.baselineInfo = baselineInfo;
+  }
+
+  public ExtendedBaselineInfo getNominalBaselineInfo()
+  {
+    return nominalBaselineInfo;
+  }
+
+  public CSSValue getDominantBaseline()
+  {
+    return dominantBaseline;
+  }
+
+  public boolean isPreserveSpace()
+  {
+    return preserveSpace;
   }
 
   public BoxDefinition getBoxDefinition()
   {
     return boxDefinition;
-  }
-
-  protected void setBoxDefinition(final BoxDefinition boxDefinition)
-  {
-    if (boxDefinition == null)
-    {
-      throw new NullPointerException();
-    }
-    this.boxDefinition = boxDefinition;
-    this.paddingsValidated = false;
-    this.bordersValidated = false;
-    invalidateMargins();
   }
 
   public RenderNode getFirstChild()
@@ -141,12 +163,12 @@ public abstract class RenderBox extends RenderNode
     this.lastChild = lastChild;
   }
 
-  protected void addGeneratedChild(final RenderNode child)
+  public void addGeneratedChild(final RenderNode child)
   {
     if (child == null)
     {
       throw new NullPointerException
-              ("Child to be added must not be null.");
+          ("Child to be added must not be null.");
     }
 
     if (lastChild != null)
@@ -169,7 +191,7 @@ public abstract class RenderBox extends RenderNode
     {
       child.freeze();
     }
-    validate(RenderNodeState.PENDING);
+    child.updateChangeTracker();
   }
 
   public void addChild(final RenderNode child)
@@ -177,13 +199,13 @@ public abstract class RenderBox extends RenderNode
     if (child == null)
     {
       throw new NullPointerException
-              ("Child to be added must not be null.");
+          ("Child to be added must not be null.");
     }
 
     if (isOpen() == false)
     {
       throw new IllegalStateException
-              ("Adding content to an already closed element.");
+          ("Adding content to an already closed element.");
     }
 
     if (lastChild != null)
@@ -206,8 +228,7 @@ public abstract class RenderBox extends RenderNode
       child.freeze();
     }
 
-    validate(RenderNodeState.PENDING);
-    setState(RenderNodeState.PENDING);
+    child.updateChangeTracker();
   }
 
   /**
@@ -230,6 +251,7 @@ public abstract class RenderBox extends RenderNode
         target.setParent(this);
         target.setPrev(null);
         target.setNext(null);
+        target.updateChangeTracker();
         return;
       }
 
@@ -239,6 +261,7 @@ public abstract class RenderBox extends RenderNode
       target.setParent(this);
       target.setPrev(null);
       target.setNext(firstChild);
+      target.updateChangeTracker();
       return;
     }
 
@@ -260,6 +283,7 @@ public abstract class RenderBox extends RenderNode
     {
       setLastChild(target);
     }
+    target.updateChangeTracker();
   }
 
   /**
@@ -281,6 +305,7 @@ public abstract class RenderBox extends RenderNode
         target.setNext(null);
         setFirstChild(target);
         setLastChild(target);
+        target.updateChangeTracker();
         return;
       }
 
@@ -289,6 +314,7 @@ public abstract class RenderBox extends RenderNode
       target.setPrev(lastChild);
       target.setNext(null);
       lastChild.setNext(target);
+      target.updateChangeTracker();
       return;
     }
 
@@ -310,6 +336,7 @@ public abstract class RenderBox extends RenderNode
     {
       setFirstChild(target);
     }
+    target.updateChangeTracker();
   }
 
   public void replaceChild(final RenderNode old, final RenderNode replacement)
@@ -342,6 +369,8 @@ public abstract class RenderBox extends RenderNode
 
     if (changed)
     {
+      old.updateChangeTracker();
+      replacement.updateChangeTracker();
       return;
     }
 
@@ -360,8 +389,9 @@ public abstract class RenderBox extends RenderNode
     }
 
     replacement.setParent(this);
-    validate(RenderNodeState.PENDING);
-    setState(RenderNodeState.PENDING);
+
+    old.updateChangeTracker();
+    replacement.updateChangeTracker();
   }
 
 
@@ -386,7 +416,7 @@ public abstract class RenderBox extends RenderNode
         return;
       }
       throw new IllegalArgumentException
-              ("Thou shall not use the replace method to insert new elements!");
+          ("Thou shall not use the replace method to insert new elements!");
     }
 
     // first, connect all replacements ...
@@ -443,8 +473,12 @@ public abstract class RenderBox extends RenderNode
       firstChild.setNext(null);
       firstChild.setPrev(null);
       firstChild = first;
-      validate(RenderNodeState.PENDING);
-      setState(RenderNodeState.PENDING);
+      old.updateChangeTracker();
+      for (int i = 0; i < replacement.length; i++)
+      {
+        RenderNode renderNode = replacement[i];
+        renderNode.updateChangeTracker();
+      }
       return;
     }
 
@@ -455,8 +489,11 @@ public abstract class RenderBox extends RenderNode
       lastChild.setNext(null);
       lastChild.setPrev(null);
       lastChild = last;
-      validate(RenderNodeState.PENDING);
-      setState(RenderNodeState.PENDING);
+      for (int i = 0; i < replacement.length; i++)
+      {
+        RenderNode renderNode = replacement[i];
+        renderNode.updateChangeTracker();
+      }
       return;
     }
 
@@ -475,86 +512,38 @@ public abstract class RenderBox extends RenderNode
       next.setPrev(last);
     }
 
-    validate(RenderNodeState.PENDING);
-    setState(RenderNodeState.PENDING);
+    for (int i = 0; i < replacement.length; i++)
+    {
+      RenderNode renderNode = replacement[i];
+      renderNode.updateChangeTracker();
+    }
   }
-
-  /**
-   * Propage all changes to all silbling nodes which come after this node and to
-   * all childs.
-   * <p/>
-   * If this node is the last child, make the parent pending again.
-   *
-   * @param state
-   */
-  protected void notifyStateChange(final RenderNodeState oldState,
-                                   final RenderNodeState newState)
-  {
-    if (newState == RenderNodeState.UNCLEAN)
-    {
-      RenderNode node = getFirstChild();
-      if (node != null)
-      {
-        node.setState(RenderNodeState.UNCLEAN);
-      }
-      paddingsValidated = false;
-      bordersValidated = false;
-    }
-    if (newState == RenderNodeState.PENDING)
-    {
-      paddingsValidated = false;
-      bordersValidated = false;
-    }
-    super.notifyStateChange(oldState, newState);
-  }
-
-  public long getMinimumChunkSize(int axis)
-  {
-    // Drive through all childs and query their size
-    // then find the maximum
-    long size = 0;
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      size = Math.max(size, child.getMinimumChunkSize(axis));
-      child = child.getNext();
-    }
-
-    final long insets = getLeadingInsets(axis) + getTrailingInsets(axis);
-
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return insets + Math.max(boxDefinition.getMinimumWidth().resolve(0), size);
-    }
-
-    return insets + Math.max(boxDefinition.getMinimumHeight().resolve(0), size);
-  }
-
-  public BreakAfterEnum getBreakAfterAllowed(final int axis)
-  {
-    if (axis == getMinorAxis())
-    {
-      return BreakAfterEnum.BREAK_ALLOW;
-    }
-
-    final RenderNode lastChild = getLastChild();
-    if (lastChild == null)
-    {
-      return BreakAfterEnum.BREAK_DONT_KNOW;
-    }
-
-    RenderNode node = lastChild;
-    while (node != null)
-    {
-      BreakAfterEnum breakAllow = node.getBreakAfterAllowed(axis);
-      if (breakAllow != BreakAfterEnum.BREAK_DONT_KNOW)
-      {
-        return breakAllow;
-      }
-      node = node.getPrev();
-    }
-    return BreakAfterEnum.BREAK_DONT_KNOW;
-  }
+//
+//  public BreakAfterEnum getBreakAfterAllowed(final int axis)
+//  {
+//    if (axis == getMinorAxis())
+//    {
+//      return BreakAfterEnum.BREAK_ALLOW;
+//    }
+//
+//    final RenderNode lastChild = getLastChild();
+//    if (lastChild == null)
+//    {
+//      return BreakAfterEnum.BREAK_DONT_KNOW;
+//    }
+//
+//    RenderNode node = lastChild;
+//    while (node != null)
+//    {
+//      BreakAfterEnum breakAllow = node.getBreakAfterAllowed(axis);
+//      if (breakAllow != BreakAfterEnum.BREAK_DONT_KNOW)
+//      {
+//        return breakAllow;
+//      }
+//      node = node.getPrev();
+//    }
+//    return BreakAfterEnum.BREAK_DONT_KNOW;
+//  }
 
   /**
    * Clones this node. Be aware that cloning can get you into deep trouble, as
@@ -564,10 +553,7 @@ public abstract class RenderBox extends RenderNode
    */
   public Object clone()
   {
-    final RenderBox o = (RenderBox) super.clone();
-    o.borderWidths = (StrictInsets) borderWidths.clone();
-    o.paddings = (StrictInsets) paddings.clone();
-    return o;
+    return (RenderBox) super.clone();
   }
 
   /**
@@ -580,9 +566,6 @@ public abstract class RenderBox extends RenderNode
   public RenderNode derive(boolean deepDerive)
   {
     RenderBox box = (RenderBox) super.derive(deepDerive);
-    box.invalidateMargins();
-    box.paddingsValidated = false;
-    box.bordersValidated = false;
     box.open = true;
 
     if (deepDerive)
@@ -698,7 +681,7 @@ public abstract class RenderBox extends RenderNode
     return null;
   }
 
-  public boolean isAppendable ()
+  public boolean isAppendable()
   {
     return isOpen();
   }
@@ -746,441 +729,7 @@ public abstract class RenderBox extends RenderNode
     }
     setFirstChild(null);
     setLastChild(null);
-    validate(RenderNodeState.PENDING);
-  }
-
-  public StrictInsets getPaddings()
-  {
-    validatePaddings();
-    return paddings;
-  }
-
-  public StrictInsets getBorderWidths()
-  {
-    validateBorders();
-    return borderWidths;
-  }
-
-  protected boolean isPaddingsValidated()
-  {
-    return paddingsValidated;
-  }
-
-  protected void setPaddingsValidated(final boolean paddingsValidated)
-  {
-    this.paddingsValidated = paddingsValidated;
-  }
-
-  protected StrictInsets getPaddingsInternal()
-  {
-    return paddings;
-  }
-
-  protected void validatePaddings()
-  {
-    if (paddingsValidated)
-    {
-      return;
-    }
-    final long boxContextWidth = getComputedBlockContextWidth();
-    paddings.setTop(boxDefinition.getPaddingTop().resolve(boxContextWidth));
-    paddings.setBottom(boxDefinition.getPaddingBottom().resolve(boxContextWidth));
-    paddings.setLeft(boxDefinition.getPaddingLeft().resolve(boxContextWidth));
-    paddings.setRight(boxDefinition.getPaddingRight().resolve(boxContextWidth));
-    paddingsValidated = true;
-  }
-
-  protected boolean isBordersValidated()
-  {
-    return bordersValidated;
-  }
-
-  protected void setBordersValidated(final boolean bordersValidated)
-  {
-    this.bordersValidated = bordersValidated;
-  }
-
-  protected StrictInsets getBordersInternal()
-  {
-    return borderWidths;
-  }
-
-  protected void validateBorders()
-  {
-    if (bordersValidated)
-    {
-      return;
-    }
-    final long boxContextWidth = getComputedBlockContextWidth();
-    final Border border = getBorder();
-    borderWidths.setTop(border.getTop().getWidth().resolve(boxContextWidth));
-    borderWidths.setBottom(border.getBottom().getWidth().resolve(boxContextWidth));
-    borderWidths.setLeft(border.getLeft().getWidth().resolve(boxContextWidth));
-    borderWidths.setRight(border.getRight().getWidth().resolve(boxContextWidth));
-    bordersValidated = true;
-  }
-
-  protected long getTrailingInsets(int axis)
-  {
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return getPaddings().getRight() +
-              getBorderWidths().getRight();
-    }
-    else
-    {
-      return getPaddings().getBottom() +
-              getBorderWidths().getBottom();
-    }
-  }
-
-  protected long getLeadingInsets(int axis)
-  {
-    validatePaddings();
-    validateBorders();
-
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return getPaddings().getLeft() +
-              getBorderWidths().getLeft();
-    }
-    else
-    {
-      return getPaddings().getTop() +
-              getBorderWidths().getTop();
-    }
-  }
-
-  /**
-   * Queries the bottom or right margin. This dives into the last child of the
-   * queried box, if needed.
-   * <p/>
-   * Warning: This method is used by the getLeadingMargin method and should not
-   * be used by someone else.
-   *
-   * @param axis
-   * @return
-   */
-  protected long getTrailingMarginInternal(int axis)
-  {
-    RenderNode lastChild = getLastChild();
-    while (lastChild != null)
-    {
-      if (lastChild.isIgnorableForMargins() == false)
-      {
-        break;
-      }
-      lastChild = lastChild.getPrev();
-    }
-
-    final long childMargins;
-    if (isTrailingMarginIndependent(axis) == false)
-    {
-      if (lastChild instanceof RenderBox)
-      {
-        // I have some childs, lets ask them about their bottom or right margins
-        RenderBox lastBox = (RenderBox) lastChild;
-        childMargins = lastBox.getTrailingMarginInternal(axis);
-      }
-      else
-      {
-        // ok, no valid, margin-carrying childs ...
-        childMargins = 0;
-      }
-    }
-    else
-    {
-      childMargins = 0;
-    }
-
-    final BoxDefinition bd = getBoxDefinition();
-    final long parentWidth = getComputedBlockContextWidth();
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return collapseMargins
-              (bd.getMarginRight().resolve(parentWidth), childMargins);
-    }
-    else
-    {
-      return collapseMargins
-              (bd.getMarginBottom().resolve(parentWidth), childMargins);
-    }
-  }
-
-
-  /**
-   * Queries the bottom or right margin. This dives into the last child of the
-   * queried box, if needed.
-   * <p/>
-   * Warning: This method is used by the getLeadingMargin method and should not
-   * be used by someone else.
-   *
-   * @param axis
-   * @return
-   */
-  protected long getLeadingMarginInternal(int axis)
-  {
-    RenderNode firstChild = getFirstChild();
-    while (firstChild != null)
-    {
-      if (firstChild.isIgnorableForMargins() == false)
-      {
-        break;
-      }
-      firstChild = firstChild.getNext();
-    }
-
-    final long childMargins;
-    if (isTrailingMarginIndependent(axis) == false)
-    {
-      if (firstChild instanceof RenderBox)
-      {
-        // I have some childs, lets ask them about their bottom or right margins
-        RenderBox firstBox = (RenderBox) firstChild;
-        childMargins = firstBox.getLeadingMarginInternal(axis);
-      }
-      else
-      {
-        // ok, no valid, margin-carrying childs ...
-        childMargins = 0;
-      }
-    }
-    else
-    {
-      childMargins = 0;
-    }
-
-    final BoxDefinition bd = getBoxDefinition();
-    final long parentWidth = getComputedBlockContextWidth();
-    if (axis == HORIZONTAL_AXIS)
-    {
-      return collapseMargins
-              (bd.getMarginLeft().resolve(parentWidth), childMargins);
-    }
-    else
-    {
-      return collapseMargins
-              (bd.getMarginTop().resolve(parentWidth), childMargins);
-    }
-  }
-
-  public boolean isLeadingMarginIndependent(int axis)
-  {
-    if (axis == VERTICAL_AXIS)
-    {
-      return getBorderWidths().getTop() > 0 ||
-              getPaddings().getTop() > 0;
-    }
-    else
-    {
-      return getBorderWidths().getLeft() > 0 ||
-              getPaddings().getLeft() > 0;
-    }
-  }
-
-  public boolean isTrailingMarginIndependent(int axis)
-  {
-    if (axis == VERTICAL_AXIS)
-    {
-      return getBorderWidths().getBottom() > 0 ||
-              getPaddings().getBottom() > 0;
-    }
-    else
-    {
-      return getBorderWidths().getRight() > 0 ||
-              getPaddings().getRight() > 0;
-    }
-  }
-
-  protected long getDefinedTrailingMargin(int axis)
-  {
-    final long parentWidth = getComputedBlockContextWidth();
-    final long myMargin;
-    if (axis == HORIZONTAL_AXIS)
-    {
-      myMargin = getBoxDefinition().getMarginRight().resolve(parentWidth);
-    }
-    else
-    {
-      myMargin = getBoxDefinition().getMarginBottom().resolve(parentWidth);
-    }
-    return myMargin;
-  }
-
-  protected long getDefinedLeadingMargin(int axis)
-  {
-    final long parentWidth = getComputedBlockContextWidth();
-    final long myMargin;
-    if (axis == HORIZONTAL_AXIS)
-    {
-      myMargin = getBoxDefinition().getMarginLeft().resolve(parentWidth);
-    }
-    else
-    {
-      myMargin = getBoxDefinition().getMarginTop().resolve(parentWidth);
-    }
-    return myMargin;
-  }
-
-  protected long getPreferredSize(int axis)
-  {
-    final long retval;
-    if (axis == getMinorAxis())
-    {
-      Loggers.VALIDATION.debug("MINOR BEGIN : PreferredSize " + this);
-
-      // minor axis means: Drive through all childs and query their size
-      // then find the maximum
-//      long sizeAbove = 0;
-      long size = 0;
-      RenderNode child = getFirstChild();
-      while (child != null)
-      {
-        if (child.isIgnorableForRendering())
-        {
-          // empty childs may affect the margin computation or cause linebreaks,
-          // but they must not appear here.
-          child = child.getNext();
-          continue;
-        }
-
-        if (child instanceof MarkerRenderBox)
-        {
-          MarkerRenderBox mrb = (MarkerRenderBox) child;
-          if (mrb.isOutside())
-          {
-            child = child.getNext();
-            continue;
-          }
-        }
-
-        size = Math.max(size, child.getEffectiveLayoutSize(axis));
-        child = child.getNext();
-      }
-      retval = getLeadingInsets(axis) + size + getTrailingInsets(axis);
-      Loggers.VALIDATION.debug("MINOR END: PreferredSize: " + retval + " " + axis + " " + this);
-
-    }
-    else
-    {
-      Loggers.VALIDATION.debug("MAJOR BEGIN : PreferredSize " + this);
-
-      long size = getLeadingInsets(axis);
-      RenderNode child = getFirstChild();
-      long trailingSpace = 0;
-      while (child != null)
-      {
-        if (child.isIgnorableForRendering())
-        {
-          // empty childs may affect the margin computation or cause linebreaks,
-          // but they must not appear here.
-          child = child.getNext();
-          continue;
-        }
-        if (child instanceof MarkerRenderBox)
-        {
-          MarkerRenderBox mrb = (MarkerRenderBox) child;
-          if (mrb.isOutside())
-          {
-            child = child.getNext();
-            continue;
-          }
-        }
-
-
-        final long layoutSize = child.getEffectiveLayoutSize(axis);
-        size += layoutSize;
-
-        final long leadingSpace = child.getLeadingSpace(axis);
-        size += Math.max(leadingSpace, trailingSpace);
-
-        trailingSpace = child.getTrailingSpace(axis);
-//        size += trailingSpace;
-
-        Loggers.VALIDATION.debug("  P-Size: " + layoutSize + " " + leadingSpace + " " + trailingSpace + " " + child);
-        child = child.getNext();
-      }
-      retval = size + trailingSpace + getTrailingInsets(axis);
-      Loggers.VALIDATION.debug("MAJOR END: PreferredSize: " + retval + " " + axis + " " + this);
-    }
-    return retval;
-  }
-
-  /**
-   * This needs to be adjusted to support vertical flows as well.
-   *
-   * @param axis
-   * @param node
-   * @return
-   */
-  public long getEffectiveLayoutSize(int axis)
-  {
-    if (axis == VERTICAL_AXIS)
-    {
-      return getPreferredSize(axis);
-    }
-
-    // 1. If the element is a flow root other than the root element,
-    //    width is the intrinsic width.
-
-    // 2. If the element is the root element on paged media, the value
-    //    is the computed width value of the 'size' property.
-    final RenderBox parent = getParent();
-    if (parent == null)
-    {
-      // this should not happen ...
-      return getPreferredSize(axis);
-    }
-
-    // 3. Otherwise, if the element is a block-level element and its
-    //    containing block also has a horizontal flow, equation (1)
-    //    below determines the width.
-    //
-    // (1) (width of containing block) = margin-left + border-left +
-    //                                   padding-left + width + padding-right +
-    //                                   border-right + margin-right
-
-    if (parent instanceof BlockRenderBox)
-    {
-      final RenderLength preferredWidth =
-              getBoxDefinition().getPreferredWidth();
-      if (RenderLength.AUTO.equals(preferredWidth))
-      {
-        // margins with 'auto' are not yet supported.
-        // This is also the behaviour of Mozilla and Opera: if the width is
-        // auto, then all auto-margins get set to zero.
-        final long margins = getLeadingSpace(axis) + getTrailingSpace(axis);
-        final long nodeWidth = getPreferredSize(axis);
-        final long l = (nodeWidth - margins);
-        if (l < 0)
-        {
-          return 0;
-        }
-        return l;
-      }
-      else
-      {
-        // todo: At the moment, this fails, as there is no computed block
-        // context width at all.
-        final long contextWidth = getComputedBlockContextWidth();
-        final long width = preferredWidth.resolve(contextWidth);
-        if (width < 0)
-        {
-          return 0;
-        }
-        else
-        {
-          return width;
-        }
-      }
-    }
-
-    // 4. Otherwise, if the element is block-level and the containing
-    //    block has a different orientation, the computed value is the
-    //    intrinsic width.
-
-    return getPreferredSize(axis);
-
+    updateChangeTracker();
   }
 
   private RenderNode getFirstNonEmpty()
@@ -1268,7 +817,6 @@ public abstract class RenderBox extends RenderNode
 
   protected void remove(RenderNode child)
   {
-    Log.debug("Removing " + child);
     final RenderBox parent = child.getParent();
     if (parent != this)
     {
@@ -1298,414 +846,8 @@ public abstract class RenderBox extends RenderNode
     {
       lastChild = prev;
     }
-  }
-
-
-  /**
-   * Returns the nearest break-point that occurrs before that splitPosition. If
-   * the splitPosition already is a break point, return that point. If there is
-   * no break opportinity at all, return zero (= BREAK_NONE).
-   * <p/>
-   * (This causes the split to behave correctly; this moves all non-splittable
-   * elements down to the next free area.)
-   *
-   * @param axis          the axis.
-   * @param splitPosition the maximum splitPosition
-   * @return the best break splitPosition.
-   */
-  public long getBestBreak(int axis, final long splitPosition)
-  {
-    if (splitPosition <= 0)
-    {
-      throw new IllegalArgumentException("Split-Position cannot be negative or zero: " + splitPosition);
-    }
-
-    //  Log.debug("InlineRenderer: Start BestBreak: " + splitPosition);
-    if (axis == getMinorAxis())
-    {
-      // not splitable.
-      Loggers.SPLITSTRATEGY.debug("The box is not splittable on the minor axis");
-      return 0;
-    }
-
-    // this is simply the best we can get from our contents.
-
-    long bestBreak = 0;
-    long cursor = getLeadingInsets(axis);
-    long trailingSpace = 0;
-
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      if (child.isIgnorableForRendering() ||
-          child.isDiscardable())
-      {
-        child = child.getNext();
-        continue;
-      }
-
-      final long currentSize =
-              Math.max(trailingSpace, child.getLeadingSpace(axis)) +
-                      child.getEffectiveLayoutSize(axis);
-      //  Log.debug("InlineRenderer: Best Break: Preferred Size: " + currentSize + " " + child);
-      trailingSpace = child.getTrailingSpace(axis);
-
-      final long posAfterGeneric = currentSize + cursor + trailingSpace;
-      final long posAfter;
-      if (child.getNext() == null)
-      {
-        posAfter = posAfterGeneric + getTrailingInsets(axis);
-      }
-      else
-      {
-        posAfter = posAfterGeneric;
-      }
-
-      // shortcut .. test for a direct hit.
-      final BreakAfterEnum breakAfterAllowed = child.getBreakAfterAllowed(axis);
-      if (posAfter == splitPosition)
-      {
-        if (breakAfterAllowed == BreakAfterEnum.BREAK_ALLOW)
-        {
-          return posAfter;
-        }
-      }
-
-      // this would go over the limit .. try to find a suitable break point
-      // inside the element.
-      if (posAfter >= splitPosition)
-      {
-        final long effectiveSplitPos = splitPosition - cursor;
-        final long bestBreakLocal = child.getBestBreak(axis, effectiveSplitPos);
-        if ((bestBreakLocal + cursor) > splitPosition)
-        {
-          child.getBestBreak(axis, effectiveSplitPos);
-          throw new IllegalStateException("Invalid splitpoint returned.");
-        }
-        if (bestBreakLocal > 0)
-        {
-          Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(1): " + (cursor + bestBreakLocal));
-          return cursor + bestBreakLocal;
-        }
-        else if (bestBreak > 0)
-        {
-          Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(2): " + (bestBreak));
-          return bestBreak;
-        }
-        else
-        {
-          // the element will not fit and there is no break opportinity.
-          // return the position before that element.
-          if (child.getPrev() == null)
-          {
-            Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(3a): " + (0));
-            return 0;
-          }
-          Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(3b): " + (cursor));
-          return cursor;
-        }
-      }
-
-      if (breakAfterAllowed == BreakAfterEnum.BREAK_ALLOW)
-      {
-        //     Log.debug("InlineRenderer: Setting best Break: " + (posAfter));
-        bestBreak = Math.max(bestBreak, posAfter);
-      }
-
-      if (posAfter >= splitPosition)
-      {
-        Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(4): " + (bestBreak));
-        return bestBreak;
-      }
-
-      child = child.getNext();
-      cursor += currentSize;
-    }
-    return 0;
-  }
-
-
-  /**
-   * Returns the first break-point in that element. If there is no break
-   * opportinity at all, return zero (= BREAK_NONE).
-   * <p/>
-   *
-   * @param axis the axis.
-   * @return the first break position.
-   */
-  public long getFirstBreak(int axis)
-  {
-    if (axis == getMinorAxis())
-    {
-      // not splitable.
-      Loggers.SPLITSTRATEGY.debug("No split on the minor axis");
-      return 0;
-    }
-
-    // this is simply the best we can get from our contents.
-
-    long cursor = getLeadingInsets(axis);
-    RenderNode child = getFirstChild();
-    long trailingSpace = 0;
-    while (child != null)
-    {
-      if (child.isIgnorableForRendering() ||
-          child.isDiscardable())
-      {
-        child = child.getNext();
-        continue;
-      }
-      
-      long currentSize = child.getPreferredSize(axis);
-      final long posAfter = currentSize + cursor;
-      final long bestBreakLocal = child.getFirstBreak(axis) +
-              Math.max(trailingSpace, child.getLeadingSpace(axis));
-      if (bestBreakLocal > 0)
-      {
-        return bestBreakLocal + cursor;
-      }
-
-      final BreakAfterEnum breakAfterAllowed = child.getBreakAfterAllowed(axis);
-      if (breakAfterAllowed == BreakAfterEnum.BREAK_ALLOW)
-      {
-        if (child.getNext() == null)
-        {
-          // if this is the last child, include the paddings and borders ..
-          //return posAfter + getTrailingInsets(axis);
-          // signal, that there is no break opportinity ..
-          return 0;
-        }
-        return posAfter;
-      }
-      else
-      {
-        //       Log.debug("BreakAfter: " + breakAfterAllowed);
-      }
-      trailingSpace = child.getTrailingSpace(axis);
-      cursor = posAfter;
-      child = child.getNext();
-    }
-    return 0;
-  }
-
-
-  /**
-   * Splits the render node at the given splitPoint. This method returns an
-   * array with the length of two; if the node is not splittable, the first
-   * element should be empty (in the element's behavioural context) and the
-   * second element should contain an independent copy of the original node.
-   * <p/>
-   * If the break splitPoint is ambugious, the break should appear *in front of*
-   * the splitPoint - where in front-of depends on the reading direction.
-   *
-   * @param axis       the axis on which to break
-   * @param splitPoint the break splitPoint within that axis.
-   * @param target     the target array that should receive the broken node. If
-   *                   the target array is not null, it must have at least two
-   *                   slots.
-   * @return the broken nodes contained in the target array.
-   */
-  public RenderNode[] split(int axis, long splitPoint, RenderNode[] target)
-  {
-    if (splitPoint <= 0)
-    {
-      throw new IllegalArgumentException();
-    }
-
-    if (target == null || target.length < 2)
-    {
-      target = new RenderNode[2];
-    }
-
-    if (axis == getMinorAxis())
-    {
-      target[0] = new SpacerRenderNode();
-      target[1] = derive(true);
-      return target;
-    }
-
-    // first, find the split point.
-    long firstSplitSize = getLeadingInsets(axis);
-    RenderNode firstSplitChild = getFirstChild();
-    long trailingSpace = 0;
-    while (firstSplitChild != null)
-    {
-      if (firstSplitChild.isIgnorableForRendering() ||
-          firstSplitChild.isDiscardable())
-      {
-        firstSplitChild = firstSplitChild.getNext();
-        continue;
-      }
-
-      final long layoutSize = firstSplitChild.getEffectiveLayoutSize(axis);
-      final long prefSize = layoutSize +
-              Math.max(firstSplitChild.getLeadingSpace(axis), trailingSpace);
-
-      trailingSpace = firstSplitChild.getTrailingSpace(axis);
-      if ((prefSize + firstSplitSize + trailingSpace) <= splitPoint)
-      {
-        firstSplitSize += prefSize;
-        firstSplitChild = firstSplitChild.getNext();
-      }
-      else
-      {
-        break;
-      }
-    }
-
-    // we will fit, no split is needed.
-    if (firstSplitChild == null)
-    {
-      Loggers.SPLITSTRATEGY.warn("PERFORMANCE: Unnecessarily stupid split detected.");
-      target[0] = derive(true);
-      target[1] = null;
-      return target;
-    }
-
-    // Prepare the borders ...
-    BoxDefinition[] boxes = getBoxDefinition().split(axis);
-    RenderBox firstBox = (RenderBox) derive(false);
-    firstBox.setBoxDefinition(boxes[0]);
-
-    // Now add everything up to the split point to the first box.
-    int firstNodeCounter = 0;
-    RenderNode firstBoxChild = getFirstChild();
-    while (firstBoxChild != null && firstSplitChild != firstBoxChild)
-    {
-      if (firstSplitChild.isDiscardable())
-      {
-        firstBoxChild = firstBoxChild.getNext();
-        continue;
-      }
-
-      firstBox.addChild(firstBoxChild.derive(true));
-      firstNodeCounter += 1;
-      firstBoxChild = firstBoxChild.getNext();
-    }
-
-    // now we've reached the split point, make a sanity test.
-    final long firstBoxEffSize = firstBox.getEffectiveLayoutSize(axis);
-    final long splitPos = splitPoint - firstBoxEffSize;
-    if (splitPos < 0)
-    {
-      throw new IllegalStateException
-              ("The selected child split is not valid: SplitPos=" + splitPos +
-                      ", SplitPoint=" + splitPoint +
-                      ", firstBoxSize=" + firstBoxEffSize);
-    }
-
-    // prepare the second box.
-    RenderBox secondBox = (RenderBox) derive(false);
-    secondBox.setBoxDefinition(boxes[1]);
-    int secondNodeCounter = 0;
-
-    if (firstSplitChild.isDiscardable() == false)
-    {
-
-      // the split pos is directly after the first box's end. So we can add
-      // the child to the second box without having to split it.
-      if (splitPos == 0)
-      {
-        //    Log.debug("Not splitting, deriving a second box. ");
-        secondBox.addChild(firstSplitChild.derive(true));
-        secondNodeCounter += 1;
-      }
-      else if (splitPos >= firstSplitChild.getEffectiveLayoutSize(axis))
-      {
-        // no split needed, the child will fit perfectly.
-        firstBox.addChild(firstSplitChild.derive(true));
-        firstNodeCounter += 1;
-      }
-      else
-      {
-        //      Log.debug("       Extra Info: PS: " + splitPointChild.getPreferredSize(axis));
-        //      Log.debug("       Extra Info: FB: " + splitPointChild.getFirstBreak(axis));
-        //      Log.debug("       Extra Info: BP: " + splitPointChild.getBestBreak(axis, splitPos));
-        //      Log.debug("       Extra Info:*BP: " + getBestBreak(axis, splitPos));
-        //      Log.debug("       Extra Info:*FP: " + getFirstBreak(axis));
-        long bestBreakPos = firstSplitChild.getBestBreak(axis, splitPos);
-        if (bestBreakPos > 0)
-        {
-          target = firstSplitChild.split(axis, bestBreakPos, target);
-          firstBox.addChild(target[0]);
-          firstNodeCounter += 1;
-          if (target[1] != null)
-          {
-            secondNodeCounter += 1;
-            secondBox.addChild(target[1]);
-          }
-        }
-        else
-        {
-          long firstBreakPos = firstSplitChild.getFirstBreak(axis);
-          if (firstBreakPos > 0)
-          {
-            target = firstSplitChild.split(axis, firstBreakPos, target);
-            firstBox.addChild(target[0]);
-            firstNodeCounter += 1;
-            if (target[1] != null)
-            {
-              secondNodeCounter += 1;
-              secondBox.addChild(target[1]);
-            }
-          }
-          else
-          {
-            // there is no best break position, so we add the child to the
-            // second box.
-            secondBox.addChild(firstSplitChild.derive(true));
-            secondNodeCounter += 1;
-          }
-        }
-      }
-    }
-
-    // The firstSplitChild here is the unmodified original. If there was a
-    // split earlier does not matter for all trailing elements, as they are
-    // bound to firstSplitChild->next and therefore they are not affected by
-    // the split
-    RenderNode postChild = firstSplitChild.getNext();
-    while (postChild != null)
-    {
-      if (secondNodeCounter == 0)
-      {
-        if (postChild.isDiscardable())
-        {
-          postChild = postChild.getNext();
-          continue;
-        }
-      }
-      // first, add everything up to the child .
-      secondBox.addChild(postChild.derive(true));
-      secondNodeCounter += 1;
-      postChild = postChild.getNext();
-    }
-
-    Loggers.SPLITSTRATEGY.debug("Result: " + firstNodeCounter + " " + secondNodeCounter);
-    if (firstNodeCounter == 0)
-    {
-      Loggers.SPLITSTRATEGY.debug("PERFORMANCE: This split is avoidable.");
-      // correct the second box. The box is not split.
-      secondBox.setBoxDefinition(getBoxDefinition());
-      target[0] = new SpacerRenderNode();
-      target[1] = secondBox;
-    }
-    else if (secondNodeCounter == 0)
-    {
-      Loggers.SPLITSTRATEGY.warn("PERFORMANCE: Invalid split implementation. Second box should never be empty.");
-      firstBox.setBoxDefinition(getBoxDefinition());
-      target[0] = firstBox;
-      target[1] = null;
-    }
-    else
-    {
-      target[0] = firstBox;
-      target[1] = secondBox;
-    }
-    //   Log.debug("LEAVE SPLIT : " + this);
-
-    // make sure that noone works with that anymore ..
-    return target;
+    child.updateChangeTracker();
+    this.updateChangeTracker();
   }
 
   public boolean isOpen()
@@ -1763,334 +905,54 @@ public abstract class RenderBox extends RenderNode
     }
   }
 
+  public BoxLayoutProperties getBoxLayoutProperties()
+  {
+    return boxLayoutProperties;
+  }
+
+  protected RenderBox performSimpleSplit(int axis)
+  {
+    final RenderBox otherBox = (RenderBox) derive(false);
+    final BoxDefinition[] boxDefinitions = boxDefinition.split(axis);
+    boxDefinition = boxDefinitions[0];
+    otherBox.boxDefinition = boxDefinitions[1];
+    return otherBox;
+  }
+
+  public long getContentAreaX1()
+  {
+    return contentAreaX1;
+  }
+
+  public void setContentAreaX1(final long contentAreaX1)
+  {
+    this.contentAreaX1 = contentAreaX1;
+  }
+
+  public long getContentAreaX2()
+  {
+    return contentAreaX2;
+  }
+
+  public void setContentAreaX2(final long contentAreaX2)
+  {
+    if (contentAreaX2 < 0)
+    {
+      throw new IllegalStateException("Failure here");
+    }
+    this.contentAreaX2 = contentAreaX2;
+  }
 
   /**
-   * Splits the render node at the given splitPoint. This method returns an
-   * array with the length of two; if the node is not splittable, the first
-   * element should be empty (in the element's behavioural context) and the
-   * second element should contain an independent copy of the original node.
-   * <p/>
-   * If the break splitPoint is ambugious, the break should appear *in front of*
-   * the splitPoint - where in front-of depends on the reading direction.
+   * Performs a simple split. This box will be altered to form the left/top side
+   * of the split, and a derived empty box will be returned, which makes up the
+   * right/bottom side.
    *
-   * @param axis       the axis on which to break
-   * @param splitPoint the break splitPoint within that axis.
-   * @param target     the target array that should receive the broken node. If
-   *                   the target array is not null, it must have at least two
-   *                   slots.
-   * @return the broken nodes contained in the target array.
+   * @param axis
+   * @return
    */
-  public RenderNode[] splitForPrint(long splitPoint, RenderNode[] target)
+  public RenderBox split(int axis)
   {
-    if (splitPoint <= 0)
-    {
-      throw new IllegalArgumentException();
-    }
-
-    if (target == null || target.length < 2)
-    {
-      target = new RenderNode[2];
-    }
-
-    if (VERTICAL_AXIS == getMajorAxis() == false)
-    {
-      // not splittable ...
-      target[0] = new SpacerRenderNode();
-      target[1] = derive(true);
-      return target;
-    }
-
-    final int axis = VERTICAL_AXIS;
-
-    // first, find the split point.
-    long firstSplitSize = getY();
-    RenderNode firstSplitChild = getFirstChild();
-    while (firstSplitChild != null)
-    {
-      final long y2 = firstSplitChild.getHeight() + firstSplitChild.getY();
-
-      if (y2 <= splitPoint)
-      {
-        firstSplitSize = y2;
-        firstSplitChild = firstSplitChild.getNext();
-      }
-      else
-      {
-        break;
-      }
-    }
-
-    // we will fit, no split is needed.
-    if (firstSplitChild == null)
-    {
-      Loggers.SPLITSTRATEGY.warn("PERFORMANCE: Unnecessarily stupid split detected.");
-      target[0] = deriveFrozen(true);
-      target[1] = null;
-      return target;
-    }
-
-    // Prepare the borders ...
-    BoxDefinition[] boxes = getBoxDefinition().split(axis);
-    RenderBox firstBox = (RenderBox) deriveFrozen(false);
-    firstBox.setBoxDefinition(boxes[0]);
-
-    // Now add everything up to the split point to the first box.
-    int firstNodeCounter = 0;
-    RenderNode firstBoxChild = getFirstChild();
-    while (firstBoxChild != null && firstSplitChild != firstBoxChild)
-    {
-      firstBox.addGeneratedChild(firstBoxChild.deriveFrozen(true));
-      firstNodeCounter += 1;
-      firstBoxChild = firstBoxChild.getNext();
-    }
-
-    // now we've reached the split point, make a sanity test.
-
-    // prepare the second box.
-    RenderBox secondBox = (RenderBox) derive(false);
-    secondBox.setBoxDefinition(boxes[1]);
-    int secondNodeCounter = 0;
-
-    if (firstSplitChild.isDiscardable() == false)
-    {
-// todo
-      // the split pos is directly after the first box's end. So we can add
-      // the child to the second box without having to split it.
-      if (splitPoint == firstSplitSize)
-      {
-        //    Log.debug("Not splitting, deriving a second box. ");
-        secondBox.addGeneratedChild(firstSplitChild.derive(true));
-        secondNodeCounter += 1;
-      }
-      else
-      if (splitPoint >= (firstSplitChild.getY() + firstSplitChild.getHeight()))
-      {
-        // no split needed, the child will fit perfectly.
-        firstBox.addGeneratedChild(firstSplitChild.deriveFrozen(true));
-        firstNodeCounter += 1;
-      }
-      else
-      {
-        long bestBreakPos = firstSplitChild.getBestPrintBreak(splitPoint);
-        if (bestBreakPos > 0)
-        {
-          target = firstSplitChild.splitForPrint(bestBreakPos, target);
-          firstBox.addGeneratedChild(target[0]);
-          firstNodeCounter += 1;
-          if (target[1] != null)
-          {
-            secondNodeCounter += 1;
-            secondBox.addGeneratedChild(target[1]);
-          }
-        }
-        else
-        {
-          long firstBreakPos = firstSplitChild.getFirstPrintBreak();
-          if (firstBreakPos > 0)
-          {
-            target = firstSplitChild.splitForPrint(firstBreakPos, target);
-            firstBox.addGeneratedChild(target[0]);
-            firstNodeCounter += 1;
-            if (target[1] != null)
-            {
-              secondNodeCounter += 1;
-              secondBox.addGeneratedChild(target[1]);
-            }
-          }
-          else
-          {
-            // there is no best break position, so we add the child to the
-            // second box.
-            secondBox.addGeneratedChild(firstSplitChild.derive(true));
-            secondNodeCounter += 1;
-          }
-        }
-      }
-    }
-
-    // The firstSplitChild here is the unmodified original. If there was a
-    // split earlier does not matter for all trailing elements, as they are
-    // bound to firstSplitChild->next and therefore they are not affected by
-    // the split
-    RenderNode postChild = firstSplitChild.getNext();
-    while (postChild != null)
-    {
-      secondBox.addGeneratedChild(postChild.derive(true));
-      secondNodeCounter += 1;
-      postChild = postChild.getNext();
-    }
-
-    Loggers.SPLITSTRATEGY.debug("Result: " + firstNodeCounter + " " + secondNodeCounter);
-    if (firstNodeCounter == 0)
-    {
-      Loggers.SPLITSTRATEGY.debug("PERFORMANCE: This split is avoidable.");
-
-      throw new IllegalStateException("This split request is an error.");
-//
-//      // correct the second box. The box is not split.
-//      secondBox.setBoxDefinition(getBoxDefinition());
-//      target[0] = new SpacerRenderNode();
-//      target[1] = secondBox;
-    }
-    else if (secondNodeCounter == 0)
-    {
-      Loggers.SPLITSTRATEGY.warn
-              ("PERFORMANCE: Invalid split implementation. Second box should never be empty.");
-      firstBox.setBoxDefinition(getBoxDefinition());
-      target[0] = firstBox;
-      target[1] = null;
-    }
-    else
-    {
-      target[0] = firstBox;
-      target[1] = secondBox;
-    }
-    //   Log.debug("LEAVE SPLIT : " + this);
-
-    // make sure that noone works with that anymore ..
-    return target;
-  }
-
-  public long getFirstPrintBreak()
-  {
-    //  Log.debug("InlineRenderer: Start BestBreak: " + splitPosition);
-    if (VERTICAL_AXIS == getMajorAxis() == false)
-    {
-      // not splitable.
-      Loggers.SPLITSTRATEGY.debug("The box is not splittable on the minor axis");
-      return 0;
-    }
-
-    // this is simply the best we can get from our contents.
-    final int axis = VERTICAL_AXIS;
-    // this is simply the best we can get from our contents.
-
-    long cursor = getY() + getLeadingInsets(axis);
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      final long posAfter = child.getY() + child.getHeight();
-      final long bestBreakLocal = child.getFirstPrintBreak();
-      if (bestBreakLocal > 0)
-      {
-        return bestBreakLocal;
-      }
-
-      final BreakAfterEnum breakAfterAllowed = child.getBreakAfterAllowed(axis);
-      if (breakAfterAllowed == BreakAfterEnum.BREAK_ALLOW)
-      {
-        if (child.getNext() == null)
-        {
-          // if this is the last child, include the paddings and borders ..
-          //return posAfter + getTrailingInsets(axis);
-          // signal, that there is no break opportinity ..
-          return 0;
-        }
-        return posAfter;
-      }
-      else
-      {
-        //       Log.debug("BreakAfter: " + breakAfterAllowed);
-      }
-      cursor = posAfter;
-      child = child.getNext();
-    }
-    return 0;
-  }
-
-  public long getBestPrintBreak(final long splitPosition)
-  {
-    if (splitPosition <= 0)
-    {
-      throw new IllegalArgumentException("Split-Position cannot be negative or zero: " + splitPosition);
-    }
-
-    //  Log.debug("InlineRenderer: Start BestBreak: " + splitPosition);
-    if (VERTICAL_AXIS == getMajorAxis() == false)
-    {
-      // not splitable.
-      Loggers.SPLITSTRATEGY.debug("The box is not splittable on the minor axis");
-      return 0;
-    }
-
-    // this is simply the best we can get from our contents.
-    final int axis = VERTICAL_AXIS;
-
-    long bestBreak = 0;
-    long lastBreakPos = getY() + getLeadingInsets(axis);
-    RenderNode child = getFirstChild();
-    while (child != null)
-    {
-      final long y2 = child.getY() + child.getHeight();
-      //  Log.debug("InlineRenderer: Best Break: Preferred Size: " + currentSize + " " + child);
-      final long posAfter;
-      if (child.getNext() == null)
-      {
-        posAfter = y2 + getTrailingInsets(axis);
-      }
-      else
-      {
-        posAfter = y2;
-      }
-
-      // shortcut .. test for a direct hit.
-      final BreakAfterEnum breakAfterAllowed = child.getBreakAfterAllowed(axis);
-      if (posAfter == splitPosition)
-      {
-        if (breakAfterAllowed == BreakAfterEnum.BREAK_ALLOW)
-        {
-          return posAfter;
-        }
-      }
-
-      // this would go over the limit .. try to find a suitable break point
-      // inside the element.
-      if (posAfter >= splitPosition)
-      {
-        final long bestBreakLocal = child.getBestPrintBreak(splitPosition);
-        if ((bestBreakLocal) > splitPosition)
-        {
-          throw new IllegalStateException("Invalid splitpoint returned.");
-        }
-        if (bestBreakLocal > 0)
-        {
-          Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(1): " + (lastBreakPos + bestBreakLocal));
-          return bestBreakLocal;
-        }
-        else if (bestBreak > 0)
-        {
-          Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(2): " + (bestBreak));
-          return bestBreak;
-        }
-        else
-        {
-          // the element will not fit and there is no break opportinity.
-          // return the position before that element.
-          if (child.getPrev() == null)
-          {
-            Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(3a): " + (0));
-            return 0;
-          }
-          Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(3b): " + (lastBreakPos));
-          return lastBreakPos;
-        }
-      }
-
-      if (breakAfterAllowed == BreakAfterEnum.BREAK_ALLOW)
-      {
-        //     Log.debug("InlineRenderer: Setting best Break: " + (posAfter));
-        bestBreak = Math.max(bestBreak, posAfter);
-      }
-
-      if (posAfter >= splitPosition)
-      {
-        Loggers.SPLITSTRATEGY.debug("InlineRenderer: Best Break(4): " + (bestBreak));
-        return bestBreak;
-      }
-
-      lastBreakPos = posAfter;
-      child = child.getNext();
-    }
-    return 0;
+    return performSimpleSplit(axis);
   }
 }

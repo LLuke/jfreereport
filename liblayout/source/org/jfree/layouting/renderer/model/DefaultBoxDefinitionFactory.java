@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultBoxDefinitionFactory.java,v 1.2 2006/07/17 13:27:25 taqua Exp $
+ * $Id: DefaultBoxDefinitionFactory.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.input.style.keys.border.BorderStyleKeys;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
-import org.jfree.layouting.input.style.keys.box.DisplayModel;
 import org.jfree.layouting.input.style.keys.color.CSSSystemColors;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSColorValue;
@@ -68,6 +67,7 @@ public class DefaultBoxDefinitionFactory implements BoxDefinitionFactory
   {
     this.borderFactory = borderFactory;
   }
+
 
   public BoxDefinition createBlockBoxDefinition(LayoutContext boxContext,
                                                 OutputProcessorMetaData metaData)

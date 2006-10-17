@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRow.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
+ * $Id: TableRow.java,v 1.2 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package org.jfree.layouting.renderer.model.table.rows;
 
 import org.jfree.layouting.renderer.border.Border;
-import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.util.LongList;
 
 /**
@@ -51,52 +50,27 @@ import org.jfree.layouting.util.LongList;
  */
 public class TableRow
 {
+  // Borders will be needed for the combined column model ..
   private Border border;
 
-  private long minimumChunkSize;
   private long preferredSize;
   private long validateSize;
 
-  private LongList minimumChunkSizes;
   private LongList preferredSizes;
   private long validatedLeadingSize;
   private LongList validatedTrailingSize;
-  private RenderLength definedHeight;
 
   public TableRow()
   {
-    this(RenderLength.AUTO, Border.createEmptyBorder());
+    this(Border.createEmptyBorder());
   }
 
-  public TableRow(final RenderLength definedHeight,
-                  final Border border)
+  public TableRow(final Border border)
   {
     this.border = border;
-    this.definedHeight = definedHeight;
     this.preferredSizes = new LongList(10);
     this.validatedLeadingSize = 0;
     this.validatedTrailingSize = new LongList(10);
-    this.minimumChunkSizes = new LongList(10);
-  }
-
-  public RenderLength getDefinedHeight()
-  {
-    return definedHeight;
-  }
-
-  public Border getBorder()
-  {
-    return border;
-  }
-
-  public long getMinimumChunkSize()
-  {
-    return minimumChunkSize;
-  }
-
-  public void setMinimumChunkSize(final long minimumChunkSize)
-  {
-    this.minimumChunkSize = minimumChunkSize;
   }
 
   public long getPreferredSize()
@@ -124,29 +98,13 @@ public class TableRow
     return preferredSizes.get(index);
   }
 
-  public long getMinimumChunkSize(int rowSpan)
-  {
-    final int index = rowSpan - 1;
-    if (index < 0)
-    {
-      throw new IllegalArgumentException();
-    }
-
-    if (minimumChunkSizes.size() <= index)
-    {
-      return 0;
-    }
-    return minimumChunkSizes.get(index);
-  }
-
   public int getMaximumRowSpan()
   {
     return preferredSizes.size();
   }
 
-  public void updateSizes(int rowSpan,
-                          long preferredWidth,
-                          long chunkSizes)
+  public void updateDefinedSize(int rowSpan,
+                                long preferredWidth)
   {
     if (rowSpan < 1)
     {
@@ -159,19 +117,6 @@ public class TableRow
     {
       preferredSizes.set(idx, preferredWidth);
     }
-    if ((rowSpan >= minimumChunkSizes.size()) ||
-            (minimumChunkSizes.get(idx) < chunkSizes))
-    {
-      minimumChunkSizes.set(idx, chunkSizes);
-    }
-  }
-
-  public void setSizes(int rowSpan,
-                       long preferredWidth,
-                       long chunkSizes)
-  {
-    preferredSizes.set(rowSpan - 1, preferredWidth);
-    minimumChunkSizes.set(rowSpan - 1, chunkSizes);
   }
 
   public long getValidatedLeadingSize()
@@ -181,13 +126,12 @@ public class TableRow
 
   public long getValidatedTrailingSize(int rowSpan)
   {
+    if (rowSpan > validatedTrailingSize.size())
+    {
+      return 0;
+    }
     return validatedTrailingSize.get(rowSpan - 1);
   }
-
-//  public void setValidatedLeadingSize(final long validatedSize)
-//  {
-//    this.validatedLeadingSize = validatedSize;
-//  }
 
   public void setValidatedTralingSize(final int rowSpan,
                                       final long validatedSize)
@@ -232,5 +176,11 @@ public class TableRow
     //this.validatedLeadingSize = 0;
     this.validatedTrailingSize.clear();
     this.validateSize = 0;
+  }
+
+  public void clearSizes()
+  {
+    this.preferredSizes.clear();
+    this.preferredSize = 0;
   }
 }

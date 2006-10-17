@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnGroup.java,v 1.2 2006/07/24 12:18:56 taqua Exp $
+ * $Id: TableColumnGroup.java,v 1.3 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -61,13 +61,12 @@ public class TableColumnGroup
 {
   private ArrayList tableColumns;
   private Border border;
-  private boolean incrementalModeSupported;
+  private boolean freeze;
 
   public TableColumnGroup(final Border border)
   {
     this.border = border;
     this.tableColumns = new ArrayList();
-    this.incrementalModeSupported = true;
   }
 
   public TableColumnGroup()
@@ -75,8 +74,17 @@ public class TableColumnGroup
     this(Border.createEmptyBorder());
   }
 
+  public void freeze()
+  {
+    freeze = true;
+  }
+
   public void addColumn(TableColumn column)
   {
+    if (freeze)
+    {
+      throw new IllegalStateException();
+    }
     this.tableColumns.add(column);
   }
 
@@ -85,63 +93,13 @@ public class TableColumnGroup
     return border;
   }
 
-  public void validate(final long computedParentWidth)
-  {
-    if (tableColumns.size() == 0)
-    {
-      return;
-    }
-
-    for (int i = 0; i < tableColumns.size(); i++)
-    {
-      final TableColumn column = (TableColumn) tableColumns.get(i);
-      final long columnWidth = column.getDefinedWidth().resolve(computedParentWidth);
-      column.updateSizes(1, columnWidth, columnWidth);
-      column.setInitialWidth(columnWidth);
-
-      if (incrementalModeSupported)
-      {
-        if (column.isAutoWidth())
-        {
-          incrementalModeSupported = false;
-          break;
-        }
-      }
-    }
-
-
-  }
-
   public int getColumnCount()
   {
     return tableColumns.size();
   }
 
-  public boolean isIncrementalModeSupported()
-  {
-    return incrementalModeSupported;
-  }
-
   public TableColumn getColumn(final int pos)
   {
     return (TableColumn) tableColumns.get(pos);
-  }
-
-  public boolean isFirstColumn(TableColumn col)
-  {
-    if (tableColumns.size() == 0)
-    {
-      return false;
-    }
-    return tableColumns.get(0) == col;
-  }
-
-  public boolean isLastColumn(TableColumn col)
-  {
-    if (tableColumns.size() == 0)
-    {
-      return false;
-    }
-    return tableColumns.get(tableColumns.size() - 1) == col;
   }
 }

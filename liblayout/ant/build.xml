@@ -78,6 +78,8 @@
         <pathelement location="${libdir}/${libloader-jar-file}"/>
         <pathelement location="${libdir}/${sac-jar-file}"/>
         <pathelement location="${libdir}/${flute-jar-file}"/>
+        <pathelement location="${libdir}/${junit-jar-file}"/>
+        
       </all-classpath>
       <all-resources>
         <include name="*.properties"/>

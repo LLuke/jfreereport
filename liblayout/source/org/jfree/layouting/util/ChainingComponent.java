@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ChainingComponent.java,v 1.1 2006/07/11 13:48:03 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,6 @@ package org.jfree.layouting.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import org.jfree.util.Log;
 
 /**
  * A chaining component accepts calls from outside, forwards them to its
@@ -127,16 +125,15 @@ public abstract class ChainingComponent
     calls.addAll(Arrays.asList(recordedCalls));
   }
 
-  public synchronized void replay ()
+  public synchronized void replay () throws ChainingCallException
   {
     replay(this);
   }
 
-  public synchronized void replay (Object target)
+  public synchronized void replay (Object target) throws ChainingCallException
   {
     final RecordedCall[] recordedCalls = getRecordedCalls();
 
-//    Log.debug ("REPLAY:"  + this + " : " + recordedCalls.length);
     for (int i = 0; i < recordedCalls.length; i++)
     {
       final RecordedCall call = recordedCalls[i];
@@ -147,18 +144,18 @@ public abstract class ChainingComponent
 
       try
       {
-//        Log.debug ("Invoking: " + target.toString() + " " + call.getMethod() + " " + call.getParameters());
         invoke(target, call.getMethod(), call.getParameters());
         call.setState(STATE_DONE);
-        calls.remove(0);
       }
       catch(Exception e)
       {
-        Log.debug ("Error: ", e);
         call.setState(STATE_ERROR);
-        break;
+        calls.clear();
+        throw new ChainingCallException(e);
       }
     }
+
+    calls.clear();
   }
 
   protected abstract void invoke (Object target, int methodId, Object parameters)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.6 2006/07/27 17:56:27 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.7 2006/07/30 13:13:47 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.layouting.renderer.text;
 
 import java.util.ArrayList;
 
-import org.jfree.fonts.registry.BaselineInfo;
 import org.jfree.fonts.registry.FontMetrics;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
@@ -73,7 +72,6 @@ import org.jfree.layouting.renderer.text.whitespace.DiscardWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.PreserveBreaksWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.PreserveWhiteSpaceFilter;
 import org.jfree.layouting.renderer.text.whitespace.WhiteSpaceFilter;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -291,11 +289,12 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     {
 
       // Finish the current word ...
-      if (glyphList.isEmpty() == false)
+      final boolean forceLinebreak = breakweight == BreakOpportunityProducer.BREAK_LINE;
+      if (glyphList.isEmpty() == false || forceLinebreak)
       {
-        final boolean forceLinebreak = breakweight == BreakOpportunityProducer.BREAK_LINE;
         addWord(forceLinebreak);
       }
+
 
       // This character can be stripped. We increase the leading margin of the
       // next word by the character's width.
@@ -324,7 +323,13 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     {
       // create an trailing margin element. This way, it can collapse with
       // the next element.
-      if (produced == true)
+      if (forceLinebreak)
+      {
+        words.add(new RenderableText
+              (layoutContext, TextUtility.createBaselineInfo('\n', fontMetrics), new Glyph[0], 0,
+                      0, lastLanguage, forceLinebreak));
+      }
+      else if (produced == true)
       {
         words.add(new SpacerRenderNode(leadingMargin, 0, false));
       }
@@ -342,68 +347,11 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       final int codePoint = glyphs[0].getCodepoint();
 
       words.add(new RenderableText
-              (layoutContext, createBaselineInfo(codePoint), glyphs, 0,
+              (layoutContext, TextUtility.createBaselineInfo(codePoint, fontMetrics), glyphs, 0,
                       glyphs.length, lastLanguage, forceLinebreak));
       glyphList.clear();
     }
     leadingMargin = 0;
-  }
-
-  /**
-   * Todo: Cheap hack
-   */
-  private ExtendedBaselineInfo createBaselineInfo(int codepoint)
-  {
-    BaselineInfo baselineInfo = fontMetrics.getBaselines(codepoint, null);
-    DefaultExtendedBaselineInfo extBaselineInfo = new DefaultExtendedBaselineInfo();
-    extBaselineInfo.setDominantBaseline(translateBaselines(baselineInfo.getDominantBaseline()));
-
-    long[] baselines = new long[8];
-    baselines[ExtendedBaselineInfo.ALPHABETHC] =
-            StrictGeomUtility.toInternalValue
-                    (baselineInfo.getBaseline(BaselineInfo.ALPHABETIC));
-    baselines[ExtendedBaselineInfo.CENTRAL] =
-            StrictGeomUtility.toInternalValue
-                    (baselineInfo.getBaseline(BaselineInfo.CENTRAL));
-    baselines[ExtendedBaselineInfo.HANGING] =
-            StrictGeomUtility.toInternalValue
-                    (baselineInfo.getBaseline(BaselineInfo.HANGING));
-    baselines[ExtendedBaselineInfo.IDEOGRAPHIC] =
-            StrictGeomUtility.toInternalValue
-                    (baselineInfo.getBaseline(BaselineInfo.IDEOGRAPHIC));
-    baselines[ExtendedBaselineInfo.MATHEMATICAL] =
-            StrictGeomUtility.toInternalValue
-                    (baselineInfo.getBaseline(BaselineInfo.MATHEMATICAL));
-    baselines[ExtendedBaselineInfo.MIDDLE] =
-            StrictGeomUtility.toInternalValue
-                    (baselineInfo.getBaseline(BaselineInfo.MIDDLE));
-    baselines[ExtendedBaselineInfo.TEXT_BEFORE_EDGE] = 0;
-    baselines[ExtendedBaselineInfo.TEXT_AFTER_EDGE] =
-            StrictGeomUtility.toInternalValue
-              (fontMetrics.getMaxHeight());
-    extBaselineInfo.setBaselines(baselines);
-    return extBaselineInfo;
-  }
-
-  private int translateBaselines(int baseline)
-  {
-    switch (baseline)
-    {
-      case BaselineInfo.HANGING:
-        return ExtendedBaselineInfo.HANGING;
-      case BaselineInfo.ALPHABETIC:
-        return ExtendedBaselineInfo.ALPHABETHC;
-      case BaselineInfo.CENTRAL:
-        return ExtendedBaselineInfo.CENTRAL;
-      case BaselineInfo.IDEOGRAPHIC:
-        return ExtendedBaselineInfo.IDEOGRAPHIC;
-      case BaselineInfo.MATHEMATICAL:
-        return ExtendedBaselineInfo.MATHEMATICAL;
-      case BaselineInfo.MIDDLE:
-        return ExtendedBaselineInfo.MIDDLE;
-    }
-
-    throw new IllegalArgumentException("Invalid baseline");
   }
 
   private boolean isWordBreak(int breakOp)

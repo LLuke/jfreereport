@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Loggers.java,v 1.1 2006/07/27 17:57:29 taqua Exp $
+ * $Id: Loggers.java,v 1.2 2006/07/29 18:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.renderer;
 
-import org.jfree.util.LogContext;
 import org.jfree.util.Log;
+import org.jfree.util.LogContext;
 
 /**
  * Creation-Date: 27.07.2006, 14:35:31
