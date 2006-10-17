@@ -3,6 +3,17 @@
 ---------------
 A list of changes in recent versions:
 
+0.1.3: 
+        * The renderer pipeline has been replaced by a faster implementation. The 
+          new phased renderer defines clearly separated processing steps and improves
+          caching and scaling. It also removes a lot of unneccessary and weird 
+          computations, which slowed down the rendering process without providing
+          any real value.
+
+0.1.2: (29-Jul-2006)
+        * A prelimentary version of the renderer has been implemented. The renderer
+          fails when asked for pagebreaks and is very slow for now.
+
 0.1.1: (30-Apr-2006)
         * LibLayout now depends on a modified version of flute - W3C's CSS-Parser.
           Our version has improved namespace awareness, while maintaining backward
