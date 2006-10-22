@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InputFeed.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
+ * $Id: InputFeed.java,v 1.4 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -138,6 +138,8 @@ public interface InputFeed extends StatefullComponent
   public void handlePageBreakEncountered(final CSSValue pageName,
                                          final PseudoPage[] pseudoPages)
           throws NormalizationException;
+
+  public boolean isPagebreakEncountered();
 
   /**
    * Warning; This method is needed internally, mess with it from the outside

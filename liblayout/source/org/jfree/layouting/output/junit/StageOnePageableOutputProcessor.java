@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StageOnePageableOutputProcessor.java,v 1.2 2006/07/17 16:48:52 taqua Exp $
+ * $Id: StageOnePageableOutputProcessor.java,v 1.3 2006/07/18 14:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -45,20 +45,19 @@ import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.renderer.Renderer;
-import org.jfree.layouting.renderer.DefaultRenderer;
-import org.jfree.layouting.renderer.EmptyRenderer;
+import org.jfree.layouting.layouter.feed.DefaultInputFeed;
+import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.normalizer.content.ContentNormalizer;
 import org.jfree.layouting.normalizer.content.Normalizer;
-import org.jfree.layouting.layouter.feed.InputFeed;
-import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.normalizer.displaymodel.DisplayModelBuilder;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
-import org.jfree.layouting.normalizer.generator.PrintContentGenerator;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.streaming.html.HtmlOutputProcessorMetaData;
+import org.jfree.layouting.renderer.DefaultRenderer;
+import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 /**
  * Creation-Date: 31.05.2006, 16:28:33
@@ -67,14 +66,12 @@ import org.jfree.layouting.output.streaming.html.HtmlOutputProcessorMetaData;
  */
 public class StageOnePageableOutputProcessor implements OutputProcessor
 {
-  private FontRegistry fontRegistry;
-  private FontStorage fontStorage;
   private OutputProcessorMetaData metaData;
 
   public StageOnePageableOutputProcessor()
   {
-    this.fontRegistry = new AWTFontRegistry();
-    this.fontStorage = new DefaultFontStorage(fontRegistry);
+    final FontRegistry fontRegistry = new AWTFontRegistry();
+    final FontStorage fontStorage = new DefaultFontStorage(fontRegistry);
     this.metaData = new HtmlOutputProcessorMetaData(fontStorage);
   }
 
@@ -83,16 +80,11 @@ public class StageOnePageableOutputProcessor implements OutputProcessor
     return metaData;
   }
 
-  public FontStorage getFontStorage()
-  {
-    return fontStorage;
-  }
-
   public InputFeed createInputFeed(LayoutProcess layoutProcess)
   {
     return new DefaultInputFeed(layoutProcess);
   }
-  
+
   /**
    * Returns the content normalizer implementation for this OP. The content
    * normalizer is responsible for resolving the styles and for initiating the
@@ -115,13 +107,15 @@ public class StageOnePageableOutputProcessor implements OutputProcessor
   public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
     return new DisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
-    //return new DisplayModelBuilder(new PrintContentGenerator(layoutProcess), layoutProcess);
   }
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
-    //return new EmptyRenderer(layoutProcess);
     return new DefaultRenderer(layoutProcess);
   }
 
+  public void processContent(LogicalPageBox logicalPage)
+  {
+
+  }
 }

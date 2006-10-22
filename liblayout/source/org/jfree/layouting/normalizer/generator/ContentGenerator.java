@@ -129,6 +129,11 @@ public interface ContentGenerator extends StatefullComponent
   public void finishDocument()
           throws NormalizationException;
 
+  /**
+   * This event handler is triggered by 'LayoutProcess.pageBreakEncountered()'.
+   * 
+   * @param pageContext
+   */
   public void handlePageBreak(final PageContext pageContext);
 
   public Renderer getRenderer();

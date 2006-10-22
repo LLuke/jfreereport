@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingNormalizer.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
+ * $Id: ChainingNormalizer.java,v 1.2 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -135,7 +135,7 @@ public class ChainingNormalizer implements Normalizer
       //Log.debug("Committing calls to Renderer: " + renderer);
       try
       {
-        renderer.replay();
+        renderer.replay(renderer.getRenderer());
       }
       catch (ChainingCallException e)
       {

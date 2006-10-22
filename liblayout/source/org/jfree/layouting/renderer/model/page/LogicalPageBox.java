@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.9 2006/07/29 18:57:13 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.10 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -102,19 +102,14 @@ public class LogicalPageBox extends BlockRenderBox
       throw new NullPointerException("PageGrid must not be null");
     }
 
-    this.pageGrid = pageGrid;
-
     this.subFlows = new ArrayList();
     NormalFlowRenderBox contentArea =
         new NormalFlowRenderBox (new EmptyBoxDefinition());
-    contentAreaId = contentArea.getInstanceId();
+    this.contentAreaId = contentArea.getInstanceId();
     this.headerArea = new IndexedRenderBox(new EmptyBoxDefinition());
     this.footerArea = new IndexedRenderBox(new EmptyBoxDefinition());
-    this.pageHeights = new long[pageGrid.getColumnCount()];
-    this.pageWidths = new long[pageGrid.getRowCount()];
-    this.horizontalBreaks = new long[pageGrid.getColumnCount()];
-    this.verticalBreaks = new long[pageGrid.getRowCount()];
-    updatePageArea();
+
+    updatePageArea(pageGrid);
 
     addChild(headerArea);
     addChild(contentArea);
@@ -138,8 +133,14 @@ public class LogicalPageBox extends BlockRenderBox
     getContentArea().appyStyle(context, metaData);
   }
 
-  private void updatePageArea()
+  public void updatePageArea(PageGrid pageGrid)
   {
+    this.pageGrid = pageGrid;
+    this.pageHeights = new long[pageGrid.getColumnCount()];
+    this.pageWidths = new long[pageGrid.getRowCount()];
+    this.horizontalBreaks = new long[pageGrid.getColumnCount()];
+    this.verticalBreaks = new long[pageGrid.getRowCount()];
+
     Arrays.fill(pageHeights, Long.MAX_VALUE);
     Arrays.fill(pageWidths, Long.MAX_VALUE);
 

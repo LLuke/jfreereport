@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LeftAlignmentProcessor.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.renderer.process.layoutrules.TextSequenceElement;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.BoxLayoutProperties;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.util.Log;
 
 /**
@@ -220,7 +221,7 @@ public class LeftAlignmentProcessor extends AbstractAlignmentProcessor
     if (node instanceof RenderBox)
     {
       final RenderBox box = (RenderBox) node;
-      final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+      final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
       node.setX(getPosition() + blp.getMarginLeft());
       node.setWidth(itemElementWidth - blp.getMarginLeft() - blp.getMarginRight());
 

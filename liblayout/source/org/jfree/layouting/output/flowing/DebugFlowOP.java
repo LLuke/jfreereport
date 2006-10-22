@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DebugFlowOP.java,v 1.1 2006/07/11 13:55:34 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.normalizer.content.ContentNormalizer;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.normalizer.generator.ContentGenerator;
@@ -127,5 +128,10 @@ public class DebugFlowOP implements FlowingOutputProcessor
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
     return null;
+  }
+
+  public void processContent(LogicalPageBox logicalPage)
+  {
+
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageContext.java,v 1.2 2006/07/26 11:52:07 taqua Exp $
+ * $Id: PageContext.java,v 1.3 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -51,12 +51,6 @@ import org.jfree.layouting.input.style.PageAreaType;
  * global pseudo-page definitions. (Note: This is unclear and unclean and thus
  * not yet implemented. Later it will be, of course...)
  * <p/>
- * The pseudo-page definitions only have a sensible meaning, if the page is
- * not spanned.
- * <p/>
- * Note: The 'page' counter is not managed by this class. That counter is
- * always managed by the layouter itself and *should* reflect the actual
- * physical position (even on spanned pages!)
  */
 public interface PageContext extends StyleContext
 {

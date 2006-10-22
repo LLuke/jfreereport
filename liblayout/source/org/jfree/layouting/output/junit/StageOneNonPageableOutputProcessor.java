@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StageOneNonPageableOutputProcessor.java,v 1.1 2006/07/11 13:55:34 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.DefaultRenderer;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.normalizer.content.ContentNormalizer;
 import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.layouter.feed.InputFeed;
@@ -118,5 +119,10 @@ public class StageOneNonPageableOutputProcessor implements OutputProcessor
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
     return new DefaultRenderer(layoutProcess);
+  }
+
+  public void processContent(LogicalPageBox logicalPage)
+  {
+
   }
 }

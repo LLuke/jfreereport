@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultPageGrid.java,v 1.3 2006/07/29 18:57:13 taqua Exp $
+ * $Id: DefaultPageGrid.java,v 1.4 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,7 @@ package org.jfree.layouting.renderer.model.page;
 import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.style.LayoutStyle;
@@ -70,7 +68,7 @@ public class DefaultPageGrid implements PageGrid
     CSSValue hspanValue = areaDefinition.getValue(PageStyleKeys.HORIZONTAL_PAGE_SPAN);
     CSSValue vspanValue = areaDefinition.getValue(PageStyleKeys.VERTICAL_PAGE_SPAN);
     CSSValue pageValue = areaDefinition.getValue(PageStyleKeys.SIZE);
-    PageSize pageSize = lookupPageSize(pageValue, metaData);
+    PageSize pageSize = PageGridUtility.lookupPageSize(pageValue, metaData);
     this.columns = Math.max (1, (int) CSSValueResolverUtility.getNumericValue
             (hspanValue, metaData.getHorizontalPageSpan()));
     this.rows = Math.max (1, (int) CSSValueResolverUtility.getNumericValue
@@ -84,41 +82,6 @@ public class DefaultPageGrid implements PageGrid
     }
   }
 
-  private PageSize lookupPageSize (CSSValue sizeVal,
-                                   OutputProcessorMetaData metaData)
-  {
-    PageSize defaultVal = metaData.getDefaultPageSize();
-    
-    if (sizeVal instanceof CSSValuePair == false)
-    {
-      return defaultVal;
-    }
-    CSSValuePair valuePair = (CSSValuePair) sizeVal;
-    final CSSValue firstValue = valuePair.getFirstValue();
-    if (firstValue instanceof CSSNumericValue == false)
-    {
-      return defaultVal;
-    }
-    final CSSValue secondValue = valuePair.getSecondValue();
-    if (secondValue instanceof CSSNumericValue == false)
-    {
-      return defaultVal;
-    }
-
-    CSSNumericValue widthVal = CSSValueResolverUtility.getLength
-            (firstValue, CSSNumericValue.createPtValue(defaultVal.getWidth()));
-    CSSNumericValue heightVal = CSSValueResolverUtility.getLength
-            (secondValue, CSSNumericValue.createPtValue(defaultVal.getHeight()));
-    double width = CSSValueResolverUtility.convertLengthToDouble
-            (widthVal, null, metaData);
-    double height = CSSValueResolverUtility.convertLengthToDouble
-            (heightVal, null, metaData);
-    if (width < 1 || height < 1)
-    {
-      return defaultVal;
-    }
-    return new PageSize((int) width, (int) height);
-  }
 
   public PhysicalPageBox getPage(int row, int col)
   {

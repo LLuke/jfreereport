@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: VerticalAlignmentProcessor.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,11 @@ import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.TextUtility;
+import org.jfree.layouting.renderer.process.InfiniteMajorAxisLayoutStep;
+import org.jfree.layouting.renderer.process.BoxShifter;
 import org.jfree.util.Log;
 
 /**
@@ -68,6 +71,7 @@ public class VerticalAlignmentProcessor
   private long minTopPos;
   private long maxBottomPos;
   private BoxAlignContext rootContext;
+  private long sourcePosition; 
 
   public VerticalAlignmentProcessor()
   {
@@ -81,10 +85,10 @@ public class VerticalAlignmentProcessor
     this.maxBottomPos = Long.MIN_VALUE;
     this.lineHeight = lineHeight;
     this.rootContext = alignStructure;
+    this.sourcePosition = y1;
 
     performAlignment(alignStructure);
     performExtendedAlignment(alignStructure, alignStructure);
-//    print(alignStructure, 1);
     normalizeAlignment(alignStructure);
 
     alignStructure.setAfterEdge(maxBottomPos);
@@ -102,6 +106,15 @@ public class VerticalAlignmentProcessor
     for (int i = 0; i < childs.length; i++)
     {
       AlignContext child = childs[i];
+
+      if (child instanceof InlineBlockAlignContext)
+      {
+        InlineBlockAlignContext context = (InlineBlockAlignContext) child;
+        InfiniteMajorAxisLayoutStep majorAxisLayoutStep = new InfiniteMajorAxisLayoutStep();
+        majorAxisLayoutStep.continueComputation((RenderBox) context.getNode());
+
+        // todo: Allow to select other than the first baseline ..
+      }
 
       BoxAlignContext parent = box;
       final CSSValue verticalAlignment = child.getNode().getVerticalAlignment();
@@ -268,6 +281,13 @@ public class VerticalAlignmentProcessor
       if (child instanceof BoxAlignContext)
       {
         apply((BoxAlignContext) child);
+      }
+      else if (child instanceof InlineBlockAlignContext)
+      {
+        // also shift all the childs.
+        BoxShifter boxShifter = new BoxShifter();
+        final long shift = child.getBeforeEdge() - sourcePosition;
+        boxShifter.shiftBox((RenderBox) child.getNode(), shift);
       }
       else
       {

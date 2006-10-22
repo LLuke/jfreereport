@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FlowingOutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
+ * $Id: FlowingOutputProcessor.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,8 @@ package org.jfree.layouting.output.flowing;
 import org.jfree.layouting.output.OutputProcessor;
 
 /**
- * Creation-Date: 03.01.2006, 12:50:20
+ * This interface extends the plain output processor with methods to manage
+ * and select the generated flows. (Light-weight pagination)
  *
  * @author Thomas Morgner
  */

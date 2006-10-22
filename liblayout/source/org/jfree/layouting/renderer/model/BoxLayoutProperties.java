@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BoxLayoutProperties.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -55,21 +55,8 @@ import java.io.Serializable;
  *
  * @author Thomas Morgner
  */
-public class BoxLayoutProperties implements Serializable
+public class BoxLayoutProperties implements Serializable, Cloneable
 {
-  private long marginLeft;
-  private long marginRight;
-  private long marginTop;
-  private long marginBottom;
-  private long paddingLeft;
-  private long paddingTop;
-  private long paddingRight;
-  private long paddingBottom;
-  private long borderLeft;
-  private long borderRight;
-  private long borderTop;
-  private long borderBottom;
-
   private boolean infiniteMarginTop;
   private boolean infiniteMarginBottom;
   private long effectiveMarginTop;
@@ -79,130 +66,10 @@ public class BoxLayoutProperties implements Serializable
   private long marginCloseState;
   private long marginState;
 
-  private int dominantBaseline;
+//  private int dominantBaseline;
 
   public BoxLayoutProperties()
   {
-  }
-
-  public long getMarginLeft()
-  {
-    return marginLeft;
-  }
-
-  public void setMarginLeft(final long marginLeft)
-  {
-    this.marginLeft = marginLeft;
-  }
-
-  public long getMarginRight()
-  {
-    return marginRight;
-  }
-
-  public void setMarginRight(final long marginRight)
-  {
-    this.marginRight = marginRight;
-  }
-
-  public long getMarginTop()
-  {
-    return marginTop;
-  }
-
-  public void setMarginTop(final long marginTop)
-  {
-    this.marginTop = marginTop;
-  }
-
-  public long getMarginBottom()
-  {
-    return marginBottom;
-  }
-
-  public void setMarginBottom(final long marginBottom)
-  {
-    this.marginBottom = marginBottom;
-  }
-
-  public long getPaddingLeft()
-  {
-    return paddingLeft;
-  }
-
-  public void setPaddingLeft(final long paddingLeft)
-  {
-    this.paddingLeft = paddingLeft;
-  }
-
-  public long getPaddingTop()
-  {
-    return paddingTop;
-  }
-
-  public void setPaddingTop(final long paddingTop)
-  {
-    this.paddingTop = paddingTop;
-  }
-
-  public long getPaddingRight()
-  {
-    return paddingRight;
-  }
-
-  public void setPaddingRight(final long paddingRight)
-  {
-    this.paddingRight = paddingRight;
-  }
-
-  public long getPaddingBottom()
-  {
-    return paddingBottom;
-  }
-
-  public void setPaddingBottom(final long paddingBottom)
-  {
-    this.paddingBottom = paddingBottom;
-  }
-
-  public long getBorderLeft()
-  {
-    return borderLeft;
-  }
-
-  public void setBorderLeft(final long borderLeft)
-  {
-    this.borderLeft = borderLeft;
-  }
-
-  public long getBorderRight()
-  {
-    return borderRight;
-  }
-
-  public void setBorderRight(final long borderRight)
-  {
-    this.borderRight = borderRight;
-  }
-
-  public long getBorderTop()
-  {
-    return borderTop;
-  }
-
-  public void setBorderTop(final long borderTop)
-  {
-    this.borderTop = borderTop;
-  }
-
-  public long getBorderBottom()
-  {
-    return borderBottom;
-  }
-
-  public void setBorderBottom(final long borderBottom)
-  {
-    this.borderBottom = borderBottom;
   }
 
   public long getEffectiveMarginTop()
@@ -228,19 +95,7 @@ public class BoxLayoutProperties implements Serializable
   public String toString()
   {
     return "BoxLayoutProperties{" +
-            "  marginLeft=" + marginLeft +
-            ", marginRight=" + marginRight +
-            ", marginTop=" + marginTop +
-            ", marginBottom=" + marginBottom +
-            ", paddingLeft=" + paddingLeft +
-            ", paddingTop=" + paddingTop +
-            ", paddingRight=" + paddingRight +
-            ", paddingBottom=" + paddingBottom +
-            ", borderLeft=" + borderLeft +
-            ", borderRight=" + borderRight +
-            ", borderTop=" + borderTop +
-            ", borderBottom=" + borderBottom +
-            ", effectiveMarginTop=" + effectiveMarginTop +
+            "effectiveMarginTop=" + effectiveMarginTop +
             ", effectiveMarginBottom=" + effectiveMarginBottom +
             '}';
   }
@@ -295,4 +150,8 @@ public class BoxLayoutProperties implements Serializable
     this.infiniteMarginBottom = infiniteMarginBottom;
   }
 
+  public Object clone() throws CloneNotSupportedException
+  {
+    return super.clone();
+  }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
+ * $Id: OutputProcessor.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 /**
  * The output processor defines, which processing-step implementation will
@@ -83,4 +84,6 @@ public interface OutputProcessor
   public ModelBuilder createModelBuilder(LayoutProcess layoutProcess);
 
   public Renderer createRenderer (LayoutProcess layoutProcess);
+
+  public void processContent (LogicalPageBox logicalPage);
 }

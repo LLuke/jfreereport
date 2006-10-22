@@ -6,6 +6,7 @@ import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
@@ -83,5 +84,10 @@ public class OOWriterOutputProcessor implements StreamingOutputProcessor
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
     return null;
+  }
+
+  public void processContent(LogicalPageBox logicalPage)
+  {
+
   }
 }

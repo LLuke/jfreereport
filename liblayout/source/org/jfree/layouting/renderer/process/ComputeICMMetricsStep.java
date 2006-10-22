@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ComputeICMMetricsStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,12 @@
 package org.jfree.layouting.renderer.process;
 
 import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.util.geom.StrictDimension;
 
@@ -85,7 +85,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
   protected void finishInlineLevelBox(final RenderBox box)
   {
     // Sum up the width; Maximize the height.; add borders and padding
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
 
     // horizontal border and padding ..
     final long hbp = blp.getBorderLeft() + blp.getBorderRight() +
@@ -119,7 +119,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
   {
     // Sum up the height; Maximize the width.; add borders and padding
 
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
 
     // horizontal border and padding ..
     final long hbp = blp.getBorderLeft() + blp.getBorderRight() +

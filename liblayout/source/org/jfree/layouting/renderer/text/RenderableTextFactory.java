@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableTextFactory.java,v 1.2 2006/07/14 14:34:41 taqua Exp $
+ * $Id: RenderableTextFactory.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.renderer.text;
 
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.StatefullComponent;
 
 /**
  * Problem: Text may span more than one chunk, and text may influence the break
@@ -58,7 +59,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
  *
  * @author Thomas Morgner
  */
-public interface RenderableTextFactory
+public interface RenderableTextFactory extends StatefullComponent
 {
   /**
    * The text is given as CodePoints.

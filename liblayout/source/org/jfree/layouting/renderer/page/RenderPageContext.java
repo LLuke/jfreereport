@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RenderPageContext.java,v 1.1 2006/07/29 18:58:07 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,9 @@ package org.jfree.layouting.renderer.page;
 
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.renderer.model.page.PageGrid;
+import org.jfree.layouting.renderer.model.page.DefaultPageGrid;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
  * This is a running page context, which contains a list of watched strings
@@ -57,6 +60,9 @@ import org.jfree.layouting.layouter.context.PageContext;
 public class RenderPageContext
 {
   private PageContext pageContext;
+  private boolean firstPage;
+  private int pageCounter;
+  private boolean leftPage;
 
   public RenderPageContext(final PageContext pageContext)
   {
@@ -87,5 +93,10 @@ public class RenderPageContext
   public RenderPageContext update(final LayoutContext layoutContext)
   {
     return this;
+  }
+
+  public PageGrid createPageGrid(final OutputProcessorMetaData outputMetaData)
+  {
+    return new DefaultPageGrid(pageContext, outputMetaData);
   }
 }

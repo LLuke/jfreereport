@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DummyOutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
+ * $Id: DummyOutputProcessor.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 public class DummyOutputProcessor implements PageableOutputProcessor
 {
@@ -120,5 +121,10 @@ public class DummyOutputProcessor implements PageableOutputProcessor
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
     return null;
+  }
+
+  public void processContent(LogicalPageBox logicalPage)
+  {
+    // the pagegrid contains the content ..
   }
 }

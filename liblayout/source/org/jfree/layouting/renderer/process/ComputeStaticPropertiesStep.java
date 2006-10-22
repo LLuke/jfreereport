@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ComputeStaticPropertiesStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -41,24 +41,22 @@
 package org.jfree.layouting.renderer.process;
 
 import org.jfree.layouting.input.style.keys.border.BorderStyle;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.BorderEdge;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BoxDefinition;
-import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
+import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
-import org.jfree.util.Log;
 
 /**
  * This step computes the defined margins, the border and paddings. Before
@@ -107,7 +105,7 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
 
     computeBlockContextWidth(box);
 
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     final RenderLength bcw = nlp.getBlockContextWidth();
     final long rbcw = bcw.resolve(0);
     final BoxDefinition boxDefinition = box.getBoxDefinition();
@@ -325,7 +323,7 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
 
     computeBlockContextWidth(box);
 
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     final RenderLength bcw = nlp.getBlockContextWidth();
     final long rbcw = bcw.resolve(0);
     final BoxDefinition boxDefinition = box.getBoxDefinition();
@@ -358,7 +356,7 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
   }
 
   private void computeBorder(final BoxDefinition boxDefinition,
-                             final BoxLayoutProperties slp, final long bcw)
+                             final StaticBoxLayoutProperties slp, final long bcw)
   {
     final Border border = boxDefinition.getBorder();
     slp.setBorderTop(resolveBorderEdge(bcw, border.getTop()));

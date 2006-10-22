@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Renderer.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
+ * $Id: Renderer.java,v 1.4 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -147,6 +147,8 @@ public interface Renderer extends StatefullComponent
    * A call-back that informs the renderer, that a new page must be started.
    * This closes the old page context and copies all pending content to the new
    * context.
+   *
+   * This method is triggered by a call to 'LayoutProcess.pageBreakEncountered'
    *
    * @param pageContext
    */

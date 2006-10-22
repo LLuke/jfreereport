@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InfiniteMajorAxisLayoutStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.process.valign.BoxAlignContext;
@@ -175,9 +176,10 @@ public class InfiniteMajorAxisLayoutStep
     if (box != continuedElement)
     {
       computeYPosition(box);
-      // We have an valid y position. Now create the remaining contentY1
-      //final BoxLayoutProperties blp = box.getBoxLayoutProperties();
-      //final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
+      // We have an valid y position now
+      // we do not recompute the y-position of the continued element yet as we
+      // would not have all context-information here (and it had been done in
+      // the calling step anyway)
     }
 
     if (breakState == null)
@@ -224,7 +226,7 @@ public class InfiniteMajorAxisLayoutStep
     // it layouts its children from left to right
     if (parent instanceof TableRowRenderBox)
     {
-      final BoxLayoutProperties blp = parent.getBoxLayoutProperties();
+      final StaticBoxLayoutProperties blp = parent.getStaticBoxLayoutProperties();
       final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
 
       node.setY(marginTop + insetTop + parent.getY());
@@ -240,7 +242,7 @@ public class InfiniteMajorAxisLayoutStep
       }
       else
       {
-        final BoxLayoutProperties blp = parent.getBoxLayoutProperties();
+        final StaticBoxLayoutProperties blp = parent.getStaticBoxLayoutProperties();
         final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
 
         node.setY(marginTop + insetTop + parent.getY());
@@ -249,7 +251,7 @@ public class InfiniteMajorAxisLayoutStep
     // The parent is a inline box.
     else if (parent != null)
     {
-      final BoxLayoutProperties blp = parent.getBoxLayoutProperties();
+      final StaticBoxLayoutProperties blp = parent.getStaticBoxLayoutProperties();
       final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
 
       node.setY(marginTop + insetTop + parent.getY());
@@ -269,7 +271,7 @@ public class InfiniteMajorAxisLayoutStep
     final long computedHeight =
         preferredHeight.resolve(computedWidth.resolve(0));
 
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     final long insetBottom = blp.getBorderBottom() + blp.getPaddingBottom();
 
     final RenderNode lastChildNode = box.getLastChild();
@@ -445,9 +447,7 @@ public class InfiniteMajorAxisLayoutStep
 
   protected void processParagraphChilds(final ParagraphRenderBox box)
   {
-    // Process the direct childs of the paragraph, not the linebox-collector
-    // and not the pool ..
-
+    // Process the direct childs of the paragraph
     // Each direct child represents a line ..
 
     RenderNode node = box.getFirstChild();
@@ -502,7 +502,7 @@ public class InfiniteMajorAxisLayoutStep
     // or whether moving them violated any of the inner-pagebreak constraints.
     final VerticalAlignmentProcessor processor = new VerticalAlignmentProcessor();
 
-    final BoxLayoutProperties blp = inlineRenderBox.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = inlineRenderBox.getStaticBoxLayoutProperties();
     final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
 
     final long contentAreaY1 = inlineRenderBox.getY() + insetTop;

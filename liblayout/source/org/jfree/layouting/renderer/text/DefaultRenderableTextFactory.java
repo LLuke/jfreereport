@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.7 2006/07/30 13:13:47 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.8 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,9 @@ import java.util.ArrayList;
 
 import org.jfree.fonts.registry.FontMetrics;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.State;
+import org.jfree.layouting.StateException;
+import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.text.TextWrap;
 import org.jfree.layouting.input.style.keys.text.WhitespaceCollapse;
@@ -82,6 +85,91 @@ import org.jfree.util.ObjectUtilities;
  */
 public class DefaultRenderableTextFactory implements RenderableTextFactory
 {
+  protected static class DefaultRenderableTextFactoryState implements State
+  {
+    private State clusterProducer;
+    private boolean startText;
+    private boolean produced;
+    private State fontSizeProducer;
+    private State kerningProducer;
+    private State spacingProducer;
+    private State breakOpportunityProducer;
+    private State whitespaceFilter;
+    private CSSValue whitespaceCollapseValue;
+    private State classificationProducer;
+    private State languageClassifier;
+
+    private ArrayList words;
+    private ArrayList glyphList;
+    private long leadingMargin;
+    private int lastLanguage;
+
+    public DefaultRenderableTextFactoryState(DefaultRenderableTextFactory factory)
+        throws StateException
+    {
+      this.lastLanguage = factory.lastLanguage;
+      this.leadingMargin = factory.leadingMargin;
+      this.glyphList = (ArrayList) factory.glyphList.clone();
+      this.words = (ArrayList) factory.words.clone();
+      this.languageClassifier = factory.languageClassifier.saveState();
+      this.classificationProducer = factory.classificationProducer.saveState();
+      this.whitespaceCollapseValue = factory.whitespaceCollapseValue;
+      this.whitespaceFilter = factory.whitespaceFilter.saveState();
+      this.breakOpportunityProducer = factory.breakOpportunityProducer.saveState();
+      this.spacingProducer = factory.spacingProducer.saveState();
+      this.kerningProducer = factory.kerningProducer.saveState();
+      this.fontSizeProducer = factory.fontSizeProducer.saveState();
+      this.produced = factory.produced;
+      this.startText = factory.startText;
+      this.clusterProducer = factory.clusterProducer.saveState();
+    }
+
+    /**
+     * Creates a restored instance of the saved component.
+     * <p/>
+     * By using this factory-like approach, we gain independence from having to
+     * know the actual implementation. This makes things a lot easier.
+     *
+     * @param layoutProcess the layout process that controls it all
+     * @return the saved state
+     * @throws org.jfree.layouting.StateException
+     *
+     */
+    public StatefullComponent restore(LayoutProcess layoutProcess)
+        throws StateException
+    {
+      DefaultRenderableTextFactory factory =
+          new DefaultRenderableTextFactory(layoutProcess, false);
+      factory.dims = null;
+      factory.lastLanguage = this.lastLanguage;
+      factory.leadingMargin = this.leadingMargin;
+      factory.glyphList = (ArrayList) this.glyphList.clone();
+      factory.words = (ArrayList) this.words.clone();
+      factory.languageClassifier = (LanguageClassifier)
+          this.languageClassifier.restore(layoutProcess);
+      factory.classificationProducer = (GlyphClassificationProducer)
+          this.classificationProducer.restore(layoutProcess);
+      factory.whitespaceCollapseValue = this.whitespaceCollapseValue;
+      factory.whitespaceFilter= (WhiteSpaceFilter)
+          this.whitespaceFilter.restore(layoutProcess);
+
+      factory.breakOpportunityProducer= (BreakOpportunityProducer)
+          this.breakOpportunityProducer.restore(layoutProcess);
+      factory.spacingProducer= (SpacingProducer)
+          this.spacingProducer.restore(layoutProcess);
+      factory.kerningProducer= (KerningProducer)
+          this.kerningProducer.restore(layoutProcess);
+      factory.fontSizeProducer= (FontSizeProducer)
+          this.fontSizeProducer.restore(layoutProcess);
+
+      factory.produced = this.produced;
+      factory.startText = this.startText;
+      factory.clusterProducer = (GraphemeClusterProducer)
+          this.clusterProducer.restore(layoutProcess);
+      return factory;
+    }
+  }
+
   private LayoutProcess layoutProcess;
   private GraphemeClusterProducer clusterProducer;
   private boolean startText;
@@ -104,17 +192,26 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   private int lastLanguage;
 
   // todo: This is part of a cheap hack.
-  private FontMetrics fontMetrics;
+  private transient FontMetrics fontMetrics;
 
   public DefaultRenderableTextFactory(final LayoutProcess layoutProcess)
   {
+    this(layoutProcess, true);
+  }
+
+  protected DefaultRenderableTextFactory(final LayoutProcess layoutProcess,
+                                         boolean init)
+  {
     this.layoutProcess = layoutProcess;
-    this.clusterProducer = new GraphemeClusterProducer();
-    this.languageClassifier = new DefaultLanguageClassifier();
-    this.startText = true;
-    this.words = new ArrayList();
-    this.glyphList = new ArrayList();
-    this.dims = new GlyphMetrics();
+    if (init)
+    {
+      this.clusterProducer = new GraphemeClusterProducer();
+      this.languageClassifier = new DefaultLanguageClassifier();
+      this.startText = true;
+      this.words = new ArrayList();
+      this.glyphList = new ArrayList();
+      this.dims = new GlyphMetrics();
+    }
   }
 
 
@@ -147,9 +244,9 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
     // Todo: This is part of a cheap hack ..
     final FontSpecification fontSpecification =
-            layoutContext.getFontSpecification();
+        layoutContext.getFontSpecification();
     final OutputProcessorMetaData outputMetaData =
-            layoutProcess.getOutputMetaData();
+        layoutProcess.getOutputMetaData();
     fontMetrics = outputMetaData.getFontMetrics(fontSpecification);
 
     return processText(text, offset, length);
@@ -165,7 +262,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     {
       final int codePoint = text[i];
       final boolean clusterStarted =
-              this.clusterProducer.createGraphemeCluster(codePoint);
+          this.clusterProducer.createGraphemeCluster(codePoint);
       // ignore the first cluster start; we need to see the whole cluster.
       if (clusterStarted)
       {
@@ -197,7 +294,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     if (words.isEmpty() == false)
     {
       final RenderNode[] renderableTexts = (RenderNode[])
-              words.toArray(new RenderNode[words.size()]);
+          words.toArray(new RenderNode[words.size()]);
       words.clear();
       produced = true;
       return renderableTexts;
@@ -295,7 +392,6 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
         addWord(forceLinebreak);
       }
 
-
       // This character can be stripped. We increase the leading margin of the
       // next word by the character's width.
       leadingMargin += width;
@@ -304,8 +400,8 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     }
 
     Glyph glyph = new Glyph(codePoint, breakweight,
-            glyphClassification, spacing, width, height,
-            dims.getBaselinePosition(), kerning, extraChars);
+        glyphClassification, spacing, width, height,
+        dims.getBaselinePosition(), kerning, extraChars);
     glyphList.add(glyph);
     // Log.debug ("Adding Glyph");
 
@@ -326,8 +422,8 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       if (forceLinebreak)
       {
         words.add(new RenderableText
-              (layoutContext, TextUtility.createBaselineInfo('\n', fontMetrics), new Glyph[0], 0,
-                      0, lastLanguage, forceLinebreak));
+            (layoutContext, TextUtility.createBaselineInfo('\n', fontMetrics), new Glyph[0], 0,
+                0, lastLanguage, forceLinebreak));
       }
       else if (produced == true)
       {
@@ -347,8 +443,8 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       final int codePoint = glyphs[0].getCodepoint();
 
       words.add(new RenderableText
-              (layoutContext, TextUtility.createBaselineInfo(codePoint, fontMetrics), glyphs, 0,
-                      glyphs.length, lastLanguage, forceLinebreak));
+          (layoutContext, TextUtility.createBaselineInfo(codePoint, fontMetrics), glyphs, 0,
+              glyphs.length, lastLanguage, forceLinebreak));
       glyphList.clear();
     }
     leadingMargin = 0;
@@ -357,7 +453,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   private boolean isWordBreak(int breakOp)
   {
     if (BreakOpportunityProducer.BREAK_WORD == breakOp ||
-            BreakOpportunityProducer.BREAK_LINE == breakOp)
+        BreakOpportunityProducer.BREAK_LINE == breakOp)
     {
       return true;
     }
@@ -406,7 +502,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   }
 
   protected BreakOpportunityProducer createBreakProducer
-          (final LayoutContext layoutContext)
+      (final LayoutContext layoutContext)
   {
     final LayoutStyle style = layoutContext.getStyle();
     final CSSValue wordBreak = style.getValue(TextStyleKeys.TEXT_WRAP);
@@ -422,7 +518,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   }
 
   protected SpacingProducer createSpacingProducer
-          (final LayoutContext layoutContext)
+      (final LayoutContext layoutContext)
   {
 
     final LayoutStyle style = layoutContext.getStyle();
@@ -431,28 +527,28 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     final CSSValue maxValue = style.getValue(TextStyleKeys.X_MAX_LETTER_SPACING);
 
     final OutputProcessorMetaData outputMetaData =
-            layoutProcess.getOutputMetaData();
+        layoutProcess.getOutputMetaData();
 
     final int minIntVal = (int) CSSValueResolverUtility.convertLengthToDouble
-            (minValue, layoutContext, outputMetaData);
+        (minValue, layoutContext, outputMetaData);
     final int optIntVal = (int) CSSValueResolverUtility.convertLengthToDouble
-            (optValue, layoutContext, outputMetaData);
+        (optValue, layoutContext, outputMetaData);
     final int maxIntVal = (int) CSSValueResolverUtility.convertLengthToDouble
-            (maxValue, layoutContext, outputMetaData);
+        (maxValue, layoutContext, outputMetaData);
     final Spacing spacing = new Spacing(minIntVal, optIntVal, maxIntVal);
 //    Log.debug("Using some static spacing: " + spacing);
     return new StaticSpacingProducer(spacing);
   }
 
   protected FontSizeProducer createFontSizeProducer
-          (final LayoutContext layoutContext)
+      (final LayoutContext layoutContext)
   {
     final FontSpecification fontSpecification =
-            layoutContext.getFontSpecification();
+        layoutContext.getFontSpecification();
     final OutputProcessorMetaData outputMetaData =
-            layoutProcess.getOutputMetaData();
+        layoutProcess.getOutputMetaData();
     final FontMetrics fontMetrics =
-            outputMetaData.getFontMetrics(fontSpecification);
+        outputMetaData.getFontMetrics(fontSpecification);
     return new VariableFontSizeProducer(fontMetrics);
   }
 
@@ -482,7 +578,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     }
 
     RenderNode[] text = processText
-            (new int[]{ClassificationProducer.END_OF_TEXT}, 0, 1);
+        (new int[]{ClassificationProducer.END_OF_TEXT}, 0, 1);
     layoutContext = null;
     classificationProducer = null;
     kerningProducer = null;
@@ -496,5 +592,10 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   public void startText()
   {
     startText = true;
+  }
+
+  public State saveState() throws StateException
+  {
+    return null;
   }
 }

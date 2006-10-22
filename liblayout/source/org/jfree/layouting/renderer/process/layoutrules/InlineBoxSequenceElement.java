@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InlineBoxSequenceElement.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.renderer.process.layoutrules;
 import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 
 /**
  * Anthing that is not text. This could be an image or an inline-block element.
@@ -68,7 +69,7 @@ public class InlineBoxSequenceElement extends InlineNodeSequenceElement
    */
   public long getMinimumWidth()
   {
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
     return nlp.getMinimumChunkWidth() +
         blp.getMarginLeft() + blp.getMarginRight();
@@ -76,7 +77,7 @@ public class InlineBoxSequenceElement extends InlineNodeSequenceElement
 
   public long getMaximumWidth()
   {
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
     return nlp.getMaximumBoxWidth() +
         blp.getMarginLeft() + blp.getMarginRight();

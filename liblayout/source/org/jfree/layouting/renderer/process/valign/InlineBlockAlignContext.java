@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InlineBlockAlignContext.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -40,37 +40,46 @@
  */
 package org.jfree.layouting.renderer.process.valign;
 
-import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 
 /**
- * Creation-Date: 13.10.2006, 22:47:16
+ * Todo: We should select a baseline (and not be limited to the first one)
  *
  * @author Thomas Morgner
  */
 public class InlineBlockAlignContext extends AlignContext
 {
-  public InlineBlockAlignContext(final RenderNode node)
+  private long[] baselines;
+
+  public InlineBlockAlignContext(final RenderBox box)
   {
-    super(node);
+    super(box);
+    ExtendedBaselineInfo baselineInfo = box.getBaselineInfo();
+    this.baselines = baselineInfo.getBaselines();
+    setDominantBaseline(baselineInfo.getDominantBaseline());
   }
 
   public long getBaselineDistance(int baseline)
   {
-    return 0;
+    return baselines[baseline] - baselines[getDominantBaseline()];
   }
 
   public void shift(final long delta)
   {
-
+    for (int i = 0; i < baselines.length; i++)
+    {
+      baselines[i] += delta;
+    }
   }
 
   public long getAfterEdge()
   {
-    return 0;
+    return this.baselines[ExtendedBaselineInfo.AFTER_EDGE];
   }
 
   public long getBeforeEdge()
   {
-    return 0;
+    return this.baselines[ExtendedBaselineInfo.BEFORE_EDGE];
   }
 }

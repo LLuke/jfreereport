@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AlignmentCollector.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.BoxLayoutProperties;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.TextSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
@@ -104,7 +105,7 @@ public class AlignmentCollector
     if (sequenceElement instanceof StartSequenceElement)
     {
       RenderBox box = (RenderBox) sequenceElement.getNode();
-      final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+      final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
       offset = blp.getBorderTop() + blp.getPaddingTop();
       height = offset + blp.getBorderBottom() + blp.getPaddingBottom();
       return offset;

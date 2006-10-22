@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingComponent.java,v 1.1 2006/07/11 13:48:03 taqua Exp $
+ * $Id: ChainingComponent.java,v 1.2 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -123,11 +123,6 @@ public abstract class ChainingComponent
   public void setRecordedCalls (RecordedCall[] recordedCalls)
   {
     calls.addAll(Arrays.asList(recordedCalls));
-  }
-
-  public synchronized void replay () throws ChainingCallException
-  {
-    replay(this);
   }
 
   public synchronized void replay (Object target) throws ChainingCallException

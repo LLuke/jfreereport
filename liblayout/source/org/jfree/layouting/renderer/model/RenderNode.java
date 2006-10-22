@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.17 2006/07/29 18:57:13 taqua Exp $
+ * $Id: RenderNode.java,v 1.18 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -44,10 +44,10 @@ import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.layouting.renderer.page.RenderPageContext;
 
 /**
  * A node of the rendering model. The renderer model keeps track of the
@@ -101,6 +101,8 @@ public abstract class RenderNode implements Cloneable
   private CSSValue verticalAlignment;
   private RenderLength baselineShiftResolved;
   private RenderLength alignmentAdjustResolved;
+
+  private long finishMarker;
 
   public RenderNode()
   {
@@ -164,12 +166,12 @@ public abstract class RenderNode implements Cloneable
     return alignmentAdjustResolved;
   }
 
-  public RenderPageContext getRenderPageContext()
+  public PageContext getPageContext()
   {
     final RenderBox parent = getParent();
     if (parent != null)
     {
-      parent.getRenderPageContext();
+      parent.getPageContext();
     }
     return null;
   }
@@ -370,7 +372,9 @@ public abstract class RenderNode implements Cloneable
   {
     try
     {
-      return (RenderNode) super.clone();
+      final RenderNode renderNode = (RenderNode) super.clone();
+      //renderNode.layoutProperties = (NodeLayoutProperties) layoutProperties.clone();
+      return renderNode;
     }
     catch (CloneNotSupportedException e)
     {
@@ -498,5 +502,15 @@ public abstract class RenderNode implements Cloneable
   public synchronized long getChangeTracker()
   {
     return changeTracker;
+  }
+
+  public long getFinishMarker()
+  {
+    return finishMarker;
+  }
+
+  public void setFinishMarker(final long finishMarker)
+  {
+    this.finishMarker = finishMarker;
   }
 }

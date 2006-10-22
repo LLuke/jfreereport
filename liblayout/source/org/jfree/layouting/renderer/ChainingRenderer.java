@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingRenderer.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
+ * $Id: ChainingRenderer.java,v 1.4 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -120,6 +120,11 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   public ChainingRenderer(final Renderer renderer)
   {
     this.renderer = renderer;
+  }
+
+  public Renderer getRenderer()
+  {
+    return renderer;
   }
 
   public void startDocument(final PageContext pageContext)
@@ -285,6 +290,7 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
 
   protected void invoke(Object target, int methodId, Object parameters) throws Exception
   {
+    Renderer renderer = (Renderer) target;
     switch(methodId)
     {
       case MTH_START_DOCUMENT:
@@ -434,6 +440,8 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
       }
     }
   }
+
+
 
   public State saveState() throws StateException
   {

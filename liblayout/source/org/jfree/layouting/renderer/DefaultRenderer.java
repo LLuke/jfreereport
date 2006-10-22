@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.13 2006/07/30 13:13:47 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.14 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -55,12 +55,14 @@ import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.content.type.GenericType;
 import org.jfree.layouting.layouter.content.type.ResourceType;
 import org.jfree.layouting.layouter.content.type.TextType;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.pageable.graphics.PageDrawable;
 import org.jfree.layouting.renderer.border.BorderFactory;
@@ -76,7 +78,6 @@ import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
-import org.jfree.layouting.renderer.model.page.DefaultPageGrid;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -92,6 +93,7 @@ import org.jfree.layouting.renderer.process.ComputeStaticPropertiesStep;
 import org.jfree.layouting.renderer.process.ComputeTableICMMetricsStep;
 import org.jfree.layouting.renderer.process.InfiniteMajorAxisLayoutStep;
 import org.jfree.layouting.renderer.process.InfiniteMinorAxisLayoutStep;
+import org.jfree.layouting.renderer.process.PaginationStep;
 import org.jfree.layouting.renderer.process.ParagraphLineBreakStep;
 import org.jfree.layouting.renderer.process.TableRowHeightStep;
 import org.jfree.layouting.renderer.process.TableValidationStep;
@@ -115,10 +117,44 @@ import org.jfree.util.WaitingImageObserver;
  */
 public class DefaultRenderer implements Renderer
 {
-  private static class DefaultFlowRendererState implements State
+  protected static class DefaultFlowRendererState implements State
   {
-    public DefaultFlowRendererState()
+    private ValidateModelStep validateModelStep;
+    private TableValidationStep tableValidationStep;
+    private ComputeStaticPropertiesStep staticPropertiesStep;
+    private ComputeMarginsStep marginsStep;
+    private ComputeICMMetricsStep icmMetricsStep;
+    private ComputeTableICMMetricsStep tableICMMetricsStep;
+    private ParagraphLineBreakStep paragraphLinebreakStep;
+    private InfiniteMinorAxisLayoutStep minorAxisLayoutStep;
+    private InfiniteMajorAxisLayoutStep majorAxisLayoutStep;
+    private TableRowHeightStep tableRowHeightStep;
+    private PaginationStep paginationStep;
+    private BoxDefinitionFactory boxDefinitionFactory;
+    private RenderPageContext pageContext;
+    private int bufferLength;
+
+    private LogicalPageBox logicalPageBox;
+
+    public DefaultFlowRendererState(DefaultRenderer renderer)
     {
+      this.boxDefinitionFactory = renderer.boxDefinitionFactory;
+      this.validateModelStep = renderer.validateModelStep;
+      this.tableValidationStep = renderer.tableValidationStep;
+      this.staticPropertiesStep = renderer.staticPropertiesStep;
+
+      this.marginsStep = renderer.marginsStep;
+      this.icmMetricsStep = renderer.icmMetricsStep;
+      this.tableICMMetricsStep = renderer.tableICMMetricsStep;
+      this.paragraphLinebreakStep = renderer.paragraphLinebreakStep;
+      this.minorAxisLayoutStep = renderer.minorAxisLayoutStep;
+      this.majorAxisLayoutStep = renderer.majorAxisLayoutStep;
+      this.tableRowHeightStep = renderer.tableRowHeightStep;
+      this.paginationStep = renderer.paginationStep;
+      this.pageContext = renderer.pageContext;
+      this.bufferLength = renderer.buffer.getData().length;
+
+      this.logicalPageBox = (LogicalPageBox) renderer.logicalPageBox.derive(true);
     }
 
     /**
@@ -134,31 +170,56 @@ public class DefaultRenderer implements Renderer
     public StatefullComponent restore(LayoutProcess layoutProcess)
             throws StateException
     {
-      return new DefaultRenderer(layoutProcess);
+      final DefaultRenderer defaultRenderer = new DefaultRenderer(layoutProcess, false);
+      defaultRenderer.buffer = new CodePointBuffer(bufferLength);
+
+      defaultRenderer.boxDefinitionFactory = this.boxDefinitionFactory;
+      defaultRenderer.validateModelStep = this.validateModelStep;
+      defaultRenderer.tableValidationStep = this.tableValidationStep;
+      defaultRenderer.staticPropertiesStep = this.staticPropertiesStep;
+      defaultRenderer.marginsStep = this.marginsStep;
+      defaultRenderer.icmMetricsStep = this.icmMetricsStep;
+      defaultRenderer.tableICMMetricsStep = this.tableICMMetricsStep;
+      defaultRenderer.paragraphLinebreakStep = this.paragraphLinebreakStep;
+      defaultRenderer.minorAxisLayoutStep = this.minorAxisLayoutStep;
+      defaultRenderer.majorAxisLayoutStep = this.majorAxisLayoutStep;
+      defaultRenderer.tableRowHeightStep = this.tableRowHeightStep;
+      defaultRenderer.paginationStep = this.paginationStep;
+      defaultRenderer.pageContext = this.pageContext;
+      defaultRenderer.logicalPageBox = (LogicalPageBox) this.logicalPageBox.derive(true);
+
+      return defaultRenderer;
     }
   }
 
 
+  // from restore
   private LayoutProcess layoutProcess;
-  private LogicalPageBox logicalPageBox;
-  private RenderableTextFactory textFactory;
-  private BoxDefinitionFactory boxDefinitionFactory;
-  private CodePointBuffer buffer;
-  private RenderPageContext pageContext;
 
+  // statefull ..
+  private LogicalPageBox logicalPageBox;
+  // state-components.
+  private RenderableTextFactory textFactory;
+
+  // to be recreated
+  private CodePointBuffer buffer;
+
+  // Stateless components ..
+  private RenderPageContext pageContext;
+  private BoxDefinitionFactory boxDefinitionFactory;
   private ValidateModelStep validateModelStep;
   private TableValidationStep tableValidationStep;
   private ComputeStaticPropertiesStep staticPropertiesStep;
   private ComputeMarginsStep marginsStep;
   private ComputeICMMetricsStep icmMetricsStep;
   private ComputeTableICMMetricsStep tableICMMetricsStep;
-
   private ParagraphLineBreakStep paragraphLinebreakStep;
   private InfiniteMinorAxisLayoutStep minorAxisLayoutStep;
   private InfiniteMajorAxisLayoutStep majorAxisLayoutStep;
   private TableRowHeightStep tableRowHeightStep;
+  private PaginationStep paginationStep;
 
-  public DefaultRenderer(final LayoutProcess layoutProcess)
+  protected DefaultRenderer(final LayoutProcess layoutProcess, boolean init)
   {
     if (layoutProcess == null)
     {
@@ -166,19 +227,28 @@ public class DefaultRenderer implements Renderer
     }
 
     this.layoutProcess = layoutProcess;
-    this.boxDefinitionFactory =
-            new DefaultBoxDefinitionFactory(new BorderFactory());
+    if (init)
+    {
+      this.boxDefinitionFactory =
+              new DefaultBoxDefinitionFactory(new BorderFactory());
 
-    this.validateModelStep = new ValidateModelStep();
-    this.staticPropertiesStep = new ComputeStaticPropertiesStep();
-    this.tableValidationStep = new TableValidationStep();
-    this.marginsStep = new ComputeMarginsStep();
-    this.paragraphLinebreakStep = new ParagraphLineBreakStep();
-    this.icmMetricsStep = new ComputeICMMetricsStep();
-    this.tableICMMetricsStep = new ComputeTableICMMetricsStep();
-    this.minorAxisLayoutStep = new InfiniteMinorAxisLayoutStep();
-    this.majorAxisLayoutStep = new InfiniteMajorAxisLayoutStep();
-    this.tableRowHeightStep = new TableRowHeightStep();
+      this.validateModelStep = new ValidateModelStep();
+      this.staticPropertiesStep = new ComputeStaticPropertiesStep();
+      this.tableValidationStep = new TableValidationStep();
+      this.marginsStep = new ComputeMarginsStep();
+      this.paragraphLinebreakStep = new ParagraphLineBreakStep();
+      this.icmMetricsStep = new ComputeICMMetricsStep();
+      this.tableICMMetricsStep = new ComputeTableICMMetricsStep();
+      this.minorAxisLayoutStep = new InfiniteMinorAxisLayoutStep();
+      this.majorAxisLayoutStep = new InfiniteMajorAxisLayoutStep();
+      this.tableRowHeightStep = new TableRowHeightStep();
+      this.paginationStep = new PaginationStep();
+    }
+  }
+
+  public DefaultRenderer(final LayoutProcess layoutProcess)
+  {
+    this(layoutProcess, true);
   }
 
   public void startDocument(final PageContext pageContext)
@@ -190,15 +260,18 @@ public class DefaultRenderer implements Renderer
 
     this.pageContext = new RenderPageContext(pageContext);
     this.textFactory = new DefaultRenderableTextFactory(layoutProcess);
-    final PageGrid pageGrid = new DefaultPageGrid(pageContext, layoutProcess.getOutputMetaData());
+    // create the initial pagegrid.
+    final PageGrid pageGrid =
+        this.pageContext.createPageGrid(layoutProcess.getOutputMetaData());
 
     // initialize the logical page. The logical page needs the page grid,
     // as this contains the hints for the physical page sizes.
     logicalPageBox = new LogicalPageBox(pageGrid);
-    logicalPageBox.setRenderPageContext(this.pageContext);
+    logicalPageBox.setPageContext(this.pageContext.getPageContext());
   }
 
   public void startedPhysicalPageFlow(final LayoutContext context)
+      throws NormalizationException
   {
     final BoxDefinition definition =
             boxDefinitionFactory.createBlockBoxDefinition
@@ -207,13 +280,13 @@ public class DefaultRenderer implements Renderer
     item.appyStyle(context, layoutProcess.getOutputMetaData());
 
     this.pageContext = pageContext.update(context);
-    item.setRenderPageContext(pageContext);
+    item.setPageContext(pageContext.getPageContext());
 
     tryToValidate();
 
   }
 
-  private void tryToValidate()
+  private void tryToValidate() throws NormalizationException
   {
     if (validateModelStep.isLayoutable(logicalPageBox) == false)
     {
@@ -221,16 +294,51 @@ public class DefaultRenderer implements Renderer
     }
 
     tableValidationStep.validate(logicalPageBox);
+
     staticPropertiesStep.compute(logicalPageBox);
     marginsStep.compute(logicalPageBox);
     paragraphLinebreakStep.compute(logicalPageBox);
 
-    icmMetricsStep.compute(logicalPageBox);
-    tableICMMetricsStep.compute(logicalPageBox);
+    boolean repeat = true;
+    while (repeat)
+    {
+      icmMetricsStep.compute(logicalPageBox);
+      tableICMMetricsStep.compute(logicalPageBox);
 
-    minorAxisLayoutStep.compute(logicalPageBox);
-    majorAxisLayoutStep.compute(logicalPageBox);
-    tableRowHeightStep.compute(logicalPageBox);
+      minorAxisLayoutStep.compute(logicalPageBox);
+      majorAxisLayoutStep.compute(logicalPageBox);
+      tableRowHeightStep.compute(logicalPageBox);
+
+      if (paginationStep.performPagebreak(logicalPageBox))
+      {
+        // A new page has been started. Recover the page-grid, then restart
+        // everything from scratch. (We have to recompute, as the pages may
+        // be different now, due to changed margins or page definitions)
+        final PageGrid pageGrid = paginationStep.getPageGrid();
+
+        // Now fire the pagebreak. This goes through all layers and informs all
+        // components, that a pagebreak has been encountered and possibly a
+        // new page has been set. It does not save the state or perform other
+        // expensive operations. However, it updates the 'isPagebreakEncountered'
+        // flag, which will be active until the input-feed received a new event.
+        firePagebreak();
+        repeat = true;
+      }
+      else
+      {
+        repeat = false;
+      }
+    }
+  }
+
+  protected void firePagebreak () throws NormalizationException
+  {
+    // todo: Compute the current page and the pseudo-pages for this one.
+    final PageContext pageContext = this.pageContext.getPageContext();
+    final LayoutStyle style = pageContext.getStyle();
+
+    // todo: Update the pseudo-pages (left | right, first)
+    layoutProcess.pageBreakEncountered(null, new PseudoPage[0]);
   }
 
   protected RenderBox getInsertationPoint()
@@ -240,6 +348,7 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedFlow(final LayoutContext context)
+      throws NormalizationException
   {
     //DefaultPendingContentStorage flow = new DefaultPendingContentStorage();
 
@@ -247,7 +356,8 @@ public class DefaultRenderer implements Renderer
 
     if (logicalPageBox.isNormalFlowActive())
     {
-      // this is the first normal flow.
+      // this is the first (the normal) flow. A document always starts
+      // with a start-document and then a start-flow event.
     }
     else
     {
@@ -262,7 +372,7 @@ public class DefaultRenderer implements Renderer
 
       NormalFlowRenderBox newFlow = new NormalFlowRenderBox(definition);
       newFlow.appyStyle(context, layoutProcess.getOutputMetaData());
-      newFlow.setRenderPageContext(pageContext);
+      newFlow.setPageContext(pageContext.getPageContext());
 
       currentBox.addChild(newFlow.getPlaceHolder());
       currentBox.getNormalFlow().addFlow(newFlow);
@@ -273,6 +383,7 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedTable(final LayoutContext context)
+      throws NormalizationException
   {
     getInsertationPoint().addChilds(textFactory.finishText());
 
@@ -286,7 +397,7 @@ public class DefaultRenderer implements Renderer
     TableRenderBox tableRenderBox =
             new TableRenderBox(definition);
     tableRenderBox.appyStyle(context, layoutProcess.getOutputMetaData());
-    tableRenderBox.setRenderPageContext(pageContext);
+    tableRenderBox.setPageContext(pageContext.getPageContext());
 
     getInsertationPoint().addChild(tableRenderBox);
 
@@ -348,7 +459,7 @@ public class DefaultRenderer implements Renderer
     TableSectionRenderBox tableRenderBox =
             new TableSectionRenderBox(definition);
     tableRenderBox.appyStyle(context, layoutProcess.getOutputMetaData());
-    tableRenderBox.setRenderPageContext(pageContext);
+    tableRenderBox.setPageContext(pageContext.getPageContext());
     getInsertationPoint().addChild(tableRenderBox);
 
     tryToValidate();
@@ -369,7 +480,7 @@ public class DefaultRenderer implements Renderer
                     (context, layoutProcess.getOutputMetaData());
     TableRowRenderBox tableRenderBox = new TableRowRenderBox(definition, false);
     tableRenderBox.appyStyle(context, layoutProcess.getOutputMetaData());
-    tableRenderBox.setRenderPageContext(pageContext);
+    tableRenderBox.setPageContext(pageContext.getPageContext());
     getInsertationPoint().addChild(tableRenderBox);
 
     tryToValidate();
@@ -390,7 +501,7 @@ public class DefaultRenderer implements Renderer
                     (context, layoutProcess.getOutputMetaData());
     TableCellRenderBox tableRenderBox =
             new TableCellRenderBox(definition);
-    tableRenderBox.setRenderPageContext(pageContext);
+    tableRenderBox.setPageContext(pageContext.getPageContext());
     tableRenderBox.appyStyle(context, layoutProcess.getOutputMetaData());
 
     getInsertationPoint().addChild(tableRenderBox);
@@ -400,6 +511,7 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedBlock(final LayoutContext context)
+      throws NormalizationException
   {
     getInsertationPoint().addChilds(textFactory.finishText());
 
@@ -413,7 +525,7 @@ public class DefaultRenderer implements Renderer
 
     BlockRenderBox blockBox = new BlockRenderBox(definition);
     blockBox.appyStyle(context, layoutProcess.getOutputMetaData());
-    blockBox.setRenderPageContext(pageContext);
+    blockBox.setPageContext(pageContext.getPageContext());
     getInsertationPoint().addChild(blockBox);
 
     tryToValidate();
@@ -433,7 +545,7 @@ public class DefaultRenderer implements Renderer
                     (context, layoutProcess.getOutputMetaData());
     MarkerRenderBox markerBox = new MarkerRenderBox(definition);
     markerBox.appyStyle(context, layoutProcess.getOutputMetaData());
-    markerBox.setRenderPageContext(pageContext);
+    markerBox.setPageContext(pageContext.getPageContext());
     getInsertationPoint().addChild(markerBox);
 
     tryToValidate();
@@ -453,7 +565,7 @@ public class DefaultRenderer implements Renderer
     ParagraphRenderBox paragraphBox =
             new ParagraphRenderBox(definition);
     paragraphBox.appyStyle(context, layoutProcess.getOutputMetaData());
-    paragraphBox.setRenderPageContext(pageContext);
+    paragraphBox.setPageContext(pageContext.getPageContext());
 
     getInsertationPoint().addChild(paragraphBox);
 
@@ -461,6 +573,7 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedInline(final LayoutContext context)
+      throws NormalizationException
   {
     getInsertationPoint().addChilds(textFactory.finishText());
 
@@ -471,7 +584,7 @@ public class DefaultRenderer implements Renderer
                     (context, layoutProcess.getOutputMetaData());
     InlineRenderBox inlineBox = new InlineRenderBox(definition);
     inlineBox.appyStyle(context, layoutProcess.getOutputMetaData());
-    inlineBox.setRenderPageContext(pageContext);
+    inlineBox.setPageContext(pageContext.getPageContext());
 
     final RenderBox insertationPoint = getInsertationPoint();
     insertationPoint.addChild(inlineBox);
@@ -481,6 +594,7 @@ public class DefaultRenderer implements Renderer
 
   public void addContent(final LayoutContext context,
                          final ContentToken content)
+      throws NormalizationException
   {
     if (content instanceof GenericType)
     {
@@ -600,7 +714,7 @@ public class DefaultRenderer implements Renderer
     return new RenderableReplacedContent(image, source, dims, width, height, valign);
   }
 
-  public void finishedInline()
+  public void finishedInline() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
     final RenderNode[] nodes = textFactory.finishText();
@@ -628,7 +742,7 @@ public class DefaultRenderer implements Renderer
     tryToValidate();
   }
 
-  public void finishedBlock()
+  public void finishedBlock() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
     insertationPoint.addChilds(textFactory.finishText());
@@ -636,7 +750,7 @@ public class DefaultRenderer implements Renderer
     tryToValidate();
   }
 
-  public void finishedTableCell()
+  public void finishedTableCell() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
     insertationPoint.addChilds(textFactory.finishText());
@@ -644,7 +758,7 @@ public class DefaultRenderer implements Renderer
     tryToValidate();
   }
 
-  public void finishedTableRow()
+  public void finishedTableRow() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
     insertationPoint.addChilds(textFactory.finishText());
@@ -652,7 +766,7 @@ public class DefaultRenderer implements Renderer
     tryToValidate();
   }
 
-  public void finishedTableSection()
+  public void finishedTableSection() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
     insertationPoint.addChilds(textFactory.finishText());
@@ -675,7 +789,7 @@ public class DefaultRenderer implements Renderer
     tryToValidate();
   }
 
-  public void finishedTable()
+  public void finishedTable() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
     insertationPoint.addChilds(textFactory.finishText());
@@ -683,7 +797,7 @@ public class DefaultRenderer implements Renderer
     tryToValidate();
   }
 
-  public void finishedFlow()
+  public void finishedFlow() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
     insertationPoint.addChilds(textFactory.finishText());
@@ -691,7 +805,7 @@ public class DefaultRenderer implements Renderer
     tryToValidate();
   }
 
-  public void finishedPhysicalPageFlow()
+  public void finishedPhysicalPageFlow() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
     insertationPoint.addChilds(textFactory.finishText());
@@ -740,21 +854,13 @@ public class DefaultRenderer implements Renderer
     }
 
     this.pageContext = this.pageContext.update(pageContext);
-
-//    final PageGrid pageGrid =
-//            new DefaultPageGrid(pageContext, layoutProcess.getOutputMetaData());
-
-    // initialize the logical page. The logical page needs the page grid,
-    // as this contains the hints for the physical page sizes.
-//    logicalPageBox = new LogicalPageBox(pageGrid);
-
-    // for now, we ignore manual pagebreaks. They create conflicting
-    // situations inside tables and auto-layout elements and so we have
-    // to ignore them.
+    final PageGrid pageGrid =
+        this.pageContext.createPageGrid(layoutProcess.getOutputMetaData());
+    this.logicalPageBox.updatePageArea(pageGrid);
   }
 
   public State saveState() throws StateException
   {
-    return new DefaultFlowRendererState();
+    return new DefaultFlowRendererState(this);
   }
 }

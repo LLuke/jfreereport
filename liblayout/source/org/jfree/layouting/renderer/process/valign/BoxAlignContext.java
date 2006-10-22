@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BoxAlignContext.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.util.ArrayList;
 
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.BoxLayoutProperties;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.TextUtility;
 import org.jfree.layouting.input.style.values.CSSValue;
@@ -75,7 +76,7 @@ public class BoxAlignContext extends AlignContext
     setDominantBaseline(TextUtility.translateDominantBaseline
         (dominantBaselineValue, baselineInfo.getDominantBaseline()));
 
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     insetsTop = blp.getBorderTop() + blp.getPaddingTop();
     insetsBottom = blp.getBorderBottom() + blp.getPaddingBottom();
 

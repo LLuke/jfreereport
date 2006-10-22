@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PseudoPage.java,v 1.1 2006/07/11 13:33:03 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ package org.jfree.layouting.input.style;
  */
 public final class PseudoPage
 {
-  public static final PseudoPage LEFT = new PseudoPage("LEFT");
+  public static final PseudoPage LEFT = new PseudoPage("Left");
   public static final PseudoPage RIGHT = new PseudoPage("Right");
   public static final PseudoPage FIRST = new PseudoPage("First");
 

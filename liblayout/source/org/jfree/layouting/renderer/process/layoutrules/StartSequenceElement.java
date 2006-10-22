@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StartSequenceElement.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.renderer.process.layoutrules;
 import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 
 /**
  * Represents the opening of an inline element and represents the respective
@@ -65,7 +66,7 @@ public class StartSequenceElement implements InlineSequenceElement
    */
   public long getMinimumWidth()
   {
-    final BoxLayoutProperties blp = node.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = node.getStaticBoxLayoutProperties();
     return blp.getBorderLeft() + blp.getPaddingLeft() + blp.getMarginLeft();
   }
 

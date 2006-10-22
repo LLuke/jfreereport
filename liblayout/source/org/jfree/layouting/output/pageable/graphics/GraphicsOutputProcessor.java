@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: GraphicsOutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
+ * $Id: GraphicsOutputProcessor.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -40,16 +40,23 @@
  */
 package org.jfree.layouting.output.pageable.graphics;
 
+import org.jfree.fonts.awt.AWTFontRegistry;
+import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.renderer.Renderer;
-import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
-import org.jfree.layouting.normalizer.generator.ContentGenerator;
-import org.jfree.layouting.normalizer.content.Normalizer;
-import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
+import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.normalizer.content.ContentNormalizer;
+import org.jfree.layouting.normalizer.content.Normalizer;
+import org.jfree.layouting.normalizer.displaymodel.DisplayModelBuilder;
+import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
+import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.output.pageable.dummy.DummyOutputProcessorMetaData;
+import org.jfree.layouting.renderer.DefaultRenderer;
+import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 /**
  * Creation-Date: 02.01.2006, 19:55:14
@@ -58,18 +65,23 @@ import org.jfree.layouting.output.OutputProcessorMetaData;
  */
 public class GraphicsOutputProcessor implements OutputProcessor
 {
+  private FontStorage fontStorage;
+  private OutputProcessorMetaData metaData;
+
   public GraphicsOutputProcessor()
   {
+    fontStorage = new DefaultFontStorage(new AWTFontRegistry());
+    metaData = new DummyOutputProcessorMetaData(fontStorage);
   }
 
   public OutputProcessorMetaData getMetaData()
   {
-    return null;
+    return metaData;
   }
 
-  public FontStorage getFontStorage()
+  public InputFeed createInputFeed(LayoutProcess layoutProcess)
   {
-    return null;
+    return new DefaultInputFeed(layoutProcess);
   }
 
   /**
@@ -81,14 +93,8 @@ public class GraphicsOutputProcessor implements OutputProcessor
    */
   public Normalizer createNormalizer(LayoutProcess layoutProcess)
   {
-    return null;
+    return new ContentNormalizer(layoutProcess);
   }
-
-  public InputFeed createInputFeed(LayoutProcess layoutProcess)
-  {
-    return new DefaultInputFeed(layoutProcess);
-  }
-  
 
   /**
    * The model builder normalizes the input and builds the Display-Model. The
@@ -99,23 +105,17 @@ public class GraphicsOutputProcessor implements OutputProcessor
    */
   public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
-    return null;
-  }
-
-  /**
-   * Creates a new content generator. The content generator is responsible for
-   * creating the visual content from the display model.
-   *
-   * @param layoutProcess the layout process that governs all.
-   * @return the created content generator.
-   */
-  public ContentGenerator createContentGenerator(LayoutProcess layoutProcess)
-  {
-    return null;
+    return new DisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
   }
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
-    return null;
+    return new DefaultRenderer(layoutProcess);
+  }
+
+
+  public void processContent(LogicalPageBox logicalPage)
+  {
+    // the pagegrid contains the content ..
   }
 }

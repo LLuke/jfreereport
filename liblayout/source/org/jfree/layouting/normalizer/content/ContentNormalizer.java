@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.3 2006/07/26 16:59:47 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.4 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -79,6 +79,7 @@ import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.util.AttributeMap;
+import org.jfree.layouting.util.ChainingCallException;
 import org.jfree.util.Log;
 
 /**
@@ -667,6 +668,44 @@ public class ContentNormalizer implements Normalizer
   }
 
 
+  protected void generateStrings(LayoutElement element)
+          throws IOException, NormalizationException
+  {
+    final ContentSpecification cspec =
+            element.getLayoutContext().getContentSpecification();
+    final ContentToken[] tokens = cspec.getContents();
+    int posContent = 0;
+    boolean contentGiven = false;
+    // first skip everything up to the first 'contents' token.
+    for (; posContent < tokens.length; posContent++)
+    {
+      final ContentToken token = tokens[posContent];
+      if (token instanceof ContentsToken)
+      {
+        if (contentGiven == false)
+        {
+          // content is given more than once, then ignore it
+          final String text = recordingContentNormalizer.getText();
+          addContent(new ResolvedStringToken((ComputedToken) token, text));
+          contentGiven = true;
+        }
+      }
+      else if (token instanceof ComputedToken)
+      {
+        final ContentToken resolved = computeToken(token, cspec);
+        if (resolved != null)
+        {
+          addContent(resolved);
+        }
+      }
+      else
+      {
+        addContent(token);
+      }
+    }
+  }
+
+
   protected void generateAfterPseudoElements(LayoutElement element)
           throws IOException, NormalizationException
   {
@@ -863,6 +902,7 @@ public class ContentNormalizer implements Normalizer
         currentSilbling = currentElement;
         currentElement = currentElement.getParent();
         ignoreContext = 0;
+        recordingContentNormalizer = null;
         return;
       }
     }
@@ -877,6 +917,10 @@ public class ContentNormalizer implements Normalizer
       LayoutContext layoutContext = currentElement.getLayoutContext();
       final ContentSpecification contentSpec =
               layoutContext.getContentSpecification();
+
+      // replace the contents token of the string-keystyle with the
+      // extracted content.
+      generateStrings(currentElement);
       if (contentSpec.isAllowContentProcessing() == false)
       {
         if (!contentSpec.isInhibitContent() ||
@@ -893,15 +937,24 @@ public class ContentNormalizer implements Normalizer
         generateAfterPseudoElements(currentElement);
         // clean up (1): Just finish the element
       }
-      ignoreContext -= 1;
+
+      ignoreContext= 0;
+      try
+      {
+        recordingContentNormalizer.replay(this);
+        recordingContentNormalizer.clear();
+      }
+      catch (ChainingCallException e)
+      {
+        // Now reiterate over all the stored content so that the normal
+        // content flow is preserved.
+      }
     }
     else
     {
       generateContentAfter(currentElement);
       generateAfterPseudoElements(currentElement);
     }
-
-    // todo: The recording normalizer is not yet handled ...
 
     modelBuilder.endElement();
 

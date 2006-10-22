@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HtmlOutputProcessor.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
+ * $Id: HtmlOutputProcessor.java,v 1.4 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.normalizer.content.ContentNormalizer;
 import org.jfree.layouting.layouter.feed.InputFeed;
@@ -133,5 +134,10 @@ public class HtmlOutputProcessor implements StreamingOutputProcessor
   public ContentGenerator createContentGenerator(LayoutProcess layoutProcess)
   {
     return null;
+  }
+
+  public void processContent(LogicalPageBox logicalPage)
+  {
+
   }
 }

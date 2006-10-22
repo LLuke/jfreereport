@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.16 2006/07/30 13:13:47 taqua Exp $
+ * $Id: RenderBox.java,v 1.17 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,9 @@ import org.jfree.layouting.input.style.keys.text.WhitespaceCollapse;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.border.Border;
-import org.jfree.layouting.renderer.page.RenderPageContext;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.TextUtility;
 
@@ -78,8 +78,9 @@ public abstract class RenderBox extends RenderNode
 
   private boolean open;
   private boolean preserveSpace;
-  private RenderPageContext renderPageContext;
+  private PageContext pageContext;
   private BoxLayoutProperties boxLayoutProperties;
+  private StaticBoxLayoutProperties staticBoxLayoutProperties;
 
   private long contentAreaX1;
   private long contentAreaX2;
@@ -97,6 +98,12 @@ public abstract class RenderBox extends RenderNode
     this.boxDefinition = boxDefinition;
     this.open = true;
     this.boxLayoutProperties = new BoxLayoutProperties();
+    this.staticBoxLayoutProperties = new StaticBoxLayoutProperties();
+  }
+
+  public StaticBoxLayoutProperties getStaticBoxLayoutProperties()
+  {
+    return staticBoxLayoutProperties;
   }
 
   public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
@@ -553,7 +560,16 @@ public abstract class RenderBox extends RenderNode
    */
   public Object clone()
   {
-    return (RenderBox) super.clone();
+    try
+    {
+      final RenderBox renderBox = (RenderBox) super.clone();
+      renderBox.boxLayoutProperties = (BoxLayoutProperties) boxLayoutProperties.clone();
+      return renderBox;
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalStateException("Clone failed for some reason.");
+    }
   }
 
   /**
@@ -875,18 +891,18 @@ public abstract class RenderBox extends RenderNode
     return parent.isAlwaysPropagateEvents();
   }
 
-  public RenderPageContext getRenderPageContext()
+  public PageContext getPageContext()
   {
-    if (renderPageContext != null)
+    if (pageContext != null)
     {
-      return renderPageContext;
+      return pageContext;
     }
-    return super.getRenderPageContext();
+    return super.getPageContext();
   }
 
-  public void setRenderPageContext(final RenderPageContext pageContext)
+  public void setPageContext(final PageContext pageContext)
   {
-    this.renderPageContext = pageContext;
+    this.pageContext = pageContext;
   }
 
   public void freeze()

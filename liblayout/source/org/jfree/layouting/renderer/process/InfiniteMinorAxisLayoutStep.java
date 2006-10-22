@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -257,7 +258,7 @@ public class InfiniteMinorAxisLayoutStep
     cellRenderBox.setX(effectiveCellPosition);
     cellRenderBox.setWidth(effectiveSize);
 
-    final BoxLayoutProperties blp = cellRenderBox.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = cellRenderBox.getStaticBoxLayoutProperties();
     // next, compute the width ...
 
     long leftPadding = blp.getBorderLeft();
@@ -286,7 +287,7 @@ public class InfiniteMinorAxisLayoutStep
       return;
     }
 
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     final long x = computeX(box) + blp.getMarginLeft();
     box.setX(x);
     // next, compute the width ...
@@ -344,7 +345,7 @@ public class InfiniteMinorAxisLayoutStep
   {
     final long x = box.getX();
     final long contentEnd = box.getContentAreaX2();
-    final BoxLayoutProperties blp = box.getBoxLayoutProperties();
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     final long boxEnd = contentEnd + blp.getBorderRight() + blp.getPaddingRight();
     box.setWidth(boxEnd - x);
   }

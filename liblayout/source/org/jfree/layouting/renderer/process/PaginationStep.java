@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PaginationStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,126 @@
  */
 package org.jfree.layouting.renderer.process;
 
+import org.jfree.layouting.renderer.model.ParagraphRenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.ParagraphPoolBox;
+import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.model.page.PageGrid;
+
 /**
- * Creation-Date: 10.10.2006, 14:10:08
+ * Computes the pagination. This step continues until there is no need to
+ * shift the content any further. As a result, a single compute-run can result
  *
  * @author Thomas Morgner
  */
-public class PaginationStep
+public class PaginationStep extends IterateVisualProcessStep
 {
+  private PageGrid pageGrid;
+  private long pageStartOffset;
+  private boolean pageFull;
+
+  public PaginationStep()
+  {
+  }
+
+  public boolean performPagebreak(LogicalPageBox pageBox)
+  {
+    pageGrid = pageBox.getPageGrid();
+    startProcessing(pageBox);
+
+    if (pageFull == false)
+    {
+      return false;
+    }
+
+
+    fillPageGrid();
+    return true;
+  }
+
+  /**
+   * This method copies all content from the logical page into the page-grid.
+   * When done, it clears the content and replaces the elements with dummy-nodes.
+   * These nodes have a fixed-size (the last known layouted size), and will not
+   * be recomputed later.
+   *
+   * Adjoining dummy-nodes get unified into a single node, thus simplifying
+   * and pruning the document tree.
+   */
+  private void fillPageGrid()
+  {
+
+  }
+
+  public PageGrid getPageGrid()
+  {
+    return pageGrid;
+  }
+
+  protected void processParagraphChilds(final ParagraphRenderBox box)
+  {
+    // Process the direct childs of the paragraph
+    // Each direct child represents a line ..
+    // Todo: Include orphan and widow stuff ..
+
+    // First: Check the number of lines. (Should have been precomputed)
+    // Second: Check whether and where the orphans- and widows-rules apply
+    // Third: Shift the lines.
+    RenderNode node = box.getFirstChild();
+    while (node != null)
+    {
+      // all childs of the linebox container must be inline boxes. They
+      // represent the lines in the paragraph. Any other element here is
+      // a error that must be reported
+      if (node instanceof ParagraphPoolBox == false)
+      {
+        throw new IllegalStateException("Encountered " + node.getClass());
+      }
+      final ParagraphPoolBox inlineRenderBox = (ParagraphPoolBox) node;
+      startLine(inlineRenderBox);
+      processBoxChilds(inlineRenderBox);
+      finishLine(inlineRenderBox);
+
+      node = node.getNext();
+    }
+  }
+
+  protected void processInlineLevelNode(final RenderNode node)
+  {
+
+  }
+
+  protected boolean startInlineLevelBox(final RenderBox box)
+  {
+    return true;
+  }
+
+  protected void finishInlineLevelBox(final RenderBox box)
+  {
+
+  }
+
+  protected void processBlockLevelNode(final RenderNode node)
+  {
+
+  }
+
+  protected boolean startBlockLevelBox(final RenderBox box)
+  {
+    return true;
+  }
+
+  protected void finishBlockLevelBox(final RenderBox box)
+  {
+
+  }
+
+  protected void startLine(ParagraphPoolBox box)
+  {
+  }
+
+  protected void finishLine(ParagraphPoolBox inlineRenderBox)
+  {
+  }
 }

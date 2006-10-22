@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: NodeLayoutProperties.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ package org.jfree.layouting.renderer.model;
 import java.io.Serializable;
 
 import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.util.Log;
 
 /**
  * A static properties collection. That one is static; once computed it does
@@ -52,8 +51,9 @@ import org.jfree.util.Log;
  *
  * @author Thomas Morgner
  */
-public class NodeLayoutProperties implements Serializable
+public class NodeLayoutProperties implements Serializable, Cloneable
 {
+  // This represents the computed with.
   private RenderLength blockContextWidth;
 
   // Either AUTO or a valid width.
@@ -188,5 +188,10 @@ public class NodeLayoutProperties implements Serializable
   public void setMetricsAge(final long metricsAge)
   {
     this.metricsAge = metricsAge;
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    return super.clone();
   }
 }

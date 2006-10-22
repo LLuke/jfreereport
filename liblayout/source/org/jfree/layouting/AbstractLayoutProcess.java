@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractLayoutProcess.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
+ * $Id: AbstractLayoutProcess.java,v 1.3 2006/07/11 13:29:46 taqua Exp $
  *
  * Changes
  * -------
@@ -184,7 +184,7 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
 
   public boolean isPagebreakEncountered()
   {
-    return false;
+    return getInputFeed().isPagebreakEncountered();
   }
 
   protected abstract AbstractLayoutProcessState createState();

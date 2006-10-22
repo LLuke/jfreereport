@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageableOutputProcessor.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
+ * $Id: PageableOutputProcessor.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ package org.jfree.layouting.output.pageable;
 import org.jfree.layouting.output.OutputProcessor;
 
 /**
- * Creation-Date: 03.01.2006, 12:28:14
+ * We need to add methods to manage the generated logical and physical pages.  
  *
  * @author Thomas Morgner
  */
