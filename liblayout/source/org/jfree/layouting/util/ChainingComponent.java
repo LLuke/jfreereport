@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingComponent.java,v 1.2 2006/10/17 16:39:08 taqua Exp $
+ * $Id: ChainingComponent.java,v 1.3 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -115,9 +115,11 @@ public abstract class ChainingComponent
     calls.clear();
   }
 
-  protected RecordedCall[] getRecordedCalls()
+  protected RecordedCall[] retrieveRecordedCalls()
   {
-    return  (RecordedCall[]) calls.toArray(new RecordedCall[calls.size()]);
+    final RecordedCall[] recordedCalls = (RecordedCall[]) calls.toArray(new RecordedCall[calls.size()]);
+    calls.clear();
+    return recordedCalls;
   }
 
   public void setRecordedCalls (RecordedCall[] recordedCalls)
@@ -127,30 +129,26 @@ public abstract class ChainingComponent
 
   public synchronized void replay (Object target) throws ChainingCallException
   {
-    final RecordedCall[] recordedCalls = getRecordedCalls();
+    // Copy all recorded calls and be done with it.
+    final RecordedCall[] recordedCalls = retrieveRecordedCalls();
 
     for (int i = 0; i < recordedCalls.length; i++)
     {
       final RecordedCall call = recordedCalls[i];
-      if (call.getState() == STATE_DONE)
+      if (call.getState() == STATE_FRESH)
       {
-        calls.remove(0);
-      }
-
-      try
-      {
-        invoke(target, call.getMethod(), call.getParameters());
-        call.setState(STATE_DONE);
-      }
-      catch(Exception e)
-      {
-        call.setState(STATE_ERROR);
-        calls.clear();
-        throw new ChainingCallException(e);
+        try
+        {
+          invoke(target, call.getMethod(), call.getParameters());
+          call.setState(STATE_DONE);
+        }
+        catch(Exception e)
+        {
+          call.setState(STATE_ERROR);
+          throw new ChainingCallException(e);
+        }
       }
     }
-
-    calls.clear();
   }
 
   protected abstract void invoke (Object target, int methodId, Object parameters)

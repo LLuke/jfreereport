@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentSpecification.java,v 1.3 2006/04/23 15:18:18 taqua Exp $
+ * $Id: ContentSpecification.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ public class ContentSpecification
   private boolean allowContentProcessing;
   private boolean inhibitContent;
   private int quotingLevel;
+  private String moveTarget;
 
   public ContentSpecification ()
   {
@@ -173,5 +174,15 @@ public class ContentSpecification
   public void setQuotingLevel (int quotingLevel)
   {
     this.quotingLevel = quotingLevel;
+  }
+
+  public String getMoveTarget()
+  {
+    return moveTarget;
+  }
+
+  public void setMoveTarget(final String moveTarget)
+  {
+    this.moveTarget = moveTarget;
   }
 }

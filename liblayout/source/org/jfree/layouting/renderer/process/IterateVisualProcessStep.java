@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: IterateVisualProcessStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 /**
  * Iterates over the tree of nodes and classifies nodes by their Display-Model.
@@ -137,7 +138,18 @@ public abstract class IterateVisualProcessStep
 
   protected void processBlockLevelChild (final RenderNode node)
   {
-    if (node instanceof ParagraphRenderBox)
+    if (node instanceof LogicalPageBox)
+    {
+      LogicalPageBox box = (LogicalPageBox) node;
+      if (startBlockLevelBox(box))
+      {
+        startProcessing(box.getHeaderArea());
+        processBoxChilds(box);
+        startProcessing(box.getFooterArea());
+      }
+      finishBlockLevelBox(box);
+    }
+    else if (node instanceof ParagraphRenderBox)
     {
       ParagraphRenderBox box = (ParagraphRenderBox) node;
       if (startBlockLevelBox(box))

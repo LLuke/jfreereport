@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PhysicalPageBox.java,v 1.8 2006/07/29 18:57:13 taqua Exp $
+ * $Id: PhysicalPageBox.java,v 1.9 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,10 @@ import org.jfree.layouting.renderer.model.RenderNode;
  * <p/>
  * This is a empty prototype, the real version should have a couple of page
  * areas which contain the physical headers and footers.
+ *
+ * For now, all of the physical page-properties (except the margins are ignored.)
+ * The PhysicalBox receives the partial content after the pagination has been
+ * completed.
  *
  * @author Thomas Morgner
  */

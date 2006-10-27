@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OutputProcessor.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
+ * $Id: OutputProcessor.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -86,4 +86,13 @@ public interface OutputProcessor
   public Renderer createRenderer (LayoutProcess layoutProcess);
 
   public void processContent (LogicalPageBox logicalPage);
+
+  /**
+   * Declares, whether the logical page given in process-content must have a
+   * valid physical page set. Non-pageable targets may want to access the
+   * logical pagebox directly. 
+   *
+   * @return
+   */
+  public boolean isPhysicalPageOutput();
 }

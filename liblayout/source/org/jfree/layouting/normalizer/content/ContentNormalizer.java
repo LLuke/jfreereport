@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.4 2006/10/17 16:39:07 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -46,12 +46,14 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.PageAreaType;
+import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
+import org.jfree.layouting.input.style.keys.content.MoveToValues;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
+import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.layouter.content.ContentToken;
@@ -221,10 +223,10 @@ public class ContentNormalizer implements Normalizer
      * @throws StateException
      */
     public StatefullComponent restore(LayoutProcess layoutProcess)
-            throws StateException
+        throws StateException
     {
       ContentNormalizer contentNormalizer =
-              new ContentNormalizer(layoutProcess, false);
+          new ContentNormalizer(layoutProcess, false);
       contentNormalizer.restore(this);
       return contentNormalizer;
     }
@@ -244,8 +246,8 @@ public class ContentNormalizer implements Normalizer
   private int ignoreContext;
 
   /**
-   * The quote-level is a global setting. The quotes get resolved during
-   * the content generation phase.
+   * The quote-level is a global setting. The quotes get resolved during the
+   * content generation phase.
    */
   private int quoteLevel;
 
@@ -266,12 +268,12 @@ public class ContentNormalizer implements Normalizer
     if (init)
     {
       this.modelBuilder = layoutProcess.getOutputProcessor().createModelBuilder
-              (layoutProcess);
+          (layoutProcess);
     }
   }
 
   public void startDocument()
-          throws IOException, NormalizationException
+      throws IOException, NormalizationException
   {
     styleResolver = new DefaultStyleResolver();
     styleResolver.initialize(layoutProcess);
@@ -282,7 +284,7 @@ public class ContentNormalizer implements Normalizer
     {
       final PageAreaType pageAreaType = pat[i];
       final LayoutStyle style = styleResolver.resolvePageStyle
-              (CSSAutoValue.getInstance(), new PseudoPage[0], pageAreaType);
+          (CSSAutoValue.getInstance(), new PseudoPage[0], pageAreaType);
       dpc.setAreaDefinition(pageAreaType, style);
     }
 
@@ -304,7 +306,7 @@ public class ContentNormalizer implements Normalizer
   public void startElement(String namespace,
                            String tag,
                            AttributeMap attributes)
-          throws NormalizationException, IOException
+      throws NormalizationException, IOException
   {
     // the contents of what is stored here is rather uninteresting,
     // important is the fact *that* we saved something.
@@ -324,24 +326,20 @@ public class ContentNormalizer implements Normalizer
                                       String tag,
                                       String pseudo,
                                       AttributeMap attributes)
-          throws NormalizationException, IOException
+      throws NormalizationException, IOException
   {
 
     final ContextId ctxId = new ContextId
-            (ContextId.SOURCE_NORMALIZER, NO_PARENT, nextId);
+        (ContextId.SOURCE_NORMALIZER, NO_PARENT, nextId);
     nextId += 1;
 
     final LayoutContext layoutContext = new DefaultLayoutContext
-            (ctxId, namespace, tag, pseudo, attributes);
+        (ctxId, namespace, tag, pseudo, attributes);
     final LayoutElement element =
-            new LayoutElement(currentElement, currentSilbling, layoutContext);
+        new LayoutElement(currentElement, currentSilbling, layoutContext);
     currentElement = element;
     currentSilbling = null;
 
-    if ("col".equals(tag))
-    {
-      Log.debug ("COL");
-    }
     styleResolver.resolveStyle(element);
     if (isStringRecordingNeeded(element))
     {
@@ -365,7 +363,7 @@ public class ContentNormalizer implements Normalizer
    * @throws IOException
    */
   private void startCurrentElement()
-          throws NormalizationException, IOException
+      throws NormalizationException, IOException
   {
     final LayoutContext layoutContext = currentElement.getLayoutContext();
     final LayoutStyle style = layoutContext.getStyle();
@@ -375,8 +373,8 @@ public class ContentNormalizer implements Normalizer
       // ignore that element ..
       ignoreContext += 1;
       Log.debug("Ignoring element (and all childs) of " +
-              layoutContext.getPseudoElement() +
-              " as it has Display:NONE");
+          layoutContext.getPseudoElement() +
+          " as it has Display:NONE");
     }
     else if (ignoreContext > 0)
     {
@@ -392,13 +390,11 @@ public class ContentNormalizer implements Normalizer
       currentElement.incrementCounter("list-item", 1);
     }
 
-
     // the whole design here should be queued. If we encounter the contents
     // token, then we have to wait for that content before we can continue.
     // thats DOM oriented and not streaming, so we do our own fast version
     // instead ..
 
-    // now process the 'x-liblayout-alternate-text'
     if (ignoreContext == 0)
     {
 
@@ -406,7 +402,7 @@ public class ContentNormalizer implements Normalizer
       // isAllowContentProcessing is false, if the 'content' property
       // had been set to 'none' or 'inhibit'.
       final ContentSpecification contentSpec =
-              currentElement.getLayoutContext().getContentSpecification();
+          currentElement.getLayoutContext().getContentSpecification();
       if (contentSpec.isAllowContentProcessing() == false)
       {
         // Quote-the-standard:
@@ -438,6 +434,7 @@ public class ContentNormalizer implements Normalizer
           generateOutsidePseudoElements(currentElement);
           modelBuilder.startElement(currentElement.getLayoutContext());
           generateBeforePseudoElements(currentElement);
+          generateContentBefore(currentElement);
           ignoreContext += 1;
         }
       }
@@ -477,7 +474,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   protected boolean generateBeforePseudoElements(LayoutElement element)
-          throws IOException, NormalizationException
+      throws IOException, NormalizationException
   {
     final LayoutContext layoutContext = element.getLayoutContext();
 
@@ -488,8 +485,8 @@ public class ContentNormalizer implements Normalizer
       if (styleResolver.isPseudoElementStyleResolvable(element, "marker"))
       {
         startElementInternal(layoutContext.getNamespace(),
-                layoutContext.getTagName(), "marker",
-                layoutContext.getAttributes());
+            layoutContext.getTagName(), "marker",
+            layoutContext.getAttributes());
         endElement();
       }
     }
@@ -499,8 +496,8 @@ public class ContentNormalizer implements Normalizer
     if (styleResolver.isPseudoElementStyleResolvable(element, "before"))
     {
       startElementInternal(layoutContext.getNamespace(),
-              layoutContext.getTagName(), "before",
-              layoutContext.getAttributes());
+          layoutContext.getTagName(), "before",
+          layoutContext.getAttributes());
       endElement();
     }
 
@@ -508,15 +505,15 @@ public class ContentNormalizer implements Normalizer
   }
 
   /**
-   * Return true, if the alternate element contained the contents token.
-   * In that case, this element receives all content. We have to make sure
-   * that the beast gets closed down later ..
+   * Return true, if the alternate element contained the contents token. In that
+   * case, this element receives all content. We have to make sure that the
+   * beast gets closed down later ..
    *
    * @param element
    * @return
    */
   private boolean generateAlternateContent(final LayoutElement element)
-          throws IOException, NormalizationException
+      throws IOException, NormalizationException
   {
     // it might be against the standard, but we do not accept the
     // contents-token here.
@@ -529,13 +526,13 @@ public class ContentNormalizer implements Normalizer
     {
       final LayoutContext layoutContext = element.getLayoutContext();
       startElementInternal(layoutContext.getNamespace(),
-              layoutContext.getTagName(), "alternate",
-              layoutContext.getAttributes());
+          layoutContext.getTagName(), "alternate",
+          layoutContext.getAttributes());
       if (element.isContentsConsumed())
       {
         // if the alternate element consumes the content, fine. We have
         // to close the element later ..
-        element.setAlternateOpen(true);
+        element.openAlternate();
         return true;
       }
       endElement();
@@ -544,8 +541,47 @@ public class ContentNormalizer implements Normalizer
   }
 
   private boolean generateOutsidePseudoElements(final LayoutElement element)
-          throws IOException, NormalizationException
+      throws IOException, NormalizationException
   {
+    final LayoutContext layoutContext = element.getLayoutContext();
+    final LayoutStyle style = layoutContext.getStyle();
+
+    final CSSValue value = style.getValue(ContentStyleKeys.MOVE_TO);
+    if (MoveToValues.HERE.equals(value) == false)
+    {
+      // Some moved content.
+      String target;
+      if (value instanceof CSSStringValue)
+      {
+        CSSStringValue sval = (CSSStringValue) value;
+        target = sval.getValue();
+      }
+      else
+      {
+        target = value.getCSSText();
+      }
+
+      layoutContext.getContentSpecification().setMoveTarget(target);
+
+      // we do not generate an alternate element, if there is no need to do so.
+      if (styleResolver.isPseudoElementStyleResolvable(element, "alternate"))
+      {
+        startElementInternal(layoutContext.getNamespace(),
+            layoutContext.getTagName(), "alternate",
+            layoutContext.getAttributes());
+        if (element.isContentsConsumed())
+        {
+          // if the alternate element consumes the content, fine. We have
+          // to close the element later ..
+          element.openAlternate();
+        }
+        else
+        {
+          endElement();
+        }
+      }
+    }
+
     return false;
   }
 
@@ -558,19 +594,19 @@ public class ContentNormalizer implements Normalizer
    * has been extracted. Generated content is not extracted at all - we work on
    * the user's data only.
    * <p/>
-   * The recorded content is replayed when the element ends (as signaled by
-   * the input-feed) so that the string-content WILL be available for all
-   * childs. Warning: This possibly duplicates content and is definitly an
-   * expensive operation.
+   * The recorded content is replayed when the element ends (as signaled by the
+   * input-feed) so that the string-content WILL be available for all childs.
+   * Warning: This possibly duplicates content and is definitly an expensive
+   * operation.
    */
   private boolean isStringRecordingNeeded(final LayoutElement element)
   {
     final ContentSpecification contentSpecification =
-            element.getLayoutContext().getContentSpecification();
+        element.getLayoutContext().getContentSpecification();
     final ContentToken[] strings = contentSpecification.getStrings();
 
     // todo: This might be invalid.
-    
+
     final LayoutStyle style = element.getLayoutContext().getStyle();
     final CSSValue value = style.getValue(ContentStyleKeys.STRING_DEFINE);
     if (value == null)
@@ -597,10 +633,10 @@ public class ContentNormalizer implements Normalizer
   }
 
   protected boolean generateContentBefore(LayoutElement element)
-          throws IOException, NormalizationException
+      throws IOException, NormalizationException
   {
     final ContentSpecification cspec =
-            element.getLayoutContext().getContentSpecification();
+        element.getLayoutContext().getContentSpecification();
     final ContentToken[] tokens = cspec.getContents();
     for (int i = 0; i < tokens.length; i++)
     {
@@ -627,10 +663,10 @@ public class ContentNormalizer implements Normalizer
   }
 
   protected void generateContentAfter(LayoutElement element)
-          throws IOException, NormalizationException
+      throws IOException, NormalizationException
   {
     final ContentSpecification cspec =
-            element.getLayoutContext().getContentSpecification();
+        element.getLayoutContext().getContentSpecification();
     final ContentToken[] tokens = cspec.getContents();
     int posContent = 0;
     // first skip everything up to the first 'contents' token.
@@ -669,10 +705,10 @@ public class ContentNormalizer implements Normalizer
 
 
   protected void generateStrings(LayoutElement element)
-          throws IOException, NormalizationException
+      throws IOException, NormalizationException
   {
     final ContentSpecification cspec =
-            element.getLayoutContext().getContentSpecification();
+        element.getLayoutContext().getContentSpecification();
     final ContentToken[] tokens = cspec.getContents();
     int posContent = 0;
     boolean contentGiven = false;
@@ -707,7 +743,7 @@ public class ContentNormalizer implements Normalizer
 
 
   protected void generateAfterPseudoElements(LayoutElement element)
-          throws IOException, NormalizationException
+      throws IOException, NormalizationException
   {
     final LayoutContext layoutContext = element.getLayoutContext();
     // it might be against the standard, but we do not accept the
@@ -715,8 +751,8 @@ public class ContentNormalizer implements Normalizer
     if (styleResolver.isPseudoElementStyleResolvable(element, "after"))
     {
       startElementInternal(layoutContext.getNamespace(),
-              layoutContext.getTagName(), "after",
-              layoutContext.getAttributes());
+          layoutContext.getTagName(), "after",
+          layoutContext.getAttributes());
       endElement();
     }
 
@@ -733,7 +769,7 @@ public class ContentNormalizer implements Normalizer
   {
     if (ignoreContext > 0)
     {
-      Log.debug ("Ignored context active: " + ignoreContext);
+      // Log.debug ("Ignored context active: " + ignoreContext);
       if (recordingContentNormalizer != null)
       {
         recordingContentNormalizer.addText(text);
@@ -746,7 +782,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   private void addContent(final ContentToken token)
-          throws NormalizationException
+      throws NormalizationException
   {
     if (token instanceof ComputedToken)
     {
@@ -776,7 +812,7 @@ public class ContentNormalizer implements Normalizer
       if (currentQuote != null)
       {
         return new ResolvedStringToken
-                (closeQuoteToken, currentQuote.getCloseQuote());
+            (closeQuoteToken, currentQuote.getCloseQuote());
       }
     }
     else if (token instanceof OpenQuoteToken)
@@ -795,14 +831,14 @@ public class ContentNormalizer implements Normalizer
       if (currentQuote != null)
       {
         return new ResolvedStringToken
-                (openQuoteToken, currentQuote.getOpenQuote());
+            (openQuoteToken, currentQuote.getOpenQuote());
       }
     }
     else if (token instanceof VariableToken)
     {
       final VariableToken variableToken = (VariableToken) token;
       final String resolvedText =
-              currentElement.getString(variableToken.getVariable());
+          currentElement.getString(variableToken.getVariable());
       return new ResolvedStringToken(variableToken, resolvedText);
     }
     else if (token instanceof CounterToken)
@@ -811,7 +847,7 @@ public class ContentNormalizer implements Normalizer
       final String name = counterToken.getName();
       final CounterStyle style = counterToken.getStyle();
       final String resolvedText =
-              style.getCounterValue(currentElement.getCounterValue(name));
+          style.getCounterValue(currentElement.getCounterValue(name));
       return new ResolvedStringToken(counterToken, resolvedText);
     }
     else if (token instanceof CountersToken)
@@ -831,7 +867,7 @@ public class ContentNormalizer implements Normalizer
           }
 
           final String resolvedText =
-                  style.getCounterValue(currentElement.getCounterValue(name));
+              style.getCounterValue(currentElement.getCounterValue(name));
           buffer.append(resolvedText);
         }
         currentElement = currentElement.getParent();
@@ -867,14 +903,14 @@ public class ContentNormalizer implements Normalizer
    * @throws IOException
    */
   public void endElement()
-          throws NormalizationException, IOException
+      throws NormalizationException, IOException
   {
 
 //    final LayoutElement element = currentElement;
     if (currentElement == null)
     {
       throw new NullPointerException
-              ("This is unexpected: I dont have a current element.");
+          ("This is unexpected: I dont have a current element.");
     }
 
     if (ignoreContext > 1)
@@ -916,7 +952,7 @@ public class ContentNormalizer implements Normalizer
     {
       LayoutContext layoutContext = currentElement.getLayoutContext();
       final ContentSpecification contentSpec =
-              layoutContext.getContentSpecification();
+          layoutContext.getContentSpecification();
 
       // replace the contents token of the string-keystyle with the
       // extracted content.
@@ -938,16 +974,19 @@ public class ContentNormalizer implements Normalizer
         // clean up (1): Just finish the element
       }
 
-      ignoreContext= 0;
-      try
+      ignoreContext = 0;
+      if (recordingContentNormalizer != null)
       {
-        recordingContentNormalizer.replay(this);
-        recordingContentNormalizer.clear();
-      }
-      catch (ChainingCallException e)
-      {
-        // Now reiterate over all the stored content so that the normal
-        // content flow is preserved.
+        try
+        {
+          recordingContentNormalizer.replay(this);
+          recordingContentNormalizer = null;
+        }
+        catch (ChainingCallException e)
+        {
+          // Now reiterate over all the stored content so that the normal
+          // content flow is preserved.
+        }
       }
     }
     else
@@ -958,12 +997,17 @@ public class ContentNormalizer implements Normalizer
 
     modelBuilder.endElement();
 
+    if (currentElement.isAlternateOpen())
+    {
+      endElement();
+    }
+
     currentSilbling = currentElement;
     currentElement = currentElement.getParent();
   }
 
   public void endDocument()
-          throws IOException, NormalizationException
+      throws IOException, NormalizationException
   {
     modelBuilder.endDocument();
   }
@@ -977,9 +1021,13 @@ public class ContentNormalizer implements Normalizer
     for (int i = 0; i < pat.length; i++)
     {
       final PageAreaType pageAreaType = pat[i];
-      final LayoutStyle style =
-              styleResolver.resolvePageStyle(pageName, pseudoPages,
-                      pageAreaType);
+      if (styleResolver == null)
+      {
+        throw new IllegalStateException();
+      }
+
+      final LayoutStyle style = styleResolver.resolvePageStyle
+          (pageName, pseudoPages, pageAreaType);
       dpc.setAreaDefinition(pageAreaType, style);
     }
 
@@ -1005,7 +1053,7 @@ public class ContentNormalizer implements Normalizer
     if (recordingContentNormalizer != null)
     {
       state.setRecordingContentNormalizerState(
-              recordingContentNormalizer.saveState());
+          recordingContentNormalizer.saveState());
     }
   }
 
@@ -1017,19 +1065,20 @@ public class ContentNormalizer implements Normalizer
   }
 
   protected void restore(final ContentNormalizerState state)
-          throws StateException
+      throws StateException
   {
     this.currentElement = state.getCurrentElement();
     this.currentSilbling = state.getCurrentSilbling();
     this.nextId = state.getNextId();
     this.modelBuilder = (ModelBuilder)
-            state.getModelBuilderState().restore(layoutProcess);
+        state.getModelBuilderState().restore(layoutProcess);
     this.styleResolver = (StyleResolver)
-            state.getStyleResolverState().restore(layoutProcess);
+        state.getStyleResolverState().restore(layoutProcess);
+    if (styleResolver == null) throw new IllegalStateException("Null after restore?");
     if (state.getRecordingContentNormalizerState() != null)
     {
       this.recordingContentNormalizer = (RecordingContentNormalizer)
-              state.getRecordingContentNormalizerState().restore(layoutProcess);
+          state.getRecordingContentNormalizerState().restore(layoutProcess);
     }
   }
 

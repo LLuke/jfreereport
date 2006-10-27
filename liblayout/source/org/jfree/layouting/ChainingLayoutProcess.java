@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ChainingLayoutProcess.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
  *
  * Changes
  * -------
@@ -154,7 +154,7 @@ public class ChainingLayoutProcess implements LayoutProcess
                                    final PseudoPage[] pseudoPages)
           throws NormalizationException
   {
-    chainedLayoutProcess.pageBreakEncountered(pageName, pseudoPages);
+    getInputFeed().handlePageBreakEncountered(pageName, pseudoPages);
   }
 
   /**
@@ -169,7 +169,7 @@ public class ChainingLayoutProcess implements LayoutProcess
    */
   public boolean isPagebreakEncountered()
   {
-    return chainedLayoutProcess.isPagebreakEncountered();
+    return getInputFeed().isPagebreakEncountered();
   }
 
   public LayoutProcess getChainedLayoutProcess()

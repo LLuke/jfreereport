@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StageOneNonPageableOutputProcessor.java,v 1.1 2006/07/11 13:55:34 taqua Exp $
+ * $Id: StageOneNonPageableOutputProcessor.java,v 1.2 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -124,5 +124,17 @@ public class StageOneNonPageableOutputProcessor implements OutputProcessor
   public void processContent(LogicalPageBox logicalPage)
   {
 
+  }
+
+  /**
+   * Declares, whether the logical page given in process-content must have a
+   * valid physical page set. Non-pageable targets may want to access the
+   * logical pagebox directly.
+   *
+   * @return
+   */
+  public boolean isPhysicalPageOutput()
+  {
+    return false;
   }
 }

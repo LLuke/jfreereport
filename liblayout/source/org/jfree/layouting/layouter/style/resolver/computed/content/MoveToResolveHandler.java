@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MoveToResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: MoveToResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,22 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.content;
 
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
+import org.jfree.layouting.input.style.keys.content.MoveToValues;
+import org.jfree.layouting.input.style.values.CSSStringType;
+import org.jfree.layouting.input.style.values.CSSStringValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.layouting.layouter.content.computed.CounterToken;
+import org.jfree.layouting.layouter.content.computed.CountersToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
+import org.jfree.layouting.layouter.context.ContentSpecification;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 public class MoveToResolveHandler implements ResolveHandler
 {
@@ -61,8 +72,43 @@ public class MoveToResolveHandler implements ResolveHandler
    */
   public StyleKey[] getRequiredStyles ()
   {
-    // todo implement me
+    // no further dependecies. (We depend on the parent, not the current element)
     return new StyleKey[0];
+  }
+
+  private boolean isCounterUsed (LayoutElement element, String counter)
+  {
+    final LayoutContext layoutContext = element.getLayoutContext();
+    final ContentSpecification contentSpecification =
+        layoutContext.getContentSpecification();
+    final ContentToken[] contents = contentSpecification.getContents();
+    for (int i = 0; i < contents.length; i++)
+    {
+      ContentToken content = contents[i];
+      if (content instanceof ResolvedToken)
+      {
+        ResolvedToken computedToken = (ResolvedToken) content;
+        content = computedToken.getParent();
+      }
+
+      if (content instanceof CounterToken)
+      {
+        CounterToken counterToken = (CounterToken) content;
+        if (counterToken.getName().equals(counter))
+        {
+          return true;
+        }
+      }
+      else if (content instanceof CountersToken)
+      {
+        CountersToken counterToken = (CountersToken) content;
+        if (counterToken.getName().equals(counter))
+        {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   /**
@@ -71,10 +117,50 @@ public class MoveToResolveHandler implements ResolveHandler
    * @param currentNode
    * @param style
    */
-  public void resolve (LayoutProcess process, LayoutElement currentNode, LayoutStyle style,
+  public void resolve (LayoutProcess process,
+                       LayoutElement currentNode,
+                       LayoutStyle style,
                        StyleKey key)
   {
-    // todo implement me
+    final CSSValue value = style.getValue(ContentStyleKeys.MOVE_TO);
+    LayoutContext layoutContext = currentNode.getLayoutContext();
 
+    // Maybe this is a 'normal'.
+    if (MoveToValues.NORMAL.equals(value))
+    {
+      if ("alternate".equals(layoutContext.getPseudoElement()))
+      {
+        // For '::alternate' pseudo-elements, if the superior parent uses
+        // the 'footnote' counter in its 'content' property then the computed
+        // value of 'move-to' is 'footnotes'.
+        if (isCounterUsed(currentNode.getParent(), "footnote"))
+        {
+          style.setValue(ContentStyleKeys.MOVE_TO,
+              new CSSStringValue(CSSStringType.STRING, "footnotes"));
+          return;
+        }
+
+        // For '::alternate' pseudo-elements, if the superior parent uses
+        // the 'endnote' counter in its 'content' property then the computed
+        // value of 'move-to' is 'endnotes'.
+        if (isCounterUsed(currentNode.getParent(), "endnote"))
+        {
+          style.setValue(ContentStyleKeys.MOVE_TO,
+              new CSSStringValue(CSSStringType.STRING, "endnotes"));
+          return;
+        }
+
+        // For '::alternate' pseudo-elements, if the superior parent uses
+        // the 'section-note' counter in its 'content' property then the
+        // computed value of 'move-to' is 'section-notes'.
+        if (isCounterUsed(currentNode.getParent(), "section-note"))
+        {
+          style.setValue(ContentStyleKeys.MOVE_TO,
+              new CSSStringValue(CSSStringType.STRING, "section-notes"));
+          return;
+        }
+      }
+      style.setValue(ContentStyleKeys.MOVE_TO, MoveToValues.HERE);
+    }
   }
 }

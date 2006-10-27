@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentReadHandler.java,v 1.2 2006/04/17 20:51:07 taqua Exp $
+ * $Id: ContentReadHandler.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -48,12 +48,11 @@ import org.jfree.layouting.input.style.keys.list.ListStyleTypeGlyphs;
 import org.jfree.layouting.input.style.parser.CSSValueFactory;
 import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.values.CSSAttrFunction;
-import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
+import org.jfree.layouting.input.style.values.CSSStringType;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.input.style.values.CSSStringType;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

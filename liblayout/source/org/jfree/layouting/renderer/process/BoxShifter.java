@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BoxShifter.java,v 1.1 2006/10/22 14:59:20 taqua Exp $
  *
  * Changes
  * -------
@@ -56,8 +56,13 @@ public class BoxShifter
   {
   }
 
-  public void shiftBox (RenderBox box, long amount)
+  public void shiftBox(RenderBox box, long amount)
   {
+    if (amount < 0)
+    {
+      throw new IllegalArgumentException("Cannot shift upwards ..");
+    }
+    
     box.setY(box.getY() + amount);
 
     RenderNode node = box.getFirstChild();
@@ -72,6 +77,16 @@ public class BoxShifter
         node.setY(node.getY() + amount);
       }
       node = node.getNext();
+    }
+  }
+
+  public void extendParents(RenderBox box, long amount)
+  {
+    RenderBox parent = box.getParent();
+    while (parent != null)
+    {
+      parent.setHeight(parent.getHeight() + amount);
+      parent = parent.getParent();
     }
   }
 }

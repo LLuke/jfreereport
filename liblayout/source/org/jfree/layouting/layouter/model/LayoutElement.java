@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LayoutElement.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class LayoutElement extends LayoutNode
   private HashMap strings;
   private HashMap counters;
   private boolean contentsConsumed;
-  private boolean alternateOpen;
+  private int alternateOpen;
 
   public LayoutElement(final LayoutElement parent,
                        final LayoutElement previous,
@@ -282,13 +282,13 @@ public class LayoutElement extends LayoutNode
     }
   }
 
-  public void setAlternateOpen(final boolean b)
+  public void openAlternate()
   {
-    this.alternateOpen = b;
+    this.alternateOpen += 1;
   }
 
   public boolean isAlternateOpen()
   {
-    return alternateOpen;
+    return alternateOpen != 0;
   }
 }

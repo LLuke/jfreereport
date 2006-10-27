@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.18 2006/10/17 16:39:08 taqua Exp $
+ * $Id: RenderNode.java,v 1.19 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -102,7 +102,7 @@ public abstract class RenderNode implements Cloneable
   private RenderLength baselineShiftResolved;
   private RenderLength alignmentAdjustResolved;
 
-  private long finishMarker;
+  private long stickyMarker;
 
   public RenderNode()
   {
@@ -504,13 +504,13 @@ public abstract class RenderNode implements Cloneable
     return changeTracker;
   }
 
-  public long getFinishMarker()
+  public long getStickyMarker()
   {
-    return finishMarker;
+    return stickyMarker;
   }
 
-  public void setFinishMarker(final long finishMarker)
+  public void setStickyMarker(final long stickyMarker)
   {
-    this.finishMarker = finishMarker;
+    this.stickyMarker = stickyMarker;
   }
 }

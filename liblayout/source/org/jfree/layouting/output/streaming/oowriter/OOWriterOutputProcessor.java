@@ -90,4 +90,16 @@ public class OOWriterOutputProcessor implements StreamingOutputProcessor
   {
 
   }
+
+  /**
+   * Declares, whether the logical page given in process-content must have a
+   * valid physical page set. Non-pageable targets may want to access the
+   * logical pagebox directly.
+   *
+   * @return
+   */
+  public boolean isPhysicalPageOutput()
+  {
+    return false;
+  }
 }

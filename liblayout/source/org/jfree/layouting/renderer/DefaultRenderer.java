@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.14 2006/10/17 16:39:07 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.15 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.renderer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.util.Stack;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
@@ -52,10 +53,10 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
+import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.content.type.GenericType;
 import org.jfree.layouting.layouter.content.type.ResourceType;
@@ -64,6 +65,7 @@ import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.pageable.graphics.PageDrawable;
 import org.jfree.layouting.renderer.border.BorderFactory;
 import org.jfree.layouting.renderer.border.RenderLength;
@@ -91,6 +93,7 @@ import org.jfree.layouting.renderer.process.ComputeICMMetricsStep;
 import org.jfree.layouting.renderer.process.ComputeMarginsStep;
 import org.jfree.layouting.renderer.process.ComputeStaticPropertiesStep;
 import org.jfree.layouting.renderer.process.ComputeTableICMMetricsStep;
+import org.jfree.layouting.renderer.process.FillPhysicalPagesStep;
 import org.jfree.layouting.renderer.process.InfiniteMajorAxisLayoutStep;
 import org.jfree.layouting.renderer.process.InfiniteMinorAxisLayoutStep;
 import org.jfree.layouting.renderer.process.PaginationStep;
@@ -98,6 +101,7 @@ import org.jfree.layouting.renderer.process.ParagraphLineBreakStep;
 import org.jfree.layouting.renderer.process.TableRowHeightStep;
 import org.jfree.layouting.renderer.process.TableValidationStep;
 import org.jfree.layouting.renderer.process.ValidateModelStep;
+import org.jfree.layouting.renderer.process.CleanPaginatedBoxesStep;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
 import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.layouting.util.geom.StrictDimension;
@@ -168,7 +172,7 @@ public class DefaultRenderer implements Renderer
      * @throws StateException
      */
     public StatefullComponent restore(LayoutProcess layoutProcess)
-            throws StateException
+        throws StateException
     {
       final DefaultRenderer defaultRenderer = new DefaultRenderer(layoutProcess, false);
       defaultRenderer.buffer = new CodePointBuffer(bufferLength);
@@ -198,8 +202,6 @@ public class DefaultRenderer implements Renderer
 
   // statefull ..
   private LogicalPageBox logicalPageBox;
-  // state-components.
-  private RenderableTextFactory textFactory;
 
   // to be recreated
   private CodePointBuffer buffer;
@@ -218,6 +220,37 @@ public class DefaultRenderer implements Renderer
   private InfiniteMajorAxisLayoutStep majorAxisLayoutStep;
   private TableRowHeightStep tableRowHeightStep;
   private PaginationStep paginationStep;
+  private FillPhysicalPagesStep fillPhysicalPagesStep;
+  private CleanPaginatedBoxesStep cleanPaginatedBoxesStep;
+
+  private StringStore stringsStore;
+  private ContentStore elementsStore;
+  private ContentStore pendingStore;
+
+  private static class FlowContext
+  {
+    private RenderableTextFactory textFactory;
+    private NormalFlowRenderBox currentFlow;
+
+    public FlowContext(final RenderableTextFactory textFactory,
+                       final NormalFlowRenderBox currentFlow)
+    {
+      this.textFactory = textFactory;
+      this.currentFlow = currentFlow;
+    }
+
+    public RenderableTextFactory getTextFactory()
+    {
+      return textFactory;
+    }
+
+    public NormalFlowRenderBox getCurrentFlow()
+    {
+      return currentFlow;
+    }
+  }
+
+  private Stack flowContexts;
 
   protected DefaultRenderer(final LayoutProcess layoutProcess, boolean init)
   {
@@ -227,10 +260,11 @@ public class DefaultRenderer implements Renderer
     }
 
     this.layoutProcess = layoutProcess;
+    this.flowContexts = new Stack();
     if (init)
     {
       this.boxDefinitionFactory =
-              new DefaultBoxDefinitionFactory(new BorderFactory());
+          new DefaultBoxDefinitionFactory(new BorderFactory());
 
       this.validateModelStep = new ValidateModelStep();
       this.staticPropertiesStep = new ComputeStaticPropertiesStep();
@@ -243,6 +277,11 @@ public class DefaultRenderer implements Renderer
       this.majorAxisLayoutStep = new InfiniteMajorAxisLayoutStep();
       this.tableRowHeightStep = new TableRowHeightStep();
       this.paginationStep = new PaginationStep();
+      this.fillPhysicalPagesStep = new FillPhysicalPagesStep();
+      this.stringsStore = new StringStore();
+      this.elementsStore = new ContentStore();
+      this.pendingStore = new ContentStore();
+      this.cleanPaginatedBoxesStep = new CleanPaginatedBoxesStep();
     }
   }
 
@@ -259,7 +298,6 @@ public class DefaultRenderer implements Renderer
     }
 
     this.pageContext = new RenderPageContext(pageContext);
-    this.textFactory = new DefaultRenderableTextFactory(layoutProcess);
     // create the initial pagegrid.
     final PageGrid pageGrid =
         this.pageContext.createPageGrid(layoutProcess.getOutputMetaData());
@@ -270,12 +308,18 @@ public class DefaultRenderer implements Renderer
     logicalPageBox.setPageContext(this.pageContext.getPageContext());
   }
 
+  /**
+   * Chances are good, that this one is never used.
+   *
+   * @param context
+   * @throws NormalizationException
+   */
   public void startedPhysicalPageFlow(final LayoutContext context)
       throws NormalizationException
   {
     final BoxDefinition definition =
-            boxDefinitionFactory.createBlockBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     final NormalFlowRenderBox item = new NormalFlowRenderBox(definition);
     item.appyStyle(context, layoutProcess.getOutputMetaData());
 
@@ -314,14 +358,28 @@ public class DefaultRenderer implements Renderer
         // A new page has been started. Recover the page-grid, then restart
         // everything from scratch. (We have to recompute, as the pages may
         // be different now, due to changed margins or page definitions)
-        final PageGrid pageGrid = paginationStep.getPageGrid();
+        final OutputProcessor outputProcessor = layoutProcess.getOutputProcessor();
+        if (outputProcessor.isPhysicalPageOutput())
+        {
+          fillPhysicalPagesStep.compute(logicalPageBox);
+          outputProcessor.processContent(logicalPageBox);
+        }
+        else
+        {
+          outputProcessor.processContent(logicalPageBox);
+        }
 
         // Now fire the pagebreak. This goes through all layers and informs all
         // components, that a pagebreak has been encountered and possibly a
         // new page has been set. It does not save the state or perform other
         // expensive operations. However, it updates the 'isPagebreakEncountered'
         // flag, which will be active until the input-feed received a new event.
+        Log.debug ("PAGEBREAK ENCOUNTERED");
+        showPreview(logicalPageBox);
         firePagebreak();
+
+        logicalPageBox.setPageOffset(paginationStep.getNextOffset());
+        cleanPaginatedBoxesStep.compute(logicalPageBox);
         repeat = true;
       }
       else
@@ -331,7 +389,7 @@ public class DefaultRenderer implements Renderer
     }
   }
 
-  protected void firePagebreak () throws NormalizationException
+  protected void firePagebreak() throws NormalizationException
   {
     // todo: Compute the current page and the pseudo-pages for this one.
     final PageContext pageContext = this.pageContext.getPageContext();
@@ -343,39 +401,61 @@ public class DefaultRenderer implements Renderer
 
   protected RenderBox getInsertationPoint()
   {
-//    NormalFlowRenderBox flow = (NormalFlowRenderBox) logicalPageBox.get();
-    return logicalPageBox.getInsertationPoint();
+    FlowContext context = (FlowContext) flowContexts.peek();
+    return context.getCurrentFlow().getInsertationPoint();
   }
 
   public void startedFlow(final LayoutContext context)
       throws NormalizationException
   {
-    //DefaultPendingContentStorage flow = new DefaultPendingContentStorage();
+    this.pageContext = pageContext.update(context);
 
-    textFactory.startText();
-
-    if (logicalPageBox.isNormalFlowActive())
+    if (logicalPageBox.isNormalFlowActive() == false)
     {
       // this is the first (the normal) flow. A document always starts
       // with a start-document and then a start-flow event.
+      logicalPageBox.setNormalFlowActive(true);
+      final DefaultRenderableTextFactory textFactory = new DefaultRenderableTextFactory(layoutProcess);
+      textFactory.startText();
+
+      FlowContext flowContext = new FlowContext
+          (textFactory, logicalPageBox.getNormalFlow());
+
+      flowContexts.push(flowContext);
     }
     else
     {
-      RenderBox currentBox = getInsertationPoint();
-      currentBox.addChilds(textFactory.finishText());
+      // now check, what flow you are. A flow-top?
+      // position: running(header); New headers replace old ones.
+      // how to differentiate that (so that style-definitions are not that
+      // complicated.
 
-      this.pageContext = pageContext.update(context);
+      // The receiving element would define the content property as
+      // 'content: elements(header)'
 
-      final BoxDefinition definition =
-              boxDefinitionFactory.createBlockBoxDefinition
-                      (context, layoutProcess.getOutputMetaData());
+      // A flow bottom?
 
-      NormalFlowRenderBox newFlow = new NormalFlowRenderBox(definition);
+      // or an ordinary flow?
+      final BoxDefinition contentRoot =
+          boxDefinitionFactory.createBlockBoxDefinition
+              (context, layoutProcess.getOutputMetaData());
+
+      NormalFlowRenderBox newFlow = new NormalFlowRenderBox(contentRoot);
       newFlow.appyStyle(context, layoutProcess.getOutputMetaData());
       newFlow.setPageContext(pageContext.getPageContext());
 
+      RenderBox currentBox = getInsertationPoint();
       currentBox.addChild(newFlow.getPlaceHolder());
       currentBox.getNormalFlow().addFlow(newFlow);
+
+      final DefaultRenderableTextFactory textFactory =
+          new DefaultRenderableTextFactory(layoutProcess);
+      textFactory.startText();
+
+      FlowContext flowContext = new FlowContext
+          (textFactory, newFlow);
+
+      flowContexts.push(flowContext);
     }
 
     tryToValidate();
@@ -385,17 +465,18 @@ public class DefaultRenderer implements Renderer
   public void startedTable(final LayoutContext context)
       throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
 
     textFactory.startText();
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createBlockBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     this.pageContext = pageContext.update(context);
 
     TableRenderBox tableRenderBox =
-            new TableRenderBox(definition);
+        new TableRenderBox(definition);
     tableRenderBox.appyStyle(context, layoutProcess.getOutputMetaData());
     tableRenderBox.setPageContext(pageContext.getPageContext());
 
@@ -405,9 +486,16 @@ public class DefaultRenderer implements Renderer
 
   }
 
-  public void startedTableColumnGroup(final LayoutContext context)
-          throws NormalizationException
+  private RenderableTextFactory getCurrentTextFactory()
   {
+    final FlowContext context = (FlowContext) flowContexts.peek();
+    return context.getTextFactory();
+  }
+
+  public void startedTableColumnGroup(final LayoutContext context)
+      throws NormalizationException
+  {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
 
     textFactory.startText();
@@ -415,8 +503,8 @@ public class DefaultRenderer implements Renderer
     this.pageContext = pageContext.update(context);
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createBlockBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     TableColumnGroupNode columnGroupNode = new TableColumnGroupNode(definition);
     columnGroupNode.appyStyle(context, layoutProcess.getOutputMetaData());
     getInsertationPoint().addChild(columnGroupNode);
@@ -426,17 +514,18 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedTableColumn(final LayoutContext context)
-          throws NormalizationException
+      throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
-    
+
     textFactory.startText();
 
     this.pageContext = pageContext.update(context);
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createBlockBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     TableColumnNode columnGroupNode = new TableColumnNode(definition, context);
     getInsertationPoint().addChild(columnGroupNode);
 
@@ -445,8 +534,9 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedTableSection(final LayoutContext context)
-          throws NormalizationException
+      throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
 
     textFactory.startText();
@@ -454,10 +544,10 @@ public class DefaultRenderer implements Renderer
     this.pageContext = pageContext.update(context);
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createBlockBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     TableSectionRenderBox tableRenderBox =
-            new TableSectionRenderBox(definition);
+        new TableSectionRenderBox(definition);
     tableRenderBox.appyStyle(context, layoutProcess.getOutputMetaData());
     tableRenderBox.setPageContext(pageContext.getPageContext());
     getInsertationPoint().addChild(tableRenderBox);
@@ -467,8 +557,9 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedTableRow(final LayoutContext context)
-          throws NormalizationException
+      throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
 
     textFactory.startText();
@@ -476,8 +567,8 @@ public class DefaultRenderer implements Renderer
     this.pageContext = pageContext.update(context);
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createBlockBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     TableRowRenderBox tableRenderBox = new TableRowRenderBox(definition, false);
     tableRenderBox.appyStyle(context, layoutProcess.getOutputMetaData());
     tableRenderBox.setPageContext(pageContext.getPageContext());
@@ -488,8 +579,9 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedTableCell(final LayoutContext context)
-          throws NormalizationException
+      throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
 
     textFactory.startText();
@@ -497,10 +589,10 @@ public class DefaultRenderer implements Renderer
     this.pageContext = pageContext.update(context);
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createBlockBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     TableCellRenderBox tableRenderBox =
-            new TableCellRenderBox(definition);
+        new TableCellRenderBox(definition);
     tableRenderBox.setPageContext(pageContext.getPageContext());
     tableRenderBox.appyStyle(context, layoutProcess.getOutputMetaData());
 
@@ -513,6 +605,7 @@ public class DefaultRenderer implements Renderer
   public void startedBlock(final LayoutContext context)
       throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
 
     textFactory.startText();
@@ -520,8 +613,8 @@ public class DefaultRenderer implements Renderer
     this.pageContext = pageContext.update(context);
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createBlockBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
 
     BlockRenderBox blockBox = new BlockRenderBox(definition);
     blockBox.appyStyle(context, layoutProcess.getOutputMetaData());
@@ -532,8 +625,9 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedMarker(final LayoutContext context)
-          throws NormalizationException
+      throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
 
     textFactory.startText();
@@ -541,8 +635,8 @@ public class DefaultRenderer implements Renderer
     this.pageContext = pageContext.update(context);
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createInlineBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createInlineBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     MarkerRenderBox markerBox = new MarkerRenderBox(definition);
     markerBox.appyStyle(context, layoutProcess.getOutputMetaData());
     markerBox.setPageContext(pageContext.getPageContext());
@@ -552,18 +646,19 @@ public class DefaultRenderer implements Renderer
   }
 
   public void startedRootInline(final LayoutContext context)
-          throws NormalizationException
+      throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
     textFactory.startText();
 
     this.pageContext = pageContext.update(context);
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createBlockBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     ParagraphRenderBox paragraphBox =
-            new ParagraphRenderBox(definition);
+        new ParagraphRenderBox(definition);
     paragraphBox.appyStyle(context, layoutProcess.getOutputMetaData());
     paragraphBox.setPageContext(pageContext.getPageContext());
 
@@ -575,13 +670,14 @@ public class DefaultRenderer implements Renderer
   public void startedInline(final LayoutContext context)
       throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     getInsertationPoint().addChilds(textFactory.finishText());
 
     this.pageContext = pageContext.update(context);
 
     final BoxDefinition definition =
-            boxDefinitionFactory.createInlineBoxDefinition
-                    (context, layoutProcess.getOutputMetaData());
+        boxDefinitionFactory.createInlineBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
     InlineRenderBox inlineBox = new InlineRenderBox(definition);
     inlineBox.appyStyle(context, layoutProcess.getOutputMetaData());
     inlineBox.setPageContext(pageContext.getPageContext());
@@ -596,6 +692,7 @@ public class DefaultRenderer implements Renderer
                          final ContentToken content)
       throws NormalizationException
   {
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     if (content instanceof GenericType)
     {
       GenericType generic = (GenericType) content;
@@ -609,7 +706,7 @@ public class DefaultRenderer implements Renderer
       if (raw instanceof Image)
       {
         RenderableReplacedContent replacedContent =
-                createImage((Image) raw, source, context);
+            createImage((Image) raw, source, context);
         if (replacedContent != null)
         {
           getInsertationPoint().addChilds(textFactory.finishText());
@@ -621,7 +718,7 @@ public class DefaultRenderer implements Renderer
       else if (raw instanceof Drawable)
       {
         RenderableReplacedContent replacedContent =
-                createDrawable((Drawable) raw, source, context);
+            createDrawable((Drawable) raw, source, context);
         if (replacedContent != null)
         {
           getInsertationPoint().addChilds(textFactory.finishText());
@@ -658,6 +755,7 @@ public class DefaultRenderer implements Renderer
     buffer = Utf16LE.getInstance().decodeString(str, buffer);
     final int[] data = buffer.getBuffer();
 
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     return textFactory.createText(data, 0, data.length, context);
   }
 
@@ -674,15 +772,15 @@ public class DefaultRenderer implements Renderer
 
     final CSSValue widthVal = context.getStyle().getValue(BoxStyleKeys.WIDTH);
     final RenderLength width = DefaultBoxDefinitionFactory.computeWidth
-            (widthVal, context, layoutProcess.getOutputMetaData(), true, false);
+        (widthVal, context, layoutProcess.getOutputMetaData(), true, false);
 
     final CSSValue heightVal = context.getStyle().getValue(BoxStyleKeys.HEIGHT);
     final RenderLength height = DefaultBoxDefinitionFactory.computeWidth
-            (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
+        (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
     final StrictDimension dims = StrictGeomUtility.createDimension
-            (image.getWidth(null), image.getHeight(null));
+        (image.getWidth(null), image.getHeight(null));
     final CSSValue valign =
-            context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+        context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
     return new RenderableReplacedContent(image, source, dims, width, height, valign);
   }
 
@@ -703,20 +801,21 @@ public class DefaultRenderer implements Renderer
 
     final CSSValue widthVal = context.getStyle().getValue(BoxStyleKeys.WIDTH);
     final RenderLength width = DefaultBoxDefinitionFactory.computeWidth
-            (widthVal, context, layoutProcess.getOutputMetaData(), true, false);
+        (widthVal, context, layoutProcess.getOutputMetaData(), true, false);
 
     final CSSValue heightVal = context.getStyle().getValue(BoxStyleKeys.HEIGHT);
     final RenderLength height = DefaultBoxDefinitionFactory.computeWidth
-            (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
+        (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
 
     final CSSValue valign =
-            context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+        context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
     return new RenderableReplacedContent(image, source, dims, width, height, valign);
   }
 
   public void finishedInline() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     final RenderNode[] nodes = textFactory.finishText();
     insertationPoint.addChilds(nodes);
     insertationPoint.close();
@@ -727,6 +826,7 @@ public class DefaultRenderer implements Renderer
   public void finishedRootInline() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     final RenderNode[] nodes = textFactory.finishText();
     insertationPoint.addChilds(nodes);
     insertationPoint.close();
@@ -735,6 +835,7 @@ public class DefaultRenderer implements Renderer
   public void finishedMarker() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     final RenderNode[] nodes = textFactory.finishText();
     insertationPoint.addChilds(nodes);
 
@@ -745,6 +846,7 @@ public class DefaultRenderer implements Renderer
   public void finishedBlock() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
     tryToValidate();
@@ -753,6 +855,7 @@ public class DefaultRenderer implements Renderer
   public void finishedTableCell() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
     tryToValidate();
@@ -761,6 +864,7 @@ public class DefaultRenderer implements Renderer
   public void finishedTableRow() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
     tryToValidate();
@@ -769,6 +873,7 @@ public class DefaultRenderer implements Renderer
   public void finishedTableSection() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
     tryToValidate();
@@ -777,6 +882,7 @@ public class DefaultRenderer implements Renderer
   public void finishedTableColumnGroup() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
     tryToValidate();
@@ -785,6 +891,7 @@ public class DefaultRenderer implements Renderer
   public void finishedTableColumn() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     tryToValidate();
   }
@@ -792,6 +899,7 @@ public class DefaultRenderer implements Renderer
   public void finishedTable() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
     tryToValidate();
@@ -800,35 +908,38 @@ public class DefaultRenderer implements Renderer
   public void finishedFlow() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
+
+    flowContexts.pop();
+
     tryToValidate();
   }
 
   public void finishedPhysicalPageFlow() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
     tryToValidate();
   }
 
-  public void finishedDocument()
+  public void finishedDocument() throws NormalizationException
   {
     logicalPageBox.close();
+    tryToValidate();
+    // At this point, we should have performed the necessary output.
 
     // Ok, lets play a little bit
-    LogicalPageBox rootBox = logicalPageBox;
+    // todo: This is the end of the document, we should do some smarter things
+    // here.
+    showPreview(logicalPageBox);
+  }
 
-//    Log.debug("Pref H-Axis: " + rootBox.getEffectiveLayoutSize(RenderNode.HORIZONTAL_AXIS));
-//    Log.debug("Pref V-Axis: " + rootBox.getEffectiveLayoutSize(RenderNode.VERTICAL_AXIS));
-//
-//    //tryToValidate();
-//    logicalPageBox.validate(RenderNodeState.FINISHED);
-
-    Log.debug("RootBox: (X,Y): " + rootBox.getX() + ", " + rootBox.getY());
-    Log.debug("RootBox: (W,H): " + rootBox.getWidth() + ", " + rootBox.getHeight());
-
+  private void showPreview(final LogicalPageBox rootBox)
+  {
     final PageDrawable drawable = new PageDrawable(rootBox);
     drawable.print();
 
@@ -856,6 +967,11 @@ public class DefaultRenderer implements Renderer
     this.pageContext = this.pageContext.update(pageContext);
     final PageGrid pageGrid =
         this.pageContext.createPageGrid(layoutProcess.getOutputMetaData());
+
+    this.pendingStore = pendingStore.derive();
+    this.elementsStore = elementsStore.derive();
+    this.stringsStore = stringsStore.derive();
+
     this.logicalPageBox.updatePageArea(pageGrid);
   }
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NormalFlowRenderBox.java,v 1.9 2006/07/29 18:57:13 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.10 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -61,13 +61,13 @@ import org.jfree.layouting.input.style.values.CSSValue;
 public class NormalFlowRenderBox extends BlockRenderBox
 {
   private Object placeHolderId;
-  private SpacerRenderNode placeHolder;
+  private PlaceholderRenderNode placeHolder;
   private ArrayList subFlows;
 
   public NormalFlowRenderBox(final BoxDefinition boxDefinition)
   {
     super(boxDefinition);
-    placeHolder = new SpacerRenderNode(0, 0, true);
+    placeHolder = new PlaceholderRenderNode();
     placeHolderId = getPlaceHolder().getInstanceId();
     subFlows = new ArrayList();
 
@@ -75,7 +75,7 @@ public class NormalFlowRenderBox extends BlockRenderBox
     // and each line flows horizontally (later with support for LTR and RTL)
   }
 
-  public SpacerRenderNode getPlaceHolder()
+  public PlaceholderRenderNode getPlaceHolder()
   {
     return placeHolder;
   }
@@ -119,13 +119,13 @@ public class NormalFlowRenderBox extends BlockRenderBox
         NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
         renderBox.subFlows.add(box.derive(true));
 
-        box.placeHolder = (SpacerRenderNode) findNodeById(box.placeHolderId);
+        box.placeHolder = (PlaceholderRenderNode) findNodeById(box.placeHolderId);
       }
       renderBox.placeHolder = null;
     }
     else
     {
-      renderBox.placeHolder = (SpacerRenderNode) placeHolder.derive(true);
+      renderBox.placeHolder = (PlaceholderRenderNode) placeHolder.derive(true);
       renderBox.subFlows = new ArrayList();
     }
     return renderBox;
@@ -149,13 +149,13 @@ public class NormalFlowRenderBox extends BlockRenderBox
         NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
         renderBox.subFlows.add(box.deriveFrozen(true));
 
-        box.placeHolder = (SpacerRenderNode) findNodeById(box.placeHolderId);
+        box.placeHolder = (PlaceholderRenderNode) findNodeById(box.placeHolderId);
       }
       renderBox.placeHolder = null;
     }
     else
     {
-      renderBox.placeHolder = (SpacerRenderNode) placeHolder.deriveFrozen(true);
+      renderBox.placeHolder = (PlaceholderRenderNode) placeHolder.deriveFrozen(true);
       renderBox.subFlows = new ArrayList();
     }
     return renderBox;

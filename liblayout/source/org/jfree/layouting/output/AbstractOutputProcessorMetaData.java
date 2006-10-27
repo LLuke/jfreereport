@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractOutputProcessorMetaData.java,v 1.4 2006/07/26 16:59:47 taqua Exp $
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.5 2006/07/29 18:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -240,7 +240,8 @@ public abstract class AbstractOutputProcessorMetaData
 
   public PageSize getDefaultPageSize()
   {
-    return PageSize.A4; // new PageSize(420, 100);
+    //return PageSize.A4;
+    return new PageSize(420, 200);
   }
 
   /**

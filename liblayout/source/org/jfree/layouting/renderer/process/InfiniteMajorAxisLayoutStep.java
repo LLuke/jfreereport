@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMajorAxisLayoutStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: InfiniteMajorAxisLayoutStep.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.process.valign.BoxAlignContext;
@@ -437,6 +438,11 @@ public class InfiniteMajorAxisLayoutStep
     // This could be anything, text, or an image.
     computeYPosition(node);
 
+    if (node instanceof FinishedRenderNode)
+    {
+      FinishedRenderNode fnode = (FinishedRenderNode) node;
+      node.setHeight(fnode.getLayoutedHeight());
+    }
     // Tables can have spacer nodes in weird positions. Actually it is less
     // expensive to filter them here than to kill them earlier.
     // Heck, given infinite time and resources, I will filter them earlier ..

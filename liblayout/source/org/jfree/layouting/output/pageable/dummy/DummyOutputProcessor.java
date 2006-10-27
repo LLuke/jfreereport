@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DummyOutputProcessor.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
+ * $Id: DummyOutputProcessor.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -126,5 +126,17 @@ public class DummyOutputProcessor implements PageableOutputProcessor
   public void processContent(LogicalPageBox logicalPage)
   {
     // the pagegrid contains the content ..
+  }
+
+  /**
+   * Declares, whether the logical page given in process-content must have a
+   * valid physical page set. Non-pageable targets may want to access the
+   * logical pagebox directly.
+   *
+   * @return
+   */
+  public boolean isPhysicalPageOutput()
+  {
+    return true;
   }
 }

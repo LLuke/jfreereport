@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingOutputProcessor.java,v 1.1 2006/07/11 13:55:34 taqua Exp $
+ * $Id: ChainingOutputProcessor.java,v 1.2 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -114,5 +114,17 @@ public class ChainingOutputProcessor implements OutputProcessor
   public void processContent(LogicalPageBox logicalPage)
   {
     outputProcessor.processContent(logicalPage);
+  }
+
+  /**
+   * Declares, whether the logical page given in process-content must have a
+   * valid physical page set. Non-pageable targets may want to access the
+   * logical pagebox directly.
+   *
+   * @return
+   */
+  public boolean isPhysicalPageOutput()
+  {
+    return outputProcessor.isPhysicalPageOutput();
   }
 }

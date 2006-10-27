@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.17 2006/10/17 16:39:08 taqua Exp $
+ * $Id: RenderBox.java,v 1.18 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -362,6 +362,7 @@ public abstract class RenderBox extends RenderNode
       firstChild.setNext(null);
       firstChild.setPrev(null);
       firstChild = replacement;
+      replacement.setParent(this);
       changed = true;
     }
     if (old == lastChild)
@@ -371,6 +372,7 @@ public abstract class RenderBox extends RenderNode
       lastChild.setNext(null);
       lastChild.setPrev(null);
       lastChild = replacement;
+      replacement.setParent(this);
       changed = true;
     }
 
@@ -831,7 +833,7 @@ public abstract class RenderBox extends RenderNode
     }
   }
 
-  protected void remove(RenderNode child)
+  public void remove(RenderNode child)
   {
     final RenderBox parent = child.getParent();
     if (parent != this)
@@ -971,4 +973,5 @@ public abstract class RenderBox extends RenderNode
   {
     return performSimpleSplit(axis);
   }
+
 }

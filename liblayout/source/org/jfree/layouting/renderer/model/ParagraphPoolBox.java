@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ParagraphPoolBox.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -137,4 +137,8 @@ public class ParagraphPoolBox extends InlineRenderBox
     return alwaysPropagate || super.isAlwaysPropagateEvents();
   }
 
+  public void setParent (RenderBox parent)
+  {
+    super.setParent(parent);
+  }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMinorAxisLayoutStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.PlaceholderRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -424,6 +425,10 @@ public class InfiniteMinorAxisLayoutStep
     if (node instanceof RenderableText)
     {
       breakState.add(new TextSequenceElement((RenderableText) node));
+    }
+    else if (node instanceof PlaceholderRenderNode)
+    {
+      breakState.add(new InlineNodeSequenceElement(node));
     }
     else if (node instanceof SpacerRenderNode)
     {

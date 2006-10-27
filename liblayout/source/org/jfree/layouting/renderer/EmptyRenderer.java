@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: EmptyRenderer.java,v 1.1 2006/07/17 16:50:42 taqua Exp $
+ * $Id: EmptyRenderer.java,v 1.2 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 17.07.2006, 17:43:21
@@ -70,7 +71,7 @@ public class EmptyRenderer implements Renderer
    */
   public void startDocument(final PageContext pageContext)
   {
-
+    Log.debug ("<document>");
   }
 
   /**
@@ -89,7 +90,7 @@ public class EmptyRenderer implements Renderer
   public void startedPhysicalPageFlow(final LayoutContext context)
           throws NormalizationException
   {
-
+    Log.debug ("<physical-page-flow>");
   }
 
   /**
@@ -101,117 +102,117 @@ public class EmptyRenderer implements Renderer
   public void startedFlow(final LayoutContext context)
           throws NormalizationException
   {
-
+    Log.debug ("<flow>");
   }
 
   public void startedTable(final LayoutContext layoutContext)
           throws NormalizationException
   {
-
+    Log.debug ("<table>");
   }
 
   public void startedTableSection(final LayoutContext layoutContext)
           throws NormalizationException
   {
-
+    Log.debug ("<table-section>");
   }
 
   public void startedTableRow(final LayoutContext layoutContext)
           throws NormalizationException
   {
-
+    Log.debug ("<table-row>");
   }
 
   public void startedTableCell(final LayoutContext layoutContext)
           throws NormalizationException
   {
-
+    Log.debug ("<table-cell>");
   }
 
   public void startedBlock(final LayoutContext context)
           throws NormalizationException
   {
-
+    Log.debug ("<block>");
   }
 
   public void startedMarker(final LayoutContext context)
           throws NormalizationException
   {
-
+    Log.debug ("<marker>");
   }
 
   public void startedRootInline(final LayoutContext context)
           throws NormalizationException
   {
-
+    Log.debug ("<paragraph>");
   }
 
   public void startedInline(final LayoutContext context)
           throws NormalizationException
   {
-
+    Log.debug ("<inline>");
   }
 
   public void addContent(final LayoutContext context,
                          final ContentToken content)
           throws NormalizationException
   {
-
+    Log.debug ("<content>" + content + "</content>");
   }
 
   public void finishedInline() throws NormalizationException
   {
-
+    Log.debug ("</inline>");
   }
 
   public void finishedRootInline() throws NormalizationException
   {
-
+    Log.debug ("</paragraph>");
   }
 
   public void finishedMarker() throws NormalizationException
   {
-
+    Log.debug ("</marker>");
   }
 
   public void finishedBlock() throws NormalizationException
   {
-
+    Log.debug ("</block>");
   }
 
   public void finishedTableCell() throws NormalizationException
   {
-
+    Log.debug ("</table-cell>");
   }
 
   public void finishedTableRow() throws NormalizationException
   {
-
+    Log.debug ("</table-row>");
   }
 
   public void finishedTableSection() throws NormalizationException
   {
-
+    Log.debug ("</table-section>");
   }
 
   public void finishedTable() throws NormalizationException
   {
-
+    Log.debug ("</table>");
   }
 
   public void finishedFlow() throws NormalizationException
   {
-
+    Log.debug ("</flow>");
   }
 
   public void finishedPhysicalPageFlow() throws NormalizationException
   {
-
+    Log.debug ("</physical-flow>");
   }
 
   public void finishedDocument() throws NormalizationException
   {
-
+    Log.debug ("</document>");
   }
 
   public void startedTableColumnGroup(final LayoutContext context)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LeftAlignmentProcessor.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: LeftAlignmentProcessor.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -183,6 +183,35 @@ public class LeftAlignmentProcessor extends AbstractAlignmentProcessor
       }
       else
       {
+        // This is the first element and it still does not fit. How evil.
+        if (start == 0)
+        {
+          if (contentElement instanceof InlineNodeSequenceElement)
+          {
+            final RenderNode node = contentElement.getNode();
+            if (node instanceof RenderBox)
+            {
+              // OK, limit the size of the box to the maximum line width and
+              // revalidate it.
+              final RenderBox box = (RenderBox) node;
+              final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+              node.setX(getPosition() + blp.getMarginLeft());
+              final long maxWidth = (getEndOfLine() - getPosition());
+              node.setWidth(maxWidth - blp.getMarginLeft() - blp.getMarginRight());
+
+              final long leftInsets = blp.getPaddingLeft() + blp.getBorderLeft();
+              final long rightInsets = blp.getPaddingRight() + blp.getBorderRight();
+              box.setContentAreaX1(node.getX() + leftInsets);
+              box.setContentAreaX2(node.getX() + node.getWidth() - rightInsets);
+
+              InfiniteMinorAxisLayoutStep layoutStep = new InfiniteMinorAxisLayoutStep();
+              layoutStep.continueComputation(getPageGrid(), box);
+
+              elementDimensions[endIndex - 1] = node.getWidth();
+            }
+          }
+          setSkipIndex(endIndex);
+        }
         return(start);
       }
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.10 2006/10/17 16:39:08 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.11 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -44,12 +44,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
-import org.jfree.layouting.renderer.model.IndexedRenderBox;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
+import org.jfree.layouting.renderer.model.PageAreaRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
  * The logical page box does not have a layout at all. It has collection of
@@ -73,6 +73,20 @@ import org.jfree.layouting.output.OutputProcessorMetaData;
  * <p/>
  * The logical page is also the container for all physical pages. (The sizes of
  * the physical pages influence the available space on the logical pages.)
+ * <p/>
+ * Layout notes: The logical page, as it is implemented now, consists of three
+ * areas. The header and footer areas are plain banded areas and correspond to
+ * the @top and @bottom page-areas. These areas are layouted zero-based. The
+ * header's y=0 corresponds to the beginning of the page, while the footer's y=0
+ * depends on the total height of the footer and must fullfill the following
+ * constraint: Page_bottom_edge = (footer_y + footer_height).
+ * <p/>
+ * The content window is positioned relative to the content-flow and is placed
+ * between the header and the footer. The mapping of the content into the header
+ * is defined by the pageOffset. The content-window's y=0 corresponds to the
+ * normal-flow's y=pageOffset.
+ * <p/>
+ * Repeatable headers and footers are *not* inserted into the content-flow.
  *
  * @author Thomas Morgner
  */
@@ -90,8 +104,11 @@ public class LogicalPageBox extends BlockRenderBox
 
   //private long offset;
   private Object contentAreaId;
-  private IndexedRenderBox footerArea;
-  private IndexedRenderBox headerArea;
+  private PageAreaRenderBox footerArea;
+  private PageAreaRenderBox headerArea;
+
+  private long pageOffset;
+  private boolean normalFlowActive;
 
   public LogicalPageBox(final PageGrid pageGrid)
   {
@@ -104,21 +121,16 @@ public class LogicalPageBox extends BlockRenderBox
 
     this.subFlows = new ArrayList();
     NormalFlowRenderBox contentArea =
-        new NormalFlowRenderBox (new EmptyBoxDefinition());
+        new NormalFlowRenderBox(new EmptyBoxDefinition());
     this.contentAreaId = contentArea.getInstanceId();
-    this.headerArea = new IndexedRenderBox(new EmptyBoxDefinition());
-    this.footerArea = new IndexedRenderBox(new EmptyBoxDefinition());
+    this.headerArea = new PageAreaRenderBox(new EmptyBoxDefinition());
+    this.headerArea.setParent(this);
+    this.footerArea = new PageAreaRenderBox(new EmptyBoxDefinition());
+    this.footerArea.setParent(this);
 
     updatePageArea(pageGrid);
 
-    addChild(headerArea);
     addChild(contentArea);
-    addChild(footerArea);
-
-    final NormalFlowRenderBox footNotes =
-            new NormalFlowRenderBox(new EmptyBoxDefinition());
-    footNotes.close();
-    footerArea.setElement("footnotes", footNotes);
 
     setMajorAxis(VERTICAL_AXIS);
     setMinorAxis(HORIZONTAL_AXIS);
@@ -128,13 +140,16 @@ public class LogicalPageBox extends BlockRenderBox
   {
     headerArea.appyStyle(context, metaData);
     footerArea.appyStyle(context, metaData);
-    final RenderBox element = (RenderBox) footerArea.getElement("footnotes");
-    element.appyStyle(context, metaData);
     getContentArea().appyStyle(context, metaData);
   }
 
   public void updatePageArea(PageGrid pageGrid)
   {
+    if (pageGrid == null)
+    {
+      throw new NullPointerException();
+    }
+
     this.pageGrid = pageGrid;
     this.pageHeights = new long[pageGrid.getColumnCount()];
     this.pageWidths = new long[pageGrid.getRowCount()];
@@ -167,7 +182,7 @@ public class LogicalPageBox extends BlockRenderBox
     for (int i = 0; i < pageWidths.length; i++)
     {
       pageWidth += pageWidths[i];
-      horizontalBreaks[i] = pageHeight;
+      horizontalBreaks[i] = pageWidth;
     }
   }
 
@@ -176,12 +191,12 @@ public class LogicalPageBox extends BlockRenderBox
     return (NormalFlowRenderBox) findNodeById(contentAreaId);
   }
 
-  public IndexedRenderBox getFooterArea()
+  public PageAreaRenderBox getFooterArea()
   {
     return footerArea;
   }
 
-  public IndexedRenderBox getHeaderArea()
+  public PageAreaRenderBox getHeaderArea()
   {
     return headerArea;
   }
@@ -194,7 +209,7 @@ public class LogicalPageBox extends BlockRenderBox
   public NormalFlowRenderBox[] getAbsoluteFlows()
   {
     return (NormalFlowRenderBox[])
-            subFlows.toArray(new NormalFlowRenderBox[subFlows.size()]);
+        subFlows.toArray(new NormalFlowRenderBox[subFlows.size()]);
   }
 
   public NormalFlowRenderBox getAbsoluteFlow(int i)
@@ -258,15 +273,7 @@ public class LogicalPageBox extends BlockRenderBox
 
   public boolean isNormalFlowActive()
   {
-    for (int i = 0; i < subFlows.size(); i++)
-    {
-      NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
-      if (box.isOpen())
-      {
-        return false;
-      }
-    }
-    return true;
+    return normalFlowActive;
   }
 
   public long getPageHeight()
@@ -277,5 +284,20 @@ public class LogicalPageBox extends BlockRenderBox
   public long getPageWidth()
   {
     return pageWidth;
+  }
+
+  public long getPageOffset()
+  {
+    return pageOffset;
+  }
+
+  public void setPageOffset(final long pageOffset)
+  {
+    this.pageOffset = pageOffset;
+  }
+
+  public void setNormalFlowActive(final boolean normalFlowActive)
+  {
+    this.normalFlowActive = normalFlowActive;
   }
 }

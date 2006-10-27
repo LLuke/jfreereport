@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: IterateStructuralProcessStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 /**
  * Iterates over the document tree using the display-role of the current node
@@ -87,15 +88,30 @@ public abstract class IterateStructuralProcessStep
     else if (node instanceof ParagraphRenderBox)
     {
       final ParagraphRenderBox box = (ParagraphRenderBox) node;
-      startBlockBox(box);
-      processParagraphChilds(box);
+      if (startBlockBox(box))
+      {
+        processParagraphChilds(box);
+      }
+      finishBlockBox(box);
+    }
+    else if (node instanceof LogicalPageBox)
+    {
+      LogicalPageBox box = (LogicalPageBox) node;
+      if (startBlockBox(box))
+      {
+        startProcessing(box.getHeaderArea());
+        processBoxChilds(box);
+        startProcessing(box.getFooterArea());
+      }
       finishBlockBox(box);
     }
     else if (node instanceof BlockRenderBox)
     {
       final BlockRenderBox box = (BlockRenderBox) node;
-      startBlockBox(box);
-      processBoxChilds(box);
+      if (startBlockBox(box))
+      {
+        processBoxChilds(box);
+      }
       finishBlockBox(box);
     }
     else if (node instanceof RenderBox)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RecordingContentNormalizer.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -243,8 +243,11 @@ public final class RecordingContentNormalizer
 
   public State saveState()
   {
-    return new RecodingContentNormalizerState
-            (getRecordedCalls(), this.text.toString(), elementDepth);
+    final RecordedCall[] calls = retrieveRecordedCalls();
+    final RecodingContentNormalizerState state = new RecodingContentNormalizerState
+        (calls, this.text.toString(), elementDepth);
+    setRecordedCalls(calls);
+    return state;
   }
 
   public String getText()

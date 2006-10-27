@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentResolveHandler.java,v 1.4 2006/07/11 13:29:52 taqua Exp $
+ * $Id: ContentResolveHandler.java,v 1.5 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -121,6 +121,7 @@ public class ContentResolveHandler implements ResolveHandler
   {
     final ContentSpecification contentSpecification =
             element.getLayoutContext().getContentSpecification();
+
     final CSSValue value = style.getValue(key);
     if (value instanceof CSSConstant)
     {
@@ -146,13 +147,15 @@ public class ContentResolveHandler implements ResolveHandler
           contentSpecification.setAllowContentProcessing(false);
           contentSpecification.setInhibitContent(true);
           contentSpecification.setContents(PSEUDO_CONTENT);
+          return;
         }
       }
     }
+
     contentSpecification.setInhibitContent(false);
     contentSpecification.setAllowContentProcessing(true);
     contentSpecification.setContents(DEFAULT_CONTENT);
-
+    
     if (value instanceof CSSAttrFunction)
     {
       final ContentToken token =
