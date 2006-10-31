@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BoxShifter.java,v 1.1 2006/10/22 14:59:20 taqua Exp $
+ * $Id: BoxShifter.java,v 1.2 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.renderer.process;
 
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.util.Log;
 
 /**
  * By keeping the shifting in a separate class, we can optimize it later without
@@ -60,25 +61,33 @@ public class BoxShifter
   {
     if (amount < 0)
     {
-      throw new IllegalArgumentException("Cannot shift upwards ..");
+      throw new IllegalArgumentException("Cannot shift upwards: " + amount);
     }
-    
-    box.setY(box.getY() + amount);
 
+    box.setY(box.getY() + amount);
+    shiftBoxInternal(box, amount);
+  }
+
+  public void shiftBoxUnchecked(RenderBox box, long amount)
+  {
+    box.setY(box.getY() + amount);
+    shiftBoxInternal(box, amount);
+  }
+
+  private void shiftBoxInternal(final RenderBox box, final long amount)
+  {
     RenderNode node = box.getFirstChild();
     while (node != null)
     {
+      node.setY(node.getY() + amount);
       if (node instanceof RenderBox)
       {
-        shiftBox((RenderBox) node, amount);
-      }
-      else
-      {
-        node.setY(node.getY() + amount);
+        shiftBoxInternal((RenderBox) node, amount);
       }
       node = node.getNext();
     }
   }
+
 
   public void extendParents(RenderBox box, long amount)
   {

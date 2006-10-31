@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.18 2006/10/22 14:58:25 taqua Exp $
+ * $Id: RenderBox.java,v 1.19 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -334,7 +334,7 @@ public abstract class RenderBox extends RenderNode
     node.setPrev(target);
     target.setNext(node);
     target.setParent(this);
-    target.setNext(prev);
+    target.setPrev(prev);
     if (prev != null)
     {
       prev.setNext(target);
@@ -348,6 +348,11 @@ public abstract class RenderBox extends RenderNode
 
   public void replaceChild(final RenderNode old, final RenderNode replacement)
   {
+    if (old.getParent() != this)
+    {
+      throw new IllegalArgumentException("None of my childs.");
+    }
+    
     if (old == replacement)
     {
       // nothing to do ...
@@ -527,32 +532,6 @@ public abstract class RenderBox extends RenderNode
       renderNode.updateChangeTracker();
     }
   }
-//
-//  public BreakAfterEnum getBreakAfterAllowed(final int axis)
-//  {
-//    if (axis == getMinorAxis())
-//    {
-//      return BreakAfterEnum.BREAK_ALLOW;
-//    }
-//
-//    final RenderNode lastChild = getLastChild();
-//    if (lastChild == null)
-//    {
-//      return BreakAfterEnum.BREAK_DONT_KNOW;
-//    }
-//
-//    RenderNode node = lastChild;
-//    while (node != null)
-//    {
-//      BreakAfterEnum breakAllow = node.getBreakAfterAllowed(axis);
-//      if (breakAllow != BreakAfterEnum.BREAK_DONT_KNOW)
-//      {
-//        return breakAllow;
-//      }
-//      node = node.getPrev();
-//    }
-//    return BreakAfterEnum.BREAK_DONT_KNOW;
-//  }
 
   /**
    * Clones this node. Be aware that cloning can get you into deep trouble, as

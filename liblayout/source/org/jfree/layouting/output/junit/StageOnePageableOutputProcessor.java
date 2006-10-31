@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StageOnePageableOutputProcessor.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
+ * $Id: StageOnePageableOutputProcessor.java,v 1.5 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,10 @@
  *
  */
 package org.jfree.layouting.output.junit;
+
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import javax.swing.JDialog;
 
 import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.DefaultFontStorage;
@@ -54,11 +58,13 @@ import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.output.pageable.graphics.PageDrawable;
 import org.jfree.layouting.output.streaming.html.HtmlOutputProcessorMetaData;
 import org.jfree.layouting.renderer.DefaultRenderer;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.EmptyRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.ui.DrawablePanel;
 
 /**
  * Creation-Date: 31.05.2006, 16:28:33
@@ -118,7 +124,21 @@ public class StageOnePageableOutputProcessor implements OutputProcessor
 
   public void processContent(LogicalPageBox logicalPage)
   {
+    final PageDrawable drawable = new PageDrawable(logicalPage);
+    drawable.print();
 
+    final DrawablePanel comp = new DrawablePanel();
+    comp.setDrawable(drawable);
+
+    JPanel contentPane = new JPanel();
+    contentPane.setLayout(new BorderLayout());
+    contentPane.add(comp, BorderLayout.CENTER);
+
+    JDialog dialog = new JDialog();
+    dialog.setModal(true);
+    dialog.setContentPane(contentPane);
+    dialog.setSize(800, 600);
+    dialog.setVisible(true);
   }
 
   /**
@@ -130,6 +150,6 @@ public class StageOnePageableOutputProcessor implements OutputProcessor
    */
   public boolean isPhysicalPageOutput()
   {
-    return false;
+    return true;
   }
 }

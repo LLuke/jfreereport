@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PlaceHolderCell.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.model.table.cells;
-
-import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 
 /**
  * Creation-Date: 10.09.2006, 17:27:54
@@ -67,12 +65,6 @@ public class PlaceHolderCell extends TableCell
   {
     return sourceCell;
   }
-
-  public TableCellRenderBox getCellRenderBox()
-  {
-    return sourceCell.getCellRenderBox();
-  }
-
 
   public String toString()
   {

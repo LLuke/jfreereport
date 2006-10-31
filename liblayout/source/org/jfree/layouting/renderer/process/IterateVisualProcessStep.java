@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IterateVisualProcessStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: IterateVisualProcessStep.java,v 1.2 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,9 @@ import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.util.Log;
 
 /**
  * Iterates over the tree of nodes and classifies nodes by their Display-Model.

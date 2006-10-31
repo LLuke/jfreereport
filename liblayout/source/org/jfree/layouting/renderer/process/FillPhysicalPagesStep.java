@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FillPhysicalPagesStep.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,12 @@
  */
 package org.jfree.layouting.renderer.process;
 
-import org.jfree.layouting.renderer.model.ParagraphPoolBox;
+import org.jfree.layouting.renderer.model.PageAreaRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
+import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.layouting.renderer.model.page.PageGrid;
+import org.jfree.util.Log;
 
 /**
  * This Step copies all content from the logical page into the page-grid. When
@@ -59,46 +60,75 @@ import org.jfree.layouting.renderer.model.page.PageGrid;
  */
 public class FillPhysicalPagesStep extends IterateVisualProcessStep
 {
+  private long pageSize;
+
   public FillPhysicalPagesStep()
   {
   }
 
-  public void compute(LogicalPageBox pagebox)
+  public LogicalPageBox compute(final LogicalPageBox pagebox,
+                                final long pageStart,
+                                final long pageEnd)
   {
-    startProcessing(pagebox);
+    this.pageSize = pageEnd - pageStart;
+
+    // This is a simpel strategy.
+    // Copy and relocate, then prune. (I whished we could prune first, but
+    // this does not work.)
+    //
+    // For the sake of efficiency, we do *not* create private copies for each
+    // phyiscal page. This would be an total overkill.
+    final LogicalPageBox derived = (LogicalPageBox) pagebox.derive(true);
+
+    // reorganize ...
+    final long headerSize = derived.getHeaderArea().getHeight();
+
+    // first, shift the normal-flow content downwards.
+    // The start of the logical pagebox might be in the negative range now
+    BoxShifter boxShifter = new BoxShifter();
+    final long normalFlowShift = -(pageStart - headerSize);
+    boxShifter.shiftBoxUnchecked(derived, normalFlowShift);
+
+    // Then add the header at the top - it starts at (0,0) and thus it is
+    // ok to leave it unshifted.
+    derived.insertFirst(derived.getHeaderArea());
+    // finally, move the footer at the bottom (to the page's bottom, please!)
+    final PageAreaRenderBox footerArea = derived.getFooterArea();
+    final long footerPosition = pageSize - (footerArea.getY() + footerArea.getHeight());
+    boxShifter.shiftBoxUnchecked(footerArea, footerPosition);
+    derived.insertLast(footerArea);
+
+    startProcessing(derived);
+    return derived;
   }
 
   protected void processParagraphChilds(final ParagraphRenderBox box)
   {
+    processBoxChilds(box);
+  }
+
+  protected boolean startBlockLevelBox(final RenderBox box)
+  {
     RenderNode node = box.getFirstChild();
     while (node != null)
     {
-      // all childs of the linebox container must be inline boxes. They
-      // represent the lines in the paragraph. Any other element here is
-      // a error that must be reported
-      if (node instanceof ParagraphPoolBox == false)
+      if ((node.getY() + node.getHeight()) <= 0)
       {
-        throw new IllegalStateException("Encountered " + node.getClass());
+        final RenderNode next = node.getNext();
+        box.remove(node);
+        node = next;
       }
-      final ParagraphPoolBox inlineRenderBox = (ParagraphPoolBox) node;
-      if (startLine(inlineRenderBox))
+      else if (node.getY() >= pageSize)
       {
-        processBoxChilds(inlineRenderBox);
+        final RenderNode next = node.getNext();
+        box.remove(node);
+        node = next;
       }
-      finishLine(inlineRenderBox);
-
-      node = node.getNext();
+      else
+      {
+        node = node.getNext();
+      }
     }
+    return true;
   }
-
-  private boolean startLine(final ParagraphPoolBox box)
-  {
-    return false;
-  }
-
-  private void finishLine(final ParagraphPoolBox box)
-  {
-
-  }
-
 }

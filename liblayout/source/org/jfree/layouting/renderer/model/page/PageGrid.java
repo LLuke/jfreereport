@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageGrid.java,v 1.2 2006/07/29 18:57:13 taqua Exp $
+ * $Id: PageGrid.java,v 1.3 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -55,4 +55,6 @@ public interface PageGrid extends Cloneable
   public PhysicalPageBox getPage(int row, int col);
   public int getRowCount ();
   public int getColumnCount ();
+  
+  public Object clone() throws CloneNotSupportedException;
 }

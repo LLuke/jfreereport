@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableCell.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -76,9 +76,6 @@ public abstract class TableCell
   {
     return colSpan;
   }
-
-  public abstract TableCellRenderBox getCellRenderBox();
-
 
   public String toString()
   {

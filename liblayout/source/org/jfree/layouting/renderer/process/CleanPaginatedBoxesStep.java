@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CleanPaginatedBoxesStep.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,15 @@
  */
 package org.jfree.layouting.renderer.process;
 
+import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
+import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
+import org.jfree.layouting.renderer.model.table.TableRenderBox;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 27.10.2006, 18:19:24
@@ -79,25 +83,51 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
       return false;
     }
 
+    if (box instanceof TableRenderBox)
+    {
+      Log.debug ("Dealing with tables..");
+    }
+
+    if (box instanceof TableSectionRenderBox)
+    {
+      // Table sections dont get removed at all.
+      return true;
+    }
+
+    if (box instanceof TableRowRenderBox)
+    {
+      // TableRows dont get removed now. We remove them when the close-event
+      // gets fired, and only if all cells have been replaced by removed-
+      // placeholders
+      return startTableRow((TableRowRenderBox) box);
+    }
+
+
     final RenderNode node = box.getFirstChild();
     if (node == null)
     {
+      // No need to replace empty cells.
       return false;
     }
 
 
-    if ((node.getY() + node.getHeight()) > pageOffset)
+    final long nodeY = node.getY();
+    if ((nodeY + node.getHeight()) > pageOffset)
     {
-      // we cant handle that. This node will be visible ..
+      // we cant handle that. At least parts of the node will be visible ..
 
-      if (node.getY() > pageOffset)
+      if (nodeY > pageOffset)
       {
-        // all childs will be visible to, so why visiting them ...
+        // all childs will be visible too, so why visiting them ...
         return false;
       }
       return true;
     }
 
+    // Next, search the last node that is fully invisible. We collapse all
+    // invisible node into one big box for efficiency reasons. They wont be
+    // visible anyway and thus the result will be the same as if they were
+    // still alive ..
     RenderNode last = node;
     for(;;)
     {
@@ -119,7 +149,7 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
     // So lets get started. We remove all nodes between (and inclusive)
     // node and last.
     final long width = box.getContentAreaX2() - box.getContentAreaX1();
-    final long height = last.getY() + last.getHeight() - node.getY();
+    final long height = last.getY() + last.getHeight() - nodeY;
     final FinishedRenderNode replacement = new FinishedRenderNode(width, height);
 
     RenderNode removeNode = node;
@@ -135,5 +165,13 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
       throw new IllegalStateException();
     }
     return (box.getLastChild() != replacement);
+  }
+
+  private boolean startTableRow(final TableRowRenderBox box)
+  {
+    // if the row's cells are all invisible, remove the row itself.
+    // todo: Shall we do this? For now, it might be sufficient to stick with
+    // the cleaned cells ..
+    return true;
   }
 }

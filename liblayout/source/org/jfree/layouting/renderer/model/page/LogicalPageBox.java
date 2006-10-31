@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.11 2006/10/22 14:58:25 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.12 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.PageAreaRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
  * The logical page box does not have a layout at all. It has collection of
@@ -257,6 +258,36 @@ public class LogicalPageBox extends BlockRenderBox
   }
 
   /**
+   * Derive creates a disconnected node that shares all the properties of the
+   * original node. The derived node will no longer have any parent, silbling,
+   * child or any other relationships with other nodes.
+   *
+   * @return
+   */
+  public RenderNode deriveFrozen(boolean deepDerive)
+  {
+    final LogicalPageBox box = (LogicalPageBox) super.deriveFrozen(deepDerive);
+    box.headerArea = (PageAreaRenderBox) headerArea.deriveFrozen(deepDerive);
+    box.footerArea = (PageAreaRenderBox) footerArea.deriveFrozen(deepDerive);
+    return box;
+  }
+
+  /**
+   * Derive creates a disconnected node that shares all the properties of the
+   * original node. The derived node will no longer have any parent, silbling,
+   * child or any other relationships with other nodes.
+   *
+   * @return
+   */
+  public RenderNode derive(boolean deepDerive)
+  {
+    final LogicalPageBox box = (LogicalPageBox) super.derive(deepDerive);
+    box.headerArea = (PageAreaRenderBox) headerArea.derive(deepDerive);
+    box.footerArea = (PageAreaRenderBox) footerArea.derive(deepDerive);
+    return box;
+  }
+
+  /**
    * Clones this node. Be aware that cloning can get you into deep trouble, as
    * the relations this node has may no longer be valid.
    *
@@ -264,11 +295,18 @@ public class LogicalPageBox extends BlockRenderBox
    */
   public Object clone()
   {
-    final LogicalPageBox o = (LogicalPageBox) super.clone();
-    o.pageHeights = (long[]) pageHeights.clone();
-    o.pageWidths = (long[]) pageWidths.clone();
-    o.pageGrid = pageGrid;
-    return o;
+    try
+    {
+      final LogicalPageBox o = (LogicalPageBox) super.clone();
+      o.pageHeights = (long[]) pageHeights.clone();
+      o.pageWidths = (long[]) pageWidths.clone();
+      o.pageGrid = (PageGrid) pageGrid.clone();
+      return o;
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalStateException("Cloning *must* be supported.");
+    }
   }
 
   public boolean isNormalFlowActive()
@@ -299,5 +337,15 @@ public class LogicalPageBox extends BlockRenderBox
   public void setNormalFlowActive(final boolean normalFlowActive)
   {
     this.normalFlowActive = normalFlowActive;
+  }
+
+  public void insertFirst(RenderNode node)
+  {
+    insertBefore(getFirstChild(), node);
+  }
+
+  public void insertLast(RenderNode node)
+  {
+    insertAfter(getLastChild(), node);
   }
 }

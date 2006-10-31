@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.15 2006/10/22 14:58:25 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.16 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,9 @@
  */
 package org.jfree.layouting.renderer;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.util.Stack;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
 
 import org.jfree.fonts.encoding.CodePointBuffer;
 import org.jfree.fonts.encoding.manual.Utf16LE;
@@ -66,7 +63,6 @@ import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.OutputProcessor;
-import org.jfree.layouting.output.pageable.graphics.PageDrawable;
 import org.jfree.layouting.renderer.border.BorderFactory;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
@@ -89,6 +85,7 @@ import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 import org.jfree.layouting.renderer.page.RenderPageContext;
+import org.jfree.layouting.renderer.process.CleanPaginatedBoxesStep;
 import org.jfree.layouting.renderer.process.ComputeICMMetricsStep;
 import org.jfree.layouting.renderer.process.ComputeMarginsStep;
 import org.jfree.layouting.renderer.process.ComputeStaticPropertiesStep;
@@ -101,14 +98,12 @@ import org.jfree.layouting.renderer.process.ParagraphLineBreakStep;
 import org.jfree.layouting.renderer.process.TableRowHeightStep;
 import org.jfree.layouting.renderer.process.TableValidationStep;
 import org.jfree.layouting.renderer.process.ValidateModelStep;
-import org.jfree.layouting.renderer.process.CleanPaginatedBoxesStep;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
 import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.layouting.util.geom.StrictDimension;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.ui.Drawable;
-import org.jfree.ui.DrawablePanel;
 import org.jfree.ui.ExtendedDrawable;
 import org.jfree.util.Log;
 import org.jfree.util.WaitingImageObserver;
@@ -353,16 +348,20 @@ public class DefaultRenderer implements Renderer
       majorAxisLayoutStep.compute(logicalPageBox);
       tableRowHeightStep.compute(logicalPageBox);
 
-      if (paginationStep.performPagebreak(logicalPageBox))
+      if (paginationStep.performPagebreak(logicalPageBox) ||
+          logicalPageBox.isOpen() == false)
       {
         // A new page has been started. Recover the page-grid, then restart
         // everything from scratch. (We have to recompute, as the pages may
         // be different now, due to changed margins or page definitions)
         final OutputProcessor outputProcessor = layoutProcess.getOutputProcessor();
+        final long nextOffset = paginationStep.getNextOffset();
         if (outputProcessor.isPhysicalPageOutput())
         {
-          fillPhysicalPagesStep.compute(logicalPageBox);
-          outputProcessor.processContent(logicalPageBox);
+          final long pageOffset = logicalPageBox.getPageOffset();
+          final LogicalPageBox box = fillPhysicalPagesStep.compute
+                  (logicalPageBox, pageOffset, nextOffset);
+          outputProcessor.processContent(box);
         }
         else
         {
@@ -374,13 +373,19 @@ public class DefaultRenderer implements Renderer
         // new page has been set. It does not save the state or perform other
         // expensive operations. However, it updates the 'isPagebreakEncountered'
         // flag, which will be active until the input-feed received a new event.
-        Log.debug ("PAGEBREAK ENCOUNTERED");
-        showPreview(logicalPageBox);
-        firePagebreak();
+        repeat = logicalPageBox.isOpen();
+        if (repeat)
+        {
+          Log.debug ("PAGEBREAK ENCOUNTERED");
+          firePagebreak();
 
-        logicalPageBox.setPageOffset(paginationStep.getNextOffset());
-        cleanPaginatedBoxesStep.compute(logicalPageBox);
-        repeat = true;
+          logicalPageBox.setPageOffset(nextOffset);
+          cleanPaginatedBoxesStep.compute(logicalPageBox);
+        }
+        else
+        {
+          Log.debug ("DOCUMENT FINISHED");
+        }
       }
       else
       {
@@ -935,27 +940,8 @@ public class DefaultRenderer implements Renderer
     // Ok, lets play a little bit
     // todo: This is the end of the document, we should do some smarter things
     // here.
-    showPreview(logicalPageBox);
   }
 
-  private void showPreview(final LogicalPageBox rootBox)
-  {
-    final PageDrawable drawable = new PageDrawable(rootBox);
-    drawable.print();
-
-    final DrawablePanel comp = new DrawablePanel();
-    comp.setDrawable(drawable);
-
-    JPanel contentPane = new JPanel();
-    contentPane.setLayout(new BorderLayout());
-    contentPane.add(comp, BorderLayout.CENTER);
-
-    JDialog dialog = new JDialog();
-    dialog.setModal(true);
-    dialog.setContentPane(contentPane);
-    dialog.setSize(800, 600);
-    dialog.setVisible(true);
-  }
 
   public void handlePageBreak(final PageContext pageContext)
   {

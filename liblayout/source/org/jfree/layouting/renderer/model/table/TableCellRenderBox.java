@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableCellRenderBox.java,v 1.9 2006/07/29 18:57:13 taqua Exp $
+ * $Id: TableCellRenderBox.java,v 1.10 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,18 +40,17 @@
  */
 package org.jfree.layouting.renderer.model.table;
 
-import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
  * A table section box does not much rendering or layouting at all. It

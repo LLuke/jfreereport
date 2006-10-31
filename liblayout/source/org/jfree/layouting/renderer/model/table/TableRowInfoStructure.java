@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableRowInfoStructure.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.renderer.model.table;
 
 import java.util.ArrayList;
 
+import org.jfree.layouting.renderer.model.table.cells.RemovedCell;
 import org.jfree.layouting.renderer.model.table.cells.TableCell;
 
 /**
@@ -60,21 +61,21 @@ public class TableRowInfoStructure
     cells = new ArrayList();
   }
 
-  public void addCell (TableCell cell)
+  public void addCell(TableCell cell)
   {
-    if (cells.size() > 6)
+    if (cell == null)
     {
-      throw new IllegalStateException();
+      throw new NullPointerException();
     }
     cells.add(cell);
   }
 
-  public int getCellCount ()
+  public int getCellCount()
   {
     return cells.size();
   }
 
-  public TableCell getCellAt (int col)
+  public TableCell getCellAt(int col)
   {
     return (TableCell) cells.get(col);
   }
@@ -97,5 +98,14 @@ public class TableRowInfoStructure
   public void setRowNumber(final int rowNumber)
   {
     this.rowNumber = rowNumber;
+  }
+
+  public void replaceCell(int pos, RemovedCell cell)
+  {
+    if (cell == null)
+    {
+      throw new NullPointerException();
+    }
+    this.cells.set(pos, cell);
   }
 }
