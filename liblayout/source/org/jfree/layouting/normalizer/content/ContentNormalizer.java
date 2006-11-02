@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.6 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -551,7 +551,11 @@ public class ContentNormalizer implements Normalizer
     {
       // Some moved content.
       String target;
-      if (value instanceof CSSStringValue)
+      if (value == null)
+      {
+        target = null;
+      }
+      else if (value instanceof CSSStringValue)
       {
         CSSStringValue sval = (CSSStringValue) value;
         target = sval.getValue();

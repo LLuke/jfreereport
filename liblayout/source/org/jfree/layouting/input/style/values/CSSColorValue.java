@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSColorValue.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
  *
  * Changes
  * -------
@@ -72,6 +72,10 @@ public class CSSColorValue extends Color implements CSSValue
   public CSSColorValue(int r, int g, int b)
   {
     super(r, g, b);
+  }
+
+  public CSSColorValue(Color color) {
+    super(color.getRGB());
   }
 
   public String getCSSText()

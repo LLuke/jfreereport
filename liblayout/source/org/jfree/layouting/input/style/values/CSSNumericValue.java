@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSNumericValue.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
+ * $Id: CSSNumericValue.java,v 1.3 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,11 @@ public class CSSNumericValue extends Number implements CSSValue
 
   private double value;
   private CSSNumericType type;
+
+  public CSSNumericValue(final CSSNumericType type, final Double value)
+  {
+    this(type, value.doubleValue());
+  }
 
   public CSSNumericValue(final CSSNumericType type, final double value)
   {
