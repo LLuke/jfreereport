@@ -24,7 +24,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * LibFormulaInfo.java
+ * Formula.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
@@ -40,51 +40,44 @@
  */
 package org.jfree.formula;
 
-import java.util.Arrays;
-
-import org.jfree.ui.about.ProjectInfo;
-import org.jfree.ui.about.Licences;
-import org.jfree.ui.about.Contributor;
-import org.jfree.JCommon;
+import org.jfree.formula.lvalues.LValue;
+import org.jfree.formula.parser.FormulaParser;
+import org.jfree.formula.parser.ParseException;
 
 /**
- * Creation-Date: 31.10.2006, 12:31:15
+ * Creation-Date: 31.10.2006, 14:43:05
  *
  * @author Thomas Morgner
  */
-public class LibFormulaInfo extends ProjectInfo
+public class Formula
 {
-  private static LibFormulaInfo instance;
+  private LValue rootReference;
 
-  public static synchronized LibFormulaInfo getInstance()
+  public Formula(final String formulaText) throws ParseException
   {
-    if (instance == null)
-    {
-      instance = new LibFormulaInfo();
-    }
-    return instance;
+    FormulaParser parser = new FormulaParser();
+    this.rootReference = parser.parse(formulaText);
   }
 
-  public LibFormulaInfo()
+  public Formula(final LValue rootReference)
   {
-    setName("LibFormula");
-    setVersion("0.0.1");
+    this.rootReference = rootReference;
+  }
 
-    setLicenceName("LGPL");
-    setLicenceText(Licences.getInstance().getLGPL());
+  public void initialize (FormulaContext context) throws EvaluationException
+  {
+    rootReference.initialize(context);
+  }
 
-    setInfo("http://www.jfree.org/jfreereport/libformula/");
-    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
-    setLicenceText(Licences.getInstance().getLGPL());
-
-    setContributors(Arrays.asList(new Contributor[]
+  public Object evaluate ()
+  {
+    try
     {
-      new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
-    }));
-
-    setBootClass("org.jfree.formula.LibFormulaBoot");
-    setAutoBoot(true);
-
-    addLibrary(JCommon.INFO);
+      return rootReference.evaluate();
+    }
+    catch (EvaluationException e)
+    {
+      return new LibFormulaErrorValue(0);
+    }
   }
 }

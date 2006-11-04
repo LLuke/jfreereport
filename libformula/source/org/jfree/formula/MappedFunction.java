@@ -24,7 +24,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * LibFormulaInfo.java
+ * MappedFunction.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
@@ -40,51 +40,42 @@
  */
 package org.jfree.formula;
 
-import java.util.Arrays;
-
-import org.jfree.ui.about.ProjectInfo;
-import org.jfree.ui.about.Licences;
-import org.jfree.ui.about.Contributor;
-import org.jfree.JCommon;
+import org.jfree.formula.function.Function;
+import org.jfree.formula.lvalues.TypeValuePair;
 
 /**
- * Creation-Date: 31.10.2006, 12:31:15
+ * A function, that calls a method on a class. The class is reinstantiated
+ * each time the function is called (unless the method is static).
  *
  * @author Thomas Morgner
  */
-public class LibFormulaInfo extends ProjectInfo
+public class MappedFunction implements Function
 {
-  private static LibFormulaInfo instance;
+  private String className;
+  private String functionName;
 
-  public static synchronized LibFormulaInfo getInstance()
+  public MappedFunction()
   {
-    if (instance == null)
-    {
-      instance = new LibFormulaInfo();
-    }
-    return instance;
   }
 
-  public LibFormulaInfo()
+  public String getClassName()
   {
-    setName("LibFormula");
-    setVersion("0.0.1");
+    return className;
+  }
 
-    setLicenceName("LGPL");
-    setLicenceText(Licences.getInstance().getLGPL());
+  public String getCannonicalName()
+  {
+    return functionName;
+  }
 
-    setInfo("http://www.jfree.org/jfreereport/libformula/");
-    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
-    setLicenceText(Licences.getInstance().getLGPL());
+  public TypeValuePair evaluate(FormulaContext context,
+                                TypeValuePair[] parameter)
+  {
+    return null;
+  }
 
-    setContributors(Arrays.asList(new Contributor[]
-    {
-      new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
-    }));
-
-    setBootClass("org.jfree.formula.LibFormulaBoot");
-    setAutoBoot(true);
-
-    addLibrary(JCommon.INFO);
+  public Object clone() throws CloneNotSupportedException
+  {
+    return super.clone();
   }
 }

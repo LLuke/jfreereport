@@ -24,7 +24,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * LibFormulaInfo.java
+ * LibFormulaErrorValue.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
@@ -40,51 +40,42 @@
  */
 package org.jfree.formula;
 
-import java.util.Arrays;
-
-import org.jfree.ui.about.ProjectInfo;
-import org.jfree.ui.about.Licences;
-import org.jfree.ui.about.Contributor;
-import org.jfree.JCommon;
+import java.util.Locale;
 
 /**
- * Creation-Date: 31.10.2006, 12:31:15
+ * Creation-Date: 31.10.2006, 13:07:37
  *
  * @author Thomas Morgner
  */
-public class LibFormulaInfo extends ProjectInfo
+public class LibFormulaErrorValue implements ErrorValue
 {
-  private static LibFormulaInfo instance;
+  /** A parse error */
+  public static final int ERROR_INVALID_CHARACTER = 501;
+  /** Parameter types are invalid. */
+  public static final int ERROR_INVALID_ARGUMENT = 502;
 
-  public static synchronized LibFormulaInfo getInstance()
+  public static final int ERROR_ARITHMETIC = 503;
+
+  private int errorCode;
+  private String errorMessage;
+
+  public LibFormulaErrorValue(final int errorCode)
   {
-    if (instance == null)
-    {
-      instance = new LibFormulaInfo();
-    }
-    return instance;
+    this.errorCode = errorCode;
   }
 
-  public LibFormulaInfo()
+  public String getNamespace()
   {
-    setName("LibFormula");
-    setVersion("0.0.1");
+    return "http://jfreereport.sourceforge.net/libformula";
+  }
 
-    setLicenceName("LGPL");
-    setLicenceText(Licences.getInstance().getLGPL());
+  public int getErrorCode()
+  {
+    return errorCode;
+  }
 
-    setInfo("http://www.jfree.org/jfreereport/libformula/");
-    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
-    setLicenceText(Licences.getInstance().getLGPL());
-
-    setContributors(Arrays.asList(new Contributor[]
-    {
-      new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
-    }));
-
-    setBootClass("org.jfree.formula.LibFormulaBoot");
-    setAutoBoot(true);
-
-    addLibrary(JCommon.INFO);
+  public String getErrorMessage(Locale locale)
+  {
+    return errorMessage;
   }
 }

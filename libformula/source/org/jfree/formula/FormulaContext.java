@@ -24,7 +24,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * LibFormulaInfo.java
+ * ReferenceContext.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
@@ -40,51 +40,27 @@
  */
 package org.jfree.formula;
 
-import java.util.Arrays;
-
-import org.jfree.ui.about.ProjectInfo;
-import org.jfree.ui.about.Licences;
-import org.jfree.ui.about.Contributor;
-import org.jfree.JCommon;
+import org.jfree.formula.function.FunctionRegistry;
+import org.jfree.formula.operators.OperatorFactory;
+import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.util.Configuration;
 
 /**
- * Creation-Date: 31.10.2006, 12:31:15
+ * Creation-Date: 31.10.2006, 14:11:52
  *
  * @author Thomas Morgner
  */
-public class LibFormulaInfo extends ProjectInfo
+public interface FormulaContext
 {
-  private static LibFormulaInfo instance;
+  public boolean isReferenceDirty(String name);
+  public Object resolveReference (String name);
+  public Type resolveReferenceType (String name);
 
-  public static synchronized LibFormulaInfo getInstance()
-  {
-    if (instance == null)
-    {
-      instance = new LibFormulaInfo();
-    }
-    return instance;
-  }
+  public LocalizationContext getLocalizationContext();
+  public Configuration getConfiguration();
 
-  public LibFormulaInfo()
-  {
-    setName("LibFormula");
-    setVersion("0.0.1");
-
-    setLicenceName("LGPL");
-    setLicenceText(Licences.getInstance().getLGPL());
-
-    setInfo("http://www.jfree.org/jfreereport/libformula/");
-    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
-    setLicenceText(Licences.getInstance().getLGPL());
-
-    setContributors(Arrays.asList(new Contributor[]
-    {
-      new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
-    }));
-
-    setBootClass("org.jfree.formula.LibFormulaBoot");
-    setAutoBoot(true);
-
-    addLibrary(JCommon.INFO);
-  }
+  public FunctionRegistry getFunctionRegistry ();
+  public TypeRegistry getTypeRegistry();
+  public OperatorFactory getOperatorFactory();
 }

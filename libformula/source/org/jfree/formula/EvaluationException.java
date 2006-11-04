@@ -24,7 +24,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * LibFormulaInfo.java
+ * EvaluationException.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
@@ -40,51 +40,27 @@
  */
 package org.jfree.formula;
 
-import java.util.Arrays;
-
-import org.jfree.ui.about.ProjectInfo;
-import org.jfree.ui.about.Licences;
-import org.jfree.ui.about.Contributor;
-import org.jfree.JCommon;
+import org.jfree.util.StackableException;
 
 /**
- * Creation-Date: 31.10.2006, 12:31:15
+ * Creation-Date: 31.10.2006, 14:15:29
  *
  * @author Thomas Morgner
  */
-public class LibFormulaInfo extends ProjectInfo
+public class EvaluationException extends StackableException
 {
-  private static LibFormulaInfo instance;
+  private ErrorValue errorValue;
 
-  public static synchronized LibFormulaInfo getInstance()
+  /**
+   * Creates a StackableRuntimeException with no message and no parent.
+   */
+  public EvaluationException(final ErrorValue errorValue)
   {
-    if (instance == null)
-    {
-      instance = new LibFormulaInfo();
-    }
-    return instance;
+    this.errorValue = errorValue;
   }
 
-  public LibFormulaInfo()
+  public ErrorValue getErrorValue()
   {
-    setName("LibFormula");
-    setVersion("0.0.1");
-
-    setLicenceName("LGPL");
-    setLicenceText(Licences.getInstance().getLGPL());
-
-    setInfo("http://www.jfree.org/jfreereport/libformula/");
-    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
-    setLicenceText(Licences.getInstance().getLGPL());
-
-    setContributors(Arrays.asList(new Contributor[]
-    {
-      new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
-    }));
-
-    setBootClass("org.jfree.formula.LibFormulaBoot");
-    setAutoBoot(true);
-
-    addLibrary(JCommon.INFO);
+    return errorValue;
   }
 }

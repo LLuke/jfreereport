@@ -24,7 +24,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * LibFormulaInfo.java
+ * ErrorValue.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
@@ -40,51 +40,18 @@
  */
 package org.jfree.formula;
 
-import java.util.Arrays;
-
-import org.jfree.ui.about.ProjectInfo;
-import org.jfree.ui.about.Licences;
-import org.jfree.ui.about.Contributor;
-import org.jfree.JCommon;
+import java.util.Locale;
 
 /**
- * Creation-Date: 31.10.2006, 12:31:15
+ * Creation-Date: 31.10.2006, 13:06:05
  *
  * @author Thomas Morgner
  */
-public class LibFormulaInfo extends ProjectInfo
+public interface ErrorValue
 {
-  private static LibFormulaInfo instance;
+  public String getNamespace();
 
-  public static synchronized LibFormulaInfo getInstance()
-  {
-    if (instance == null)
-    {
-      instance = new LibFormulaInfo();
-    }
-    return instance;
-  }
+  public int getErrorCode();
 
-  public LibFormulaInfo()
-  {
-    setName("LibFormula");
-    setVersion("0.0.1");
-
-    setLicenceName("LGPL");
-    setLicenceText(Licences.getInstance().getLGPL());
-
-    setInfo("http://www.jfree.org/jfreereport/libformula/");
-    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
-    setLicenceText(Licences.getInstance().getLGPL());
-
-    setContributors(Arrays.asList(new Contributor[]
-    {
-      new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
-    }));
-
-    setBootClass("org.jfree.formula.LibFormulaBoot");
-    setAutoBoot(true);
-
-    addLibrary(JCommon.INFO);
-  }
+  public String getErrorMessage(Locale locale);
 }
