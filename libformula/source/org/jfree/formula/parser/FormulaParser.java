@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FormulaParser.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ package org.jfree.formula.parser;
 import java.io.StringReader;
 
 import org.jfree.formula.LibFormulaBoot;
+import org.jfree.formula.DefaultFormulaContext;
+import org.jfree.formula.EvaluationException;
 import org.jfree.formula.lvalues.LValue;
 import org.jfree.formula.operators.DefaultOperatorFactory;
 import org.jfree.formula.operators.OperatorFactory;
@@ -69,12 +71,16 @@ public class FormulaParser extends GeneratedFormulaParser {
     return getExpression(0);
   }
 
-  public static void main(String[] args) throws ParseException
+  public static void main(String[] args)
+      throws ParseException, EvaluationException
   {
     FormulaParser parser = new FormulaParser();
-    System.out.println (parser.parse("-10 * -10% + 10 * 10"));
-    System.out.println (parser.parse("10 + [Test]"));
-    System.out.println (parser.parse("+\"quoted string \\n Dirty \"\" Tricks\""));
-    System.out.println (parser.parse("+SUM(-SUM(10, 20), 10 + 20)"));
+    LValue x = parser.parse("1 * 2 + 3 * 4");
+    x.initialize(new DefaultFormulaContext());
+    System.out.println (x);
+
+    x = parser.parse("[a] * [b] + [c] * [d]");
+    x.initialize(new DefaultFormulaContext());
+    System.out.println (x);
   }
 }

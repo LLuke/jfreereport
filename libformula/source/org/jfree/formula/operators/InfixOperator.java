@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: InfixOperator.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
  *
  * Changes
  * -------
@@ -57,5 +57,25 @@ public interface InfixOperator extends Serializable
   public TypeValuePair evaluate(final FormulaContext context,
                                 TypeValuePair value1, TypeValuePair value2)
       throws EvaluationException;
+
   public int getLevel();
+
+  /**
+   * Defines the bind-direction of the operator. That direction defines, in
+   * which direction a sequence of equal operators is resolved.
+   *
+   * @return true, if the operation is left-binding, false if right-binding
+   */
+  public boolean isLeftOperation();
+
+  /**
+   * Defines, whether the operation is associative. For associative operations,
+   * the evaluation order does not matter, if the operation appears more than
+   * once in an expression, and therefore we can optimize them
+   * a lot better than non-associative operations (ie. merge constant parts
+   * and precompute them once).
+   *
+   * @return true, if the operation is associative, false otherwise
+   */
+  public boolean isAssociative();
 }

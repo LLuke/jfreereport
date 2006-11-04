@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultFormulaContext.java,v 1.1 2006/11/04 15:40:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@
  */
 package org.jfree.formula;
 
+import java.util.HashMap;
+
 import org.jfree.formula.function.DefaultFunctionRegistry;
 import org.jfree.formula.function.FunctionRegistry;
 import org.jfree.formula.operators.DefaultOperatorFactory;
@@ -47,6 +49,7 @@ import org.jfree.formula.operators.OperatorFactory;
 import org.jfree.formula.typing.DefaultTypeRegistry;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.util.Configuration;
 
 /**
@@ -60,6 +63,8 @@ public class DefaultFormulaContext implements FormulaContext
   private DefaultFunctionRegistry functionRegistry;
   private OperatorFactory operatorFactory;
   private LocalizationContext localizationContext;
+  private Configuration config;
+  private HashMap references;
 
   public DefaultFormulaContext()
   {
@@ -68,6 +73,7 @@ public class DefaultFormulaContext implements FormulaContext
 
   public DefaultFormulaContext(Configuration config)
   {
+    this.config = config;
     localizationContext = new DefaultLocalizationContext();
     typeRegistry = new DefaultTypeRegistry();
     typeRegistry.initialize(config, localizationContext);
@@ -82,14 +88,27 @@ public class DefaultFormulaContext implements FormulaContext
     return operatorFactory;
   }
 
+  public void defineReference(String name, Object value)
+  {
+    if (references == null)
+    {
+      references = new HashMap();
+    }
+    references.put(name, value);
+  }
+
   public Object resolveReference(String name)
   {
-    return null;
+    if (references == null)
+    {
+      return null;
+    }
+    return references.get(name);
   }
 
   public Configuration getConfiguration()
   {
-    return null;
+    return config;
   }
 
   public FunctionRegistry getFunctionRegistry()
@@ -99,7 +118,7 @@ public class DefaultFormulaContext implements FormulaContext
 
   public Type resolveReferenceType(String name)
   {
-    return null;
+    return AnyType.TYPE;
   }
 
   public TypeRegistry getTypeRegistry()

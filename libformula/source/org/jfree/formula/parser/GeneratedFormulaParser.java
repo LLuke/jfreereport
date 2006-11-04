@@ -36,6 +36,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
       case MINUS:
       case MULT:
       case DIV:
+      case POW:
       case EQUALS:
       case NOT_EQUALS:
       case LT_EQUALS:
@@ -78,6 +79,9 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
       break;
     case DIV:
       value = jj_consume_token(DIV);
+      break;
+    case POW:
+      value = jj_consume_token(POW);
       break;
     case EQUALS:
       value = jj_consume_token(EQUALS);
@@ -287,10 +291,10 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
       jj_la1_1();
    }
    private static void jj_la1_0() {
-      jj_la1_0 = new int[] {0xff800000,0xff800000,0x1800000,0x40100,0x0,0x1000,0x1840100,0x1800000,};
+      jj_la1_0 = new int[] {0xff000000,0xff000000,0x3000000,0x80100,0x0,0x2000,0x3080100,0x3000000,};
    }
    private static void jj_la1_1() {
-      jj_la1_1 = new int[] {0x3,0x3,0x0,0x878,0x4,0x0,0x878,0x0,};
+      jj_la1_1 = new int[] {0xf,0xf,0x0,0x21e0,0x10,0x0,0x21e0,0x0,};
    }
 
   public GeneratedFormulaParser(java.io.InputStream stream) {
@@ -381,8 +385,8 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
 
   public ParseException generateParseException() {
     jj_expentries.removeAllElements();
-    boolean[] la1tokens = new boolean[44];
-    for (int i = 0; i < 44; i++) {
+    boolean[] la1tokens = new boolean[46];
+    for (int i = 0; i < 46; i++) {
       la1tokens[i] = false;
     }
     if (jj_kind >= 0) {
@@ -401,7 +405,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
         }
       }
     }
-    for (int i = 0; i < 44; i++) {
+    for (int i = 0; i < 46; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PrefixTerm.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,15 @@ public class PrefixTerm extends AbstractLValue
 
   public PrefixTerm(final PrefixOperator operator, final LValue value)
   {
+    if (operator == null)
+    {
+      throw new NullPointerException();
+    }
+    if (value == null)
+    {
+      throw new NullPointerException();
+    }
+
     this.operator = operator;
     this.value = value;
   }
@@ -79,5 +88,16 @@ public class PrefixTerm extends AbstractLValue
   public String toString()
   {
     return "(" + operator + value + ")";
+  }
+
+  /**
+   * Checks, whether the LValue is constant. Constant lvalues always return the
+   * same value.
+   *
+   * @return
+   */
+  public boolean isConstant()
+  {
+    return value.isConstant();
   }
 }

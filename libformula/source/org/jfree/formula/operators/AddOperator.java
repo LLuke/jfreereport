@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AddOperator.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
  *
  * Changes
  * -------
@@ -102,4 +102,24 @@ public class AddOperator implements InfixOperator
   {
     return "+";
   }
+
+  public boolean isLeftOperation()
+  {
+    return true;
+  }
+
+  /**
+   * Defines, whether the operation is associative. For associative operations,
+   * the evaluation order does not matter, if the operation appears more than
+   * once in an expression, and therefore we can optimize them a lot better than
+   * non-associative operations (ie. merge constant parts and precompute them
+   * once).
+   *
+   * @return true, if the operation is associative, false otherwise
+   */
+  public boolean isAssociative()
+  {
+    return true;
+  }
+
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StaticValue.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
  *
  * Changes
  * -------
@@ -71,5 +71,16 @@ public class StaticValue extends AbstractLValue
   public String toString()
   {
     return String.valueOf(value);
+  }
+
+  /**
+   * Checks, whether the LValue is constant. Constant lvalues always return the
+   * same value.
+   *
+   * @return
+   */
+  public boolean isConstant()
+  {
+    return true;
   }
 }

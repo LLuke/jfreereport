@@ -64,6 +64,7 @@ TOKEN:
   | <#NEWLINE:           (["\n","\r"] | "\n\r" | "\r\n")>
 //  | <#NONQUOTE_CHARACTER:  ("\"\"" | "\\" ["a"-"z", "\\", "'"] | ~["\""] ) >
   | <#NONQUOTE_CHARACTER:  ("\"\"" | "\\" ["a"-"z", "\\", "\""] | ~["\""] )>
+  | <#NONQUOTE_LOOKUP:  ("\\" ["a"-"z", "\\", "\"", "]"] | ~["]"] )>
 
   | <COMMA:             "," >
   | <#PERIOD:            "." >
@@ -89,6 +90,7 @@ TOKEN [IGNORE_CASE]:
   | <MINUS:    "-">
   | <MULT:     "*">
   | <DIV:      "/">
+  | <POW:      "^">
   | <EQUALS:       "=">
   | <NOT_EQUALS:   "<>">
   | <LT_EQUALS:    "<=">
@@ -104,7 +106,7 @@ TOKEN [IGNORE_CASE]:
 ///
 ///
   | <IDENTIFIER:  (<LETTER> (<LETTER> | <DIGIT>)* (<PERIOD> (<LETTER> | <DIGIT>)*)?)>
-  | <COLUMN_LOOKUP:  (<L_BRACKET> (<NONQUOTE_CHARACTER>)* <R_BRACKET>)>
+  | <COLUMN_LOOKUP:  (<L_BRACKET> (<NONQUOTE_LOOKUP>)* <R_BRACKET>)>
   | <STRING_LITERAL:     (<DQUOTE> (<NONQUOTE_CHARACTER>)* <DQUOTE>)>
 
 /// Defining numeric values.
@@ -152,6 +154,7 @@ InfixOperator getInfixOperator () :
   | value = <MINUS>
   | value = <MULT>
   | value = <DIV>
+  | value = <POW>
   | value = <EQUALS>
   | value = <NOT_EQUALS>
   | value = <LT_EQUALS>

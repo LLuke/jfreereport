@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SumFunctionDescription.java,v 1.1 2006/11/04 15:45:44 taqua Exp $
  *
  * Changes
  * -------
@@ -120,5 +120,10 @@ public class SumFunctionDescription implements FunctionDescription
   public Object getDefaultValue(int position)
   {
     return null;
+  }
+
+  public boolean isVolatile()
+  {
+    return false;
   }
 }

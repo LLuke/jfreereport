@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PostfixTerm.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,14 @@ public class PostfixTerm extends AbstractLValue
 
   public PostfixTerm(final LValue value, final PostfixOperator operator)
   {
+    if (operator == null)
+    {
+      throw new NullPointerException();
+    }
+    if (value == null)
+    {
+      throw new NullPointerException();
+    }
     this.operator = operator;
     this.value = value;
   }
@@ -78,5 +86,16 @@ public class PostfixTerm extends AbstractLValue
   public String toString()
   {
     return "(" + value + operator + ')';
+  }
+
+  /**
+   * Checks, whether the LValue is constant. Constant lvalues always return the
+   * same value.
+   *
+   * @return
+   */
+  public boolean isConstant()
+  {
+    return value.isConstant();
   }
 }

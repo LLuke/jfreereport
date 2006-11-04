@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FormulaFunction.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
  *
  * Changes
  * -------
@@ -121,7 +121,7 @@ public class FormulaFunction extends AbstractLValue
         {
           final LibFormulaErrorValue errorValue = new LibFormulaErrorValue
               (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT);
-          Log.debug ("Failed to evaluate paramter " + i + " on function " + function);
+          Log.debug("Failed to evaluate paramter " + i + " on function " + function);
           throw new EvaluationException(errorValue);
         }
         params[i] = converted;
@@ -132,7 +132,6 @@ public class FormulaFunction extends AbstractLValue
         params[i] = new TypeValuePair(paramType, metaData.getDefaultValue(i));
       }
     }
-
 
     // And if everything is ok, compute the stuff ..
     return function.evaluate(context, params);
@@ -165,5 +164,28 @@ public class FormulaFunction extends AbstractLValue
     }
     b.append(")");
     return b.toString();
+  }
+
+  /**
+   * Checks, whether the LValue is constant. Constant lvalues always return the
+   * same value.
+   *
+   * @return
+   */
+  public boolean isConstant()
+  {
+    if (metaData.isVolatile())
+    {
+      return false;
+    }
+    for (int i = 0; i < parameters.length; i++)
+    {
+      LValue value = parameters[i];
+      if (value.isConstant() == false)
+      {
+        return false;
+      }
+    }
+    return true;
   }
 }

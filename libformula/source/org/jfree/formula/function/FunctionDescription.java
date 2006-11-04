@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FunctionDescription.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,8 @@ public interface FunctionDescription
 {
   public String getDisplayName (Locale locale);
   public String getDescription (Locale locale);
-
+  public boolean isVolatile();
+  
   public int getParameterCount ();
   public boolean isInfiniteParameterCount();
 

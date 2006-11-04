@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Term.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ import org.jfree.formula.operators.InfixOperator;
  */
 public class Term extends AbstractLValue
 {
+  private LValue optimizedHeadValue;
   private LValue headValue;
   private ArrayList operators;
   private ArrayList operands;
@@ -73,7 +74,7 @@ public class Term extends AbstractLValue
 
   public TypeValuePair evaluate() throws EvaluationException
   {
-    TypeValuePair result = headValue.evaluate();
+    TypeValuePair result = optimizedHeadValue.evaluate();
     for (int i = 0; i < operandsArray.length; i++)
     {
       final LValue value = operandsArray[i];
@@ -113,16 +114,88 @@ public class Term extends AbstractLValue
       this.operatorArray = new InfixOperator[0];
       return;
     }
+
+    optimize(context);
+  }
+
+  private void optimize(FormulaContext context) throws EvaluationException
+  {
+    ArrayList operators = (ArrayList) this.operators.clone();
+    ArrayList operands = (ArrayList) this.operands.clone();
+    this.optimizedHeadValue = headValue;
+
+    while (true)
+    {
+      // now start to optimize everything.
+      // first, search the operator with the highest priority..
+      final InfixOperator op = (InfixOperator) operators.get(0);
+      int level = op.getLevel();
+      boolean moreThanOne = false;
+      for (int i = 1; i < operators.size(); i++)
+      {
+        final InfixOperator operator = (InfixOperator) operators.get(i);
+        final int opLevel = operator.getLevel();
+        if (opLevel != level)
+        {
+          moreThanOne = true;
+          level = Math.min(opLevel, level);
+        }
+      }
+
+      if (moreThanOne == false)
+      {
+        // No need to optimize the operators ..
+        break;
+      }
+
+      // There are at least two op-levels in this term.
+      Term subTerm = null;
+      for (int i = 0; i < operators.size(); i++)
+      {
+        final InfixOperator operator = (InfixOperator) operators.get(i);
+        if (operator.getLevel() != level)
+        {
+          subTerm = null;
+          continue;
+        }
+
+        if (subTerm == null)
+        {
+          if (i == 0)
+          {
+            subTerm = new Term(optimizedHeadValue);
+            optimizedHeadValue = subTerm;
+          }
+          else
+          {
+            final LValue lval = (LValue) operands.get(i - 1);
+            subTerm = new Term(lval);
+            operands.set(i - 1, subTerm);
+          }
+        }
+
+        // OK, now a term exists, and we should join it.
+        final LValue operand = (LValue) operands.get(i);
+        subTerm.add(operator, operand);
+        operands.remove(i);
+        operators.remove(i);
+        // Rollback the current index ..
+        //noinspection AssignmentToForLoopParameter
+        i -= 1;
+      }
+    }
+
     this.operatorArray = (InfixOperator[])
         operators.toArray(new InfixOperator[operators.size()]);
     this.operandsArray = (LValue[])
         operands.toArray(new LValue[operands.size()]);
-
+    this.optimizedHeadValue.initialize(context);
     for (int i = 0; i < operandsArray.length; i++)
     {
       final LValue value = operandsArray[i];
       value.initialize(context);
     }
+
   }
 
   /**
@@ -140,17 +213,58 @@ public class Term extends AbstractLValue
   {
     StringBuffer b = new StringBuffer();
 
-    b.append("Term={");
-    b.append(headValue);
+    b.append("(");
+//    b.append(headValue);
+//    if (operands != null && operators != null)
+//    {
+//      for (int i = 0; i < operands.size(); i++)
+//      {
+//        InfixOperator op = (InfixOperator) operators.get(i);
+//        LValue value = (LValue) operands.get(i);
+//        b.append(op);
+//        b.append(value);
+//      }
+//    }
+//    b.append(")");
+//
+//    b.append(";OPTIMIZED(");
+    b.append(optimizedHeadValue);
+    if (operandsArray != null && operatorArray != null)
+    {
+      for (int i = 0; i < operandsArray.length; i++)
+      {
+        InfixOperator op = operatorArray[i];
+        LValue value = operandsArray[i];
+        b.append(op);
+        b.append(value);
+      }
+    }
+    b.append(")");
+
+    return b.toString();
+  }
+
+  /**
+   * Checks, whether the LValue is constant. Constant lvalues always return the
+   * same value.
+   *
+   * @return
+   */
+  public boolean isConstant()
+  {
+    if (headValue.isConstant() == false)
+    {
+      return false;
+    }
 
     for (int i = 0; i < operands.size(); i++)
     {
-      InfixOperator op = (InfixOperator) operators.get(i);
       LValue value = (LValue) operands.get(i);
-      b.append(op);
-      b.append(value);
+      if (value.isConstant() == false)
+      {
+        return false;
+      }
     }
-    b.append("}");
-    return b.toString();
+    return true;
   }
 }

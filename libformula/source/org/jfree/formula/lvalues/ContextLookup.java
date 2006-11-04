@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ContextLookup.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
  *
  * Changes
  * -------
@@ -67,5 +67,16 @@ public class ContextLookup extends AbstractLValue
   public String toString()
   {
     return "[" +  name + "]";
+  }
+
+  /**
+   * Checks, whether the LValue is constant. Constant lvalues always return the
+   * same value.
+   *
+   * @return
+   */
+  public boolean isConstant()
+  {
+    return false;
   }
 }

@@ -14,38 +14,40 @@ public interface GeneratedFormulaParserConstants {
   int EXPONENT_PART = 9;
   int NEWLINE = 10;
   int NONQUOTE_CHARACTER = 11;
-  int COMMA = 12;
-  int PERIOD = 13;
-  int COLON = 14;
-  int QUOTE = 15;
-  int DQUOTE = 16;
-  int SEMICOLON = 17;
-  int L_PAREN = 18;
-  int R_PAREN = 19;
-  int L_BRACKET = 20;
-  int R_BRACKET = 21;
-  int QUEST = 22;
-  int PLUS = 23;
-  int MINUS = 24;
-  int MULT = 25;
-  int DIV = 26;
-  int EQUALS = 27;
-  int NOT_EQUALS = 28;
-  int LT_EQUALS = 29;
-  int GT_EQUALS = 30;
-  int LT = 31;
-  int GT = 32;
-  int CONCAT = 33;
-  int PERCENT = 34;
-  int IDENTIFIER = 35;
-  int COLUMN_LOOKUP = 36;
-  int STRING_LITERAL = 37;
-  int UNSIGNED_NUMERIC_LITERAL = 38;
-  int EXACT_NUMERIC_LITERAL = 39;
-  int APPROXIMATE_NUMERIC_LITERAL = 40;
-  int MANTISSA = 41;
-  int SIGN = 42;
-  int NULL = 43;
+  int NONQUOTE_LOOKUP = 12;
+  int COMMA = 13;
+  int PERIOD = 14;
+  int COLON = 15;
+  int QUOTE = 16;
+  int DQUOTE = 17;
+  int SEMICOLON = 18;
+  int L_PAREN = 19;
+  int R_PAREN = 20;
+  int L_BRACKET = 21;
+  int R_BRACKET = 22;
+  int QUEST = 23;
+  int PLUS = 24;
+  int MINUS = 25;
+  int MULT = 26;
+  int DIV = 27;
+  int POW = 28;
+  int EQUALS = 29;
+  int NOT_EQUALS = 30;
+  int LT_EQUALS = 31;
+  int GT_EQUALS = 32;
+  int LT = 33;
+  int GT = 34;
+  int CONCAT = 35;
+  int PERCENT = 36;
+  int IDENTIFIER = 37;
+  int COLUMN_LOOKUP = 38;
+  int STRING_LITERAL = 39;
+  int UNSIGNED_NUMERIC_LITERAL = 40;
+  int EXACT_NUMERIC_LITERAL = 41;
+  int APPROXIMATE_NUMERIC_LITERAL = 42;
+  int MANTISSA = 43;
+  int SIGN = 44;
+  int NULL = 45;
 
   int DEFAULT = 0;
 
@@ -62,6 +64,7 @@ public interface GeneratedFormulaParserConstants {
     "<EXPONENT_PART>",
     "<NEWLINE>",
     "<NONQUOTE_CHARACTER>",
+    "<NONQUOTE_LOOKUP>",
     "\",\"",
     "\".\"",
     "\":\"",
@@ -77,6 +80,7 @@ public interface GeneratedFormulaParserConstants {
     "\"-\"",
     "\"*\"",
     "\"/\"",
+    "\"^\"",
     "\"=\"",
     "\"<>\"",
     "\"<=\"",

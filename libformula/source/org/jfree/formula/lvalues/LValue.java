@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LValue.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
  *
  * Changes
  * -------
@@ -74,4 +74,12 @@ public interface LValue extends Serializable, Cloneable
    * @return
    */
   public LValue[] getChildValues();
+
+  /**
+   * Checks, whether the LValue is constant. Constant lvalues always return
+   * the same value.
+   * 
+   * @return
+   */
+  public boolean isConstant();
 }
