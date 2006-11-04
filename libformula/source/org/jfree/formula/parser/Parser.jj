@@ -1,0 +1,291 @@
+options
+{
+  LOOKAHEAD=1;
+  UNICODE_INPUT=true;
+  //IGNORE_CASE=true;
+  FORCE_LA_CHECK=true;
+  CACHE_TOKENS=true;
+  STATIC=false;
+  JAVA_UNICODE_ESCAPE=true;
+}
+
+PARSER_BEGIN(GeneratedFormulaParser)
+
+package org.jfree.formula.parser;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
+import org.jfree.formula.lvalues.ContextLookup;
+import org.jfree.formula.lvalues.FormulaFunction;
+import org.jfree.formula.lvalues.LValue;
+import org.jfree.formula.lvalues.PostfixTerm;
+import org.jfree.formula.lvalues.PrefixTerm;
+import org.jfree.formula.lvalues.StaticValue;
+import org.jfree.formula.lvalues.Term;
+import org.jfree.formula.operators.InfixOperator;
+import org.jfree.formula.operators.OperatorFactory;
+import org.jfree.formula.operators.PostfixOperator;
+import org.jfree.formula.operators.PrefixOperator;
+
+public abstract class GeneratedFormulaParser
+{
+
+  protected GeneratedFormulaParser ()
+  {
+  }
+
+  protected abstract OperatorFactory getOperatorFactory();
+
+}
+PARSER_END(GeneratedFormulaParser)
+
+SKIP :
+{
+    <WHITESPACE:  ["\u0000" - "\u0020"]>
+  | <"--" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+
+}
+
+
+TOKEN:
+{
+    <#LETTER:            (["a" - "z"]|["A" - "Z"]|["_"]|["$"])>
+  | <#NON_ZERO_DIGIT:    ["1"-"9"]>
+  | <#DIGIT:             ["0" - "9"]>
+
+  | <#HEX_DIGIT:         (<DIGIT> | ["A" - "F"] | ["a" - "f"])>
+  | <#BINARY_DIGIT:      ["0", "1"] >
+
+  | <UNSIGNED_INTEGER:  ( ["0"] | (<NON_ZERO_DIGIT> (<DIGIT>)*))>
+
+  | <#EXPONENT_PART:     ( ("e" | "E") (("+" | "-")?) (<DIGIT>)+ ) >
+
+  | <#NEWLINE:           (["\n","\r"] | "\n\r" | "\r\n")>
+//  | <#NONQUOTE_CHARACTER:  ("\"\"" | "\\" ["a"-"z", "\\", "'"] | ~["\""] ) >
+  | <#NONQUOTE_CHARACTER:  ("\"\"" | "\\" ["a"-"z", "\\", "\""] | ~["\""] )>
+
+  | <COMMA:             "," >
+  | <#PERIOD:            "." >
+  | <#COLON:             ":" >
+  | <#QUOTE:             "'" >
+  | <#DQUOTE:            "\"" >
+  | <SEMICOLON:          ";" >
+  | <L_PAREN:            "(" >
+  | <R_PAREN:            ")" >
+  | <L_BRACKET:          "[" >
+  | <R_BRACKET:          "]" >
+  | <QUEST:              "?" >
+
+//  | <#COMMENT_INTRODUCER:          "--">
+}
+
+
+TOKEN [IGNORE_CASE]:
+{
+
+// Operators for expressions: First the Infix-Operators.
+    <PLUS:     "+">
+  | <MINUS:    "-">
+  | <MULT:     "*">
+  | <DIV:      "/">
+  | <EQUALS:       "=">
+  | <NOT_EQUALS:   "<>">
+  | <LT_EQUALS:    "<=">
+  | <GT_EQUALS:    ">=">
+  | <LT:           "<">
+  | <GT:           ">">
+  | <CONCAT:       "&">
+// Postfix operators: Only one for now.
+  | <PERCENT:      "%">
+// Prefix operators: Two defined at the moment, PLUS and MINUS (already covered).
+
+
+///
+///
+  | <IDENTIFIER:  (<LETTER> (<LETTER> | <DIGIT>)* (<PERIOD> (<LETTER> | <DIGIT>)*)?)>
+  | <COLUMN_LOOKUP:  (<L_BRACKET> (<NONQUOTE_CHARACTER>)* <R_BRACKET>)>
+  | <STRING_LITERAL:     (<DQUOTE> (<NONQUOTE_CHARACTER>)* <DQUOTE>)>
+
+/// Defining numeric values.
+///
+  | <UNSIGNED_NUMERIC_LITERAL:     (<EXACT_NUMERIC_LITERAL> | <APPROXIMATE_NUMERIC_LITERAL>)>
+  | <#EXACT_NUMERIC_LITERAL:        (<UNSIGNED_INTEGER> (<PERIOD> <UNSIGNED_INTEGER>)? | (<PERIOD> <UNSIGNED_INTEGER>))>
+  | <#APPROXIMATE_NUMERIC_LITERAL: (<MANTISSA> ["E","e"] ( (<SIGN>)? <UNSIGNED_INTEGER>))>
+  | <#MANTISSA:                    <EXACT_NUMERIC_LITERAL> >
+  | <#SIGN:                        ["+","-"]>
+  | <NULL:                         "null">
+}
+
+LValue getExpression (int level) :
+{
+  LValue retval = null;
+  Term ex = null;
+  if (level == -1) level = -2;
+}
+{
+  retval = getLValue (level + 1)
+  (
+    ex = startTail (retval, ex)
+  )*
+  {
+    if (ex != null)
+    {
+      return ex;
+    }
+    if ((level == 0) && (retval instanceof Term))
+    {
+      ex = (Term) retval;
+    }
+    return retval;
+  }
+}
+
+InfixOperator getInfixOperator () :
+{
+  InfixOperator op = null;
+  Token value = null;
+}
+{
+  (
+    value = <PLUS>
+  | value = <MINUS>
+  | value = <MULT>
+  | value = <DIV>
+  | value = <EQUALS>
+  | value = <NOT_EQUALS>
+  | value = <LT_EQUALS>
+  | value = <GT_EQUALS>
+  | value = <LT>
+  | value = <GT>
+  | value = <CONCAT>
+  )
+  {
+    return getOperatorFactory().createInfixOperator(value.image);
+  }
+}
+
+Term startTail (LValue retval, Term ex) :
+{
+  LValue val = null;
+  InfixOperator op = null;
+}
+{
+    op  = getInfixOperator()
+    val = getLValue (-1)
+    {
+      if (ex == null)
+      {
+        if (retval instanceof Term)
+        {
+          ex = (Term) retval;
+        }
+        else
+        {
+          ex = new Term (retval);
+        }
+      }
+      ex.add (op, val);
+
+      return ex;
+    }
+}
+
+LValue getLValue (int level):
+{
+  Token value = null; LValue retval = null; LValue lval;
+  PrefixOperator prefixOp = null;
+  PostfixOperator postfixOp = null;
+}
+{
+  (
+    prefixOp = getPrefixOperator()
+  )?
+  (
+      value = <COLUMN_LOOKUP> { retval = new ContextLookup (ParserTools.stripQuote(value.image)); }
+    | value = <STRING_LITERAL> { retval = new StaticValue (ParserTools.stripQuote(value.image)); }
+    | value = <UNSIGNED_NUMERIC_LITERAL> { retval = new StaticValue (new BigDecimal (value.image)); }
+    | value = <UNSIGNED_INTEGER> { retval = new StaticValue (new BigDecimal (value.image)); }
+    | value = <NULL> { retval = new StaticValue (null); }
+    | value = <IDENTIFIER> <L_PAREN> retval = parseFunction(value.image) <R_PAREN>
+    | <L_PAREN> retval = getExpression (level) <R_PAREN>
+      {
+        if (level != -1)
+        {
+          retval = new Term (retval);
+        }
+      }
+  )
+  (
+     postfixOp = getPostfixOperator()
+  )?
+  {
+    if (postfixOp != null)
+    {
+      retval = new PostfixTerm(retval, postfixOp);
+    }
+    if (prefixOp != null)
+    {
+      retval = new PrefixTerm(prefixOp, retval);
+    }
+    return retval;
+  }
+}
+
+LValue parseFunction (String name) :
+{
+   ArrayList params = null;
+   LValue parameter = null;
+}
+{
+   (
+      parameter = getExpression(0)
+      {
+        params = new ArrayList();
+        params.add(parameter);
+      }
+      (
+        <COMMA> parameter = getExpression(0)
+        {
+          params.add(parameter);
+        }
+      )*
+   )?
+   {
+     if (params == null)
+     {
+       return new FormulaFunction(name, new LValue[0]);
+     }
+
+     LValue[] paramVals = (LValue[]) params.toArray(new LValue[params.size()]);
+     return new FormulaFunction(name, paramVals);
+   }
+}
+
+PrefixOperator getPrefixOperator () :
+{
+  Token value = null;
+}
+{
+  (
+     value = <PLUS>
+   | value = <MINUS>
+  )
+  {
+     return getOperatorFactory().createPrefixOperator(value.image);
+  }
+}
+
+PostfixOperator getPostfixOperator () :
+{
+  Token value = null;
+}
+{
+  (
+     value = <PERCENT>
+  )
+  {
+     return getOperatorFactory().createPostfixOperator(value.image);
+  }
+}
+

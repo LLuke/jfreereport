@@ -1,0 +1,128 @@
+<!--
+  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  -->
+
+<project name="libformula" default="all" basedir="..">
+
+  <import file="build-lib.xml"/>
+
+  <!-- Initialisation. -->
+  <target name="initialise">
+    <tstamp/>
+
+    <property name="builddir" value="build"/>
+
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <property file="ant/build.properties"/>
+
+    <path id="core.Classpath">
+      <pathelement location="${libdir}/${jcommon-jar-file}"/>
+    </path>
+
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="lib.jcommon.present"
+                             file-name="${libdir}/${jcommon-jar-file}"
+                             classpath-id="core.Classpath"/>
+    <fail unless="lib.jcommon.present"/>
+
+  </target>
+
+  <!-- Compile the JCommon classes -->
+  <target name="compile-jj" depends="initialise"
+          description="Compiles the libformula-Parser from the JavaCC specs.">
+    <javacc
+        target="source/org/jfree/formula/parser/Parser.jj"
+        outputdirectory="source/org/jfree/formula/parser/"
+        javacchome="${javacchome}"
+    />
+  </target>
+
+
+  <target name="compile" depends="initialise">
+
+    <fileset dir="source/" id="core.SourceFiles">
+      <exclude name="**/junit/**"/>
+      <include name="**/*.java"/>
+    </fileset>
+
+    <fileset dir="source/" id="core.ResourceFiles">
+      <exclude name="**/junit/**"/>
+      <include name="**/*.properties"/>
+      <include name="**/*.jj"/>
+    </fileset>
+
+    <build-core target-jar="${libformula-jar-file}"
+                source-files-id="core.SourceFiles"
+                resource-files-id="core.ResourceFiles"
+                classpath-id="core.Classpath">
+    </build-core>
+  </target>
+
+
+  <target name="javadoc" depends="initialise">
+    <description>
+      Generate the libformula JavaDoc HTML pages
+    </description>
+
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+             windowtitle="libformula Library (version ${libformula.version})"
+             linksource="true">
+      <classpath refid="core.Classpath"/>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/formula/**"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="fill-dist-dir">
+    <!-- copy across README -->
+    <copy file="README.txt"
+          tofile="${dist-dir}/README.txt"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+          tofile="${dist-dir}/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${libformula-jar-file}"
+          tofile="${dist-dir}/${libformula-jar-file}"/>
+
+    <!-- copy across source files -->
+    <copy todir="${dist-dir}/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <copy todir="${dist-dir}/lib">
+      <fileset dir="lib"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy file="ant/build.xml"
+          tofile="${dist-dir}/ant/build.xml"/>
+    <copy file="ant/build-lib.xml"
+          tofile="${dist-dir}/ant/build-lib.xml"/>
+
+    <copy file="ant/build.properties"
+          tofile="${dist-dir}/ant/build.properties"/>
+  </target>
+
+
+  <!-- Make .zip distribution for libfonts -->
+  <target name="zip" depends="compile">
+
+    <make-zip lib.version="${libformula.version}" lib.name="${libformula.name}"/>
+
+  </target>
+
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="targz" depends="compile">
+
+    <make-targz lib.version="${libformula.version}"
+                lib.name="${libformula.name}"/>
+
+  </target>
+
+  <target name="all" depends="compile,javadoc,zip,targz"/>
+</project>
