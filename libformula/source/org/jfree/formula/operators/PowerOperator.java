@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PowerOperator.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
+ * $Id: PowerOperator.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -43,14 +43,14 @@ package org.jfree.formula.operators;
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.NumberType;
-import org.jfree.formula.lvalues.TypeValuePair;
 
 /**
  * This has to be implemented manually if we want to support arbitary precision.
- * Damn, do I have to implement the logarithm computation as well?
- * For now: Ignore that and use doubles!
+ * Damn, do I have to implement the logarithm computation as well? For now:
+ * Ignore that and use doubles!
  *
  * @author Thomas Morgner
  */

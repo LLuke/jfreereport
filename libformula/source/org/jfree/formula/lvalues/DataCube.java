@@ -24,71 +24,29 @@
  * in the United States and other countries.]
  *
  * ------------
- * Formula.java
+ * DataCube.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Formula.java,v 1.1 2006/11/04 15:40:57 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.formula;
-
-import java.io.Serializable;
-
-import org.jfree.formula.lvalues.LValue;
-import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.parser.FormulaParser;
-import org.jfree.formula.parser.ParseException;
+package org.jfree.formula.lvalues;
 
 /**
- * Creation-Date: 31.10.2006, 14:43:05
+ * A multi-dimensional data collection. It should return LValues, but for
+ * now, this remains totally undefined until I have a clue about what I'm doing
+ * here.
  *
  * @author Thomas Morgner
  */
-public class Formula implements Serializable, Cloneable
+public interface DataCube
 {
-  private LValue rootReference;
-
-  public Formula(final String formulaText) throws ParseException
-  {
-    FormulaParser parser = new FormulaParser();
-    this.rootReference = parser.parse(formulaText);
-  }
-
-  public Formula(final LValue rootReference)
-  {
-    this.rootReference = rootReference;
-  }
-
-  public void initialize (FormulaContext context) throws EvaluationException
-  {
-    rootReference.initialize(context);
-  }
-
-  public Object evaluate ()
-  {
-    try
-    {
-      final TypeValuePair typeValuePair = rootReference.evaluate();
-      return typeValuePair.getValue();
-    }
-    catch (Exception e)
-    {
-      return new LibFormulaErrorValue(0);
-    }
-  }
-
-  public Object clone () throws CloneNotSupportedException
-  {
-    final Formula o = (Formula) super.clone();
-    o.rootReference = (LValue) rootReference.clone();
-    return o;
-  }
 }

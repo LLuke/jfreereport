@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PostfixTerm.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
+ * $Id: PostfixTerm.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -97,5 +97,22 @@ public class PostfixTerm extends AbstractLValue
   public boolean isConstant()
   {
     return value.isConstant();
+  }
+
+  /**
+   * Returns any dependent lvalues (parameters and operands, mostly).
+   *
+   * @return
+   */
+  public LValue[] getChildValues()
+  {
+    return new LValue[]{ value };
+  }
+
+  public Object clone() throws CloneNotSupportedException
+  {
+    final PostfixTerm o = (PostfixTerm) super.clone();
+    o.value = (LValue) value.clone();
+    return o;
   }
 }

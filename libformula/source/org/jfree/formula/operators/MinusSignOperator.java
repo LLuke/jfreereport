@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MinusSignOperator.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
  *
  * Changes
  * -------
@@ -75,16 +75,16 @@ public class MinusSignOperator implements PrefixOperator
           context.getTypeRegistry().convertToNumber(type, value1.getValue());
       if (number == null)
       {
-        return new TypeValuePair(new ErrorType(),
-            new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+        return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
+            (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
       }
 
       final BigDecimal value = getAsBigDecimal(number);
       return new TypeValuePair(type, ZERO.subtract(value));
     }
 
-    return new TypeValuePair(new ErrorType(),
-        new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+    return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
+        (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
   }
 
   private BigDecimal getAsBigDecimal(final Number number)

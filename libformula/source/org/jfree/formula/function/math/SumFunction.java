@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SumFunction.java,v 1.1 2006/11/04 15:45:44 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class SumFunction implements Function
   {
   }
 
-  public String getCannonicalName()
+  public String getCanonicalName()
   {
     return "SUM";
   }

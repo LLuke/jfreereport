@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FormulaFunction.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
+ * $Id: FormulaFunction.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -188,4 +188,6 @@ public class FormulaFunction extends AbstractLValue
     }
     return true;
   }
+
+  
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PrefixTerm.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
+ * $Id: PrefixTerm.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -91,6 +91,16 @@ public class PrefixTerm extends AbstractLValue
   }
 
   /**
+   * Returns any dependent lvalues (parameters and operands, mostly).
+   *
+   * @return
+   */
+  public LValue[] getChildValues()
+  {
+    return new LValue[]{ value };
+  }
+
+  /**
    * Checks, whether the LValue is constant. Constant lvalues always return the
    * same value.
    *
@@ -99,5 +109,12 @@ public class PrefixTerm extends AbstractLValue
   public boolean isConstant()
   {
     return value.isConstant();
+  }
+
+  public Object clone() throws CloneNotSupportedException
+  {
+    final PrefixTerm o = (PrefixTerm) super.clone();
+    o.value = (LValue) value.clone();
+    return o;
   }
 }

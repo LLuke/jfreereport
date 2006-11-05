@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DateFunction.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public class DateFunction implements Function
   {
   }
 
-  public String getCannonicalName()
+  public String getCanonicalName()
   {
     return "DATE";
   }

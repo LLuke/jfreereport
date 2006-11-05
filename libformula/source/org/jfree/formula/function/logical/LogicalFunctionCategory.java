@@ -24,14 +24,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * NotFunctionDescription.java
+ * LogicalFunctionCategory.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NotFunctionDescription.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
@@ -40,71 +40,20 @@
  */
 package org.jfree.formula.function.logical;
 
-import org.jfree.formula.function.AbstractFunctionDescription;
+import org.jfree.formula.function.AbstractFunctionCategory;
 import org.jfree.formula.function.FunctionCategory;
-import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
- * Creation-Date: 04.11.2006, 18:28:55
+ * Creation-Date: 05.11.2006, 14:30:36
  *
  * @author Thomas Morgner
  */
-public class NotFunctionDescription extends AbstractFunctionDescription
+public final class LogicalFunctionCategory extends AbstractFunctionCategory
 {
-  public NotFunctionDescription()
-  {
-    super("org.jfree.formula.function.logical.Not-Function");
-  }
+  public static final FunctionCategory CATEGORY = new LogicalFunctionCategory();
 
-  public int getParameterCount()
+  private LogicalFunctionCategory()
   {
-    return 1;
+    super("org.jfree.formula.function.logical.category");
   }
-
-  public boolean isInfiniteParameterCount()
-  {
-    return false;
-  }
-
-  public Type getParameterType(int position)
-  {
-    return LogicalType.TYPE;
-  }
-
-  public Type getValueType()
-  {
-    return LogicalType.TYPE;
-  }
-
-  /**
-   * Defines, whether the parameter at the given position is mandatory. A
-   * mandatory parameter must be filled in, while optional parameters need not
-   * to be filled in.
-   *
-   * @return
-   */
-  public boolean isParameterMandatory(int position)
-  {
-    return true;
-  }
-
-  /**
-   * Returns the default value for an optional parameter. If the value returned
-   * here is null, then this either means, that the parameter is mandatory or
-   * that the default value is computed by the expression itself.
-   *
-   * @param position
-   * @return
-   */
-  public Object getDefaultValue(int position)
-  {
-    return null;
-  }
-
-  public FunctionCategory getCategory()
-  {
-    return LogicalFunctionCategory.CATEGORY;
-  }
-  
 }

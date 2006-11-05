@@ -24,42 +24,47 @@
  * in the United States and other countries.]
  *
  * ------------
- * FalseFunctionDescription.java
+ * AbstractFunctionDescription.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FalseFunctionDescription.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.formula.function.logical;
+package org.jfree.formula.function;
 
-import org.jfree.formula.function.AbstractFunctionDescription;
-import org.jfree.formula.function.FunctionCategory;
-import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.LogicalType;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
- * Creation-Date: 04.11.2006, 18:28:55
+ * Creation-Date: 04.11.2006, 18:30:33
  *
  * @author Thomas Morgner
  */
-public class FalseFunctionDescription extends AbstractFunctionDescription
+public abstract class AbstractFunctionDescription implements FunctionDescription
 {
-  public FalseFunctionDescription()
+  private String bundleName;
+
+  protected AbstractFunctionDescription(final String bundleName)
   {
-    super("org.jfree.formula.function.logical.False-Function");
+    this.bundleName = bundleName;
   }
 
-  public int getParameterCount()
+  public boolean isVolatile()
   {
-    return 0;
+    return false;
+  }
+
+  public Object getDefaultValue(int position)
+  {
+    return null;
   }
 
   public boolean isInfiniteParameterCount()
@@ -67,44 +72,30 @@ public class FalseFunctionDescription extends AbstractFunctionDescription
     return false;
   }
 
-  public Type getParameterType(int position)
+  protected ResourceBundle getBundle(Locale locale)
   {
-    return LogicalType.TYPE;
+    return ResourceBundle.getBundle(bundleName, locale);
   }
 
-  public Type getValueType()
+  public String getDisplayName(Locale locale)
   {
-    return LogicalType.TYPE;
+    return getBundle(locale).getString("display-name");
   }
 
-  /**
-   * Defines, whether the parameter at the given position is mandatory. A
-   * mandatory parameter must be filled in, while optional parameters need not
-   * to be filled in.
-   *
-   * @return
-   */
-  public boolean isParameterMandatory(int position)
+  public String getDescription(Locale locale)
   {
-    return false;
+    return getBundle(locale).getString("description");
   }
 
-  /**
-   * Returns the default value for an optional parameter. If the value returned
-   * here is null, then this either means, that the parameter is mandatory or
-   * that the default value is computed by the expression itself.
-   *
-   * @param position
-   * @return
-   */
-  public Object getDefaultValue(int position)
+  public String getParameterDisplayName(int position, Locale locale)
   {
-    return null;
+    return getBundle(locale).getString("parameter." + position + ".display-name");
   }
 
-  public FunctionCategory getCategory()
+  public String getParameterDescription(int position, Locale locale)
   {
-    return LogicalFunctionCategory.CATEGORY;
+    return getBundle(locale).getString("parameter." + position + ".description");
   }
-  
+
+
 }

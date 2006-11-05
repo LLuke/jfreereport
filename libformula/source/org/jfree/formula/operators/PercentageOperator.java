@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PercentageOperator.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
  *
  * Changes
  * -------
@@ -70,8 +70,8 @@ public class PercentageOperator implements PostfixOperator
     final Type type = value1.getType();
     if (type.isFlagSet(Type.NUMERIC_TYPE) == false)
     {
-      return new TypeValuePair(new ErrorType(),
-          new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
+          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
 
     // return the same as zero minus value.
@@ -79,8 +79,8 @@ public class PercentageOperator implements PostfixOperator
         context.getTypeRegistry().convertToNumber(type, value1.getValue());
     if (number == null)
     {
-      return new TypeValuePair(new ErrorType(),
-          new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
+          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
 
     final BigDecimal value = OperatorUtility.getAsBigDecimal(number);

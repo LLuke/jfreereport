@@ -1,0 +1,11 @@
+---------------
+1.  WHAT's NEW
+---------------
+A list of changes in recent versions:
+
+0.1.0: (06-Nov-2006)
+        * Initial version. This version happily deals with plain types and
+          somehow it even handles arrays without crashing. Code for database
+          support exists, but is not in a usable state (yet).
+
+          I don't even think about OLAP cubes now.

@@ -24,71 +24,36 @@
  * in the United States and other countries.]
  *
  * ------------
- * Formula.java
+ * DateTimeFunctionCategory.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Formula.java,v 1.1 2006/11/04 15:40:57 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.formula;
+package org.jfree.formula.function.datetime;
 
-import java.io.Serializable;
-
-import org.jfree.formula.lvalues.LValue;
-import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.parser.FormulaParser;
-import org.jfree.formula.parser.ParseException;
+import org.jfree.formula.function.AbstractFunctionCategory;
+import org.jfree.formula.function.FunctionCategory;
 
 /**
- * Creation-Date: 31.10.2006, 14:43:05
+ * Creation-Date: 05.11.2006, 14:30:36
  *
  * @author Thomas Morgner
  */
-public class Formula implements Serializable, Cloneable
+public final class DateTimeFunctionCategory extends AbstractFunctionCategory
 {
-  private LValue rootReference;
+  public static final FunctionCategory CATEGORY = new DateTimeFunctionCategory();
 
-  public Formula(final String formulaText) throws ParseException
+  private DateTimeFunctionCategory()
   {
-    FormulaParser parser = new FormulaParser();
-    this.rootReference = parser.parse(formulaText);
-  }
-
-  public Formula(final LValue rootReference)
-  {
-    this.rootReference = rootReference;
-  }
-
-  public void initialize (FormulaContext context) throws EvaluationException
-  {
-    rootReference.initialize(context);
-  }
-
-  public Object evaluate ()
-  {
-    try
-    {
-      final TypeValuePair typeValuePair = rootReference.evaluate();
-      return typeValuePair.getValue();
-    }
-    catch (Exception e)
-    {
-      return new LibFormulaErrorValue(0);
-    }
-  }
-
-  public Object clone () throws CloneNotSupportedException
-  {
-    final Formula o = (Formula) super.clone();
-    o.rootReference = (LValue) rootReference.clone();
-    return o;
+    super("org.jfree.formula.function.datetime.category");
   }
 }

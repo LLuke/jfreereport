@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SumFunctionDescription.java,v 1.1 2006/11/04 15:45:44 taqua Exp $
+ * $Id: SumFunctionDescription.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.formula.function.math;
 import java.util.Locale;
 
 import org.jfree.formula.function.FunctionDescription;
+import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.NumberType;
 
@@ -125,5 +126,10 @@ public class SumFunctionDescription implements FunctionDescription
   public boolean isVolatile()
   {
     return false;
+  }
+
+  public FunctionCategory getCategory()
+  {
+    return MathFunctionCategory.CATEGORY;
   }
 }

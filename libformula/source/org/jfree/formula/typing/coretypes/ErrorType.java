@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ErrorType.java,v 1.1 2006/11/04 15:45:44 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,9 @@ import org.jfree.formula.typing.Type;
  */
 public final class ErrorType extends DefaultType
 {
-  public ErrorType()
+  public static final Type TYPE = new ErrorType();
+
+  private ErrorType()
   {
     addFlag(Type.ERROR_TYPE);
     lock();

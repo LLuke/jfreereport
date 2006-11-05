@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Term.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
+ * $Id: Term.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,7 @@ public class Term extends AbstractLValue
   private ArrayList operands;
   private InfixOperator[] operatorArray;
   private LValue[] operandsArray;
+  private boolean initialized;
 
   public Term(final LValue headValue)
   {
@@ -103,6 +104,7 @@ public class Term extends AbstractLValue
 
     operands.add(operand);
     operators.add(operator);
+    initialized = false;
   }
 
   public void initialize(FormulaContext context) throws EvaluationException
@@ -112,6 +114,17 @@ public class Term extends AbstractLValue
     {
       this.operandsArray = new LValue[0];
       this.operatorArray = new InfixOperator[0];
+      return;
+    }
+
+    if (initialized)
+    {
+      optimizedHeadValue.initialize(context);
+      for (int i = 0; i < operandsArray.length; i++)
+      {
+        LValue lValue = operandsArray[i];
+        lValue.initialize(context);
+      }
       return;
     }
 
@@ -266,5 +279,24 @@ public class Term extends AbstractLValue
       }
     }
     return true;
+  }
+
+  public Object clone() throws CloneNotSupportedException
+  {
+    final Term o = (Term) super.clone();
+    if (operands != null)
+    {
+      o.operands = (ArrayList) operands.clone();
+    }
+    if (operators != null)
+    {
+      o.operators = (ArrayList) operators.clone();
+    }
+    o.headValue = (LValue) headValue.clone();
+    o.optimizedHeadValue = null;
+    o.operandsArray = null;
+    o.operatorArray = null;
+    o.initialized = false;
+    return o;
   }
 }

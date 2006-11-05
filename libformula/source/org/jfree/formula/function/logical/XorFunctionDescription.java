@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: XorFunctionDescription.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.formula.function.logical;
 
 import org.jfree.formula.function.AbstractFunctionDescription;
+import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
@@ -100,4 +101,10 @@ public class XorFunctionDescription extends AbstractFunctionDescription
   {
     return null;
   }
+
+  public FunctionCategory getCategory()
+  {
+    return LogicalFunctionCategory.CATEGORY;
+  }
+  
 }

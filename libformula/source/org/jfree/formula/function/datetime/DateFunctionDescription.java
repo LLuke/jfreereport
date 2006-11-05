@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DateFunctionDescription.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.formula.function.datetime;
 
 import org.jfree.formula.function.AbstractFunctionDescription;
+import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.NumberType;
 import org.jfree.formula.typing.coretypes.DateType;
@@ -82,5 +83,10 @@ public class DateFunctionDescription extends AbstractFunctionDescription
   public boolean isParameterMandatory(int position)
   {
     return true;
+  }
+
+  public FunctionCategory getCategory()
+  {
+    return DateTimeFunctionCategory.CATEGORY;
   }
 }

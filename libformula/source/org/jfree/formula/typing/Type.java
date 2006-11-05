@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Type.java,v 1.1 2006/11/04 15:43:46 taqua Exp $
  *
  * Changes
  * -------
@@ -55,8 +55,8 @@ public interface Type
   public static final String ANY_TYPE = "type.any";
   public static final String ERROR_TYPE = "type.error";
   public static final String DATE_TYPE = "type.date";
-  /** Also for lists .. */
   public static final String ARRAY_TYPE = "type.array";
+  public static final String DATATABLE_TYPE = "type.datatable";
 
   public boolean isFlagSet (String name);
   public Object getProperty (String name);

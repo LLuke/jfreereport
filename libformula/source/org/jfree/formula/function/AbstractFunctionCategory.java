@@ -24,71 +24,65 @@
  * in the United States and other countries.]
  *
  * ------------
- * Formula.java
+ * AbstractFunctionCategory.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Formula.java,v 1.1 2006/11/04 15:40:57 taqua Exp $
+ * $Id$
  *
  * Changes
  * -------
  *
  *
  */
-package org.jfree.formula;
+package org.jfree.formula.function;
 
-import java.io.Serializable;
-
-import org.jfree.formula.lvalues.LValue;
-import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.parser.FormulaParser;
-import org.jfree.formula.parser.ParseException;
+import java.util.ResourceBundle;
+import java.util.Locale;
 
 /**
- * Creation-Date: 31.10.2006, 14:43:05
+ * Creation-Date: 05.11.2006, 14:31:22
  *
  * @author Thomas Morgner
  */
-public class Formula implements Serializable, Cloneable
+public class AbstractFunctionCategory implements FunctionCategory
 {
-  private LValue rootReference;
+  private String bundleName;
 
-  public Formula(final String formulaText) throws ParseException
+  protected AbstractFunctionCategory(final String bundleName)
   {
-    FormulaParser parser = new FormulaParser();
-    this.rootReference = parser.parse(formulaText);
+    this.bundleName = bundleName;
   }
 
-  public Formula(final LValue rootReference)
+  protected ResourceBundle getBundle(Locale locale)
   {
-    this.rootReference = rootReference;
+    return ResourceBundle.getBundle(bundleName, locale);
   }
 
-  public void initialize (FormulaContext context) throws EvaluationException
+  public String getDisplayName(Locale locale)
   {
-    rootReference.initialize(context);
+    return getBundle(locale).getString("display-name");
   }
 
-  public Object evaluate ()
+  public String getDescription(Locale locale)
   {
-    try
+    return getBundle(locale).getString("description");
+  }
+
+  public boolean equals(final Object o)
+  {
+    if (this == o)
     {
-      final TypeValuePair typeValuePair = rootReference.evaluate();
-      return typeValuePair.getValue();
+      return true;
     }
-    catch (Exception e)
-    {
-      return new LibFormulaErrorValue(0);
-    }
+    return !(o == null || getClass() != o.getClass());
   }
 
-  public Object clone () throws CloneNotSupportedException
+  public int hashCode()
   {
-    final Formula o = (Formula) super.clone();
-    o.rootReference = (LValue) rootReference.clone();
-    return o;
+    return getClass().hashCode();
   }
 }

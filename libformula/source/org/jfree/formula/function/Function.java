@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Function.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,6 @@ import org.jfree.formula.FormulaContext;
  */
 public interface Function extends Serializable
 {
-  public String getCannonicalName();
+  public String getCanonicalName();
   public TypeValuePair evaluate (FormulaContext context, TypeValuePair[] parameter);
 }
