@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableRowHeightStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.model.table.rows.TableRow;
 import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 10.10.2006, 14:10:08
@@ -154,7 +155,10 @@ public class TableRowHeightStep extends IterateVisualProcessStep
 
   protected boolean startBlockLevelBox(final RenderBox box)
   {
-//    Log.debug ("Shifting: " + shiftDistance + " : " + box);
+    if ("hr".equals(box.getTagName()))
+    {
+      Log.debug ("Shifting: " + shiftDistance + " : " + box);
+    }
     box.setY(box.getY() + shiftDistance);
     if (box instanceof TableRenderBox)
     {
@@ -246,7 +250,7 @@ public class TableRowHeightStep extends IterateVisualProcessStep
       final long shift = position - oldPosition;
       shift(rowBox, shift);
       shiftDistance += shift;
-//      Log.debug ("Row shifts: " + shift + " (" + shiftDistance + ")");
+      Log.debug ("Row shifts: " + shift + " (" + shiftDistance + ")");
 
       RenderNode cellNode = rowBox.getFirstChild();
       while (cellNode != null)
@@ -283,12 +287,17 @@ public class TableRowHeightStep extends IterateVisualProcessStep
     final long newHeight = position - section.getY();
     final long extendedHeight = newHeight - section.getHeight();
     section.setHeight(newHeight);
-
-    RenderNode parent = section.getParent();
-    while (parent != null)
+    if (extendedHeight != 0)
     {
-      parent.setHeight(parent.getHeight() + extendedHeight);
-      parent = parent.getParent();
+      Log.debug ("Section shifts: " + extendedHeight + " (" + shiftDistance + ")");
+      RenderNode parent = section.getParent();
+      while (parent != null)
+      {
+        parent.setHeight(parent.getHeight() + extendedHeight);
+        parent = parent.getParent();
+      }
+
+      shiftDistance += extendedHeight;
     }
 
     // We do not perform a real shift, as this would be to expensive.

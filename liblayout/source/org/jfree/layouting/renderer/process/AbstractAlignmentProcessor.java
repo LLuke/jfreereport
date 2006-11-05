@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractAlignmentProcessor.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -214,7 +214,7 @@ public abstract class AbstractAlignmentProcessor
     if (end <= start)
     {
       // This is most certainly an error, treat it as such ..
-      throw new IllegalArgumentException("Start is <= end; which is stupid!");
+      throw new IllegalArgumentException("Start is <= end; which is stupid!: " + end + " " + start);
     }
 
     this.sequenceElements = sequence;

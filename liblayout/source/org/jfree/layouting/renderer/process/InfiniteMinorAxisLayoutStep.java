@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMinorAxisLayoutStep.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,7 @@ import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.SpacerSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.TextSequenceElement;
+import org.jfree.util.Log;
 
 /**
  * This process-step computes the effective layout, but it does not take
@@ -512,7 +513,18 @@ public class InfiniteMinorAxisLayoutStep
 
     final long lineStart = paragraph.getContentAreaX1();
     final long lineEnd = paragraph.getContentAreaX2();
-    processor.initialize(sequence, lineStart, lineEnd, pageGrid);
+    if (lineEnd - lineStart <= 0)
+    {
+      final NodeLayoutProperties nlp = paragraph.getNodeLayoutProperties();
+      final long minimumChunkWidth = nlp.getMinimumChunkWidth();
+      processor.initialize(sequence,
+          lineStart, lineStart + minimumChunkWidth, pageGrid);
+      Log.warn ("Auto-Corrected zero-width linebox."); 
+    }
+    else
+    {
+      processor.initialize(sequence, lineStart, lineEnd, pageGrid);
+    }
 
     while (processor.hasNext())
     {

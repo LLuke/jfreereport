@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.19 2006/10/22 14:58:25 taqua Exp $
+ * $Id: RenderNode.java,v 1.20 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -102,6 +102,9 @@ public abstract class RenderNode implements Cloneable
   private RenderLength baselineShiftResolved;
   private RenderLength alignmentAdjustResolved;
 
+  private String namespace;
+  private String tagName;
+
   private long stickyMarker;
 
   public RenderNode()
@@ -129,6 +132,18 @@ public abstract class RenderNode implements Cloneable
     verticalAlignment = normalizeAlignment
         (context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN));
 
+    namespace = context.getNamespace();
+    tagName = context.getTagName();
+  }
+
+  public String getNamespace()
+  {
+    return namespace;
+  }
+
+  public String getTagName()
+  {
+    return tagName;
   }
 
   protected CSSValue normalizeAlignment(CSSValue verticalAlignment)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpearateColumnModel.java,v 1.1 2006/07/22 15:31:00 taqua Exp $
+ * $Id: SpearateColumnModel.java,v 1.2 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -110,19 +110,48 @@ public class SpearateColumnModel extends AbstractColumnModel
     final long[] maxBoxSizes = new long[colCount];
     final long[] preferredSizes = new long[colCount];
 
-    // For each colspan ...
-    for (int colspan = 1; colspan <= maxColSpan; colspan += 1)
+    // For each colspan distribute the content.
+    if (maxColSpan == 0)
     {
       for (int colIdx = 0; colIdx < minChunkSizes.length; colIdx++)
       {
         final TableColumn column = columns[colIdx];
-        final long minimumChunkSize = column.getMinimumChunkSize(colspan);
-        final long maxBoxSize = column.getMaximumBoxWidth(colspan);
-        final long preferredSize = column.getPreferredWidth(colspan);
+        final long resolvedColWidth = column.getDefinedWidth().resolve(bcw);
+        minChunkSizes[colIdx] = resolvedColWidth;
+        maxBoxSizes[colIdx] = resolvedColWidth;
+        preferredSizes[colIdx] = resolvedColWidth;
+      }
+    }
+    else
+    {
+      // The 1-column size also gets the preferred size ...
+      for (int colIdx = 0; colIdx < minChunkSizes.length; colIdx++)
+      {
+        final TableColumn column = columns[colIdx];
+        final long minimumChunkSize = column.getMinimumChunkSize(1);
+        final long maxBoxSize = column.getMaximumBoxWidth(1);
+        final long resolvedColWidth = column.getDefinedWidth().resolve(bcw);
+        final long preferredSize = Math.max
+            (resolvedColWidth, column.getPreferredWidth(1));
 
-        distribute(minimumChunkSize, minChunkSizes, colIdx, colspan);
-        distribute(preferredSize, preferredSizes, colIdx, colspan);
-        distribute(maxBoxSize, maxBoxSizes, colIdx, colspan);
+        minChunkSizes[colIdx] = minimumChunkSize;
+        maxBoxSizes[colIdx] = maxBoxSize;
+        preferredSizes[colIdx] = preferredSize;
+      }
+
+      for (int colspan = 2; colspan <= maxColSpan; colspan += 1)
+      {
+        for (int colIdx = 0; colIdx < minChunkSizes.length; colIdx++)
+        {
+          final TableColumn column = columns[colIdx];
+          final long minimumChunkSize = column.getMinimumChunkSize(colspan);
+          final long maxBoxSize = column.getMaximumBoxWidth(colspan);
+          final long preferredSize = column.getPreferredWidth(colspan);
+
+          distribute(minimumChunkSize, minChunkSizes, colIdx, colspan);
+          distribute(preferredSize, preferredSizes, colIdx, colspan);
+          distribute(maxBoxSize, maxBoxSizes, colIdx, colspan);
+        }
       }
     }
 
