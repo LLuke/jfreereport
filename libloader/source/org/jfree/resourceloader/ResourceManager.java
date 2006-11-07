@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceManager.java,v 1.6 2006/07/11 13:22:07 taqua Exp $
+ * $Id: ResourceManager.java,v 1.7 2006/07/30 13:15:43 taqua Exp $
  *
  * Changes
  * -------
@@ -313,14 +313,14 @@ public class ResourceManager
         catch(ResourceCreationException rex)
         {
           // ignore it, try the next factory ...
-//          if (Log.isDebugEnabled())
-//          {
-//            Log.debug ("Failed at " + fact.getClass() + ": ",rex);
-//          }
+          if (Log.isDebugEnabled())
+          {
+            Log.debug ("Failed at " + fact.getClass() + ": ",rex);
+          }
         }
       }
       throw new ResourceCreationException
-              ("None of the selected factories was able to handle the given data.");
+              ("None of the selected factories was able to handle the given data: " + key);
     }
   }
 
