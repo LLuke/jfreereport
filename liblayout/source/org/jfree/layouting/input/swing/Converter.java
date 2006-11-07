@@ -24,21 +24,20 @@
  * in the United States and other countries.]
  *
  * ------------
- * Convertor.java
+ * Converter.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
+ * Contributor(s):   Cedric Pronzato;
  *
- * $Id$
+ * $Id: Converter.java,v 1.2 2006/11/07 19:53:54 taqua Exp $
  *
  * Changes
  * -------
  *
  *
  */
-
 package org.jfree.layouting.input.swing;
 
 import javax.swing.text.AttributeSet;
@@ -47,8 +46,7 @@ import javax.swing.text.Element;
 /**
  * 
  */
-public interface Convertor
-{
+public interface Converter {
   /**
    * Converts a style key and a style value to a CSS compatible style key and style value.
    * A conversion can result in more than one key and value.

@@ -29,9 +29,9 @@
  * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
+ * Contributor(s):   Cedric Pronzato;
  *
- * $Id: SwingDocumentImport.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
+ * $Id: SwingDocumentImport.java,v 1.4 2006/10/30 19:51:41 mimil Exp $
  *
  * Changes
  * -------
@@ -43,11 +43,13 @@ package org.jfree.layouting.input.swing;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.nio.charset.Charset;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -62,10 +64,10 @@ import javax.swing.text.StyleConstants;
 
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.StreamingLayoutProcess;
-import org.jfree.layouting.input.swing.convertor.CharacterConvertor;
-import org.jfree.layouting.input.swing.convertor.ColorConvertor;
-import org.jfree.layouting.input.swing.convertor.FontConvertor;
-import org.jfree.layouting.input.swing.convertor.ParagraphConvertor;
+import org.jfree.layouting.input.swing.converter.CharacterConverter;
+import org.jfree.layouting.input.swing.converter.ColorConverter;
+import org.jfree.layouting.input.swing.converter.FontConverter;
+import org.jfree.layouting.input.swing.converter.ParagraphConverter;
 import org.jfree.layouting.junit.DebugLayoutProcess;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.InputFeedException;
@@ -91,33 +93,33 @@ public class SwingDocumentImport
 
   static {
     // font
-    final FontConvertor fontConvertor = new FontConvertor();
-    styleConstantsMap.put(StyleConstants.FontFamily, fontConvertor);
-    styleConstantsMap.put(StyleConstants.FontSize, fontConvertor);
-    styleConstantsMap.put(StyleConstants.Bold, fontConvertor);
-    styleConstantsMap.put(StyleConstants.Italic, fontConvertor);
+    final FontConverter fontConverter = new FontConverter();
+    styleConstantsMap.put(StyleConstants.FontFamily, fontConverter);
+    styleConstantsMap.put(StyleConstants.FontSize, fontConverter);
+    styleConstantsMap.put(StyleConstants.Bold, fontConverter);
+    styleConstantsMap.put(StyleConstants.Italic, fontConverter);
 
     // text
-    final ParagraphConvertor paragraphConvertor = new ParagraphConvertor();
-    styleConstantsMap.put(StyleConstants.Alignment, paragraphConvertor);
-    styleConstantsMap.put(StyleConstants.LeftIndent, paragraphConvertor);
-    styleConstantsMap.put(StyleConstants.RightIndent, paragraphConvertor);
-    styleConstantsMap.put(StyleConstants.SpaceAbove, paragraphConvertor);
-    styleConstantsMap.put(StyleConstants.SpaceBelow, paragraphConvertor);
-    styleConstantsMap.put(StyleConstants.FirstLineIndent, paragraphConvertor);
+    final ParagraphConverter paragraphConverter = new ParagraphConverter();
+    styleConstantsMap.put(StyleConstants.Alignment, paragraphConverter);
+    styleConstantsMap.put(StyleConstants.LeftIndent, paragraphConverter);
+    styleConstantsMap.put(StyleConstants.RightIndent, paragraphConverter);
+    styleConstantsMap.put(StyleConstants.SpaceAbove, paragraphConverter);
+    styleConstantsMap.put(StyleConstants.SpaceBelow, paragraphConverter);
+    styleConstantsMap.put(StyleConstants.FirstLineIndent, paragraphConverter);
 
     // character
-    final CharacterConvertor characterConvertor = new CharacterConvertor();
-    styleConstantsMap.put(StyleConstants.Underline, characterConvertor);
-    styleConstantsMap.put(StyleConstants.StrikeThrough, characterConvertor);
-    styleConstantsMap.put(StyleConstants.BidiLevel, characterConvertor);
-    styleConstantsMap.put(StyleConstants.Superscript, characterConvertor);
-    styleConstantsMap.put(StyleConstants.Subscript, characterConvertor);
+    final CharacterConverter characterConverter = new CharacterConverter();
+    styleConstantsMap.put(StyleConstants.Underline, characterConverter);
+    styleConstantsMap.put(StyleConstants.StrikeThrough, characterConverter);
+    styleConstantsMap.put(StyleConstants.BidiLevel, characterConverter);
+    styleConstantsMap.put(StyleConstants.Superscript, characterConverter);
+    styleConstantsMap.put(StyleConstants.Subscript, characterConverter);
 
     // color
-    final ColorConvertor colorConvertor = new ColorConvertor();
-    styleConstantsMap.put(StyleConstants.Foreground, colorConvertor);
-    styleConstantsMap.put(StyleConstants.Background, colorConvertor);
+    final ColorConverter colorConverter = new ColorConverter();
+    styleConstantsMap.put(StyleConstants.Foreground, colorConverter);
+    styleConstantsMap.put(StyleConstants.Background, colorConverter);
 
   }
 
@@ -171,10 +173,10 @@ public class SwingDocumentImport
       final Object key = attributeNames.nextElement();
       final Object value = attr.getAttribute(key);
 
-      final Convertor convertor = (Convertor)styleConstantsMap.get(key);
-      if(convertor != null)
+      final Converter converter = (Converter)styleConstantsMap.get(key);
+      if(converter != null)
       {
-        final AttributeSet attributeSet = convertor.convertToCSS(key, value, cssAttr, context);
+        final AttributeSet attributeSet = converter.convertToCSS(key, value, cssAttr, context);
         if(attributeSet != null)
         {
           cssAttr.addAttributes(attributeSet);
@@ -187,7 +189,7 @@ public class SwingDocumentImport
       }
       else
       {
-        debugAttribut("No convertor for ", key, value);
+        debugAttribut("No converter for ", key, value);
         cssAttr.addAttribute(key, value);
       }
     }
@@ -226,10 +228,11 @@ public class SwingDocumentImport
 
       if(key == StyleConstants.ResolveAttribute)
       {
-        // parent style
+        // style name
         if(value instanceof Style) {
           final Style style = (Style) value;
-          feed.setAttribute(NAMESPACE, STYLE_ATTRIBUTE, style.getName());
+          final String styleName = (String)styleNames.get(style.getName());
+          feed.setAttribute(NAMESPACE, STYLE_ATTRIBUTE, styleName);
           continue;
         }
       }
@@ -281,7 +284,6 @@ public class SwingDocumentImport
    * once in the document and are reused by styled elements.
    *
    * @param document The source document.
-   * @param feed The input feed to use.
    * @throws InputFeedException If a problem occured with the feed.
    */
   protected void processStyleElements (DefaultStyledDocument document)
@@ -305,6 +307,9 @@ public class SwingDocumentImport
         continue;
       }
 
+      final String convertedStyleName = convertStyleName(styleName);
+      styleNames.put(styleName, convertedStyleName);
+
       final AttributeSet cssAttr = convertAttributes(s, null);
 
       final Enumeration attributeNames = cssAttr.getAttributeNames();
@@ -324,7 +329,8 @@ public class SwingDocumentImport
           // parent style
           if(value instanceof Style) {
             final Style style = (Style) value;
-            feed.setMetaNodeAttribute(PARENT_STYLE_ATTRIBUTE, style.getName());
+            final String parentStyleName = (String)styleNames.get(style.getName());
+            feed.setMetaNodeAttribute(PARENT_STYLE_ATTRIBUTE, parentStyleName);
             feed.endMetaNode();
             continue;
           }
@@ -343,7 +349,6 @@ public class SwingDocumentImport
    * the whole document.
    *
    * @param document The document source.
-   * @param feed The input feed to use.
    * @throws InputFeedException If a problem occured with the feed.
    */
   protected void processDocumentProperties (DefaultStyledDocument document)
