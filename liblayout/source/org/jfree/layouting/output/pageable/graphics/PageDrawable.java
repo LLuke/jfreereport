@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageDrawable.java,v 1.11 2006/10/17 16:39:07 taqua Exp $
+ * $Id: PageDrawable.java,v 1.12 2006/11/05 16:45:53 taqua Exp $
  *
  * Changes
  * -------
@@ -137,10 +137,6 @@ public class PageDrawable implements Drawable
     else
     {
       g2.setPaint(Color.lightGray);
-      if (box.getHeight() == 3000)
-      {
-        Log.debug ("Gotcha!");
-      }
     }
     final int x = (int) (box.getX() / 1000);
     final int y = (int) (box.getY() / 1000);

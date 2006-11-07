@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRenderBox.java,v 1.9 2006/07/29 18:57:13 taqua Exp $
+ * $Id: TableRenderBox.java,v 1.10 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.layouting.renderer.model.table;
+
+import java.util.ArrayList;
 
 import org.jfree.layouting.input.style.keys.table.BorderCollapse;
 import org.jfree.layouting.input.style.keys.table.EmptyCells;
@@ -55,7 +57,6 @@ import org.jfree.layouting.renderer.model.DefaultBoxDefinitionFactory;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.table.cols.SpearateColumnModel;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
-import org.jfree.util.Log;
 
 /**
  * A table render box contains table header, table footer and the table body.
@@ -80,6 +81,7 @@ public class TableRenderBox extends BlockRenderBox
   private boolean autoLayout;
 
   private TableLayoutInfo tableInfo;
+  private ArrayList tableColumnDefinitions;
 
   public TableRenderBox(final BoxDefinition boxDefinition)
   {
@@ -88,7 +90,7 @@ public class TableRenderBox extends BlockRenderBox
     this.columnModel = new SpearateColumnModel(this);
     this.borderSpacing = RenderLength.EMPTY;
     this.tableInfo = new TableLayoutInfo();
-
+    this.tableColumnDefinitions = new ArrayList();
   }
 
   public void appyStyle(LayoutContext layoutContext,

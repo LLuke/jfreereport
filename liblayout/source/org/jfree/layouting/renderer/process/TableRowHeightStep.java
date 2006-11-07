@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRowHeightStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: TableRowHeightStep.java,v 1.2 2006/11/05 16:45:53 taqua Exp $
  *
  * Changes
  * -------
@@ -155,10 +155,6 @@ public class TableRowHeightStep extends IterateVisualProcessStep
 
   protected boolean startBlockLevelBox(final RenderBox box)
   {
-    if ("hr".equals(box.getTagName()))
-    {
-      Log.debug ("Shifting: " + shiftDistance + " : " + box);
-    }
     box.setY(box.getY() + shiftDistance);
     if (box instanceof TableRenderBox)
     {
@@ -248,9 +244,14 @@ public class TableRowHeightStep extends IterateVisualProcessStep
 
       final long oldPosition = rowBox.getY();
       final long shift = position - oldPosition;
+      if (shift < 0)
+      {
+        throw new IllegalStateException("Shift-back is not allowed.");
+      }
+
       shift(rowBox, shift);
       shiftDistance += shift;
-      Log.debug ("Row shifts: " + shift + " (" + shiftDistance + ")");
+      Log.debug("Row shifts: " + shift + " (" + shiftDistance + ")");
 
       RenderNode cellNode = rowBox.getFirstChild();
       while (cellNode != null)
@@ -289,7 +290,7 @@ public class TableRowHeightStep extends IterateVisualProcessStep
     section.setHeight(newHeight);
     if (extendedHeight != 0)
     {
-      Log.debug ("Section shifts: " + extendedHeight + " (" + shiftDistance + ")");
+      Log.debug("Section shifts: " + extendedHeight + " (" + shiftDistance + ")");
       RenderNode parent = section.getParent();
       while (parent != null)
       {
@@ -314,6 +315,11 @@ public class TableRowHeightStep extends IterateVisualProcessStep
    */
   private void shift(final RenderNode node, final long shift)
   {
+    if (shift == 0)
+    {
+      return;
+    }
+
     final long y = node.getY();
     node.setY(y + shift);
 

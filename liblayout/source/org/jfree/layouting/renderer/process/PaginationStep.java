@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginationStep.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
+ * $Id: PaginationStep.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,19 @@
  */
 package org.jfree.layouting.renderer.process;
 
-import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.PageAreaRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphPoolBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
+import org.jfree.layouting.renderer.model.table.TableColumnGroupNode;
+import org.jfree.layouting.renderer.model.table.TableRenderBox;
+import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
+import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
+import org.jfree.layouting.input.style.keys.box.DisplayRole;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.util.Log;
 
 /**
@@ -255,19 +261,111 @@ public class PaginationStep extends IterateVisualProcessStep
   private void addShift (long shift)
   {
     this.shift += shift;
-    if (this.shift == 11805)
+  }
+
+  protected void processTable (final TableRenderBox table)
+  {
+
+    final long y2 = table.getY() + table.getHeight();
+    if (y2 < pageStartOffset)
     {
-      Log.debug ("HERE");
+      // not in range.
+      return;
+    }
+    if (table.isIgnorableForRendering())
+    {
+      return;
+    }
+
+    // its a table, so we have to perform some special treatment.
+    // This must be done regardless of the state.
+    // Step 1: Process all headers.
+    final long headerSize = sortTable(table, DisplayRole.TABLE_HEADER_GROUP, 0);
+
+    // Step 2: Process the table body
+    long runningSize = sortTable(table, DisplayRole.TABLE_ROW_GROUP, headerSize);
+    final long bodySize = runningSize - headerSize;
+
+    // Step 3: Process the table footer
+    runningSize = sortTable(table, DisplayRole.TABLE_FOOTER_GROUP, runningSize);
+    final long footerSize = runningSize - headerSize - bodySize;
+
+    // Check, whether the header and at least one row of the body will fit.
+
+
+    return;
+  }
+
+  private long sortTable(final TableRenderBox box,
+                         final CSSConstant role,
+                         long headerSize)
+  {
+    RenderNode rowGroupNode = box.getFirstChild();
+    while (rowGroupNode != null)
+    {
+      if (rowGroupNode instanceof TableSectionRenderBox == false)
+      {
+        rowGroupNode = rowGroupNode.getNext();
+        continue;
+      }
+
+      final TableSectionRenderBox sectionBox =
+          (TableSectionRenderBox) rowGroupNode;
+      if (role.equals
+          (sectionBox.getDisplayRole()) == false)
+      {
+        // not a header ..
+        rowGroupNode = rowGroupNode.getNext();
+        continue;
+      }
+
+      // A header.
+      final long headerPosition = sectionBox.getY();
+      final long tablePosition = box.getY();
+      final long shift = (headerPosition + headerSize) - tablePosition;
+      boxShifter.shiftBoxUnchecked(sectionBox, shift);
+      headerSize += rowGroupNode.getHeight();
+      rowGroupNode = rowGroupNode.getNext();
+    }
+    return headerSize;
+  }
+
+  protected void processBlockLevelChild(final RenderNode node)
+  {
+    if (node instanceof TableRenderBox)
+    {
+      final TableRenderBox table = (TableRenderBox) node;
+      processTable(table);
+    }
+    else
+    {
+      super.processBlockLevelChild(node);
     }
   }
 
   protected boolean startBlockLevelBox(final RenderBox box)
   {
+    if (box instanceof TableSectionRenderBox ||
+        box instanceof TableRowRenderBox)
+    {
+      // Is already processed along with their table.
+      return true;
+    }
+
     if (isNodeProcessable(box) == false)
     {
       // Not shifted, as this box will not be affected. It is not part of the
       // content window.
       return false;
+    }
+
+    final long y = box.getY();
+    if (box instanceof TableCellRenderBox)
+    {
+      // table cells get a special treatment when the row is computed ..
+      box.setY(y + shift);
+      box.setStickyMarker(stickyMarker);
+      return true;
     }
 
     if (isOverflow(box))
@@ -281,12 +379,16 @@ public class PaginationStep extends IterateVisualProcessStep
     // Apply the current shift to the box only (non-recursive)
     if (isCrossingBreak(box) == false)
     {
-      // It does. So why bother ..
+      // It fits into the page. So why bother ..
       boxShifter.shiftBox(box, shift);
       return false;
     }
 
-//    box.setY(box.getY() + shift);
+    if (box instanceof TableColumnGroupNode)
+    {
+      boxShifter.shiftBox(box, shift);
+      return false;
+    }
 
     // At this point, we know that the node is in fact in range - that
     // means it intersects the current content-window.
@@ -296,72 +398,139 @@ public class PaginationStep extends IterateVisualProcessStep
     // that content will fit on the page. If it does, ok, if not - move all
     // boxed from here up to (and including) the content to the bottom.
 
+    final long nextBreak = getNextBreak(y + shift);
+    final long usableHeight = nextBreak - (y + shift);
 
+    final long height = box.getHeight();
+    if (box.isAvoidPagebreakInside() ||
+        box.getOrphansSize() + box.getWidowsSize() > height ||
+        box.getOrphansSize() > usableHeight)
+    {
+      final long newShift = nextBreak - y;
+
+      // orphans and widows rules prevent a break.
+
+      if (newShift > 0)
+      {
+        boxShifter.shiftBox(box, newShift);
+        boxShifter.extendParents(box, newShift);
+        shift = newShift;
+        box.setStickyMarker(stickyMarker);
+        return false;
+      }
+      else if (newShift < 0)
+      {
+        boxShifter.shiftBox(box, shift);
+        pageOverflow = true;
+        return false;
+      }
+      else
+      {
+        return false;
+      }
+    }
+
+    // At this point, we know that the box is way to large to fit the remaining
+    // space. But we know, that content will be processed on that page (by
+    // looking at the orphan-size) and that the break occurrs somewhere inside
+    // of the children of this box. So shall it be!
+
+    box.setY(box.getY() + shift);
+    box.setStickyMarker(stickyMarker);
+    return true;
+
+/// IGNORE EVERYTHING BELOW ---
     // Collect all elements that might collapse at this point. We are less
     // strict than with the margin collection - all boxes contribute to the
     // complext top-edge as long as we did not hit any content or an empty
     // box.
-
-    RenderNode contentNode;
-    RenderBox marginBox = box;
-    for (;;)
-    {
-      final RenderNode node = marginBox.getFirstChild();
-      if (node == null)
-      {
-        contentNode = marginBox;
-        break;
-      }
-      else if (node instanceof BlockRenderBox == false)
-      {
-        contentNode = node;
-        break;
-      }
-
-
-      marginBox = (RenderBox) node;
-    }
-
-    // Compute the total heigth of the edge.
-    // This is rather easy for now. Later, we have to count the number of
-    // lines or so to get the chunk-height under the constraints of orphans
-    // and widows.
-    final long firstChunkHeight =
-        (contentNode.getY() + contentNode.getHeight()) - box.getY();
-
-    final long nextBreak = getNextBreak(box.getY() + shift);
-    final long usableHeight = nextBreak - (box.getY() + shift);
-    if (firstChunkHeight < usableHeight)
-    {
-      // Oh, how easy. The content will fit. A break will occur somewhere
-      // in the box, but we deal with it later. For now: Dont shift.
-      box.setY(box.getY() + shift);
-      box.setStickyMarker(stickyMarker);
-      return true;
-    }
-
-    // It gets more complicated. Shift it to the next page. The first node shall
-    // be marked as done.
-    final long newShift = nextBreak - box.getY();
-    if (newShift > 0)
-    {
-      boxShifter.shiftBox(box, newShift);
-      boxShifter.extendParents(box, newShift);
-      shift = newShift;
-      box.setStickyMarker(stickyMarker);
-      return false;
-    }
-    else if (newShift < 0)
-    {
-      boxShifter.shiftBox(box, shift);
-      pageOverflow = true;
-      return false;
-    }
-    else
-    {
-      // boxShifter.shiftBox(box, shift);
-      return false;
-    }
+//
+//    RenderNode contentNode;
+//    RenderBox marginBox = box;
+//    for (;;)
+//    {
+//      final RenderNode node = marginBox.getFirstChild();
+//      if (node == null)
+//      {
+//        contentNode = marginBox;
+//        break;
+//      }
+//      else if (node instanceof TableColumnNode ||
+//               node instanceof TableColumnGroupNode)
+//      {
+//        RenderNode next = node.getNext();
+//        RenderNode oldNext = node;
+//        while (next != null)
+//        {
+//          if (next instanceof RenderBox)
+//          {
+//            break;
+//          }
+//          oldNext = next;
+//          next = next.getNext();
+//        }
+//        if (next == null)
+//        {
+//          contentNode = oldNext;
+//          break;
+//        }
+//
+//        marginBox = (RenderBox) next;
+//        continue;
+//      }
+//      else if (node instanceof BlockRenderBox == false)
+//      {
+//        contentNode = node;
+//        break;
+//      }
+//      else if (node instanceof TableRowRenderBox)
+//      {
+//        contentNode = node;
+//        break;
+//      }
+//      marginBox = (RenderBox) node;
+//    }
+//
+//    // Compute the total heigth of the edge.
+//    // This is rather easy for now. Later, we have to count the number of
+//    // lines or so to get the chunk-height under the constraints of orphans
+//    // and widows.
+//    final long firstChunkHeight =
+//        (contentNode.getY() + contentNode.getHeight()) - box.getY();
+//
+//    final long nextBreak = getNextBreak(box.getY() + shift);
+//    final long usableHeight = nextBreak - (box.getY() + shift);
+//    if (firstChunkHeight < usableHeight)
+//    {
+//      // Oh, how easy. The content will fit. A break will occur somewhere
+//      // in the box, but we deal with it later. For now: Dont shift.
+//      box.setY(box.getY() + shift);
+//      box.setStickyMarker(stickyMarker);
+//      return true;
+//    }
+//
+//    // It gets more complicated. Shift it to the next page. The first node shall
+//    // be marked as done.
+//    final long newShift = nextBreak - box.getY();
+//    if (newShift > 0)
+//    {
+//      boxShifter.shiftBox(box, newShift);
+//      boxShifter.extendParents(box, newShift);
+//      shift = newShift;
+//      box.setStickyMarker(stickyMarker);
+//      return false;
+//    }
+//    else if (newShift < 0)
+//    {
+//      boxShifter.shiftBox(box, shift);
+//      pageOverflow = true;
+//      return false;
+//    }
+//    else
+//    {
+//      // boxShifter.shiftBox(box, shift);
+//      return false;
+//    }
   }
 
   private boolean isOverflow(final RenderNode box)

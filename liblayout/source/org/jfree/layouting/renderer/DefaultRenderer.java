@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.16 2006/10/27 18:25:50 taqua Exp $
+ * $Id: DefaultRenderer.java,v 1.17 2006/10/31 11:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -98,6 +98,7 @@ import org.jfree.layouting.renderer.process.ParagraphLineBreakStep;
 import org.jfree.layouting.renderer.process.TableRowHeightStep;
 import org.jfree.layouting.renderer.process.TableValidationStep;
 import org.jfree.layouting.renderer.process.ValidateModelStep;
+import org.jfree.layouting.renderer.process.ComputeBreakabilityStep;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
 import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.layouting.util.geom.StrictDimension;
@@ -128,7 +129,10 @@ public class DefaultRenderer implements Renderer
     private InfiniteMinorAxisLayoutStep minorAxisLayoutStep;
     private InfiniteMajorAxisLayoutStep majorAxisLayoutStep;
     private TableRowHeightStep tableRowHeightStep;
+    private ComputeBreakabilityStep breakabilityStep;
     private PaginationStep paginationStep;
+    private FillPhysicalPagesStep fillPhysicalPagesStep;
+    private CleanPaginatedBoxesStep cleanPaginatedBoxesStep;
     private BoxDefinitionFactory boxDefinitionFactory;
     private RenderPageContext pageContext;
     private int bufferLength;
@@ -149,7 +153,10 @@ public class DefaultRenderer implements Renderer
       this.minorAxisLayoutStep = renderer.minorAxisLayoutStep;
       this.majorAxisLayoutStep = renderer.majorAxisLayoutStep;
       this.tableRowHeightStep = renderer.tableRowHeightStep;
+      this.breakabilityStep = renderer.breakabilityStep;
       this.paginationStep = renderer.paginationStep;
+      this.fillPhysicalPagesStep = renderer.fillPhysicalPagesStep;
+      this.cleanPaginatedBoxesStep = renderer.cleanPaginatedBoxesStep;
       this.pageContext = renderer.pageContext;
       this.bufferLength = renderer.buffer.getData().length;
 
@@ -184,6 +191,8 @@ public class DefaultRenderer implements Renderer
       defaultRenderer.majorAxisLayoutStep = this.majorAxisLayoutStep;
       defaultRenderer.tableRowHeightStep = this.tableRowHeightStep;
       defaultRenderer.paginationStep = this.paginationStep;
+      defaultRenderer.fillPhysicalPagesStep = this.fillPhysicalPagesStep;
+      defaultRenderer.cleanPaginatedBoxesStep = this.cleanPaginatedBoxesStep;
       defaultRenderer.pageContext = this.pageContext;
       defaultRenderer.logicalPageBox = (LogicalPageBox) this.logicalPageBox.derive(true);
 
@@ -214,6 +223,7 @@ public class DefaultRenderer implements Renderer
   private InfiniteMinorAxisLayoutStep minorAxisLayoutStep;
   private InfiniteMajorAxisLayoutStep majorAxisLayoutStep;
   private TableRowHeightStep tableRowHeightStep;
+  private ComputeBreakabilityStep breakabilityStep;
   private PaginationStep paginationStep;
   private FillPhysicalPagesStep fillPhysicalPagesStep;
   private CleanPaginatedBoxesStep cleanPaginatedBoxesStep;
@@ -271,12 +281,13 @@ public class DefaultRenderer implements Renderer
       this.minorAxisLayoutStep = new InfiniteMinorAxisLayoutStep();
       this.majorAxisLayoutStep = new InfiniteMajorAxisLayoutStep();
       this.tableRowHeightStep = new TableRowHeightStep();
+      this.breakabilityStep = new ComputeBreakabilityStep();
       this.paginationStep = new PaginationStep();
       this.fillPhysicalPagesStep = new FillPhysicalPagesStep();
+      this.cleanPaginatedBoxesStep = new CleanPaginatedBoxesStep();
       this.stringsStore = new StringStore();
       this.elementsStore = new ContentStore();
       this.pendingStore = new ContentStore();
-      this.cleanPaginatedBoxesStep = new CleanPaginatedBoxesStep();
     }
   }
 
@@ -347,6 +358,7 @@ public class DefaultRenderer implements Renderer
       minorAxisLayoutStep.compute(logicalPageBox);
       majorAxisLayoutStep.compute(logicalPageBox);
       tableRowHeightStep.compute(logicalPageBox);
+      breakabilityStep.compute(logicalPageBox);
 
       if (paginationStep.performPagebreak(logicalPageBox) ||
           logicalPageBox.isOpen() == false)

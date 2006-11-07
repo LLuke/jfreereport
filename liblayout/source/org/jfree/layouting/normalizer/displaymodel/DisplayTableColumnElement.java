@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayTableColumnElement.java,v 1.1 2006/07/17 16:50:42 taqua Exp $
  *
  * Changes
  * -------
@@ -69,6 +69,4 @@ public class DisplayTableColumnElement extends DisplayElement
   {
     getRootFlow().getContentGenerator().finishedTableColumn();
   }
-
-
 }

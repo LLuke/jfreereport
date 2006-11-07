@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.19 2006/10/27 18:25:50 taqua Exp $
+ * $Id: RenderBox.java,v 1.20 2006/10/31 11:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -42,12 +42,15 @@ package org.jfree.layouting.renderer.model;
 
 import org.jfree.fonts.registry.FontMetrics;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.keys.page.PageBreak;
+import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.text.WhitespaceCollapse;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
@@ -89,6 +92,13 @@ public abstract class RenderBox extends RenderNode
   private ExtendedBaselineInfo nominalBaselineInfo;
   private ExtendedBaselineInfo baselineInfo;
 
+  private long widowsSize;
+  private long orphansSize;
+  private int lineCount;
+  private int widows;
+  private int orphans;
+  private boolean avoidPagebreakInside;
+
   public RenderBox(final BoxDefinition boxDefinition)
   {
     if (boxDefinition == null)
@@ -118,6 +128,62 @@ public abstract class RenderBox extends RenderNode
     final FontSpecification fontSpecification = context.getFontSpecification();
     final FontMetrics fontMetrics = metaData.getFontMetrics(fontSpecification);
     nominalBaselineInfo = TextUtility.createBaselineInfo('x', fontMetrics);
+
+    final CSSValue widowsValue = context.getStyle().getValue(PageStyleKeys.WIDOWS);
+    this.widows = Math.max (1, (int)
+        CSSValueResolverUtility.getNumericValue(widowsValue, 0));
+
+    final CSSValue orphansValue = context.getStyle().getValue(PageStyleKeys.ORPHANS);
+    this.orphans = Math.max (1, (int)
+        CSSValueResolverUtility.getNumericValue(orphansValue, 0));
+
+    final CSSValue pageBreak = context.getStyle().getValue(PageStyleKeys.PAGE_BREAK_INSIDE);
+    this.avoidPagebreakInside = PageBreak.AVOID.equals(pageBreak);
+  }
+
+  public long getWidowsSize()
+  {
+    return widowsSize;
+  }
+
+  public void setWidowsSize(final long widowsSize)
+  {
+    this.widowsSize = widowsSize;
+  }
+
+  public long getOrphansSize()
+  {
+    return orphansSize;
+  }
+
+  public void setOrphansSize(final long orphansSize)
+  {
+    this.orphansSize = orphansSize;
+  }
+
+  public int getLineCount()
+  {
+    return lineCount;
+  }
+
+  public void setLineCount(final int lineCount)
+  {
+    this.lineCount = lineCount;
+  }
+
+  public int getWidows()
+  {
+    return widows;
+  }
+
+  public int getOrphans()
+  {
+    return orphans;
+  }
+
+  public boolean isAvoidPagebreakInside()
+  {
+    return avoidPagebreakInside;
   }
 
   public ExtendedBaselineInfo getBaselineInfo()
