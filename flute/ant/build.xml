@@ -31,7 +31,7 @@
     <javacc
         target="source/org/w3c/flute/parser/Parser.jj"
         outputdirectory="source/org/w3c/flute/parser/"
-        javacchome="/home/src/ext/javacc"
+        javacchome="${javacchome}"
     />
   </target>
 
