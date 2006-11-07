@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MultiplexRootElementHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: MultiplexRootElementHandler.java,v 1.1.1.1 2006/05/15 12:28:33 taqua Exp $
  *
  * Changes
  * -------
@@ -45,9 +45,6 @@ import java.util.HashMap;
 
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.util.Log;
-import org.jfree.xmlns.parser.DefaultXmlDocumentInfo;
-import org.jfree.xmlns.parser.FixNamespaceUriAttributes;
 import org.xml.sax.Attributes;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;

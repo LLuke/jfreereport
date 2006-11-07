@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PropertiesReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: PropertiesReadHandler.java,v 1.1.1.1 2006/05/15 12:28:36 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.util.Properties;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.jfree.xmlns.parser.AbstractXmlReadHandler;
 
 /**
  * Creation-Date: 07.04.2006, 18:11:50

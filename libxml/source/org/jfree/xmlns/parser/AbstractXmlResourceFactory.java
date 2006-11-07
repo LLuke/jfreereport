@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractXmlResourceFactory.java,v 1.1.1.1 2006/05/15 12:28:31 taqua Exp $
+ * $Id: AbstractXmlResourceFactory.java,v 1.2 2006/07/11 13:13:11 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,6 @@ import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.xmlns.LibXmlBoot;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
