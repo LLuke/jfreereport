@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ChainingCallException.java,v 1.1 2006/10/17 17:31:58 taqua Exp $
  *
  * Changes
  * -------
@@ -40,36 +40,40 @@
  */
 package org.jfree.layouting.util;
 
+import org.jfree.util.StackableException;
+
 /**
  * Creation-Date: 04.10.2006, 18:35:12
  *
  * @author Thomas Morgner
  */
-public class ChainingCallException extends Exception
+public class ChainingCallException extends StackableException
 {
   /**
-   * Constructs a new exception with <code>null</code> as its detail message.
-   * The cause is not initialized, and may subsequently be initialized by a call
-   * to {@link #initCause}.
+   * Creates a StackableRuntimeException with no message and no parent.
    */
   public ChainingCallException()
   {
   }
 
   /**
-   * Constructs a new exception with the specified cause and a detail message of
-   * <tt>(cause==null ? null : cause.toString())</tt> (which typically contains
-   * the class and detail message of <tt>cause</tt>). This constructor is useful
-   * for exceptions that are little more than wrappers for other throwables (for
-   * example, {@link java.security.PrivilegedActionException}).
+   * Creates an exception.
    *
-   * @param cause the cause (which is saved for later retrieval by the {@link
-   *              #getCause()} method).  (A <tt>null</tt> value is permitted,
-   *              and indicates that the cause is nonexistent or unknown.)
-   * @since 1.4
+   * @param message the exception message.
+   * @param ex      the parent exception.
    */
-  public ChainingCallException(Throwable cause)
+  public ChainingCallException(final String message, final Exception ex)
   {
-    super(cause);
+    super(message, ex);
+  }
+
+  /**
+   * Creates an exception.
+   *
+   * @param message the exception message.
+   */
+  public ChainingCallException(final String message)
+  {
+    super(message);
   }
 }

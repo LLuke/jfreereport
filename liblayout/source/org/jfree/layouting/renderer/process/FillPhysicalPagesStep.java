@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FillPhysicalPagesStep.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
+ * $Id: FillPhysicalPagesStep.java,v 1.2 2006/10/31 11:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -107,6 +107,12 @@ public class FillPhysicalPagesStep extends IterateVisualProcessStep
     processBoxChilds(box);
   }
 
+  /**
+   * Invisible nodes may need special treatment here.
+   * 
+   * @param box
+   * @return
+   */
   protected boolean startBlockLevelBox(final RenderBox box)
   {
     RenderNode node = box.getFirstChild();

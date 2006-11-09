@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRowHeightStep.java,v 1.2 2006/11/05 16:45:53 taqua Exp $
+ * $Id: TableRowHeightStep.java,v 1.3 2006/11/07 19:53:54 taqua Exp $
  *
  * Changes
  * -------
@@ -160,6 +160,7 @@ public class TableRowHeightStep extends IterateVisualProcessStep
     {
       final TableRenderBox table = (TableRenderBox) box;
       currentTable = new TableInfoStructure(table);
+      Log.debug ("Initial Position: " + table.getY());
       currentTable.setPosition(table.getY());
 
       tableStack.push(currentTable);
@@ -227,6 +228,10 @@ public class TableRowHeightStep extends IterateVisualProcessStep
         rowNode = rowNode.getNext();
         continue;
       }
+      if (rowNode.isDirty() == false)
+      {
+        throw new IllegalStateException("The row is not dirty?");
+      }
 
       final TableRowRenderBox rowBox = (TableRowRenderBox) rowNode;
       final int rowNumber = rowBox.getRowInfoStructure().getRowNumber();
@@ -278,6 +283,7 @@ public class TableRowHeightStep extends IterateVisualProcessStep
       }
 
       rowBox.setHeight(validatedRowHeight);
+      rowBox.setDirty(false);
       position += validatedRowHeight;
       rowNode = rowNode.getNext();
     }
@@ -304,6 +310,7 @@ public class TableRowHeightStep extends IterateVisualProcessStep
     // We do not perform a real shift, as this would be to expensive.
     // we simply store the location--
     currentTable.setPosition(position);
+    Log.debug ("Updated Position: " + position);
 
   }
 

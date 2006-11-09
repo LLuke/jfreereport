@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ComputeICMMetricsStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: ComputeICMMetricsStep.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
     long minChunkWidth = 0;
     long maxBoxWidth = 0;
 
-    RenderNode node = box.getFirstChild();
+    RenderNode node = box.getVisibleFirst();
     while (node != null)
     {
       final NodeLayoutProperties cnlp = node.getNodeLayoutProperties();
@@ -106,7 +106,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
       {
         minChunkWidth = childChunkWidth;
       }
-      node = node.getNext();
+      node = node.getVisibleNext();
     }
 
     NodeLayoutProperties nlp = box.getNodeLayoutProperties();
@@ -143,7 +143,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
     long minChunkWidth = 0;
     long maxBoxWidth = 0;
 
-    RenderNode node = box.getFirstChild();
+    RenderNode node = box.getVisibleFirst();
     while (node != null)
     {
       final NodeLayoutProperties cnlp = node.getNodeLayoutProperties();
@@ -160,7 +160,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
         maxBoxWidth = childBoxWidth;
       }
 
-      node = node.getNext();
+      node = node.getVisibleNext();
     }
 
     NodeLayoutProperties nlp = box.getNodeLayoutProperties();

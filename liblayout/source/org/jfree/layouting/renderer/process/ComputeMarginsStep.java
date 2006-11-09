@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ComputeMarginsStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: ComputeMarginsStep.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -170,16 +170,17 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
 
     final boolean infiniteMarginTop;
     final RenderBox boxParent = box.getParent();
+    final RenderNode visiblePrev = box.getVisiblePrev();
     if (boxParent == null)
     {
-      infiniteMarginTop = (box.getPrev() == null);
+      infiniteMarginTop = (visiblePrev == null);
     }
     else
     {
       final StaticBoxLayoutProperties sBlp = boxParent.getStaticBoxLayoutProperties();
       final BoxLayoutProperties pBlp = boxParent.getBoxLayoutProperties();
       infiniteMarginTop =
-          (pBlp.isInfiniteMarginTop() && box.getPrev() == null &&
+          (pBlp.isInfiniteMarginTop() && visiblePrev == null &&
           sBlp.getBorderTop() == 0 && sBlp.getPaddingTop() != 0);
     }
 
@@ -201,7 +202,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
         break;
       }
 
-      final RenderNode node = marginBox.getFirstChild();
+      final RenderNode node = marginBox.getVisibleFirst();
       if (node instanceof RenderBox == false)
       {
         break;
@@ -238,9 +239,9 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
       topMarginPositive = marginTop;
     }
 
-    if (box.getPrev() instanceof BlockRenderBox)
+    if (visiblePrev instanceof BlockRenderBox)
     {
-      final RenderBox prevBox = (RenderBox) box.getPrev();
+      final RenderBox prevBox = (RenderBox) visiblePrev;
       final long effectiveMarginBottom =
           prevBox.getBoxLayoutProperties().getEffectiveMarginBottom();
 

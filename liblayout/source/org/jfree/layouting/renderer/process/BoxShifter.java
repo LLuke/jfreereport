@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BoxShifter.java,v 1.3 2006/10/31 11:14:12 taqua Exp $
+ * $Id: BoxShifter.java,v 1.4 2006/11/07 19:53:54 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,9 @@ package org.jfree.layouting.renderer.process;
 
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
+import org.jfree.layouting.renderer.model.table.TableRenderBox;
+import org.jfree.util.Log;
 
 /**
  * By keeping the shifting in a separate class, we can optimize it later without
@@ -77,7 +80,7 @@ public class BoxShifter
     {
       return;
     }
-    
+
     box.setY(box.getY() + amount);
     shiftBoxInternal(box, amount);
   }
@@ -97,9 +100,35 @@ public class BoxShifter
   }
 
 
-  public void extendParents(RenderBox box, long amount)
+//  public void extendParents(RenderBox box, long amount)
+//  {
+//    if (amount < 0)
+//    {
+//      throw new IllegalArgumentException();
+//    }
+//    RenderBox parent = box.getParent();
+//    while (parent != null)
+//    {
+//      parent.setHeight(parent.getHeight() + amount);
+//      parent = parent.getParent();
+//    }
+//  }
+//
+  public void extendHeight(RenderNode node, long amount)
   {
-    RenderBox parent = box.getParent();
+    if (amount < 0)
+    {
+      throw new IllegalArgumentException("Cannot shrink elements.");
+    }
+    if (node == null)
+    {
+      Log.debug ("No parent?");
+      return;
+    }
+
+    node.setHeight(node.getHeight() + amount);
+
+    RenderBox parent = node.getParent();
     while (parent != null)
     {
       parent.setHeight(parent.getHeight() + amount);

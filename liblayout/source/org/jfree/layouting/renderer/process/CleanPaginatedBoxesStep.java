@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CleanPaginatedBoxesStep.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
+ * $Id: CleanPaginatedBoxesStep.java,v 1.2 2006/10/31 11:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -102,14 +102,12 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
       return startTableRow((TableRowRenderBox) box);
     }
 
-
-    final RenderNode node = box.getFirstChild();
+    final RenderNode node = box.getVisibleFirst();
     if (node == null)
     {
-      // No need to replace empty cells.
+      // The cell is empty ..
       return false;
     }
-
 
     final long nodeY = node.getY();
     if ((nodeY + node.getHeight()) > pageOffset)
@@ -131,7 +129,7 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
     RenderNode last = node;
     for(;;)
     {
-      final RenderNode next = last.getNext();
+      final RenderNode next = last.getVisibleNext();
       if (next == null)
       {
         break;

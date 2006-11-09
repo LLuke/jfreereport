@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ValidateModelStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -206,7 +206,7 @@ public class ValidateModelStep extends IterateStructuralProcessStep
             boolean foundRow = false;
             // We found a tbody element ..
             // next - check whether the first row is closed ..
-            RenderNode maybeRow = section.getFirstChild();
+            RenderNode maybeRow = section.getVisibleFirst();
             while (maybeRow != null)
             {
               if (maybeRow instanceof TableRowRenderBox)
@@ -250,7 +250,7 @@ public class ValidateModelStep extends IterateStructuralProcessStep
         // we need to have at least one complete row of data (not counting header
         // and footer sections. The first row has no prev-element, so we simply
         // test whether there is one ..
-        if (row.getPrev() == null)
+        if (row.getVisiblePrev() == null)
         {
           layoutableResult = false;
           context.debug("Table: First Row not finished. Not layoutable.");

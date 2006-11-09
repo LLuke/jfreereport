@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingComponent.java,v 1.3 2006/10/22 14:58:26 taqua Exp $
+ * $Id: ChainingComponent.java,v 1.4 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -145,7 +145,7 @@ public abstract class ChainingComponent
         catch(Exception e)
         {
           call.setState(STATE_ERROR);
-          throw new ChainingCallException(e);
+          throw new ChainingCallException("Chained Call failed:", e);
         }
       }
     }

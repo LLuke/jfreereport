@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ComputeBreakabilityStep.java,v 1.1 2006/11/07 19:54:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -33,12 +33,14 @@ package org.jfree.layouting.renderer.process;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 /**
- * Creation-Date: 06.11.2006, 19:54:20
+ * Computes the size of the non-breakable areas at the beginning and end
+ * of each block-level box.
  *
  * @author Thomas Morgner
  */
@@ -64,24 +66,27 @@ public class ComputeBreakabilityStep extends IterateVisualProcessStep
   {
     if (box instanceof ParagraphRenderBox)
     {
-      finishParagraph((ParagraphRenderBox) box);
+      final ParagraphRenderBox paragraph = (ParagraphRenderBox) box;
+      finishParagraph(paragraph);
       return;
     }
     else if (box instanceof TableRenderBox)
     {
-      finishTable(box);
+      final TableRenderBox table = (TableRenderBox) box;
+      finishTable(table);
       return;
     }
     else if (box instanceof TableRowRenderBox)
     {
-      finishTableRow(box);
+      final TableRowRenderBox row = (TableRowRenderBox) box;
+      finishTableRow(row);
       return;
     }
 
     // do something ..
     // for now, we ignore most of the stuff, and assume that orphans and
     // widows count for paragraphs and tables, and not for the ordinary stuff.
-    final RenderNode firstNode = getFirstUsableNode(box);
+    final RenderNode firstNode = findNonFinishedVisibleFirst (box);
     if (firstNode instanceof RenderBox)
     {
       final RenderBox firstBox = (RenderBox) firstNode;
@@ -92,7 +97,7 @@ public class ComputeBreakabilityStep extends IterateVisualProcessStep
       box.setOrphansSize(firstNode.getHeight());
     }
 
-    final RenderNode lastNode = getLastUsableNode(box);
+    final RenderNode lastNode = findNonFinishedVisibleLast(box);
     if (lastNode instanceof RenderBox)
     {
       final RenderBox lastBox = (RenderBox) lastNode;
@@ -104,25 +109,39 @@ public class ComputeBreakabilityStep extends IterateVisualProcessStep
     }
   }
 
-  private void finishTableRow(final RenderBox box)
+  private RenderNode findNonFinishedVisibleFirst (RenderBox box)
+  {
+    RenderNode node = box.getVisibleFirst();
+    while (node instanceof FinishedRenderNode)
+    {
+      node = node.getVisibleNext();
+    }
+    return node;
+  }
+
+  private RenderNode findNonFinishedVisibleLast (RenderBox box)
+  {
+    RenderNode node = box.getVisibleLast();
+    while (node instanceof FinishedRenderNode)
+    {
+      node = node.getVisiblePrev();
+    }
+    return node;
+  }
+
+  private void finishTableRow(final TableRowRenderBox box)
   {
     // A table row is different. It behaves as if it is a linebox.
     long orphanSize = 0;
     long widowSize = 0;
     int linecount = 0;
 
-    RenderNode node = box.getFirstChild();
+    RenderNode node = box.getVisibleFirst();
     while (node != null)
     {
-      if (node.isIgnorableForRendering())
-      {
-        node = node.getNext();
-        continue;
-      }
-
       if (node instanceof RenderBox == false)
       {
-        node = node.getNext();
+        node = node.getVisibleNext();
         continue;
       }
 
@@ -130,7 +149,7 @@ public class ComputeBreakabilityStep extends IterateVisualProcessStep
       orphanSize = Math.max (cellBox.getOrphansSize(), orphanSize);
       widowSize = Math.max (cellBox.getWidowsSize(), widowSize);
       linecount = Math.max (cellBox.getLineCount(), linecount);
-      node = node.getNext();
+      node = node.getVisibleNext();
     }
 
     box.setOrphansSize(orphanSize);
@@ -138,122 +157,49 @@ public class ComputeBreakabilityStep extends IterateVisualProcessStep
     box.setLineCount(linecount);
   }
 
-  private RenderNode getFirstUsableNode (RenderBox box)
-  {
-    RenderNode node = box.getFirstChild();
-    while (node != null)
-    {
-      // Each node is a line.
-      if (node.isIgnorableForRendering() == false)
-      {
-        return node;
-      }
-      node = node.getNext();
-    }
-    return null;
-  }
-
-  private RenderNode getLastUsableNode (RenderBox box)
-  {
-    RenderNode node = box.getLastChild();
-    while (node != null)
-    {
-      // Each node is a line.
-      if (node.isIgnorableForRendering() == false)
-      {
-        return node;
-      }
-      node = node.getPrev();
-    }
-    return null;
-  }
-
-  private void finishTable(final RenderBox box)
+  private void finishTable(final TableRenderBox box)
   {
     // Tables are simple right now. Just grab whatever you get ..
     // ignore non-renderable stuff ..
 
-    // Todo: Use the row's orphan stuff ..
-
-    int lineCount = 0;
-    RenderNode node = box.getFirstChild();
-    while (node != null)
+    RenderNode node = box.getVisibleFirst();
+    if (node instanceof RenderBox)
     {
-      // Each node is a line.
-      if (node.isIgnorableForRendering())
-      {
-        node = node.getNext();
-        continue;
-      }
-
-      lineCount += 1;
-      if (lineCount == box.getOrphans())
-      {
-        break;
-      }
-      node = node.getNext();
+      // This is not very valid now.
+      RenderBox firstBox = (RenderBox) node;
+      box.setOrphansSize(firstBox.getOrphansSize());
     }
-
-    if (node == null)
+    else
     {
       box.setOrphansSize(box.getHeight());
     }
+
+
+    node = box.getVisibleLast();
+    if (node instanceof RenderBox)
+    {
+      RenderBox lastBox = (RenderBox) node;
+      box.setWidowsSize(lastBox.getWidowsSize());
+    }
     else
-    {
-      final long nodeY2 = (node.getY() + node.getHeight());
-      box.setOrphansSize(nodeY2 - box.getY());
-    }
-
-    lineCount = 0;
-    node = box.getLastChild();
-    while (node != null)
-    {
-      if (node.isIgnorableForRendering())
-      {
-        node = node.getNext();
-        continue;
-      }
-
-      // Each node is a line.
-      lineCount += 1;
-      if (lineCount == box.getWidows())
-      {
-        break;
-      }
-      node = node.getPrev();
-    }
-
-    if (node == null)
     {
       box.setWidowsSize(box.getHeight());
-    }
-    else
-    {
-      final long nodeY2 = (node.getY() + node.getHeight());
-      final long paragraphY2 = box.getY() + box.getHeight();
-      box.setWidowsSize(paragraphY2 - nodeY2);
     }
   }
 
   private void finishParagraph(final ParagraphRenderBox box)
   {
     int lineCount = 0;
-    RenderNode node = box.getFirstChild();
+    RenderNode node = box.getVisibleFirst();
     while (node != null)
     {
       // Each node is a line.
-      if (node.isIgnorableForRendering())
-      {
-        node = node.getNext();
-        continue;
-      }
-
       lineCount += 1;
       if (lineCount == box.getOrphans())
       {
         break;
       }
-      node = node.getNext();
+      node = node.getVisibleNext();
     }
 
     if (node == null)
@@ -267,22 +213,16 @@ public class ComputeBreakabilityStep extends IterateVisualProcessStep
     }
 
     lineCount = 0;
-    node = box.getLastChild();
+    node = box.getVisibleLast();
     while (node != null)
     {
-      if (node.isIgnorableForRendering())
-      {
-        node = node.getNext();
-        continue;
-      }
-
       // Each node is a line.
       lineCount += 1;
       if (lineCount == box.getWidows())
       {
         break;
       }
-      node = node.getPrev();
+      node = node.getVisiblePrev();
     }
 
     if (node == null)

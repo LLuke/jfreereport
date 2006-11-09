@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMajorAxisLayoutStep.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
+ * $Id: InfiniteMajorAxisLayoutStep.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -57,11 +57,13 @@ import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
+import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.process.valign.BoxAlignContext;
 import org.jfree.layouting.renderer.process.valign.InlineBlockAlignContext;
 import org.jfree.layouting.renderer.process.valign.NodeAlignContext;
 import org.jfree.layouting.renderer.process.valign.TextElementAlignContext;
 import org.jfree.layouting.renderer.process.valign.VerticalAlignmentProcessor;
+import org.jfree.util.Log;
 
 /**
  * This process-step computes the vertical alignment and corrects the
@@ -170,6 +172,11 @@ public class InfiniteMajorAxisLayoutStep
 
   protected boolean startBlockLevelBox(final RenderBox box)
   {
+    if (box.isIgnorableForRendering())
+    {
+      return false;
+    }
+
     // first, compute the position. The position is global, not relative to a
     // parent or so. Therefore a child has no connection to the parent's
     // effective position, when it is painted.
@@ -227,18 +234,22 @@ public class InfiniteMajorAxisLayoutStep
     // it layouts its children from left to right
     if (parent instanceof TableRowRenderBox)
     {
-      final StaticBoxLayoutProperties blp = parent.getStaticBoxLayoutProperties();
-      final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
-
-      node.setY(marginTop + insetTop + parent.getY());
+      // Node is a table-cell ..
+      node.setDirty(true);
+      node.setY(parent.getY());
     }
     // If the box's parent is a block box ..
     else if (parent instanceof BlockRenderBox)
     {
-      final RenderNode prev = node.getPrev();
+      if (node instanceof TableRowRenderBox)
+      {
+        Log.debug ("ER");
+      }
+      final RenderNode prev = node.getVisiblePrev();
       if (prev != null)
       {
         // we have a silbling. Position yourself directly below your silbling ..
+        node.setDirty(true);
         node.setY(marginTop + prev.getY() + prev.getHeight());
       }
       else
@@ -246,6 +257,7 @@ public class InfiniteMajorAxisLayoutStep
         final StaticBoxLayoutProperties blp = parent.getStaticBoxLayoutProperties();
         final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
 
+        node.setDirty(true);
         node.setY(marginTop + insetTop + parent.getY());
       }
     }
@@ -255,10 +267,13 @@ public class InfiniteMajorAxisLayoutStep
       final StaticBoxLayoutProperties blp = parent.getStaticBoxLayoutProperties();
       final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
 
+      node.setDirty(true);
       node.setY(marginTop + insetTop + parent.getY());
     }
     else
     {
+      // there's no parent ..
+      node.setDirty(true);
       node.setY(marginTop);
     }
   }
@@ -355,7 +370,7 @@ public class InfiniteMajorAxisLayoutStep
 
   private void computeBaselineInfo(final RenderBox box)
   {
-    RenderNode node = box.getFirstChild();
+    RenderNode node = box.getVisibleFirst();
     while (node != null)
     {
       if (node instanceof RenderableText)
@@ -366,7 +381,7 @@ public class InfiniteMajorAxisLayoutStep
         break;
       }
 
-      node = node.getNext();
+      node = node.getVisibleNext();
     }
 
     if (box.getBaselineInfo() == null)
@@ -456,7 +471,7 @@ public class InfiniteMajorAxisLayoutStep
     // Process the direct childs of the paragraph
     // Each direct child represents a line ..
 
-    RenderNode node = box.getFirstChild();
+    RenderNode node = box.getVisibleFirst();
     while (node != null)
     {
       // all childs of the linebox container must be inline boxes. They
@@ -471,7 +486,7 @@ public class InfiniteMajorAxisLayoutStep
       processBoxChilds(inlineRenderBox);
       finishLine(inlineRenderBox);
 
-      node = node.getNext();
+      node = node.getVisibleNext();
     }
 
   }

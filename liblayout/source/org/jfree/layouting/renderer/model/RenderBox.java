@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.20 2006/10/31 11:14:12 taqua Exp $
+ * $Id: RenderBox.java,v 1.21 2006/11/07 19:53:54 taqua Exp $
  *
  * Changes
  * -------
@@ -793,6 +793,34 @@ public abstract class RenderBox extends RenderNode
     setFirstChild(null);
     setLastChild(null);
     updateChangeTracker();
+  }
+
+  public RenderNode getVisibleFirst()
+  {
+    RenderNode firstChild = getFirstChild();
+    while (firstChild != null)
+    {
+      if (firstChild.isIgnorableForRendering() == false)
+      {
+        return firstChild;
+      }
+      firstChild = firstChild.getNext();
+    }
+    return null;
+  }
+
+  public RenderNode getVisibleLast()
+  {
+    RenderNode lastChild = getLastChild();
+    while (lastChild != null)
+    {
+      if (lastChild.isIgnorableForRendering() == false)
+      {
+        return lastChild;
+      }
+      lastChild = lastChild.getPrev();
+    }
+    return null;
   }
 
   private RenderNode getFirstNonEmpty()

@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: TableValidationStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -196,7 +196,7 @@ public class TableValidationStep extends IterateStructuralProcessStep
         lastRow = (TableRowRenderBox) rowNode;
         break;
       }
-      rowNode = rowNode.getPrev();
+      rowNode = rowNode.getVisiblePrev();
     }
 
     final TableRowModel rowModel = section.getRowModel();

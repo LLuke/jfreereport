@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: SwingDocumentImport.java,v 1.4 2006/10/30 19:51:41 mimil Exp $
+ * $Id: SwingDocumentImport.java,v 1.5 2006/11/07 22:37:25 mimil Exp $
  *
  * Changes
  * -------
@@ -41,15 +41,15 @@
 
 package org.jfree.layouting.input.swing;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.nio.charset.Charset;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -396,7 +396,18 @@ public class SwingDocumentImport
     pane.setEditable(false);
     final JFrame frame = new JFrame("HTML Viewer");
     frame.setSize(800, 600);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // JDK 1.2.2 has no EXIT_ON_CLOSE .. 
+    frame.addWindowListener(new WindowAdapter() {
+      /**
+       * Invoked when a window has been closed.
+       */
+      public void windowClosed(WindowEvent e)
+      {
+        System.exit(0);
+      }
+    });
+
+
     JScrollPane scroll = new JScrollPane(pane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     frame.getContentPane().add(scroll);
     frame.setVisible(true);

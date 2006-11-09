@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMinorAxisLayoutStep.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.4 2006/11/05 16:45:53 taqua Exp $
  *
  * Changes
  * -------
@@ -455,7 +455,7 @@ public class InfiniteMinorAxisLayoutStep
   protected void processParagraphChilds(final ParagraphRenderBox box)
   {
     final BlockRenderBox lineboxContainer = box.getLineboxContainer();
-    RenderNode node = lineboxContainer.getFirstChild();
+    RenderNode node = lineboxContainer.getVisibleFirst();
     while (node != null)
     {
       // all childs of the linebox container must be inline boxes. They
@@ -470,7 +470,7 @@ public class InfiniteMinorAxisLayoutStep
       processBoxChilds(inlineRenderBox);
       finishLine(inlineRenderBox);
 
-      node = node.getNext();
+      node = node.getVisibleNext();
     }
 
   }

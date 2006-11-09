@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginationStep.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
+ * $Id: PaginationStep.java,v 1.4 2006/11/07 19:53:54 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,10 @@
  */
 package org.jfree.layouting.renderer.process;
 
+import java.util.Stack;
+
+import org.jfree.layouting.input.style.keys.box.DisplayRole;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.renderer.model.PageAreaRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphPoolBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
@@ -49,10 +53,7 @@ import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableColumnGroupNode;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
-import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.layouting.input.style.keys.box.DisplayRole;
-import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.util.Log;
 
 /**
@@ -60,7 +61,7 @@ import org.jfree.util.Log;
  * or outer page boundary. In that case, the content is shifted downwards to the
  * next page and then marked as sticky (so it wont move any further later; this
  * prevents infinite loops).
- *
+ * <p/>
  * This kind of shifting does not apply to inline-elements - they get shifted
  * when their linebox gets shifted.
  *
@@ -83,7 +84,7 @@ public class PaginationStep extends IterateVisualProcessStep
   private long headerHeight;
   private long footerHeight;
   private long stickyMarker;
-
+  private Stack tableContexts;
   private BoxShifter boxShifter;
 
   public PaginationStep()
@@ -107,7 +108,7 @@ public class PaginationStep extends IterateVisualProcessStep
     return physicalBreaks[physicalBreaks.length - 1];
   }
 
-  private boolean isCrossingBreak (RenderNode node)
+  private boolean isCrossingBreak(RenderNode node)
   {
     int y1Index = -1;
     int y2Index = -1;
@@ -128,7 +129,7 @@ public class PaginationStep extends IterateVisualProcessStep
     }
     if (y1Index != y2Index)
     {
-      Log.debug ("Crossing a break: " + y1Index + " " + y2Index);
+      Log.debug("Crossing a break: " + y1Index + " " + y2Index);
       return true;
     }
     return false;
@@ -143,7 +144,6 @@ public class PaginationStep extends IterateVisualProcessStep
     // Step one: layout the header-section. Record that height.
     final PageAreaRenderBox headerArea = pageBox.getHeaderArea();
     headerHeight = headerArea.getHeight();
-
 
     // Step two: The footer. For the footer, we have to traverse the whole
     // thing backwards. Nonetheless, we've got the height.
@@ -168,11 +168,11 @@ public class PaginationStep extends IterateVisualProcessStep
     // now consume the usable height and stop if all space is used or the
     // end of the document has been reached. Process at least one line of
     // content.
-    Log.debug ("Usable Page-Sizes: ");
+    Log.debug("Usable Page-Sizes: ");
     for (int i = 0; i < physicalBreaks.length; i++)
     {
       long physicalBreak = physicalBreaks[i];
-      Log.debug ("BREAK: " + i + " " + physicalBreak);
+      Log.debug("BREAK: " + i + " " + physicalBreak);
     }
     startProcessing(pageBox);
   }
@@ -192,7 +192,7 @@ public class PaginationStep extends IterateVisualProcessStep
     // First: Check the number of lines. (Should have been precomputed)
     // Second: Check whether and where the orphans- and widows-rules apply
     // Third: Shift the lines.
-    RenderNode node = box.getFirstChild();
+    RenderNode node = box.getVisibleFirst();
     while (node != null)
     {
       // all childs of the linebox container must be inline boxes. They
@@ -209,11 +209,11 @@ public class PaginationStep extends IterateVisualProcessStep
       }
       finishLine(inlineRenderBox);
 
-      node = node.getNext();
+      node = node.getVisibleNext();
     }
   }
 
-  private boolean isNodeProcessable (RenderNode node)
+  private boolean isNodeProcessable(RenderNode node)
   {
     if (node.getStickyMarker() == stickyMarker)
     {
@@ -251,22 +251,21 @@ public class PaginationStep extends IterateVisualProcessStep
 
     // oh, we have to move the node downwards.
     final long nextBreakShiftDistance = getNextBreak(node.getY()) - node.getY();
-    addShift(nextBreakShiftDistance);
     node.setY(node.getY() + nextBreakShiftDistance);
+    boxShifter.extendHeight(node, nextBreakShiftDistance);
+    shift += nextBreakShiftDistance;
 
     // Make sure we do not move that node later on ..
     node.setStickyMarker(stickyMarker);
   }
 
-  private void addShift (long shift)
+  protected void processTable(final TableRenderBox table)
   {
-    this.shift += shift;
-  }
+    final long originalShift = shift;
+    final long height = table.getHeight();
 
-  protected void processTable (final TableRenderBox table)
-  {
-
-    final long y2 = table.getY() + table.getHeight();
+    final long y = table.getY();
+    final long y2 = shift + y + height;
     if (y2 < pageStartOffset)
     {
       // not in range.
@@ -277,28 +276,73 @@ public class PaginationStep extends IterateVisualProcessStep
       return;
     }
 
-    // its a table, so we have to perform some special treatment.
-    // This must be done regardless of the state.
-    // Step 1: Process all headers.
-    final long headerSize = sortTable(table, DisplayRole.TABLE_HEADER_GROUP, 0);
 
-    // Step 2: Process the table body
-    long runningSize = sortTable(table, DisplayRole.TABLE_ROW_GROUP, headerSize);
-    final long bodySize = runningSize - headerSize;
+    final long nextBreak = getNextBreak(y + shift);
+    final long usableHeight = nextBreak - (y + shift);
+    if (usableHeight > 0)
+    {
+      final long reservedHeight = Math.min(height,
+          table.getOrphansSize() + table.getWidowsSize());
 
-    // Step 3: Process the table footer
-    runningSize = sortTable(table, DisplayRole.TABLE_FOOTER_GROUP, runningSize);
-    final long footerSize = runningSize - headerSize - bodySize;
+      if (table.isAvoidPagebreakInside() ||
+          reservedHeight > usableHeight ||
+          table.getOrphansSize() > usableHeight)
+      {
+        final long newShift = nextBreak - y;
 
-    // Check, whether the header and at least one row of the body will fit.
+        // orphans and widows rules prevent a break.
 
+        if (newShift > 0)
+        {
+          table.setY(table.getY() + newShift);
+          // the table itself shifts, but the parent extends ..
+          boxShifter.extendHeight(table.getParent(), newShift - shift);
+          shift = newShift;
+          table.setStickyMarker(stickyMarker);
+        }
+        else if (newShift < 0)
+        {
+          table.setY(table.getY() + shift);
+          pageOverflow = true;
+        }
+        else
+        {
+          // No shift needed, no processing of the childs needed.
+        }
+      }
+      else
+      {
+        // ordinary shifting is used ..
+        table.setY(table.getY() + shift);
+        table.setStickyMarker(stickyMarker);
+      }
+    }
+    else
+    {
+      // ordinary shifting is used ..
+      table.setY(table.getY() + shift);
+      table.setStickyMarker(stickyMarker);
+    }
 
-    return;
+    processTableSection(table, DisplayRole.TABLE_HEADER_GROUP);
+    processTableSection(table, DisplayRole.TABLE_ROW_GROUP);
+    processTableSection(table, DisplayRole.TABLE_FOOTER_GROUP);
+
+    // Processing all he sections can have an effect on the height of the table
+    // Shifting content down increases the height of the table.
+    final long finalHeight = table.getHeight();
+    final long delta = finalHeight - height;
+    if (delta < 0)
+    {
+      throw new IllegalStateException("A table can/must not shrink!");
+    }
+
+    Log.debug ("Setting shift: " + delta + " " + originalShift + " " + shift);
+    //shift = originalShift + delta;
   }
 
-  private long sortTable(final TableRenderBox box,
-                         final CSSConstant role,
-                         long headerSize)
+  private void processTableSection(final TableRenderBox box,
+                                   final CSSConstant role)
   {
     RenderNode rowGroupNode = box.getFirstChild();
     while (rowGroupNode != null)
@@ -319,15 +363,9 @@ public class PaginationStep extends IterateVisualProcessStep
         continue;
       }
 
-      // A header.
-      final long headerPosition = sectionBox.getY();
-      final long tablePosition = box.getY();
-      final long shift = (headerPosition + headerSize) - tablePosition;
-      boxShifter.shiftBoxUnchecked(sectionBox, shift);
-      headerSize += rowGroupNode.getHeight();
+      startProcessing(rowGroupNode);
       rowGroupNode = rowGroupNode.getNext();
     }
-    return headerSize;
   }
 
   protected void processBlockLevelChild(final RenderNode node)
@@ -345,13 +383,6 @@ public class PaginationStep extends IterateVisualProcessStep
 
   protected boolean startBlockLevelBox(final RenderBox box)
   {
-    if (box instanceof TableSectionRenderBox ||
-        box instanceof TableRowRenderBox)
-    {
-      // Is already processed along with their table.
-      return true;
-    }
-
     if (isNodeProcessable(box) == false)
     {
       // Not shifted, as this box will not be affected. It is not part of the
@@ -386,8 +417,7 @@ public class PaginationStep extends IterateVisualProcessStep
 
     if (box instanceof TableColumnGroupNode)
     {
-      boxShifter.shiftBox(box, shift);
-      return false;
+      throw new IllegalArgumentException("This is not expected here");
     }
 
     // At this point, we know that the node is in fact in range - that
@@ -400,10 +430,12 @@ public class PaginationStep extends IterateVisualProcessStep
 
     final long nextBreak = getNextBreak(y + shift);
     final long usableHeight = nextBreak - (y + shift);
-
     final long height = box.getHeight();
+    final long reservedHeight = Math.min
+        (height, box.getOrphansSize() + box.getWidowsSize());
+
     if (box.isAvoidPagebreakInside() ||
-        box.getOrphansSize() + box.getWidowsSize() > height ||
+        usableHeight < 0 || reservedHeight > height ||
         box.getOrphansSize() > usableHeight)
     {
       final long newShift = nextBreak - y;
@@ -413,7 +445,7 @@ public class PaginationStep extends IterateVisualProcessStep
       if (newShift > 0)
       {
         boxShifter.shiftBox(box, newShift);
-        boxShifter.extendParents(box, newShift);
+        boxShifter.extendHeight(box.getParent(), newShift - shift);
         shift = newShift;
         box.setStickyMarker(stickyMarker);
         return false;
@@ -438,99 +470,6 @@ public class PaginationStep extends IterateVisualProcessStep
     box.setY(box.getY() + shift);
     box.setStickyMarker(stickyMarker);
     return true;
-
-/// IGNORE EVERYTHING BELOW ---
-    // Collect all elements that might collapse at this point. We are less
-    // strict than with the margin collection - all boxes contribute to the
-    // complext top-edge as long as we did not hit any content or an empty
-    // box.
-//
-//    RenderNode contentNode;
-//    RenderBox marginBox = box;
-//    for (;;)
-//    {
-//      final RenderNode node = marginBox.getFirstChild();
-//      if (node == null)
-//      {
-//        contentNode = marginBox;
-//        break;
-//      }
-//      else if (node instanceof TableColumnNode ||
-//               node instanceof TableColumnGroupNode)
-//      {
-//        RenderNode next = node.getNext();
-//        RenderNode oldNext = node;
-//        while (next != null)
-//        {
-//          if (next instanceof RenderBox)
-//          {
-//            break;
-//          }
-//          oldNext = next;
-//          next = next.getNext();
-//        }
-//        if (next == null)
-//        {
-//          contentNode = oldNext;
-//          break;
-//        }
-//
-//        marginBox = (RenderBox) next;
-//        continue;
-//      }
-//      else if (node instanceof BlockRenderBox == false)
-//      {
-//        contentNode = node;
-//        break;
-//      }
-//      else if (node instanceof TableRowRenderBox)
-//      {
-//        contentNode = node;
-//        break;
-//      }
-//      marginBox = (RenderBox) node;
-//    }
-//
-//    // Compute the total heigth of the edge.
-//    // This is rather easy for now. Later, we have to count the number of
-//    // lines or so to get the chunk-height under the constraints of orphans
-//    // and widows.
-//    final long firstChunkHeight =
-//        (contentNode.getY() + contentNode.getHeight()) - box.getY();
-//
-//    final long nextBreak = getNextBreak(box.getY() + shift);
-//    final long usableHeight = nextBreak - (box.getY() + shift);
-//    if (firstChunkHeight < usableHeight)
-//    {
-//      // Oh, how easy. The content will fit. A break will occur somewhere
-//      // in the box, but we deal with it later. For now: Dont shift.
-//      box.setY(box.getY() + shift);
-//      box.setStickyMarker(stickyMarker);
-//      return true;
-//    }
-//
-//    // It gets more complicated. Shift it to the next page. The first node shall
-//    // be marked as done.
-//    final long newShift = nextBreak - box.getY();
-//    if (newShift > 0)
-//    {
-//      boxShifter.shiftBox(box, newShift);
-//      boxShifter.extendParents(box, newShift);
-//      shift = newShift;
-//      box.setStickyMarker(stickyMarker);
-//      return false;
-//    }
-//    else if (newShift < 0)
-//    {
-//      boxShifter.shiftBox(box, shift);
-//      pageOverflow = true;
-//      return false;
-//    }
-//    else
-//    {
-//      // boxShifter.shiftBox(box, shift);
-//      return false;
-//    }
   }
 
   private boolean isOverflow(final RenderNode box)
@@ -555,11 +494,6 @@ public class PaginationStep extends IterateVisualProcessStep
     }
     // Fall back to the last one, for heavens sake..
     return physicalBreaks[physicalBreaks.length - 1];
-  }
-
-  protected void finishBlockLevelBox(final RenderBox box)
-  {
-
   }
 
   protected boolean startLine(ParagraphPoolBox box)
@@ -592,7 +526,7 @@ public class PaginationStep extends IterateVisualProcessStep
     {
       // we already left the current page.
       boxShifter.shiftBox(box, newShift);
-      boxShifter.extendParents(box, newShift);
+      boxShifter.extendHeight(box, newShift - shift);
       shift = newShift;
       box.setStickyMarker(stickyMarker);
     }

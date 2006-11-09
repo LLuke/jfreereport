@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.20 2006/10/27 18:25:50 taqua Exp $
+ * $Id: RenderNode.java,v 1.21 2006/11/05 16:45:53 taqua Exp $
  *
  * Changes
  * -------
@@ -104,6 +104,7 @@ public abstract class RenderNode implements Cloneable
 
   private String namespace;
   private String tagName;
+  private boolean dirty;
 
   private long stickyMarker;
 
@@ -134,6 +135,16 @@ public abstract class RenderNode implements Cloneable
 
     namespace = context.getNamespace();
     tagName = context.getTagName();
+  }
+
+  public boolean isDirty()
+  {
+    return dirty;
+  }
+
+  public void setDirty(final boolean dirty)
+  {
+    this.dirty = dirty;
   }
 
   public String getNamespace()
@@ -333,6 +344,20 @@ public abstract class RenderNode implements Cloneable
 
   }
 
+  public RenderNode getVisiblePrev()
+  {
+    RenderNode node = prev;
+    while (node != null)
+    {
+      if (node.isIgnorableForRendering() == false)
+      {
+        return node;
+      }
+      node = node.getPrev();
+    }
+    return null;
+  }
+
   public RenderNode getPrev()
   {
     return prev;
@@ -346,6 +371,21 @@ public abstract class RenderNode implements Cloneable
       throw new IllegalStateException();
     }
   }
+
+  public RenderNode getVisibleNext()
+  {
+    RenderNode node = next;
+    while (node != null)
+    {
+      if (node.isIgnorableForRendering() == false)
+      {
+        return node;
+      }
+      node = node.getNext();
+    }
+    return null;
+  }
+
 
   public RenderNode getNext()
   {
