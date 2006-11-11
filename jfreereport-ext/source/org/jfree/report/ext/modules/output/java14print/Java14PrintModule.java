@@ -33,7 +33,6 @@ package org.jfree.report.ext.modules.output.java14print;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.ext.modules.java14print.Java14PrintModuleInitializer;
 
 /**
  * The module definition for the Java 1.4 printing support module.

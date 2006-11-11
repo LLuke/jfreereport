@@ -36,7 +36,6 @@ import java.net.URI;
 
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGUniverse;
-import org.jfree.report.ext.modules.svgimage.SvgSalamanderDrawable;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceData;

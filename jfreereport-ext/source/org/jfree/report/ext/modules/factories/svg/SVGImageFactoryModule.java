@@ -30,28 +30,25 @@
 
 package org.jfree.report.ext.modules.factories.svg;
 
-import java.awt.Image;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
 
-import com.kitfox.svg.SVGUniverse;
 import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGDiagram;
 import com.kitfox.svg.SVGException;
-import org.jfree.util.Log;
-import org.jfree.ui.Drawable;
-import org.jfree.report.ext.modules.svgimage.SvgSalamanderDrawable;
+import com.kitfox.svg.SVGUniverse;
 import org.jfree.resourceloader.Resource;
-import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
-import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.SimpleResource;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 21.12.2005, 20:08:51
