@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageableOutputProcessor.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
+ * $Id: PageableOutputProcessor.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,32 @@ package org.jfree.layouting.output.pageable;
 import org.jfree.layouting.output.OutputProcessor;
 
 /**
- * We need to add methods to manage the generated logical and physical pages.  
+ * A pageable processor generates zero or more pages per event. For the sake
+ * of performance, an PageableOutputProcessor should implement some sort of
+ * caching so that requesting pages from the same chunk does not result in a
+ * full recomputation.
+ *
+ * For each logical page, a set of one or more physical pages is generated.
+ * The pageable output processor allows to query pages by their logical
+ * page number and by their physical number.
+ *
+ * The page content should not be exposed to the caller.
  *
  * @author Thomas Morgner
  */
 public interface PageableOutputProcessor extends OutputProcessor
 {
+  public int getLogicalPageCount();
+  public int getPhysicalPageCount();
+
+  public LogicalPageKey getLogicalPage (int page);
+  public PhysicalPageKey getPhysicalPage (int page);
+
+  /**
+   * Checks, whether the 'processingFinished' event had been received at least
+   * once.
+   * 
+   * @return
+   */
+  public boolean isPaginationFinished();
 }

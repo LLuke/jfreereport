@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultInputFeed.java,v 1.2 2006/05/15 12:45:12 taqua Exp $
+ * $Id: DefaultInputFeed.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -311,7 +311,7 @@ public class DefaultInputFeed implements InputFeed
     }
   }
 
-  protected void resetPageBreakFlag()
+  public void resetPageBreakFlag()
   {
     this.pagebreakEncountered = false;
   }
@@ -347,7 +347,7 @@ public class DefaultInputFeed implements InputFeed
   public final void startDocument()
   {
     checkState(META_EXPECTED);
-    resetPageBreakFlag();
+    // resetPageBreakFlag();
     performStartDocument();
   }
 
@@ -444,7 +444,7 @@ public class DefaultInputFeed implements InputFeed
           throws InputFeedException
   {
     int oldState = checkState(ELEMENT_STARTED);
-    resetPageBreakFlag();
+    // resetPageBreakFlag();
 
     if (oldState == META_EXPECTED ||
             oldState == ELEMENT_EXPECTED)
@@ -516,7 +516,7 @@ public class DefaultInputFeed implements InputFeed
     try
     {
       int oldState = checkState(ELEMENT_CONTENT);
-      resetPageBreakFlag();
+      // resetPageBreakFlag();
 
       if (oldState == ELEMENT_ATTRIBUTES ||
               oldState == ELEMENT_STARTED)
@@ -554,7 +554,7 @@ public class DefaultInputFeed implements InputFeed
     try
     {
       int oldState = checkState(ELEMENT_EXPECTED);
-      resetPageBreakFlag();
+      // resetPageBreakFlag();
       if (oldState == ELEMENT_ATTRIBUTES ||
               oldState == ELEMENT_STARTED)
       {
@@ -587,7 +587,7 @@ public class DefaultInputFeed implements InputFeed
           throws InputFeedException
   {
     checkState(DOCUMENT_FINISHED);
-    resetPageBreakFlag();
+    // resetPageBreakFlag();
     try
     {
       performEndDocument();

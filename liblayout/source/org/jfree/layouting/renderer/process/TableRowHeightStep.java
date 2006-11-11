@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRowHeightStep.java,v 1.3 2006/11/07 19:53:54 taqua Exp $
+ * $Id: TableRowHeightStep.java,v 1.4 2006/11/09 14:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -132,6 +132,19 @@ public class TableRowHeightStep extends IterateVisualProcessStep
     tableStack = new Stack();
   }
 
+  public void compute(final LogicalPageBox box)
+  {
+    tableStack.clear();
+    currentTable = null;
+
+    shiftDistance = 0;
+    startProcessing(box);
+    shiftDistance = 0;
+
+    tableStack.clear();
+    currentTable = null;
+  }
+
   protected void processParagraphChilds(final ParagraphRenderBox box)
   {
     processBoxChilds(box);
@@ -160,7 +173,6 @@ public class TableRowHeightStep extends IterateVisualProcessStep
     {
       final TableRenderBox table = (TableRenderBox) box;
       currentTable = new TableInfoStructure(table);
-      Log.debug ("Initial Position: " + table.getY());
       currentTable.setPosition(table.getY());
 
       tableStack.push(currentTable);
@@ -256,7 +268,6 @@ public class TableRowHeightStep extends IterateVisualProcessStep
 
       shift(rowBox, shift);
       shiftDistance += shift;
-      Log.debug("Row shifts: " + shift + " (" + shiftDistance + ")");
 
       RenderNode cellNode = rowBox.getFirstChild();
       while (cellNode != null)
@@ -296,7 +307,6 @@ public class TableRowHeightStep extends IterateVisualProcessStep
     section.setHeight(newHeight);
     if (extendedHeight != 0)
     {
-      Log.debug("Section shifts: " + extendedHeight + " (" + shiftDistance + ")");
       RenderNode parent = section.getParent();
       while (parent != null)
       {
@@ -310,8 +320,6 @@ public class TableRowHeightStep extends IterateVisualProcessStep
     // We do not perform a real shift, as this would be to expensive.
     // we simply store the location--
     currentTable.setPosition(position);
-    Log.debug ("Updated Position: " + position);
-
   }
 
   /**
@@ -343,12 +351,5 @@ public class TableRowHeightStep extends IterateVisualProcessStep
       shift(child, shift);
       child = child.getNext();
     }
-  }
-
-  public void compute(final LogicalPageBox box)
-  {
-    shiftDistance = 0;
-    startProcessing(box);
-    shiftDistance = 0;
   }
 }

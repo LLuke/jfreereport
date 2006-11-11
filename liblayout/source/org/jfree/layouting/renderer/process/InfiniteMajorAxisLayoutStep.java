@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMajorAxisLayoutStep.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
+ * $Id: InfiniteMajorAxisLayoutStep.java,v 1.4 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.util.Stack;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxLayoutProperties;
+import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphPoolBox;
@@ -54,16 +55,13 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
-import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
-import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.process.valign.BoxAlignContext;
 import org.jfree.layouting.renderer.process.valign.InlineBlockAlignContext;
 import org.jfree.layouting.renderer.process.valign.NodeAlignContext;
 import org.jfree.layouting.renderer.process.valign.TextElementAlignContext;
 import org.jfree.layouting.renderer.process.valign.VerticalAlignmentProcessor;
-import org.jfree.util.Log;
 
 /**
  * This process-step computes the vertical alignment and corrects the
@@ -148,7 +146,11 @@ public class InfiniteMajorAxisLayoutStep
 
   public void compute(LogicalPageBox pageBox)
   {
+    this.breakState = null;
+    this.continuedElement = null;
     startProcessing(pageBox);
+    this.breakState = null;
+    this.continuedElement = null;
   }
 
   /**
@@ -165,6 +167,7 @@ public class InfiniteMajorAxisLayoutStep
       throw new IllegalStateException("Box must be layouted a bit ..");
     }
 
+    this.breakState = null;
     this.continuedElement = box;
     startProcessing(box);
     this.continuedElement = null;
@@ -241,10 +244,6 @@ public class InfiniteMajorAxisLayoutStep
     // If the box's parent is a block box ..
     else if (parent instanceof BlockRenderBox)
     {
-      if (node instanceof TableRowRenderBox)
-      {
-        Log.debug ("ER");
-      }
       final RenderNode prev = node.getVisiblePrev();
       if (prev != null)
       {

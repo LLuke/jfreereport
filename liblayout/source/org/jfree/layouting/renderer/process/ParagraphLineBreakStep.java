@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ParagraphLineBreakStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -381,7 +381,6 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
       
       InlineRenderBox inline = (InlineRenderBox) context;
       contexts.push(inline.split(RenderNode.HORIZONTAL_AXIS));
-      Log.debug ("Adding " + inline + " to the context collection.");
       context = context.getParent();
     }
 

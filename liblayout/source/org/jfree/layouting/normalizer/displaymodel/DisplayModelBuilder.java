@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayModelBuilder.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
+ * $Id: DisplayModelBuilder.java,v 1.4 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,7 @@ import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.normalizer.generator.ContentGenerator;
+import org.jfree.layouting.normalizer.generator.EmptyContentGenerator;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.util.AttributeMap;
 
@@ -535,6 +536,7 @@ public class DisplayModelBuilder implements ModelBuilder
   protected void restoreStack (DisplayNode[] nodes)
           throws StateException, NormalizationException
   {
+    ContentGenerator emptyContentGenerator = new EmptyContentGenerator();
     stack.clear();
     DisplayElement parent = null;
     for (int i = 0; i < nodes.length; i++)
@@ -545,7 +547,7 @@ public class DisplayModelBuilder implements ModelBuilder
         if (node instanceof DisplayRoot)
         {
           DisplayRoot dfe = (DisplayRoot) node;
-          dfe.setContentGenerator(contentGenerator);
+          dfe.setContentGenerator(emptyContentGenerator);
           dfe.setLayoutProcess(layoutProcess);
         }
 
@@ -572,6 +574,16 @@ public class DisplayModelBuilder implements ModelBuilder
       catch (CloneNotSupportedException e)
       {
         throw new StateException("Unable to restore state");
+      }
+    }
+
+    for (int i = 0; i < stack.size(); i++)
+    {
+      DisplayElement element = (DisplayElement) stack.get(i);
+      if (element instanceof DisplayRoot)
+      {
+        DisplayRoot dfe = (DisplayRoot) element;
+        dfe.setContentGenerator(contentGenerator);
       }
     }
   }

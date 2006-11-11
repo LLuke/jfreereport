@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BoxShifter.java,v 1.4 2006/11/07 19:53:54 taqua Exp $
+ * $Id: BoxShifter.java,v 1.5 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -100,29 +100,14 @@ public class BoxShifter
   }
 
 
-//  public void extendParents(RenderBox box, long amount)
-//  {
-//    if (amount < 0)
-//    {
-//      throw new IllegalArgumentException();
-//    }
-//    RenderBox parent = box.getParent();
-//    while (parent != null)
-//    {
-//      parent.setHeight(parent.getHeight() + amount);
-//      parent = parent.getParent();
-//    }
-//  }
-//
   public void extendHeight(RenderNode node, long amount)
   {
     if (amount < 0)
     {
       throw new IllegalArgumentException("Cannot shrink elements.");
     }
-    if (node == null)
+    if (node == null || amount == 0)
     {
-      Log.debug ("No parent?");
       return;
     }
 

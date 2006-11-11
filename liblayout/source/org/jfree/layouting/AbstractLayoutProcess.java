@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractLayoutProcess.java,v 1.3 2006/07/11 13:29:46 taqua Exp $
+ * $Id: AbstractLayoutProcess.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -101,7 +101,8 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
       this.documentContext = documentContext;
     }
 
-    protected abstract AbstractLayoutProcess create(OutputProcessor outputProcessor);
+    protected abstract AbstractLayoutProcess create(OutputProcessor outputProcessor)
+        throws StateException;
 
     protected void fill(AbstractLayoutProcess layoutProcess)
             throws StateException
@@ -187,7 +188,8 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
     return getInputFeed().isPagebreakEncountered();
   }
 
-  protected abstract AbstractLayoutProcessState createState();
+  protected abstract AbstractLayoutProcessState createState()
+      throws StateException;
 
   protected void fillState(AbstractLayoutProcessState state) throws
           StateException

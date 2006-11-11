@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ContentStore.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
  *
  * @author Thomas Morgner
  */
-public class ContentStore
+public class ContentStore implements Cloneable
 {
   private HashMap initialSet;
   private HashMap firstSet;
@@ -114,4 +114,16 @@ public class ContentStore
     contentStore.initialSet.putAll(lastSet);
     return contentStore;
   }
+
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    ContentStore store = (ContentStore) super.clone();
+    store.firstSet = (HashMap) firstSet.clone();
+    store.lastSet = (HashMap) lastSet.clone();
+    // initial set is immutable.
+    store.initialSet = initialSet;
+    return store;
+  }
+
 }

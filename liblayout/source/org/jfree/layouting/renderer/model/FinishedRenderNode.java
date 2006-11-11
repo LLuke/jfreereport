@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FinishedRenderNode.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,14 @@ public class FinishedRenderNode extends PlaceholderRenderNode
 
   public FinishedRenderNode(final long layoutedWidth, final long layoutedHeight)
   {
+    if (layoutedWidth <= 0)
+    {
+      throw new IllegalStateException();
+    }
+    if (layoutedHeight <= 0)
+    {
+      throw new IllegalStateException();
+    }
     this.layoutedWidth = layoutedWidth;
     this.layoutedHeight = layoutedHeight;
   }

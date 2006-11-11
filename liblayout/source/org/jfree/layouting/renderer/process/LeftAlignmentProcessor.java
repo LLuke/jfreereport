@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LeftAlignmentProcessor.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
+ * $Id: LeftAlignmentProcessor.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -40,16 +40,14 @@
  */
 package org.jfree.layouting.renderer.process;
 
+import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.process.layoutrules.EndSequenceElement;
-import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineNodeSequenceElement;
+import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.TextSequenceElement;
-import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.renderer.model.BoxLayoutProperties;
-import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
-import org.jfree.util.Log;
 
 /**
  * Performs the left-alignment computations.
@@ -238,11 +236,11 @@ public class LeftAlignmentProcessor extends AbstractAlignmentProcessor
     // This is a bit more complicated. So we encountered an inline-block
     // element here. That means, the element will try to occuppy its
     // maximum-content-width.
-    Log.debug("Advance block at index " + contentIndex);
-    final long ceWidth = contentElement.getMinimumWidth();
-    final long extraSpace = contentElement.getMaximumWidth();
-    Log.debug("Advance block: Min " + ceWidth);
-    Log.debug("Advance block: Max " + extraSpace);
+//    Log.debug("Advance block at index " + contentIndex);
+//    final long ceWidth = contentElement.getMinimumWidth();
+//    final long extraSpace = contentElement.getMaximumWidth();
+//    Log.debug("Advance block: Min " + ceWidth);
+//    Log.debug("Advance block: Max " + extraSpace);
 
     final long itemElementWidth = contentElement.getMaximumWidth();
 

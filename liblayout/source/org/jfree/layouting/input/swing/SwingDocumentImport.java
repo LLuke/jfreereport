@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: SwingDocumentImport.java,v 1.5 2006/11/07 22:37:25 mimil Exp $
+ * $Id: SwingDocumentImport.java,v 1.6 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,8 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.StreamingLayoutProcess;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.DefaultLayoutProcess;
 import org.jfree.layouting.input.swing.converter.CharacterConverter;
 import org.jfree.layouting.input.swing.converter.ColorConverter;
 import org.jfree.layouting.input.swing.converter.FontConverter;
@@ -418,8 +419,8 @@ public class SwingDocumentImport
 
     long startTime = System.currentTimeMillis();
 
-      final StreamingLayoutProcess process =
-              new DebugLayoutProcess(new HtmlOutputProcessor(out));
+      final LayoutProcess process =
+              new DefaultLayoutProcess(new HtmlOutputProcessor(out));
 
 
     SwingDocumentImport imprt = new SwingDocumentImport();

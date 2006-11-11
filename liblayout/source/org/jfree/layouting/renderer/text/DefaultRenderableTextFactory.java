@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.8 2006/10/17 16:39:08 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.9 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -112,16 +112,20 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       this.glyphList = (ArrayList) factory.glyphList.clone();
       this.words = (ArrayList) factory.words.clone();
       this.languageClassifier = factory.languageClassifier.saveState();
-      this.classificationProducer = factory.classificationProducer.saveState();
-      this.whitespaceCollapseValue = factory.whitespaceCollapseValue;
-      this.whitespaceFilter = factory.whitespaceFilter.saveState();
-      this.breakOpportunityProducer = factory.breakOpportunityProducer.saveState();
-      this.spacingProducer = factory.spacingProducer.saveState();
-      this.kerningProducer = factory.kerningProducer.saveState();
-      this.fontSizeProducer = factory.fontSizeProducer.saveState();
+      this.clusterProducer = factory.clusterProducer.saveState();
       this.produced = factory.produced;
       this.startText = factory.startText;
-      this.clusterProducer = factory.clusterProducer.saveState();
+
+      if (factory.layoutContext != null)
+      {
+        this.classificationProducer = factory.classificationProducer.saveState();
+        this.whitespaceCollapseValue = factory.whitespaceCollapseValue;
+        this.whitespaceFilter = factory.whitespaceFilter.saveState();
+        this.breakOpportunityProducer = factory.breakOpportunityProducer.saveState();
+        this.spacingProducer = factory.spacingProducer.saveState();
+        this.kerningProducer = factory.kerningProducer.saveState();
+        this.fontSizeProducer = factory.fontSizeProducer.saveState();
+      }
     }
 
     /**
@@ -147,25 +151,29 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       factory.words = (ArrayList) this.words.clone();
       factory.languageClassifier = (LanguageClassifier)
           this.languageClassifier.restore(layoutProcess);
-      factory.classificationProducer = (GlyphClassificationProducer)
-          this.classificationProducer.restore(layoutProcess);
-      factory.whitespaceCollapseValue = this.whitespaceCollapseValue;
-      factory.whitespaceFilter= (WhiteSpaceFilter)
-          this.whitespaceFilter.restore(layoutProcess);
-
-      factory.breakOpportunityProducer= (BreakOpportunityProducer)
-          this.breakOpportunityProducer.restore(layoutProcess);
-      factory.spacingProducer= (SpacingProducer)
-          this.spacingProducer.restore(layoutProcess);
-      factory.kerningProducer= (KerningProducer)
-          this.kerningProducer.restore(layoutProcess);
-      factory.fontSizeProducer= (FontSizeProducer)
-          this.fontSizeProducer.restore(layoutProcess);
-
-      factory.produced = this.produced;
-      factory.startText = this.startText;
       factory.clusterProducer = (GraphemeClusterProducer)
           this.clusterProducer.restore(layoutProcess);
+      factory.produced = this.produced;
+      factory.startText = this.startText;
+
+      if (factory.classificationProducer != null)
+      {
+        factory.classificationProducer = (GlyphClassificationProducer)
+            this.classificationProducer.restore(layoutProcess);
+        factory.whitespaceCollapseValue = this.whitespaceCollapseValue;
+        factory.whitespaceFilter = (WhiteSpaceFilter)
+            this.whitespaceFilter.restore(layoutProcess);
+
+        factory.breakOpportunityProducer = (BreakOpportunityProducer)
+            this.breakOpportunityProducer.restore(layoutProcess);
+        factory.spacingProducer = (SpacingProducer)
+            this.spacingProducer.restore(layoutProcess);
+        factory.kerningProducer = (KerningProducer)
+            this.kerningProducer.restore(layoutProcess);
+        factory.fontSizeProducer = (FontSizeProducer)
+            this.fontSizeProducer.restore(layoutProcess);
+      }
+
       return factory;
     }
   }
@@ -596,6 +604,6 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
   public State saveState() throws StateException
   {
-    return null;
+    return new DefaultRenderableTextFactoryState(this);
   }
 }

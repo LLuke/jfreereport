@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMinorAxisLayoutStep.java,v 1.4 2006/11/05 16:45:53 taqua Exp $
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.5 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.PlaceholderRenderNode;
+import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -423,6 +424,12 @@ public class InfiniteMinorAxisLayoutStep
       return;
     }
 
+    if (node instanceof FinishedRenderNode)
+    {
+      FinishedRenderNode finNode = (FinishedRenderNode) node;
+      node.setWidth(finNode.getLayoutedWidth());
+    }
+
     if (node instanceof RenderableText)
     {
       breakState.add(new TextSequenceElement((RenderableText) node));
@@ -449,7 +456,15 @@ public class InfiniteMinorAxisLayoutStep
     // This could be anything, text, or an image.
     final long x = computeX(node);
     node.setX(x);
-    node.setWidth(node.getNodeLayoutProperties().getComputedWidth().resolve(0));
+    if (node instanceof FinishedRenderNode)
+    {
+      FinishedRenderNode finNode = (FinishedRenderNode) node;
+      node.setWidth(finNode.getLayoutedWidth());
+    }
+    else
+    {
+      node.setWidth(node.getNodeLayoutProperties().getComputedWidth().resolve(0));
+    }
   }
 
   protected void processParagraphChilds(final ParagraphRenderBox box)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StageOnePageableOutputProcessor.java,v 1.5 2006/10/27 18:25:50 taqua Exp $
+ * $Id: StageOnePageableOutputProcessor.java,v 1.6 2006/10/31 11:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,6 @@
  *
  */
 package org.jfree.layouting.output.junit;
-
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.JDialog;
 
 import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.DefaultFontStorage;
@@ -56,22 +52,22 @@ import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.normalizer.displaymodel.DisplayModelBuilder;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
-import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
-import org.jfree.layouting.output.pageable.graphics.PageDrawable;
+import org.jfree.layouting.output.pageable.LogicalPageKey;
+import org.jfree.layouting.output.pageable.PageableOutputProcessor;
+import org.jfree.layouting.output.pageable.PhysicalPageKey;
 import org.jfree.layouting.output.streaming.html.HtmlOutputProcessorMetaData;
-import org.jfree.layouting.renderer.DefaultRenderer;
 import org.jfree.layouting.renderer.Renderer;
-import org.jfree.layouting.renderer.EmptyRenderer;
+import org.jfree.layouting.renderer.StreamingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.ui.DrawablePanel;
 
 /**
  * Creation-Date: 31.05.2006, 16:28:33
  *
  * @author Thomas Morgner
+ * @deprecated 
  */
-public class StageOnePageableOutputProcessor implements OutputProcessor
+public class StageOnePageableOutputProcessor implements PageableOutputProcessor
 {
   private OutputProcessorMetaData metaData;
 
@@ -118,27 +114,27 @@ public class StageOnePageableOutputProcessor implements OutputProcessor
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
-    return new DefaultRenderer(layoutProcess);
+    return new StreamingRenderer(layoutProcess);
 //    return new EmptyRenderer(layoutProcess);
   }
 
   public void processContent(LogicalPageBox logicalPage)
   {
-    final PageDrawable drawable = new PageDrawable(logicalPage);
-    drawable.print();
-
-    final DrawablePanel comp = new DrawablePanel();
-    comp.setDrawable(drawable);
-
-    JPanel contentPane = new JPanel();
-    contentPane.setLayout(new BorderLayout());
-    contentPane.add(comp, BorderLayout.CENTER);
-
-    JDialog dialog = new JDialog();
-    dialog.setModal(true);
-    dialog.setContentPane(contentPane);
-    dialog.setSize(800, 600);
-    dialog.setVisible(true);
+//    final PageDrawableImpl drawable = new PageDrawableImpl(logicalPage);
+//    drawable.print();
+//
+//    final DrawablePanel comp = new DrawablePanel();
+//    comp.setDrawable(drawable);
+//
+//    JPanel contentPane = new JPanel();
+//    contentPane.setLayout(new BorderLayout());
+//    contentPane.add(comp, BorderLayout.CENTER);
+//
+//    JDialog dialog = new JDialog();
+//    dialog.setModal(true);
+//    dialog.setContentPane(contentPane);
+//    dialog.setSize(800, 600);
+//    dialog.setVisible(true);
   }
 
   /**
@@ -151,5 +147,72 @@ public class StageOnePageableOutputProcessor implements OutputProcessor
   public boolean isPhysicalPageOutput()
   {
     return true;
+  }
+
+  public int getLogicalPageCount()
+  {
+    return 0;
+  }
+
+  public int getPhysicalPageCount()
+  {
+    return 0;
+  }
+
+  public LogicalPageKey getLogicalPage(int page)
+  {
+    return null;
+  }
+
+  public PhysicalPageKey getPhysicalPage(int page)
+  {
+    return null;
+  }
+
+  /**
+   * Checks, whether the 'processingFinished' event had been received at least
+   * once.
+   *
+   * @return
+   */
+  public boolean isPaginationFinished()
+  {
+    return false;
+  }
+
+  /**
+   * Notifies the output processor, that the processing has been finished and
+   * that the input-feed received the last event.
+   */
+  public void processingFinished()
+  {
+
+  }
+
+  /**
+   * This flag indicates, whether the global content has been computed. Global
+   * content consists of global counters (except the pages counter) and derived
+   * information like table of contents, the global directory of images or
+   * tables etc.
+   * <p/>
+   * The global state must be computed before paginating can be attempted (if
+   * the output target is paginating at all).
+   *
+   * @return true, if the global state has been computed, false otherwise.
+   */
+  public boolean isGlobalStateComputed()
+  {
+    return false;
+  }
+
+  /**
+   * This flag indicates, whether the output processor has collected enough
+   * information to start the content generation.
+   *
+   * @return
+   */
+  public boolean isContentGeneratable()
+  {
+    return false;
   }
 }

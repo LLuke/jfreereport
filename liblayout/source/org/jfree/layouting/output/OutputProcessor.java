@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OutputProcessor.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
+ * $Id: OutputProcessor.java,v 1.5 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -88,11 +88,29 @@ public interface OutputProcessor
   public void processContent (LogicalPageBox logicalPage);
 
   /**
-   * Declares, whether the logical page given in process-content must have a
-   * valid physical page set. Non-pageable targets may want to access the
-   * logical pagebox directly. 
+   * Notifies the output processor, that the processing has been finished and
+   * that the input-feed received the last event.
+   */
+  public void processingFinished();
+
+  /**
+   * This flag indicates, whether the global content has been computed. Global
+   * content consists of global counters (except the pages counter) and
+   * derived information like table of contents, the global directory of images
+   * or tables etc.
+   *
+   * The global state must be computed before paginating can be attempted (if
+   * the output target is paginating at all).
+   *
+   * @return true, if the global state has been computed, false otherwise.
+   */
+  public boolean isGlobalStateComputed();
+
+  /**
+   * This flag indicates, whether the output processor has collected enough
+   * information to start the content generation.
    *
    * @return
    */
-  public boolean isPhysicalPageOutput();
+  public boolean isContentGeneratable();
 }

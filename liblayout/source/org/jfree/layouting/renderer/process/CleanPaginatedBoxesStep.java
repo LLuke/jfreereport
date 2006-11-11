@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CleanPaginatedBoxesStep.java,v 1.2 2006/10/31 11:14:12 taqua Exp $
+ * $Id: CleanPaginatedBoxesStep.java,v 1.3 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,6 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.layouting.renderer.model.table.TableRenderBox;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 27.10.2006, 18:19:24
@@ -81,11 +79,6 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
     if (box instanceof ParagraphRenderBox)
     {
       return false;
-    }
-
-    if (box instanceof TableRenderBox)
-    {
-      Log.debug ("Dealing with tables..");
     }
 
     if (box instanceof TableSectionRenderBox)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InputFeed.java,v 1.4 2006/07/11 13:29:48 taqua Exp $
+ * $Id: InputFeed.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -140,6 +140,7 @@ public interface InputFeed extends StatefullComponent
           throws NormalizationException;
 
   public boolean isPagebreakEncountered();
+  public void resetPageBreakFlag();
 
   /**
    * Warning; This method is needed internally, mess with it from the outside

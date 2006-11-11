@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DebugLayoutProcess.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@
 package org.jfree.layouting.junit;
 
 import org.jfree.layouting.AbstractLayoutProcess;
-import org.jfree.layouting.StreamingLayoutProcess;
+import org.jfree.layouting.StateException;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.output.OutputProcessor;
@@ -50,9 +50,9 @@ import org.jfree.layouting.output.OutputProcessor;
  * Dont use that class in the real world. Its a debugging support class.
  *
  * @author Thomas Morgner
+ * @deprecated 
  */
 public class DebugLayoutProcess extends AbstractLayoutProcess
-        implements StreamingLayoutProcess
 {
   protected static class DebugLayoutProcessState extends AbstractLayoutProcessState
   {
@@ -61,6 +61,7 @@ public class DebugLayoutProcess extends AbstractLayoutProcess
     }
 
     protected AbstractLayoutProcess create(OutputProcessor outputProcessor)
+        throws StateException
     {
       return new DebugLayoutProcess(outputProcessor);
     }
@@ -76,8 +77,10 @@ public class DebugLayoutProcess extends AbstractLayoutProcess
     return new DefaultInputFeed(this);
   }
 
-  protected AbstractLayoutProcessState createState()
+  protected AbstractLayoutProcessState createState() throws StateException
   {
-    return new DebugLayoutProcessState();
+    final DebugLayoutProcessState state = new DebugLayoutProcessState();
+    fillState(state);
+    return state;
   }
 }

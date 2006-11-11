@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HtmlOutputProcessor.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
+ * $Id: HtmlOutputProcessor.java,v 1.6 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,18 @@ import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.renderer.Renderer;
-import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.layouting.normalizer.content.Normalizer;
-import org.jfree.layouting.normalizer.content.ContentNormalizer;
-import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
+import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.normalizer.content.ContentNormalizer;
+import org.jfree.layouting.normalizer.content.Normalizer;
+import org.jfree.layouting.normalizer.displaymodel.DisplayModelBuilder;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
-import org.jfree.layouting.normalizer.displaymodel.EmptyModelBuilder;
-import org.jfree.layouting.normalizer.generator.ContentGenerator;
+import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
+import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.StreamingRenderer;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 /**
  * A later version should allow the same degree of flexibility as jfreereport's
@@ -67,15 +68,15 @@ import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
  */
 public class HtmlOutputProcessor implements StreamingOutputProcessor
 {
-  private FontRegistry fontRegistry;
   private FontStorage fontStorage;
   private OutputProcessorMetaData metaData;
   private OutputStream outstream;
+  private boolean globalStateComputed;
 
   public HtmlOutputProcessor(final OutputStream outstream)
   {
     this.outstream = outstream;
-    this.fontRegistry = new AWTFontRegistry();
+    FontRegistry fontRegistry = new AWTFontRegistry();
     this.fontStorage = new DefaultFontStorage(fontRegistry);
     this.metaData = new HtmlOutputProcessorMetaData(fontStorage);
   }
@@ -87,7 +88,7 @@ public class HtmlOutputProcessor implements StreamingOutputProcessor
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
-    return null;
+    return new StreamingRenderer(layoutProcess);
   }
 
   public InputFeed createInputFeed(LayoutProcess layoutProcess)
@@ -121,19 +122,9 @@ public class HtmlOutputProcessor implements StreamingOutputProcessor
    */
   public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
-    return new EmptyModelBuilder();
-  }
-
-  /**
-   * Creates a new content generator. The content generator is responsible for
-   * creating the visual content from the display model.
-   *
-   * @param layoutProcess the layout process that governs all.
-   * @return the created content generator.
-   */
-  public ContentGenerator createContentGenerator(LayoutProcess layoutProcess)
-  {
-    return null;
+    final DefaultContentGenerator contentGenerator =
+        new DefaultContentGenerator(layoutProcess);
+    return new DisplayModelBuilder(contentGenerator, layoutProcess);
   }
 
   public void processContent(LogicalPageBox logicalPage)
@@ -142,14 +133,27 @@ public class HtmlOutputProcessor implements StreamingOutputProcessor
   }
 
   /**
-   * Declares, whether the logical page given in process-content must have a
-   * valid physical page set. Non-pageable targets may want to access the
-   * logical pagebox directly.
+   * Notifies the output processor, that the processing has been finished and
+   * that the input-feed received the last event.
+   */
+  public void processingFinished()
+  {
+    globalStateComputed = true;
+  }
+
+  public boolean isGlobalStateComputed()
+  {
+    return globalStateComputed;
+  }
+
+  /**
+   * This flag indicates, whether the output processor has collected enough
+   * information to start the content generation.
    *
    * @return
    */
-  public boolean isPhysicalPageOutput()
+  public boolean isContentGeneratable()
   {
-    return false;
+    return globalStateComputed;
   }
 }

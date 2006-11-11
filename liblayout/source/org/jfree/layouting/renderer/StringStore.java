@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StringStore.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
  *
  * Changes
  * -------
@@ -41,17 +41,20 @@
 package org.jfree.layouting.renderer;
 
 import java.util.HashMap;
+import java.io.Serializable;
 
 /**
- * For the first throw, the content ramins very simple. We support the 4 modes:
+ * For the first throw, the content remains very simple. We support the 4 modes:
  * start - the initial content is used. first - the first value set in this page
  * is used (else the initial content) last - the last value is used. last-except
  * - the last value is used on the next page. (Contrary to the specification, we
  * fall back to the start-value instead of using an empty value).
  *
+ * The string store is used for all counter, counters and string properties.
+ *
  * @author Thomas Morgner
  */
-public class StringStore
+public class StringStore implements Cloneable, Serializable
 {
   private HashMap initialSet;
   private HashMap firstSet;
@@ -96,5 +99,15 @@ public class StringStore
     final StringStore contentStore = new StringStore();
     contentStore.initialSet.putAll(lastSet);
     return contentStore;
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    StringStore store = (StringStore) super.clone();
+    store.firstSet = (HashMap) firstSet.clone();
+    store.lastSet = (HashMap) lastSet.clone();
+    // initial set is immutable.
+    store.initialSet = initialSet;
+    return store;
   }
 }

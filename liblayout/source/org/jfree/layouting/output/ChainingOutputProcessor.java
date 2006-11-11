@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingOutputProcessor.java,v 1.2 2006/10/22 14:58:25 taqua Exp $
+ * $Id: ChainingOutputProcessor.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@
  */
 package org.jfree.layouting.output;
 
-import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.layouter.feed.InputFeed;
@@ -85,9 +84,8 @@ public class ChainingOutputProcessor implements OutputProcessor
    */
   public Normalizer createNormalizer(LayoutProcess layoutProcess)
   {
-    ChainingNormalizer chainingNormalizer = new ChainingNormalizer
+    return new ChainingNormalizer
             (outputProcessor.createNormalizer(layoutProcess));
-    return chainingNormalizer;
   }
 
   /**
@@ -106,9 +104,8 @@ public class ChainingOutputProcessor implements OutputProcessor
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
-    ChainingRenderer chainingRenderer = new ChainingRenderer
+    return new ChainingRenderer
             (outputProcessor.createRenderer(layoutProcess));
-    return chainingRenderer;
   }
 
   public void processContent(LogicalPageBox logicalPage)
@@ -117,14 +114,38 @@ public class ChainingOutputProcessor implements OutputProcessor
   }
 
   /**
-   * Declares, whether the logical page given in process-content must have a
-   * valid physical page set. Non-pageable targets may want to access the
-   * logical pagebox directly.
+   * Notifies the output processor, that the processing has been finished and
+   * that the input-feed received the last event.
+   */
+  public void processingFinished()
+  {
+    outputProcessor.processingFinished();
+  }
+
+  /**
+   * This flag indicates, whether the global content has been computed. Global
+   * content consists of global counters (except the pages counter) and derived
+   * information like table of contents, the global directory of images or
+   * tables etc.
+   * <p/>
+   * The global state must be computed before paginating can be attempted (if
+   * the output target is paginating at all).
+   *
+   * @return true, if the global state has been computed, false otherwise.
+   */
+  public boolean isGlobalStateComputed()
+  {
+    return outputProcessor.isGlobalStateComputed();
+  }
+
+  /**
+   * This flag indicates, whether the output processor has collected enough
+   * information to start the content generation.
    *
    * @return
    */
-  public boolean isPhysicalPageOutput()
+  public boolean isContentGeneratable()
   {
-    return outputProcessor.isPhysicalPageOutput();
+    return outputProcessor.isContentGeneratable();
   }
 }

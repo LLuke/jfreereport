@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StageOneNonPageableOutputProcessor.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
+ * $Id: StageOneNonPageableOutputProcessor.java,v 1.4 2006/10/31 11:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.renderer.Renderer;
-import org.jfree.layouting.renderer.DefaultRenderer;
+import org.jfree.layouting.renderer.StreamingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.normalizer.content.ContentNormalizer;
 import org.jfree.layouting.normalizer.content.Normalizer;
@@ -61,7 +61,7 @@ import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
-import org.jfree.layouting.output.pageable.graphics.PageDrawable;
+import org.jfree.layouting.output.pageable.graphics.PageDrawableImpl;
 import org.jfree.layouting.output.streaming.html.HtmlOutputProcessorMetaData;
 import org.jfree.ui.DrawablePanel;
 
@@ -69,6 +69,7 @@ import org.jfree.ui.DrawablePanel;
  * Creation-Date: 31.05.2006, 16:28:33
  *
  * @author Thomas Morgner
+ * @deprecated 
  */
 public class StageOneNonPageableOutputProcessor implements OutputProcessor
 {
@@ -124,26 +125,26 @@ public class StageOneNonPageableOutputProcessor implements OutputProcessor
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
-    return new DefaultRenderer(layoutProcess);
+    return new StreamingRenderer(layoutProcess);
   }
 
   public void processContent(LogicalPageBox logicalPage)
   {
-    final PageDrawable drawable = new PageDrawable(logicalPage);
-    drawable.print();
-
-    final DrawablePanel comp = new DrawablePanel();
-    comp.setDrawable(drawable);
-
-    JPanel contentPane = new JPanel();
-    contentPane.setLayout(new BorderLayout());
-    contentPane.add(comp, BorderLayout.CENTER);
-
-    JDialog dialog = new JDialog();
-    dialog.setModal(true);
-    dialog.setContentPane(contentPane);
-    dialog.setSize(800, 600);
-    dialog.setVisible(true);
+//    final PageDrawableImpl drawable = new PageDrawableImpl(logicalPage);
+//    drawable.print();
+//
+//    final DrawablePanel comp = new DrawablePanel();
+//    comp.setDrawable(drawable);
+//
+//    JPanel contentPane = new JPanel();
+//    contentPane.setLayout(new BorderLayout());
+//    contentPane.add(comp, BorderLayout.CENTER);
+//
+//    JDialog dialog = new JDialog();
+//    dialog.setModal(true);
+//    dialog.setContentPane(contentPane);
+//    dialog.setSize(800, 600);
+//    dialog.setVisible(true);
   }
 
   /**
@@ -154,6 +155,42 @@ public class StageOneNonPageableOutputProcessor implements OutputProcessor
    * @return
    */
   public boolean isPhysicalPageOutput()
+  {
+    return false;
+  }
+
+  /**
+   * Notifies the output processor, that the processing has been finished and
+   * that the input-feed received the last event.
+   */
+  public void processingFinished()
+  {
+
+  }
+
+  /**
+   * This flag indicates, whether the global content has been computed. Global
+   * content consists of global counters (except the pages counter) and derived
+   * information like table of contents, the global directory of images or
+   * tables etc.
+   * <p/>
+   * The global state must be computed before paginating can be attempted (if
+   * the output target is paginating at all).
+   *
+   * @return true, if the global state has been computed, false otherwise.
+   */
+  public boolean isGlobalStateComputed()
+  {
+    return false;
+  }
+
+  /**
+   * This flag indicates, whether the output processor has collected enough
+   * information to start the content generation.
+   *
+   * @return
+   */
+  public boolean isContentGeneratable()
   {
     return false;
   }

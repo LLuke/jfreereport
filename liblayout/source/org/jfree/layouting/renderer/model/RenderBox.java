@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.21 2006/11/07 19:53:54 taqua Exp $
+ * $Id: RenderBox.java,v 1.22 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -629,7 +629,6 @@ public abstract class RenderBox extends RenderNode
   public RenderNode derive(boolean deepDerive)
   {
     RenderBox box = (RenderBox) super.derive(deepDerive);
-    box.open = true;
 
     if (deepDerive)
     {

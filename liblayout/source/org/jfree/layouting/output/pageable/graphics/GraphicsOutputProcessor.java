@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: GraphicsOutputProcessor.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
+ * $Id: GraphicsOutputProcessor.java,v 1.5 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -42,36 +42,28 @@ package org.jfree.layouting.output.pageable.graphics;
 
 import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.DefaultFontStorage;
-import org.jfree.fonts.registry.FontStorage;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.feed.DefaultInputFeed;
-import org.jfree.layouting.layouter.feed.InputFeed;
-import org.jfree.layouting.normalizer.content.ContentNormalizer;
-import org.jfree.layouting.normalizer.content.Normalizer;
-import org.jfree.layouting.normalizer.displaymodel.DisplayModelBuilder;
-import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
-import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
-import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
-import org.jfree.layouting.output.pageable.dummy.DummyOutputProcessorMetaData;
-import org.jfree.layouting.renderer.DefaultRenderer;
-import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.output.pageable.LogicalPageKey;
+import org.jfree.layouting.output.pageable.PhysicalPageKey;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.model.page.PageGrid;
+import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
 
 /**
  * Creation-Date: 02.01.2006, 19:55:14
  *
  * @author Thomas Morgner
  */
-public class GraphicsOutputProcessor implements OutputProcessor
+public class GraphicsOutputProcessor extends AbstractPageableProcessor
 {
-  private FontStorage fontStorage;
+  private int pageCursor;
   private OutputProcessorMetaData metaData;
+  private GraphicsContentInterceptor interceptor;
 
   public GraphicsOutputProcessor()
   {
-    fontStorage = new DefaultFontStorage(new AWTFontRegistry());
-    metaData = new DummyOutputProcessorMetaData(fontStorage);
+    DefaultFontStorage fontStorage = new DefaultFontStorage(new AWTFontRegistry());
+    metaData = new GraphicsOutputProcessorMetaData(fontStorage);
   }
 
   public OutputProcessorMetaData getMetaData()
@@ -79,55 +71,84 @@ public class GraphicsOutputProcessor implements OutputProcessor
     return metaData;
   }
 
-  public InputFeed createInputFeed(LayoutProcess layoutProcess)
-  {
-    return new DefaultInputFeed(layoutProcess);
-  }
-
-  /**
-   * Returns the content normalizer implementation for this OP. The content
-   * normalizer is responsible for resolving the styles and for initiating the
-   * DOM building.
-   *
-   * @return
-   */
-  public Normalizer createNormalizer(LayoutProcess layoutProcess)
-  {
-    return new ContentNormalizer(layoutProcess);
-  }
-
-  /**
-   * The model builder normalizes the input and builds the Display-Model. The
-   * DisplayModel enriches and normalizes the logical document model so that it
-   * is better suited for rendering.
-   *
-   * @return
-   */
-  public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
-  {
-    return new DisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
-  }
-
-  public Renderer createRenderer(LayoutProcess layoutProcess)
-  {
-    return new DefaultRenderer(layoutProcess);
-  }
-
-
   public void processContent(LogicalPageBox logicalPage)
   {
-    // the pagegrid contains the content ..
+    final PageGrid pageGrid = logicalPage.getPageGrid();
+    final int rowCount = pageGrid.getRowCount();
+    final int colCount = pageGrid.getColumnCount();
+
+    if (getProcessingState() == PROCESSING_PAGES)
+    {
+      final LogicalPageKey key = createLogicalPage(colCount, rowCount);
+      if (key.getPosition() != pageCursor)
+      {
+        throw new IllegalStateException("Expected position " + pageCursor + " is not the key's position " + key.getPosition());
+      }
+      pageCursor += 1;
+      return;
+    }
+
+    if (isContentGeneratable())
+    {
+      if (interceptor == null)
+      {
+        return;
+      }
+
+      LogicalPageKey logicalPageKey = getLogicalPage(pageCursor);
+      if (interceptor.isLogicalPageAccepted(logicalPageKey))
+      {
+        final PageDrawableImpl page = new PageDrawableImpl(logicalPage,
+            logicalPage.getPageWidth(), logicalPage.getPageHeight());
+        interceptor.processLogicalPage(logicalPageKey, page);
+      }
+
+      for (int row = 0; row < rowCount; row++)
+      {
+        for (int col = 0; col < colCount; col++)
+        {
+          PhysicalPageKey pageKey = logicalPageKey.getPage(col, row);
+          if (interceptor.isPhysicalPageAccepted(pageKey))
+          {
+            final PhysicalPageBox page = pageGrid.getPage(row, col);
+            final PageDrawableImpl drawable = new PageDrawableImpl(page,
+                page.getWidth(), page.getHeight());
+            interceptor.processPhysicalPage(pageKey, drawable);
+          }
+        }
+      }
+
+      pageCursor += 1;
+    }
+  }
+
+  public GraphicsContentInterceptor getInterceptor()
+  {
+    return interceptor;
+  }
+
+  public void setInterceptor(final GraphicsContentInterceptor interceptor)
+  {
+    this.interceptor = interceptor;
   }
 
   /**
-   * Declares, whether the logical page given in process-content must have a
-   * valid physical page set. Non-pageable targets may want to access the
-   * logical pagebox directly.
-   *
-   * @return
+   * Notifies the output processor, that the processing has been finished and
+   * that the input-feed received the last event.
    */
-  public boolean isPhysicalPageOutput()
+  public void processingFinished()
   {
-    return false;
+    super.processingFinished();
+    pageCursor = 0;
+  }
+
+  public int getPageCursor()
+  {
+    return pageCursor;
+  }
+
+  public void setPageCursor(final int pageCursor)
+  {
+    this.pageCursor = pageCursor;
   }
 }

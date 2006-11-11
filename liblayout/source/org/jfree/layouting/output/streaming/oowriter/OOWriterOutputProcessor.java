@@ -31,14 +31,6 @@ public class OOWriterOutputProcessor implements StreamingOutputProcessor
           (LayoutProcess defaultStreamingLayoutProcess)
   {
     // todo implement me
-//    try
-//    {
-//      return new DisplayModelBuilder(new OOWriterContentGenerator(System.out));
-//    }
-//    catch (UnsupportedEncodingException e)
-//    {
-//      throw new IllegalStateException();
-//    }
     return null;
   }
 
@@ -99,6 +91,42 @@ public class OOWriterOutputProcessor implements StreamingOutputProcessor
    * @return
    */
   public boolean isPhysicalPageOutput()
+  {
+    return false;
+  }
+
+  /**
+   * Notifies the output processor, that the processing has been finished and
+   * that the input-feed received the last event.
+   */
+  public void processingFinished()
+  {
+
+  }
+
+  /**
+   * This flag indicates, whether the global content has been computed. Global
+   * content consists of global counters (except the pages counter) and derived
+   * information like table of contents, the global directory of images or
+   * tables etc.
+   * <p/>
+   * The global state must be computed before paginating can be attempted (if
+   * the output target is paginating at all).
+   *
+   * @return true, if the global state has been computed, false otherwise.
+   */
+  public boolean isGlobalStateComputed()
+  {
+    return false;
+  }
+
+  /**
+   * This flag indicates, whether the output processor has collected enough
+   * information to start the content generation.
+   *
+   * @return
+   */
+  public boolean isContentGeneratable()
   {
     return false;
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginationStep.java,v 1.4 2006/11/07 19:53:54 taqua Exp $
+ * $Id: PaginationStep.java,v 1.5 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.process;
-
-import java.util.Stack;
 
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.values.CSSConstant;
@@ -54,7 +52,6 @@ import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableColumnGroupNode;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.util.Log;
 
 /**
  * Computes the pagination. This step checks, whether content crosses an inner
@@ -84,7 +81,6 @@ public class PaginationStep extends IterateVisualProcessStep
   private long headerHeight;
   private long footerHeight;
   private long stickyMarker;
-  private Stack tableContexts;
   private BoxShifter boxShifter;
 
   public PaginationStep()
@@ -94,6 +90,14 @@ public class PaginationStep extends IterateVisualProcessStep
 
   public boolean performPagebreak(LogicalPageBox pageBox)
   {
+    pageStartOffset = 0;
+    pageOverflow = false;
+    shift = 0;
+    physicalBreaks = null;
+    headerHeight = 0;
+    footerHeight = 0;
+    stickyMarker = 0;
+
     pageStartOffset = pageBox.getPageOffset();
     pageOverflow = false;
     stickyMarker = pageBox.getChangeTracker();
@@ -127,12 +131,7 @@ public class PaginationStep extends IterateVisualProcessStep
         y2Index = i;
       }
     }
-    if (y1Index != y2Index)
-    {
-      Log.debug("Crossing a break: " + y1Index + " " + y2Index);
-      return true;
-    }
-    return false;
+    return (y1Index != y2Index);
   }
 
   private void startRootProcessing(final LogicalPageBox pageBox)
@@ -168,12 +167,12 @@ public class PaginationStep extends IterateVisualProcessStep
     // now consume the usable height and stop if all space is used or the
     // end of the document has been reached. Process at least one line of
     // content.
-    Log.debug("Usable Page-Sizes: ");
-    for (int i = 0; i < physicalBreaks.length; i++)
-    {
-      long physicalBreak = physicalBreaks[i];
-      Log.debug("BREAK: " + i + " " + physicalBreak);
-    }
+//    Log.debug("Usable Page-Sizes: ");
+//    for (int i = 0; i < physicalBreaks.length; i++)
+//    {
+//      long physicalBreak = physicalBreaks[i];
+//      Log.debug("BREAK: " + i + " " + physicalBreak);
+//    }
     startProcessing(pageBox);
   }
 
@@ -336,9 +335,6 @@ public class PaginationStep extends IterateVisualProcessStep
     {
       throw new IllegalStateException("A table can/must not shrink!");
     }
-
-    Log.debug ("Setting shift: " + delta + " " + originalShift + " " + shift);
-    //shift = originalShift + delta;
   }
 
   private void processTableSection(final TableRenderBox box,

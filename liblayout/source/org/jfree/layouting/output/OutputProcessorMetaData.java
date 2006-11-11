@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OutputProcessorMetaData.java,v 1.4 2006/07/26 16:59:47 taqua Exp $
+ * $Id: OutputProcessorMetaData.java,v 1.5 2006/07/27 17:56:27 taqua Exp $
  *
  * Changes
  * -------
@@ -118,4 +118,13 @@ public interface OutputProcessorMetaData
   public FontMetrics getFontMetrics(FontSpecification spec);
 
   public Class[] getSupportedResourceTypes();
+
+  /**
+   * An iterative output processor accepts and processes small content chunks.
+   * If this method returns false, the output processor will not receive the
+   * content until the whole document is processed.
+   *
+   * @return
+   */
+  public boolean isIterative();
 }

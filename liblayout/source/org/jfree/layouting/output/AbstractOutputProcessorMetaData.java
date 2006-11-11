@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractOutputProcessorMetaData.java,v 1.5 2006/07/29 18:57:12 taqua Exp $
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.6 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -309,5 +309,10 @@ public abstract class AbstractOutputProcessorMetaData
   public Class[] getSupportedResourceTypes()
   {
     return new Class[] {Drawable.class, Image.class};
+  }
+
+  public boolean isIterative()
+  {
+    return false;
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.6 2006/10/27 18:25:50 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.7 2006/11/02 23:13:31 mimil Exp $
  *
  * Changes
  * -------
@@ -1053,7 +1053,10 @@ public class ContentNormalizer implements Normalizer
     state.setCurrentSilbling(currentSilbling);
     state.setLayoutProcess(layoutProcess);
     state.setModelBuilderState(modelBuilder.saveState());
-    state.setStyleResolverState(styleResolver.saveState());
+    if (styleResolver != null)
+    {
+      state.setStyleResolverState(styleResolver.saveState());
+    }
     if (recordingContentNormalizer != null)
     {
       state.setRecordingContentNormalizerState(
@@ -1076,9 +1079,11 @@ public class ContentNormalizer implements Normalizer
     this.nextId = state.getNextId();
     this.modelBuilder = (ModelBuilder)
         state.getModelBuilderState().restore(layoutProcess);
-    this.styleResolver = (StyleResolver)
-        state.getStyleResolverState().restore(layoutProcess);
-    if (styleResolver == null) throw new IllegalStateException("Null after restore?");
+    if (state.getStyleResolverState() != null)
+    {
+      this.styleResolver = (StyleResolver)
+          state.getStyleResolverState().restore(layoutProcess);
+    }
     if (state.getRecordingContentNormalizerState() != null)
     {
       this.recordingContentNormalizer = (RecordingContentNormalizer)
