@@ -32,9 +32,8 @@ package org.jfree.report.ext.modules.misc.java14config;
 
 import java.util.prefs.Preferences;
 
-import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.base.modules.ModuleInitializeException;
-
+import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.preferences.base.ConfigFactory;
 

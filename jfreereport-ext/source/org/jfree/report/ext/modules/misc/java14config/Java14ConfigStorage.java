@@ -30,18 +30,18 @@
 
 package org.jfree.report.ext.modules.misc.java14config;
 
-import java.util.prefs.Preferences;
-import java.util.prefs.BackingStoreException;
-import java.util.Properties;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Properties;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.config.ModifiableConfiguration;
+import org.jfree.report.modules.preferences.base.ConfigFactory;
 import org.jfree.report.modules.preferences.base.ConfigStorage;
 import org.jfree.report.modules.preferences.base.ConfigStoreException;
-import org.jfree.report.modules.preferences.base.ConfigFactory;
 import org.jfree.util.Configuration;
-import org.jfree.base.config.ModifiableConfiguration;
-import org.jfree.base.config.HierarchicalConfiguration;
 
 /**
  * A configuration storage provider which stores the entries using the
