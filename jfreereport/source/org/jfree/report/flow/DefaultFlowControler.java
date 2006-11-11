@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFlowControler.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
+ * $Id: DefaultFlowControler.java,v 1.5 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,13 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportData;
 import org.jfree.report.ReportDataFactory;
 import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.expressions.Expression;
 import org.jfree.report.data.ExpressionDataRow;
 import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.data.ImportedVariablesDataRow;
 import org.jfree.report.data.ParameterDataRow;
 import org.jfree.report.data.ReportDataRow;
 import org.jfree.report.data.StaticExpressionRuntimeData;
-import org.jfree.report.function.Expression;
-import org.jfree.report.function.sys.QueryVariableExpression;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.ReportDefinition;
 import org.jfree.report.structure.SubReport;
@@ -272,8 +271,7 @@ public class DefaultFlowControler implements FlowControler
     }
     final ReportDefinition report = element.getReport();
     final Expression[] expressions = element.getExpressions();
-    final String[] variables = element.getVariables();
-    if (expressions.length == 0 && variables.length == 0)
+    if (expressions.length == 0)
     {
       DefaultFlowControler fc = new DefaultFlowControler(this, dataRow);
       fc.expressionsStack.push(IntegerCache.getInteger(0));
@@ -291,16 +289,9 @@ public class DefaultFlowControler implements FlowControler
     final ExpressionDataRow edr = dataRow.getExpressionDataRow();
     edr.pushExpressions(expressions, sdd);
 
-    final Expression[] qVarsExpressions = new Expression[variables.length];
-    for (int i = 0; i < qVarsExpressions.length; i++)
-    {
-      qVarsExpressions[i] = new QueryVariableExpression(variables[i]);
-    }
-    edr.pushExpressions(qVarsExpressions, sdd);
 
     DefaultFlowControler fc = new DefaultFlowControler(this, dataRow);
-    final Integer exCount = IntegerCache.getInteger
-            (expressions.length + qVarsExpressions.length);
+    final Integer exCount = IntegerCache.getInteger(expressions.length);
     fc.expressionsStack.push(exCount);
     return fc;
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CountryDataTableModel.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
+ * $Id: CountryDataTableModel.java,v 1.2 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 
 package org.jfree.report.test;
 
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -54,7 +55,7 @@ public class CountryDataTableModel extends AbstractTableModel
   /**
    * Storage for the data.
    */
-  private final Object[][] data;
+  private ArrayList data;
 
   /**
    * Default constructor - builds the sample data source using incomplete (and possibly
@@ -62,32 +63,31 @@ public class CountryDataTableModel extends AbstractTableModel
    */
   public CountryDataTableModel ()
   {
-//    final int length = 4;
-    data = new Object[23][4];
-    data[0] = new Object[]{"Morocco", "MA", "Africa", new Integer(29114497)};
-    data[1] = new Object[]{"South Africa", "ZA", "Africa", new Integer(40583573)};
-    data[2] = new Object[]{"China", "CN", "Asia", new Integer(1254400000)};
-    data[3] = new Object[]{"Iran", "IR", "Asia", new Integer(66000000)};
-    data[4] = new Object[]{"Iraq", "IQ", "Asia", new Integer(19700000)};
-    data[5] = new Object[]{"Australia", "AU", "Australia", new Integer(18751000)};
-    data[6] = new Object[]{"Austria", "AT", "Europe", new Integer(8015000)};
-    data[7] = new Object[]{"Belgium", "BE", "Europe", new Integer(10213752)};
-    data[8] = new Object[]{"Estonia", "EE", "Europe", new Integer(1445580)};
-    data[9] = new Object[]{"Finland", "FI", "Europe", new Integer(5171000)};
-    data[10] = new Object[]{"France", "FR", "Europe", new Integer(60186184)};
-    data[11] = new Object[]{"Germany", "DE", "Europe", new Integer(82037000)};
-    data[12] = new Object[]{"Hungary", "HU", "Europe", new Integer(10044000)};
-    data[13] = new Object[]{"Italy", "IT", "Europe", new Integer(57612615)};
-    data[14] = new Object[]{"Norway", "NO", "Europe", new Integer(4445460)};
-    data[15] = new Object[]{"Poland", "PL", "Europe", new Integer(38608929)};
-    data[16] = new Object[]{"Portugal", "PT", "Europe", new Integer(9918040)};
-    data[17] = new Object[]{"Spain", "ES", "Europe", new Integer(39669394)};
-    data[18] = new Object[]{"Sweden", "SE", "Europe", new Integer(8854322)};
-    data[19] = new Object[]{"Switzerland", "CH", "Europe", new Integer(7123500)};
-    data[20] = new Object[]{"Canada", "CA", "North America", new Integer(30491300)};
-    data[21] = new Object[]{"United States of America",
-                            "US", "North America", new Integer(273866000)};
-    data[22] = new Object[]{"Brazil", "BR", "South America", new Integer(165715400)};
+    data = new ArrayList();
+//    data.add(new Object[]{"Morocco", "MA", "Africa", new Integer(29114497)});
+//    data.add(new Object[]{"South Africa", "ZA", "Africa", new Integer(40583573)});
+//    data.add(new Object[]{"China", "CN", "Asia", new Integer(1254400000)});
+//    data.add(new Object[]{"Iran", "IR", "Asia", new Integer(66000000)});
+//    data.add(new Object[]{"Iraq", "IQ", "Asia", new Integer(19700000)});
+//    data.add(new Object[]{"Australia", "AU", "Australia", new Integer(18751000)});
+    data.add(new Object[]{"Austria", "AT", "Europe", new Integer(8015000)});
+    data.add(new Object[]{"Belgium", "BE", "Europe", new Integer(10213752)});
+    data.add(new Object[]{"Estonia", "EE", "Europe", new Integer(1445580)});
+    data.add(new Object[]{"Finland", "FI", "Europe", new Integer(5171000)});
+    data.add(new Object[]{"France", "FR", "Europe", new Integer(60186184)});
+    data.add(new Object[]{"Germany", "DE", "Europe", new Integer(82037000)});
+    data.add(new Object[]{"Hungary", "HU", "Europe", new Integer(10044000)});
+    data.add(new Object[]{"Italy", "IT", "Europe", new Integer(57612615)});
+    data.add(new Object[]{"Norway", "NO", "Europe", new Integer(4445460)});
+    data.add(new Object[]{"Poland", "PL", "Europe", new Integer(38608929)});
+    data.add(new Object[]{"Portugal", "PT", "Europe", new Integer(9918040)});
+    data.add(new Object[]{"Spain", "ES", "Europe", new Integer(39669394)});
+    data.add(new Object[]{"Sweden", "SE", "Europe", new Integer(8854322)});
+    data.add(new Object[]{"Switzerland", "CH", "Europe", new Integer(7123500)});
+    data.add(new Object[]{"Canada", "CA", "North America", new Integer(30491300)});
+    data.add(new Object[]{"United States of America",
+                            "US", "North America", new Integer(273866000)});
+    data.add(new Object[]{"Brazil", "BR", "South America", new Integer(165715400)});
   }
 
   /**
@@ -97,7 +97,7 @@ public class CountryDataTableModel extends AbstractTableModel
    */
   public int getRowCount ()
   {
-    return data.length;
+    return data.size();
   }
 
   /**
@@ -167,7 +167,8 @@ public class CountryDataTableModel extends AbstractTableModel
    */
   public Object getValueAt (final int row, final int column)
   {
-    return data[row][column];
+    Object[] rowData = (Object[]) data.get(row);
+    return rowData[column];
   }
 
 }

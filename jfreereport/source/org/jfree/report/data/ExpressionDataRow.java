@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ExpressionDataRow.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
+ * $Id: ExpressionDataRow.java,v 1.3 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -47,10 +47,9 @@ import org.jfree.report.DataFlags;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportData;
-import org.jfree.report.function.Expression;
-import org.jfree.report.function.ExpressionDependencyInfo;
-import org.jfree.report.function.ExpressionRuntime;
-import org.jfree.report.function.Function;
+import org.jfree.report.expressions.Expression;
+import org.jfree.report.expressions.Function;
+import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
@@ -65,8 +64,8 @@ import org.jfree.util.Log;
  */
 public final class ExpressionDataRow implements DataRow
 {
-  private static class ExpressionSlot extends ExpressionDependencyInfo
-          implements ExpressionRuntime
+  private static class ExpressionSlot
+          implements ExpressionRuntime, Cloneable
   {
     private StaticExpressionRuntimeData staticRuntimeData;
     private Expression expression;
@@ -82,7 +81,6 @@ public final class ExpressionDataRow implements DataRow
       this.expression = expression;
       this.name = expression.getName();
       this.expression.setRuntime(this);
-      this.expression.queryDependencyInfo(this);
       this.expression.setRuntime(null);
     }
 
@@ -98,7 +96,7 @@ public final class ExpressionDataRow implements DataRow
         synchronized(expression)
         {
           expression.setRuntime(this);
-          value = expression.getValue();
+          value = expression.computeValue();
           expression.setRuntime(null);
         }
         queried = true;
@@ -114,6 +112,11 @@ public final class ExpressionDataRow implements DataRow
     public DataRow getDataRow()
     {
       return dataRow;
+    }
+
+    public Object clone() throws CloneNotSupportedException
+    {
+      return super.clone();
     }
 
     public void setDataRow(final DataRow dataRow)
@@ -168,6 +171,11 @@ public final class ExpressionDataRow implements DataRow
       }
       value = null;
       queried = false;
+    }
+
+    public boolean isDeepTraversing ()
+    {
+      return expression.isDeepTraversing();
     }
 
     public int getCurrentRow()
@@ -433,17 +441,20 @@ public final class ExpressionDataRow implements DataRow
       {
         ExpressionSlot expressionSlot = edr.expressions[i];
         expressionSlot.setDataRow(master.getGlobalView());
-        if (deepTraversing && expressionSlot.isDeepTraversal() ||
+        if (deepTraversing && expressionSlot.isDeepTraversing() ||
             deepTraversing == false)
         {
           expressionSlot.advance();
         }
-        // Just for the fun out of it ...
+        // Query the value (once per advance) ..
         final Object value = expressionSlot.getValue();
-        final MasterDataRowChangeEvent chEvent = new MasterDataRowChangeEvent
-                (MasterDataRowChangeEvent.COLUMN_UPDATED,
-                        expressionSlot.getName(), value);
-        master.dataRowChanged(chEvent);
+        if (expressionSlot.getName() != null)
+        {
+          final MasterDataRowChangeEvent chEvent = new MasterDataRowChangeEvent
+                  (MasterDataRowChangeEvent.COLUMN_UPDATED,
+                          expressionSlot.getName(), value);
+          master.dataRowChanged(chEvent);
+        }
       }
       return edr;
     }

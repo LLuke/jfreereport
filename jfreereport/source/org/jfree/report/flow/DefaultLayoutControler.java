@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutControler.java,v 1.5 2006/07/18 14:39:03 taqua Exp $
+ * $Id: DefaultLayoutControler.java,v 1.6 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,8 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.DataFlags;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.expressions.Expression;
 import org.jfree.report.data.DefaultDataFlags;
-import org.jfree.report.function.Expression;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Group;
@@ -201,7 +201,7 @@ public class DefaultLayoutControler implements LayoutControler
     try
     {
       ex.setRuntime(er);
-      value = ex.getValue();
+      value = ex.computeValue();
     }
     finally
     {
@@ -214,23 +214,25 @@ public class DefaultLayoutControler implements LayoutControler
               (node, (DataFlags) value, er);
       return advanceForStartElement(pos, node, fc);
     }
-    else if (value instanceof Node == false)
+    else if (value instanceof Node)
+    {
+      // we explictly allow structural content here.
+      // As this might be a very expensive thing, if we
+      // keep it in a single state, we continue on a separate state.
+      Node valueNode = (Node) value;
+
+      // actually, this is the same as if the element were a
+      // child element of a section. The only difference is
+      // that there can be only one child, and that there is no
+      // direct parent-child direction.
+      return pos.deriveChildPosition(fc, valueNode);
+    }
+    else
     {
       processor.processContentElement
               (node, new DefaultDataFlags(ex.getName(), value, true), er);
       return advanceForStartElement(pos, node, fc);
     }
-
-    // we explictly allow structural content here.
-    // As this might be a very expensive thing, if we
-    // keep it in a single state, we continue on a separate state.
-    Node valueNode = (Node) value;
-
-    // actually, this is the same as if the element were a
-    // child element of a section. The only difference is
-    // that there can be only one child, and that there is no
-    // direct parent-child direction.
-    return pos.deriveChildPosition(fc, valueNode);
   }
 
   public FlowControler processFlowOperations(FlowControler fc,
@@ -264,7 +266,7 @@ public class DefaultLayoutControler implements LayoutControler
       }
 
       dc.setRuntime(pos.getExpressionRuntime(fc));
-      final boolean retval = Boolean.TRUE.equals(dc.getValue());
+      final boolean retval = Boolean.TRUE.equals(dc.computeValue());
       dc.setRuntime(null);
       return retval;
     }
@@ -430,7 +432,7 @@ public class DefaultLayoutControler implements LayoutControler
       final Object result;
       try
       {
-        result = groupingExpression.getValue();
+        result = groupingExpression.computeValue();
       }
       finally
       {

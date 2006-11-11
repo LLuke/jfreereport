@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractReportTarget.java,v 1.1 2006/07/11 13:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -53,8 +53,8 @@ import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.Expression;
-import org.jfree.report.function.ExpressionRuntime;
+import org.jfree.report.expressions.Expression;
+import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.structure.Element;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceKey;
@@ -172,7 +172,7 @@ public abstract class AbstractReportTarget implements ReportTarget
       try
       {
         expression.setRuntime(runtime);
-        final Object value = expression.getValue();
+        final Object value = expression.computeValue();
         if (value instanceof CSSValue)
         {
           targetRule.setPropertyValue(name, (CSSValue) value);
@@ -211,7 +211,7 @@ public abstract class AbstractReportTarget implements ReportTarget
         try
         {
           expression.setRuntime(runtime);
-          final Object value = expression.getValue();
+          final Object value = expression.computeValue();
           attributes.setAttribute(namespace, name, value);
         }
         finally

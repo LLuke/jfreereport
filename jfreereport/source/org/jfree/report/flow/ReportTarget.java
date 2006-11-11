@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportTarget.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
+ * $Id: ReportTarget.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.ExpressionRuntime;
+import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;

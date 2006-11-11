@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TypedPropertyReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: TypedPropertyReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -133,6 +133,7 @@ public class TypedPropertyReadHandler extends PropertyReadHandler
     }
     catch (BeanException e)
     {
+      e.printStackTrace();
       throw new SAXException("Unable to assign property '" + getName()
               + "' to expression '" + expressionName + "'", e);
     }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
+ * $Id: Group.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,7 @@ package org.jfree.report.structure;
 
 import java.io.Serializable;
 
-import org.jfree.report.function.Expression;
-import org.jfree.report.JFreeReport;
+import org.jfree.report.expressions.Expression;
 
 /**
  * A report group.  Reports can contain any number of (nested) groups. The order

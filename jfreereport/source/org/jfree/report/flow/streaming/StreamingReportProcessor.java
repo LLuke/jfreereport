@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StreamingReportProcessor.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
+ * $Id: StreamingReportProcessor.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -40,23 +40,25 @@
  */
 package org.jfree.report.flow.streaming;
 
+import org.jfree.layouting.DefaultLayoutProcess;
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
-import org.jfree.layouting.StreamingLayoutProcess;
-import org.jfree.layouting.DefaultStreamingLayoutProcess;
-import org.jfree.report.flow.ReportTarget;
-import org.jfree.report.flow.SinglePassReportProcessor;
+import org.jfree.report.DataSourceException;
+import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
+import org.jfree.report.flow.AbstractReportProcessor;
 import org.jfree.report.flow.LibLayoutReportTarget;
 import org.jfree.report.flow.ReportJob;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
- * Creation-Date: 02.04.2006, 14:27:00
+ * This is written to use LibLayout. It will never work with other report
+ * targets.
  *
  * @author Thomas Morgner
  */
-public class StreamingReportProcessor extends SinglePassReportProcessor
+public class StreamingReportProcessor extends AbstractReportProcessor
 {
   private StreamingOutputProcessor outputProcessor;
 
@@ -74,7 +76,16 @@ public class StreamingReportProcessor extends SinglePassReportProcessor
     this.outputProcessor = outputProcessor;
   }
 
-  protected ReportTarget createReportTarget(final ReportJob job)
+  public void processReport(ReportJob job)
+      throws ReportDataFactoryException, DataSourceException, ReportProcessingException
+  {
+    // first, compute the globals ..
+    processReportRun(job, createReportTarget(job));
+    // second, generate the content. (no pagination needed for streaming)
+    processReportRun(job, createReportTarget(job));
+  }
+
+  protected LibLayoutReportTarget createReportTarget(final ReportJob job)
           throws ReportProcessingException
   {
     if (outputProcessor == null)
@@ -82,16 +93,8 @@ public class StreamingReportProcessor extends SinglePassReportProcessor
       throw new IllegalStateException(
               "OutputProcessor is invalid.");
     }
-    final StreamingLayoutProcess layoutProcess
-            ;
-    try
-    {
-      layoutProcess = new DefaultStreamingLayoutProcess(outputProcessor);
-    }
-    catch (Exception e)
-    {
-      throw new ReportProcessingException("Blah", e);
-    }
+    final LayoutProcess layoutProcess =
+        new DefaultLayoutProcess(outputProcessor);
     final ResourceManager resourceManager = job.getReport().getResourceManager();
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 

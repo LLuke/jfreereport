@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Section.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
+ * $Id: Section.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.report.flow.FlowControlOperation;
-import org.jfree.report.function.Expression;
 
 /**
  * A report section is a collection of other elements and sections.

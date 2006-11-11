@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GroupingExpressionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  */
 package org.jfree.report.modules.factories.report.flow;
 
-import org.jfree.report.function.sys.GroupByExpression;
+import org.jfree.report.expressions.sys.GroupByExpression;
 
 /**
  * Creation-Date: 09.04.2006, 13:54:23

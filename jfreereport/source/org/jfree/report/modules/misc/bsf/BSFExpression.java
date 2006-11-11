@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSFExpression.java,v 1.1 2005/09/12 18:04:37 taqua Exp $
+ * $Id: BSFExpression.java,v 1.2 2006/04/18 11:28:41 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -47,8 +47,11 @@ import java.io.Serializable;
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.jfree.report.DataRow;
-import org.jfree.report.function.AbstractExpression;
+import org.jfree.report.expressions.AbstractExpression;
+import org.jfree.report.expressions.Expression;
+import org.jfree.report.expressions.ExpressionException;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * An expression that uses the BeanShell scripting framework to perform a scripted
@@ -104,7 +107,6 @@ public class BSFExpression extends AbstractExpression implements Serializable
   private transient DataRowWrapper dataRowWrapper;
 
   private String language;
-  private String script;
   private String expression;
 
   /**
@@ -134,10 +136,6 @@ public class BSFExpression extends AbstractExpression implements Serializable
   {
     dataRowWrapper = new DataRowWrapper();
     interpreter.declareBean("dataRow", dataRowWrapper, DataRow.class);
-    if (expression != null)
-    {
-      interpreter.exec(getLanguage(), "script", 1, 1, getExpression());
-    }
   }
 
   /**
@@ -152,12 +150,13 @@ public class BSFExpression extends AbstractExpression implements Serializable
    *
    * @return the evaluated value or null.
    */
-  public Object getValue ()
+  public Object computeValue () throws ExpressionException
   {
-    if (invalid || script == null)
+    if (invalid)
     {
       return null;
     }
+
     if (interpreter == null)
     {
       interpreter = createInterpreter();
@@ -182,16 +181,14 @@ public class BSFExpression extends AbstractExpression implements Serializable
   }
 
   /**
-   * Clones the expression and reinitializes the script.
+   * Return a new instance of this expression. The copy is initialized and uses
+   * the same parameters as the original, but does not share any objects.
    *
-   * @return a clone of the expression.
-   *
-   * @throws CloneNotSupportedException this should never happen.
+   * @return a copy of this function.
    */
-  public Object clone ()
-          throws CloneNotSupportedException
+  public Expression getInstance()
   {
-    final BSFExpression expression = (BSFExpression) super.clone();
+    final BSFExpression expression = (BSFExpression) super.getInstance();
     expression.interpreter = null;
     return expression;
   }
@@ -221,6 +218,10 @@ public class BSFExpression extends AbstractExpression implements Serializable
 
   public void setExpression (final String expression)
   {
+    if (ObjectUtilities.equal(this.expression, expression))
+    {
+      return;
+    }
     this.expression = expression;
     this.interpreter = null;
   }
@@ -232,18 +233,11 @@ public class BSFExpression extends AbstractExpression implements Serializable
 
   public void setLanguage(final String language)
   {
+    if (ObjectUtilities.equal(this.language, language))
+    {
+      return;
+    }
     this.language = language;
-    this.interpreter = null;
-  }
-
-  public String getScript()
-  {
-    return script;
-  }
-
-  public void setScript(final String script)
-  {
-    this.script = script;
     this.interpreter = null;
   }
 }

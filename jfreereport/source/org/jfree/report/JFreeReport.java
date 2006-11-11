@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.32 2006/04/21 17:31:22 taqua Exp $
+ * $Id: JFreeReport.java,v 1.33 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,8 +69,6 @@ import javax.swing.table.TableModel;
 import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.layouting.input.style.StyleSheet;
-import org.jfree.layouting.namespace.DefaultNamespaceCollection;
-import org.jfree.report.function.Expression;
 import org.jfree.report.i18n.DefaultResourceBundleFactory;
 import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.structure.ReportDefinition;
@@ -81,7 +79,7 @@ import org.jfree.resourceloader.ResourceManager;
 /**
  * A JFreeReport instance is used as report template to define the visual layout
  * of a report and to collect all data sources for the reporting. Possible data
- * sources are the {@link TableModel}, {@link Expression}s or {@link
+ * sources are the {@link TableModel}, {@link org.jfree.report.expressions.Expression}s or {@link
  * ReportProperties}.
  * <p/>
  * New since 0.9: Report properties contain data. They do not contain processing

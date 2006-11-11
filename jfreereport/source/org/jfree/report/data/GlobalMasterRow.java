@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GlobalMasterRow.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -213,8 +213,11 @@ public final class GlobalMasterRow
     for (int i = 0; i < parameterCount; i++)
     {
       final String columnName = importedDataRow.getColumnName(i);
-      final Object columnValue = importedDataRow.get(i);
-      globalView.putField(columnName, columnValue);
+      if (columnName != null)
+      {
+        final Object columnValue = importedDataRow.get(i);
+        globalView.putField(columnName, columnValue);
+      }
     }
   }
 
@@ -225,8 +228,11 @@ public final class GlobalMasterRow
     for (int i = 0; i < parameterCount; i++)
     {
       final String columnName = parameterDataRow.getColumnName(i);
-      final Object columnValue = parameterDataRow.get(i);
-      globalView.putField(columnName, columnValue);
+      if (columnName != null)
+      {
+        final Object columnValue = parameterDataRow.get(i);
+        globalView.putField(columnName, columnValue);
+      }
     }
     if (reportDataRow != null)
     {
@@ -234,8 +240,11 @@ public final class GlobalMasterRow
       for (int i = 0; i < dataColCount; i++)
       {
         final String columnName = reportDataRow.getColumnName(i);
-        final Object columnValue = reportDataRow.get(i);
-        globalView.putField(columnName, columnValue);
+        if (columnName != null)
+        {
+          final Object columnValue = reportDataRow.get(i);
+          globalView.putField(columnName, columnValue);
+        }
       }
     }
   }

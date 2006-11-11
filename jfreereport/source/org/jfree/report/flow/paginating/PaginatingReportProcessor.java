@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginatingReportProcessor.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: PaginatingReportProcessor.java,v 1.3 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -40,26 +40,40 @@
  */
 package org.jfree.report.flow.paginating;
 
-import org.jfree.layouting.PageGenerationLayoutProcess;
-import org.jfree.layouting.PagePreparationLayoutProcess;
+import java.util.ArrayList;
+
+import org.jfree.layouting.DefaultLayoutProcess;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.StateException;
+import org.jfree.layouting.ChainingLayoutProcess;
 import org.jfree.layouting.output.pageable.PageableOutputProcessor;
+import org.jfree.layouting.output.pageable.graphics.DisplayAllInterceptor;
+import org.jfree.layouting.output.pageable.graphics.DisplayInterceptor;
+import org.jfree.layouting.output.pageable.graphics.GraphicsOutputProcessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
-import org.jfree.report.flow.DefaultFlowControler;
+import org.jfree.report.ReportProcessingException;
+import org.jfree.report.flow.AbstractReportProcessor;
+import org.jfree.report.flow.DefaultLayoutControler;
 import org.jfree.report.flow.FlowControler;
+import org.jfree.report.flow.LayoutControler;
+import org.jfree.report.flow.LayoutPosition;
 import org.jfree.report.flow.LibLayoutReportTarget;
 import org.jfree.report.flow.ReportJob;
-import org.jfree.report.flow.ReportProcessor;
-import org.jfree.report.flow.ReportTarget;
-import org.jfree.resourceloader.ResourceManager;
+import org.jfree.report.flow.ReportTargetState;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.Log;
 
 /**
- * Creation-Date: 02.04.2006, 15:11:55
+ * Paginating report processors are multi-pass processors.
+ * <p/>
+ * This is written to use LibLayout. It will never work with other report
+ * targets.
  *
  * @author Thomas Morgner
  */
-public class PaginatingReportProcessor implements ReportProcessor
+public class PaginatingReportProcessor extends AbstractReportProcessor
 {
   private PageableOutputProcessor outputProcessor;
 
@@ -77,56 +91,150 @@ public class PaginatingReportProcessor implements ReportProcessor
     this.outputProcessor = outputProcessor;
   }
 
-  protected FlowControler createFlowControler(ReportJob job)
-          throws DataSourceException
-  {
-    return new DefaultFlowControler(job);
-  }
-
-  protected ReportTarget createPrepareTarget(ReportJob job)
+  protected LibLayoutReportTarget createTarget(ReportJob job)
   {
     if (outputProcessor == null)
     {
-      throw new IllegalStateException(
-              "OutputProcessor is invalid.");
+      throw new IllegalStateException("OutputProcessor is invalid.");
     }
-    final PagePreparationLayoutProcess layoutProcess = null;
-//            new DefaultPagePreparationLayoutProcess(outputProcessor);
+
+    final LayoutProcess layoutProcess =
+        new ChainingLayoutProcess(new DefaultLayoutProcess(outputProcessor));
     final ResourceManager resourceManager = job.getReport().getResourceManager();
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
-            (job, resourceKey, resourceManager, layoutProcess);
-  }
-
-  protected ReportTarget createGenerateTarget(ReportJob job)
-  {
-    if (outputProcessor == null)
-    {
-      throw new IllegalStateException(
-              "OutputProcessor is invalid.");
-    }
-    final PageGenerationLayoutProcess layoutProcess = null;
-//            new DefaultPageGenerationLayoutProcess(outputProcessor, null, null);
-    final ResourceManager resourceManager = job.getReport().getResourceManager();
-    final ResourceKey resourceKey = job.getReport().getBaseResource();
-
-    return new LibLayoutReportTarget
-            (job, resourceKey, resourceManager, layoutProcess);
+        (job, resourceKey, resourceManager, layoutProcess);
   }
 
   public void processReport(ReportJob job)
-          throws ReportDataFactoryException, DataSourceException
+      throws ReportDataFactoryException,
+      DataSourceException, ReportProcessingException
   {
     if (job == null)
     {
       throw new NullPointerException();
     }
 
+    // first, compute the globals
+    processReportRun(job, createTarget(job));
+    // second, paginate
+    final ArrayList stateList = processPaginationRun(job, createTarget(job));
+    if (outputProcessor.isPaginationFinished() == false)
+    {
+      throw new ReportProcessingException
+          ("Pagination has not yet been finished.");
+    }
+
+    Log.debug("Generated: " + outputProcessor.getLogicalPageCount() + " logical pages");
+    Log.debug("Generated: " + outputProcessor.getPhysicalPageCount() + " physical pages");
+    // third, generate the content.
+
+    // Have a look at the content ..
+    DisplayAllInterceptor dia = new DisplayAllInterceptor();
+    GraphicsOutputProcessor gop = (GraphicsOutputProcessor) outputProcessor;
+//    gop.setInterceptor(dia);
+
+//    processReportRun(job, createTarget(job));
+//
+//    // Using the interceptor to get a specific page without state management.
+    DisplayInterceptor di =
+        new DisplayInterceptor(outputProcessor.getLogicalPage(1));
+    gop.setInterceptor(di);
+
+    processReportRun(job, createTarget(job));
+
+
+
+    try
+    {
+      // Using the state management.
+      final PageState state = (PageState) stateList.get(1);
+      final ReportTargetState o = state.getTargetState();
+      final LayoutPosition position = state.getLayoutPosition();
+
+      final LibLayoutReportTarget target =
+          (LibLayoutReportTarget) o.restore(outputProcessor);
+      gop.setInterceptor(dia);
+      continueFromPos(position, target);
+    }
+    catch (StateException e)
+    {
+      e.printStackTrace();
+    }
+
+  }
+
+
+  protected void continueFromPos (LayoutPosition position,
+                                  final LibLayoutReportTarget target)
+      throws ReportDataFactoryException,
+      DataSourceException, ReportProcessingException
+  {
+    ReportJob job = target.getReportJob();
     synchronized (job)
     {
-      //prepareReport(job);
-      //generateReport(job);
+      // set up the scene
+      final LayoutControler layoutControler = new DefaultLayoutControler();
+
+      // we have the data and we have our position inside the report.
+      // lets generate something ...
+      while (position.isFinalPosition() == false)
+      {
+        position = layoutControler.process(target, position);
+        target.commit();
+      }
+    }
+  }
+
+
+
+  protected ArrayList processPaginationRun(final ReportJob job,
+                                      final LibLayoutReportTarget target)
+      throws ReportDataFactoryException,
+      DataSourceException, ReportProcessingException
+  {
+    synchronized (job)
+    {
+      final ArrayList states = new ArrayList();
+
+      // set up the scene
+      final LayoutControler layoutControler = new DefaultLayoutControler();
+
+      // we have the data and we have our position inside the report.
+      // lets generate something ...
+      final FlowControler flowControler = createFlowControler(job);
+      LayoutPosition position = layoutControler.createInitialPosition
+          (flowControler, job.getReport());
+      try
+      {
+        states.add(new PageState(target.saveState(), position));
+
+        while (position.isFinalPosition() == false)
+        {
+          position = layoutControler.process(target, position);
+          target.commit();
+
+          // check whether a pagebreak has been encountered.
+          if (target.isPagebreakEncountered())
+          {
+            // So we hit a pagebreak. Store the state for later reuse.
+            Log.debug ("*********************************************************");
+            Log.debug ("************* SAVED A PAGE-STATE ************************");
+            Log.debug ("*********************************************************");
+
+            states.add(new PageState(target.saveState(), position));
+            target.resetPagebreakFlag();
+          }
+        }
+      }
+      catch (StateException e)
+      {
+        throw new ReportProcessingException("Blah!");
+      }
+
+      Log.debug ("After pagination we have " + states.size() + " states");
+      return states;
     }
   }
 

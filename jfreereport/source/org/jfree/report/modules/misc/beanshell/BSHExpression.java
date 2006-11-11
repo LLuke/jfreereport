@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.14 2005/09/07 14:25:10 taqua Exp $
+ * $Id: BSHExpression.java,v 1.15 2006/04/18 11:28:40 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -50,8 +50,9 @@ import java.io.Serializable;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import org.jfree.report.function.AbstractExpression;
-import org.jfree.report.function.Expression;
+import org.jfree.report.expressions.Expression;
+import org.jfree.report.expressions.AbstractExpression;
+import org.jfree.report.expressions.ExpressionException;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
@@ -170,12 +171,13 @@ public class BSHExpression extends AbstractExpression implements Serializable
    *
    * @return the evaluated value or null.
    */
-  public Object getValue ()
+  public Object computeValue () throws ExpressionException
   {
     if (invalid)
     {
       return null;
     }
+
     if (interpreter == null)
     {
       interpreter = createInterpreter();

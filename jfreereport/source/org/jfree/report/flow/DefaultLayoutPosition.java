@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutPosition.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
+ * $Id: DefaultLayoutPosition.java,v 1.3 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -218,7 +218,7 @@ public final class DefaultLayoutPosition implements LayoutPosition
 
   public boolean isFinalPosition()
   {
-    return node != null;
+    return node == null;
   }
 
   public int compareTo(Object o)

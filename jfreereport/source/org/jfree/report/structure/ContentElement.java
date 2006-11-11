@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentElement.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
+ * $Id: ContentElement.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  */
 package org.jfree.report.structure;
 
-import org.jfree.report.function.Expression;
+import org.jfree.report.expressions.Expression;
 
 /**
  * A element holding values from the report data sources. These values

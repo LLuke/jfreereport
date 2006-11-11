@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutExpressionRuntime.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: LayoutExpressionRuntime.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  */
 package org.jfree.report.flow;
 
-import org.jfree.report.function.ExpressionRuntime;
+import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.DataRow;
 import org.jfree.report.ReportData;
 import org.jfree.report.structure.Element;

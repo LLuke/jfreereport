@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ValueExpressionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -49,10 +49,5 @@ public class ValueExpressionReadHandler extends AbstractExpressionReadHandler
 {
   public ValueExpressionReadHandler()
   {
-  }
-
-  protected String getDefaultClassName()
-  {
-    return "org.jfree.report.function.sys.GetValueExpression";
   }
 }

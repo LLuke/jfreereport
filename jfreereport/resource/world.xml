@@ -57,10 +57,12 @@
   There is no special report header. Everything before an group
   declaration will behave like a report header.
   -->
+<!--
   <h1 style="background-color: #afafaf;">
     List of Countries by Continent
   </h1>
-
+  -->
+<!--
   <p>
     This report lists a selected set of countries and produces a running
     total from the given population numbers. The original JFreeReport
@@ -69,7 +71,7 @@
     value can be set in relation to the total population. The <i>precomputation</i>
     is not yet implemented.
   </p>
-
+-->
   <!--
   Groups are nested.
   -->
@@ -81,17 +83,13 @@
     <!--
     This will be a little bit easier as soon as we have Excel-Style functions.
     -->
-    <report:expression
-            class="org.jfree.report.function.numeric.ItemSumFunction">
-      <report:name>PopulationSum</report:name>
-      <report:property name="field">Population</report:property>
-    </report:expression>
+    <report:expression formula="jfreereport:[Population] + [PopulationSum]"
+                       initial="jfreereport:[Population]"
+                       name="PopulationSum"/>
 
     <h2>Continent:
       <report:content>
-        <report:value-expression>
-          <report:property name="field">Continent</report:property>
-        </report:value-expression>
+        <report:value-expression formula="jfreereport:[Continent]"/>
       </report:content>
     </h2>
 
@@ -113,23 +111,17 @@
           <tr>
             <td>
               <report:content>
-                <report:value-expression>
-                  <report:property name="field">Country</report:property>
-                </report:value-expression>
+                <report:value-expression formula="jfreereport:[Country]"/>
               </report:content>
             </td>
             <td>
               <report:content>
-                <report:value-expression>
-                  <report:property name="field">ISO Code</report:property>
-                </report:value-expression>
+                <report:value-expression formula="jfreereport:[ISO Code]"/>
               </report:content>
             </td>
             <td style="text-align: right;">
               <report:content>
-                <report:value-expression>
-                  <report:property name="field">Population</report:property>
-                </report:value-expression>
+                <report:value-expression formula="jfreereport:[Population]"/>
               </report:content>
             </td>
           </tr>
@@ -138,9 +130,7 @@
           <td colspan="2">Total Population:</td>
           <td style="text-align: right; border-top: 1px solid black">
             <report:content>
-              <report:value-expression>
-                <report:property name="field">PopulationSum</report:property>
-              </report:value-expression>
+              <report:value-expression formula="jfreereport:[PopulationSum]"/>
             </report:content>
           </td>
         </tr>

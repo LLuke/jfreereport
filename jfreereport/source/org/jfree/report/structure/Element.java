@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
+ * $Id: Element.java,v 1.5 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -44,19 +44,18 @@ package org.jfree.report.structure;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Locale;
+import java.util.Map;
 
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.namespace.Namespaces;
-import org.jfree.layouting.util.LocaleUtility;
 import org.jfree.layouting.util.AttributeMap;
+import org.jfree.layouting.util.LocaleUtility;
 import org.jfree.report.JFreeReportInfo;
-import org.jfree.report.function.Expression;
+import org.jfree.report.expressions.Expression;
 
 /**
  * An element is a node that can have attributes. The 'id' and the 'name'
@@ -74,7 +73,6 @@ import org.jfree.report.function.Expression;
  */
 public abstract class Element extends Node
 {
-  private static final String[] EMPTY_VARIABLES = new String[0];
   private static final Expression[] EMPTY_EXPRESSIONS = new Expression[0];
 
   public static final String NAME_ATTRIBUTE = "name";
@@ -90,7 +88,6 @@ public abstract class Element extends Node
   private AttributeMap attributes;
   private CSSStyleRule style;
   private ArrayList expressions;
-  private HashSet variables;
   private AttributeMap attributeExpressions;
   private HashMap styleExpressions;
   private boolean enabled;
@@ -113,7 +110,6 @@ public abstract class Element extends Node
     this.attributes = new AttributeMap();
     this.style = new CSSStyleRule(null, null);
     this.expressions = new ArrayList();
-    this.variables = new HashSet();
     this.attributeExpressions = new AttributeMap();
     this.styleExpressions = new HashMap();
     this.enabled = true;
@@ -381,25 +377,6 @@ public abstract class Element extends Node
   public void setEnabled(final boolean enabled)
   {
     this.enabled = enabled;
-  }
-
-  public void addVariable(String name)
-  {
-    this.variables.add(name);
-  }
-
-  public void removeVariable(String name)
-  {
-    this.variables.remove(name);
-  }
-
-  public String[] getVariables()
-  {
-    if (variables.isEmpty())
-    {
-      return EMPTY_VARIABLES;
-    }
-    return (String[]) this.variables.toArray(new String[this.variables.size()]);
   }
 
   public Expression getDisplayCondition()

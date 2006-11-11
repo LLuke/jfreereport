@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LayoutPosition.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,14 @@
  */
 package org.jfree.report.flow;
 
+import java.io.Serializable;
+
 /**
  * Creation-Date: 21.04.2006, 12:14:23
  *
  * @author Thomas Morgner
  */
-public interface LayoutPosition extends Comparable
+public interface LayoutPosition extends Serializable
 {
   public boolean equals (Object o);
   public int hashCode ();

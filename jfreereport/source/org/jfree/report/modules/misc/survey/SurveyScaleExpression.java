@@ -38,15 +38,12 @@
 
 package org.jfree.report.modules.misc.survey;
 
-import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.jfree.report.DataSourceException;
-import org.jfree.report.function.AbstractExpression;
+import org.jfree.report.expressions.ColumnAggregationExpression;
 import org.jfree.ui.Drawable;
 
 /**
@@ -58,32 +55,18 @@ import org.jfree.ui.Drawable;
  * SurveyScale} class implements the {@link Drawable} interface, so it can be displayed
  * using a {@link DrawableElement}.
  */
-public class SurveyScaleExpression extends AbstractExpression implements Serializable
+public class SurveyScaleExpression extends
+        ColumnAggregationExpression implements Serializable
 {
-  /**
-   * The lowest value on the scale.
-   */
-  private transient int lowest;
-
-  /**
-   * The highest value on the scale.
-   */
-  private transient int highest;
-
-  /**
-   * An ordered list containing the fieldnames used in the expression.
-   */
-  private ArrayList fieldList;
-
   /**
    * The name of the field containing the lower bound of the highlighted range.
    */
-  private String rangeLowerBoundField;
+  private Number rangeLowerBound;
 
   /**
    * The name of the field containing the upper bound of the highlighted range.
    */
-  private String rangeUpperBoundField;
+  private Number rangeUpperBound;
 
   /**
    * The range paint.
@@ -100,94 +83,56 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
    */
   private boolean overrideShapeFilled;
 
+  private int lowestValue;
+  private int highestValue;
+
   public SurveyScaleExpression ()
   {
-    this(0, 1);
   }
 
-  /**
-   * Creates a new expression.
-   *
-   * @param lowest  the lowest value on the response scale.
-   * @param highest the highest value on the response scale.
-   */
-  public SurveyScaleExpression (final int lowest, final int highest)
+  protected int getFieldListParameterPosition()
   {
-    this(lowest, highest, null, null, null);
+    return 2;
   }
 
-  /**
-   * Creates a new expression.
-   *
-   * @param lowest  the lowest value on the response scale.
-   * @param highest the highest value on the response scale.
-   * @param lowerBoundsField  the name of the field containing the lower bound of the highlighted
-   *                range (<code>null</code> permitted).
-   * @param upperBoundsField  the name of the field containing the upper bound of the highlighted
-   *                range (<code>null</code> permitted).
-   * @param shape   a shape that will be used to override the shape displayed for the
-   *                first series (<code>null</code> permitted).
-   */
-  public SurveyScaleExpression (final int lowest,
-                                final int highest,
-                                final String lowerBoundsField,
-                                final String upperBoundsField,
-                                final Shape shape)
+  public Number getRangeLowerBound()
   {
-    this.lowest = lowest;
-    this.highest = highest;
-    this.fieldList = new ArrayList();
-    this.overrideShape = shape;
-    this.overrideShapeFilled = false;
-    this.rangeLowerBoundField = lowerBoundsField;
-    this.rangeUpperBoundField = upperBoundsField;
-    this.rangePaint = Color.lightGray;
+    return rangeLowerBound;
   }
 
-  /**
-   * Returns the name of the field containing the lower bound of the range that is to be
-   * highlighted on the scale.
-   *
-   * @return A string (possibly <code>null</code>).
-   */
-  public String getRangeLowerBoundField ()
+  public void setRangeLowerBound(final Number rangeLowerBound)
   {
-    return this.rangeLowerBoundField;
+    this.rangeLowerBound = rangeLowerBound;
   }
 
-  /**
-   * Sets the name of the field containing the lower bound of the range that is to be
-   * highlighted on the scale.  Set this to <code>null</code> if you have no range to
-   * highlight.
-   *
-   * @param field the field name (<code>null</code> permitted).
-   */
-  public void setRangeLowerBoundField (final String field)
+  public Number getRangeUpperBound()
   {
-    this.rangeLowerBoundField = field;
+    return rangeUpperBound;
   }
 
-  /**
-   * Returns the name of the field containing the upper bound of the range that is to be
-   * highlighted on the scale.
-   *
-   * @return A string (possibly <code>null</code>).
-   */
-  public String getRangeUpperBoundField ()
+  public void setRangeUpperBound(final Number rangeUpperBound)
   {
-    return this.rangeUpperBoundField;
+    this.rangeUpperBound = rangeUpperBound;
   }
 
-  /**
-   * Sets the name of the field containing the upper bound of the range that is to be
-   * highlighted on the scale.  Set this to <code>null</code> if you have no range to
-   * highlight.
-   *
-   * @param field the field name (<code>null</code> permitted).
-   */
-  public void setRangeUpperBoundField (final String field)
+  public int getLowestValue()
   {
-    this.rangeUpperBoundField = field;
+    return lowestValue;
+  }
+
+  public void setLowestValue(final int lowestValue)
+  {
+    this.lowestValue = lowestValue;
+  }
+
+  public int getHighestValue()
+  {
+    return highestValue;
+  }
+
+  public void setHighestValue(final int highestValue)
+  {
+    this.highestValue = highestValue;
   }
 
   /**
@@ -222,110 +167,28 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
     this.overrideShapeFilled = b;
   }
 
-  public int getLowest()
-  {
-    return lowest;
-  }
-
-  public void setLowest(final int lowest)
-  {
-    this.lowest = lowest;
-  }
-
-  public int getHighest()
-  {
-    return highest;
-  }
-
-  public void setHighest(final int highest)
-  {
-    this.highest = highest;
-  }
-
   /**
    * Returns a {@link SurveyScale} instance that is set up to display the values in the
    * current row.
    *
    * @return a {@link SurveyScale} instance.
    */
-  public Object getValue () throws DataSourceException
+  public Object computeValue () throws DataSourceException
   {
-    final SurveyScale result =
-            new SurveyScale(this.lowest, this.highest, collectValues());
+    final Number[] fieldValues = (Number[]) getFieldValues(Number.class);
+    final SurveyScale result = new SurveyScale
+            (this.lowestValue, this.highestValue, fieldValues);
 
-    if (this.rangeLowerBoundField != null && this.rangeUpperBoundField != null)
-    {
-      final Number b0 = (Number) getDataRow().get(this.rangeLowerBoundField);
-      final Number b1 = (Number) getDataRow().get(this.rangeUpperBoundField);
-      result.setRangeLowerBound(b0);
-      result.setRangeUpperBound(b1);
-    }
+    result.setRangeLowerBound(getRangeLowerBound());
+    result.setRangeUpperBound(getRangeUpperBound());
     result.setRangePaint(this.rangePaint);
+
     if (this.overrideShape != null)
     {
       result.setShape(0, this.overrideShape);
       result.setShapeFilled(0, this.overrideShapeFilled);
     }
     return result;
-  }
-
-  /**
-   * collects the values of all fields defined in the fieldList.
-   *
-   * @return an Objectarray containing all defined values from the datarow
-   */
-  private Number[] collectValues () throws DataSourceException
-  {
-    final Number[] retval = new Number[this.fieldList.size()];
-    for (int i = 0; i < this.fieldList.size(); i++)
-    {
-      final String field = (String) this.fieldList.get(i);
-      retval[i] = (Number) getDataRow().get(field);
-    }
-    return retval;
-  }
-
-  /**
-   * Clones the expression.
-   *
-   * @return a copy of this expression.
-   *
-   * @throws CloneNotSupportedException this should never happen.
-   */
-  public Object clone ()
-          throws CloneNotSupportedException
-  {
-    final SurveyScaleExpression fva = (SurveyScaleExpression) super.clone();
-    fva.fieldList = (ArrayList) this.fieldList.clone();
-    return fva;
-  }
-
-  public String[] getField ()
-  {
-    return (String[]) fieldList.toArray(new String[fieldList.size()]);
-  }
-
-  public void setField (final String[] fields)
-  {
-    this.fieldList.clear();
-    this.fieldList.addAll(Arrays.asList(fields));
-  }
-
-  public String getField (final int idx)
-  {
-    return (String) this.fieldList.get(idx);
-  }
-
-  public void setField (final int index, final String field)
-  {
-    if (fieldList.size() == index)
-    {
-      fieldList.add(field);
-    }
-    else
-    {
-      fieldList.set(index, field);
-    }
   }
 
   public boolean isOverrideShapeFilled ()

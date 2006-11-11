@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextProcessingTest.java,v 1.1 2006/07/18 14:39:32 taqua Exp $
+ * $Id: TextProcessingTest.java,v 1.2 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -75,8 +75,8 @@ public class TextProcessingTest
   {
     JFreeReportBoot.getInstance().start();
 //    TextProcessingTest.processFlowReport("/complex.xml");
-//    TextProcessingTest.processFlowReport("/baseline.xml");
-    TextProcessingTest.processFlowReport("/tables.xml");
+    TextProcessingTest.processFlowReport("/baseline.xml");
+//    TextProcessingTest.processFlowReport("/tables.xml");
   }
 
   private static void processFlowReport(String file)

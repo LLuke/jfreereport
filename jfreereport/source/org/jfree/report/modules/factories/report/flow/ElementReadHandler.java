@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ElementReadHandler.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
+ * $Id: ElementReadHandler.java,v 1.4 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,6 @@ public abstract class ElementReadHandler extends AbstractXmlReadHandler
   private boolean enabled;
   private String style;
   private ArrayList expressionHandlers;
-  private ArrayList variablesReadHandlers;
   private ArrayList styleExpressionHandlers;
   private ArrayList attributeExpressionHandlers;
   private ArrayList attributeHandlers;
@@ -73,7 +72,6 @@ public abstract class ElementReadHandler extends AbstractXmlReadHandler
   protected ElementReadHandler()
   {
     expressionHandlers = new ArrayList();
-    variablesReadHandlers = new ArrayList();
     styleExpressionHandlers = new ArrayList();
     attributeExpressionHandlers = new ArrayList();
     stylePropertyHandlers = new ArrayList();
@@ -143,12 +141,6 @@ public abstract class ElementReadHandler extends AbstractXmlReadHandler
         expressionHandlers.add(erh);
         return erh;
       }
-      if ("variable".equals(tagName))
-      {
-        StringReadHandler vrh = new StringReadHandler();
-        variablesReadHandlers.add(vrh);
-        return vrh;
-      }
       if ("style-expression".equals(tagName))
       {
         StyleExpressionReadHandler erh = new StyleExpressionReadHandler();
@@ -193,12 +185,6 @@ public abstract class ElementReadHandler extends AbstractXmlReadHandler
       final ExpressionReadHandler handler =
               (ExpressionReadHandler) expressionHandlers.get(i);
       e.addExpression(handler.getExpression());
-    }
-    for (int i = 0; i < variablesReadHandlers.size(); i++)
-    {
-      final StringReadHandler handler =
-              (StringReadHandler) variablesReadHandlers.get(i);
-      e.addVariable(handler.getResult());
     }
     for (int i = 0; i < styleExpressionHandlers.size(); i++)
     {

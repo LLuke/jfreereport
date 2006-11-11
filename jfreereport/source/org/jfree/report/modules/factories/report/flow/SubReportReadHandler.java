@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SubReportReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: SubReportReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -72,6 +72,23 @@ public class SubReportReadHandler extends SectionReadHandler
     subReport = new SubReport();
     importParameters = new ArrayList();
     exportParameters = new ArrayList();
+  }
+
+  /**
+   * Starts parsing.
+   *
+   * @param attrs the attributes.
+   * @throws org.xml.sax.SAXException if there is a parsing error.
+   */
+  protected void startParsing(final Attributes attrs) throws SAXException
+  {
+    super.startParsing(attrs);
+    final String source = attrs.getValue(getUri(), "href");
+    if (source != null)
+    {
+      
+    }
+
   }
 
   /**

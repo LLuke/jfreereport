@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StaticDataRow.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
  */
 package org.jfree.report.data;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Collections;
 
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataRow;
@@ -89,7 +89,7 @@ public class StaticDataRow implements DataRow
     }
 
     HashMap nameCache = new HashMap();
-    synchronized(dataRow)
+    synchronized (dataRow)
     {
       final int columnCount = dataRow.getColumnCount();
       this.names = new String[columnCount];
@@ -98,7 +98,10 @@ public class StaticDataRow implements DataRow
       {
         names[i] = dataRow.getColumnName(i);
         values[i] = dataRow.get(i);
-        nameCache.put (names[i], IntegerCache.getInteger(i));
+        if (names[i] != null)
+        {
+          nameCache.put(names[i], IntegerCache.getInteger(i));
+        }
       }
     }
     this.nameCache = Collections.unmodifiableMap(nameCache);
@@ -109,7 +112,7 @@ public class StaticDataRow implements DataRow
     setData(names, values);
   }
 
-  protected void setData (String[] names, Object[] values)
+  protected void setData(String[] names, Object[] values)
   {
     if (names == null)
     {
@@ -130,12 +133,15 @@ public class StaticDataRow implements DataRow
     for (int i = 0; i < names.length; i++)
     {
       String name = names[i];
-      nameCache.put (name, IntegerCache.getInteger(i));
+      if (name != null)
+      {
+        nameCache.put(name, IntegerCache.getInteger(i));
+      }
     }
     this.nameCache = Collections.unmodifiableMap(nameCache);
   }
 
-  protected void updateData (final Object[] values)
+  protected void updateData(final Object[] values)
   {
     if (values.length != this.values.length)
     {
@@ -144,6 +150,7 @@ public class StaticDataRow implements DataRow
 
     this.values = (Object[]) values.clone();
   }
+
   /**
    * Returns the value of the expression or column in the tablemodel using the
    * given column number as index. For functions and expressions, the

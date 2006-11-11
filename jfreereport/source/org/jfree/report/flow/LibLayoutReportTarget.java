@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibLayoutReportTarget.java,v 1.6 2006/05/15 12:56:56 taqua Exp $
+ * $Id: LibLayoutReportTarget.java,v 1.7 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.StateException;
+import org.jfree.layouting.LayoutProcessState;
+import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.feed.InputFeed;
@@ -56,7 +59,7 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportInfo;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.ExpressionRuntime;
+import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
@@ -71,7 +74,40 @@ import org.jfree.util.Log;
  * @author Thomas Morgner
  */
 public class LibLayoutReportTarget extends AbstractReportTarget
+  implements StatefullReportTarget
 {
+  protected static class LibLayoutReportTargetState
+      implements ReportTargetState
+  {
+    private LayoutProcessState layoutProcess;
+    private ReportJob reportJob;
+    private ResourceKey baseResourceKey;
+    private ResourceManager resourceManager;
+    private NamespaceCollection namespaceCollection;
+
+    public LibLayoutReportTargetState()
+    {
+    }
+
+    public void fill (LibLayoutReportTarget target) throws StateException
+    {
+      this.layoutProcess = target.getLayoutProcess().saveState();
+      this.reportJob = target.getReportJob();
+      this.baseResourceKey = target.getBaseResource();
+      this.resourceManager = target.getResourceManager();
+      this.namespaceCollection = target.getNamespaces();
+    }
+
+    public ReportTarget restore(OutputProcessor out)
+        throws StateException
+    {
+      final LayoutProcess layoutProcess = this.layoutProcess.restore(out);
+      return new LibLayoutReportTarget(reportJob,
+          baseResourceKey, resourceManager, layoutProcess, namespaceCollection);
+    }
+  }
+
+
   private InputFeed feed;
   private NamespaceCollection namespaces;
   private LayoutProcess layoutProcess;
@@ -82,11 +118,11 @@ public class LibLayoutReportTarget extends AbstractReportTarget
    * @param feed
    */
   public LibLayoutReportTarget (final ReportJob reportJob,
-                                final ResourceKey basResourceKey,
+                                final ResourceKey baseResourceKey,
                                 final ResourceManager resourceManager,
                                 final LayoutProcess layoutProcess)
   {
-    super(reportJob, resourceManager, basResourceKey);
+    super(reportJob, resourceManager, baseResourceKey);
 
     if (layoutProcess == null)
     {
@@ -96,9 +132,41 @@ public class LibLayoutReportTarget extends AbstractReportTarget
     this.feed = layoutProcess.getInputFeed();
   }
 
+  public LibLayoutReportTarget(final ReportJob reportJob,
+                               final ResourceKey baseResource,
+                               final ResourceManager resourceManager,
+                               final LayoutProcess layoutProcess,
+                               final NamespaceCollection namespaces)
+  {
+    this(reportJob, baseResource, resourceManager, layoutProcess);
+    this.namespaces = namespaces;
+  }
+
+  public ReportTargetState saveState() throws StateException
+  {
+    final LibLayoutReportTargetState state = new LibLayoutReportTargetState();
+    state.fill(this);
+    return state;
+  }
+
   public void commit()
   {
 
+  }
+
+  public NamespaceCollection getNamespaces()
+  {
+    return namespaces;
+  }
+
+  public boolean isPagebreakEncountered()
+  {
+    return layoutProcess.isPagebreakEncountered();
+  }
+
+  protected LayoutProcess getLayoutProcess()
+  {
+    return layoutProcess;
   }
 
   protected InputFeed getInputFeed ()
@@ -300,4 +368,12 @@ public class LibLayoutReportTarget extends AbstractReportTarget
       throw new ReportProcessingException("Failed to process inputfeed", e);
     }
   }
+
+
+  public void resetPagebreakFlag()
+  {
+    getInputFeed().resetPageBreakFlag();
+  }
+
+
 }

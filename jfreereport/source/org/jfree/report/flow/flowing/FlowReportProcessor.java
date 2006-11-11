@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FlowReportProcessor.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
+ * $Id: FlowReportProcessor.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -41,30 +41,25 @@
 package org.jfree.report.flow.flowing;
 
 import org.jfree.layouting.ChainingLayoutProcess;
+import org.jfree.layouting.DefaultLayoutProcess;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.junit.DebugLayoutProcess;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.flow.DefaultFlowControler;
-import org.jfree.report.flow.DefaultLayoutControler;
-import org.jfree.report.flow.FlowControler;
-import org.jfree.report.flow.LayoutControler;
-import org.jfree.report.flow.LayoutPosition;
+import org.jfree.report.flow.AbstractReportProcessor;
 import org.jfree.report.flow.LibLayoutReportTarget;
 import org.jfree.report.flow.ReportJob;
-import org.jfree.report.flow.ReportProcessor;
-import org.jfree.report.flow.ReportTarget;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
 
 /**
- * Creation-Date: 02.04.2006, 15:11:55
+ * This is written to use LibLayout. It will never work with other report
+ * targets.
  *
  * @author Thomas Morgner
  */
-public class FlowReportProcessor implements ReportProcessor
+public class FlowReportProcessor extends AbstractReportProcessor
 {
   private OutputProcessor outputProcessor;
 
@@ -82,13 +77,7 @@ public class FlowReportProcessor implements ReportProcessor
     this.outputProcessor = outputProcessor;
   }
 
-  protected FlowControler createFlowControler(ReportJob job)
-          throws DataSourceException
-  {
-    return new DefaultFlowControler(job);
-  }
-
-  protected ReportTarget createPrepareTarget(final ReportJob job)
+  protected LibLayoutReportTarget createTarget(final ReportJob job)
   {
     if (outputProcessor == null)
     {
@@ -96,30 +85,13 @@ public class FlowReportProcessor implements ReportProcessor
               "OutputProcessor is invalid.");
     }
     final LayoutProcess layoutProcess =
-            new ChainingLayoutProcess(new DebugLayoutProcess(outputProcessor));
+            new ChainingLayoutProcess(new DefaultLayoutProcess(outputProcessor));
     final ResourceManager resourceManager = job.getReport().getResourceManager();
     final ResourceKey resourceKey = job.getReport().getBaseResource();
 
     return new LibLayoutReportTarget
             (job, resourceKey, resourceManager, layoutProcess);
   }
-
-  protected ReportTarget createGenerateTarget(final ReportJob job)
-  {
-    if (outputProcessor == null)
-    {
-      throw new IllegalStateException(
-              "OutputProcessor is invalid.");
-    }
-    final LayoutProcess layoutProcess =
-            new ChainingLayoutProcess(new DebugLayoutProcess(outputProcessor));
-    final ResourceManager resourceManager = job.getReport().getResourceManager();
-    final ResourceKey resourceKey = job.getReport().getBaseResource();
-
-    return new LibLayoutReportTarget
-            (job, resourceKey, resourceManager, layoutProcess);
-  }
-
 
   /**
    * Bootstraps the local report processing. This way of executing the report
@@ -140,55 +112,13 @@ public class FlowReportProcessor implements ReportProcessor
 
     synchronized (job)
     {
-      prepareReport(job);
-     // generateReport(job);
+      // first, compute the globals
+      processReportRun(job, createTarget(job));
+      // second, paginate (this splits the stream into flows)
+      processReportRun(job, createTarget(job));
+      // third, generate the content.
+      processReportRun(job, createTarget(job));
     }
   }
-
-
-  protected void prepareReport (final ReportJob job)
-          throws ReportDataFactoryException, DataSourceException,
-          ReportProcessingException
-  {
-    synchronized (job)
-    {
-      // set up the scene
-      final LayoutControler layoutControler = new DefaultLayoutControler();
-
-      // we have the data and we have our position inside the report.
-      // lets prepare the layout ...
-      final FlowControler flowControler = createFlowControler(job);
-      LayoutPosition position = layoutControler.createInitialPosition
-              (flowControler, job.getReport());
-      final ReportTarget prepareTarget = createPrepareTarget(job);
-      while (position.isFinalPosition())
-      {
-        position = layoutControler.process(prepareTarget, position);
-      }
-    }
-  }
-
-  protected void generateReport (final ReportJob job)
-          throws ReportDataFactoryException, DataSourceException,
-          ReportProcessingException
-  {
-    synchronized (job)
-    {
-      // set up the scene
-      final LayoutControler layoutControler = new DefaultLayoutControler();
-
-      // we have the data and we have our position inside the report.
-      // lets prepare the layout ...
-      final FlowControler flowControler = createFlowControler(job);
-      LayoutPosition position = layoutControler.createInitialPosition
-              (flowControler, job.getReport());
-      final ReportTarget generateTarget = createGenerateTarget(job);
-      while (position.isFinalPosition())
-      {
-        position = layoutControler.process(generateTarget, position);
-      }
-    }
-  }
-
 
 }

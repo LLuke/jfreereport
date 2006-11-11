@@ -15,6 +15,8 @@
   </xsd:annotation>
 
   <xsd:element name="name" type="xsd:string"/>
+  <xsd:attribute name="formula" type="xsd:string"/>
+  <xsd:attribute name="initial" type="xsd:string"/>
 
   <xsd:attribute name="encoding" default="text">
     <xsd:simpleType>
@@ -24,6 +26,7 @@
       </xsd:restriction>
     </xsd:simpleType>
   </xsd:attribute>
+
 
   <xsd:element name="property-definition" abstract="true">
     <xsd:complexType mixed="true">
@@ -42,14 +45,14 @@
         </xsd:documentation>
       </xsd:annotation>
       <xsd:complexContent>
-        <xsd:extension base="xsd:anyType">
+        <xsd:restriction base="xsd:anyType">
           <xsd:sequence>
             <xsd:element ref="property"/>
           </xsd:sequence>
           <xsd:attribute name="name" type="xsd:string"/>
           <xsd:attribute ref="class" use="optional"/>
           <xsd:attribute ref="encoding"/>
-        </xsd:extension>
+        </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
@@ -62,6 +65,8 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+
+  <xsd:attribute name="class" type="xsd:string"/>
 
   <xsd:element name="attribute">
     <xsd:annotation>
@@ -79,13 +84,13 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:complexContent>
-        <xsd:extension base="xsd:anyType">
+        <xsd:restriction base="xsd:anyType">
           <xsd:attribute name="name" type="xsd:string" use="required"/>
           <xsd:attribute name="namespace-uri" type="xsd:string"/>
           <xsd:attribute name="namespace-prefix" type="xsd:string"/>
           <xsd:attribute ref="class" default="java.lang.String" use="optional"/>
           <xsd:attribute ref="encoding"/>
-        </xsd:extension>
+        </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
@@ -113,32 +118,48 @@
         An expression computes a single value. An expression defined here can
         be unnamed. Expressions without a name will not appear in the datarow
         and cannot be referenced by other expressions.
+
+        Expressions can either be defined by specifying a classname or by
+        providing a formula. If a formula is given, this counts as if a
+        property named 'formula' of type string is defined in the
+        expression-class. The expression class defaults to the Formula
+        Expression.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="name" minOccurs="0" maxOccurs="1"/>
         <xsd:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
-      <xsd:attribute ref="class" use="required"/>
+      <xsd:attribute ref="class" use="optional"/>
+      <xsd:attribute name="name" type="xsd:string" use="optional"/>
+      <xsd:attribute ref="formula" use="optional"/>
+      <xsd:attribute ref="initial" use="optional"/>
     </xsd:complexType>
   </xsd:element>
 
-  <xsd:element name="style-key" type="xsd:string"/>
+  <xsd:attribute name="style-key" type="xsd:string"/>
 
   <xsd:element name="style-expression">
     <xsd:annotation>
       <xsd:documentation>
         A style expression computes a single style value. StyleExpressions
         cannot be named expressions.
+
+        Expressions can either be defined by specifying a classname or by
+        providing a formula. If a formula is given, this counts as if a
+        property named 'formula' of type string is defined in the
+        expression-class. The expression class defaults to the Formula
+        Expression.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="style-key" minOccurs="1" maxOccurs="1"/>
         <xsd:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
-      <xsd:attribute ref="class" use="required"/>
+      <xsd:attribute ref="class" use="optional"/>
+      <xsd:attribute ref="style-key" use="required"/>
+      <xsd:attribute ref="formula" use="optional"/>
+      <xsd:attribute ref="initial" use="optional"/>
     </xsd:complexType>
   </xsd:element>
 
@@ -151,6 +172,12 @@
       <xsd:documentation>
         An attribute expression computes a single attribute value.
         AttributeExpressions cannot be named expressions.
+
+        Expressions can either be defined by specifying a classname or by
+        providing a formula. If a formula is given, this counts as if a
+        property named 'formula' of type string is defined in the
+        expression-class. The expression class defaults to the Formula
+        Expression.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -160,7 +187,9 @@
         <xsd:element ref="attribute-namespace-prefix" minOccurs="1" maxOccurs="1"/>
         <xsd:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
-      <xsd:attribute ref="class" use="required"/>
+      <xsd:attribute ref="class" use="optional"/>
+      <xsd:attribute ref="formula" use="optional"/>
+      <xsd:attribute ref="initial" use="optional"/>
     </xsd:complexType>
   </xsd:element>
 
@@ -171,18 +200,22 @@
         element should be displayed. All other values count as 'false' effectivly
         hiding the element.
 
-        DisplayConditions cannot be named expressions.
+        Expressions can either be defined by specifying a classname or by
+        providing a formula. If a formula is given, this counts as if a
+        property named 'formula' of type string is defined in the
+        expression-class. The expression class defaults to the Formula
+        Expression.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
-      <xsd:attribute ref="class" use="required"/>
+      <xsd:attribute ref="class" use="optional"/>
+      <xsd:attribute ref="formula" use="optional"/>
+      <xsd:attribute ref="initial" use="optional"/>
     </xsd:complexType>
   </xsd:element>
-
-  <xsd:element name="variable" type="xsd:string"/>
 
   <xsd:attribute name="virtual" type="xsd:boolean"/>
   <xsd:attribute name="enabled" type="xsd:boolean"/>
@@ -194,7 +227,6 @@
       <xsd:restriction base="xsd:anyType">
         <xsd:sequence>
           <xsd:element ref="expression" minOccurs="0" maxOccurs="unbounded"/>
-          <xsd:element ref="variable" minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element ref="style-expression" minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element ref="style-property" minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element ref="attribute-expression" minOccurs="0" maxOccurs="unbounded"/>
@@ -239,7 +271,9 @@
       <xsd:sequence>
         <xsd:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
-      <xsd:attribute ref="class" default="org.jfree.report.function.sys.GetValueExpression" use="optional"/>
+      <xsd:attribute ref="class" use="optional"/>
+      <xsd:attribute ref="formula" use="optional"/>
+      <xsd:attribute ref="initial" use="optional"/>
     </xsd:complexType>
   </xsd:element>
 
@@ -385,8 +419,6 @@
     </xsd:annotation>
   </xsd:element>
 
-  <xsd:attribute name="class" type="xsd:string"/>
-
   <xsd:element name="grouping-expression">
     <xsd:annotation>
       <xsd:documentation>
@@ -400,7 +432,9 @@
       <xsd:sequence>
         <xsd:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
-      <xsd:attribute ref="class" default="org.jfree.report.function.sys.GroupByExpression" use="optional"/>
+      <xsd:attribute ref="class" use="optional"/>
+      <xsd:attribute ref="formula" use="optional"/>
+      <xsd:attribute ref="initial" use="optional"/>
     </xsd:complexType>
   </xsd:element>
 

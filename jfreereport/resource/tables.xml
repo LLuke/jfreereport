@@ -30,23 +30,41 @@
     <report:property name="org.jfree.report.modules.output.pageable.pdf.Encoding">IDENTITY-H</report:property>
   </report:configuration>
   <report:datasource href="sample.sqlds"/>
-<!--
+
+  <table>
+    <tr>
+      <td>Column1Row1</td>
+    </tr>
+    <tr>
+      <td>Column1Row2</td>
+    </tr>
+  </table>
+
+
   <table style="border-spacing: 10pt">
-    <colgroup>
-      <col style="width:100%" span="2"/>
-    </colgroup>
     <tbody>
       <tr>
-        <td colspan="1" rowspan="2">A tale of a table</td>
-        <td>Once there was a table</td>
-        <td colspan="1" rowspan="2">with many spanned cells</td>
+        <td colspan="1" rowspan="2" style="border: 2px solid green">
+          A tale of a table
+        </td>
+        <td style="border: 2px solid green">
+          Once there was a table
+        </td>
+        <td colspan="1" rowspan="2" style="border: 2px solid green">
+          with many spanned cells
+        </td>
       </tr>
       <tr>
-        <td colspan="2" rowspan="1">But that table was very depressed</td>
-        <td>as it had no margins, paddings or borders to paint</td>
+        <td colspan="2" rowspan="1" style="border: 2px solid green">
+          But that table was very depressed
+        </td>
+        <td style="border: 2px solid green">
+          as it had no margins, paddings or borders to paint
+        </td>
       </tr>
     </tbody>
   </table>
+
 
   <table style="border-spacing: 10pt; border: 1px solid black; border-collapse: collapse">
     <tbody>
@@ -61,7 +79,6 @@
       </tr>
     </tbody>
   </table>
--->
 
   <h1>Testing, how the collapsing table model works</h1>
   <table style="border: 1px solid green; border-collapse:separate; border-spacing: 0; vertical-align:baseline;">
@@ -101,6 +118,7 @@
     </tr>
     </tbody>
   </table>
+
   <h1>Text</h1>
 
 </report:report>

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BeanUtility.java,v 1.9 2005/09/21 14:03:06 taqua Exp $
+ * $Id: BeanUtility.java,v 1.10 2006/04/18 11:28:42 taqua Exp $
  *
  * Changes
  * -------
@@ -149,19 +149,36 @@ public final class BeanUtility
   private Object bean;
   private HashMap properties;
 
+  private BeanUtility()
+  {
+  }
+
   public BeanUtility (final Object o)
           throws IntrospectionException
   {
-    beanInfo = Introspector.getBeanInfo(o.getClass());
     bean = o;
-    properties = new HashMap();
 
+    beanInfo = Introspector.getBeanInfo(o.getClass());
+    properties = new HashMap();
     final PropertyDescriptor[] propertyDescriptors =
             beanInfo.getPropertyDescriptors();
     for (int i = 0; i < propertyDescriptors.length; i++)
     {
       properties.put(propertyDescriptors[i].getName(), propertyDescriptors[i]);
     }
+  }
+
+
+
+  public BeanUtility derive (final Object o)
+  {
+    if (o.getClass().equals(bean.getClass()) == false)
+    {
+      throw new IllegalArgumentException();
+    }
+    final BeanUtility bu = new BeanUtility();
+    bu.bean = o;
+    return bu;
   }
 
   public PropertyDescriptor[] getPropertyInfos ()

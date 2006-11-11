@@ -48,6 +48,8 @@
         <pathelement location="${libdir}/${libfonts-jar-file}"/>
         <pathelement location="${libdir}/${libloader-jar-file}"/>
         <pathelement location="${libdir}/${liblayout-jar-file}"/>
+        <pathelement location="${libdir}/${libformula-jar-file}"/>
+        <pathelement location="${libdir}/${libxml-jar-file}"/>
         <pathelement location="${libdir}/${beanshell-jar-file}"/>
         <pathelement location="${libdir}/${bsf-jar-file}"/>
         <pathelement location="${libdir}/${jaxp-jar-file}"/>
@@ -79,6 +81,8 @@
         <pathelement location="${libdir}/${libfonts-jar-file}"/>
         <pathelement location="${libdir}/${libloader-jar-file}"/>
         <pathelement location="${libdir}/${liblayout-jar-file}"/>
+        <pathelement location="${libdir}/${libformula-jar-file}"/>
+        <pathelement location="${libdir}/${libxml-jar-file}"/>
         <pathelement location="${libdir}/${beanshell-jar-file}"/>
         <pathelement location="${libdir}/${bsf-jar-file}"/>
         <pathelement location="${libdir}/${jaxp-jar-file}"/>

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractExpressionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: AbstractExpressionReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -42,13 +42,15 @@ package org.jfree.report.modules.factories.report.flow;
 
 import java.beans.IntrospectionException;
 
-import org.jfree.report.function.Expression;
+import org.jfree.report.expressions.Expression;
+import org.jfree.report.expressions.FormulaFunction;
+import org.jfree.report.util.CharacterEntityParser;
+import org.jfree.report.util.beans.BeanUtility;
+import org.jfree.report.util.beans.BeanException;
+import org.jfree.util.ObjectUtilities;
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
 import org.jfree.xmlns.parser.ParseException;
 import org.jfree.xmlns.parser.XmlReadHandler;
-import org.jfree.report.util.CharacterEntityParser;
-import org.jfree.report.util.beans.BeanUtility;
-import org.jfree.util.ObjectUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -58,7 +60,7 @@ import org.xml.sax.SAXException;
  * @author Thomas Morgner
  */
 public abstract class AbstractExpressionReadHandler
-        extends AbstractXmlReadHandler
+    extends AbstractXmlReadHandler
 {
   private Expression expression;
   private BeanUtility expressionBeanUtility;
@@ -82,54 +84,78 @@ public abstract class AbstractExpressionReadHandler
    */
   protected void startParsing(final Attributes attrs) throws SAXException
   {
-
+    String name = attrs.getValue(getUri(), "name");
     String className = attrs.getValue(getUri(), "class");
+    String formula = attrs.getValue(getUri(), "formula");
     if (className == null)
     {
-      className = getDefaultClassName();
-      if (className == null)
+      if (formula != null)
       {
-        throw new ParseException("Required attribute 'class' is missing.",
-                getRootHandler().getDocumentLocator());
+        className = FormulaFunction.class.getName();
+      }
+      else
+      {
+        className = getDefaultClassName();
+        if (className == null)
+        {
+          throw new ParseException("Required attribute 'class' is missing.",
+              getRootHandler().getDocumentLocator());
+        }
       }
     }
 
     try
     {
       final Class fnC = ObjectUtilities.getClassLoader
-              (getClass()).loadClass(className);
+          (getClass()).loadClass(className);
       expression = (Expression) fnC.newInstance();
+      expression.setName(name);
       expressionBeanUtility = new BeanUtility(expression);
+
+      if (formula != null)
+      {
+        expressionBeanUtility.setPropertyAsString("formula", formula);
+        String initial = attrs.getValue(getUri(), "initial");
+        if (initial != null)
+        {
+          expressionBeanUtility.setPropertyAsString("initial", initial);
+        }
+      }
     }
     catch (ClassNotFoundException e)
     {
       throw new ParseException("Expression '" + className +
-              "' is not valid. The specified class was not found.",
-              e, getRootHandler().getDocumentLocator());
+          "' is not valid. The specified class was not found.",
+          e, getRootHandler().getDocumentLocator());
     }
     catch (IllegalAccessException e)
     {
       throw new ParseException("Expression " + className +
-              "' is not valid. The specified class does not define a public default constructor.",
-              e, getRootHandler().getDocumentLocator());
+          "' is not valid. The specified class does not define a public default constructor.",
+          e, getRootHandler().getDocumentLocator());
     }
     catch (InstantiationException e)
     {
       throw new ParseException("Expression '" + className +
-              "' is not valid. The specified class cannot be instantiated.",
-              e, getRootHandler().getDocumentLocator());
+          "' is not valid. The specified class cannot be instantiated.",
+          e, getRootHandler().getDocumentLocator());
     }
     catch (ClassCastException e)
     {
       throw new ParseException("Expression '" + className +
-              "' is not valid. The specified class is not an expression or function.",
-              e, getRootHandler().getDocumentLocator());
+          "' is not valid. The specified class is not an expression or function.",
+          e, getRootHandler().getDocumentLocator());
     }
     catch (IntrospectionException e)
     {
       throw new ParseException("Expression '" + className +
-              "' is not valid. Introspection failed for this expression.",
-              e, getRootHandler().getDocumentLocator());
+          "' is not valid. Introspection failed for this expression.",
+          e, getRootHandler().getDocumentLocator());
+    }
+    catch (BeanException e)
+    {
+      throw new SAXException("Unable to assign formula properties " +
+          "to expression '" + className + "'", e);
     }
 
   }
@@ -145,7 +171,7 @@ public abstract class AbstractExpressionReadHandler
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
                                               final Attributes atts)
-          throws SAXException
+      throws SAXException
   {
     if (isSameNamespace(uri) == false)
     {
@@ -154,8 +180,8 @@ public abstract class AbstractExpressionReadHandler
     if (tagName.equals("property"))
     {
       return new TypedPropertyReadHandler
-              (expressionBeanUtility, expression.getName(),
-                      characterEntityParser);
+          (expressionBeanUtility, expression.getName(),
+              characterEntityParser);
     }
     return null;
   }

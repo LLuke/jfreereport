@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RawReportTarget.java,v 1.3 2006/07/11 13:24:40 taqua Exp $
+ * $Id: RawReportTarget.java,v 1.4 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ package org.jfree.report.flow.raw;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.ReportTarget;
-import org.jfree.report.function.ExpressionRuntime;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;

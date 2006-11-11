@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDataRow.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: ReportDataRow.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,6 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportData;
 import org.jfree.report.util.IntegerCache;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 20.02.2006, 15:32:32
@@ -77,7 +76,7 @@ public final class ReportDataRow implements DataRow
     }
   }
 
-  private void rebuildFromScratch () throws DataSourceException
+  private void rebuildFromScratch() throws DataSourceException
   {
     final int columnCount = reportData.getColumnCount();
     this.data = new DataFlags[columnCount];
@@ -86,12 +85,13 @@ public final class ReportDataRow implements DataRow
     for (int i = 0; i < columnCount; i++)
     {
       final String columnName = reportData.getColumnName(i);
-      nameCache.put(columnName, IntegerCache.getInteger(i));
+      if (columnName != null)
+      {
+        nameCache.put(columnName, IntegerCache.getInteger(i));
+      }
 
       final Object value = reportData.get(i);
-
-      this.data[i] = new DefaultDataFlags
-              (columnName, value, true);
+      this.data[i] = new DefaultDataFlags(columnName, value, true);
     }
     this.nameCache = Collections.unmodifiableMap(nameCache);
   }
@@ -125,7 +125,7 @@ public final class ReportDataRow implements DataRow
     }
   }
 
-  public static ReportDataRow createDataRow (final ReportData reportData)
+  public static ReportDataRow createDataRow(final ReportData reportData)
           throws DataSourceException
   {
     final ReportDataRow dataRow = new ReportDataRow(reportData);
@@ -247,7 +247,7 @@ public final class ReportDataRow implements DataRow
     }
   }
 
-  public boolean isAdvanceable () throws DataSourceException
+  public boolean isAdvanceable() throws DataSourceException
   {
     return ((cursor + 1) < reportData.getRowCount());
   }

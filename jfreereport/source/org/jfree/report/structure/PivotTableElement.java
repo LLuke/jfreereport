@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PivotTableElement.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: PivotTableElement.java,v 1.3 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -41,17 +41,23 @@
 
 package org.jfree.report.structure;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jfree.report.flow.ReportProcessor;
 import org.jfree.report.flow.FlowControler;
 import org.jfree.report.flow.LayoutControler;
 
 public class PivotTableElement extends ReportComponent
 {
-
+  private Section dataSection;
+  private ArrayList dimensions;
 
   public PivotTableElement ()
   {
     setType("pivot-table");
+    dimensions = new ArrayList();
+    dataSection = new Section();
   }
 
   public ReportComponentState advance (ReportComponentState state,
@@ -83,4 +89,35 @@ public class PivotTableElement extends ReportComponent
   {
     return null;
   }
+
+  public Section getDataSection()
+  {
+    return dataSection;
+  }
+
+  public void addDimension (PivotDimension dimension)
+  {
+    dimensions.add(dimension);
+  }
+
+  public void removeDimension (PivotDimension dimension)
+  {
+    dimensions.remove (dimension);
+  }
+
+  public int getDimensionCount ()
+  {
+    return dimensions.size();
+  }
+
+  public PivotDimension getDimension (int i)
+  {
+    return (PivotDimension) dimensions.get(i);
+  }
+
+  public List getDimensions()
+  {
+    return dimensions;
+  }
+
 }

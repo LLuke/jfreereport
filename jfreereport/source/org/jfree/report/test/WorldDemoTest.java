@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WorldDemoTest.java,v 1.1 2006/07/30 13:12:49 taqua Exp $
  *
  * Changes
  * -------
@@ -42,20 +42,20 @@ package org.jfree.report.test;
 
 import java.net.URL;
 
-import org.jfree.report.ReportDataFactoryException;
+import org.jfree.layouting.output.pageable.graphics.GraphicsOutputProcessor;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.TableReportDataFactory;
 import org.jfree.report.flow.ReportJob;
-import org.jfree.report.flow.flowing.FlowReportProcessor;
-import org.jfree.resourceloader.ResourceKeyCreationException;
+import org.jfree.report.flow.paginating.PaginatingReportProcessor;
+import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
+import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.resourceloader.Resource;
-import org.jfree.layouting.output.junit.StageOnePageableOutputProcessor;
 
 /**
  * Creation-Date: 21.02.2006, 14:11:22
@@ -75,10 +75,10 @@ public class WorldDemoTest
   {
     JFreeReportBoot.getInstance().start();
 
-    WorldDemoTest.processFlowReport("/world.xml");
+    WorldDemoTest.processReport("/world.xml");
   }
 
-  private static void processFlowReport(String file)
+  private static void processReport(String file)
           throws ResourceLoadingException,
           ResourceCreationException, ResourceKeyCreationException,
           ReportDataFactoryException, DataSourceException, ReportProcessingException
@@ -94,9 +94,13 @@ public class WorldDemoTest
             new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);
 
-    final StageOnePageableOutputProcessor out = new StageOnePageableOutputProcessor();
-    final FlowReportProcessor rp = new FlowReportProcessor();
+    final GraphicsOutputProcessor out = new GraphicsOutputProcessor();
+    final PaginatingReportProcessor rp = new PaginatingReportProcessor();
     rp.setOutputProcessor(out);
+    long startTime = System.currentTimeMillis();
     rp.processReport(job);
+    long endTime = System.currentTimeMillis();
+
+    System.out.println ("Time: " + ((endTime - startTime) / 1000f));
   }
 }

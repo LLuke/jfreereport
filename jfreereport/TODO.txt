@@ -60,3 +60,37 @@ Next minor release:
 Known bugs:
   * Non-Area shapes, which are not instances of Line2D cannot be
     drawn right now. The clipping fails for these shapes. [Not fixable yet]
+
+
+-----------------------------------------------------------------------------
+
+Crosstab-Component:
+
+<cross-tab dimension-strategy>
+  <dimension name="Dimension1" placement="left">
+    <!-- Header cell definition here -->
+  </dimension>
+  <dimension name="Dimension2" placement="left">
+    <!-- Header cell definition here -->
+  </dimension>
+  <dimension name="Dimension3" placement="top">
+    <header>
+    <!-- Header cell definition here -->
+    </header>
+    <total>
+      asasd
+    </total>
+  </dimension>
+  <dimension name="Dimension4" placement="top">
+    <!-- Header cell definition here -->
+  </dimension>
+  <data>
+    <!-- Data cell definition here -->
+  </data>
+</cross-tab>
+
+  The order of the dimensions on the axis is important (so left, right affect
+  each other and top-bottom affect each other). The dimension that is declared
+  first is the outer dimension.
+
+  The data cell is always the last one ..

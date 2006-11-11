@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SinglePassReportProcessor.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
+ * $Id: SinglePassReportProcessor.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package org.jfree.report.flow;
 
 import org.jfree.report.DataSourceException;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
 
@@ -52,17 +51,10 @@ import org.jfree.report.ReportProcessingException;
  *
  * @author Thomas Morgner
  */
-public abstract class SinglePassReportProcessor implements ReportProcessor
+public abstract class SinglePassReportProcessor extends AbstractReportProcessor
 {
   public SinglePassReportProcessor()
   {
-  }
-
-
-  protected FlowControler createFlowControler(ReportJob job)
-          throws DataSourceException
-  {
-    return new DefaultFlowControler(job);
   }
 
   protected abstract ReportTarget createReportTarget (ReportJob job)
@@ -80,19 +72,6 @@ public abstract class SinglePassReportProcessor implements ReportProcessor
           throws ReportDataFactoryException,
           DataSourceException, ReportProcessingException
   {
-    // set up the scene
-    final LayoutControler layoutControler = new DefaultLayoutControler();
-
-    // we have the data and we have our position inside the report.
-    // lets generate something ...
-    final FlowControler flowControler = createFlowControler(job);
-    LayoutPosition position = layoutControler.createInitialPosition
-            (flowControler, job.getReport());
-    final ReportTarget target = createReportTarget(job);
-    while (position.isFinalPosition())
-    {
-      position = layoutControler.process(target, position);
-      target.commit();
-    }
+    processReportRun(job, createReportTarget(job));
   }
 }

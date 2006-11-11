@@ -7,6 +7,10 @@
 
   <report:stylesheet href="quad.css"/>
 
+  <report:configuration>
+    <report:property name="org.jfree.SomeConfigProperty">SomeConfigValue</report:property>
+  </report:configuration>
+
   <!--
   pageheaders are not yet accepted by the layouter (in their special
   role). The layouter treats them as ordinary bands instead.
@@ -62,24 +66,18 @@
   Groups are nested.
   -->
   <report:group virtual="true">
-    <report:grouping-expression>
-      <report:property name="field[0]">REGION</report:property>
-    </report:grouping-expression>
+    <report:grouping-expression formula="jfreereport:GroupBy(&quot;REGION&quot;)"/>
 
     <!--
     This will be a little bit easier as soon as we have Excel-Style functions.
+    This one uses the excel expression but not the itemsum expression
     -->
-    <report:expression
-            class="org.jfree.report.function.numeric.ItemSumFunction">
-      <report:name>ActualSum</report:name>
-      <report:property name="field">ACTUAL</report:property>
-    </report:expression>
+    <report:expression name="ActualSum" formula="jfreereport:[ActualSum] + [ACTUAL]"/>
 
-    <report:expression
-            class="org.jfree.report.function.numeric.ItemSumFunction">
-      <report:name>BudgetSum</report:name>
-      <report:property name="field">BUDGET</report:property>
-    </report:expression>
+    <!--
+     And this one uses the ItemSum (excel style, of course)
+     -->
+    <report:expression name="BudgetSum" formula="jfreereport:SUM([BUDGET])"/>
 
     <table>
       <col style="width: 40%"/>
@@ -91,36 +89,20 @@
         <tr class="region-header">
           <td colspan="4">
             <report:content>
-              <report:value-expression>
-                <report:property name="field">REGION</report:property>
-              </report:value-expression>
+              <report:value-expression formula="jfreereport:[REGION]"/>
             </report:content>
           </td>
         </tr>
 
         <report:group virtual="true">
-          <report:grouping-expression>
-            <report:property name="field[0]">DEPARTMENT</report:property>
-          </report:grouping-expression>
-
-          <report:expression
-                  class="org.jfree.report.function.numeric.ItemSumFunction">
-            <report:name>ActualSum</report:name>
-            <report:property name="field">ACTUAL</report:property>
-          </report:expression>
-
-          <report:expression
-                  class="org.jfree.report.function.numeric.ItemSumFunction">
-            <report:name>BudgetSum</report:name>
-            <report:property name="field">BUDGET</report:property>
-          </report:expression>
+          <report:grouping-expression formula="jfreereport:GroupBy(&quot;DEPARTMENT&quot;)"/>
+          <report:expression name="ActualSum" formula="jfreereport:SUM([ACTUAL])"/>
+          <report:expression name="BudgetSum" formula="jfreereport:SUM([BUDGET])"/>
 
           <tr class="department-header">
             <td colspan="4">Department:
               <report:content>
-                <report:value-expression>
-                  <report:property name="field">DEPARTMENT</report:property>
-                </report:value-expression>
+                <report:value-expression formula="jfreereport:[DEPARTMENT]"/>
               </report:content>
             </td>
           </tr>
@@ -144,31 +126,22 @@
             <tr>
               <td class="firstcol">
                 <report:content>
-                  <report:value-expression>
-                    <report:property name="field">POSITIONTITLE</report:property>
-                  </report:value-expression>
+                  <report:value-expression formula="jfreereport:[POSITIONTITLE]"/>
                 </report:content>
               </td>
               <td class="othercol">
                 <report:content>
-                  <report:value-expression>
-                    <report:property name="field">ACTUAL</report:property>
-                  </report:value-expression>
+                  <report:value-expression formula="jfreereport:[ACTUAL]"/>
                 </report:content>
               </td>
               <td class="othercol">
                 <report:content>
-                  <report:value-expression>
-                    <report:property name="field">BUDGET</report:property>
-                  </report:value-expression>
+                  <report:value-expression formula="jfreereport:[BUDGET]"/>
                 </report:content>
               </td>
               <td class="othercol">
                 <report:content>
-                  <report:value-expression class="org.jfree.report.function.numeric.ColumnDifferenceExpression">
-                    <report:property name="field[0]">BUDGET</report:property>
-                    <report:property name="field[1]">ACTUAL</report:property>
-                  </report:value-expression>
+                  <report:value-expression formula="jfreereport:[BUDGET] - [ACTUAL]"/>
                 </report:content>
               </td>
             </tr>
@@ -178,24 +151,17 @@
             <td>Total</td>
             <td class="othercol">
               <report:content>
-                <report:value-expression>
-                  <report:property name="field">ActualSum</report:property>
-                </report:value-expression>
+                <report:value-expression formula="jfreereport:[ActualSum]"/>
               </report:content>
             </td>
             <td class="othercol">
               <report:content>
-                <report:value-expression>
-                  <report:property name="field">BudgetSum</report:property>
-                </report:value-expression>
+                <report:value-expression formula="jfreereport:[BudgetSum]"/>
               </report:content>
             </td>
             <td class="othercol">
               <report:content>
-                <report:value-expression class="org.jfree.report.function.numeric.ColumnDifferenceExpression">
-                  <report:property name="field[0]">BudgetSum</report:property>
-                  <report:property name="field[1]">ActualSum</report:property>
-                </report:value-expression>
+                <report:value-expression formula="jfreereport:[BudgetSum] - [ActualSum]"/>
               </report:content>
             </td>
           </tr>
@@ -205,24 +171,17 @@
           <td>Total</td>
           <td class="othercol">
             <report:content>
-              <report:value-expression>
-                <report:property name="field">ActualSum</report:property>
-              </report:value-expression>
+              <report:value-expression formula="jfreereport:[ActualSum]"/>
             </report:content>
           </td>
           <td class="othercol">
             <report:content>
-              <report:value-expression>
-                <report:property name="field">BudgetSum</report:property>
-              </report:value-expression>
+              <report:value-expression formula="jfreereport:[BudgetSum]"/>
             </report:content>
           </td>
           <td class="othercol">
             <report:content>
-              <report:value-expression class="org.jfree.report.function.numeric.ColumnDifferenceExpression">
-                <report:property name="field[0]">ActualSum</report:property>
-                <report:property name="field[1]">BudgetSum</report:property>
-              </report:value-expression>
+              <report:value-expression formula="jfreereport:[BudgetSum] - [ActualSum]"/>
             </report:content>
           </td>
         </tr>
