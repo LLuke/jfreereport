@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: GraphicsOutputProcessor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -37,7 +37,6 @@ import org.jfree.layouting.output.pageable.AbstractPageableProcessor;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.output.pageable.PageFlowSelector;
 import org.jfree.layouting.output.pageable.PhysicalPageKey;
-import org.jfree.layouting.output.pageable.graphics.GraphicsContentInterceptor;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
@@ -52,7 +51,7 @@ public class GraphicsOutputProcessor extends AbstractPageableProcessor
 {
   private int pageCursor;
   private OutputProcessorMetaData metaData;
-  private org.jfree.layouting.output.pageable.graphics.GraphicsContentInterceptor interceptor;
+  private GraphicsContentInterceptor interceptor;
 
   public GraphicsOutputProcessor(Configuration configuration)
   {

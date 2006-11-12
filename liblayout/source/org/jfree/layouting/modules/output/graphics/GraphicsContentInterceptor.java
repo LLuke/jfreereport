@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: GraphicsContentInterceptor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -33,7 +33,6 @@ package org.jfree.layouting.modules.output.graphics;
 import org.jfree.layouting.output.pageable.PageFlowSelector;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.output.pageable.PhysicalPageKey;
-import org.jfree.layouting.output.pageable.graphics.PageDrawable;
 
 /**
  * Creation-Date: 10.11.2006, 20:02:15

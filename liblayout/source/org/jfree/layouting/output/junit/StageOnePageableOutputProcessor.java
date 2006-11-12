@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StageOnePageableOutputProcessor.java,v 1.7 2006/11/11 20:23:46 taqua Exp $
+ * $Id: StageOnePageableOutputProcessor.java,v 1.8 2006/11/12 14:05:28 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.modules.output.html.HtmlOutputProcessorMetaData;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.normalizer.content.ContentNormalizer;
@@ -56,7 +57,6 @@ import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.output.pageable.PageableOutputProcessor;
 import org.jfree.layouting.output.pageable.PhysicalPageKey;
-import org.jfree.layouting.output.streaming.html.HtmlOutputProcessorMetaData;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.StreamingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;

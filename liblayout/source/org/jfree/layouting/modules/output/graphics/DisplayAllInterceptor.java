@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DisplayAllInterceptor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -34,8 +34,6 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JDialog;
 
-import org.jfree.layouting.output.pageable.graphics.GraphicsContentInterceptor;
-import org.jfree.layouting.output.pageable.graphics.PageDrawable;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.output.pageable.PhysicalPageKey;
 import org.jfree.ui.DrawablePanel;

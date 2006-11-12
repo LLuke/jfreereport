@@ -23,12 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StreamingHtmlOutputProcessor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.html;
+
+import java.io.OutputStream;
 
 import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.DefaultFontStorage;
@@ -51,10 +53,13 @@ public class StreamingHtmlOutputProcessor extends AbstractOutputProcessor
 {
   private HtmlOutputProcessorMetaData metaData;
   private boolean globalStateComputed;
+  private OutputStream outputStream;
 
-  public StreamingHtmlOutputProcessor(final Configuration configuration)
+  public StreamingHtmlOutputProcessor(final OutputStream outputStream,
+                                      final Configuration configuration)
   {
     super(configuration);
+    this.outputStream = outputStream;
 
     FontRegistry fontRegistry = new AWTFontRegistry();
     FontStorage fontStorage = new DefaultFontStorage(fontRegistry);
