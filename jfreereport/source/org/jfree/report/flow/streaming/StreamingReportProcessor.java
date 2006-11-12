@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StreamingReportProcessor.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
+ * $Id: StreamingReportProcessor.java,v 1.5 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ package org.jfree.report.flow.streaming;
 
 import org.jfree.layouting.DefaultLayoutProcess;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.output.streaming.StreamingOutputProcessor;
+import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
@@ -60,18 +60,18 @@ import org.jfree.resourceloader.ResourceManager;
  */
 public class StreamingReportProcessor extends AbstractReportProcessor
 {
-  private StreamingOutputProcessor outputProcessor;
+  private OutputProcessor outputProcessor;
 
   public StreamingReportProcessor()
   {
   }
 
-  public StreamingOutputProcessor getOutputProcessor()
+  public OutputProcessor getOutputProcessor()
   {
     return outputProcessor;
   }
 
-  public void setOutputProcessor(final StreamingOutputProcessor outputProcessor)
+  public void setOutputProcessor(final OutputProcessor outputProcessor)
   {
     this.outputProcessor = outputProcessor;
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginatingReportProcessor.java,v 1.3 2006/07/11 13:24:40 taqua Exp $
+ * $Id: PaginatingReportProcessor.java,v 1.4 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -46,10 +46,10 @@ import org.jfree.layouting.DefaultLayoutProcess;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.ChainingLayoutProcess;
+import org.jfree.layouting.modules.output.graphics.DisplayAllInterceptor;
+import org.jfree.layouting.modules.output.graphics.GraphicsOutputProcessor;
+import org.jfree.layouting.modules.output.graphics.DisplayInterceptor;
 import org.jfree.layouting.output.pageable.PageableOutputProcessor;
-import org.jfree.layouting.output.pageable.graphics.DisplayAllInterceptor;
-import org.jfree.layouting.output.pageable.graphics.DisplayInterceptor;
-import org.jfree.layouting.output.pageable.graphics.GraphicsOutputProcessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;

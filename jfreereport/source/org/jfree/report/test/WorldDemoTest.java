@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: WorldDemoTest.java,v 1.1 2006/07/30 13:12:49 taqua Exp $
+ * $Id: WorldDemoTest.java,v 1.2 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.report.test;
 
 import java.net.URL;
 
-import org.jfree.layouting.output.pageable.graphics.GraphicsOutputProcessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
@@ -56,6 +55,7 @@ import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.layouting.modules.output.graphics.GraphicsOutputProcessor;
 
 /**
  * Creation-Date: 21.02.2006, 14:11:22
@@ -94,7 +94,7 @@ public class WorldDemoTest
             new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);
 
-    final GraphicsOutputProcessor out = new GraphicsOutputProcessor();
+    final GraphicsOutputProcessor out = new GraphicsOutputProcessor(null);
     final PaginatingReportProcessor rp = new PaginatingReportProcessor();
     rp.setOutputProcessor(out);
     long startTime = System.currentTimeMillis();
