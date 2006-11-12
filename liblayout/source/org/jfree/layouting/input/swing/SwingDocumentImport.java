@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: SwingDocumentImport.java,v 1.6 2006/11/09 14:28:49 taqua Exp $
+ * $Id: SwingDocumentImport.java,v 1.7 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -62,14 +62,13 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 
-import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.DefaultLayoutProcess;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.swing.converter.CharacterConverter;
 import org.jfree.layouting.input.swing.converter.ColorConverter;
 import org.jfree.layouting.input.swing.converter.FontConverter;
 import org.jfree.layouting.input.swing.converter.ParagraphConverter;
-import org.jfree.layouting.junit.DebugLayoutProcess;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.InputFeedException;
 import org.jfree.layouting.normalizer.content.NormalizationException;
@@ -79,8 +78,8 @@ import org.jfree.layouting.util.NullOutputStream;
 /**
  * Right now, we do not convert Swing-styles into CSS styles. Hey, we should,
  * but we don't.
- *
- * todo parse styles 
+ * <p/>
+ * todo parse styles
  */
 public class SwingDocumentImport
 {
@@ -92,7 +91,8 @@ public class SwingDocumentImport
   private InputFeed feed;
   protected static Map styleConstantsMap = new HashMap();
 
-  static {
+  static
+  {
     // font
     final FontConverter fontConverter = new FontConverter();
     styleConstantsMap.put(StyleConstants.FontFamily, fontConverter);
@@ -129,35 +129,41 @@ public class SwingDocumentImport
     styleNames = new HashMap();
   }
 
-  public InputFeed getFeed ()
+  public InputFeed getFeed()
   {
     return feed;
   }
 
-  public void setFeed (InputFeed feed)
+  public void setFeed(InputFeed feed)
   {
     this.feed = feed;
   }
 
-  private String convertStyleName(String name) {
+  private String convertStyleName(String name)
+  {
     //todo implement me
     return name;
   }
 
-  public String normalizeStyleName(String name) {
-    if(name == null) {
+  public String normalizeStyleName(String name)
+  {
+    if (name == null)
+    {
       throw new IllegalArgumentException("The style name must not be null");
     }
 
-    String o = (String)styleNames.get(name);
-    if(o == null) {
+    String o = (String) styleNames.get(name);
+    if (o == null)
+    {
       o = convertStyleName(name);
-      if(o == null) {
+      if (o == null)
+      {
         throw new IllegalStateException("Unable to convert style name");
       }
 
       final Object res = styleNames.put(name, o);
-      if(res != null) {
+      if (res != null)
+      {
         throw new IllegalStateException("Style name clash during convertion");
       }
     }
@@ -165,20 +171,20 @@ public class SwingDocumentImport
   }
 
   public AttributeSet convertAttributes(AttributeSet attr, Element context)
-          throws InputFeedException
+      throws InputFeedException
   {
     final SimpleAttributeSet cssAttr = new SimpleAttributeSet();
     final Enumeration attributeNames = attr.getAttributeNames();
-    while(attributeNames.hasMoreElements())
+    while (attributeNames.hasMoreElements())
     {
       final Object key = attributeNames.nextElement();
       final Object value = attr.getAttribute(key);
 
-      final Converter converter = (Converter)styleConstantsMap.get(key);
-      if(converter != null)
+      final Converter converter = (Converter) styleConstantsMap.get(key);
+      if (converter != null)
       {
         final AttributeSet attributeSet = converter.convertToCSS(key, value, cssAttr, context);
-        if(attributeSet != null)
+        if (attributeSet != null)
         {
           cssAttr.addAttributes(attributeSet);
         }
@@ -198,19 +204,21 @@ public class SwingDocumentImport
     return cssAttr;
   }
 
-  private void debugAttribut (String name, Object key, Object value) {
-      System.out.println(name+"attribute ["+key.getClass().getName()+"] "+key+" = "+value +" ["+value.getClass().getName()+"]");
+  private void debugAttribut(String name, Object key, Object value)
+  {
+    System.out.println(name + "attribute [" + key.getClass().getName() + "] " + key + " = " + value + " [" + value.getClass().getName() + "]");
   }
 
-  protected void handleElement (Element element)
-          throws BadLocationException, InputFeedException
+  protected void handleElement(Element element)
+      throws BadLocationException, InputFeedException
   {
-    if(element == null) {
+    if (element == null)
+    {
       return;
     }
 
 
-    System.out.println("Stating Element: "+element.getName());
+    System.out.println("Stating Element: " + element.getName());
     feed.startElement(NAMESPACE, element.getName());
     final AttributeSet as = element.getAttributes();
 
@@ -222,17 +230,18 @@ public class SwingDocumentImport
       final Object key = attributeNames.nextElement();
       final Object value = cssAttr.getAttribute(key);
 
-      if(key == StyleConstants.NameAttribute)
+      if (key == StyleConstants.NameAttribute)
       {
         continue;
       }
 
-      if(key == StyleConstants.ResolveAttribute)
+      if (key == StyleConstants.ResolveAttribute)
       {
         // style name
-        if(value instanceof Style) {
+        if (value instanceof Style)
+        {
           final Style style = (Style) value;
-          final String styleName = (String)styleNames.get(style.getName());
+          final String styleName = (String) styleNames.get(style.getName());
           feed.setAttribute(NAMESPACE, STYLE_ATTRIBUTE, styleName);
           continue;
         }
@@ -243,10 +252,11 @@ public class SwingDocumentImport
     }
 
     final String text = getElementText(element);
-    if(text!=null || !"".equals(text)) {
+    if (text != null || !"".equals(text))
+    {
       if (element.isLeaf())
       {
-        System.out.println("'"+text+"'");
+        System.out.println("'" + text + "'");
         feed.addContent(text);
       }
     }
@@ -269,26 +279,26 @@ public class SwingDocumentImport
    * @return The text.
    * @throws BadLocationException If the text position is invalid.
    */
-  protected String getElementText (Element element)
-          throws BadLocationException
+  protected String getElementText(Element element)
+      throws BadLocationException
   {
     final Document document = element.getDocument();
     final String text = document.getText
-            (element.getStartOffset(),
-                    element.getEndOffset() - element.getStartOffset());
+        (element.getStartOffset(),
+            element.getEndOffset() - element.getStartOffset());
     return text;
   }
 
 
   /**
-   * Processes the style definitions of a styled document. Style definitions are declared
-   * once in the document and are reused by styled elements.
+   * Processes the style definitions of a styled document. Style definitions are
+   * declared once in the document and are reused by styled elements.
    *
    * @param document The source document.
    * @throws InputFeedException If a problem occured with the feed.
    */
-  protected void processStyleElements (DefaultStyledDocument document)
-          throws InputFeedException
+  protected void processStyleElements(DefaultStyledDocument document)
+      throws InputFeedException
   {
     final Enumeration names = document.getStyleNames();
     while (names.hasMoreElements())
@@ -296,14 +306,14 @@ public class SwingDocumentImport
       String styleName = (String) names.nextElement();
       Style s = document.getStyle(styleName);
 
-      System.out.println("Processing style: "+styleName);
+      System.out.println("Processing style: " + styleName);
 
-      if(s == null)
+      if (s == null)
       {
         continue;
       }
       if (s.getAttributeCount() <= 1 &&
-              s.isDefined(StyleConstants.NameAttribute))
+          s.isDefined(StyleConstants.NameAttribute))
       {
         continue;
       }
@@ -319,18 +329,19 @@ public class SwingDocumentImport
         final Object key = attributeNames.nextElement();
         final Object value = cssAttr.getAttribute(key);
 
-        if(key == StyleConstants.NameAttribute)
+        if (key == StyleConstants.NameAttribute)
         {
-         continue;
+          continue;
         }
 
         feed.startMetaNode();
-        if(key == StyleConstants.ResolveAttribute)
+        if (key == StyleConstants.ResolveAttribute)
         {
           // parent style
-          if(value instanceof Style) {
+          if (value instanceof Style)
+          {
             final Style style = (Style) value;
-            final String parentStyleName = (String)styleNames.get(style.getName());
+            final String parentStyleName = (String) styleNames.get(style.getName());
             feed.setMetaNodeAttribute(PARENT_STYLE_ATTRIBUTE, parentStyleName);
             feed.endMetaNode();
             continue;
@@ -338,40 +349,42 @@ public class SwingDocumentImport
         }
 
         debugAttribut("Style ", key, value);
-       feed.setMetaNodeAttribute(key.toString(), value);
-       feed.endMetaNode();
+        feed.setMetaNodeAttribute(key.toString(), value);
+        feed.endMetaNode();
       }
 
     }
   }
 
   /**
-   * Processes the document properties. These properties defined once for
-   * the whole document.
+   * Processes the document properties. These properties defined once for the
+   * whole document.
    *
    * @param document The document source.
    * @throws InputFeedException If a problem occured with the feed.
    */
-  protected void processDocumentProperties (DefaultStyledDocument document)
-          throws InputFeedException
+  protected void processDocumentProperties(DefaultStyledDocument document)
+      throws InputFeedException
   {
     //final Object title = document.getProperty(DefaultStyledDocument.TitleProperty);
     final Dictionary documentProperties = document.getDocumentProperties();
     final Enumeration keys = documentProperties.keys();
-    while(keys.hasMoreElements()) {
+    while (keys.hasMoreElements())
+    {
       final Object key = keys.nextElement();
       final Object value = documentProperties.get(key);
 
-      if(key instanceof String) {
+      if (key instanceof String)
+      {
         debugAttribut("Document Property ", key, value);
-        feed.addDocumentAttribute((String)key, value);
+        feed.addDocumentAttribute((String) key, value);
       } // ingnoring non String properties
     }
     //todo copy XhtmlInputDriver code for HMLT headers
   }
 
-  public void parseDocument (DefaultStyledDocument doc, InputFeed feed)
-          throws BadLocationException, InputFeedException
+  public void parseDocument(DefaultStyledDocument doc, InputFeed feed)
+      throws BadLocationException, InputFeedException
   {
     setFeed(feed);
     feed.startDocument();
@@ -385,9 +398,9 @@ public class SwingDocumentImport
   }
 
 
-  public static void main (String[] args)
-          throws IOException, NormalizationException, BadLocationException,
-          InputFeedException
+  public static void main(String[] args)
+      throws IOException, NormalizationException, BadLocationException,
+      InputFeedException
   {
     final URL initialPage = new URL("http://www.google.com");
     //final URL initialPage = new URL("http://interglacial.com/rtf/rtf_book_examples/example_documents/p069_styles.rtf");
@@ -398,7 +411,8 @@ public class SwingDocumentImport
     final JFrame frame = new JFrame("HTML Viewer");
     frame.setSize(800, 600);
     // JDK 1.2.2 has no EXIT_ON_CLOSE .. 
-    frame.addWindowListener(new WindowAdapter() {
+    frame.addWindowListener(new WindowAdapter()
+    {
       /**
        * Invoked when a window has been closed.
        */
@@ -419,16 +433,16 @@ public class SwingDocumentImport
 
     long startTime = System.currentTimeMillis();
 
-      final LayoutProcess process =
-              new DefaultLayoutProcess(new HtmlOutputProcessor(out));
+    final LayoutProcess process =
+        new DefaultLayoutProcess(new HtmlOutputProcessor(out, null));
 
 
     SwingDocumentImport imprt = new SwingDocumentImport();
-      imprt.parseDocument((DefaultStyledDocument)pane.getDocument(), process.getInputFeed());
+    imprt.parseDocument((DefaultStyledDocument) pane.getDocument(), process.getInputFeed());
 
 
     long endTime = System.currentTimeMillis();
 
-    System.out.println("Done!: " + (endTime -startTime));
+    System.out.println("Done!: " + (endTime - startTime));
   }
 }
