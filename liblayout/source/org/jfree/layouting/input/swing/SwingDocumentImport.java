@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: SwingDocumentImport.java,v 1.8 2006/11/12 14:29:58 taqua Exp $
+ * $Id: SwingDocumentImport.java,v 1.6 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,21 @@
 
 package org.jfree.layouting.input.swing;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import org.jfree.layouting.DefaultLayoutProcess;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.LibLayoutBoot;
+import org.jfree.layouting.input.swing.converter.CharacterConverter;
+import org.jfree.layouting.input.swing.converter.ColorConverter;
+import org.jfree.layouting.input.swing.converter.FontConverter;
+import org.jfree.layouting.input.swing.converter.ParagraphConverter;
+import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.feed.InputFeedException;
+import org.jfree.layouting.modules.output.html.StreamingHtmlOutputProcessor;
+import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.util.NullOutputStream;
+
+import javax.swing.text.*;
+import javax.swing.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
@@ -50,30 +63,8 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-
-import org.jfree.layouting.DefaultLayoutProcess;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.modules.output.html.StreamingHtmlOutputProcessor;
-import org.jfree.layouting.input.swing.converter.CharacterConverter;
-import org.jfree.layouting.input.swing.converter.ColorConverter;
-import org.jfree.layouting.input.swing.converter.FontConverter;
-import org.jfree.layouting.input.swing.converter.ParagraphConverter;
-import org.jfree.layouting.layouter.feed.InputFeed;
-import org.jfree.layouting.layouter.feed.InputFeedException;
-import org.jfree.layouting.normalizer.content.NormalizationException;
-import org.jfree.layouting.util.NullOutputStream;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 
 /**
  * Right now, we do not convert Swing-styles into CSS styles. Hey, we should,
@@ -312,11 +303,11 @@ public class SwingDocumentImport
       {
         continue;
       }
-      if (s.getAttributeCount() <= 1 &&
+      /*if (s.getAttributeCount() <= 1 &&
           s.isDefined(StyleConstants.NameAttribute))
       {
         continue;
-      }
+      }*/
 
       final String convertedStyleName = convertStyleName(styleName);
       styleNames.put(styleName, convertedStyleName);
@@ -334,20 +325,32 @@ public class SwingDocumentImport
           continue;
         }
 
-        feed.startMetaNode();
-        if (key == StyleConstants.ResolveAttribute)
+
+        if(key == StyleConstants.ResolveAttribute)
         {
           // parent style
           if (value instanceof Style)
           {
             final Style style = (Style) value;
-            final String parentStyleName = (String) styleNames.get(style.getName());
-            feed.setMetaNodeAttribute(PARENT_STYLE_ATTRIBUTE, parentStyleName);
-            feed.endMetaNode();
-            continue;
+            final String parentStyleName = (String)styleNames.get(style.getName());
+            if(parentStyleName != null)
+            {
+              feed.startMetaNode();
+              debugAttribut("Style parent ", PARENT_STYLE_ATTRIBUTE, parentStyleName);
+              feed.setMetaNodeAttribute(PARENT_STYLE_ATTRIBUTE, parentStyleName);
+              feed.endMetaNode();
+              continue;
+            }
+            else
+            {
+              //todo default style
+              System.out.println("Parent style name not found: "+style.getName());
+              continue;
+            }
           }
         }
 
+        feed.startMetaNode();
         debugAttribut("Style ", key, value);
         feed.setMetaNodeAttribute(key.toString(), value);
         feed.endMetaNode();
@@ -379,6 +382,10 @@ public class SwingDocumentImport
         debugAttribut("Document Property ", key, value);
         feed.addDocumentAttribute((String) key, value);
       } // ingnoring non String properties
+      else
+      {
+        debugAttribut("Ignoring document Property ", key, value);
+      }
     }
     //todo copy XhtmlInputDriver code for HMLT headers
   }
@@ -402,20 +409,20 @@ public class SwingDocumentImport
       throws IOException, NormalizationException, BadLocationException,
       InputFeedException
   {
-    final URL initialPage = new URL("http://www.google.com");
-    //final URL initialPage = new URL("http://interglacial.com/rtf/rtf_book_examples/example_documents/p069_styles.rtf");
+    //final URL initialPage = new URL("http://www.google.com");
+    //final URL initialPage = new URL("http://www.tug.org/tex-archive/obsolete/info/RTF/RTF-Spec.rtf");
+    final URL initialPage = new URL("http://interglacial.com/rtf/rtf_book_examples/example_documents/p060_landscape_a4.rtf");
     //final URL initialPage = new URL("file:///d:/temp/1.rtf");
     initialPage.getContent();
     final JEditorPane pane = new JEditorPane(initialPage);
     pane.setEditable(false);
     final JFrame frame = new JFrame("HTML Viewer");
     frame.setSize(800, 600);
-    // JDK 1.2.2 has no EXIT_ON_CLOSE .. 
-    frame.addWindowListener(new WindowAdapter()
-    {
+    // JDK 1.2.2 has no EXIT_ON_CLOSE ..
+    frame.addWindowListener(new WindowAdapter() {
       /**
        * Invoked when a window has been closed.
-       */
+       **/
       public void windowClosed(WindowEvent e)
       {
         System.exit(0);
@@ -439,7 +446,6 @@ public class SwingDocumentImport
 
     SwingDocumentImport imprt = new SwingDocumentImport();
     imprt.parseDocument((DefaultStyledDocument) pane.getDocument(), process.getInputFeed());
-
 
     long endTime = System.currentTimeMillis();
 
