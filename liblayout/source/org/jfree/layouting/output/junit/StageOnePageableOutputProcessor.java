@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StageOnePageableOutputProcessor.java,v 1.6 2006/10/31 11:14:12 taqua Exp $
+ * $Id: StageOnePageableOutputProcessor.java,v 1.7 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -60,12 +60,13 @@ import org.jfree.layouting.output.streaming.html.HtmlOutputProcessorMetaData;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.StreamingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 31.05.2006, 16:28:33
  *
  * @author Thomas Morgner
- * @deprecated 
+ * @deprecated
  */
 public class StageOnePageableOutputProcessor implements PageableOutputProcessor
 {
@@ -86,6 +87,11 @@ public class StageOnePageableOutputProcessor implements PageableOutputProcessor
   public InputFeed createInputFeed(LayoutProcess layoutProcess)
   {
     return new DefaultInputFeed(layoutProcess);
+  }
+
+  public Configuration getConfiguration()
+  {
+    return null;
   }
 
   /**

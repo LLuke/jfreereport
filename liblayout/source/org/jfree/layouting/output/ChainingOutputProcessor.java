@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingOutputProcessor.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
+ * $Id: ChainingOutputProcessor.java,v 1.4 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.renderer.ChainingRenderer;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 16.06.2006, 14:44:55
@@ -147,5 +148,10 @@ public class ChainingOutputProcessor implements OutputProcessor
   public boolean isContentGeneratable()
   {
     return outputProcessor.isContentGeneratable();
+  }
+
+  public Configuration getConfiguration()
+  {
+    return outputProcessor.getConfiguration();
   }
 }

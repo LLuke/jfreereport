@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractOutputProcessorMetaData.java,v 1.6 2006/10/27 18:25:50 taqua Exp $
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.7 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -236,7 +236,6 @@ public abstract class AbstractOutputProcessorMetaData
   {
     return fontStorage.getFontRegistry();
   }
-
 
   public PageSize getDefaultPageSize()
   {

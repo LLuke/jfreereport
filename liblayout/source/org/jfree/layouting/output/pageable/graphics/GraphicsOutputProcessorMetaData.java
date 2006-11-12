@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: GraphicsOutputProcessorMetaData.java,v 1.2 2006/04/17 20:51:19 taqua Exp $
+ * $Id: GraphicsOutputProcessorMetaData.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,8 @@
 package org.jfree.layouting.output.pageable.graphics;
 
 import org.jfree.fonts.registry.FontFamily;
-import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
-import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
 
 /**

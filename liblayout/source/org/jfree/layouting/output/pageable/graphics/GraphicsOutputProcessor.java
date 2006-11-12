@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: GraphicsOutputProcessor.java,v 1.5 2006/10/27 18:25:50 taqua Exp $
+ * $Id: GraphicsOutputProcessor.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -45,9 +45,12 @@ import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.output.pageable.PhysicalPageKey;
+import org.jfree.layouting.output.pageable.AbstractPageableProcessor;
+import org.jfree.layouting.output.pageable.PageFlowSelector;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
+import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 02.01.2006, 19:55:14
@@ -60,8 +63,9 @@ public class GraphicsOutputProcessor extends AbstractPageableProcessor
   private OutputProcessorMetaData metaData;
   private GraphicsContentInterceptor interceptor;
 
-  public GraphicsOutputProcessor()
+  public GraphicsOutputProcessor(Configuration configuration)
   {
+    super(configuration);
     DefaultFontStorage fontStorage = new DefaultFontStorage(new AWTFontRegistry());
     metaData = new GraphicsOutputProcessorMetaData(fontStorage);
   }
@@ -69,57 +73,6 @@ public class GraphicsOutputProcessor extends AbstractPageableProcessor
   public OutputProcessorMetaData getMetaData()
   {
     return metaData;
-  }
-
-  public void processContent(LogicalPageBox logicalPage)
-  {
-    final PageGrid pageGrid = logicalPage.getPageGrid();
-    final int rowCount = pageGrid.getRowCount();
-    final int colCount = pageGrid.getColumnCount();
-
-    if (getProcessingState() == PROCESSING_PAGES)
-    {
-      final LogicalPageKey key = createLogicalPage(colCount, rowCount);
-      if (key.getPosition() != pageCursor)
-      {
-        throw new IllegalStateException("Expected position " + pageCursor + " is not the key's position " + key.getPosition());
-      }
-      pageCursor += 1;
-      return;
-    }
-
-    if (isContentGeneratable())
-    {
-      if (interceptor == null)
-      {
-        return;
-      }
-
-      LogicalPageKey logicalPageKey = getLogicalPage(pageCursor);
-      if (interceptor.isLogicalPageAccepted(logicalPageKey))
-      {
-        final PageDrawableImpl page = new PageDrawableImpl(logicalPage,
-            logicalPage.getPageWidth(), logicalPage.getPageHeight());
-        interceptor.processLogicalPage(logicalPageKey, page);
-      }
-
-      for (int row = 0; row < rowCount; row++)
-      {
-        for (int col = 0; col < colCount; col++)
-        {
-          PhysicalPageKey pageKey = logicalPageKey.getPage(col, row);
-          if (interceptor.isPhysicalPageAccepted(pageKey))
-          {
-            final PhysicalPageBox page = pageGrid.getPage(row, col);
-            final PageDrawableImpl drawable = new PageDrawableImpl(page,
-                page.getWidth(), page.getHeight());
-            interceptor.processPhysicalPage(pageKey, drawable);
-          }
-        }
-      }
-
-      pageCursor += 1;
-    }
   }
 
   public GraphicsContentInterceptor getInterceptor()
@@ -132,23 +85,27 @@ public class GraphicsOutputProcessor extends AbstractPageableProcessor
     this.interceptor = interceptor;
   }
 
-  /**
-   * Notifies the output processor, that the processing has been finished and
-   * that the input-feed received the last event.
-   */
-  public void processingFinished()
+  protected PageFlowSelector getFlowSelector()
   {
-    super.processingFinished();
-    pageCursor = 0;
+    return getInterceptor();
   }
 
-  public int getPageCursor()
+
+  protected void processPhysicalPage(final PageGrid pageGrid,
+                                     final int row,
+                                     final int col,
+                                     final PhysicalPageKey pageKey)
   {
-    return pageCursor;
+    final PhysicalPageBox page = pageGrid.getPage(row, col);
+    final PageDrawableImpl drawable = new PageDrawableImpl(page,
+        page.getWidth(), page.getHeight());
+    interceptor.processPhysicalPage(pageKey, drawable);
   }
 
-  public void setPageCursor(final int pageCursor)
+  protected void processLogicalPage (LogicalPageKey key, LogicalPageBox logicalPage)
   {
-    this.pageCursor = pageCursor;
+    final PageDrawableImpl page = new PageDrawableImpl(logicalPage,
+        logicalPage.getPageWidth(), logicalPage.getPageHeight());
+    interceptor.processLogicalPage(key, page);
   }
 }
