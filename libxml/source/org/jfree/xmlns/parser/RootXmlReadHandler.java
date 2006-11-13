@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RootXmlReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: RootXmlReadHandler.java,v 1.1.1.1 2006/05/15 12:28:36 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,6 @@ import org.jfree.resourceloader.DependencyCollector;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.DefaultConfiguration;
-import org.jfree.xmlns.parser.CommentHandler;
-import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;

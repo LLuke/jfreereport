@@ -1,8 +1,8 @@
 package org.jfree.xmlns.common;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * The attribute list is used by a writer to specify the attributes of an XML element in a

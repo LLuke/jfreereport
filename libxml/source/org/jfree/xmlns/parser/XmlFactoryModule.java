@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: XmlFactoryModule.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: XmlFactoryModule.java,v 1.1.1.1 2006/05/15 12:28:39 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.xmlns.parser;
-
-import org.jfree.xmlns.parser.XmlDocumentInfo;
 
 /**
  * Creation-Date: 07.04.2006, 16:27:48

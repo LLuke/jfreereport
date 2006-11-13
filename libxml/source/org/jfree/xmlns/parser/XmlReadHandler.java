@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: XmlReadHandler.java,v 1.2 2006/05/06 12:59:25 taqua Exp $
+ * $Id: XmlReadHandler.java,v 1.1.1.1 2006/05/15 12:28:39 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.xmlns.parser;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.jfree.xmlns.parser.RootXmlReadHandler;
 
 /**
  * A handler for reading an XML element.

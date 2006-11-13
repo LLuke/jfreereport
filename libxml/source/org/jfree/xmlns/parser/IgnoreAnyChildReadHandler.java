@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: IgnoreAnyChildReadHandler.java,v 1.1 2006/07/11 13:21:18 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.xmlns.parser;
 
-import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * Creation-Date: 03.07.2006, 14:33:08

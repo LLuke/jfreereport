@@ -2,10 +2,10 @@ package org.jfree.xmlns;
 
 import java.util.Arrays;
 
-import org.jfree.ui.about.ProjectInfo;
-import org.jfree.ui.about.Contributor;
 import org.jfree.JCommon;
 import org.jfree.resourceloader.LibLoaderInfo;
+import org.jfree.ui.about.Contributor;
+import org.jfree.ui.about.ProjectInfo;
 
 public class LibXmlInfo extends ProjectInfo
 {
