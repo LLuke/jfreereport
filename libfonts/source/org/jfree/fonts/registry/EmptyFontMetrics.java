@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: EmptyFontMetrics.java,v 1.1 2006/06/08 18:06:56 taqua Exp $
+ * $Id: EmptyFontMetrics.java,v 1.2 2006/07/30 13:14:31 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@
  */
 package org.jfree.fonts.registry;
 
+import org.jfree.fonts.LibFontsDefaults;
+
 /**
  * An placeholder metrics for buggy fonts.
  *
@@ -47,6 +49,15 @@ package org.jfree.fonts.registry;
  */
 public class EmptyFontMetrics implements FontMetrics
 {
+  private double baseSize;
+  private double baseWidth;
+
+  public EmptyFontMetrics(final double baseHeight, final double baseWidth)
+  {
+    this.baseSize = baseHeight;
+    this.baseWidth = baseWidth;
+  }
+
   public EmptyFontMetrics()
   {
   }
@@ -58,12 +69,12 @@ public class EmptyFontMetrics implements FontMetrics
    */
   public double getAscent()
   {
-    return 0;
+    return baseSize * LibFontsDefaults.DEFAULT_ASCENT_SIZE;
   }
 
   public double getDescent()
   {
-    return 0;
+    return baseSize * LibFontsDefaults.DEFAULT_DESCENT_SIZE;
   }
 
   public double getLeading()
@@ -79,7 +90,7 @@ public class EmptyFontMetrics implements FontMetrics
    */
   public double getXHeight()
   {
-    return 0;
+    return baseSize * LibFontsDefaults.DEFAULT_XHEIGHT_SIZE;
   }
 
   public double getOverlinePosition()
@@ -89,42 +100,42 @@ public class EmptyFontMetrics implements FontMetrics
 
   public double getUnderlinePosition()
   {
-    return 0;
+    return getAscent();
   }
 
   public double getStrikeThroughPosition()
   {
-    return 0;
+    return getXHeight() * LibFontsDefaults.DEFAULT_STRIKETHROUGH_POSITION;
   }
 
   public double getMaxAscent()
   {
-    return 0;
+    return getAscent();
   }
 
   public double getMaxDescent()
   {
-    return 0;
+    return getDescent();
   }
 
   public double getMaxLeading()
   {
-    return 0;
+    return getLeading();
   }
 
   public double getMaxHeight()
   {
-    return 0;
+    return baseSize;
   }
 
   public double getMaxCharAdvance()
   {
-    return 0;
+    return baseWidth;
   }
 
   public double getCharWidth(int codePoint)
   {
-    return 0;
+    return baseWidth;
   }
 
   public double getKerning(int previous, int codePoint)
@@ -142,6 +153,26 @@ public class EmptyFontMetrics implements FontMetrics
    */
   public BaselineInfo getBaselines(int c, BaselineInfo info)
   {
-    return null;
+    if (info == null)
+    {
+      info = new BaselineInfo();
+    }
+
+    // this is the most dilletantic baseline computation on this planet.
+    // But without any font metrics, it is also the base baseline computation :)
+
+    // The ascent is local - but we need the global baseline, relative to the
+    // MaxAscent.
+    final double maxAscent = getMaxAscent();
+    info.setBaseline(BaselineInfo.MATHEMATICAL,
+            maxAscent - getXHeight());
+    info.setBaseline(BaselineInfo.IDEOGRAPHIC, getMaxHeight());
+    info.setBaseline(BaselineInfo.MIDDLE, maxAscent / 2);
+    info.setBaseline(BaselineInfo.ALPHABETIC, maxAscent);
+    info.setBaseline(BaselineInfo.CENTRAL, maxAscent / 2);
+    info.setBaseline(BaselineInfo.HANGING, maxAscent - getXHeight());
+    info.setDominantBaseline(BaselineInfo.ALPHABETIC);
+
+    return info;
   }
 }

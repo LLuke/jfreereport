@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AWTFontMetrics.java,v 1.6 2006/06/08 18:06:11 taqua Exp $
+ * $Id: AWTFontMetrics.java,v 1.7 2006/07/30 13:14:31 taqua Exp $
  *
  * Changes
  * -------
@@ -259,11 +259,12 @@ public class AWTFontMetrics implements FontMetrics
 
     // The ascent is local - but we need the global baseline, relative to the
     // MaxAscent.
-    final double delta = getMaxAscent() - lm.getAscent();
+    final double maxAscent = getMaxAscent();
+    final double delta = maxAscent - lm.getAscent();
     info.setBaseline(BaselineInfo.MATHEMATICAL,
-            delta + getMaxAscent() - getXHeight());
+            delta + maxAscent - getXHeight());
     info.setBaseline(BaselineInfo.IDEOGRAPHIC, getMaxHeight());
-    info.setBaseline(BaselineInfo.MIDDLE, getMaxAscent() / 2);
+    info.setBaseline(BaselineInfo.MIDDLE, maxAscent / 2);
 
     final double base = delta + lm.getAscent();
 

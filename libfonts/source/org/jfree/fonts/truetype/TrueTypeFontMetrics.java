@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TrueTypeFontMetrics.java,v 1.6 2006/06/08 18:06:12 taqua Exp $
+ * $Id: TrueTypeFontMetrics.java,v 1.7 2006/07/30 13:14:31 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,9 @@
  *
  */
 package org.jfree.fonts.truetype;
+
+import java.awt.font.LineMetrics;
+import java.awt.Font;
 
 import org.jfree.fonts.registry.FontMetrics;
 import org.jfree.fonts.registry.BaselineInfo;
@@ -150,7 +153,6 @@ public class TrueTypeFontMetrics implements FontMetrics
    */
   public BaselineInfo getBaselines(int c, BaselineInfo info)
   {
-    // todo
-    return null;
+    throw new UnsupportedOperationException("Not yet implemented.");
   }
 }

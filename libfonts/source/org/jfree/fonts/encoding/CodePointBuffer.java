@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CodePointBuffer.java,v 1.1 2006/04/29 15:12:55 taqua Exp $
+ * $Id: CodePointBuffer.java,v 1.2 2006/06/28 16:50:27 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ public class CodePointBuffer implements Serializable
 
   public CodePointBuffer(int[] data)
   {
+    if (data == null) throw new NullPointerException();
     this.data = data;
     this.offset = 0;
     this.cursor = 0;
@@ -84,7 +85,7 @@ public class CodePointBuffer implements Serializable
   {
     if (data == null)
     {
-      throw new IllegalArgumentException();
+      throw new NullPointerException();
     }
     if (length < 0)
     {
