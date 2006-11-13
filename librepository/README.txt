@@ -1,0 +1,13 @@
+LibRepository
+
+This library provides a simple abstraction layer to access bulk content that
+is organized in a hierarchical layer.
+
+Unlike the JSR-000170, this library does not aim to solve all problems
+associated with content storages. The main purpose of LibRepository is to
+give users an astract view over an filesystem like structure so that content
+generator and content consumer do no longer have to make assumptions about
+where to store the generated content.
+
+The repositories described here should not be used to store other things than
+BLOBs.
