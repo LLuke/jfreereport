@@ -23,12 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ExcelOutputProcessor.java,v 1.1 2006/11/12 14:41:33 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.excel;
+
+import java.io.OutputStream;
 
 import org.jfree.layouting.output.AbstractOutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
@@ -44,9 +46,18 @@ import org.jfree.util.Configuration;
  */
 public class ExcelOutputProcessor extends AbstractOutputProcessor
 {
-  public ExcelOutputProcessor(final Configuration configuration)
+  private OutputStream outputStream;
+
+  public ExcelOutputProcessor(final Configuration configuration,
+                              final OutputStream outputStream)
   {
     super(configuration);
+    this.outputStream = outputStream;
+  }
+
+  public OutputStream getOutputStream()
+  {
+    return outputStream;
   }
 
   public OutputProcessorMetaData getMetaData()

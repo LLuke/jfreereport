@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: XhtmlInputDriver.java,v 1.6 2006/11/12 14:29:58 taqua Exp $
+ * $Id: XhtmlInputDriver.java,v 1.7 2006/11/12 14:33:09 taqua Exp $
  *
  * Changes
  * -------
@@ -201,8 +201,8 @@ public class XhtmlInputDriver
     long startTime = System.currentTimeMillis();
     for (int i = 0; i < 10; i++)
     {
-      final DefaultLayoutProcess process =
-              new DefaultLayoutProcess(new StreamingHtmlOutputProcessor(out, null));
+      final DefaultLayoutProcess process = new DefaultLayoutProcess
+                  (new StreamingHtmlOutputProcessor(null, null, null, null, null));
       XhtmlInputDriver idrDriver = new XhtmlInputDriver(process.getInputFeed());
      // idrDriver.processDomTree(doc.getDocument());
     }

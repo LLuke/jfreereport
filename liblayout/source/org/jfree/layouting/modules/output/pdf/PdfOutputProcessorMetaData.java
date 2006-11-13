@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfOutputProcessorMetaData.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -61,5 +61,10 @@ public class PdfOutputProcessorMetaData extends AbstractOutputProcessorMetaData
   public String getExportDescriptor()
   {
     return "pageable/pdf";
+  }
+
+  public boolean isPagebreakAware()
+  {
+    return true;
   }
 }

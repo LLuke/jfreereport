@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: StreamingHtmlOutputProcessor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: StreamingHtmlOutputProcessor.java,v 1.2 2006/11/12 14:33:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -42,6 +42,11 @@ import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.StreamingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.repository.ContentLocation;
+import org.jfree.repository.NameGenerator;
+import org.jfree.repository.DefaultNameGenerator;
+import org.jfree.repository.dummy.DummyRepository;
+import org.jfree.repository.stream.StreamRepository;
 import org.jfree.util.Configuration;
 
 /**
@@ -51,20 +56,59 @@ import org.jfree.util.Configuration;
  */
 public class StreamingHtmlOutputProcessor extends AbstractOutputProcessor
 {
+  private ContentLocation contentLocation;
+  private NameGenerator contentNameGenerator;
+  private ContentLocation dataLocation;
+  private NameGenerator dataNameGenerator;
+
   private HtmlOutputProcessorMetaData metaData;
   private boolean globalStateComputed;
-  private OutputStream outputStream;
 
-  public StreamingHtmlOutputProcessor(final OutputStream outputStream,
-                                      final Configuration configuration)
+  public StreamingHtmlOutputProcessor(final Configuration configuration,
+                                     final OutputStream out)
   {
     super(configuration);
-    this.outputStream = outputStream;
+    this.contentLocation = new StreamRepository(null, out).getRoot();
+    this.contentNameGenerator = new DefaultNameGenerator(this.contentLocation);
+    this.dataLocation = new DummyRepository().getRoot();
+    this.dataNameGenerator = new DefaultNameGenerator(this.dataLocation);
 
+    initialize();
+  }
+
+  public StreamingHtmlOutputProcessor(final Configuration configuration,
+                                 final ContentLocation contentLocation,
+                                 final NameGenerator contentNameGenerator)
+  {
+    super(configuration);
+    this.contentLocation = contentLocation;
+    this.contentNameGenerator = contentNameGenerator;
+    this.dataLocation = new DummyRepository().getRoot();
+    this.dataNameGenerator = new DefaultNameGenerator(this.dataLocation);
+
+    initialize();
+  }
+
+  public StreamingHtmlOutputProcessor(final Configuration configuration,
+                                 final ContentLocation contentLocation,
+                                 final NameGenerator contentNameGenerator,
+                                 final ContentLocation dataLocation,
+                                 final NameGenerator dataNameGenerator)
+  {
+    super(configuration);
+    this.contentLocation = contentLocation;
+    this.contentNameGenerator = contentNameGenerator;
+    this.dataLocation = dataLocation;
+    this.dataNameGenerator = dataNameGenerator;
+
+    initialize();
+  }
+
+  private void initialize()
+  {
     FontRegistry fontRegistry = new AWTFontRegistry();
     FontStorage fontStorage = new DefaultFontStorage(fontRegistry);
-    this.metaData = new HtmlOutputProcessorMetaData(fontStorage);
-
+    this.metaData = new HtmlOutputProcessorMetaData(fontStorage, false);
   }
 
   public OutputProcessorMetaData getMetaData()

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderer.java,v 1.18 2006/11/07 19:53:54 taqua Exp $
+ * $Id: StreamingRenderer.java,v 1.1 2006/11/11 20:25:36 taqua Exp $
  *
  * Changes
  * -------
@@ -183,6 +183,12 @@ public class StreamingRenderer extends AbstractRenderer
     this(layoutProcess, true);
   }
 
+  /**
+   * Todo: Using this renderer with an non-iterative output processor results
+   * in trouble!
+   * 
+   * @throws NormalizationException
+   */
   protected void validateOutput() throws NormalizationException
   {
     final OutputProcessor outputProcessor = getLayoutProcess().getOutputProcessor();
@@ -207,41 +213,36 @@ public class StreamingRenderer extends AbstractRenderer
     marginsStep.compute(logicalPageBox);
     paragraphLinebreakStep.compute(logicalPageBox);
 
-    boolean repeat = true;
-    while (repeat)
+    icmMetricsStep.compute(logicalPageBox);
+    tableICMMetricsStep.compute(logicalPageBox);
+
+    minorAxisLayoutStep.compute(logicalPageBox);
+    majorAxisLayoutStep.compute(logicalPageBox);
+    tableRowHeightStep.compute(logicalPageBox);
+    breakabilityStep.compute(logicalPageBox);
+
+    paginationStep.performPagebreak(logicalPageBox);
+
+    // A new page has been started. Recover the page-grid, then restart
+    // everything from scratch. (We have to recompute, as the pages may
+    // be different now, due to changed margins or page definitions)
+    outputProcessor.processContent(logicalPageBox);
+
+    // Now fire the pagebreak. This goes through all layers and informs all
+    // components, that a pagebreak has been encountered and possibly a
+    // new page has been set. It does not save the state or perform other
+    // expensive operations. However, it updates the 'isPagebreakEncountered'
+    // flag, which will be active until the input-feed received a new event.
+    if (logicalPageBox.isOpen())
     {
-      icmMetricsStep.compute(logicalPageBox);
-      tableICMMetricsStep.compute(logicalPageBox);
-
-      minorAxisLayoutStep.compute(logicalPageBox);
-      majorAxisLayoutStep.compute(logicalPageBox);
-      tableRowHeightStep.compute(logicalPageBox);
-      breakabilityStep.compute(logicalPageBox);
-
-      paginationStep.performPagebreak(logicalPageBox);
-
-      // A new page has been started. Recover the page-grid, then restart
-      // everything from scratch. (We have to recompute, as the pages may
-      // be different now, due to changed margins or page definitions)
-      outputProcessor.processContent(logicalPageBox);
-
-      // Now fire the pagebreak. This goes through all layers and informs all
-      // components, that a pagebreak has been encountered and possibly a
-      // new page has been set. It does not save the state or perform other
-      // expensive operations. However, it updates the 'isPagebreakEncountered'
-      // flag, which will be active until the input-feed received a new event.
-      repeat = logicalPageBox.isOpen();
-      if (repeat)
-      {
-        Log.debug ("PAGEBREAK ENCOUNTERED");
-        firePagebreak();
-        cleanPaginatedBoxesStep.compute(logicalPageBox);
-      }
-      else
-      {
-        Log.debug ("DOCUMENT FINISHED");
-        outputProcessor.processingFinished();
-      }
+      Log.debug ("PAGEBREAK ENCOUNTERED");
+      firePagebreak();
+      cleanPaginatedBoxesStep.compute(logicalPageBox);
+    }
+    else
+    {
+      Log.debug ("DOCUMENT FINISHED");
+      outputProcessor.processingFinished();
     }
   }
 

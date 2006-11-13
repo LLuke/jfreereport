@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: GraphicsOutputProcessorMetaData.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -40,7 +40,8 @@ import org.jfree.fonts.registry.FontFamily;
  *
  * @author Thomas Morgner
  */
-public class GraphicsOutputProcessorMetaData extends AbstractOutputProcessorMetaData
+public class GraphicsOutputProcessorMetaData
+    extends AbstractOutputProcessorMetaData
 {
   public GraphicsOutputProcessorMetaData(FontStorage storage)
   {
@@ -61,5 +62,10 @@ public class GraphicsOutputProcessorMetaData extends AbstractOutputProcessorMeta
   public String getExportDescriptor()
   {
     return "pageable/X-AWT-Graphics";
+  }
+
+  public boolean isPagebreakAware()
+  {
+    return true;
   }
 }

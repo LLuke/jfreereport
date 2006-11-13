@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TestRenderableTextFactory.java,v 1.5 2006/10/17 16:39:08 taqua Exp $
+ * $Id: TestRenderableTextFactory.java,v 1.6 2006/11/12 14:45:23 taqua Exp $
  *
  * Changes
  * -------
@@ -149,7 +149,8 @@ public class TestRenderableTextFactory extends DefaultRenderableTextFactory
     fontSpecification.setFontFamily("Arial");
     fontSpecification.setFontSize(12);
 
-    final FlowHtmlOutputProcessor out = new FlowHtmlOutputProcessor(null);
+    final FlowHtmlOutputProcessor out =
+        new FlowHtmlOutputProcessor(null, null, null, null, null);
     final DefaultLayoutProcess layoutProcess = new DefaultLayoutProcess(out);
     TestRenderableTextFactory tr = new TestRenderableTextFactory(layoutProcess);
 

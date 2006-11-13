@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlOutputProcessorMetaData.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -42,9 +42,13 @@ import org.jfree.fonts.registry.FontFamily;
  */
 public class HtmlOutputProcessorMetaData extends AbstractOutputProcessorMetaData
 {
-  public HtmlOutputProcessorMetaData(final FontStorage fontStorage)
+  private boolean pagebreakAware;
+
+  public HtmlOutputProcessorMetaData(final FontStorage fontStorage,
+                                     final boolean pagebreakAware)
   {
     super(fontStorage);
+    this.pagebreakAware = pagebreakAware;
 
     setFamilyMapping(FontFamilyValues.CURSIVE, "sans-serif");
     setFamilyMapping(FontFamilyValues.FANTASY, "fantasy");
@@ -60,6 +64,16 @@ public class HtmlOutputProcessorMetaData extends AbstractOutputProcessorMetaData
 
   public String getExportDescriptor()
   {
+    if (pagebreakAware)
+    {
+      return "pageable/html";
+    }
+
     return "streaming/html";
+  }
+
+  public boolean isPagebreakAware()
+  {
+    return pagebreakAware;
   }
 }
