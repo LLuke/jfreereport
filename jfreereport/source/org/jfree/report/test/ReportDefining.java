@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDefining.java,v 1.7 2006/07/18 14:39:03 taqua Exp $
+ * $Id: ReportDefining.java,v 1.8 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.report.test;
 
 import java.net.URL;
 
-import org.jfree.layouting.output.junit.StageOnePageableOutputProcessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
@@ -56,6 +55,7 @@ import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.layouting.modules.output.html.FlowHtmlOutputProcessor;
 
 /**
  * Creation-Date: 21.02.2006, 14:11:22
@@ -74,7 +74,7 @@ public class ReportDefining
           ResourceLoadingException, ReportProcessingException
   {
     JFreeReportBoot.getInstance().start();
-    
+
 //    {
 //      URL url = ReportDefining.class.getResource("/sample.sqlds");
 //      ResourceManager manager = new ResourceManager();
@@ -140,7 +140,7 @@ public class ReportDefining
     dataFactory.addTable("subreport", new CountryDataTableModel());
     job.setDataFactory(dataFactory);
 
-    final StageOnePageableOutputProcessor out = new StageOnePageableOutputProcessor();
+    final FlowHtmlOutputProcessor out = new FlowHtmlOutputProcessor(null, null);
     final FlowReportProcessor rp = new FlowReportProcessor();
     rp.setOutputProcessor(out);
     rp.processReport(job);
