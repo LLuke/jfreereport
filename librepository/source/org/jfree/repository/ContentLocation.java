@@ -45,4 +45,5 @@ public interface ContentLocation extends ContentEntity
   public ContentItem createItem (String name) throws ContentCreationException;
   public ContentLocation createLocation (String name) throws ContentCreationException;
 
+  public boolean exists(final String name);
 }

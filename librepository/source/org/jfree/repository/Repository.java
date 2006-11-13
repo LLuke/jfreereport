@@ -38,4 +38,5 @@ package org.jfree.repository;
 public interface Repository
 {
   public ContentLocation getRoot() throws ContentIOException;
+  public MimeRegistry getMimeRegistry();
 }

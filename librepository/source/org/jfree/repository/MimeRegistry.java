@@ -38,4 +38,5 @@ package org.jfree.repository;
 public interface MimeRegistry
 {
   public String getMimeType (ContentItem item);
+  public String getSuffix (String mimeType);
 }

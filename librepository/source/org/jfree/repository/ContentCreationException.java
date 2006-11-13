@@ -30,14 +30,12 @@
 
 package org.jfree.repository;
 
-import org.jfree.util.StackableException;
-
 /**
  * Creation-Date: 13.11.2006, 11:46:52
  *
  * @author Thomas Morgner
  */
-public class ContentCreationException extends StackableException
+public class ContentCreationException extends ContentIOException
 {
   /**
    * Creates a StackableRuntimeException with no message and no parent.

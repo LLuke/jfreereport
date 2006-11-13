@@ -45,4 +45,9 @@ public class DefaultMimeRegistry implements MimeRegistry
   {
     return "application/octet-stream";
   }
+
+  public String getSuffix(String mimeType)
+  {
+    return null;
+  }
 }

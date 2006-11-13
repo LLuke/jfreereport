@@ -150,4 +150,11 @@ public class FileContentLocation extends FileContentEntity
     }
     return new FileContentLocation(this, child);
   }
+
+  public boolean exists(final String name)
+  {
+    final File file = getBackend();
+    final File child = new File (file, name);
+    return (child.exists());
+  }
 }
