@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DateFunction.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
+ * $Id: DateFunction.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.formula.function.datetime;
 
 import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.FormulaContext;
 
@@ -61,9 +62,8 @@ public class DateFunction implements Function
   }
 
   public TypeValuePair evaluate(FormulaContext context,
-                                TypeValuePair[] parameter)
+                                ParameterCallback parameters)
   {
-    
     return null;
   }
 }

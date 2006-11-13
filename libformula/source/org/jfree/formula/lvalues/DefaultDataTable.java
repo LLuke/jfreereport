@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultDataTable.java,v 1.1 2006/11/05 14:29:39 taqua Exp $
  *
  * Changes
  * -------
@@ -201,5 +201,4 @@ public class DefaultDataTable extends ObjectTable implements DataTable
     }
     return true;
   }
-
 }

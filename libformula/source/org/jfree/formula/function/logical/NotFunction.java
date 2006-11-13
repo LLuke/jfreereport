@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NotFunction.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
+ * $Id: NotFunction.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,12 @@
 package org.jfree.formula.function.logical;
 
 import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.EvaluationException;
 import org.jfree.formula.typing.coretypes.LogicalType;
+import org.jfree.formula.typing.Type;
 
 /**
  * Creation-Date: 04.11.2006, 18:28:15
@@ -62,9 +65,10 @@ public class NotFunction implements Function
   }
 
   public TypeValuePair evaluate(FormulaContext context,
-                                TypeValuePair[] parameter)
+                                ParameterCallback parameters)
+      throws EvaluationException
   {
-    if (Boolean.TRUE.equals(parameter[0].getValue()) == false)
+    if (Boolean.TRUE.equals(parameters.getValue(0)) == false)
     {
       return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
     }

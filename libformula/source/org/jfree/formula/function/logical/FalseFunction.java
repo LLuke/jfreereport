@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FalseFunction.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
+ * $Id: FalseFunction.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,10 @@
 package org.jfree.formula.function.logical;
 
 import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.EvaluationException;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -61,8 +63,10 @@ public class FalseFunction implements Function
     return "FALSE";
   }
 
+
   public TypeValuePair evaluate(FormulaContext context,
-                                TypeValuePair[] parameter)
+                                ParameterCallback parameters)
+      throws EvaluationException
   {
     return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
   }

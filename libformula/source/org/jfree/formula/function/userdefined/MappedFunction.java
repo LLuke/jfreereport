@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MappedFunction.java,v 1.1 2006/11/04 15:40:58 taqua Exp $
+ * $Id: MappedFunction.java,v 1.1 2006/11/05 14:32:10 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.formula.function.userdefined;
 
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 
 /**
@@ -70,7 +71,7 @@ public class MappedFunction implements Function
   }
 
   public TypeValuePair evaluate(FormulaContext context,
-                                TypeValuePair[] parameter)
+                                ParameterCallback parameters)
   {
     return null;
   }

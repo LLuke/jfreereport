@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IfFunction.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
+ * $Id: IfFunction.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,12 @@ package org.jfree.formula.function.logical;
 
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.EvaluationException;
 import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.coretypes.ErrorType;
+import org.jfree.formula.typing.Type;
 
 /**
  * Creation-Date: 04.11.2006, 18:28:15
@@ -63,18 +66,24 @@ public class IfFunction implements Function
   }
 
   public TypeValuePair evaluate(FormulaContext context,
-                                TypeValuePair[] parameter)
+                                ParameterCallback parameters)
+      throws EvaluationException
   {
-    if (parameter.length < 3)
+    final int parameterCount = parameters.getParameterCount();
+    if (parameterCount < 3)
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(1));
     }
 
-    if (Boolean.TRUE.equals(parameter[0].getValue()))
+    if (Boolean.TRUE.equals(parameters.getValue(0)))
     {
-      return parameter[1];
+      final Object value = parameters.getValue(1);
+      final Type type = parameters.getType(1);
+      return new TypeValuePair(type, value);
     }
-    return parameter[2];
 
+    final Object value = parameters.getValue(2);
+    final Type type = parameters.getType(2);
+    return new TypeValuePair(type, value);
   }
 }

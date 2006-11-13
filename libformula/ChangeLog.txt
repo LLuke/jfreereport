@@ -3,6 +3,11 @@
 ---------------
 A list of changes in recent versions:
 
+0.1.1:
+        * Functions use a parameter callback now. This way, we avoid to pre-
+          evaluate all the parameters and therefore optimize the evaluation of
+          the whole formula.
+
 0.1.0: (06-Nov-2006)
         * Initial version. This version happily deals with plain types and
           somehow it even handles arrays without crashing. Code for database

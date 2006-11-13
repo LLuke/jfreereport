@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FunctionRegistry.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,10 @@ package org.jfree.formula.function;
  */
 public interface FunctionRegistry
 {
+  public FunctionCategory[] getCategories();
+  public Function[] getFunctions();
+  public Function[] getFunctionsByCategory(FunctionCategory category);
+  
   public Function createFunction(String name);
   public FunctionDescription getMetaData (String name);
 }

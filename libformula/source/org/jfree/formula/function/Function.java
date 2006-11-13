@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Function.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
+ * $Id: Function.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.io.Serializable;
 
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.EvaluationException;
 
 /**
  * A function is an arbitary computation. A return value type is not available
@@ -57,5 +58,7 @@ import org.jfree.formula.FormulaContext;
 public interface Function extends Serializable
 {
   public String getCanonicalName();
-  public TypeValuePair evaluate (FormulaContext context, TypeValuePair[] parameter);
+  public TypeValuePair evaluate (FormulaContext context,
+                                 ParameterCallback parameters)
+      throws EvaluationException;
 }

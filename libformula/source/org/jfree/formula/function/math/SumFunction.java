@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SumFunction.java,v 1.1 2006/11/04 15:45:44 taqua Exp $
+ * $Id: SumFunction.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,9 @@ package org.jfree.formula.function.math;
 import java.math.BigDecimal;
 
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.EvaluationException;
 import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.NumberType;
@@ -66,19 +68,21 @@ public class SumFunction implements Function
     return "SUM";
   }
 
-  public TypeValuePair evaluate(FormulaContext context, TypeValuePair[] parameter)
+  public TypeValuePair evaluate(FormulaContext context,
+                                ParameterCallback parameters)
+      throws EvaluationException
   {
     BigDecimal computedResult = ZERO;
-    for (int paramIdx = 0; paramIdx < parameter.length; paramIdx++)
+    final int parameterCount = parameters.getParameterCount();
+    for (int paramIdx = 0; paramIdx < parameterCount; paramIdx++)
     {
-      final TypeValuePair param = parameter[paramIdx];
-      Object value = param.getValue();
+      final Object value = parameters.getValue(paramIdx);
       if (value == null)
       {
         continue;
       }
 
-      final Type type = param.getType();
+      final Type type = parameters.getType(paramIdx);
       if (type.isFlagSet(Type.ARRAY_TYPE) == false)
       {
         continue;

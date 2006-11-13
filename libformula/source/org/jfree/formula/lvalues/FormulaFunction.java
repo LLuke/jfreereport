@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FormulaFunction.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
+ * $Id: FormulaFunction.java,v 1.3 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.FunctionDescription;
 import org.jfree.formula.function.FunctionRegistry;
+import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.util.Log;
@@ -69,6 +70,74 @@ import org.jfree.util.Log;
  */
 public class FormulaFunction extends AbstractLValue
 {
+  private static class FormulaParameterCallback implements ParameterCallback
+  {
+    private TypeValuePair[] backend;
+    private FormulaFunction function;
+
+    public FormulaParameterCallback(final FormulaFunction function)
+    {
+      this.function = function;
+      this.backend = new TypeValuePair[function.parameters.length];
+    }
+
+    private TypeValuePair get (int pos) throws EvaluationException
+    {
+      final LValue parameter = function.parameters[pos];
+      final Type paramType = function.metaData.getParameterType(pos);
+      if (parameter != null)
+      {
+        final TypeValuePair result = parameter.evaluate();
+        // lets do some type checking, right?
+        final TypeRegistry typeRegistry = function.getContext().getTypeRegistry();
+        final TypeValuePair converted = typeRegistry.convertTo(paramType, result);
+        if (converted == null)
+        {
+          final LibFormulaErrorValue errorValue = new LibFormulaErrorValue
+              (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT);
+          Log.debug("Failed to evaluate paramter " + pos + " on function " + function);
+          throw new EvaluationException(errorValue);
+        }
+        return converted;
+      }
+      else
+      {
+        return new TypeValuePair(paramType, function.metaData.getDefaultValue(pos));
+      }
+    }
+
+    public Object getValue(int position) throws EvaluationException
+    {
+      final TypeValuePair retval = backend[position];
+      if (retval != null)
+      {
+        return retval.getValue();
+      }
+
+      final TypeValuePair pair = get(position);
+      backend[position] = pair;
+      return pair.getValue();
+    }
+
+    public Type getType(int position) throws EvaluationException
+    {
+      final TypeValuePair retval = backend[position];
+      if (retval != null)
+      {
+        return retval.getType();
+      }
+
+      final TypeValuePair pair = get(position);
+      backend[position] = pair;
+      return pair.getType();
+    }
+
+    public int getParameterCount()
+    {
+      return backend.length;
+    }
+  }
+
   private String functionName;
   private LValue[] parameters;
   private Function function;
@@ -104,37 +173,8 @@ public class FormulaFunction extends AbstractLValue
   {
     // First, grab the parameters and their types.
     final FormulaContext context = getContext();
-    final TypeRegistry typeRegistry = context.getTypeRegistry();
-    final TypeValuePair[] params = new TypeValuePair[parameters.length];
-
-    // prepare the parameters ..
-    for (int i = 0; i < parameters.length; i++)
-    {
-      final LValue parameter = parameters[i];
-      final Type paramType = metaData.getParameterType(i);
-      if (parameter != null)
-      {
-        final TypeValuePair result = parameter.evaluate();
-        // lets do some type checking, right?
-        final TypeValuePair converted = typeRegistry.convertTo(paramType, result);
-        if (converted == null)
-        {
-          final LibFormulaErrorValue errorValue = new LibFormulaErrorValue
-              (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT);
-          Log.debug("Failed to evaluate paramter " + i + " on function " + function);
-          throw new EvaluationException(errorValue);
-        }
-        params[i] = converted;
-
-      }
-      else
-      {
-        params[i] = new TypeValuePair(paramType, metaData.getDefaultValue(i));
-      }
-    }
-
     // And if everything is ok, compute the stuff ..
-    return function.evaluate(context, params);
+    return function.evaluate(context, new FormulaParameterCallback(this));
   }
 
   /**

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TrueFunction.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
+ * $Id: TrueFunction.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.formula.function.logical;
 
 import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.typing.coretypes.LogicalType;
@@ -62,7 +63,7 @@ public class TrueFunction implements Function
   }
 
   public TypeValuePair evaluate(FormulaContext context,
-                                TypeValuePair[] parameter)
+                                ParameterCallback parameters)
   {
     return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
   }

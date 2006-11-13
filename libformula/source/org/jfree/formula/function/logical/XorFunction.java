@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: XorFunction.java,v 1.1 2006/11/04 18:06:09 taqua Exp $
+ * $Id: XorFunction.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,10 @@
 package org.jfree.formula.function.logical;
 
 import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.EvaluationException;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -61,14 +63,16 @@ public class XorFunction implements Function
     return "XOR";
   }
 
+
   public TypeValuePair evaluate(FormulaContext context,
-                                TypeValuePair[] parameter)
+                                ParameterCallback parameters)
+      throws EvaluationException
   {
     int count = 0;
-    for (int i = 0; i < parameter.length; i++)
+    final int parameterCount = parameters.getParameterCount();
+    for (int i = 0; i < parameterCount; i++)
     {
-      final TypeValuePair pair = parameter[i];
-      if (Boolean.TRUE.equals(pair.getValue()))
+      if (Boolean.TRUE.equals(parameters.getValue(i)))
       {
         count += 1;
       }
