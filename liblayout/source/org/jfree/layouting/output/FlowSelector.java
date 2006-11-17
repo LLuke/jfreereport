@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FlowSelector.java,v 1.1 2006/11/12 14:29:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -40,4 +40,5 @@ import org.jfree.layouting.output.pageable.LogicalPageKey;
 public interface FlowSelector
 {
   public boolean isLogicalPageAccepted(LogicalPageKey key);
+  public boolean isMoreContentNeeded();
 }

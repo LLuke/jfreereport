@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractRenderer.java,v 1.4 2006/10/17 16:39:07 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,6 @@ import org.jfree.fonts.encoding.manual.Utf16LE;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
-import org.jfree.layouting.output.pageable.graphics.PageDrawableImpl;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
@@ -90,7 +89,6 @@ import org.jfree.resourceloader.ResourceKey;
 import org.jfree.ui.Drawable;
 import org.jfree.ui.ExtendedDrawable;
 import org.jfree.util.WaitingImageObserver;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 16.06.2006, 14:10:40

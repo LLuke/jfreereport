@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DisplayAllInterceptor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: DisplayAllInterceptor.java,v 1.2 2006/11/12 14:33:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -78,5 +78,10 @@ public class DisplayAllInterceptor implements GraphicsContentInterceptor
   public void processPhysicalPage(PhysicalPageKey key, PageDrawable page)
   {
 
+  }
+
+  public boolean isMoreContentNeeded()
+  {
+    return true;
   }
 }

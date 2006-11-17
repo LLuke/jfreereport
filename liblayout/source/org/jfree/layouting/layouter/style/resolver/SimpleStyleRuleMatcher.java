@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleStyleRuleMatcher.java,v 1.6 2006/07/26 11:52:07 taqua Exp $
+ * $Id: SimpleStyleRuleMatcher.java,v 1.7 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,13 @@ import java.util.StringTokenizer;
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.CSSCounterRule;
+import org.jfree.layouting.input.style.CSSPageRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
+import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.StyleRule;
 import org.jfree.layouting.input.style.StyleSheet;
-import org.jfree.layouting.input.style.CSSPageRule;
-import org.jfree.layouting.input.style.PseudoPage;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.context.DocumentMetaNode;
 import org.jfree.layouting.layouter.context.LayoutContext;
@@ -131,14 +131,14 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
 
       final ResourceKey baseKey =
-              DocumentContextUtility.getBaseResource
-                      (layoutProcess.getDocumentContext());
+          DocumentContextUtility.getBaseResource
+              (layoutProcess.getDocumentContext());
       StyleSheet styleSheet = parseStyleSheet(rawKey, baseKey);
       if (styleSheet == null)
       {
         continue;
       }
-      Log.debug ("Loaded stylesheet from " + rawKey + " for namespace " + nsDef.getURI());
+      Log.debug("Loaded stylesheet from " + rawKey + " for namespace " + nsDef.getURI());
       addStyleRules(styleSheet, styleRules);
       addPageRules(styleSheet, pageRules);
       addCounterRules(styleSheet, counterRules);
@@ -159,11 +159,11 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
     }
     activeStyleRules = (CSSStyleRule[])
-            styleRules.toArray(new CSSStyleRule[styleRules.size()]);
+        styleRules.toArray(new CSSStyleRule[styleRules.size()]);
     this.pageRules = (CSSPageRule[])
-            pageRules.toArray(new CSSPageRule[pageRules.size()]);
+        pageRules.toArray(new CSSPageRule[pageRules.size()]);
     this.counterRules = (CSSCounterRule[])
-            counterRules.toArray(new CSSCounterRule[counterRules.size()]);
+        counterRules.toArray(new CSSCounterRule[counterRules.size()]);
 
     styleRules.clear();
     for (int i = 0; i < activeStyleRules.length; i++)
@@ -176,7 +176,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       styleRules.add(activeStyleRule);
     }
     activePseudoStyleRules = (CSSStyleRule[])
-            styleRules.toArray(new CSSStyleRule[styleRules.size()]);
+        styleRules.toArray(new CSSStyleRule[styleRules.size()]);
 
   }
 
@@ -191,8 +191,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     {
       final Object href = node.getMetaAttribute("href");
       final ResourceKey baseKey =
-              DocumentContextUtility.getBaseResource
-                      (layoutProcess.getDocumentContext());
+          DocumentContextUtility.getBaseResource
+              (layoutProcess.getDocumentContext());
 
       final ResourceKey derivedKey;
       if (baseKey == null)
@@ -222,8 +222,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
 
   private void handleStyleNode(final DocumentMetaNode node,
                                final ArrayList styleRules,
-                              final ArrayList pageRules,
-                              final ArrayList counterRules)
+                               final ArrayList pageRules,
+                               final ArrayList counterRules)
   {
     // do some inline parsing
     // (Same as the <style> element of HTML)
@@ -250,8 +250,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       final ResourceKey rawKey = resourceManager.createKey(bytes);
 
       final ResourceKey baseKey =
-              DocumentContextUtility.getBaseResource
-                      (layoutProcess.getDocumentContext());
+          DocumentContextUtility.getBaseResource
+              (layoutProcess.getDocumentContext());
       StyleSheet styleSheet = parseStyleSheet(rawKey, baseKey);
       if (styleSheet == null)
       {
@@ -272,8 +272,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   }
 
 
-  private void addCounterRules (final StyleSheet styleSheet,
-                             final ArrayList rules)
+  private void addCounterRules(final StyleSheet styleSheet,
+                               final ArrayList rules)
   {
     final int sc = styleSheet.getStyleSheetCount();
     for (int i = 0; i < sc; i++)
@@ -294,8 +294,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   }
 
 
-  private void addPageRules (final StyleSheet styleSheet,
-                             final ArrayList rules)
+  private void addPageRules(final StyleSheet styleSheet,
+                            final ArrayList rules)
   {
     final int sc = styleSheet.getStyleSheetCount();
     for (int i = 0; i < sc; i++)
@@ -343,7 +343,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     try
     {
       final Resource resource = resourceManager.create
-              (key, context, StyleSheet.class);
+          (key, context, StyleSheet.class);
       return (StyleSheet) resource.getResource();
     }
     catch (ResourceCreationException e)
@@ -357,9 +357,14 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     return null;
   }
 
-  private boolean isPseudoElementRule (CSSStyleRule rule)
+  private boolean isPseudoElementRule(CSSStyleRule rule)
   {
     final CSSSelector selector = rule.getSelector();
+    if (selector == null)
+    {
+      return false;
+    }
+
     if (selector.getSelectorType() != Selector.SAC_CONDITIONAL_SELECTOR)
     {
       return false;
@@ -374,7 +379,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     return true;
   }
 
-  public boolean isMatchingPseudoElement (LayoutElement element, String pseudo)
+  public boolean isMatchingPseudoElement(LayoutElement element, String pseudo)
   {
     for (int i = 0; i < activePseudoStyleRules.length; i++)
     {
@@ -416,6 +421,11 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     {
       final CSSStyleRule activeStyleRule = activeStyleRules[i];
       final CSSSelector selector = activeStyleRule.getSelector();
+      if (selector == null)
+      {
+        continue;
+      }
+
       if (isMatch(element, selector))
       {
         retvals.add(activeStyleRule);
@@ -427,7 +437,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
 //            layoutContext.getPseudoElement());
 
     return (CSSStyleRule[]) retvals.toArray
-            (new CSSStyleRule[retvals.size()]);
+        (new CSSStyleRule[retvals.size()]);
   }
 
   private boolean isMatch(final LayoutElement node, final Selector selector)
@@ -524,13 +534,13 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       {
         CombinatorCondition cc = (CombinatorCondition) condition;
         return (evaluateCondition(node, cc.getFirstCondition()) &&
-                evaluateCondition(node, cc.getSecondCondition()));
+            evaluateCondition(node, cc.getSecondCondition()));
       }
       case Condition.SAC_OR_CONDITION:
       {
         CombinatorCondition cc = (CombinatorCondition) condition;
         return (evaluateCondition(node, cc.getFirstCondition()) ||
-                evaluateCondition(node, cc.getSecondCondition()));
+            evaluateCondition(node, cc.getSecondCondition()));
       }
       case Condition.SAC_ATTRIBUTE_CONDITION:
       {
@@ -543,7 +553,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
 
         final AttributeMap attributes = layoutContext.getAttributes();
         final String attr = (String) attributes.getAttribute
-                (namespaceURI, ac.getLocalName());
+            (namespaceURI, ac.getLocalName());
         if (ac.getValue() == null)
         {
           // dont care what's inside, as long as there is a value ..
@@ -568,13 +578,13 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
           return false;
         }
         final String[] classAttribute = ndef.getClassAttribute(
-                layoutContext.getTagName());
+            layoutContext.getTagName());
         for (int i = 0; i < classAttribute.length; i++)
         {
           final String attr = classAttribute[i];
           final String htmlAttr = (String)
-                  layoutContext.getAttributes().getAttribute(
-                          namespace, attr);
+              layoutContext.getAttributes().getAttribute(
+                  namespace, attr);
           if (isOneOfAttributes(htmlAttr, ac.getValue()))
           {
             return true;
@@ -587,7 +597,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
         final AttributeCondition ac = (AttributeCondition) condition;
         final AttributeMap attributes = layoutContext.getAttributes();
         final Object id = attributes.getAttribute(Namespaces.XML_NAMESPACE,
-                "id");
+            "id");
         return ObjectUtilities.equal(ac.getValue(), id);
       }
       case Condition.SAC_LANG_CONDITION:
@@ -606,8 +616,8 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       {
         final AttributeCondition ac = (AttributeCondition) condition;
         final String attr = (String)
-                layoutContext.getAttributes().getAttribute(
-                        ac.getNamespaceURI(), ac.getLocalName());
+            layoutContext.getAttributes().getAttribute(
+                ac.getNamespaceURI(), ac.getLocalName());
         return isOneOfAttributes(attr, ac.getValue());
       }
       case Condition.SAC_PSEUDO_CLASS_CONDITION:
@@ -700,6 +710,40 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
 
   public CSSPageRule[] getPageRule(CSSValue pageName, PseudoPage[] pseudoPages)
   {
-    return new CSSPageRule[0];
+    final CSSPageRule[] pageRules = this.pageRules;
+    ArrayList rules = new ArrayList();
+    for (int i = 0; i < pageRules.length; i++)
+    {
+      final CSSPageRule rule = pageRules[i];
+      final String rulePageName = rule.getName();
+      // Check the page name.
+      if (rulePageName != null)
+      {
+        if (rulePageName.equals(pageName) == false)
+        {
+          continue;
+        }
+      }
+
+      // And the pseudo page ..
+      final String rulePseudoPage = rule.getPseudoPage();
+      if (rulePseudoPage != null)
+      {
+        for (int j = 0; j < pseudoPages.length; j++)
+        {
+          PseudoPage pseudoPage = pseudoPages[j];
+          if (pseudoPage.toString().equalsIgnoreCase(rulePseudoPage))
+          {
+            rules.add(rule);
+            continue;
+          }
+        }
+        continue;
+      }
+
+      rules.add(rule);
+    }
+
+    return (CSSPageRule[]) rules.toArray(new CSSPageRule[rules.size()]);
   }
 }

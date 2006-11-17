@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageRulesTest.java,v 1.1 2006/07/11 14:03:35 taqua Exp $
+ * $Id: PageRulesTest.java,v 1.2 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -70,12 +70,12 @@ public class PageRulesTest
     
     Log.debug ("---------------------------------------------------------");
     final File defaultStyleURL = new File
-            ("/home/src/jfreereport/head/liblayout/resource/colspan.css");
+            ("/home/src/jfreereport/head/liblayout/resource/pages.css");
 
     final ResourceManager manager = new ResourceManager();
     manager.registerDefaults();
     Resource res = manager.createDirectly(defaultStyleURL, StyleSheet.class);
     StyleSheet s = (StyleSheet) res.getResource();
-
+    Log.debug ("S");
   }
 }

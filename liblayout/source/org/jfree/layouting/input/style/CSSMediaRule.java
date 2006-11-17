@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSMediaRule.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
+ * $Id: CSSMediaRule.java,v 1.3 2006/07/11 13:29:46 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,11 @@ public class CSSMediaRule extends CSSDeclarationRule
   {
     super(parentStyle, parentRule);
     this.rules = new ArrayList();
+  }
+
+  public void addRule (final StyleRule rule)
+  {
+    rules.add(rule);
   }
 
   public void insertRule (final int index, final StyleRule rule)

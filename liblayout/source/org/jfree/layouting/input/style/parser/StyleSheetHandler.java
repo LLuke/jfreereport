@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetHandler.java,v 1.4 2006/07/26 16:59:46 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.5 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -461,6 +461,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
   public void endMedia(SACMediaList media) throws CSSException
   {
     parentRules.pop();
+    styleSheet.addRule(styleRule);
+    styleRule = null;
   }
 
   /**
@@ -494,6 +496,7 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
   public void endPage(String name, String pseudo_page) throws CSSException
   {
     parentRules.pop();
+    styleSheet.addRule(styleRule);
     styleRule = null;
   }
 

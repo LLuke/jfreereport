@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DisplayInterceptor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: DisplayInterceptor.java,v 1.2 2006/11/12 14:33:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -46,6 +46,7 @@ import org.jfree.ui.DrawablePanel;
 public class DisplayInterceptor implements GraphicsContentInterceptor
 {
   private LogicalPageKey logicalPageKey;
+  private boolean matched;
 
   public DisplayInterceptor(final LogicalPageKey logicalPageKey)
   {
@@ -54,7 +55,12 @@ public class DisplayInterceptor implements GraphicsContentInterceptor
 
   public boolean isLogicalPageAccepted(LogicalPageKey key)
   {
-    return logicalPageKey.equals(key);
+    if (logicalPageKey.equals(key))
+    {
+      matched = true;
+      return true;
+    }
+    return false;
   }
 
   public void processLogicalPage(LogicalPageKey key, PageDrawable page)
@@ -81,5 +87,20 @@ public class DisplayInterceptor implements GraphicsContentInterceptor
   public void processPhysicalPage(PhysicalPageKey key, PageDrawable page)
   {
 
+  }
+
+  public boolean isMoreContentNeeded()
+  {
+    return matched == false;
+  }
+
+  public boolean isMatched()
+  {
+    return matched;
+  }
+
+  public void setMatched(final boolean matched)
+  {
+    this.matched = matched;
   }
 }

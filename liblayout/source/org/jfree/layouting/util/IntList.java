@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IntList.java,v 1.6 2005/08/08 15:36:38 taqua Exp $
+ * $Id: IntList.java,v 1.1 2006/07/20 17:53:50 taqua Exp $
  *
  * Changes
  * -------
@@ -135,7 +135,7 @@ public class IntList implements Serializable, Cloneable
   {
     if (index >= size || index < 0)
     {
-      throw new IndexOutOfBoundsException();
+      throw new IndexOutOfBoundsException("Index " + index + " is invalid");
     }
     return data[index];
   }

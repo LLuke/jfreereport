@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.7 2006/11/02 23:13:31 mimil Exp $
+ * $Id: ContentNormalizer.java,v 1.8 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -287,6 +287,8 @@ public class ContentNormalizer implements Normalizer
           (CSSAutoValue.getInstance(), new PseudoPage[0], pageAreaType);
       dpc.setAreaDefinition(pageAreaType, style);
     }
+    final LayoutStyle areaDefinition = dpc.getAreaDefinition(PageAreaType.CONTENT);
+
 
     modelBuilder.startDocument(dpc);
   }
@@ -1034,10 +1036,6 @@ public class ContentNormalizer implements Normalizer
           (pageName, pseudoPages, pageAreaType);
       dpc.setAreaDefinition(pageAreaType, style);
     }
-
-    // handle the page-resets.
-
-
     modelBuilder.handlePageBreak(dpc);
   }
 

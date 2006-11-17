@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageSize.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -847,21 +847,21 @@ public final class PageSize
    */
   public static final PageSize TABLOIDEXTRA = new PageSize(864, 1296);
 
-  private int width;
-  private int height;
+  private double width;
+  private double height;
 
-  public PageSize (final int width, final int height)
+  public PageSize (final double width, final double height)
   {
     this.width = width;
     this.height = height;
   }
 
-  public int getWidth()
+  public double getWidth()
   {
     return width;
   }
 
-  public int getHeight()
+  public double getHeight()
   {
     return height;
   }
@@ -879,18 +879,33 @@ public final class PageSize
 
     final PageSize pageSize = (PageSize) o;
 
-    if (height != pageSize.height)
+
+
+    if (equal(pageSize.height, height) == false)
     {
       return false;
     }
-    return width == pageSize.width;
+    if (equal(pageSize.width, width) == false)
+    {
+      return false;
+    }
 
+    return true;
+  }
+
+  private boolean equal (double d1, double d2)
+  {
+    return Double.doubleToLongBits(d1) == Double.doubleToLongBits(d2);
   }
 
   public int hashCode()
   {
-    int result = width;
-    result = 29 * result + height;
+    int result;
+    long temp;
+    temp = width != +0.0d ? Double.doubleToLongBits(width) : 0L;
+    result = (int) (temp ^ (temp >>> 32));
+    temp = height != +0.0d ? Double.doubleToLongBits(height) : 0L;
+    result = 29 * result + (int) (temp ^ (temp >>> 32));
     return result;
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractPageableProcessor.java,v 1.1 2006/11/11 20:25:36 taqua Exp $
+ * $Id: AbstractPageableProcessor.java,v 1.1 2006/11/12 14:29:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -143,11 +143,21 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
 
   public LogicalPageKey getLogicalPage(int page)
   {
+    if (isPaginationFinished() == false)
+    {
+      throw new IllegalStateException();
+    }
+
     return (LogicalPageKey) logicalPages.get(page);
   }
 
   public PhysicalPageKey getPhysicalPage(int page)
   {
+    if (isPaginationFinished() == false)
+    {
+      throw new IllegalStateException();
+    }
+
     return (PhysicalPageKey) physicalPages.get(page);
   }
 
@@ -188,20 +198,23 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
     if (isContentGeneratable())
     {
       final PageFlowSelector selector = getFlowSelector();
-      LogicalPageKey logicalPageKey = getLogicalPage(pageCursor);
-      if (selector.isLogicalPageAccepted(logicalPageKey))
+      if (selector != null)
       {
-        processLogicalPage(logicalPageKey, logicalPage);
-      }
-
-      for (int row = 0; row < rowCount; row++)
-      {
-        for (int col = 0; col < colCount; col++)
+        LogicalPageKey logicalPageKey = getLogicalPage(pageCursor);
+        if (selector.isLogicalPageAccepted(logicalPageKey))
         {
-          PhysicalPageKey pageKey = logicalPageKey.getPage(col, row);
-          if (selector.isPhysicalPageAccepted(pageKey))
+          processLogicalPage(logicalPageKey, logicalPage);
+        }
+
+        for (int row = 0; row < rowCount; row++)
+        {
+          for (int col = 0; col < colCount; col++)
           {
-            processPhysicalPage(pageGrid, row, col, pageKey);
+            PhysicalPageKey pageKey = logicalPageKey.getPage(col, row);
+            if (selector.isPhysicalPageAccepted(pageKey))
+            {
+              processPhysicalPage(pageGrid, logicalPage, row, col, pageKey);
+            }
           }
         }
       }
@@ -211,6 +224,7 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
   }
 
   protected abstract void processPhysicalPage(final PageGrid pageGrid,
+                                              final LogicalPageBox logicalPage,
                                               final int row,
                                               final int col,
                                               final PhysicalPageKey pageKey);

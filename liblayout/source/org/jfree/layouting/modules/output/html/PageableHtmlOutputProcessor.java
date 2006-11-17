@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PageableHtmlOutputProcessor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: PageableHtmlOutputProcessor.java,v 1.2 2006/11/13 19:14:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -111,8 +111,8 @@ public class PageableHtmlOutputProcessor extends AbstractPageableProcessor
     this.metaData = new HtmlOutputProcessorMetaData(fontStorage, true);
   }
 
-
   protected void processPhysicalPage(final PageGrid pageGrid,
+                                     final LogicalPageBox logicalPage,
                                      final int row,
                                      final int col,
                                      final PhysicalPageKey pageKey)

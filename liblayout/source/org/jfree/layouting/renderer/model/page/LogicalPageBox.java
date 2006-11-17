@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.12 2006/10/27 18:25:50 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.13 2006/10/31 11:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -167,8 +167,8 @@ public class LogicalPageBox extends BlockRenderBox
       for (int col = 0; col < pageGrid.getColumnCount(); col++)
       {
         PhysicalPageBox box = pageGrid.getPage(row, col);
-        pageHeights[row] = Math.min(pageHeights[row], box.getHeight());
-        pageWidths[col] = Math.min(pageWidths[col], box.getWidth());
+        pageHeights[row] = Math.min(pageHeights[row], box.getImageableHeight());
+        pageWidths[col] = Math.min(pageWidths[col], box.getImageableWidth());
       }
     }
 

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AllPageFlowSelector.java,v 1.1 2006/11/12 14:29:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -57,5 +57,10 @@ public class AllPageFlowSelector implements PageFlowSelector
   public boolean isLogicalPageAccepted(LogicalPageKey key)
   {
     return logicalPages;
+  }
+
+  public boolean isMoreContentNeeded()
+  {
+    return true;
   }
 }

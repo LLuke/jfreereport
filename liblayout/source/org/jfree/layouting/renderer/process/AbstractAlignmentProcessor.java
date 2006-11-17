@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractAlignmentProcessor.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: AbstractAlignmentProcessor.java,v 1.2 2006/11/05 16:45:53 taqua Exp $
  *
  * Changes
  * -------
@@ -242,7 +242,7 @@ public abstract class AbstractAlignmentProcessor
         continue;
       }
       final PhysicalPageBox page = pageGrid.getPage(0, i);
-      pos += page.getWidth();
+      pos += page.getImageableWidth();
       if (pos >= endOfLine)
       {
         break;

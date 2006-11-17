@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: GraphicsOutputProcessor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: GraphicsOutputProcessor.java,v 1.2 2006/11/12 14:33:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -49,7 +49,6 @@ import org.jfree.util.Configuration;
  */
 public class GraphicsOutputProcessor extends AbstractPageableProcessor
 {
-  private int pageCursor;
   private OutputProcessorMetaData metaData;
   private GraphicsContentInterceptor interceptor;
 
@@ -80,22 +79,22 @@ public class GraphicsOutputProcessor extends AbstractPageableProcessor
     return getInterceptor();
   }
 
-
   protected void processPhysicalPage(final PageGrid pageGrid,
+                                     final LogicalPageBox logicalPage,
                                      final int row,
                                      final int col,
                                      final PhysicalPageKey pageKey)
   {
     final PhysicalPageBox page = pageGrid.getPage(row, col);
-    final PageDrawableImpl drawable = new PageDrawableImpl(page,
-        page.getWidth(), page.getHeight());
-    interceptor.processPhysicalPage(pageKey, drawable);
+    final LogicalPageDrawable drawable = new LogicalPageDrawable(logicalPage);
+    final PhysicalPageDrawable pageDrawable =
+        new PhysicalPageDrawable(drawable, page);
+    interceptor.processPhysicalPage(pageKey, pageDrawable);
   }
 
   protected void processLogicalPage (LogicalPageKey key, LogicalPageBox logicalPage)
   {
-    final PageDrawableImpl page = new PageDrawableImpl(logicalPage,
-        logicalPage.getPageWidth(), logicalPage.getPageHeight());
-    interceptor.processLogicalPage(key, page);
+    final LogicalPageDrawable drawable = new LogicalPageDrawable(logicalPage);
+    interceptor.processLogicalPage(key, drawable);
   }
 }

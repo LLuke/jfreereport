@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageGridUtility.java,v 1.1 2006/10/22 14:59:20 taqua Exp $
  *
  * Changes
  * -------
@@ -61,37 +61,36 @@ public class PageGridUtility
   public static PageSize lookupPageSize (CSSValue sizeVal,
                                          OutputProcessorMetaData metaData)
   {
-    PageSize defaultVal = metaData.getDefaultPageSize();
 
     if (sizeVal instanceof CSSValuePair == false)
     {
+      PageSize defaultVal = metaData.getDefaultPageSize();
       return defaultVal;
     }
     CSSValuePair valuePair = (CSSValuePair) sizeVal;
     final CSSValue firstValue = valuePair.getFirstValue();
     if (firstValue instanceof CSSNumericValue == false)
     {
+      PageSize defaultVal = metaData.getDefaultPageSize();
       return defaultVal;
     }
     final CSSValue secondValue = valuePair.getSecondValue();
     if (secondValue instanceof CSSNumericValue == false)
     {
+      PageSize defaultVal = metaData.getDefaultPageSize();
       return defaultVal;
     }
 
-    CSSNumericValue widthVal = CSSValueResolverUtility.getLength
-            (firstValue, CSSNumericValue.createPtValue(defaultVal.getWidth()));
-    CSSNumericValue heightVal = CSSValueResolverUtility.getLength
-            (secondValue, CSSNumericValue.createPtValue(defaultVal.getHeight()));
     double width = CSSValueResolverUtility.convertLengthToDouble
-            (widthVal, null, metaData);
+            (firstValue, null, metaData);
     double height = CSSValueResolverUtility.convertLengthToDouble
-            (heightVal, null, metaData);
+            (secondValue, null, metaData);
     if (width < 1 || height < 1)
     {
+      PageSize defaultVal = metaData.getDefaultPageSize();
       return defaultVal;
     }
-    return new PageSize((int) width, (int) height);
+    return new PageSize(width, height);
   }
 
 }

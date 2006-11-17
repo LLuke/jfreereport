@@ -23,12 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PageDrawable.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.graphics;
+
+import java.awt.print.PageFormat;
 
 import org.jfree.ui.ExtendedDrawable;
 
@@ -39,6 +41,11 @@ import org.jfree.ui.ExtendedDrawable;
  */
 public interface PageDrawable extends ExtendedDrawable
 {
-  public void setZoom (final double zoom);
-  public double getZoom ();
+  /**
+   * Describes the physical output characteristics like page size, margins,
+   * and imaginable area.
+   *
+   * @return
+   */
+  public PageFormat getPageFormat();
 }

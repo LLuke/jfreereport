@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfOutputProcessor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -98,12 +98,12 @@ public class PdfOutputProcessor extends AbstractPageableProcessor
   }
 
   protected void processPhysicalPage(final PageGrid pageGrid,
+                                     final LogicalPageBox logicalPage,
                                      final int row,
                                      final int col,
                                      final PhysicalPageKey pageKey)
   {
-    final PhysicalPageBox page = pageGrid.getPage(row, col);
-    // todo:
+
   }
 
   protected void processLogicalPage(LogicalPageKey key,

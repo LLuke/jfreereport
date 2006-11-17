@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PhysicalPageBox.java,v 1.9 2006/10/17 16:39:08 taqua Exp $
+ * $Id: PhysicalPageBox.java,v 1.10 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -40,70 +40,178 @@
  */
 package org.jfree.layouting.renderer.model.page;
 
-import org.jfree.layouting.input.style.keys.line.VerticalAlign;
+import org.jfree.layouting.input.style.PageAreaType;
+import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
+import org.jfree.layouting.input.style.keys.page.PageSize;
+import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.PageContext;
-import org.jfree.layouting.renderer.model.BlockRenderBox;
-import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
-import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
-import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.renderer.border.RenderLength;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
+import org.jfree.util.Log;
 
 /**
- * This is behaves like a table box (but is none, as the layouting rules are
- * different).
- * <p/>
- * This is a empty prototype, the real version should have a couple of page
- * areas which contain the physical headers and footers.
- *
- * For now, all of the physical page-properties (except the margins are ignored.)
- * The PhysicalBox receives the partial content after the pagination has been
- * completed.
- *
- * @author Thomas Morgner
+ * Defines the properties of a single physical page. In a later version, this
+ * box may receive physical page header and footer or may even support the full
+ * CSS-pagebox modell.
  */
-public class PhysicalPageBox extends RenderBox
+public class PhysicalPageBox implements Cloneable
 {
-  private BlockRenderBox contentArea;
-
   private PageContext pageContext;
   private long width;
   private long height;
+  private long imageableX;
+  private long imageableY;
+  private long imageableWidth;
+  private long imageableHeight;
+  private long globalX;
+  private long globalY;
 
   public PhysicalPageBox(final PageContext pageContext,
-                         final long width,
-                         final long height)
+                         final OutputProcessorMetaData metaData,
+                         final long globalX,
+                         final long globalY)
   {
-    super(new EmptyBoxDefinition());
-    freeze();
+    this.globalX = globalX;
+    this.globalY = globalY;
     this.pageContext = pageContext;
-    this.width = width;
-    this.height = height;
 
-    this.contentArea = new BlockRenderBox(new EmptyBoxDefinition());
-    addChild(contentArea);
-  }
+    final LayoutStyle areaDefinition =
+        pageContext.getAreaDefinition(PageAreaType.CONTENT);
+    final CSSValue pageValue = areaDefinition.getValue(PageStyleKeys.SIZE);
+    final PageSize pageSize = PageGridUtility.lookupPageSize(pageValue, metaData);
 
-  public BlockRenderBox getContentArea()
-  {
-    return contentArea;
-  }
+    this.width = StrictGeomUtility.toInternalValue(pageSize.getWidth());
+    this.height = StrictGeomUtility.toInternalValue(pageSize.getHeight());
 
-  protected long getPreferredSize(int axis)
-  {
-    if (axis == VERTICAL_AXIS)
+    final CSSValue marginTopValue =
+        areaDefinition.getValue(BoxStyleKeys.MARGIN_TOP);
+    final CSSValue marginLeftValue =
+        areaDefinition.getValue(BoxStyleKeys.MARGIN_LEFT);
+    final CSSValue marginBottomValue =
+        areaDefinition.getValue(BoxStyleKeys.MARGIN_BOTTOM);
+    final CSSValue marginRightValue =
+        areaDefinition.getValue(BoxStyleKeys.MARGIN_RIGHT);
+
+    final long marginTop = computeWidth(marginTopValue, metaData).resolve(width);
+    final long marginLeft  = computeWidth(marginLeftValue, metaData).resolve(width);
+    final long marginBottom = computeWidth(marginBottomValue, metaData).resolve(width);
+    final long marginRight = computeWidth(marginRightValue, metaData).resolve(width);
+
+    imageableX = marginLeft;
+    imageableY = marginTop;
+    imageableWidth = Math.max(0, width - marginLeft - marginRight);
+    imageableHeight = Math.max(0, height - marginTop - marginBottom);
+
+    if (imageableWidth == 0)
     {
-      return height;
+      Log.warn ("The Margins are invalid: Ignoring right.");
+      imageableWidth = Math.max(0, width - marginLeft);
+      if (imageableWidth == 0)
+      {
+        Log.warn ("The Margins are totally messed up: Ignoring left and right");
+        imageableWidth = Math.max(0, width);
+        if (imageableHeight == 0)
+        {
+          Log.warn ("Oh, your page-size definition is funny: Using the built in default.");
+          imageableWidth = StrictGeomUtility.toInternalValue
+              (metaData.getDefaultPageSize().getWidth());
+          if (imageableWidth <= 0)
+          {
+            throw new IllegalStateException
+                ("I tried everything to save you, but you ignored me.");
+          }
+        }
+      }
     }
-    return width;
+
+    if (imageableHeight == 0)
+    {
+      Log.warn ("The Margins are invalid: Ignoring right.");
+      imageableHeight = Math.max(0, height - marginTop);
+      if (imageableHeight == 0)
+      {
+        Log.warn ("The Margins are totally messed up: Ignoring left and right");
+        imageableHeight = Math.max(0, height);
+        if (imageableHeight == 0)
+        {
+          Log.warn ("Oh, your page-size definition is funny: Using the built in default.");
+          imageableHeight = StrictGeomUtility.toInternalValue
+              (metaData.getDefaultPageSize().getHeight());
+          if (imageableHeight <= 0)
+          {
+            throw new IllegalStateException
+                ("I tried everything to save you, but you ignored me.");
+          }
+        }
+      }
+    }
   }
 
-  protected long getEffectiveLayoutSize(int axis, RenderNode node)
+  private static RenderLength computeWidth(CSSValue widthValue,
+                                           OutputProcessorMetaData metaData)
   {
-    if (axis == VERTICAL_AXIS)
+    if (widthValue instanceof CSSNumericValue == false)
     {
-      return height;
+      return RenderLength.EMPTY;
     }
-    return width;
+    else
+    {
+      final CSSNumericValue nval = (CSSNumericValue) widthValue;
+      if (nval.getValue() > 0)
+      {
+        final RenderLength renderLength =
+            RenderLength.convertToInternal(widthValue, null, metaData);
+        if (renderLength.getValue() > 0)
+        {
+          return renderLength;
+        }
+      }
+      return RenderLength.EMPTY;
+    }
+  }
+
+  public long getImageableX()
+  {
+    return imageableX;
+  }
+
+  public long getImageableY()
+  {
+    return imageableY;
+  }
+
+  public long getImageableWidth()
+  {
+    return imageableWidth;
+  }
+
+  public long getImageableHeight()
+  {
+    return imageableHeight;
+  }
+
+  public long getGlobalX()
+  {
+    return globalX;
+  }
+
+  public void setGlobalX(final long globalX)
+  {
+    this.globalX = globalX;
+  }
+
+  public long getGlobalY()
+  {
+    return globalY;
+  }
+
+  public void setGlobalY(final long globalY)
+  {
+    this.globalY = globalY;
   }
 
   public long getWidth()
@@ -116,43 +224,13 @@ public class PhysicalPageBox extends RenderBox
     return height;
   }
 
-
-  public void setContentAreaBounds(final long x, final long y,
-                                   final long width, final long height)
+  public PageContext getPageContext()
   {
-    // depending on the other area's sizes, we have to adjust our own
-    // origin point ..
-    setX(x);
-    setY(y);
-    setWidth(width);
-    setHeight(height);
+    return pageContext;
   }
 
-  /**
-   * Derive creates a disconnected node that shares all the properties of the
-   * original node. The derived node will no longer have any parent, silbling,
-   * child or any other relationships with other nodes.
-   *
-   * @return
-   */
-  public RenderNode derive(boolean deepDerive)
+  public Object clone() throws CloneNotSupportedException
   {
-    final PhysicalPageBox renderNode = (PhysicalPageBox) super.derive(deepDerive);
-    if (deepDerive)
-    {
-      // after the derive, reconnect the header and footer
-      // ok, the structure is known, so that's easy
-      renderNode.contentArea = (BlockRenderBox)
-              renderNode.findNodeById(contentArea.getInstanceId());
-    }
-    else
-    {
-      renderNode.clear();
-      renderNode.contentArea = (NormalFlowRenderBox) contentArea.derive(false);
-      renderNode.addChild(renderNode.contentArea);
-    }
-    return renderNode;
+    return super.clone();
   }
-
-  
 }

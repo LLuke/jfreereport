@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PaginatingRenderer.java,v 1.1 2006/11/11 20:25:36 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -39,7 +39,6 @@ import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.OutputProcessor;
-import org.jfree.layouting.output.pageable.graphics.PageDrawableImpl;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.process.CleanPaginatedBoxesStep;
 import org.jfree.layouting.renderer.process.ComputeBreakabilityStep;

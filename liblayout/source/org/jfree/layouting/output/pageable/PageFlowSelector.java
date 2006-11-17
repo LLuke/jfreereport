@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PageFlowSelector.java,v 1.1 2006/11/12 14:07:08 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -40,5 +40,4 @@ import org.jfree.layouting.output.FlowSelector;
 public interface PageFlowSelector extends FlowSelector
 {
   public boolean isPhysicalPageAccepted(PhysicalPageKey key);
-  
 }

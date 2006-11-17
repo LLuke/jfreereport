@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FlowGraphicsOutputProcessor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -82,20 +82,22 @@ public class FlowGraphicsOutputProcessor extends AbstractPageableProcessor
 
 
   protected void processPhysicalPage(final PageGrid pageGrid,
+                                     final LogicalPageBox logicalPage,
                                      final int row,
                                      final int col,
                                      final PhysicalPageKey pageKey)
   {
     final PhysicalPageBox page = pageGrid.getPage(row, col);
-    final PageDrawableImpl drawable = new PageDrawableImpl(page,
-        page.getWidth(), page.getHeight());
-    interceptor.processPhysicalPage(pageKey, drawable);
+    final LogicalPageDrawable drawable = new LogicalPageDrawable
+        (logicalPage);
+    final PhysicalPageDrawable physicalPageDrawable =
+        new PhysicalPageDrawable(drawable, page);
+    interceptor.processPhysicalPage(pageKey, physicalPageDrawable);
   }
 
   protected void processLogicalPage (LogicalPageKey key, LogicalPageBox logicalPage)
   {
-    final PageDrawableImpl page = new PageDrawableImpl(logicalPage,
-        logicalPage.getPageWidth(), logicalPage.getPageHeight());
+    final LogicalPageDrawable page = new LogicalPageDrawable(logicalPage);
     interceptor.processLogicalPage(key, page);
   }
 }

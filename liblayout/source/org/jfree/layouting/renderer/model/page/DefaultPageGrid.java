@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultPageGrid.java,v 1.4 2006/10/17 16:39:08 taqua Exp $
+ * $Id: DefaultPageGrid.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package org.jfree.layouting.renderer.model.page;
 
 import org.jfree.layouting.input.style.PageAreaType;
-import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.PageContext;
@@ -67,18 +66,28 @@ public class DefaultPageGrid implements PageGrid
             pageContext.getAreaDefinition(PageAreaType.CONTENT);
     CSSValue hspanValue = areaDefinition.getValue(PageStyleKeys.HORIZONTAL_PAGE_SPAN);
     CSSValue vspanValue = areaDefinition.getValue(PageStyleKeys.VERTICAL_PAGE_SPAN);
-    CSSValue pageValue = areaDefinition.getValue(PageStyleKeys.SIZE);
-    PageSize pageSize = PageGridUtility.lookupPageSize(pageValue, metaData);
+
     this.columns = Math.max (1, (int) CSSValueResolverUtility.getNumericValue
             (hspanValue, metaData.getHorizontalPageSpan()));
     this.rows = Math.max (1, (int) CSSValueResolverUtility.getNumericValue
             (vspanValue, metaData.getVerticalPageSpan()));
 
     this.pages = new PhysicalPageBox[rows * columns];
-    for (int i = 0; i < pages.length; i++)
+
+    long globalY = 0;
+    for (int row = 0; row < rows; row++)
     {
-      pages[i] = new PhysicalPageBox(pageContext,
-              pageSize.getWidth() * 1000, pageSize.getHeight()  * 1000);
+      long globalX = 0;
+      long lastHeight = 0;
+      for (int col = 0; col < columns; col++)
+      {
+        final PhysicalPageBox ppb =
+            new PhysicalPageBox(pageContext, metaData, globalX, globalY);
+        pages[row * columns + col] = ppb;
+        globalX += ppb.getImageableWidth();
+        lastHeight = ppb.getImageableHeight();
+      }
+      globalY += lastHeight;
     }
   }
 
@@ -107,7 +116,7 @@ public class DefaultPageGrid implements PageGrid
       for (int i = 0; i < pages.length; i++)
       {
         PhysicalPageBox page = pages[i];
-        o.pages[i] = (PhysicalPageBox) page.derive(true);
+        o.pages[i] = (PhysicalPageBox) page.clone();
       }
       return o;
     }
