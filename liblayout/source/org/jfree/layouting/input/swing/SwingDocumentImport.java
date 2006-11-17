@@ -41,8 +41,18 @@
 
 package org.jfree.layouting.input.swing;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import org.jfree.layouting.DefaultLayoutProcess;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.LibLayoutBoot;
+import org.jfree.layouting.input.swing.converter.*;
+import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.feed.InputFeedException;
+import org.jfree.layouting.modules.output.html.StreamingHtmlOutputProcessor;
+import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.util.NullOutputStream;
+
+import javax.swing.text.*;
+import javax.swing.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
@@ -50,30 +60,8 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-
-import org.jfree.layouting.DefaultLayoutProcess;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.input.swing.converter.CharacterConverter;
-import org.jfree.layouting.input.swing.converter.ColorConverter;
-import org.jfree.layouting.input.swing.converter.FontConverter;
-import org.jfree.layouting.input.swing.converter.ParagraphConverter;
-import org.jfree.layouting.layouter.feed.InputFeed;
-import org.jfree.layouting.layouter.feed.InputFeedException;
-import org.jfree.layouting.modules.output.html.StreamingHtmlOutputProcessor;
-import org.jfree.layouting.util.NullOutputStream;
-import org.jfree.repository.ContentIOException;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 
 /**
  * Right now, we do not convert Swing-styles into CSS styles. Hey, we should,
@@ -84,8 +72,10 @@ import org.jfree.repository.ContentIOException;
 public class SwingDocumentImport
 {
   public static final String NAMESPACE = "http://www.w3.org/1999/xhtml";
-  public static final String STYLE_ATTRIBUTE = "style";
-  public static final String PARENT_STYLE_ATTRIBUTE = "parent";
+  public static final String STYLESHEET_TYPE = "type";
+  public static final String STYLESHEET_PCDATA = "#pcdata";
+  public static final String STYLESHEET = "stylesheet";
+  public static final String ELEMENT_STYLE_ATTRIBUTE = "style";
 
   private Map styleNames;
   private InputFeed feed;
@@ -122,6 +112,15 @@ public class SwingDocumentImport
     styleConstantsMap.put(StyleConstants.Foreground, colorConverter);
     styleConstantsMap.put(StyleConstants.Background, colorConverter);
 
+    // document
+    final DocumentConverter documentConverter = new DocumentConverter();
+    styleConstantsMap.put(DocumentConverter.RTF_PAGEWIDTH, documentConverter);
+    styleConstantsMap.put(DocumentConverter.RTF_PAGEHEIGHT, documentConverter);
+    styleConstantsMap.put(DocumentConverter.RTF_MARGINBOTTOM, documentConverter);
+    styleConstantsMap.put(DocumentConverter.RTF_MARGINLEFT, documentConverter);
+    styleConstantsMap.put(DocumentConverter.RTF_MARGINRIGHT, documentConverter);
+    styleConstantsMap.put(DocumentConverter.RTF_MARGINTOP, documentConverter);
+
   }
 
   public SwingDocumentImport()
@@ -145,7 +144,7 @@ public class SwingDocumentImport
     return name;
   }
 
-  public String normalizeStyleName(String name)
+  public String getNormalizedStyleName(String name)
   {
     if (name == null)
     {
@@ -170,10 +169,10 @@ public class SwingDocumentImport
     return o;
   }
 
-  public AttributeSet convertAttributes(AttributeSet attr, Element context)
+  public ConverterAttributeSet convertAttributes(AttributeSet attr, Element context)
       throws InputFeedException
   {
-    final SimpleAttributeSet cssAttr = new SimpleAttributeSet();
+    final ConverterAttributeSet cssAttr = new ConverterAttributeSet();
     final Enumeration attributeNames = attr.getAttributeNames();
     while (attributeNames.hasMoreElements())
     {
@@ -230,6 +229,7 @@ public class SwingDocumentImport
       final Object key = attributeNames.nextElement();
       final Object value = cssAttr.getAttribute(key);
 
+      // forget element name because we handled it just before
       if (key == StyleConstants.NameAttribute)
       {
         continue;
@@ -241,8 +241,7 @@ public class SwingDocumentImport
         if (value instanceof Style)
         {
           final Style style = (Style) value;
-          final String styleName = (String) styleNames.get(style.getName());
-          feed.setAttribute(NAMESPACE, STYLE_ATTRIBUTE, styleName);
+          feed.setAttribute(NAMESPACE, ELEMENT_STYLE_ATTRIBUTE, getNormalizedStyleName(style.getName()));
           continue;
         }
       }
@@ -306,8 +305,6 @@ public class SwingDocumentImport
       String styleName = (String) names.nextElement();
       Style s = document.getStyle(styleName);
 
-      System.out.println("Processing style: " + styleName);
-
       if (s == null)
       {
         continue;
@@ -318,54 +315,70 @@ public class SwingDocumentImport
         continue;
       }*/
 
-      final String convertedStyleName = convertStyleName(styleName);
-      styleNames.put(styleName, convertedStyleName);
-
+      // registering  & converting style name
+      final String convertedStyleName = getNormalizedStyleName(styleName);
+      System.out.println("Processing style: " + styleName + "("+convertedStyleName+")");
+      //convert attributes to css attributes
       final AttributeSet cssAttr = convertAttributes(s, null);
-
       final Enumeration attributeNames = cssAttr.getAttributeNames();
+      final StringBuffer buffer = new StringBuffer(cssAttr.getAttributeCount()*4+5);
+
+      feed.startMetaNode();
+      // making stylesheet selector
+      buffer.append(convertedStyleName);
+      buffer.append(" ");
+      buffer.append(getParentSelector(s.getResolveParent()));
+      buffer.append("{\n");
+      // generate stylesheet properties
       while (attributeNames.hasMoreElements())
       {
         final Object key = attributeNames.nextElement();
         final Object value = cssAttr.getAttribute(key);
 
-        if (key == StyleConstants.NameAttribute)
+        if (key == StyleConstants.NameAttribute || key == StyleConstants.ResolveAttribute)
         {
           continue;
         }
 
-
-        if (key == StyleConstants.ResolveAttribute)
-        {
-          // parent style
-          if (value instanceof Style)
-          {
-            final Style style = (Style) value;
-            final String parentStyleName = (String) styleNames.get(style.getName());
-            if (parentStyleName != null)
-            {
-              feed.startMetaNode();
-              debugAttribut("Style parent ", PARENT_STYLE_ATTRIBUTE, parentStyleName);
-              feed.setMetaNodeAttribute(PARENT_STYLE_ATTRIBUTE, parentStyleName);
-              feed.endMetaNode();
-              continue;
-            }
-            else
-            {
-              //todo default style
-              System.out.println("Parent style name not found: " + style.getName());
-              continue;
-            }
-          }
-        }
-
-        feed.startMetaNode();
         debugAttribut("Style ", key, value);
-        feed.setMetaNodeAttribute(key.toString(), value);
-        feed.endMetaNode();
+        buffer.append(key.toString());
+        buffer.append(":");
+        buffer.append(value.toString());
+        buffer.append(";\n");
       }
+      buffer.append("}");
 
+      // adding stylesheet
+      feed.setMetaNodeAttribute(STYLESHEET_TYPE, STYLESHEET);
+      feed.setMetaNodeAttribute(STYLESHEET_PCDATA, buffer.toString());
+      feed.endMetaNode();
     }
+  }
+
+  /**
+   * Returns the parent CSS selector of the given <code>AttributeSet</code>.
+   *
+   * @param attributeSet The style AttributeSet to use.
+   * @return The parent CSS selector or an empty String if there is no parent.
+   */
+  private String getParentSelector(AttributeSet attributeSet) {
+    if(attributeSet != null)
+    {
+      final Object o = attributeSet.getAttribute(StyleConstants.ResolveAttribute);
+
+      if(o != null)
+      {
+        final Style s = (Style)o;
+
+        return getNormalizedStyleName(s.getName())+" "+ getParentSelector(attributeSet.getResolveParent());
+      }
+    }
+    else
+    {
+      return "";
+    }
+
+    return "";
   }
 
   /**
@@ -379,24 +392,58 @@ public class SwingDocumentImport
       throws InputFeedException
   {
     //final Object title = document.getProperty(DefaultStyledDocument.TitleProperty);
+    final SimpleAttributeSet attributeSet = new SimpleAttributeSet();
     final Dictionary documentProperties = document.getDocumentProperties();
     final Enumeration keys = documentProperties.keys();
     while (keys.hasMoreElements())
     {
       final Object key = keys.nextElement();
       final Object value = documentProperties.get(key);
-
-      if (key instanceof String)
-      {
-        debugAttribut("Document Property ", key, value);
-        feed.addDocumentAttribute((String) key, value);
-      } // ingnoring non String properties
-      else
-      {
-        debugAttribut("Ignoring document Property ", key, value);
-      }
+      attributeSet.addAttribute(key, value);
     }
+
+    final ConverterAttributeSet convertedSet = convertAttributes(attributeSet, null);
+    processRules(convertedSet);
+
+    // add other attributes as document attributes
+    final AttributeSet documentAttributes = convertedSet.getAttributesByType(ConverterAttributeSet.NOT_TYPED);
+    final Enumeration names = documentAttributes.getAttributeNames();
+    while(names.hasMoreElements())
+    {
+      final Object name = names.nextElement();
+      final Object value = documentAttributes.getAttribute(name);
+      debugAttribut("Document Property ", name, value);
+      feed.addDocumentAttribute(name.toString(), value);
+    }
+
     //todo copy XhtmlInputDriver code for HMLT headers
+  }
+
+  private void processRules(ConverterAttributeSet convertedSet) throws InputFeedException
+  {
+    final AttributeSet pageRuleAttributes = convertedSet.getAttributesByType(DocumentConverter.PAGE_RULE_TYPE);
+    if(pageRuleAttributes.getAttributeCount() > 0)
+    {
+      final StringBuffer buffer = new StringBuffer();
+      buffer.append("@page {\n");
+      final Enumeration names = pageRuleAttributes.getAttributeNames();
+      while(names.hasMoreElements())
+      {
+        final Object name = names.nextElement();
+        final Object value = pageRuleAttributes.getAttribute(name);
+        debugAttribut("Page rule attribute ", name, value);
+        buffer.append(name.toString());
+        buffer.append(":");
+        buffer.append(value.toString());
+        buffer.append(";\n");
+      }
+      buffer.append("}");
+      feed.startMetaNode();
+      // adding stylesheet
+      feed.setMetaNodeAttribute(STYLESHEET_TYPE, STYLESHEET);
+      feed.setMetaNodeAttribute(STYLESHEET_PCDATA, buffer.toString());
+      feed.endMetaNode();
+    }
   }
 
   public void parseDocument(DefaultStyledDocument doc, InputFeed feed)
@@ -416,7 +463,7 @@ public class SwingDocumentImport
 
   public static void main(String[] args)
       throws IOException, BadLocationException,
-      InputFeedException, ContentIOException
+      InputFeedException
   {
     //final URL initialPage = new URL("http://www.google.com");
     //final URL initialPage = new URL("http://www.tug.org/tex-archive/obsolete/info/RTF/RTF-Spec.rtf");

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Converter.java,v 1.2 2006/11/07 19:53:54 taqua Exp $
+ * $Id: Converter.java,v 1.1 2006/11/07 22:38:11 mimil Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.Element;
 
 /**
- * 
+ * This interface describes a class that is used to convert style attributes to css style attributes.
  */
 public interface Converter {
   /**
@@ -57,5 +57,5 @@ public interface Converter {
    * @param context The current Element.
    * @return The conversion result or null if no converstion has been done.
    */
-  public AttributeSet convertToCSS(Object key, Object value, AttributeSet cssAttr, Element context);
+  public ConverterAttributeSet convertToCSS(Object key, Object value, ConverterAttributeSet cssAttr, Element context);
 }

@@ -24,14 +24,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * Converter.java
+ * ParagraphConverter.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Converter.java,v 1.2 2006/11/07 19:53:54 taqua Exp $
+ * $Id: ParagraphConverter.java,v 1.1 2006/11/07 22:37:25 mimil Exp $
  *
  * Changes
  * -------
@@ -52,31 +52,51 @@ import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.swing.Converter;
+import org.jfree.layouting.input.swing.ConverterAttributeSet;
 import org.jfree.util.Log;
 
 /**
- * 
+ * This class handles convertions of paragraph style attributes to css style attributes.
  */
 public class ParagraphConverter implements Converter {
-  public AttributeSet convertToCSS (Object key, Object value, AttributeSet cssAttr,
+
+  /**
+   * Converts a style key and a style value to a CSS compatible style key and style value.
+   * A conversion can result in more than one key and value.
+   *
+   * @param key The style key to convert.
+   * @param value The style value to convert.
+   * @param cssAttr The current converted CSS attributes for the current element.
+   * @param context The current Element.
+   * @return The conversion result or null if no converstion has been done.
+   */
+  public ConverterAttributeSet convertToCSS (Object key, Object value, ConverterAttributeSet cssAttr,
                                     Element context)
   {
-    final SimpleAttributeSet attr = new SimpleAttributeSet();
+
     if(key instanceof StyleConstants.ParagraphConstants)
     {
       final StyleConstants.ParagraphConstants paragraphConstant = (StyleConstants.ParagraphConstants)key;
 
-      return handleParagraphConstants(paragraphConstant, value, attr);
+      return handleParagraphConstants(paragraphConstant, value);
 
     }
 
     return null;
   }
 
-  private AttributeSet handleParagraphConstants (
-          StyleConstants.ParagraphConstants paragraphConstant, Object value,
-          SimpleAttributeSet attr)
+  /**
+   * Handles the convertions of <code>StyleConstants.ParagraphConstants</code> key type.
+   *
+   * @param paragraphConstant The style key.
+   * @param value The style value.
+   * @return The conversion result or null if no converstion has been done.
+   */
+  private ConverterAttributeSet handleParagraphConstants (
+          StyleConstants.ParagraphConstants paragraphConstant, Object value)
   {
+    final ConverterAttributeSet attr = new ConverterAttributeSet();
+
     if(paragraphConstant == StyleConstants.FirstLineIndent)
     {
       final CSSNumericValue cssNumericValue = new CSSNumericValue(CSSNumericType.PT, Double.valueOf(value.toString()));

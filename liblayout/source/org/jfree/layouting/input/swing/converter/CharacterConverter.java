@@ -24,14 +24,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * Converter.java
+ * CharacterConverter.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Converter.java,v 1.2 2006/11/07 19:53:54 taqua Exp $
+ * $Id: CharacterConverter.java,v 1.1 2006/11/07 22:37:25 mimil Exp $
  *
  * Changes
  * -------
@@ -51,10 +51,11 @@ import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.text.UnicodeBidi;
 import org.jfree.layouting.input.swing.Converter;
+import org.jfree.layouting.input.swing.ConverterAttributeSet;
 import org.jfree.util.Log;
 
 /**
- *
+ * This class handles convertions of character style attributes to css style attributes.
  */
 public class CharacterConverter implements Converter {
   public static final String TEXT_DECORATION_KEY = "text-decoration";
@@ -109,24 +110,42 @@ public class CharacterConverter implements Converter {
     return NONE_TEXT_DECORATION;
   }
 
-  public AttributeSet convertToCSS (Object key, Object value, AttributeSet cssAttr, Element context)
+  /**
+   * Converts a style key and a style value to a CSS compatible style key and style value.
+   * A conversion can result in more than one key and value.
+   *
+   * @param key The style key to convert.
+   * @param value The style value to convert.
+   * @param cssAttr The current converted CSS attributes for the current element.
+   * @param context The current Element.
+   * @return The conversion result or null if no converstion has been done.
+   */
+  public ConverterAttributeSet convertToCSS (Object key, Object value, ConverterAttributeSet cssAttr, Element context)
   {
-    final SimpleAttributeSet attr = new SimpleAttributeSet();
-
     if(key instanceof StyleConstants.CharacterConstants)
     {
       final StyleConstants.CharacterConstants characterConstant = (StyleConstants.CharacterConstants) key;
 
-      return handleCharacterConstants(characterConstant, value, cssAttr, attr);
+      return handleCharacterConstants(characterConstant, value, cssAttr);
     }
 
     return null;
   }
 
-  private AttributeSet handleCharacterConstants (
+  /**
+   * Handles the convertions of <code>StyleConstants.CharacterConstants</code> key type.
+   *
+   * @param characterConstant The style key.
+   * @param value The style value.
+   * @param cssAttr The current converted CSS attributes.
+   * @return The conversion result or null if no converstion has been done.
+   */
+  private ConverterAttributeSet handleCharacterConstants (
           StyleConstants.CharacterConstants characterConstant, Object value,
-          AttributeSet cssAttr, SimpleAttributeSet attr)
+          ConverterAttributeSet cssAttr)
   {
+    final ConverterAttributeSet attr = new ConverterAttributeSet();
+
     if(characterConstant == StyleConstants.Underline)
     {
       Boolean b = (Boolean)value;
