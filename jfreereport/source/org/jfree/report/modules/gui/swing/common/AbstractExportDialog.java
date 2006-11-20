@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractExportDialog.java,v 1.6.2.5 2006/08/28 18:22:23 mimil Exp $
+ * $Id: AbstractExportDialog.java,v 1.1 2006/11/13 19:27:45 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -58,8 +57,8 @@ import org.jfree.report.modules.preferences.base.ConfigFactory;
 import org.jfree.report.modules.preferences.base.ConfigStorage;
 import org.jfree.report.modules.preferences.base.ConfigStoreException;
 import org.jfree.util.Configuration;
-import org.jfree.util.Log;
 import org.jfree.util.DefaultConfiguration;
+import org.jfree.util.Log;
 
 public abstract class AbstractExportDialog extends JDialog
 {

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JStatusBar.java,v 1.6 2005/12/09 20:05:32 taqua Exp $
+ * $Id: JStatusBar.java,v 1.1 2006/11/13 19:27:45 taqua Exp $
  *
  * Changes
  * -------
@@ -61,8 +61,9 @@ public class JStatusBar extends JComponent
 
   private JComponent otherComponents;
   private JLabel statusHolder;
-  private IconTheme theme;
+  private IconTheme iconTheme;
   private Locale locale;
+  private int statusType;
 
   public JStatusBar (final IconTheme theme)
   {
@@ -82,12 +83,28 @@ public class JStatusBar extends JComponent
 
     otherComponents = new JPanel();
     add(otherComponents, BorderLayout.EAST);
-    this.theme = theme;
+    this.iconTheme = theme;
   }
 
-  protected IconTheme getTheme()
+  protected IconTheme getIconTheme()
   {
-    return theme;
+    return iconTheme;
+  }
+
+  public void setIconTheme(final IconTheme iconTheme)
+  {
+    IconTheme oldTheme = this.iconTheme;
+    this.iconTheme = iconTheme;
+    firePropertyChange("iconTheme", oldTheme, iconTheme);
+
+    if (iconTheme == null)
+    {
+      statusHolder.setIcon(null);
+    }
+    else
+    {
+      updateTypeIcon(getStatusType());
+    }
   }
 
   public JComponent getExtensionArea ()
@@ -95,30 +112,63 @@ public class JStatusBar extends JComponent
     return otherComponents;
   }
 
+  public int getStatusType()
+  {
+    return statusType;
+  }
+
+  public String getStatusText()
+  {
+    return statusHolder.getText();
+  }
+
+  public void setStatusText (String text)
+  {
+    final String oldText = statusHolder.getText();
+    this.statusHolder.setText(text);
+    firePropertyChange("statusText", oldText, text);
+  }
+
+  public void setStatusType (int type)
+  {
+    int oldType = statusType;
+    this.statusType = type;
+    firePropertyChange("statusType", oldType, type);
+    updateTypeIcon(type);
+  }
+
   public void setStatus (final int type, final String text)
   {
-//    Log.debug ("Setting status: " + type + ", " + text);
-    if (type == TYPE_ERROR)
-    {
-      final Icon res = getTheme().getSmallIcon(locale, "statusbar.errorIcon");
-      statusHolder.setIcon(res);
-    }
-    else if (type == TYPE_WARNING)
-    {
-      final Icon res = getTheme().getSmallIcon(locale, "statusbar.warningIcon");
-      statusHolder.setIcon(res);
-    }
-    else if (type == TYPE_INFORMATION)
-    {
-      final Icon res = getTheme().getSmallIcon(locale, "statusbar.informationIcon");
-      statusHolder.setIcon(res);
-    }
-    else
-    {
-      final Icon res = getTheme().getSmallIcon(locale, "statusbar.otherIcon");
-      statusHolder.setIcon(res);
-    }
+    this.statusType = type;
+    updateTypeIcon(type);
     statusHolder.setText(text);
+  }
+
+  private void updateTypeIcon(final int type)
+  {
+    if (iconTheme != null)
+    {
+      if (type == TYPE_ERROR)
+      {
+        final Icon res = getIconTheme().getSmallIcon(locale, "statusbar.errorIcon");
+        statusHolder.setIcon(res);
+      }
+      else if (type == TYPE_WARNING)
+      {
+        final Icon res = getIconTheme().getSmallIcon(locale, "statusbar.warningIcon");
+        statusHolder.setIcon(res);
+      }
+      else if (type == TYPE_INFORMATION)
+      {
+        final Icon res = getIconTheme().getSmallIcon(locale, "statusbar.informationIcon");
+        statusHolder.setIcon(res);
+      }
+      else
+      {
+        final Icon res = getIconTheme().getSmallIcon(locale, "statusbar.otherIcon");
+        statusHolder.setIcon(res);
+      }
+    }
   }
 
   public void clear ()
