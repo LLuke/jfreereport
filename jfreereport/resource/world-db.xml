@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<report:report xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:report="http://jfreereport.sourceforge.net/namespaces/reports/flow">
+  <report:query>default</report:query>
+  <report:datasource href="world.sqlds"/>
+
+  <report:inline-stylesheet>
+    div.page-header {
+      margin: 5pt;
+      background-color: #AFAFAF;
+      vertical-align: right;
+      border-bottom: 2pt solid #CFCFCF;
+    }
+
+    div.page-footer {
+      content: "Page " counter(page) " of " counter(pages);
+    }
+
+    table {
+      border-spacing: 0;
+    }
+
+    @page {
+       margin: 2cm;
+       size: A4;
+    }
+  </report:inline-stylesheet>
+
+  <!--
+  pageheaders are not yet accepted by the layouter (in their special
+  role). The layouter treats them as ordinary bands instead.
+  -->
+  <!--
+  <report:out-of-order-section role="page-header">
+    <div class="page-header">
+      <report:content>
+        <report:attribute name="format">yyyy-MM-dd</report:attribute>
+        <report:value-expression formula="[report.date]"/>
+      </report:content>
+    </div>
+
+  </report:out-of-order-section>
+  -->
+  <!--
+  page footers are not yet accepted by the layouter (in their special
+  role). The layouter treats them as ordinary bands instead.
+
+  Page-counters are maintained by the layouter itself. There is no
+  sane way to receive page events from the layouter. Doing this would break
+  the separation of the layouter and the feeder.
+  -->
+
+  <!--
+  There is no special report header. Everything before an group
+  declaration will behave like a report header.
+  -->
+
+  <h1 style="background-color: #afafaf;">
+    List of Countries by Continent
+  </h1>
+<!--
+  <p>
+    This report lists a selected set of countries and produces a running
+    total from the given population numbers. The original JFreeReport
+    demo report supported percentages as well. Percentages need a
+    precomputation step to compute the grand total, before the current
+    value can be set in relation to the total population. The <i>precomputation</i>
+    is not yet implemented.
+  </p>
+-->
+  <!--
+  Groups are nested.
+  -->
+  <report:group virtual="true">
+    <report:grouping-expression>
+      <report:property name="field[0]">CountryCode</report:property>
+    </report:grouping-expression>
+
+    <!--
+    This will be a little bit easier as soon as we have Excel-Style functions.
+    -->
+    <report:expression formula="jfreereport:[Population] + [PopulationSum]"
+                       initial="jfreereport:[Population]"
+                       name="PopulationSum"/>
+
+    <h2>Country:
+      <report:content>
+        <report:value-expression formula="jfreereport:[CountryCode]"/>
+      </report:content>
+    </h2>
+
+    <table>
+      <!--
+      A table that does not declare its column widths will trigger
+      the auto-width mode. If that happens, the performance will go down.
+       -->
+      <col style="width: 55%"/>
+      <col style="width: 10%"/>
+      <col style="width: 35%"/>
+      <tbody>
+        <!--
+        A virtual element will not be sent to the layouter. However,
+        all childs will be layouted as usual. (This way, the element
+        behaves like a JSP tag, which is quite usefull sometimes.
+        -->
+        <report:detail-section virtual="true">
+          <tr>
+            <td>
+              <report:content>
+                <report:value-expression formula="jfreereport:[Name]"/>
+              </report:content>
+            </td>
+            <td>
+              <report:content>
+                <report:value-expression formula="jfreereport:[District]"/>
+              </report:content>
+            </td>
+            <td style="text-align: right;">
+              <report:content>
+                <report:value-expression formula="jfreereport:[Population]"/>
+              </report:content>
+            </td>
+          </tr>
+        </report:detail-section>
+        <tr>
+          <td colspan="2">Total Population:</td>
+          <td style="text-align: right; border-top: 1px solid black">
+            <report:content>
+              <report:value-expression formula="jfreereport:[PopulationSum]"/>
+            </report:content>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr/>
+
+  </report:group>
+
+  <h2>End of Report</h2>
+
+</report:report>
