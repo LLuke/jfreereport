@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AWTFontRecord.java,v 1.3 2006/04/17 16:33:45 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,10 @@ public class AWTFontRecord implements FontRecord, FontIdentifier
   public AWTFontRecord(final FontFamily fontFamily,
                        final boolean bold, final boolean italics)
   {
+    if (fontFamily == null)
+    {
+      throw new NullPointerException();
+    }
     this.fontFamily = fontFamily;
     this.bold = bold;
     this.italics = italics;
@@ -163,8 +167,8 @@ public class AWTFontRecord implements FontRecord, FontIdentifier
 
   public String[] getAllVariants()
   {
-    return new String[] {
-            getVariant()
+    return new String[]{
+        getVariant()
     };
   }
 
@@ -188,5 +192,43 @@ public class AWTFontRecord implements FontRecord, FontIdentifier
   public FontType getFontType()
   {
     return FontType.AWT;
+  }
+
+  public boolean equals(final Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass())
+    {
+      return false;
+    }
+
+    final AWTFontRecord that = (AWTFontRecord) o;
+
+    if (bold != that.bold)
+    {
+      return false;
+    }
+    if (italics != that.italics)
+    {
+      return false;
+    }
+    if (!fontFamily.equals(that.fontFamily))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    int result;
+    result = fontFamily.hashCode();
+    result = 29 * result + (bold ? 1 : 0);
+    result = 29 * result + (italics ? 1 : 0);
+    return result;
   }
 }

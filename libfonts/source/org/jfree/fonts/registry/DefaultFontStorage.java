@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFontStorage.java,v 1.3 2006/04/17 16:33:46 taqua Exp $
+ * $Id: DefaultFontStorage.java,v 1.4 2006/06/08 18:06:12 taqua Exp $
  *
  * Changes
  * -------
@@ -49,15 +49,126 @@ import java.util.HashMap;
  */
 public class DefaultFontStorage implements FontStorage
 {
+  private static class FontKey
+  {
+    private FontIdentifier identifier;
+    private boolean aliased;
+    private boolean fractional;
+    private double fontSize;
+
+    public FontKey(final FontIdentifier identifier,
+                   final boolean aliased,
+                   final boolean fractional, final double fontSize)
+    {
+      if (identifier == null)
+      {
+        throw new NullPointerException();
+      }
+      this.identifier = identifier;
+      this.aliased = aliased;
+      this.fractional = fractional;
+      this.fontSize = fontSize;
+    }
+
+    public FontKey()
+    {
+    }
+
+    public FontIdentifier getIdentifier()
+    {
+      return identifier;
+    }
+
+    public void setIdentifier(final FontIdentifier identifier)
+    {
+      this.identifier = identifier;
+    }
+
+    public boolean isAliased()
+    {
+      return aliased;
+    }
+
+    public void setAliased(final boolean aliased)
+    {
+      this.aliased = aliased;
+    }
+
+    public boolean isFractional()
+    {
+      return fractional;
+    }
+
+    public void setFractional(final boolean fractional)
+    {
+      this.fractional = fractional;
+    }
+
+    public double getFontSize()
+    {
+      return fontSize;
+    }
+
+    public void setFontSize(final double fontSize)
+    {
+      this.fontSize = fontSize;
+    }
+
+    public boolean equals(final Object o)
+    {
+      if (this == o)
+      {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass())
+      {
+        return false;
+      }
+
+      final FontKey fontKey = (FontKey) o;
+
+      if (aliased != fontKey.aliased)
+      {
+        return false;
+      }
+      if (fontKey.fontSize != fontSize)
+      {
+        return false;
+      }
+      if (fractional != fontKey.fractional)
+      {
+        return false;
+      }
+      if (!identifier.equals(fontKey.identifier))
+      {
+        return false;
+      }
+
+      return true;
+    }
+
+    public int hashCode()
+    {
+      int result = identifier.hashCode();
+      result = 29 * result + (aliased ? 1 : 0);
+      result = 29 * result + (fractional ? 1 : 0);
+      long temp = fontSize != +0.0d ? Double.doubleToLongBits(fontSize) : 0L;
+      result = 29 * result + (int) (temp ^ (temp >>> 32));
+      return result;
+    }
+  }
+
   private HashMap knownMetrics;
   private FontRegistry registry;
   private FontMetricsFactory metricsFactory;
+  private FontKey lookupKey;
 
   public DefaultFontStorage(FontRegistry registry)
   {
     this.knownMetrics = new HashMap();
     this.registry = registry;
     this.metricsFactory = registry.createMetricsFactory();
+    this.lookupKey = new FontKey();
   }
 
   public FontRegistry getFontRegistry()
@@ -68,6 +179,30 @@ public class DefaultFontStorage implements FontStorage
   public FontMetrics getFontMetrics(final FontIdentifier record,
                                     final FontContext context)
   {
-    return metricsFactory.createMetrics(record, context);
+    if (record == null)
+    {
+      throw new NullPointerException();
+    }
+    if (context == null)
+    {
+      throw new NullPointerException();
+    }
+
+    lookupKey.setAliased(context.isAntiAliased());
+    lookupKey.setFontSize(context.getFontSize());
+    lookupKey.setIdentifier(record);
+    lookupKey.setFractional(context.isFractionalMetrics());
+
+    final FontMetrics cachedMetrics = (FontMetrics) knownMetrics.get(lookupKey);
+    if (cachedMetrics != null)
+    {
+      return cachedMetrics;
+    }
+
+    final FontKey key = new FontKey(record, context.isAntiAliased(),
+        context.isFractionalMetrics(), context.getFontSize());
+    final FontMetrics metrics = metricsFactory.createMetrics(record, context);
+    knownMetrics.put(key, metrics);
+    return metrics;
   }
 }

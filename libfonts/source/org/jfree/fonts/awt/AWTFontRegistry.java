@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AWTFontRegistry.java,v 1.3 2006/04/17 16:33:45 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.fonts.awt;
 
 import java.awt.GraphicsEnvironment;
+import java.util.HashMap;
 
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRegistry;
@@ -53,9 +54,11 @@ import org.jfree.fonts.registry.FontMetricsFactory;
  */
 public class AWTFontRegistry implements FontRegistry
 {
+  private HashMap fontFamilyCache;
 
   public AWTFontRegistry()
   {
+    fontFamilyCache = new HashMap();
   }
 
   public void initialize()
@@ -77,9 +80,16 @@ public class AWTFontRegistry implements FontRegistry
     return new AWTFontMetricsFactory();
   }
 
-  public FontFamily getFontFamily(String name)
+  public synchronized FontFamily getFontFamily(String name)
   {
-    return new AWTFontFamily(name);
+    final AWTFontFamily fontFamily = (AWTFontFamily) fontFamilyCache.get(name);
+    if (fontFamily != null)
+    {
+      return fontFamily;
+    }
+    final AWTFontFamily awtFontFamily = new AWTFontFamily(name);
+    fontFamilyCache.put(name, awtFontFamily);
+    return awtFontFamily;
   }
 
   public String[] getRegisteredFamilies()

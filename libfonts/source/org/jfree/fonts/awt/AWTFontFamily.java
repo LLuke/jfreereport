@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AWTFontFamily.java,v 1.3 2006/04/17 16:33:45 taqua Exp $
  *
  * Changes
  * -------
@@ -95,8 +95,37 @@ public class AWTFontFamily implements FontFamily
     {
       index += 2;
     }
-    if (fonts[index] != null) return fonts[index];
+    if (fonts[index] != null)
+    {
+      return fonts[index];
+    }
     fonts[index] = new AWTFontRecord(this, bold, italics);
     return fonts[index];
+  }
+
+  public boolean equals(final Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass())
+    {
+      return false;
+    }
+
+    final AWTFontFamily that = (AWTFontFamily) o;
+
+    if (!fontName.equals(that.fontName))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    return fontName.hashCode();
   }
 }

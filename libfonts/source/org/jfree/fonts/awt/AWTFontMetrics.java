@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AWTFontMetrics.java,v 1.7 2006/07/30 13:14:31 taqua Exp $
+ * $Id: AWTFontMetrics.java,v 1.8 2006/11/13 19:19:07 taqua Exp $
  *
  * Changes
  * -------
@@ -50,9 +50,9 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import org.jfree.fonts.encoding.CodePointUtilities;
+import org.jfree.fonts.registry.BaselineInfo;
 import org.jfree.fonts.registry.FontContext;
 import org.jfree.fonts.registry.FontMetrics;
-import org.jfree.fonts.registry.BaselineInfo;
 
 /**
  * Creation-Date: 16.12.2005, 21:09:39
@@ -61,10 +61,11 @@ import org.jfree.fonts.registry.BaselineInfo;
  */
 public class AWTFontMetrics implements FontMetrics
 {
+  private static final Graphics2D[] graphics = new Graphics2D[4];
+
   private Font font;
   private FontContext context;
   private java.awt.FontMetrics fontMetrics;
-  private Graphics2D graphics;
   private double lineHeight;
   private double maxCharAdvance;
   private char[] cpBuffer;
@@ -79,7 +80,7 @@ public class AWTFontMetrics implements FontMetrics
             (null, context.isAntiAliased(), context.isFractionalMetrics());
 
 
-    Graphics2D graphics = getGraphics(frc);
+    Graphics2D graphics = createGraphics();
     this.fontMetrics = graphics.getFontMetrics(font);
     final Rectangle2D rect = this.font.getMaxCharBounds(frc);
     this.lineHeight = rect.getHeight();
@@ -93,27 +94,42 @@ public class AWTFontMetrics implements FontMetrics
 
   }
 
-  protected Graphics2D getGraphics(final FontRenderContext frc)
+  protected Graphics2D createGraphics()
   {
-    if (graphics == null)
+    int idx = 0;
+    if (context.isAntiAliased())
     {
-      final BufferedImage image = new BufferedImage
-              (1, 1, BufferedImage.TYPE_INT_ARGB);
-      final Graphics2D g2 = image.createGraphics();
-      if (context.isAntiAliased())
-      {
-        g2.setRenderingHint
-                (RenderingHints.KEY_TEXT_ANTIALIASING,
-                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-      }
-      if (context.isFractionalMetrics())
-      {
-        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-      }
-      graphics = g2;
+      idx += 1;
     }
-    return graphics;
+    if (context.isFractionalMetrics())
+    {
+      idx += 2;
+    }
+
+    synchronized(graphics)
+    {
+      final Graphics2D retval = graphics[idx];
+      if (retval == null)
+      {
+        final BufferedImage image = new BufferedImage
+                (1, 1, BufferedImage.TYPE_INT_ARGB);
+        final Graphics2D g2 = image.createGraphics();
+        if (context.isAntiAliased())
+        {
+          g2.setRenderingHint
+                  (RenderingHints.KEY_TEXT_ANTIALIASING,
+                          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        }
+        if (context.isFractionalMetrics())
+        {
+          g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+                  RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        }
+        graphics[idx] = g2;
+        return g2;
+      }
+      return retval;
+    }
   }
 
   public Font getFont()
