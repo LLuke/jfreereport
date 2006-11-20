@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Renderer.java,v 1.4 2006/10/17 16:39:07 taqua Exp $
+ * $Id: Renderer.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -63,22 +63,6 @@ public interface Renderer extends StatefullComponent
    * @param pageContext
    */
   public void startDocument(final PageContext pageContext);
-
-  /**
-   * Starts a special flow. A special flow receives content for the special and
-   * page areas; the renderer may have to update the content area size.
-   *
-   * When this method is called, it is up to the renderer to find out which
-   * page area needs to be updated. If the context cannot be resolved to a
-   * defined special area, the content is handled as if it is a block content.
-   *
-   * The special flow always addresses physical page areas. The logical page
-   * areas are not special in any way.
-   *
-   * @param context
-   */
-  public void startedPhysicalPageFlow(final LayoutContext context)
-          throws NormalizationException;
 
   /**
    * Starts a floating, absolute or static element. This establishes a new
@@ -137,9 +121,6 @@ public interface Renderer extends StatefullComponent
   public void finishedFlow()
           throws NormalizationException;
 
-  public void finishedPhysicalPageFlow()
-          throws NormalizationException;
-
   public void finishedDocument()
           throws NormalizationException;
 
@@ -154,4 +135,10 @@ public interface Renderer extends StatefullComponent
    */
   public void handlePageBreak(final PageContext pageContext);
 
+  public void startedPassThrough(final LayoutContext context);
+
+  public void addPassThroughContent(final LayoutContext context,
+                             final ContentToken content);
+
+  public void finishedPassThrough();
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MarkerRenderBox.java,v 1.3 2006/07/27 17:56:27 taqua Exp $
+ * $Id: MarkerRenderBox.java,v 1.4 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class MarkerRenderBox extends InlineRenderBox
   {
     super.appyStyle(context, metaData);
     CSSValue position =
-            context.getStyle().getValue(ListStyleKeys.LIST_STYLE_POSITION);
+            context.getValue(ListStyleKeys.LIST_STYLE_POSITION);
     this.outside = ListStylePosition.OUTSIDE.equals(position);
   }
 

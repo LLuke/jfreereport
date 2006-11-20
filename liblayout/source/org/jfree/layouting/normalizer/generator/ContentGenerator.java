@@ -13,6 +13,7 @@ import org.jfree.layouting.normalizer.displaymodel.DisplayTableSectionElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayRootInlineElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnGroupElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayPassThroughElement;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.renderer.Renderer;
 
@@ -37,16 +38,13 @@ public interface ContentGenerator extends StatefullComponent
   public void startedDocument(final PageContext pageContext)
           throws NormalizationException;
 
-  /**
-   * Starts a special flow. A special flow receives content for the special
-   * and page areas; the renderer may have to update the content area size.
-   *
-   * Todo: This is not yet implemented.
-   *
-   * @param context
-   */
-  public void startedPhysicalPageFlow(final DisplayFlowElement element)
+  public void startedPassThrough(final DisplayPassThroughElement element)
           throws NormalizationException;
+
+  public void addPassThroughContent(final DisplayContent node)
+      throws NormalizationException;
+
+  public void finishPassThrough();
 
   public void startedFlow(final DisplayFlowElement element)
           throws NormalizationException;
@@ -115,9 +113,6 @@ public interface ContentGenerator extends StatefullComponent
           throws NormalizationException;
 
   public void finishedFlow ()
-          throws NormalizationException;
-
-  public void finishedPhysicalPageFlow()
           throws NormalizationException;
 
   /**

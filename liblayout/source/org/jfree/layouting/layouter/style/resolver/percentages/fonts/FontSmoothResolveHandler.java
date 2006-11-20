@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontSmoothResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
+ * $Id: FontSmoothResolveHandler.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,9 @@ import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 18.12.2005, 20:29:20
@@ -83,11 +83,11 @@ public class FontSmoothResolveHandler implements ResolveHandler
    * @param style
    */
   public void resolve(LayoutProcess process,
-                         LayoutElement currentNode,
-                         LayoutStyle style,
-                         StyleKey key)
+                      LayoutElement currentNode,
+                      StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSNumericValue == false)
     {
       return;
@@ -100,11 +100,11 @@ public class FontSmoothResolveHandler implements ResolveHandler
 
     if (fontSize < length)
     {
-      style.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.NEVER);
+      layoutContext.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.NEVER);
     }
     else
     {
-      style.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.ALWAYS);
+      layoutContext.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.ALWAYS);
     }
   }
 }

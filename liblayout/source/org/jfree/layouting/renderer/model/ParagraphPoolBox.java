@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphPoolBox.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: ParagraphPoolBox.java,v 1.2 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -53,22 +53,19 @@ import org.jfree.layouting.output.OutputProcessorMetaData;
  */
 public class ParagraphPoolBox extends InlineRenderBox
 {
-  private boolean alwaysPropagate;
   private RenderLength lineHeight;
 
   public ParagraphPoolBox(final BoxDefinition boxDefinition)
   {
     super(boxDefinition);
-    alwaysPropagate = true;
   }
 
   public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
   {
     super.appyStyle(context, metaData);
-    CSSValue lineHeightValue =
-        context.getStyle().getValue(LineStyleKeys.LINE_HEIGHT);
-    lineHeight =
-        RenderLength.convertToInternal(lineHeightValue, context, metaData);
+    CSSValue lineHeightValue = context.getValue(LineStyleKeys.LINE_HEIGHT);
+    lineHeight = RenderLength.convertToInternal
+        (lineHeightValue, context, metaData);
 
   }
 
@@ -116,25 +113,6 @@ public class ParagraphPoolBox extends InlineRenderBox
       remove(node);
       node = getLastChild();
     }
-  }
-
-  /**
-   * Derive creates a disconnected node that shares all the properties of the
-   * original node. The derived node will no longer have any parent, silbling,
-   * child or any other relationships with other nodes.
-   *
-   * @return
-   */
-  public RenderNode derive(boolean deepDerive)
-  {
-    final ParagraphPoolBox renderNode = (ParagraphPoolBox) super.derive(deepDerive);
-    renderNode.alwaysPropagate = false;
-    return renderNode;
-  }
-
-  public boolean isAlwaysPropagateEvents()
-  {
-    return alwaysPropagate || super.isAlwaysPropagateEvents();
   }
 
   public void setParent (RenderBox parent)

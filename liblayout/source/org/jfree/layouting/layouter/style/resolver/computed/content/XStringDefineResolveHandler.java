@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: XStringDefineResolveHandler.java,v 1.1 2006/07/11 13:38:39 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 
 public class XStringDefineResolveHandler implements ResolveHandler
@@ -75,10 +75,10 @@ public class XStringDefineResolveHandler implements ResolveHandler
    */
   public void resolve (final LayoutProcess process,
                        final LayoutElement element,
-                       final LayoutStyle style,
                        final StyleKey key)
   {
-    final CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = element.getLayoutContext();
+    final CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSValueList == false)
     {
       return; // do nothing.

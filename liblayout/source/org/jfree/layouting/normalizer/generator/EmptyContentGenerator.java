@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: EmptyContentGenerator.java,v 1.1 2006/11/11 20:25:36 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -43,6 +43,7 @@ import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableCellElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayContent;
+import org.jfree.layouting.normalizer.displaymodel.DisplayPassThroughElement;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
@@ -66,20 +67,6 @@ public class EmptyContentGenerator implements ContentGenerator
    * @param pageContext the page context for the default page.
    */
   public void startedDocument(final PageContext pageContext)
-      throws NormalizationException
-  {
-
-  }
-
-  /**
-   * Starts a special flow. A special flow receives content for the special and
-   * page areas; the renderer may have to update the content area size.
-   * <p/>
-   * Todo: This is not yet implemented.
-   *
-   * @param context
-   */
-  public void startedPhysicalPageFlow(final DisplayFlowElement element)
       throws NormalizationException
   {
 
@@ -212,11 +199,6 @@ public class EmptyContentGenerator implements ContentGenerator
 
   }
 
-  public void finishedPhysicalPageFlow() throws NormalizationException
-  {
-
-  }
-
   /**
    * Receives notification, that a new flow has started. A new flow is started
    * for each flowing or absolutly positioned element.
@@ -246,5 +228,21 @@ public class EmptyContentGenerator implements ContentGenerator
   public State saveState() throws StateException
   {
     return null;
+  }
+
+  public void startedPassThrough(final DisplayPassThroughElement element)
+      throws NormalizationException
+  {
+
+  }
+
+  public void addPassThroughContent(final DisplayContent node)
+  {
+
+  }
+
+  public void finishPassThrough()
+  {
+
   }
 }

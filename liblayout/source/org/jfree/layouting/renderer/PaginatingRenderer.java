@@ -23,20 +23,24 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PaginatingRenderer.java,v 1.1 2006/11/11 20:25:36 taqua Exp $
+ * $Id: PaginatingRenderer.java,v 1.2 2006/11/17 20:14:56 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.renderer;
 
+import org.jfree.base.log.MemoryUsageMessage;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.layouter.content.resolved.ResolvedCounterToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
+import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.context.PageContext;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.modules.output.graphics.LogicalPageDrawable;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
@@ -183,6 +187,13 @@ public class PaginatingRenderer extends AbstractRenderer
     LogicalPageBox logicalPageBox = getLogicalPageBox();
     if (validateModelStep.isLayoutable(logicalPageBox) == false)
     {
+//      Log.debug ("Validation impossible: Reason-id: " +
+//          validateModelStep.getLayoutFailureResolution() +
+//          " on node " +
+//          logicalPageBox.findNodeById(validateModelStep.getLayoutFailureNodeId()));
+//
+      setLayoutFailureReason(validateModelStep.getLayoutFailureResolution(),
+          validateModelStep.getLayoutFailureNodeId());
       return;
     }
 
@@ -193,6 +204,7 @@ public class PaginatingRenderer extends AbstractRenderer
     paragraphLinebreakStep.compute(logicalPageBox);
 
     boolean repeat = true;
+    boolean gotBreak = false;
     while (repeat)
     {
       icmMetricsStep.compute(logicalPageBox);
@@ -214,7 +226,7 @@ public class PaginatingRenderer extends AbstractRenderer
         final long nextOffset = paginationStep.getNextOffset();
         final long pageOffset = logicalPageBox.getPageOffset();
         final LogicalPageBox box = fillPhysicalPagesStep.compute
-                (logicalPageBox, pageOffset, nextOffset);
+            (logicalPageBox, pageOffset, nextOffset);
         outputProcessor.processContent(box);
 
         // Now fire the pagebreak. This goes through all layers and informs all
@@ -225,11 +237,12 @@ public class PaginatingRenderer extends AbstractRenderer
         repeat = logicalPageBox.isOpen();
         if (repeat)
         {
-          Log.debug ("PAGEBREAK ENCOUNTERED");
+          Log.debug(new MemoryUsageMessage("PAGEBREAK ENCOUNTERED"));
+          Log.debug("Page-Offset: " + pageOffset + " -> " + nextOffset);
           firePagebreak();
 
           logicalPageBox.setPageOffset(nextOffset);
-          //cleanPaginatedBoxesStep.compute(logicalPageBox);
+          cleanPaginatedBoxesStep.compute(logicalPageBox);
         }
         else
         {
@@ -253,6 +266,24 @@ public class PaginatingRenderer extends AbstractRenderer
     getLayoutProcess().pageBreakEncountered(null, new PseudoPage[0]);
   }
 
+
+  protected String resolveComputedToken(ResolvedToken token)
+  {
+    // yet again: Very primitive ..
+    if (token instanceof ResolvedCounterToken)
+    {
+      ResolvedCounterToken counterToken = (ResolvedCounterToken) token;
+      if ("page".equals(counterToken.getParent().getName()))
+      {
+        return "IMPLEMENT ME";
+      }
+      if ("pages".equals(counterToken.getParent().getName()))
+      {
+        return "IMPLEMENT ME";
+      }
+    }
+    return super.resolveComputedToken(token);
+  }
 
   public State saveState() throws StateException
   {

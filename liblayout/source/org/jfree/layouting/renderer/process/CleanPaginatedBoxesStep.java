@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CleanPaginatedBoxesStep.java,v 1.3 2006/11/09 14:28:49 taqua Exp $
+ * $Id: CleanPaginatedBoxesStep.java,v 1.4 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 27.10.2006, 18:19:24
@@ -64,7 +65,12 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
   public void compute(LogicalPageBox pageBox)
   {
     pageOffset = pageBox.getPageOffset();
-    startProcessing(pageBox);
+    if (startBlockLevelBox(pageBox))
+    {
+      // not processing the header and footer area: they are 'out-of-context' bands
+      processBoxChilds(pageBox);
+    }
+    finishBlockLevelBox(pageBox);
   }
 
   protected void processParagraphChilds(final ParagraphRenderBox box)
@@ -141,7 +147,12 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
     // node and last.
     final long width = box.getContentAreaX2() - box.getContentAreaX1();
     final long height = last.getY() + last.getHeight() - nodeY;
-    final FinishedRenderNode replacement = new FinishedRenderNode(width, height);
+
+    // make sure that the finished-box inherits the margins ..
+    final long marginsTop = node.getEffectiveMarginTop();
+    final long marginsBottom = last.getEffectiveMarginBottom();
+    final FinishedRenderNode replacement =
+        new FinishedRenderNode(width, height, marginsTop, marginsBottom);
 
     RenderNode removeNode = node;
     while (removeNode != last)

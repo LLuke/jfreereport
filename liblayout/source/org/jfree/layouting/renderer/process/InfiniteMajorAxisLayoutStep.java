@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMajorAxisLayoutStep.java,v 1.4 2006/11/09 14:28:49 taqua Exp $
+ * $Id: InfiniteMajorAxisLayoutStep.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,8 @@ import org.jfree.layouting.renderer.process.valign.VerticalAlignmentProcessor;
  * y-positions whereever needed.
  * <p/>
  * This will only work, if the minor-axis step has been executed.
- *
+ * Executing this class eats 23% of the current layouting time.
+ *  
  * @author Thomas Morgner
  */
 public class InfiniteMajorAxisLayoutStep
@@ -222,13 +223,7 @@ public class InfiniteMajorAxisLayoutStep
 
   private void computeYPosition(final RenderNode node)
   {
-    long marginTop = 0;
-    if (node instanceof RenderBox)
-    {
-      RenderBox box = (RenderBox) node;
-      BoxLayoutProperties blp = box.getBoxLayoutProperties();
-      marginTop = blp.getEffectiveMarginTop();
-    }
+    long marginTop = node.getEffectiveMarginTop();
 
     // The y-position of a box depends on the parent.
     RenderBox parent = node.getParent();
@@ -293,17 +288,8 @@ public class InfiniteMajorAxisLayoutStep
     if (lastChildNode != null)
     {
       // grab the node's y2
-      final long childY2;
-      if (lastChildNode instanceof RenderBox)
-      {
-        RenderBox childBox = (RenderBox) lastChildNode;
-        childY2 = lastChildNode.getY() + lastChildNode.getHeight() +
-            childBox.getBoxLayoutProperties().getEffectiveMarginBottom();
-      }
-      else
-      {
-        childY2 = lastChildNode.getY() + lastChildNode.getHeight();
-      }
+      final long childY2 = lastChildNode.getY() + lastChildNode.getHeight() +
+          lastChildNode.getEffectiveMarginBottom();
       final long effectiveHeight = (childY2 - box.getY()) + insetBottom;
       final long height = Math.max(effectiveHeight, computedHeight);
       box.setHeight(height);

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextUtility.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -182,7 +182,7 @@ public class TextUtility
     final DefaultExtendedBaselineInfo extBaselineInfo =
         new DefaultExtendedBaselineInfo(dominantBaseline);
 
-    long[] baselines = new long[ExtendedBaselineInfo.BASELINE_COUNT];
+    final long[] baselines = new long[ExtendedBaselineInfo.BASELINE_COUNT];
     baselines[ExtendedBaselineInfo.ALPHABETHIC] =
         StrictGeomUtility.toInternalValue
             (baselineInfo.getBaseline(BaselineInfo.ALPHABETIC));

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultExtendedBaselineInfo.java,v 1.1 2006/07/26 12:43:33 taqua Exp $
+ * $Id: DefaultExtendedBaselineInfo.java,v 1.2 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class DefaultExtendedBaselineInfo implements ExtendedBaselineInfo
 
   public long[] getBaselines()
   {
-    return (long[]) baselines.clone();
+    return baselines;
   }
 
   public void setBaselines(final long[] baselines)

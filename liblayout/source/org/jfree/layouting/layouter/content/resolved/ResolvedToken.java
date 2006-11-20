@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResolvedToken.java,v 1.1 2006/07/11 13:39:58 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@
  */
 package org.jfree.layouting.layouter.content.resolved;
 
-import org.jfree.layouting.layouter.content.computed.ComputedToken;
 import org.jfree.layouting.layouter.content.ContentToken;
 
 /**
@@ -49,21 +48,7 @@ import org.jfree.layouting.layouter.content.ContentToken;
  *
  * @author Thomas Morgner
  */
-public abstract class ResolvedToken implements ContentToken
+public interface ResolvedToken extends ContentToken
 {
-  private ComputedToken parent;
-
-  public ResolvedToken(final ComputedToken parent)
-  {
-    if (parent == null)
-    {
-      throw new NullPointerException();
-    }
-    this.parent = parent;
-  }
-
-  public ComputedToken getParent()
-  {
-    return parent;
-  }
+  public abstract String getText();
 }

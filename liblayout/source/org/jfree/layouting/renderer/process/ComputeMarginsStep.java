@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ComputeMarginsStep.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
+ * $Id: ComputeMarginsStep.java,v 1.3 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -48,10 +48,13 @@ import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
+import org.jfree.layouting.renderer.model.table.TableRenderBox;
+import org.jfree.util.Log;
 
 /**
  * This semi-dynamic step computes the effective margins. It requires that the
@@ -63,7 +66,7 @@ import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
  * margins).
  *
  * Todo: Some better change management. Right now everything is recomputed all the time.
- *
+ * Margins eat 10% of the total time ..
  * @author Thomas Morgner
  */
 public class ComputeMarginsStep extends IterateVisualProcessStep
@@ -120,6 +123,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
    */
 
   private long marginChangeKey;
+  private ArrayList marginCollection;
 
   public ComputeMarginsStep()
   {
@@ -128,8 +132,10 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
   public void compute(LogicalPageBox root)
   {
     marginChangeKey = root.getChangeTracker();
+    marginCollection = new ArrayList();
     startProcessing(root);
     marginChangeKey = 0;
+    marginCollection.clear();
   }
 
 
@@ -148,10 +154,6 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
   {
     final BoxLayoutProperties blp = box.getBoxLayoutProperties();
     final StaticBoxLayoutProperties sblp = box.getStaticBoxLayoutProperties();
-//    if (blp.getMarginCloseState() == marginChangeKey)
-//    {
-//      return false;
-//    }
 
     if (blp.getMarginOpenState() == marginChangeKey)
     {
@@ -167,6 +169,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
       blp.setMarginOpenState(marginChangeKey);
       return true;
     }
+
 
     final boolean infiniteMarginTop;
     final RenderBox boxParent = box.getParent();
@@ -184,7 +187,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
           sBlp.getBorderTop() == 0 && sBlp.getPaddingTop() != 0);
     }
 
-    final ArrayList marginCollection = new ArrayList();
+    marginCollection.clear();
 
     // Collect all elements that will contribute to the margins.
     RenderBox marginBox = box;
@@ -239,11 +242,10 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
       topMarginPositive = marginTop;
     }
 
-    if (visiblePrev instanceof BlockRenderBox)
+    if (visiblePrev != null)
     {
-      final RenderBox prevBox = (RenderBox) visiblePrev;
       final long effectiveMarginBottom =
-          prevBox.getBoxLayoutProperties().getEffectiveMarginBottom();
+          visiblePrev.getEffectiveMarginBottom();
 
       if (effectiveMarginBottom < 0)
       {
@@ -309,11 +311,11 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
     }
 
     // Collect all elements that will contribute to the margins.
-    final ArrayList marginContext = new ArrayList();
+    marginCollection.clear();
     RenderBox marginBox = box;
     for (;;)
     {
-      marginContext.add(marginBox);
+      marginCollection.add(marginBox);
       if (marginBox.getNext() != null)
       {
         break;
@@ -338,14 +340,14 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
 
     // Check, whether we have an infinite margin ..
     final RenderBox lastBox = (RenderBox)
-        marginContext.get(marginContext.size() - 1);
+        marginCollection.get(marginCollection.size() - 1);
     if (lastBox.getParent() == null)
     {
       // Looks like that's it.
       // Strive for the simple solution here.
-      for (int i = 0; i < marginContext.size(); i++)
+      for (int i = 0; i < marginCollection.size(); i++)
       {
-        RenderBox renderBox = (RenderBox) marginContext.get(i);
+        RenderBox renderBox = (RenderBox) marginCollection.get(i);
         BoxLayoutProperties cblp = renderBox.getBoxLayoutProperties();
         cblp.setMarginCloseState(marginChangeKey);
         cblp.setInfiniteMarginBottom(true);
@@ -358,9 +360,9 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
     long marginPositive = 0;
 
     // Collapsing the margins. Seek the big one ..
-    for (int i = 0; i < marginContext.size(); i++)
+    for (int i = 0; i < marginCollection.size(); i++)
     {
-      final RenderBox renderBox = (RenderBox) marginContext.get(i);
+      final RenderBox renderBox = (RenderBox) marginCollection.get(i);
       final BoxLayoutProperties cblp = renderBox.getBoxLayoutProperties();
       final StaticBoxLayoutProperties sblp = renderBox.getStaticBoxLayoutProperties();
       cblp.setMarginCloseState(marginChangeKey);

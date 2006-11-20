@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayNode.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
+ * $Id: DisplayNode.java,v 1.2 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.normalizer.displaymodel;
 
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.util.Log;
 
 /**
  * A display node is something displayable. It has a style and a layout
@@ -78,6 +79,10 @@ public abstract class DisplayNode implements Cloneable
 
   public void markFinished() throws NormalizationException
   {
+    if ("span".equals(layoutContext.getTagName()))
+    {
+      Log.debug ("HERE");
+    }
     finished = true;
   }
 
@@ -89,10 +94,12 @@ public abstract class DisplayNode implements Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     DisplayNode node = (DisplayNode) super.clone();
-    if (layoutContext != null)
-    {
-      node.layoutContext = (LayoutContext) layoutContext.clone();
-    }
+    // We try to get away without cloning the context, this is expensive and
+    // we do not expect it to change at this point anyway ..
+//    if (layoutContext != null)
+//    {
+//      node.layoutContext = (LayoutContext) layoutContext.clone();
+//    }
     return node;
   }
 
@@ -132,4 +139,8 @@ public abstract class DisplayNode implements Cloneable
 
   protected abstract void signalStart () throws NormalizationException;
 
+  public void reopen()
+  {
+    finished = false;
+  }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NodeLayoutProperties.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: NodeLayoutProperties.java,v 1.2 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.renderer.model;
 import java.io.Serializable;
 
 import org.jfree.layouting.renderer.border.RenderLength;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * A static properties collection. That one is static; once computed it does
@@ -61,7 +62,17 @@ public class NodeLayoutProperties implements Serializable, Cloneable
 
   private long maximumBoxWidth;
   private long minimumChunkWidth;
-  private long metricsAge;
+  private boolean icmFinished;
+
+  private CSSValue alignmentBaseline;
+  private CSSValue alignmentAdjust;
+  private CSSValue baselineShift;
+  private CSSValue verticalAlignment;
+  private RenderLength baselineShiftResolved;
+  private RenderLength alignmentAdjustResolved;
+
+  private String namespace;
+  private String tagName;
 
   /**
    * Whether that element will need intrinsic sizing.
@@ -155,7 +166,7 @@ public class NodeLayoutProperties implements Serializable, Cloneable
             ", computedWidth=" + computedWidth +
             ", maximumBoxWidth=" + maximumBoxWidth +
             ", minimumChunkWidth=" + minimumChunkWidth +
-            ", metricsAge=" + metricsAge +
+            ", icmFinished=" + icmFinished +
             ", intrinsic=" + intrinsic +
             '}';
   }
@@ -180,18 +191,98 @@ public class NodeLayoutProperties implements Serializable, Cloneable
     this.minimumChunkWidth = minimumChunkWidth;
   }
 
-  public long getMetricsAge()
+  public boolean isIcmFinished()
   {
-    return metricsAge;
+    return icmFinished;
   }
 
-  public void setMetricsAge(final long metricsAge)
+  public void setIcmFinished(final boolean icmFinished)
   {
-    this.metricsAge = metricsAge;
+    this.icmFinished = icmFinished;
   }
 
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone();
+  }
+
+  public CSSValue getAlignmentBaseline()
+  {
+    return alignmentBaseline;
+  }
+
+  public void setAlignmentBaseline(final CSSValue alignmentBaseline)
+  {
+    this.alignmentBaseline = alignmentBaseline;
+  }
+
+  public CSSValue getAlignmentAdjust()
+  {
+    return alignmentAdjust;
+  }
+
+  public void setAlignmentAdjust(final CSSValue alignmentAdjust)
+  {
+    this.alignmentAdjust = alignmentAdjust;
+  }
+
+  public CSSValue getBaselineShift()
+  {
+    return baselineShift;
+  }
+
+  public void setBaselineShift(final CSSValue baselineShift)
+  {
+    this.baselineShift = baselineShift;
+  }
+
+  public CSSValue getVerticalAlignment()
+  {
+    return verticalAlignment;
+  }
+
+  public void setVerticalAlignment(final CSSValue verticalAlignment)
+  {
+    this.verticalAlignment = verticalAlignment;
+  }
+
+  public RenderLength getBaselineShiftResolved()
+  {
+    return baselineShiftResolved;
+  }
+
+  public void setBaselineShiftResolved(final RenderLength baselineShiftResolved)
+  {
+    this.baselineShiftResolved = baselineShiftResolved;
+  }
+
+  public RenderLength getAlignmentAdjustResolved()
+  {
+    return alignmentAdjustResolved;
+  }
+
+  public void setAlignmentAdjustResolved(final RenderLength alignmentAdjustResolved)
+  {
+    this.alignmentAdjustResolved = alignmentAdjustResolved;
+  }
+
+  public String getNamespace()
+  {
+    return namespace;
+  }
+
+  public void setNamespace(final String namespace)
+  {
+    this.namespace = namespace;
+  }
+
+  public String getTagName()
+  {
+    return tagName;
+  }
+
+  public void setTagName(final String tagName)
+  {
+    this.tagName = tagName;
   }
 }

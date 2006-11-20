@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultPageContext.java,v 1.2 2006/07/26 11:52:07 taqua Exp $
+ * $Id: DefaultPageContext.java,v 1.3 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,8 @@ package org.jfree.layouting.layouter.context;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.jfree.layouting.input.style.PseudoPage;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.input.style.PageAreaType;
+import org.jfree.layouting.input.style.PseudoPage;
 
 public class DefaultPageContext implements PageContext
 {

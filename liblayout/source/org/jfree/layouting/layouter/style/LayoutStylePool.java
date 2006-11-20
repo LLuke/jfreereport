@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LayoutStylePool.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,12 @@
 
 package org.jfree.layouting.layouter.style;
 
+import org.jfree.layouting.layouter.context.LayoutStyle;
+
+/**
+ * This class does not work as expected as long as we have no clear life-cycle
+ * for the layout-style classes.
+ */
 public class LayoutStylePool
 {
   private static class LayoutStyleReference
@@ -101,30 +107,31 @@ public class LayoutStylePool
 
   private LayoutStylePool ()
   {
-    storage = new LayoutStyleReference[32000];
+    storage = new LayoutStyleReference[32];
   }
 
-  public synchronized LayoutStyle getStyle ()
+  public synchronized LayoutStyleImpl getStyle ()
   {
     final int oldCursor = cursor;
     if (oldCursor == 0)
     {
-      final LayoutStyle retval = seekUpTo(storage.length);
+      final LayoutStyleImpl retval = seekUpTo(storage.length);
       if (retval == null)
       {
        // return new LayoutStyle();
+        // todo: This is a deadly stupid construct.
         throw new OutOfMemoryError("Pool was invalid.");
       }
       return retval;
     }
 
-    final LayoutStyle retval = seekUpTo(storage.length);
+    final LayoutStyleImpl retval = seekUpTo(storage.length);
     if (retval != null)
     {
       return retval;
     }
     cursor = 0;
-    final LayoutStyle secondRun = seekUpTo(oldCursor - 1);
+    final LayoutStyleImpl secondRun = seekUpTo(oldCursor - 1);
     if (secondRun == null)
     {
       throw new OutOfMemoryError("Pool was invalid.");
@@ -132,14 +139,14 @@ public class LayoutStylePool
     return secondRun;
   }
 
-  private LayoutStyle seekUpTo (final int limit)
+  private LayoutStyleImpl seekUpTo (final int limit)
   {
     for (; cursor < limit; cursor++)
     {
       LayoutStyleReference reference = storage[cursor];
       if (reference == null)
       {
-        final LayoutStyle referent = new LayoutStyle(this);
+        final LayoutStyleImpl referent = new LayoutStyleImpl(this);
         storage[cursor] = new LayoutStyleReference(referent);
         referent.setReference(storage[cursor]);
         cursor += 1;
@@ -150,7 +157,7 @@ public class LayoutStylePool
         continue;
       }
 
-      final LayoutStyle style = (LayoutStyle) reference.get();
+      final LayoutStyleImpl style = (LayoutStyleImpl) reference.get();
       if (style != null)
       {
         reference.setInUse(true);
@@ -158,7 +165,7 @@ public class LayoutStylePool
       }
       else
       {
-        final LayoutStyle referent = new LayoutStyle(this);
+        final LayoutStyleImpl referent = new LayoutStyleImpl(this);
         storage[cursor] = new LayoutStyleReference(referent);
         referent.setReference(storage[cursor]);
         cursor += 1;

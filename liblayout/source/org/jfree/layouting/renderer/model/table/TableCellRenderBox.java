@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableCellRenderBox.java,v 1.10 2006/10/17 16:39:08 taqua Exp $
+ * $Id: TableCellRenderBox.java,v 1.11 2006/10/31 11:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -88,10 +88,10 @@ public class TableCellRenderBox extends BlockRenderBox
     super.appyStyle(context, metaData);
     // This one is a special value here ... 
 
-    final CSSValue csValue = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
+    final CSSValue csValue = context.getValue(TableStyleKeys.COL_SPAN);
     this.colSpan = (int) CSSValueResolverUtility.getNumericValue(csValue, 1);
 
-    final CSSValue rsValue = context.getStyle().getValue(TableStyleKeys.ROW_SPAN);
+    final CSSValue rsValue = context.getValue(TableStyleKeys.ROW_SPAN);
     this.rowSpan = (int) CSSValueResolverUtility.getNumericValue(rsValue, 1);
   }
 

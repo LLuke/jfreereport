@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: XAlternateTextResolveHandler.java,v 1.1 2006/07/11 13:38:39 taqua Exp $
  *
  * Changes
  * -------
@@ -59,8 +59,8 @@ import org.jfree.layouting.layouter.content.statics.ExternalContentToken;
 import org.jfree.layouting.layouter.content.statics.ResourceContentToken;
 import org.jfree.layouting.layouter.content.statics.StaticTextToken;
 import org.jfree.layouting.layouter.context.ContentSpecification;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
 import org.jfree.layouting.layouter.style.functions.FunctionFactory;
 import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
@@ -105,12 +105,12 @@ public class XAlternateTextResolveHandler implements ResolveHandler
    */
   public void resolve (final LayoutProcess process,
                        final LayoutElement element,
-                       final LayoutStyle style,
                        final StyleKey key)
   {
+    final LayoutContext layoutContext = element.getLayoutContext();
     final ContentSpecification contentSpecification =
-            element.getLayoutContext().getContentSpecification();
-    final CSSValue value = style.getValue(key);
+            layoutContext.getContentSpecification();
+    final CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSConstant)
     {
       if (ContentValues.NONE.equals(value))

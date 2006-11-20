@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultPageGrid.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
+ * $Id: DefaultPageGrid.java,v 1.6 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**

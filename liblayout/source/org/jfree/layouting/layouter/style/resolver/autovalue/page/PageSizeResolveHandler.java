@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageSizeResolveHandler.java,v 1.1 2006/07/11 13:38:39 taqua Exp $
+ * $Id: PageSizeResolveHandler.java,v 1.2 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package org.jfree.layouting.layouter.style.resolver.autovalue.page;
 
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSValue;
@@ -81,13 +80,12 @@ public class PageSizeResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
     final PageSize ps = process.getOutputMetaData().getDefaultPageSize();
     CSSValue page =
         new CSSValuePair(CSSNumericValue.createPtValue(ps.getWidth()),
             CSSNumericValue.createPtValue(ps.getHeight()));
-    style.setValue(PageStyleKeys.SIZE, page);
+    currentNode.getLayoutContext().setValue(PageStyleKeys.SIZE, page);
   }
 }

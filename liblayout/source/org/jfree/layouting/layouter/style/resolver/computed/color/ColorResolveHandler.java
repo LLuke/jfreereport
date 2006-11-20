@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ColorResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
+ * $Id: ColorResolveHandler.java,v 1.4 2006/07/30 13:13:47 taqua Exp $
  *
  * Changes
  * -------
@@ -49,12 +49,12 @@ import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
 import org.jfree.layouting.layouter.style.functions.FunctionFactory;
 import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.util.ColorUtil;
 
 /**
@@ -87,9 +87,9 @@ public class ColorResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
+    LayoutContext style = currentNode.getLayoutContext();
     CSSValue value = style.getValue(key);
 
     if (value instanceof CSSColorValue)
@@ -136,7 +136,7 @@ public class ColorResolveHandler implements ResolveHandler
     }
     if (CSSSystemColors.CURRENT_COLOR.equals(value))
     {
-      style.setValue(key, getCurrentColor(currentNode, style));
+      style.setValue(key, getCurrentColor(currentNode));
       return;
     }
 
@@ -151,14 +151,13 @@ public class ColorResolveHandler implements ResolveHandler
     }
   }
 
-  protected CSSColorValue getCurrentColor (LayoutElement currentNode,
-                                           LayoutStyle style)
+  protected CSSColorValue getCurrentColor (LayoutElement currentNode)
   {
     LayoutElement parent = currentNode.getParent();
     if (parent != null)
     {
-      final LayoutStyle pstyle = parent.getLayoutContext().getStyle();
-      CSSValue value = pstyle.getValue(ColorStyleKeys.COLOR);
+      final LayoutContext layoutContext = parent.getLayoutContext();
+      CSSValue value = layoutContext.getValue(ColorStyleKeys.COLOR);
       if (value instanceof CSSColorValue)
       {
         return (CSSColorValue) value;

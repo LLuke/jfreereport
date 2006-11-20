@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PhysicalPageBox.java,v 1.10 2006/10/27 18:25:50 taqua Exp $
+ * $Id: PhysicalPageBox.java,v 1.11 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.PageContext;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.util.geom.StrictGeomUtility;

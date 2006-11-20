@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontFamilyResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
+ * $Id: FontFamilyResolveHandler.java,v 1.4 2006/07/17 13:27:24 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.FontSpecification;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.util.Log;
@@ -95,14 +95,14 @@ public class FontFamilyResolveHandler extends ConstantsResolveHandler
    */
   public void resolve(LayoutProcess process,
                          LayoutElement currentNode,
-                         LayoutStyle style,
                          StyleKey key)
   {
     //Log.debug ("Processing: " + currentNode);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
     final FontSpecification fs =
-            currentNode.getLayoutContext().getFontSpecification();
+            layoutContext.getFontSpecification();
     final OutputProcessorMetaData outputMetaData = process.getOutputMetaData();
-    final CSSValue cssValue = style.getValue(key);
+    final CSSValue cssValue = layoutContext.getValue(key);
     if (cssValue instanceof CSSValueList)
     {
 

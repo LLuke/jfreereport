@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StaticBoxLayoutProperties.java,v 1.1 2006/10/22 14:59:20 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,9 @@
 package org.jfree.layouting.renderer.model;
 
 import java.io.Serializable;
+
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 
 /**
  * A static properties collection. That one is static; once computed it does
@@ -69,6 +72,13 @@ public class StaticBoxLayoutProperties implements Serializable
   private long borderRight;
   private long borderTop;
   private long borderBottom;
+
+  private CSSValue dominantBaseline;
+  private ExtendedBaselineInfo nominalBaselineInfo;
+  private int widows;
+  private int orphans;
+  private boolean avoidPagebreakInside;
+  private boolean preserveSpace;
 
   public StaticBoxLayoutProperties()
   {
@@ -194,6 +204,65 @@ public class StaticBoxLayoutProperties implements Serializable
     this.borderBottom = borderBottom;
   }
 
+  public CSSValue getDominantBaseline()
+  {
+    return dominantBaseline;
+  }
+
+  public void setDominantBaseline(final CSSValue dominantBaseline)
+  {
+    this.dominantBaseline = dominantBaseline;
+  }
+
+  public ExtendedBaselineInfo getNominalBaselineInfo()
+  {
+    return nominalBaselineInfo;
+  }
+
+  public void setNominalBaselineInfo(final ExtendedBaselineInfo nominalBaselineInfo)
+  {
+    this.nominalBaselineInfo = nominalBaselineInfo;
+  }
+
+  public int getWidows()
+  {
+    return widows;
+  }
+
+  public void setWidows(final int widows)
+  {
+    this.widows = widows;
+  }
+
+  public int getOrphans()
+  {
+    return orphans;
+  }
+
+  public void setOrphans(final int orphans)
+  {
+    this.orphans = orphans;
+  }
+
+  public boolean isAvoidPagebreakInside()
+  {
+    return avoidPagebreakInside;
+  }
+
+  public void setAvoidPagebreakInside(final boolean avoidPagebreakInside)
+  {
+    this.avoidPagebreakInside = avoidPagebreakInside;
+  }
+
+  public boolean isPreserveSpace()
+  {
+    return preserveSpace;
+  }
+
+  public void setPreserveSpace(final boolean preserveSpace)
+  {
+    this.preserveSpace = preserveSpace;
+  }
 
   public String toString()
   {

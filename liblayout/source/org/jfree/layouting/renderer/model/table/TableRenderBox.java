@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRenderBox.java,v 1.10 2006/10/17 16:39:08 taqua Exp $
+ * $Id: TableRenderBox.java,v 1.11 2006/11/07 19:53:54 taqua Exp $
  *
  * Changes
  * -------
@@ -97,20 +97,20 @@ public class TableRenderBox extends BlockRenderBox
                         OutputProcessorMetaData metaData)
   {
     super.appyStyle(layoutContext, metaData);
-    CSSValue emptyCellsVal = layoutContext.getStyle().getValue
+    CSSValue emptyCellsVal = layoutContext.getValue
             (TableStyleKeys.EMPTY_CELLS);
     this.displayEmptyCells = EmptyCells.SHOW.equals(emptyCellsVal);
 
     final CSSValue borderModel =
-            layoutContext.getStyle().getValue(TableStyleKeys.BORDER_COLLAPSE);
+            layoutContext.getValue(TableStyleKeys.BORDER_COLLAPSE);
     this.collapsingBorderModel = BorderCollapse.COLLAPSE.equals(borderModel);
 
     final CSSValue layoutModel =
-            layoutContext.getStyle().getValue(TableStyleKeys.TABLE_LAYOUT);
+            layoutContext.getValue(TableStyleKeys.TABLE_LAYOUT);
     this.autoLayout = TableLayout.AUTO.equals(layoutModel);
 
     final CSSValue borderSpacingVal =
-            layoutContext.getStyle().getValue(TableStyleKeys.BORDER_SPACING);
+            layoutContext.getValue(TableStyleKeys.BORDER_SPACING);
 
     if (borderSpacingVal instanceof CSSValuePair)
     {

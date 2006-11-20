@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: RightAlignmentProcessor.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  */
 package org.jfree.layouting.renderer.process;
 
-import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 
 /**
  * Right alignment strategy. Not working yet, as this is unimplemented right now.
@@ -49,59 +49,32 @@ import org.jfree.layouting.renderer.model.RenderNode;
  */
 public class RightAlignmentProcessor extends AbstractAlignmentProcessor
 {
-  private int pageSegment;
-  private long position;
-
   public RightAlignmentProcessor()
   {
   }
 
-  public int getPageSegment()
+  protected int handleLayout(int start,
+                             int count,
+                             int contentIndex,
+                             long usedWidth)
   {
-    return pageSegment;
-  }
+    final InlineSequenceElement[] sequenceElements = getSequenceElements();
+    final long[] elementDimensions = getElementDimensions();
+    final long[] elementPositions = getElementPositions();
 
-  public void setPageSegment(final int pageSegment)
-  {
-    this.pageSegment = pageSegment;
-  }
+    // if we reached that method, then this means, that the elements may fit
+    // into the available space. (Assuming that there is no inner pagebreak;
+    // a thing we do not handle yet)
 
-  public long getPosition()
-  {
-    return position;
-  }
-
-  public void setPosition(final long position)
-  {
-    this.position = position;
-  }
-
-  /**
-   * Handle the next input chunk.
-   *
-   * @param start the start index
-   * @param count the number of elements in the sequence
-   * @return true, if processing should be finished, false if more elements are
-   *         needed for the line.
-   */
-  protected int handleElement(int start, int count)
-  {
-    final int endIndex = start + count;
-
-    return 0;
-  }
-
-  public RenderNode next()
-  {
-    position = getStartOfLine();
-    pageSegment = 0;
-
-    final RenderNode retval = super.next();
-
-    position = 0;
-    pageSegment = 0;
-
-    return retval;
+    long position = getEndOfLine();
+    for (int i = sequenceElements.length - 1; i >= 0; i--)
+    {
+      final long elementWidth = sequenceElements[i].getMaximumWidth();
+      position -= elementWidth;
+      elementDimensions[i] = elementWidth;
+      elementPositions[i] = position;
+    }
+    return start + count;
   }
 
 }

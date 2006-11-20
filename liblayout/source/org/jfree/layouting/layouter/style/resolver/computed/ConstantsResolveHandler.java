@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConstantsResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: ConstantsResolveHandler.java,v 1.3 2006/07/11 13:29:51 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 11.12.2005, 23:15:57
@@ -111,23 +111,22 @@ public abstract class ConstantsResolveHandler implements ResolveHandler
    */
   public void resolve(final LayoutProcess process,
                       final LayoutElement currentNode,
-                      final LayoutStyle style,
                       final StyleKey key)
   {
 
-    final CSSValue value = resolveValue(process, currentNode, style, key);
+    final CSSValue value = resolveValue(process, currentNode, key);
     if (value != null)
     {
-      style.setValue(key, value);
+      currentNode.getLayoutContext().setValue(key, value);
     }
   }
 
   protected CSSValue resolveValue (final LayoutProcess process,
                                    final LayoutElement currentNode,
-                                   final LayoutStyle style,
                                    final StyleKey key)
   {
-    final CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSConstant == false)
     {
       final CSSValue fallback = getFallback();
@@ -142,14 +141,14 @@ public abstract class ConstantsResolveHandler implements ResolveHandler
     CSSValue resolvedValue = lookupValue(constant);
     if (resolvedValue != null)
     {
-      style.setValue(key, resolvedValue);
+//      layoutContext.setValue(key, resolvedValue);
       return resolvedValue;
     }
 
     final CSSValue fallback = getFallback();
     if (fallback != null)
     {
-      style.setValue(key, fallback);
+//      layoutContext.setValue(key, fallback);
       return fallback;
     }
 

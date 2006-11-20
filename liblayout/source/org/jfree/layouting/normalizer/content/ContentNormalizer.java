@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.8 2006/11/11 20:23:46 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.9 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.normalizer.content;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
@@ -66,6 +67,8 @@ import org.jfree.layouting.layouter.content.computed.OpenQuoteToken;
 import org.jfree.layouting.layouter.content.computed.VariableToken;
 import org.jfree.layouting.layouter.content.resolved.ResolvedStringToken;
 import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedCounterToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedCountersToken;
 import org.jfree.layouting.layouter.content.statics.StaticTextToken;
 import org.jfree.layouting.layouter.context.ContentSpecification;
 import org.jfree.layouting.layouter.context.ContextId;
@@ -73,15 +76,17 @@ import org.jfree.layouting.layouter.context.DefaultLayoutContext;
 import org.jfree.layouting.layouter.context.DefaultPageContext;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.QuotesPair;
+import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.LayoutStyleImpl;
 import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.util.AttributeMap;
 import org.jfree.layouting.util.ChainingCallException;
+import org.jfree.layouting.util.IntList;
 import org.jfree.util.Log;
 
 /**
@@ -283,11 +288,12 @@ public class ContentNormalizer implements Normalizer
     for (int i = 0; i < pat.length; i++)
     {
       final PageAreaType pageAreaType = pat[i];
-      final LayoutStyle style = styleResolver.resolvePageStyle
+      final LayoutStyleImpl style = styleResolver.resolvePageStyle
           (CSSAutoValue.getInstance(), new PseudoPage[0], pageAreaType);
       dpc.setAreaDefinition(pageAreaType, style);
     }
-    final LayoutStyle areaDefinition = dpc.getAreaDefinition(PageAreaType.CONTENT);
+    final LayoutStyle areaDefinition =
+        dpc.getAreaDefinition(PageAreaType.CONTENT);
 
 
     modelBuilder.startDocument(dpc);
@@ -321,6 +327,10 @@ public class ContentNormalizer implements Normalizer
       return;
     }
 
+    if (tag.equals("out-of-order-section"))
+    {
+      Log.debug ("Gotcha");
+    }
     startElementInternal(namespace, tag, null, attributes);
   }
 
@@ -368,8 +378,7 @@ public class ContentNormalizer implements Normalizer
       throws NormalizationException, IOException
   {
     final LayoutContext layoutContext = currentElement.getLayoutContext();
-    final LayoutStyle style = layoutContext.getStyle();
-    final CSSValue displayRole = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
+    final CSSValue displayRole = layoutContext.getValue(BoxStyleKeys.DISPLAY_ROLE);
     if (DisplayRole.NONE.equals(displayRole))
     {
       // ignore that element ..
@@ -480,8 +489,7 @@ public class ContentNormalizer implements Normalizer
   {
     final LayoutContext layoutContext = element.getLayoutContext();
 
-    final LayoutStyle style = layoutContext.getStyle();
-    final CSSValue displayRole = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
+    final CSSValue displayRole = layoutContext.getValue(BoxStyleKeys.DISPLAY_ROLE);
     if (DisplayRole.LIST_ITEM.equals(displayRole))
     {
       if (styleResolver.isPseudoElementStyleResolvable(element, "marker"))
@@ -546,9 +554,8 @@ public class ContentNormalizer implements Normalizer
       throws IOException, NormalizationException
   {
     final LayoutContext layoutContext = element.getLayoutContext();
-    final LayoutStyle style = layoutContext.getStyle();
 
-    final CSSValue value = style.getValue(ContentStyleKeys.MOVE_TO);
+    final CSSValue value = layoutContext.getValue(ContentStyleKeys.MOVE_TO);
     if (MoveToValues.HERE.equals(value) == false)
     {
       // Some moved content.
@@ -613,8 +620,8 @@ public class ContentNormalizer implements Normalizer
 
     // todo: This might be invalid.
 
-    final LayoutStyle style = element.getLayoutContext().getStyle();
-    final CSSValue value = style.getValue(ContentStyleKeys.STRING_DEFINE);
+    final LayoutContext layoutContext = element.getLayoutContext();
+    final CSSValue value = layoutContext.getValue(ContentStyleKeys.STRING_DEFINE);
     if (value == null)
     {
       return false;
@@ -800,8 +807,8 @@ public class ContentNormalizer implements Normalizer
     }
   }
 
-  private ResolvedToken computeToken(final ContentToken token,
-                                     final ContentSpecification cspec)
+  private ContentToken computeToken(final ContentToken token,
+                                    final ContentSpecification cspec)
   {
     if (token instanceof CloseQuoteToken)
     {
@@ -851,35 +858,30 @@ public class ContentNormalizer implements Normalizer
     {
       final CounterToken counterToken = (CounterToken) token;
       final String name = counterToken.getName();
-      final CounterStyle style = counterToken.getStyle();
-      final String resolvedText =
-          style.getCounterValue(currentElement.getCounterValue(name));
-      return new ResolvedStringToken(counterToken, resolvedText);
+      final int counterValue = currentElement.getCounterValue(name);
+      return new ResolvedCounterToken(counterToken, counterValue);
     }
     else if (token instanceof CountersToken)
     {
       final CountersToken counterToken = (CountersToken) token;
       final String name = counterToken.getName();
-      final CounterStyle style = counterToken.getStyle();
-      final String separator = counterToken.getSeparator();
-      final StringBuffer buffer = new StringBuffer();
+      IntList counterValues = new IntList(10);
       while (currentElement != null)
       {
         if (currentElement.isCounterDefined(name))
         {
-          if (buffer.length() > 0)
-          {
-            buffer.append(separator);
-          }
-
-          final String resolvedText =
-              style.getCounterValue(currentElement.getCounterValue(name));
-          buffer.append(resolvedText);
+          counterValues.add (currentElement.getCounterValue(name));
         }
         currentElement = currentElement.getParent();
       }
 
-      return new ResolvedStringToken(counterToken, buffer.toString());
+      final int counterCount = counterValues.size();
+      final int[] ints = new int[counterCount];
+      for (int i = 0; i < counterCount; i++)
+      {
+        ints[i] = counterValues.get(counterCount - i - 1);
+      }
+      return new ResolvedCountersToken(counterToken, ints);
     }
     // not recognized ...
     return null;
@@ -936,8 +938,7 @@ public class ContentNormalizer implements Normalizer
     {
       // check, what caused the trouble ..
       LayoutContext layoutContext = currentElement.getLayoutContext();
-      LayoutStyle style = layoutContext.getStyle();
-      final CSSValue displayRole = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
+      final CSSValue displayRole = layoutContext.getValue(BoxStyleKeys.DISPLAY_ROLE);
       if (DisplayRole.NONE.equals(displayRole))
       {
         // ok, no need to clean up.
@@ -1032,7 +1033,7 @@ public class ContentNormalizer implements Normalizer
         throw new IllegalStateException();
       }
 
-      final LayoutStyle style = styleResolver.resolvePageStyle
+      final LayoutStyleImpl style = styleResolver.resolvePageStyle
           (pageName, pseudoPages, pageAreaType);
       dpc.setAreaDefinition(pageAreaType, style);
     }

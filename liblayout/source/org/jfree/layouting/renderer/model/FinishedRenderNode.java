@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FinishedRenderNode.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
+ * $Id: FinishedRenderNode.java,v 1.2 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -49,12 +49,17 @@ package org.jfree.layouting.renderer.model;
  *
  * @author Thomas Morgner
  */
-public class FinishedRenderNode extends PlaceholderRenderNode
+public class FinishedRenderNode extends RenderNode
 {
   private long layoutedWidth;
   private long layoutedHeight;
+  private long effectiveMarginsTop;
+  private long effectiveMarginsBottom;
 
-  public FinishedRenderNode(final long layoutedWidth, final long layoutedHeight)
+  public FinishedRenderNode(final long layoutedWidth,
+                            final long layoutedHeight,
+                            final long effectiveMarginsTop,
+                            final long effectiveMarginsBottom)
   {
     if (layoutedWidth <= 0)
     {
@@ -64,8 +69,16 @@ public class FinishedRenderNode extends PlaceholderRenderNode
     {
       throw new IllegalStateException();
     }
+
+    this.effectiveMarginsTop = effectiveMarginsTop;
+    this.effectiveMarginsBottom = effectiveMarginsBottom;
     this.layoutedWidth = layoutedWidth;
     this.layoutedHeight = layoutedHeight;
+  }
+
+  public boolean isDiscardable()
+  {
+    return false;
   }
 
   public boolean isEmpty()
@@ -81,5 +94,31 @@ public class FinishedRenderNode extends PlaceholderRenderNode
   public long getLayoutedHeight()
   {
     return layoutedHeight;
+  }
+
+  /**
+   * If that method returns true, the element will not be used for rendering.
+   * For the purpose of computing sizes or performing the layouting (in the
+   * validate() step), this element will treated as if it is not there.
+   * <p/>
+   * If the element reports itself as non-empty, however, it will affect the
+   * margin computation.
+   *
+   * @return
+   */
+  public boolean isIgnorableForRendering()
+  {
+    // Finished rows affect the margins ..
+    return false;
+  }
+
+  public long getEffectiveMarginTop()
+  {
+    return effectiveMarginsTop;
+  }
+
+  public long getEffectiveMarginBottom()
+  {
+    return effectiveMarginsBottom;
   }
 }

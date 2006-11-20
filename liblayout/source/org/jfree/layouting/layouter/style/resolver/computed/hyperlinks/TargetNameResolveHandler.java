@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TargetNameResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: TargetNameResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@
 package org.jfree.layouting.layouter.style.resolver.computed.hyperlinks;
 
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.hyperlinks.TargetName;
 import org.jfree.layouting.input.style.values.CSSValue;
@@ -75,13 +75,13 @@ public class TargetNameResolveHandler extends ConstantsResolveHandler
    */
   public void resolve(final LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSConstant)
     {
-      super.resolve(process, currentNode, style, key);
+      super.resolve(process, currentNode, key);
     }
     else if (value instanceof CSSStringValue)
     {
@@ -89,7 +89,7 @@ public class TargetNameResolveHandler extends ConstantsResolveHandler
     }
     else
     {
-      style.setValue(key, getFallback());
+      layoutContext.setValue(key, getFallback());
     }
   }
 

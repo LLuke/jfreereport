@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BackgroundOriginResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: BackgroundOriginResolveHandler.java,v 1.3 2006/07/11 13:29:51 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,6 @@ import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.BackgroundSpecification;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ListOfConstantsResolveHandler;
 
 /**
@@ -77,7 +76,6 @@ public class BackgroundOriginResolveHandler
 
   protected boolean resolveItem(final LayoutProcess process,
                                 LayoutElement currentNode,
-                                LayoutStyle style,
                                 StyleKey key, int index,
                                 CSSConstant item)
   {

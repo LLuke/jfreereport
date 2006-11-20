@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LeftAlignmentProcessor.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
+ * $Id: LeftAlignmentProcessor.java,v 1.4 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.layouting.renderer.process;
 
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.process.layoutrules.EndSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineNodeSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
@@ -192,18 +191,8 @@ public class LeftAlignmentProcessor extends AbstractAlignmentProcessor
               // OK, limit the size of the box to the maximum line width and
               // revalidate it.
               final RenderBox box = (RenderBox) node;
-              final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
-              node.setX(getPosition() + blp.getMarginLeft());
               final long maxWidth = (getEndOfLine() - getPosition());
-              node.setWidth(maxWidth - blp.getMarginLeft() - blp.getMarginRight());
-
-              final long leftInsets = blp.getPaddingLeft() + blp.getBorderLeft();
-              final long rightInsets = blp.getPaddingRight() + blp.getBorderRight();
-              box.setContentAreaX1(node.getX() + leftInsets);
-              box.setContentAreaX2(node.getX() + node.getWidth() - rightInsets);
-
-              InfiniteMinorAxisLayoutStep layoutStep = new InfiniteMinorAxisLayoutStep();
-              layoutStep.continueComputation(getPageGrid(), box);
+              computeInlineBlock(box, getPosition(), maxWidth);
 
               elementDimensions[endIndex - 1] = node.getWidth();
             }
@@ -248,17 +237,7 @@ public class LeftAlignmentProcessor extends AbstractAlignmentProcessor
     if (node instanceof RenderBox)
     {
       final RenderBox box = (RenderBox) node;
-      final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
-      node.setX(getPosition() + blp.getMarginLeft());
-      node.setWidth(itemElementWidth - blp.getMarginLeft() - blp.getMarginRight());
-
-      final long leftInsets = blp.getPaddingLeft() + blp.getBorderLeft();
-      final long rightInsets = blp.getPaddingRight() + blp.getBorderRight();
-      box.setContentAreaX1(node.getX() + leftInsets);
-      box.setContentAreaX2(node.getX() + node.getWidth() - rightInsets);
-
-      InfiniteMinorAxisLayoutStep layoutStep = new InfiniteMinorAxisLayoutStep();
-      layoutStep.continueComputation(getPageGrid(), box);
+      computeInlineBlock(box, getPosition(), itemElementWidth);
     }
     else
     {
@@ -307,5 +286,14 @@ public class LeftAlignmentProcessor extends AbstractAlignmentProcessor
     }
 
     return endIndex;
+  }
+
+  protected int handleLayout(int start,
+                             int count,
+                             int contentIndex,
+                             long usedWidth)
+  {
+    // not used ..
+    return 0;
   }
 }

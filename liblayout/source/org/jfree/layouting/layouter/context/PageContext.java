@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageContext.java,v 1.3 2006/07/26 16:59:47 taqua Exp $
+ * $Id: PageContext.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@
 package org.jfree.layouting.layouter.context;
 
 import org.jfree.layouting.input.style.PseudoPage;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.input.style.PageAreaType;
 
 /**
@@ -52,7 +51,7 @@ import org.jfree.layouting.input.style.PageAreaType;
  * not yet implemented. Later it will be, of course...)
  * <p/>
  */
-public interface PageContext extends StyleContext
+public interface PageContext
 {
   public LayoutStyle getAreaDefinition (PageAreaType name);
 
@@ -63,4 +62,6 @@ public interface PageContext extends StyleContext
    * @return true, if the pseudopage matches, false otherwise.
    */
   public boolean isPseudoPage (PseudoPage page);
+
+  public LayoutStyle getStyle();
 }

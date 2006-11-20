@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractPageableProcessor.java,v 1.1 2006/11/12 14:29:58 taqua Exp $
+ * $Id: AbstractPageableProcessor.java,v 1.2 2006/11/17 20:14:56 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -31,11 +31,14 @@
 package org.jfree.layouting.output.pageable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.output.AbstractOutputProcessor;
 import org.jfree.layouting.renderer.PaginatingRenderer;
 import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.PrintingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.util.Configuration;
@@ -52,8 +55,8 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
   protected static final int PROCESSING_PAGES = 1;
   protected static final int PROCESSING_CONTENT = 2;
   private int processingState;
-  private ArrayList physicalPages;
-  private ArrayList logicalPages;
+  private List physicalPages;
+  private List logicalPages;
   private int pageCursor;
 
   protected AbstractPageableProcessor(final Configuration configuration)
@@ -96,6 +99,8 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
     {
       // the pagination is complete. So, now we can produce real content.
       processingState = PROCESSING_CONTENT;
+      logicalPages = Collections.unmodifiableList(logicalPages);
+      physicalPages = Collections.unmodifiableList(physicalPages);
     }
   }
 

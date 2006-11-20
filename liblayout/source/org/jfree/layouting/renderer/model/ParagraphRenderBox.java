@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphRenderBox.java,v 1.12 2006/07/30 13:13:47 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.13 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -84,11 +84,11 @@ public class ParagraphRenderBox extends BlockRenderBox
   {
     super(boxDefinition);
 
-    pool = new ParagraphPoolBox(new EmptyBoxDefinition());
+    pool = new ParagraphPoolBox(EmptyBoxDefinition.getInstance());
     pool.setParent(this);
 
     // yet another helper box. Level 2
-    lineboxContainer = new LineBoxRenderBox(new EmptyBoxDefinition());
+    lineboxContainer = new LineBoxRenderBox(EmptyBoxDefinition.getInstance());
     lineboxContainer.setParent(this);
     // level 3 means: Add all lineboxes to the paragraph
     // This gets auto-generated ..
@@ -97,8 +97,8 @@ public class ParagraphRenderBox extends BlockRenderBox
   public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
   {
     super.appyStyle(context, metaData);
-    CSSValue alignVal = context.getStyle().getValue(TextStyleKeys.TEXT_ALIGN);
-    CSSValue alignLastVal = context.getStyle().getValue(TextStyleKeys.TEXT_ALIGN_LAST);
+    CSSValue alignVal = context.getValue(TextStyleKeys.TEXT_ALIGN);
+    CSSValue alignLastVal = context.getValue(TextStyleKeys.TEXT_ALIGN_LAST);
     this.textAlignment = createAlignment(alignVal);
     if (textAlignment == TextAlign.JUSTIFY)
     {
@@ -130,6 +130,26 @@ public class ParagraphRenderBox extends BlockRenderBox
     box.lineboxContainer.setParent(box);
     return box;
   }
+
+  /**
+   * Derive creates a disconnected node that shares all the properties of the
+   * original node. The derived node will no longer have any parent, silbling,
+   * child or any other relationships with other nodes.
+   *
+   * @return
+   */
+  public RenderNode hibernate()
+  {
+    final ParagraphRenderBox box = (ParagraphRenderBox) super.derive(false);
+    box.pool = (ParagraphPoolBox) pool.hibernate();
+    box.pool.setParent(box);
+
+    box.lineboxContainer = (LineBoxRenderBox) lineboxContainer.derive(false);
+    box.lineboxContainer.setParent(box);
+    box.lineBoxAge = 0;
+    return box;
+  }
+
 
   private CSSValue createAlignment(CSSValue value)
   {
@@ -258,5 +278,14 @@ public class ParagraphRenderBox extends BlockRenderBox
   public void setMajorLayoutAge(final long majorLayoutAge)
   {
     this.majorLayoutAge = majorLayoutAge;
+  }
+
+  /**
+   * The public-id for the paragraph is the pool-box.
+   * @return
+   */
+  public Object getInstanceId()
+  {
+    return pool.getInstanceId();
   }
 }

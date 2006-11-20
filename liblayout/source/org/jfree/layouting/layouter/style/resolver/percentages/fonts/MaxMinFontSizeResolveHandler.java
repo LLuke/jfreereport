@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MaxMinFontSizeResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
+ * $Id: MaxMinFontSizeResolveHandler.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,15 +41,15 @@
 package org.jfree.layouting.layouter.style.resolver.percentages.fonts;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.FontSpecification;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.context.FontSpecification;
 
 /**
  * Creation-Date: 21.12.2005, 12:53:36
@@ -83,11 +83,10 @@ public class MaxMinFontSizeResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    CSSValue value = style.getValue(key);
-    final FontSpecification fs =currentNode.getLayoutContext().getFontSpecification();
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSNumericValue == false)
     {
       // no limit ..
@@ -95,8 +94,8 @@ public class MaxMinFontSizeResolveHandler implements ResolveHandler
     }
 
     final CSSNumericValue size = CSSValueResolverUtility.convertLength
-          ((CSSNumericValue) value, currentNode.getLayoutContext(), process.getOutputMetaData());
+          (value, layoutContext, process.getOutputMetaData());
 
-    style.setValue(key, size);
+    layoutContext.setValue(key, size);
   }
 }

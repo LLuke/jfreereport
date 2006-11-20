@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontSizeAdjustResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: FontSizeAdjustResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,9 @@ import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.context.FontSpecification;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
 
 /**
@@ -90,10 +90,10 @@ public class FontSizeAdjustResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                          LayoutElement currentNode,
-                         LayoutStyle style,
                          StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSNumericValue == false)
     {
       return; // do nothing

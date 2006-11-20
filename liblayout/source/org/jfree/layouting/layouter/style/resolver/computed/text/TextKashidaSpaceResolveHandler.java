@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextKashidaSpaceResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: TextKashidaSpaceResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 21.12.2005, 15:00:43
@@ -80,10 +80,10 @@ public class TextKashidaSpaceResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if ((value instanceof CSSNumericValue) == false)
     {
       return;
@@ -102,7 +102,7 @@ public class TextKashidaSpaceResolveHandler implements ResolveHandler
     {
       percentage = 100;
     }
-    style.setValue(TextStyleKeys.TEXT_KASHIDA_SPACE,
+    layoutContext.setValue(TextStyleKeys.TEXT_KASHIDA_SPACE,
             new CSSNumericValue(CSSNumericType.PERCENTAGE, percentage));
   }
 }

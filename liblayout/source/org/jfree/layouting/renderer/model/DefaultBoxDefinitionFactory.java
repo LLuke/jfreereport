@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultBoxDefinitionFactory.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
+ * $Id: DefaultBoxDefinitionFactory.java,v 1.4 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,6 @@ import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.BorderFactory;
@@ -75,7 +74,7 @@ public class DefaultBoxDefinitionFactory implements BoxDefinitionFactory
     final Border border = borderFactory.createBorder(boxContext, metaData);
     DefaultBoxDefinition boxDefinition = new DefaultBoxDefinition();
     boxDefinition.setBorder(border);
-    final CSSValue value = boxContext.getStyle().getValue(BorderStyleKeys.BACKGROUND_COLOR);
+    final CSSValue value = boxContext.getValue(BorderStyleKeys.BACKGROUND_COLOR);
     if (value instanceof CSSColorValue)
     {
       boxDefinition.setBackgroundColor((CSSColorValue) value);
@@ -85,18 +84,16 @@ public class DefaultBoxDefinitionFactory implements BoxDefinitionFactory
       boxDefinition.setBackgroundColor(CSSSystemColors.TRANSPARENT);
     }
 
-    final LayoutStyle style = boxContext.getStyle();
-
-    fillHorizontalPadding(boxDefinition, style, boxContext, metaData);
+    fillHorizontalPadding(boxDefinition, boxContext, metaData);
 
     boxDefinition.setPreferredWidth(computeWidth
-            (style.getValue(BoxStyleKeys.WIDTH), boxContext, metaData, true, true));
+            (boxContext.getValue(BoxStyleKeys.WIDTH), boxContext, metaData, true, true));
     boxDefinition.setMarginLeft(computeWidth
-            (style.getValue(BoxStyleKeys.MARGIN_LEFT), boxContext, metaData, true, true));
+            (boxContext.getValue(BoxStyleKeys.MARGIN_LEFT), boxContext, metaData, true, true));
     boxDefinition.setMarginRight(computeWidth
-            (style.getValue(BoxStyleKeys.MARGIN_RIGHT), boxContext, metaData, true, true));
+            (boxContext.getValue(BoxStyleKeys.MARGIN_RIGHT), boxContext, metaData, true, true));
 
-    fillVerticalModel(boxDefinition, style, boxContext, metaData);
+    fillVerticalModel(boxDefinition, boxContext, metaData);
 
     return boxDefinition;
   }
@@ -107,7 +104,7 @@ public class DefaultBoxDefinitionFactory implements BoxDefinitionFactory
     final Border border = borderFactory.createBorder(boxContext, metaData);
     DefaultBoxDefinition boxDefinition = new DefaultBoxDefinition();
     boxDefinition.setBorder(border);
-    final CSSValue value = boxContext.getStyle().getValue(BorderStyleKeys.BACKGROUND_COLOR);
+    final CSSValue value = boxContext.getValue(BorderStyleKeys.BACKGROUND_COLOR);
     if (value instanceof CSSColorValue)
     {
       boxDefinition.setBackgroundColor((CSSColorValue) value);
@@ -117,74 +114,70 @@ public class DefaultBoxDefinitionFactory implements BoxDefinitionFactory
       boxDefinition.setBackgroundColor(CSSSystemColors.TRANSPARENT);
     }
 
-    final LayoutStyle style = boxContext.getStyle();
-
-    fillHorizontalPadding(boxDefinition, style, boxContext, metaData);
+    fillHorizontalPadding(boxDefinition, boxContext, metaData);
 
     // inline-elements have no way to define the width. (10.3.1 of CSS2.1)
     // exception: inline-block elements can and will have a width.
     // we move that evaluation into the layouter, that one may or may not
     // use the preferred width ..
     boxDefinition.setPreferredWidth(computeWidth
-            (style.getValue(BoxStyleKeys.WIDTH), boxContext, metaData, true, true));
+            (boxContext.getValue(BoxStyleKeys.WIDTH), boxContext, metaData, true, true));
 
     boxDefinition.setMarginLeft(computeWidth
-            (style.getValue(BoxStyleKeys.MARGIN_LEFT), boxContext, metaData, false, true));
+            (boxContext.getValue(BoxStyleKeys.MARGIN_LEFT), boxContext, metaData, false, true));
     boxDefinition.setMarginRight(computeWidth
-            (style.getValue(BoxStyleKeys.MARGIN_RIGHT), boxContext, metaData, false, true));
+            (boxContext.getValue(BoxStyleKeys.MARGIN_RIGHT), boxContext, metaData, false, true));
 
     // second, the vertical model.
-    fillVerticalModel(boxDefinition, style, boxContext, metaData);
+    fillVerticalModel(boxDefinition, boxContext, metaData);
 
     return boxDefinition;
   }
 
   private void fillVerticalModel(final DefaultBoxDefinition boxDefinition,
-                                 final LayoutStyle style,
                                  final LayoutContext boxContext,
                                  final OutputProcessorMetaData metaData)
   {
     boxDefinition.setPaddingTop(computeWidth
-            (style.getValue(BoxStyleKeys.PADDING_TOP), boxContext, metaData, false, false));
+            (boxContext.getValue(BoxStyleKeys.PADDING_TOP), boxContext, metaData, false, false));
     boxDefinition.setPaddingBottom(computeWidth
-            (style.getValue(BoxStyleKeys.PADDING_BOTTOM), boxContext, metaData, false, false));
+            (boxContext.getValue(BoxStyleKeys.PADDING_BOTTOM), boxContext, metaData, false, false));
 
     boxDefinition.setMarginTop(computeWidth
-            (style.getValue(BoxStyleKeys.MARGIN_TOP), boxContext, metaData, false, true));
+            (boxContext.getValue(BoxStyleKeys.MARGIN_TOP), boxContext, metaData, false, true));
     boxDefinition.setMarginBottom(computeWidth
-            (style.getValue(BoxStyleKeys.MARGIN_BOTTOM), boxContext, metaData, false, true));
+            (boxContext.getValue(BoxStyleKeys.MARGIN_BOTTOM), boxContext, metaData, false, true));
 
     // I dont believe in Voodoo, therefore I dont follow Section 10.6.3 on the
     // height computation. Auto-Values are now generally accepted, if no length
     // has been specified explicitly. In that case we simply compute what ever
     // comes in and do not overflow in any case.
     boxDefinition.setPreferredHeight(computeWidth
-            (style.getValue(BoxStyleKeys.HEIGHT), boxContext, metaData, true, true));
+            (boxContext.getValue(BoxStyleKeys.HEIGHT), boxContext, metaData, true, true));
   }
 
   private void fillHorizontalPadding(final DefaultBoxDefinition boxDefinition,
-                                     final LayoutStyle style,
                                      final LayoutContext boxContext,
                                      final OutputProcessorMetaData metaData)
   {
     // first, the horizontal model.
     boxDefinition.setPaddingLeft(computeWidth
-            (style.getValue(BoxStyleKeys.PADDING_LEFT),
+            (boxContext.getValue(BoxStyleKeys.PADDING_LEFT),
                     boxContext, metaData, false, false));
     boxDefinition.setPaddingRight(computeWidth
-            (style.getValue(BoxStyleKeys.PADDING_RIGHT),
+            (boxContext.getValue(BoxStyleKeys.PADDING_RIGHT),
                     boxContext, metaData, false, false));
     boxDefinition.setMaximumWidth(computeWidth
-            (style.getValue(BoxStyleKeys.MAX_WIDTH),
+            (boxContext.getValue(BoxStyleKeys.MAX_WIDTH),
                     boxContext, metaData, false, false));
     boxDefinition.setMaximumHeight(computeWidth
-            (style.getValue(BoxStyleKeys.MAX_HEIGHT),
+            (boxContext.getValue(BoxStyleKeys.MAX_HEIGHT),
                     boxContext, metaData, false, false));
     boxDefinition.setMinimumWidth(computeWidth
-            (style.getValue(BoxStyleKeys.MIN_WIDTH),
+            (boxContext.getValue(BoxStyleKeys.MIN_WIDTH),
                     boxContext, metaData, false, false));
     boxDefinition.setMinimumHeight(computeWidth
-            (style.getValue(BoxStyleKeys.MIN_HEIGHT),
+            (boxContext.getValue(BoxStyleKeys.MIN_HEIGHT),
                     boxContext, metaData, false, false));
   }
 

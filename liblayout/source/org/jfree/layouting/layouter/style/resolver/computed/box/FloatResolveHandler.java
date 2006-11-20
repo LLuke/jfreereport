@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FloatResolveHandler.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
+ * $Id: FloatResolveHandler.java,v 1.4 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,18 +42,20 @@
 package org.jfree.layouting.layouter.style.resolver.computed.box;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.box.Floating;
+import org.jfree.layouting.input.style.keys.box.DisplayModel;
+import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 public class FloatResolveHandler extends ConstantsResolveHandler
 {
-  public FloatResolveHandler ()
+  public FloatResolveHandler()
   {
     addNormalizeValue(Floating.BOTTOM);
     addNormalizeValue(Floating.LEFT);
@@ -70,15 +72,16 @@ public class FloatResolveHandler extends ConstantsResolveHandler
   }
 
   /**
-   * This indirectly defines the resolve order. The higher the order, the more dependent
-   * is the resolver on other resolvers to be complete.
+   * This indirectly defines the resolve order. The higher the order, the more
+   * dependent is the resolver on other resolvers to be complete.
    *
    * @return the array of required style keys.
    */
-  public StyleKey[] getRequiredStyles ()
+  public StyleKey[] getRequiredStyles()
   {
     return new StyleKey[]{
-            BoxStyleKeys.DISPLAY_ROLE
+        BoxStyleKeys.DISPLAY_ROLE,
+        PositioningStyleKeys.POSITION
     };
   }
 
@@ -88,19 +91,30 @@ public class FloatResolveHandler extends ConstantsResolveHandler
    * @param currentNode
    * @param style
    */
-  public void resolve (final LayoutProcess process,
-                       LayoutElement currentNode,
-                       LayoutStyle style,
-                       StyleKey key)
+  public void resolve(final LayoutProcess process,
+                      LayoutElement currentNode,
+                      StyleKey key)
   {
-    final CSSValue displayRole = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue displayRole = layoutContext.getValue(BoxStyleKeys.DISPLAY_ROLE);
+    final CSSValue floating;
     if (DisplayRole.NONE.equals(displayRole))
     {
-      style.setValue(key, Floating.NONE);
-      return;
+      floating = Floating.NONE;
+    }
+    else
+    {
+      floating = resolveValue(process, currentNode, key);
     }
 
-    CSSValue f = resolveValue(process, currentNode, style, key);
-    style.setValue(key, f);
+    if (Floating.NONE.equals(floating) == false)
+    {
+      //  Otherwise, if 'float' has a value other than 'none', 'display'
+      // is set to 'block' and the box is floated.
+      layoutContext.setValue(BoxStyleKeys.DISPLAY_MODEL, DisplayModel.BLOCK_INSIDE);
+      layoutContext.setValue(BoxStyleKeys.DISPLAY_ROLE, DisplayRole.BLOCK);
+    }
+
+    layoutContext.setValue(key, Floating.NONE);
   }
 }

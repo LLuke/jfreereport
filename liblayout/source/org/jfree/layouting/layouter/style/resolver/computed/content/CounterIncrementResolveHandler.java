@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CounterIncrementResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: CounterIncrementResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,6 @@ import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 public class CounterIncrementResolveHandler implements ResolveHandler
@@ -81,10 +80,9 @@ public class CounterIncrementResolveHandler implements ResolveHandler
    */
   public void resolve (final LayoutProcess process,
                        final LayoutElement element,
-                       final LayoutStyle style,
                        final StyleKey key)
   {
-    final CSSValue value = style.getValue(key);
+    final CSSValue value = element.getLayoutContext().getValue(key);
     if (value instanceof CSSValueList == false)
     {
       return; // do nothing.

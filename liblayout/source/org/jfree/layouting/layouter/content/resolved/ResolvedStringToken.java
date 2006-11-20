@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResolvedStringToken.java,v 1.1 2006/07/11 13:39:58 taqua Exp $
  *
  * Changes
  * -------
@@ -48,14 +48,25 @@ import org.jfree.layouting.layouter.content.computed.ComputedToken;
  *
  * @author Thomas Morgner
  */
-public class ResolvedStringToken extends ResolvedToken implements TextType
+public class ResolvedStringToken implements ResolvedToken, TextType
 {
+  private ComputedToken parent;
+
   private String text;
 
   public ResolvedStringToken(final ComputedToken parent, final String text)
   {
-    super(parent);
+    if (parent == null)
+    {
+      throw new NullPointerException();
+    }
+    this.parent = parent;
     this.text = text;
+  }
+
+  public ComputedToken getParent()
+  {
+    return parent;
   }
 
   public String getText()

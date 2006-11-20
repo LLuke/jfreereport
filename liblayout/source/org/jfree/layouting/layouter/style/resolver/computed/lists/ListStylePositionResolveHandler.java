@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ListStylePositionResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: ListStylePositionResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@
 package org.jfree.layouting.layouter.style.resolver.computed.lists;
 
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.context.ListSpecification;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
@@ -66,9 +65,9 @@ public class ListStylePositionResolveHandler extends ConstantsResolveHandler
    * @param style
    */
   public void resolve (final LayoutProcess process, LayoutElement currentNode,
-                       LayoutStyle style, StyleKey key)
+                       StyleKey key)
   {
-    CSSValue value = resolveValue(process, currentNode, style, key);
+    CSSValue value = resolveValue(process, currentNode, key);
     ListSpecification listSpecification =
             currentNode.getLayoutContext().getListSpecification();
     listSpecification.setPosition((ListStylePosition) value);

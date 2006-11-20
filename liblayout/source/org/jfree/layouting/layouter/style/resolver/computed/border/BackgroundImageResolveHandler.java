@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BackgroundImageResolveHandler.java,v 1.3 2006/07/11 13:29:51 taqua Exp $
+ * $Id: BackgroundImageResolveHandler.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,9 @@ import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.layouter.context.BackgroundSpecification;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.output.OutputProcessorFeature;
 import org.jfree.resourceloader.ResourceKey;
@@ -85,7 +85,6 @@ public class BackgroundImageResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
     // start loading all images, assume that they are found and include them
@@ -97,7 +96,8 @@ public class BackgroundImageResolveHandler implements ResolveHandler
       return;
     }
 
-    CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if (value == null)
     {
       return;
@@ -114,8 +114,9 @@ public class BackgroundImageResolveHandler implements ResolveHandler
       return;
     }
     BackgroundSpecification backgroundSpecification =
-            currentNode.getLayoutContext().getBackgroundSpecification();
-    ResourceKey baseURL = DocumentContextUtility.getBaseResource(process.getDocumentContext());
+            layoutContext.getBackgroundSpecification();
+    ResourceKey baseURL = DocumentContextUtility.getBaseResource
+        (process.getDocumentContext());
 
     for (int i = 0; i < length; i++)
     {

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractAlignmentProcessor.java,v 1.2 2006/11/05 16:45:53 taqua Exp $
+ * $Id: AbstractAlignmentProcessor.java,v 1.3 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,29 +40,29 @@
  */
 package org.jfree.layouting.renderer.process;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
-import java.util.ArrayList;
 
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.BlockRenderBox;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
 import org.jfree.layouting.renderer.process.layoutrules.EndSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
 import org.jfree.layouting.util.LongList;
-import org.jfree.util.Log;
 
 /**
- * Creation-Date: 03.10.2006, 15:23:31
+ * Todo: The whole horizontal alignment is not suitable for spanned page
+ * breaks.
  *
  * @author Thomas Morgner
  */
 public abstract class AbstractAlignmentProcessor
-        implements TextAlignmentProcessor
+    implements TextAlignmentProcessor
 {
   private static final int START = 0;
   private static final int CONTENT = 1;
@@ -76,9 +76,13 @@ public abstract class AbstractAlignmentProcessor
   private InlineSequenceElement[] sequenceElements;
   private int sequenceFill;
 
-  /** A layouter hint, that indicates a possibly breakable element */
+  /**
+   * A layouter hint, that indicates a possibly breakable element
+   */
   private int breakableIndex;
-  /** A layouter hint, that indicates where to continue on unbreakable elements. */
+  /**
+   * A layouter hint, that indicates where to continue on unbreakable elements.
+   */
   private int skipIndex;
 
   private long[] elementPositions;
@@ -118,7 +122,7 @@ public abstract class AbstractAlignmentProcessor
     return endOfLine;
   }
 
-  protected long getPageBreak (int pageIndex)
+  protected long getPageBreak(int pageIndex)
   {
     return pagebreaks[pageIndex];
   }
@@ -196,7 +200,6 @@ public abstract class AbstractAlignmentProcessor
   }
 
 
-
   /**
    * Initializes the alignment process. The start and end parameters specify the
    * line boundaries, and have been precomputed.
@@ -259,7 +262,7 @@ public abstract class AbstractAlignmentProcessor
     return sequenceFill > 0;
   }
 
-  public RenderNode next ()
+  public RenderNode next()
   {
     Arrays.fill(elementDimensions, 0);
     Arrays.fill(elementPositions, 0);
@@ -330,7 +333,7 @@ public abstract class AbstractAlignmentProcessor
       if (box == null)
       {
         throw new IllegalStateException("Invalid sequence: " +
-                "Cannot have elements before we open the box context.");
+            "Cannot have elements before we open the box context.");
       }
 
       // Content element: Perform a deep-derive, so that we preserve the
@@ -380,13 +383,13 @@ public abstract class AbstractAlignmentProcessor
       renderBox.setWidth(getEndOfLine() - box.getX());
 
       final InlineRenderBox rightBox = (InlineRenderBox)
-              renderBox.split(RenderNode.HORIZONTAL_AXIS);
+          renderBox.split(RenderNode.HORIZONTAL_AXIS);
       sequenceElements[i] = new StartSequenceElement(rightBox);
     }
 
     final int length = sequenceFill - lastPosition;
     System.arraycopy(sequenceElements, lastPosition,
-            sequenceElements, openContexts, length);
+        sequenceElements, openContexts, length);
     sequenceFill = openContexts + length;
     Arrays.fill(sequenceElements, sequenceFill, sequenceElements.length, null);
 
@@ -399,9 +402,41 @@ public abstract class AbstractAlignmentProcessor
    * @param start the start index
    * @param count the number of elements in the sequence
    * @return the processing position. Linebreaks will be inserted, if the
-   * returned value is equal or less the start index.
+   *         returned value is equal or less the start index.
    */
-  protected abstract int handleElement(int start, int count);
+  protected int handleElement(int start, int count)
+  {
+    final int endIndex = start + count;
+    // always look at all elements.
+
+    final InlineSequenceElement[] sequenceElements = getSequenceElements();
+
+    // In the given range, there should be only one content element.
+    int contentIndex = start;
+    long width = 0;
+    for (int i = 0; i < endIndex; i++)
+    {
+      InlineSequenceElement element = sequenceElements[i];
+      width += element.getMaximumWidth();
+      if (element instanceof StartSequenceElement ||
+          element instanceof EndSequenceElement)
+      {
+        continue;
+      }
+
+      contentIndex = i;
+    }
+
+    final long pagebreak = getPageBreak(0);
+    // Do we cross a page boundary?
+    if (width > pagebreak)
+    {
+      return start;
+    }
+    return handleLayout(start, count, contentIndex, width);
+  }
+
+  protected abstract int handleLayout(int start, int count, int contentIndex, long usedWidth);
 
   private int classifyInput(InlineSequenceElement element)
   {
@@ -418,4 +453,23 @@ public abstract class AbstractAlignmentProcessor
       return CONTENT;
     }
   }
+
+
+  protected void computeInlineBlock(final RenderBox box,
+                                    final long position,
+                                    final long itemElementWidth)
+  {
+    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    box.setX(position + blp.getMarginLeft());
+    box.setWidth(itemElementWidth - blp.getMarginLeft() - blp.getMarginRight());
+
+    final long leftInsets = blp.getPaddingLeft() + blp.getBorderLeft();
+    final long rightInsets = blp.getPaddingRight() + blp.getBorderRight();
+    box.setContentAreaX1(box.getX() + leftInsets);
+    box.setContentAreaX2(box.getX() + box.getWidth() - rightInsets);
+
+    InfiniteMinorAxisLayoutStep layoutStep = new InfiniteMinorAxisLayoutStep();
+    layoutStep.continueComputation(getPageGrid(), box);
+  }
+
 }

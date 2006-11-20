@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: VerticalAlignmentProcessor.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: VerticalAlignmentProcessor.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class VerticalAlignmentProcessor
   public VerticalAlignmentProcessor()
   {
   }
-
+  // 7% of our time is spent here ..
   public void align(final BoxAlignContext alignStructure,
                     final long y1,
                     final long lineHeight)
@@ -101,12 +101,9 @@ public class VerticalAlignmentProcessor
   private void performAlignment(final BoxAlignContext box)
   {
     // We have a valid align structure here.
-    final AlignContext[] childs = box.getChilds();
-
-    for (int i = 0; i < childs.length; i++)
+    AlignContext child = box.getFirstChild();
+    while (child != null)
     {
-      AlignContext child = childs[i];
-
       if (child instanceof InlineBlockAlignContext)
       {
         InlineBlockAlignContext context = (InlineBlockAlignContext) child;
@@ -178,6 +175,8 @@ public class VerticalAlignmentProcessor
       {
         performAlignment((BoxAlignContext) child);
       }
+
+      child = child.getNext();
     }
   }
 
@@ -191,17 +190,17 @@ public class VerticalAlignmentProcessor
    */
   private void normalizeAlignment(final BoxAlignContext box)
   {
-    final AlignContext[] childs = box.getChilds();
     minTopPos = Math.min (minTopPos, box.getBeforeEdge());
     maxBottomPos = Math.max (maxBottomPos, box.getAfterEdge());
 
-    for (int i = 0; i < childs.length; i++)
+    AlignContext child = box.getFirstChild();
+    while (child != null)
     {
-      AlignContext child = childs[i];
       if (child instanceof BoxAlignContext)
       {
         normalizeAlignment((BoxAlignContext) child);
       }
+      child = child.getNext();
     }
   }
 
@@ -274,10 +273,9 @@ public class VerticalAlignmentProcessor
     node.setY(box.getBeforeEdge());
     node.setHeight(box.getAfterEdge() - box.getBeforeEdge());
 
-    final AlignContext[] childs = box.getChilds();
-    for (int i = 0; i < childs.length; i++)
+    AlignContext child = box.getFirstChild();
+    while (child != null)
     {
-      AlignContext child = childs[i];
       if (child instanceof BoxAlignContext)
       {
         apply((BoxAlignContext) child);
@@ -295,6 +293,8 @@ public class VerticalAlignmentProcessor
         childNode.setY(child.getBeforeEdge());
         childNode.setHeight(child.getAfterEdge() - child.getBeforeEdge());
       }
+
+      child = child.getNext();
     }
   }
 
@@ -305,12 +305,9 @@ public class VerticalAlignmentProcessor
         " H:" + (alignContext.getAfterEdge() - alignContext.getBeforeEdge())
     );
     // We have a valid align structure here.
-    final AlignContext[] childs = alignContext.getChilds();
-
-    for (int i = 0; i < childs.length; i++)
+    AlignContext child = alignContext.getFirstChild();
+    while (child != null)
     {
-      AlignContext child = childs[i];
-
       if (child instanceof BoxAlignContext)
       {
         print((BoxAlignContext) child, level + 1);
@@ -321,6 +318,7 @@ public class VerticalAlignmentProcessor
             " Y2:" + (child.getAfterEdge()) +
             " H:" + (child.getAfterEdge() - child.getBeforeEdge()));
       }
+      child = child.getNext();
     }
   }
 
@@ -337,10 +335,9 @@ public class VerticalAlignmentProcessor
                                         final BoxAlignContext lineBox)
   {
     // Aligns elements with vertical-align TOP and vertical-align BOTTOM
-    final AlignContext[] childs = box.getChilds();
-    for (int i = 0; i < childs.length; i++)
+    AlignContext child = box.getFirstChild();
+    while (child != null)
     {
-      AlignContext child = childs[i];
       final CSSValue verticalAlignment = child.getNode().getVerticalAlignment();
       if (VerticalAlign.TOP.equals(verticalAlignment))
       {
@@ -360,6 +357,8 @@ public class VerticalAlignmentProcessor
       {
         performExtendedAlignment((BoxAlignContext) child, lineBox);
       }
+
+      child = child.getNext();
     }
   }
 }

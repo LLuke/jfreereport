@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ValidateModelStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: ValidateModelStep.java,v 1.2 2006/11/09 14:28:50 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
-import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
@@ -53,8 +53,6 @@ import org.jfree.layouting.renderer.model.table.TableRowInfoStructure;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 import org.jfree.layouting.renderer.model.table.cells.TableCell;
-import org.jfree.util.Log;
-import org.jfree.util.LogContext;
 
 /**
  * This step checks, whether the model will be layoutable.
@@ -83,9 +81,14 @@ import org.jfree.util.LogContext;
  */
 public class ValidateModelStep extends IterateStructuralProcessStep
 {
-  private boolean layoutableResult;
+  public static final int LAYOUT_OK = 0;
+  public static final int NEED_MORE_DATA = 1;
+  public static final int BOX_MUST_BE_CLOSED = 2;
+
+  private Object layoutFailureNodeId;
+  private int layoutFailureResolution;
+
   private LogicalPageBox root;
-  private static LogContext context = Log.createContext(ValidateModelStep.class);
 
   public ValidateModelStep()
   {
@@ -93,16 +96,28 @@ public class ValidateModelStep extends IterateStructuralProcessStep
 
   public synchronized boolean isLayoutable (LogicalPageBox root)
   {
-    this.layoutableResult = true;
+
+    this.layoutFailureNodeId = null;
+    this.layoutFailureResolution = LAYOUT_OK;
     this.root = root;
     startProcessing(root);
     this.root = null;
-    return layoutableResult;
+    return layoutFailureNodeId == null;
+  }
+
+  public Object getLayoutFailureNodeId()
+  {
+    return layoutFailureNodeId;
+  }
+
+  public int getLayoutFailureResolution()
+  {
+    return layoutFailureResolution;
   }
 
   protected void finishBlockBox(BlockRenderBox box)
   {
-    if (layoutableResult == false)
+    if (layoutFailureNodeId != null)
     {
       return;
     }
@@ -162,16 +177,17 @@ public class ValidateModelStep extends IterateStructuralProcessStep
 
       if (expectedRows >= 1)
       {
-        layoutableResult = false;
+        layoutFailureNodeId = box.getInstanceId();
+        layoutFailureResolution = NEED_MORE_DATA;
       }
     }
   }
 
   protected boolean startBlockBox(BlockRenderBox box)
   {
-    if (layoutableResult == false)
+    if (layoutFailureNodeId != null)
     {
-      // no need to check any further ..
+      // we already hit an error, so why seek more ..
       return false;
     }
 
@@ -187,7 +203,8 @@ public class ValidateModelStep extends IterateStructuralProcessStep
       {
         // Auto-Layout means, we have to see the complete table.
         // Yes, that is expensive ..
-        layoutableResult = false;
+        layoutFailureNodeId = box.getInstanceId();
+        layoutFailureResolution = BOX_MUST_BE_CLOSED;
         return false;
       }
 
@@ -214,7 +231,8 @@ public class ValidateModelStep extends IterateStructuralProcessStep
                 if (maybeRow.isOpen())
                 {
                   // not layoutable - bail out ..
-                  layoutableResult = false;
+                  layoutFailureNodeId = maybeRow.getInstanceId();
+                  layoutFailureResolution = BOX_MUST_BE_CLOSED;
                   return false;
                 }
                 foundRow = true;
@@ -225,7 +243,8 @@ public class ValidateModelStep extends IterateStructuralProcessStep
             if (foundRow == false)
             {
               // not layoutable - bail out ..
-              layoutableResult = false;
+              layoutFailureNodeId = box.getInstanceId();
+              layoutFailureResolution = NEED_MORE_DATA;
               return false;
             }
           }
@@ -237,7 +256,8 @@ public class ValidateModelStep extends IterateStructuralProcessStep
         // even if the table will never declare a tbody-group, it will become
         // layoutable as soon as it is closed.
 
-        layoutableResult = false;
+        layoutFailureNodeId = box.getInstanceId();
+        layoutFailureResolution = NEED_MORE_DATA;
         return false;
       }
     }
@@ -252,8 +272,8 @@ public class ValidateModelStep extends IterateStructuralProcessStep
         // test whether there is one ..
         if (row.getVisiblePrev() == null)
         {
-          layoutableResult = false;
-          context.debug("Table: First Row not finished. Not layoutable.");
+          layoutFailureNodeId = box.getInstanceId();
+          layoutFailureResolution = BOX_MUST_BE_CLOSED;
           return false;
         }
       }
@@ -263,7 +283,8 @@ public class ValidateModelStep extends IterateStructuralProcessStep
       // An paragraph must be complete before we can attempt to layout it.
       // Without that constraint, we cannot guarantee that inline-block-elements
       // will behave correctly.
-      layoutableResult = false;
+      layoutFailureNodeId = box.getInstanceId();
+      layoutFailureResolution = BOX_MUST_BE_CLOSED;
       return false;
     }
     return true;
@@ -271,7 +292,7 @@ public class ValidateModelStep extends IterateStructuralProcessStep
 
   protected boolean startInlineBox(InlineRenderBox box)
   {
-    if (layoutableResult == false)
+    if (layoutFailureNodeId != null)
     {
       // no need to check any further ..
       return false;
@@ -281,7 +302,7 @@ public class ValidateModelStep extends IterateStructuralProcessStep
 
   protected void startNormalFlow(final NormalFlowRenderBox box)
   {
-    if (layoutableResult == false)
+    if (layoutFailureNodeId != null)
     {
       // no need to check any further ..
       return;
@@ -293,8 +314,8 @@ public class ValidateModelStep extends IterateStructuralProcessStep
       // we only accept the root flow as open flow.
       if (box.isOpen())
       {
-        layoutableResult = false;
-        context.debug("Open NormalFlow detected. Not layoutable.");
+        layoutFailureNodeId = box.getInstanceId();
+        layoutFailureResolution = BOX_MUST_BE_CLOSED;
       }
     }
   }

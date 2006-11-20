@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontWeightResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: FontWeightResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,8 @@ import org.jfree.layouting.input.style.keys.font.FontWeight;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 18.12.2005, 20:33:42
@@ -81,10 +81,10 @@ public class FontWeightResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    final CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue value = layoutContext.getValue(key);
     final int fontWeight;
     if (FontWeight.BOLD.equals(value))
     {
@@ -124,7 +124,7 @@ public class FontWeightResolveHandler implements ResolveHandler
       fontWeight = queryParent(currentNode.getParent());
     }
 
-    style.setValue(FontStyleKeys.FONT_WEIGHT,
+    layoutContext.setValue(FontStyleKeys.FONT_WEIGHT,
             new CSSNumericValue(CSSNumericType.NUMBER, fontWeight));
   }
 

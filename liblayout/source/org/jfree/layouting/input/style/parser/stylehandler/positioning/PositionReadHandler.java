@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PositionReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,13 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.positioning;
 
-import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
+import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.positioning.Position;
+import org.jfree.layouting.input.style.parser.CSSValueFactory;
+import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.w3c.css.sac.LexicalUnit;
 
 /**
  * Creation-Date: 21.12.2005, 18:32:53
@@ -57,5 +62,29 @@ public class PositionReadHandler extends OneOfConstantsReadHandler
     addValue(Position.FIXED);
     addValue(Position.RELATIVE);
     addValue(Position.STATIC);
+  }
+
+  public CSSValue createValue(StyleKey name, LexicalUnit value)
+  {
+    final CSSValue result = super.createValue(name, value);
+    if (result != null)
+    {
+      return result;
+    }
+
+    // maybe the position is a 'running(..)' function.
+    if (CSSValueFactory.isFunctionValue(value))
+    {
+      final CSSFunctionValue cssFunctionValue = CSSValueFactory.parseFunction(value);
+      if (cssFunctionValue != null)
+      {
+        // we are a bit restrictive for now ..
+        if ("running".equals(cssFunctionValue.getFunctionName()))
+        {
+          return cssFunctionValue;
+        }
+      }
+    }
+    return null;
   }
 }

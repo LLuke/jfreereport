@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.9 2006/10/22 14:58:26 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.10 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,6 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
@@ -201,6 +200,8 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
   // todo: This is part of a cheap hack.
   private transient FontMetrics fontMetrics;
+  private static final int[] EMPTY_EXTRA_CHARS = new int[0];
+  private static final RenderNode[] EMPTY_RENDER_NODE = new RenderNode[0];
 
   public DefaultRenderableTextFactory(final LayoutProcess layoutProcess)
   {
@@ -276,12 +277,17 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       {
         if (i > offset)
         {
-          int[] extraChars = new int[i - clusterStartIdx - 1];
-          if (extraChars.length > 0)
+          final int extraCharLength = i - clusterStartIdx - 1;
+          if (extraCharLength > 0)
           {
+            int[] extraChars = new int[extraCharLength];
             System.arraycopy(text, clusterStartIdx + 1, extraChars, 0, extraChars.length);
+            addGlyph(text[clusterStartIdx], extraChars);
           }
-          addGlyph(text[clusterStartIdx], extraChars);
+          else
+          {
+            addGlyph(text[clusterStartIdx], EMPTY_EXTRA_CHARS);
+          }
         }
 
         clusterStartIdx = i;
@@ -291,12 +297,17 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     // Process the last cluster ...
     if (clusterStartIdx >= offset)
     {
-      int[] extraChars = new int[maxLen - clusterStartIdx - 1];
-      if (extraChars.length > 0)
+      final int extraCharLength = maxLen - clusterStartIdx - 1;
+      if (extraCharLength > 0)
       {
+        int[] extraChars = new int[extraCharLength];
         System.arraycopy(text, clusterStartIdx + 1, extraChars, 0, extraChars.length);
+        addGlyph(text[clusterStartIdx], extraChars);
       }
-      addGlyph(text[clusterStartIdx], extraChars);
+      else
+      {
+        addGlyph(text[clusterStartIdx], EMPTY_EXTRA_CHARS);
+      }
     }
 
     if (words.isEmpty() == false)
@@ -310,7 +321,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     else
     {
       // we did not produce any text.
-      return new RenderNode[0];
+      return EMPTY_RENDER_NODE;
     }
   }
 
@@ -470,8 +481,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
   protected WhiteSpaceFilter createWhitespaceFilter(final LayoutContext layoutContext)
   {
-    final LayoutStyle style = layoutContext.getStyle();
-    final CSSValue wsColl = style.getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE);
+    final CSSValue wsColl = layoutContext.getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE);
 
     if (ObjectUtilities.equal(whitespaceCollapseValue, wsColl))
     {
@@ -500,8 +510,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
   protected GlyphClassificationProducer createGlyphClassifier(final LayoutContext layoutContext)
   {
-    final LayoutStyle style = layoutContext.getStyle();
-    final CSSValue wsColl = style.getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE);
+    final CSSValue wsColl = layoutContext.getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE);
     if (WhitespaceCollapse.PRESERVE.equals(wsColl))
     {
       return new LinebreakClassificationProducer();
@@ -512,8 +521,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   protected BreakOpportunityProducer createBreakProducer
       (final LayoutContext layoutContext)
   {
-    final LayoutStyle style = layoutContext.getStyle();
-    final CSSValue wordBreak = style.getValue(TextStyleKeys.TEXT_WRAP);
+    final CSSValue wordBreak = layoutContext.getValue(TextStyleKeys.TEXT_WRAP);
     if (TextWrap.NONE.equals(wordBreak))
     {
       // surpress all but the linebreaks. This equals the 'pre' mode of HTML
@@ -529,10 +537,9 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       (final LayoutContext layoutContext)
   {
 
-    final LayoutStyle style = layoutContext.getStyle();
-    final CSSValue minValue = style.getValue(TextStyleKeys.X_MIN_LETTER_SPACING);
-    final CSSValue optValue = style.getValue(TextStyleKeys.X_OPTIMUM_LETTER_SPACING);
-    final CSSValue maxValue = style.getValue(TextStyleKeys.X_MAX_LETTER_SPACING);
+    final CSSValue minValue = layoutContext.getValue(TextStyleKeys.X_MIN_LETTER_SPACING);
+    final CSSValue optValue = layoutContext.getValue(TextStyleKeys.X_OPTIMUM_LETTER_SPACING);
+    final CSSValue maxValue = layoutContext.getValue(TextStyleKeys.X_MAX_LETTER_SPACING);
 
     final OutputProcessorMetaData outputMetaData =
         layoutProcess.getOutputMetaData();

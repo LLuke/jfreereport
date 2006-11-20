@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextOverflowEllipsisResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: TextOverflowEllipsisResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,8 @@ import org.jfree.layouting.input.style.values.CSSStringType;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 21.12.2005, 16:48:23
@@ -81,10 +81,10 @@ public class TextOverflowEllipsisResolveHandler implements ResolveHandler
    */
   public void resolve(final LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue value = layoutContext.getValue(key);
     CSSStringValue lineEllipsis = null;
     CSSStringValue blockEllipsis = null;
     if (value instanceof CSSValueList)
@@ -110,8 +110,8 @@ public class TextOverflowEllipsisResolveHandler implements ResolveHandler
       blockEllipsis = new CSSStringValue(CSSStringType.STRING, "..");
     }
 
-    style.setValue(TextStyleKeys.X_BLOCK_TEXT_OVERFLOW_ELLIPSIS, blockEllipsis);
-    style.setValue(TextStyleKeys.X_LINE_TEXT_OVERFLOW_ELLIPSIS, lineEllipsis);
+    layoutContext.setValue(TextStyleKeys.X_BLOCK_TEXT_OVERFLOW_ELLIPSIS, blockEllipsis);
+    layoutContext.setValue(TextStyleKeys.X_LINE_TEXT_OVERFLOW_ELLIPSIS, lineEllipsis);
   }
 
   private CSSStringValue filterString (CSSValue value)

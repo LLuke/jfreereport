@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LetterSpacingResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
+ * $Id: LetterSpacingResolveHandler.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -49,10 +49,10 @@ import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.context.FontSpecification;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 21.12.2005, 15:12:04
@@ -91,20 +91,20 @@ public class LetterSpacingResolveHandler implements ResolveHandler
    */
   public void resolve(final LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
     // Percentages get resolved against the width of a standard space (0x20)
     // character.
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
     final FontSpecification fontSpecification =
-            currentNode.getLayoutContext().getFontSpecification();
+            layoutContext.getFontSpecification();
     final FontMetrics fm = process.getOutputMetaData().getFontMetrics(fontSpecification);
     if (fm == null)
     {
       // we have no font family, so return.
-      style.setValue(TextStyleKeys.X_MIN_LETTER_SPACING, CSSNumericValue.ZERO_LENGTH);
-      style.setValue(TextStyleKeys.X_MAX_LETTER_SPACING, CSSNumericValue.ZERO_LENGTH);
-      style.setValue(TextStyleKeys.X_OPTIMUM_LETTER_SPACING, CSSNumericValue.ZERO_LENGTH);
+      layoutContext.setValue(TextStyleKeys.X_MIN_LETTER_SPACING, CSSNumericValue.ZERO_LENGTH);
+      layoutContext.setValue(TextStyleKeys.X_MAX_LETTER_SPACING, CSSNumericValue.ZERO_LENGTH);
+      layoutContext.setValue(TextStyleKeys.X_OPTIMUM_LETTER_SPACING, CSSNumericValue.ZERO_LENGTH);
       return;
     }
 
@@ -112,18 +112,18 @@ public class LetterSpacingResolveHandler implements ResolveHandler
     final CSSNumericValue percentageBase =
             new CSSNumericValue(CSSNumericType.PT, width);
     final CSSNumericValue min = CSSValueResolverUtility.getLength
-            (resolveValue(style, TextStyleKeys.X_MIN_LETTER_SPACING), percentageBase);
+            (resolveValue(layoutContext, TextStyleKeys.X_MIN_LETTER_SPACING), percentageBase);
     final CSSNumericValue max = CSSValueResolverUtility.getLength
-            (resolveValue(style, TextStyleKeys.X_MAX_LETTER_SPACING), percentageBase);
+            (resolveValue(layoutContext, TextStyleKeys.X_MAX_LETTER_SPACING), percentageBase);
     final CSSNumericValue opt = CSSValueResolverUtility.getLength
-            (resolveValue(style, TextStyleKeys.X_OPTIMUM_LETTER_SPACING), percentageBase);
+            (resolveValue(layoutContext, TextStyleKeys.X_OPTIMUM_LETTER_SPACING), percentageBase);
 
-    style.setValue(TextStyleKeys.X_MIN_LETTER_SPACING, min);
-    style.setValue(TextStyleKeys.X_MAX_LETTER_SPACING, max);
-    style.setValue(TextStyleKeys.X_OPTIMUM_LETTER_SPACING, opt);
+    layoutContext.setValue(TextStyleKeys.X_MIN_LETTER_SPACING, min);
+    layoutContext.setValue(TextStyleKeys.X_MAX_LETTER_SPACING, max);
+    layoutContext.setValue(TextStyleKeys.X_OPTIMUM_LETTER_SPACING, opt);
   }
 
-  private CSSNumericValue resolveValue (LayoutStyle style, StyleKey key)
+  private CSSNumericValue resolveValue (LayoutContext style, StyleKey key)
   {
     final CSSValue value = style.getValue(key);
     if (value instanceof CSSNumericValue == false)

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractOutputProcessor.java,v 1.1 2006/11/12 14:29:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -38,6 +38,7 @@ import org.jfree.layouting.normalizer.content.ContentNormalizer;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.normalizer.displaymodel.DisplayModelBuilder;
 import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
+import org.jfree.layouting.normalizer.generator.PrintContentGenerator;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 
@@ -99,6 +100,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor
    */
   public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
+    //return new DisplayModelBuilder(new PrintContentGenerator(layoutProcess), layoutProcess);
     return new DisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
   }
 

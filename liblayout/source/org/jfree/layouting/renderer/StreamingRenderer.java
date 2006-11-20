@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StreamingRenderer.java,v 1.1 2006/11/11 20:25:36 taqua Exp $
+ * $Id: StreamingRenderer.java,v 1.2 2006/11/13 19:14:05 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.layouter.context.PageContext;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;

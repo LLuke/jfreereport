@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageSizeResolveHandler.java,v 1.1 2006/07/11 13:38:39 taqua Exp $
+ * $Id: PageSizeResolveHandler.java,v 1.2 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -51,8 +51,8 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 16.06.2006, 13:56:31
@@ -84,10 +84,10 @@ public class PageSizeResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    CSSValue value = style.getValue(PageStyleKeys.SIZE);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(PageStyleKeys.SIZE);
 
     String name = null;
     if (value instanceof CSSStringValue)
@@ -111,9 +111,10 @@ public class PageSizeResolveHandler implements ResolveHandler
       ps = process.getOutputMetaData().getDefaultPageSize();
     }
     // if it is stll null, then the output target is not valid.
+    // We will crash in that case ..
     CSSValue page =
         new CSSValuePair(CSSNumericValue.createPtValue(ps.getWidth()),
             CSSNumericValue.createPtValue(ps.getHeight()));
-    style.setValue(PageStyleKeys.SIZE, page);
+    layoutContext.setValue(PageStyleKeys.SIZE, page);
   }
 }

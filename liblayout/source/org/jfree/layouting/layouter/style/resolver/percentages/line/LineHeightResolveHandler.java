@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LineHeightResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
+ * $Id: LineHeightResolveHandler.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,6 @@ import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.context.LayoutContext;
@@ -84,35 +83,34 @@ public class LineHeightResolveHandler implements ResolveHandler
    */
   public void resolve (LayoutProcess process,
                        LayoutElement currentNode,
-                       LayoutStyle style,
                        StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if (LineHeight.NONE.equals(value))
     {
       // query the anchestor, if there's one ..
-      handleNone(currentNode, style);
+      handleNone(currentNode);
       return;
     }
 
     if (LineHeight.NORMAL.equals(value))
     {
-      handleNormal(currentNode, style);
+      handleNormal(currentNode);
       return;
     }
 
     if (value instanceof CSSNumericValue == false)
     {
       // fall back to normal ..
-      handleNormal(currentNode, style);
+      handleNormal(currentNode);
       return;
     }
     CSSNumericValue nval = (CSSNumericValue) value;
-    final LayoutContext layoutContext = currentNode.getLayoutContext();
 
     if (CSSValueResolverUtility.isLengthValue(nval))
     {
-      style.setValue(LineStyleKeys.LINE_HEIGHT, nval);
+      layoutContext.setValue(LineStyleKeys.LINE_HEIGHT, nval);
       return;
     }
 
@@ -127,44 +125,42 @@ public class LineHeightResolveHandler implements ResolveHandler
     }
     else
     {
-      handleNormal(currentNode, style);
+      handleNormal(currentNode);
       return;
     }
 
 
     final double fontSize =
             layoutContext.getFontSpecification().getFontSize();
-    style.setValue(LineStyleKeys.LINE_HEIGHT,
+    layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
             new CSSNumericValue(CSSNumericType.PT, fontSize * factor));
 
   }
 
-  private void handleNormal (LayoutElement currentNode,
-                             LayoutStyle style)
+  private void handleNormal (LayoutElement currentNode)
   {
     final LayoutContext layoutContext = currentNode.getLayoutContext();
     final double fontSize =
             layoutContext.getFontSpecification().getFontSize();
     if (fontSize < 10)
     {
-      style.setValue(LineStyleKeys.LINE_HEIGHT,
+      layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
               new CSSNumericValue(CSSNumericType.PT, fontSize * 1.2));
     }
     else if (fontSize < 24)
     {
-      style.setValue(LineStyleKeys.LINE_HEIGHT,
+      layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
               new CSSNumericValue(CSSNumericType.PT, fontSize * 1.1));
     }
     else
     {
-      style.setValue(LineStyleKeys.LINE_HEIGHT,
+      layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
               new CSSNumericValue(CSSNumericType.PT, fontSize * 1.05));
     }
 
   }
 
-  private void handleNone (LayoutElement currentNode,
-                           LayoutStyle style)
+  private void handleNone (LayoutElement currentNode)
   {
     final double fontSize;
     final LayoutElement parent = currentNode.getParent();
@@ -178,7 +174,7 @@ public class LineHeightResolveHandler implements ResolveHandler
     {
       fontSize = parent.getLayoutContext().getFontSpecification().getFontSize();
     }
-    style.setValue(LineStyleKeys.LINE_HEIGHT,
+    layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
             new CSSNumericValue(CSSNumericType.PT, fontSize));
   }
 }

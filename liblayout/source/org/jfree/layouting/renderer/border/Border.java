@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Border.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
+ * $Id: Border.java,v 1.4 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -74,6 +74,7 @@ public class Border implements Cloneable
   private BorderCorner topRight;
   private BorderCorner bottomLeft;
   private BorderCorner bottomRight;
+  private Boolean empty;
 
   public Border(final BorderEdge top,
                 final BorderEdge left,
@@ -149,9 +150,11 @@ public class Border implements Cloneable
     }
 
     borders[0] = (Border) clone();
+    borders[0].empty = null;
     borders[0].right = borders[0].splittingEdge;
 
     borders[1] = (Border) clone();
+    borders[1].empty = null;
     borders[1].left = borders[1].splittingEdge;
     return borders;
   }
@@ -164,9 +167,11 @@ public class Border implements Cloneable
     }
 
     borders[0] = (Border) clone();
+    borders[0].empty = null;
     borders[0].bottom = borders[0].splittingEdge;
 
     borders[1] = (Border) clone();
+    borders[1].empty = null;
     borders[1].top = borders[1].splittingEdge;
     return borders;
   }
@@ -191,29 +196,40 @@ public class Border implements Cloneable
       final BorderCorner corner = EmptyBorderCorner.getInstance();
 
       emptyBorder = new Border(edge, edge, edge, edge, edge,
-              corner, corner, corner, corner);
+          corner, corner, corner, corner);
     }
     return emptyBorder;
   }
 
   public boolean isEmpty()
   {
+    if (empty != null)
+    {
+      return empty.booleanValue();
+    }
+
     if (top.getWidth().getValue() != 0)
     {
+      empty = Boolean.FALSE;
       return false;
     }
     if (left.getWidth().getValue() != 0)
     {
+      empty = Boolean.FALSE;
       return false;
     }
     if (bottom.getWidth().getValue() != 0)
     {
+      empty = Boolean.FALSE;
       return false;
     }
     if (right.getWidth().getValue() != 0)
     {
+      empty = Boolean.FALSE;
       return false;
     }
+
+    empty = Boolean.TRUE;
     return true;
   }
 

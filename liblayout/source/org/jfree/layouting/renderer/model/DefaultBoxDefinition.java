@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultBoxDefinition.java,v 1.4 2006/07/26 12:41:48 taqua Exp $
+ * $Id: DefaultBoxDefinition.java,v 1.5 2006/07/29 18:57:13 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,8 @@ public class DefaultBoxDefinition implements BoxDefinition
   private RenderLength preferredHeight;
 
   private CSSColorValue backgroundColor;
+
+  private Boolean empty;
 
   public DefaultBoxDefinition()
   {
@@ -422,22 +424,38 @@ public class DefaultBoxDefinition implements BoxDefinition
 
   public boolean isEmpty()
   {
+    if (empty != null)
+    {
+      return empty.booleanValue();
+    }
+
     if (paddingTop.getValue() != 0)
     {
+      empty = Boolean.FALSE;
       return false;
     }
     if (paddingLeft.getValue() != 0)
     {
+      empty = Boolean.FALSE;
       return false;
     }
     if (paddingBottom.getValue() != 0)
     {
+      empty = Boolean.FALSE;
       return false;
     }
     if (paddingRight.getValue() != 0)
     {
+      empty = Boolean.FALSE;
       return false;
     }
-    return border.isEmpty();
+    if (border.isEmpty())
+    {
+      empty = Boolean.FALSE;
+      return false;
+    }
+    
+    empty = Boolean.TRUE;
+    return true;
   }
 }

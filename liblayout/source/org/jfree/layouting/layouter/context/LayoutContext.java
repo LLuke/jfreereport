@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
+ * $Id: LayoutContext.java,v 1.2 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.layouting.layouter.context;
 
 import java.util.Locale;
 
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.util.AttributeMap;
 
 /**
@@ -50,7 +49,7 @@ import org.jfree.layouting.util.AttributeMap;
  *
  * @author Thomas Morgner
  */
-public interface LayoutContext extends Cloneable, StyleContext
+public interface LayoutContext extends LayoutStyle, Cloneable
 {
   public ContextId getContextId();
 
@@ -58,7 +57,6 @@ public interface LayoutContext extends Cloneable, StyleContext
   public FontSpecification getFontSpecification();
   public ContentSpecification getContentSpecification();
   public ListSpecification getListSpecification();
-  public LayoutStyle getStyle();
 
   /**
    * An element can be exactly one pseudo-element type. It is not possible
@@ -102,4 +100,6 @@ public interface LayoutContext extends Cloneable, StyleContext
   public LayoutContext derive();
 
   public LayoutContext deriveAnonymous();
+
+  public void dispose();
 }

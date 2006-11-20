@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PageDrawableImpl.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: LogicalPageDrawable.java,v 1.1 2006/11/17 20:15:52 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -49,6 +49,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowInfoStructure;
@@ -59,6 +60,7 @@ import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
+import org.jfree.layouting.output.pageable.BorderShapeFactory;
 import org.jfree.ui.Drawable;
 import org.jfree.util.Log;
 
@@ -71,24 +73,25 @@ import org.jfree.util.Log;
  */
 public class LogicalPageDrawable implements PageDrawable
 {
-  private RenderBox rootBox;
+  private static final boolean OUTLINE_MODE = false;
+  private LogicalPageBox rootBox;
   private PageFormat pageFormat;
   private double width;
   private double height;
 
-  public LogicalPageDrawable(final RenderBox rootBox)
+  public LogicalPageDrawable(final LogicalPageBox rootBox)
   {
     this.rootBox = rootBox;
-    this.width = rootBox.getWidth() / 1000f;
-    this.height = rootBox.getHeight() / 1000f;
-
-    Log.debug ("Logical Page: " + width + " " + height);
+    this.width = rootBox.getPageWidth() / 1000f;
+    this.height = rootBox.getPageHeight() / 1000f;
 
     Paper paper = new Paper();
     paper.setImageableArea(0,0, width, height);
 
     this.pageFormat = new PageFormat();
     this.pageFormat.setPaper(paper);
+
+    //print();
   }
 
   public PageFormat getPageFormat()
@@ -130,12 +133,17 @@ public class LogicalPageDrawable implements PageDrawable
     g2.setPaint(Color.white);
     g2.fill(area);
 
-    final Rectangle2D.Double bounds = new Rectangle2D.Double
-            (rootBox.getX() / 1000f, rootBox.getY() / 1000f,
-                    rootBox.getWidth() / 1000f, rootBox.getHeight() / 1000f);
-    g2.setPaint(Color.black);
-    g2.draw(bounds);
+//    final Rectangle2D.Double headerBounds = new Rectangle2D.Double
+//            (rootBox.getX() / 1000f, rootBox.getY() / 1000f,
+//                    rootBox.getWidth() / 1000f, rootBox.getHeight() / 1000f);
+//    g2.setPaint(Color.black);
+//    g2.draw(headerBounds);
+    drawBox(g2, rootBox.getHeaderArea(), 0);
     drawBox(g2, rootBox, 0);
+    drawBox(g2, rootBox.getFooterArea(), 0);
+
+//    drawDebugBox(g2, rootBox.getHeaderArea());
+//    drawDebugBox(g2, rootBox.getFooterArea());
   }
 
   private void drawDebugBox (Graphics2D g2, RenderBox box)
@@ -177,9 +185,16 @@ public class LogicalPageDrawable implements PageDrawable
 
   public void drawBox(Graphics2D g2, RenderBox box, int level)
   {
-    //BorderShapeFactory borderShapeFactory = new BorderShapeFactory(box);
-    //borderShapeFactory.generateBorder(g2);
-    drawDebugBox(g2, box);
+    if (OUTLINE_MODE)
+    {
+      drawDebugBox(g2, box);
+    }
+    else
+    {
+      BorderShapeFactory borderShapeFactory = new BorderShapeFactory(box);
+      borderShapeFactory.generateBorder(g2);
+    }
+
 
     RenderNode childs = box.getFirstChild();
     while (childs != null)
@@ -246,7 +261,7 @@ public class LogicalPageDrawable implements PageDrawable
     }
 
     final CSSColorValue cssColor = (CSSColorValue)
-            layoutContext.getStyle().getValue(ColorStyleKeys.COLOR);
+            layoutContext.getValue(ColorStyleKeys.COLOR);
 
     g2.setColor(cssColor);
     g2.setFont(new Font(fontSpecification.getFontFamily(), style,

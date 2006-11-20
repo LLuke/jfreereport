@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BorderWidthResolveHandler.java,v 1.3 2006/05/06 13:02:47 taqua Exp $
+ * $Id: BorderWidthResolveHandler.java,v 1.4 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -51,9 +51,9 @@ import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 11.12.2005, 22:20:16
@@ -98,7 +98,6 @@ public class BorderWidthResolveHandler extends ConstantsResolveHandler
 
   protected CSSValue resolveValue (final LayoutProcess process,
                                    final LayoutElement currentNode,
-                                   final LayoutStyle style,
                                    final StyleKey key)
   {
     final StyleKey borderStyleKey = (StyleKey) keyMapping.get(key);
@@ -108,16 +107,17 @@ public class BorderWidthResolveHandler extends ConstantsResolveHandler
       throw new IllegalArgumentException("This is not a valid key: " + key);
     }
 
-    final CSSValue borderStyle = style.getValue(borderStyleKey);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue borderStyle = layoutContext.getValue(borderStyleKey);
     if (BorderStyle.NONE.equals(borderStyle))
     {
       return CSSNumericValue.ZERO_LENGTH;
     }
 
-    CSSValue value = style.getValue(key);
+    CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSConstant)
     {
-      return super.resolveValue(process, currentNode, style, key);
+      return super.resolveValue(process, currentNode, key);
     }
     return value;
   }

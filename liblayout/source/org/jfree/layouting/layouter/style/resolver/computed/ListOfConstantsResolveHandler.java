@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ListOfConstantsResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: ListOfConstantsResolveHandler.java,v 1.3 2006/07/11 13:29:51 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,12 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.util.Log;
 
 /**
@@ -68,10 +67,9 @@ public abstract class ListOfConstantsResolveHandler extends ConstantsResolveHand
    */
   public void resolve(final LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    CSSValue value = currentNode.getLayoutContext().getValue(key);
     if (value == null)
     {
       return;
@@ -93,18 +91,17 @@ public abstract class ListOfConstantsResolveHandler extends ConstantsResolveHand
       CSSValue item = list.getItem(i);
       if (item instanceof CSSConstant == false)
       {
-        resolveInvalidItem(process, currentNode, style, key, i);
+        resolveInvalidItem(process, currentNode, key, i);
       }
       else
       {
-        resolveItem(process, currentNode, style, key, i, (CSSConstant) item);
+        resolveItem(process, currentNode, key, i, (CSSConstant) item);
       }
     }
   }
 
   protected void resolveInvalidItem (final LayoutProcess process,
                                      LayoutElement currentNode,
-                                     LayoutStyle style,
                                      StyleKey key,
                                      int index)
   {
@@ -113,7 +110,6 @@ public abstract class ListOfConstantsResolveHandler extends ConstantsResolveHand
 
   protected abstract boolean resolveItem(final LayoutProcess process,
                                          LayoutElement currentNode,
-                                         LayoutStyle style,
                                          StyleKey key,
                                          int index,
                                          CSSConstant item);

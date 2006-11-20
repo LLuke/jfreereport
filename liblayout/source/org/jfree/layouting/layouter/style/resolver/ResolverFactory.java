@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResolverFactory.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
+ * $Id: ResolverFactory.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
@@ -157,34 +157,34 @@ public class ResolverFactory
   }
 
   public void performResolve(LayoutProcess process,
-                             final LayoutElement node,
-                             final LayoutStyle style)
+                             final LayoutElement node)
   {
+    final LayoutContext layoutContext = node.getLayoutContext();
     for (int i = 0; i < handlers.length; i++)
     {
       final ResolveHandlerModule handler = handlers[i];
       final StyleKey key = handler.getKey();
-      final CSSValue value = style.getValue(key);
+      final CSSValue value = layoutContext.getValue(key);
 
       final ResolveHandler autoValueHandler = handler.getAutoValueHandler();
       if (autoValueHandler != null)
       {
         if (value instanceof CSSAutoValue)
         {
-          autoValueHandler.resolve(process, node, style, key);
+          autoValueHandler.resolve(process, node, key);
         }
       }
 
       final ResolveHandler compValueHandler = handler.getComputedValueHandler();
       if (compValueHandler != null)
       {
-        compValueHandler.resolve(process, node, style, key);
+        compValueHandler.resolve(process, node, key);
       }
 
       final ResolveHandler percValueHandler = handler.getPercentagesValueHandler();
       if (percValueHandler != null)
       {
-        percValueHandler.resolve(process, node, style, key);
+        percValueHandler.resolve(process, node, key);
       }
     }
   }

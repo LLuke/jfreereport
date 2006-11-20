@@ -4,9 +4,9 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 public class TextDecorationWidthResolveHandler implements ResolveHandler
 {
@@ -31,10 +31,11 @@ public class TextDecorationWidthResolveHandler implements ResolveHandler
    * @param currentNode
    * @param style
    */
-  public void resolve (LayoutProcess process, LayoutElement currentNode, LayoutStyle style,
+  public void resolve (LayoutProcess process,
+                       LayoutElement currentNode,
                        StyleKey key)
   {
-    currentNode.getLayoutContext().getStyle().setValue
-            (key, new CSSNumericValue(CSSNumericType.PT, 1));
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PT, 1));
   }
 }

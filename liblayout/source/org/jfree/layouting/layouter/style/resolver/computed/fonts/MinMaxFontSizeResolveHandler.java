@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MinMaxFontSizeResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: MinMaxFontSizeResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -51,8 +51,8 @@ import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 // todo apply built in defaults instead ...
 /**
@@ -150,10 +150,10 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
    */
   public void resolve(LayoutProcess process,
                          LayoutElement currentNode,
-                         LayoutStyle style,
                          StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSConstant == false)
     {
       // fine, we're done here ...
@@ -165,29 +165,29 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
     if (RelativeFontSize.LARGER.equals(value))
     {
       final double scaleFactor = getScaleLargerFactor(parentFontSize);
-      style.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
+      layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
     }
     else if (RelativeFontSize.SMALLER.equals(value))
     {
       final double scaleFactor = getScaleSmallerFactor(parentFontSize);
-      style.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
+      layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
     }
 
     final CSSValue resolvedValue = lookupValue(constant);
     if (resolvedValue != null)
     {
-      style.setValue(key, resolvedValue);
+      layoutContext.setValue(key, resolvedValue);
       return;
     }
     if (key.equals(FontStyleKeys.MAX_FONT_SIZE))
     {
       // there is no upper limit if the value is invalid
-      style.setValue(key, new CSSNumericValue(CSSNumericType.PT, Short.MAX_VALUE));
+      layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PT, Short.MAX_VALUE));
     }
     else
     {
       // there is no lower limit if the value is invalid
-      style.setValue(key, new CSSNumericValue(CSSNumericType.PT, 0));
+      layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PT, 0));
     }
   }
 

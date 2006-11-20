@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextAlignResolveHandler.java,v 1.3 2006/05/06 13:02:47 taqua Exp $
+ * $Id: TextAlignResolveHandler.java,v 1.4 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,14 +41,14 @@
 package org.jfree.layouting.layouter.style.resolver.computed.text;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.text.TextAlign;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 /**
@@ -77,10 +77,10 @@ public class TextAlignResolveHandler extends ConstantsResolveHandler
    */
   public void resolve(final LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSStringValue)
     {
       // this is a sub-string alignment.
@@ -88,7 +88,7 @@ public class TextAlignResolveHandler extends ConstantsResolveHandler
     }
 
     final CSSConstant alignValue =
-            (CSSConstant) resolveValue(process, currentNode, style, key);
-    style.setValue(TextStyleKeys.TEXT_ALIGN, alignValue);
+            (CSSConstant) resolveValue(process, currentNode, key);
+    layoutContext.setValue(TextStyleKeys.TEXT_ALIGN, alignValue);
   }
 }

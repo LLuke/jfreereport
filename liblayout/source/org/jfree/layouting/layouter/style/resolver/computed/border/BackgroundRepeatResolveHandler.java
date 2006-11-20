@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BackgroundRepeatResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: BackgroundRepeatResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import org.jfree.layouting.input.style.keys.border.BackgroundRepeat;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.input.style.values.CSSValuePair;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.context.BackgroundSpecification;
 
@@ -84,10 +83,9 @@ public class BackgroundRepeatResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    CSSValue value = currentNode.getLayoutContext().getValue(key);
     if (value == null)
     {
       return;

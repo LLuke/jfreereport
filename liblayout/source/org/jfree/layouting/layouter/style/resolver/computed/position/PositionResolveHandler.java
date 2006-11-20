@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PositionResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: PositionResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -52,8 +52,9 @@ import org.jfree.layouting.input.style.keys.positioning.Position;
 import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 public class PositionResolveHandler extends ConstantsResolveHandler
 {
@@ -76,7 +77,6 @@ public class PositionResolveHandler extends ConstantsResolveHandler
   {
     return new StyleKey[]{
             BoxStyleKeys.DISPLAY_MODEL,
-            BoxStyleKeys.FLOAT
     };
   }
 
@@ -88,34 +88,51 @@ public class PositionResolveHandler extends ConstantsResolveHandler
    */
   public void resolve (final LayoutProcess process,
                        final LayoutElement currentNode,
-                       final LayoutStyle style,
                        final StyleKey key)
   {
-    CSSValue displayModel = style.getValue(BoxStyleKeys.DISPLAY_MODEL);
+
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue displayModel = layoutContext.getValue(BoxStyleKeys.DISPLAY_MODEL);
     if (DisplayRole.NONE.equals(displayModel))
     {
       // skip ... the element will not be displayed ...
-      style.setValue(PositioningStyleKeys.POSITION, Position.STATIC);
+      layoutContext.setValue(PositioningStyleKeys.POSITION, Position.STATIC);
       return;
     }
 
-    CSSValue floating = style.getValue(BoxStyleKeys.FLOAT);
-    if (Floating.NONE.equals(floating))
+    final CSSValue rawValue = layoutContext.getValue(key);
+    if (rawValue instanceof CSSFunctionValue)
     {
-      style.setValue(PositioningStyleKeys.POSITION, Position.STATIC);
+      // OK; check for pending ..
+      CSSFunctionValue function = (CSSFunctionValue) rawValue;
+      if ("running".equals(function.getFunctionName()))
+      {
+        // The element will be inside a block-context (same behaviour as
+        // for floats)
+        layoutContext.setValue(BoxStyleKeys.DISPLAY_MODEL, DisplayModel.BLOCK_INSIDE);
+        layoutContext.setValue(BoxStyleKeys.DISPLAY_ROLE, DisplayRole.BLOCK);
+        return;
+      }
+      layoutContext.setValue(PositioningStyleKeys.POSITION, Position.STATIC);
       return;
     }
 
-    final CSSConstant value = (CSSConstant) resolveValue(process, currentNode, style, key);
-    style.setValue(PositioningStyleKeys.POSITION, value);
+    final CSSConstant value = (CSSConstant) resolveValue(process, currentNode, key);
+    layoutContext.setValue(PositioningStyleKeys.POSITION, value);
     if (Position.ABSOLUTE.equals(value) ||
         Position.FIXED.equals(value))
     {
       // http://www.w3.org/TR/REC-CSS2/visuren.html#propdef-float
       // this is specified in 9.7: Relationships between 'display',
-      // 'position', and 'float'
-      style.setValue(BoxStyleKeys.DISPLAY_MODEL, DisplayModel.BLOCK_INSIDE);
-      style.setValue(BoxStyleKeys.DISPLAY_ROLE, DisplayRole.BLOCK);
+      // 'position', and 'float':
+
+      // Quote: Otherwise, 'position' has the value 'absolute' or 'fixed',
+      // 'display' is set to 'block' and 'float' is set to 'none'. The position
+      // of the box will be determined by the 'top', 'right', 'bottom' and
+      // 'left' properties and the box's containing block.
+      layoutContext.setValue(BoxStyleKeys.DISPLAY_MODEL, DisplayModel.BLOCK_INSIDE);
+      layoutContext.setValue(BoxStyleKeys.DISPLAY_ROLE, DisplayRole.BLOCK);
+      layoutContext.setValue(BoxStyleKeys.FLOAT, Floating.NONE);
     }
   }
 }

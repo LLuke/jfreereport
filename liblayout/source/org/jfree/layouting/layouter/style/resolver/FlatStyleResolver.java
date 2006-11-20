@@ -4,8 +4,13 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.PageAreaType;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.LayoutStyle;
+import org.jfree.layouting.layouter.style.LayoutStyleImpl;
 
 /**
  * Not yet used. Needs to be implemented. Its my fast resolver, but that
@@ -33,6 +38,13 @@ public class FlatStyleResolver extends AbstractStyleResolver
 
   }
 
+  public LayoutStyleImpl resolvePageStyle(CSSValue pageName,
+                                                                             PseudoPage[] pseudoPages,
+                                                                             PageAreaType pageArea)
+  {
+    return null;
+  }
+
   /**
    * Performs tests, whether there is a pseudo-element definition for the given
    * element. The element itself can be a pseudo-element as well.
@@ -56,7 +68,7 @@ public class FlatStyleResolver extends AbstractStyleResolver
   public void resolveStyle (LayoutElement node)
   {
     // this is a three stage process
-    final LayoutStyle style = node.getLayoutContext().getStyle();
+    final LayoutContext layoutContext = node.getLayoutContext();
     final StyleKey[] keys = getKeys();
 
     // Stage 0: Initialize with the built-in defaults
@@ -67,7 +79,7 @@ public class FlatStyleResolver extends AbstractStyleResolver
     for (int i = 0; i < keys.length; i++)
     {
       StyleKey key = keys[i];
-      style.setValue(key, initialStyle.getValue(key));
+      layoutContext.setValue(key, initialStyle.getValue(key));
     }
 
     // Stage 2: Search for all class attributes, and lookup the corresponding

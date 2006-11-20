@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CounterResetResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: CounterResetResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -52,8 +52,8 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 public class CounterResetResolveHandler implements ResolveHandler
 {
@@ -82,10 +82,10 @@ public class CounterResetResolveHandler implements ResolveHandler
    */
   public void resolve (final LayoutProcess process,
                        final LayoutElement element,
-                       final LayoutStyle style,
                        final StyleKey key)
   {
-    final CSSValue displayRole = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
+    final LayoutContext layoutContext = element.getLayoutContext();
+    final CSSValue displayRole = layoutContext.getValue(BoxStyleKeys.DISPLAY_ROLE);
     if (DisplayRole.NONE.equals(displayRole))
     {
       // [GENERATED] 8.3. Counters in elements with 'display: none'
@@ -95,7 +95,7 @@ public class CounterResetResolveHandler implements ResolveHandler
       return;
     }
 
-    final CSSValue value = style.getValue(key);
+    final CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSValueList == false)
     {
       return; // do nothing.

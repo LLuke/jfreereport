@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: QuotesResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: QuotesResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,6 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.QuotesPair;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 public class QuotesResolveHandler extends ConstantsResolveHandler
@@ -78,10 +77,12 @@ public class QuotesResolveHandler extends ConstantsResolveHandler
    * @param currentNode
    * @param style
    */
-  public void resolve (final LayoutProcess process, LayoutElement currentNode,
-                       LayoutStyle style, StyleKey key)
+  public void resolve (final LayoutProcess process,
+                       LayoutElement currentNode,
+                       StyleKey key)
   {
-    CSSValue rawValue = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue rawValue = layoutContext.getValue(key);
     if (rawValue instanceof CSSValueList == false)
     {
       return;
@@ -115,7 +116,6 @@ public class QuotesResolveHandler extends ConstantsResolveHandler
 
     final QuotesPair[] quotesArray =
             (QuotesPair[]) quotes.toArray(new QuotesPair[quotes.size()]);
-    final LayoutContext layoutContext = currentNode.getLayoutContext();
     layoutContext.getContentSpecification().setQuotes(quotesArray);
   }
 }

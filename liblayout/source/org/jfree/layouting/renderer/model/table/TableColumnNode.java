@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnNode.java,v 1.3 2006/07/20 17:50:52 taqua Exp $
+ * $Id: TableColumnNode.java,v 1.4 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,7 @@ public class TableColumnNode extends SpacerRenderNode
     super(0, 0, true);
     this.definition = definition;
     
-    final CSSValue value = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
+    final CSSValue value = context.getValue(TableStyleKeys.COL_SPAN);
     this.colspan = (int) CSSValueResolverUtility.getNumericValue(value, 1);
   }
 

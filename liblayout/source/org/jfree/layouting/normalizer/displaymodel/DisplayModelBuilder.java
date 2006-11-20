@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayModelBuilder.java,v 1.4 2006/10/17 16:39:07 taqua Exp $
+ * $Id: DisplayModelBuilder.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,8 @@ import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayModel;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.box.Floating;
+import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
+import org.jfree.layouting.input.style.keys.positioning.Position;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.context.LayoutContext;
@@ -63,6 +65,7 @@ import org.jfree.layouting.normalizer.generator.ContentGenerator;
 import org.jfree.layouting.normalizer.generator.EmptyContentGenerator;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.util.AttributeMap;
+import org.jfree.util.Log;
 
 /**
  * Builds the display model. The display model guarantees, that block and inline
@@ -194,6 +197,7 @@ public class DisplayModelBuilder implements ModelBuilder
         // different border here (the internal-border instead of the external
         // ones.
         final DisplayElement derived = (DisplayElement) contentBox.derive();
+        derived.reopen();
         currentBox.add(derived);
         stack.push(derived);
         currentBox = derived;
@@ -224,6 +228,7 @@ public class DisplayModelBuilder implements ModelBuilder
       // Look, mama, we started a new document. Create a flow context.
       // Oh, yes, by that logic we can have more than one root flow, but
       // for our purpose, thats not a limitation nor a bug at all.
+      // The Input-Feed should prevent that.
       final DisplayRoot newBox = new DisplayRoot(layoutContext);
       newBox.setContentGenerator(contentGenerator);
       newBox.setLayoutProcess(layoutProcess);
@@ -234,13 +239,30 @@ public class DisplayModelBuilder implements ModelBuilder
     }
 
 //    Log.debug ("Start element " + layoutContext.getTagName());
+    final CSSValue displayRole = layoutContext.getValue
+            (BoxStyleKeys.DISPLAY_ROLE);
 
     DisplayElement currentBox = getCurrentContext();
+    if (currentBox instanceof DisplayPassThroughElement ||
+        DisplayRole.NONE.equals(displayRole))
+    {
+      // A pass through element will only contain other pass-through
+      // elements.
+      DisplayPassThroughElement newBox =
+          new DisplayPassThroughElement(layoutContext);
+      newBox.setParent(currentBox);
 
-    final CSSValue floating = layoutContext.getStyle().getValue(
-            BoxStyleKeys.FLOAT);
+      getContentGenerator().startedPassThrough(newBox);
+      stack.push(newBox);
+      return;
+    }
 
-    if (Floating.NONE.equals(floating) == false)
+    final CSSValue position = layoutContext.getValue(PositioningStyleKeys.POSITION);
+    final CSSValue floating = layoutContext.getValue(BoxStyleKeys.FLOAT);
+
+    final boolean b = (Position.STATIC.equals(position) == false &&
+        Position.RELATIVE.equals(position) == false);
+    if (Floating.NONE.equals(floating) == false || b)
     {
       // display model is always block here. This is fixed and defined.
       DisplayFlowElement newBox =
@@ -257,10 +279,8 @@ public class DisplayModelBuilder implements ModelBuilder
       return;
     }
 
-    final CSSValue displayModel = layoutContext.getStyle().getValue(
+    final CSSValue displayModel = layoutContext.getValue(
             BoxStyleKeys.DISPLAY_MODEL);
-    final CSSValue displayRole = layoutContext.getStyle().getValue
-            (BoxStyleKeys.DISPLAY_ROLE);
 
 //    Log.debug ("Display: " + displayModel + " " + displayRole);
     if ("marker".equals(layoutContext.getPseudoElement()))
@@ -466,6 +486,15 @@ public class DisplayModelBuilder implements ModelBuilder
           throws NormalizationException
   {
     final DisplayElement currentBox = getCurrentContext();
+    if (currentBox instanceof DisplayPassThroughElement)
+    {
+      // add pass-through-content
+      final LayoutContext layoutContext = currentBox.getLayoutContext().derive();
+      final DisplayContent node = new DisplayContent(layoutContext, content);
+      getContentGenerator().addPassThroughContent(node);
+      return;
+    }
+
     final LayoutContext layoutContext = currentBox.getLayoutContext().derive();
     final DisplayContent node = new DisplayContent(layoutContext, content);
     currentBox.add(node);
@@ -475,6 +504,12 @@ public class DisplayModelBuilder implements ModelBuilder
           throws NormalizationException
   {
     DisplayElement cb = (DisplayElement) stack.pop();
+    if (cb instanceof DisplayPassThroughElement)
+    {
+      getContentGenerator().finishPassThrough();
+      return;
+    }
+
     while (cb.isAutoGenerated() && stack.isEmpty() == false)
     {
       cb.markFinished();

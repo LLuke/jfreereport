@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontSmoothResolveHandler.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
+ * $Id: FontSmoothResolveHandler.java,v 1.3 2006/07/11 13:29:51 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import org.jfree.layouting.input.style.keys.font.FontSmooth;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.FontSpecification;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.output.OutputProcessorFeature;
 
@@ -82,23 +82,23 @@ public class FontSmoothResolveHandler implements ResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
     // as this is an 'auto' handler, we can assume that 'auto' is the
     // current value
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
     final FontSpecification fs =
-            currentNode.getLayoutContext().getFontSpecification();
+            layoutContext.getFontSpecification();
     final double threshold =
             process.getOutputMetaData().getNumericFeatureValue
             (OutputProcessorFeature.FONT_SMOOTH_THRESHOLD);
     if (fs.getFontSize() < threshold)
     {
-      style.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.NEVER);
+      layoutContext.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.NEVER);
     }
     else
     {
-      style.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.ALWAYS);
+      layoutContext.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.ALWAYS);
     }
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutContext.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
+ * $Id: DefaultLayoutContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,11 @@ package org.jfree.layouting.layouter.context;
 
 import java.util.Locale;
 
-import org.jfree.layouting.layouter.style.LayoutStyle;
-import org.jfree.layouting.layouter.style.LayoutStylePool;
+import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.style.LayoutStyleImpl;
 import org.jfree.layouting.util.AttributeMap;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 14.12.2005, 13:42:06
@@ -57,12 +59,13 @@ public class DefaultLayoutContext implements LayoutContext
   private FontSpecification fontSpecification;
   private ContentSpecification contentSpecification;
   private ListSpecification listSpecification;
-  private LayoutStyle style;
+  private LayoutStyleImpl style;
   private ContextId contextId;
   private String namespace;
   private String tagName;
   private AttributeMap attributeMap;
   private String pseudoElement;
+  private boolean derived;
 
   public DefaultLayoutContext(final ContextId contextId,
                               final String namespace,
@@ -85,7 +88,7 @@ public class DefaultLayoutContext implements LayoutContext
     this.attributeMap = attributeMap;
 
     this.contextId = contextId;
-    this.style = LayoutStylePool.getPool().getStyle();
+    this.style = new LayoutStyleImpl(null);
     this.fontSpecification = new FontSpecification(style);
     this.backgroundSpecification = new BackgroundSpecification();
     this.contentSpecification = new ContentSpecification();
@@ -132,6 +135,16 @@ public class DefaultLayoutContext implements LayoutContext
     return listSpecification;
   }
 
+  public void setValue(final StyleKey key, final CSSValue value)
+  {
+    style.setValue(key, value);
+  }
+
+  public CSSValue getValue(final StyleKey key)
+  {
+    return style.getValue(key);
+  }
+
   public LayoutStyle getStyle()
   {
     return style;
@@ -162,8 +175,13 @@ public class DefaultLayoutContext implements LayoutContext
 
   public Object clone()
   {
+    // todo: Is this sane the way it is now?
     try
     {
+      if (!safeClone)
+      {
+        Log.debug ("Clone called ", new Exception());
+      }
       final DefaultLayoutContext lc = (DefaultLayoutContext) super.clone();
       lc.style = style.createCopy();
       return lc;
@@ -171,21 +189,34 @@ public class DefaultLayoutContext implements LayoutContext
     catch (CloneNotSupportedException e)
     {
       throw new IllegalStateException
-              ("Invalid implementation: Clone not supported.");
+          ("Invalid implementation: Clone not supported.");
     }
   }
 
+  private boolean safeClone;
+
   public LayoutContext derive()
   {
+    safeClone = true;
     DefaultLayoutContext lc = (DefaultLayoutContext) clone();
     lc.tagName = tagName + "*";
+    safeClone = false;
+    lc.safeClone = false;
     return lc;
   }
 
   public LayoutContext deriveAnonymous()
   {
+    safeClone = true;
     DefaultLayoutContext lc = (DefaultLayoutContext) clone();
-    
+
+    safeClone = false;
+    lc.safeClone = false;
     return lc;
+  }
+
+  public void dispose()
+  {
+    style.dispose();
   }
 }

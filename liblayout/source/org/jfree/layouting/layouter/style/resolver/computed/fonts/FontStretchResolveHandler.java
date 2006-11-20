@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontStretchResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: FontStretchResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import org.jfree.layouting.input.style.keys.font.FontStretch;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.util.Log;
 
 /**
@@ -79,10 +79,10 @@ public class FontStretchResolveHandler extends ConstantsResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    final CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue value = layoutContext.getValue(key);
     final CSSConstant result;
     if (FontStretch.WIDER.equals(value))
     {
@@ -112,7 +112,7 @@ public class FontStretchResolveHandler extends ConstantsResolveHandler
     {
       result = FontStretch.NORMAL;
     }
-    style.setValue(key, result);
+    layoutContext.setValue(key, result);
   }
 
   private CSSConstant queryParent(final LayoutElement parent)
@@ -122,7 +122,7 @@ public class FontStretchResolveHandler extends ConstantsResolveHandler
       return FontStretch.NORMAL;
     }
     final CSSValue parentValue =
-            parent.getLayoutContext().getStyle().getValue(FontStyleKeys.FONT_STRETCH);
+            parent.getLayoutContext().getValue(FontStyleKeys.FONT_STRETCH);
     if (parentValue == null)
     {
       Log.error("Assertation failed: Parent stretch is null");

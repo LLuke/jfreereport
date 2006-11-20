@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleKeyRegistry.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
+ * $Id: StyleKeyRegistry.java,v 1.3 2006/07/11 13:29:46 taqua Exp $
  *
  * Changes
  * -------
@@ -93,7 +93,7 @@ public class StyleKeyRegistry
     throw new IllegalStateException("This key is not registered. How could that be?");
   }
 
-  public int getKeyCount()
+  public synchronized int getKeyCount()
   {
     return knownStyleKeys.size();
   }

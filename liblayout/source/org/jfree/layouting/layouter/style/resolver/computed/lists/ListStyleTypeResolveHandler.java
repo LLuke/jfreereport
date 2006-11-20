@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ListStyleTypeResolveHandler.java,v 1.2 2006/04/17 20:51:16 taqua Exp $
+ * $Id: ListStyleTypeResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.layouter.counters.CounterStyleFactory;
 import org.jfree.layouting.layouter.counters.numeric.DecimalCounterStyle;
 import org.jfree.layouting.layouter.context.ListSpecification;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 public class ListStyleTypeResolveHandler extends ConstantsResolveHandler
@@ -179,10 +179,10 @@ public class ListStyleTypeResolveHandler extends ConstantsResolveHandler
    */
   public void resolve (final LayoutProcess process,
                        final LayoutElement currentNode,
-                       final LayoutStyle style,
                        final StyleKey key)
   {
-    final CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue value = layoutContext.getValue(key);
     final ListSpecification lspec =
             currentNode.getLayoutContext().getListSpecification();
     if (ListStyleTypeOther.NORMAL.equals(value))
@@ -193,7 +193,7 @@ public class ListStyleTypeResolveHandler extends ConstantsResolveHandler
     }
     else
     {
-      final CSSValue resolvedValue = resolveValue(process, currentNode, style, key);
+      final CSSValue resolvedValue = resolveValue(process, currentNode, key);
       if (resolvedValue == null)
       {
         lspec.setCounterStyle(new DecimalCounterStyle());

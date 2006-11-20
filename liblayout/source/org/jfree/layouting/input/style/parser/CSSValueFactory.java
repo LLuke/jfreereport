@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSValueFactory.java,v 1.6 2006/07/18 17:26:32 taqua Exp $
+ * $Id: CSSValueFactory.java,v 1.7 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -132,8 +132,9 @@ public class CSSValueFactory
   {
     final CSSValueReadHandler module =
             (CSSValueReadHandler) handlers.get(key.getName());
-    if (module == null || module instanceof CSSCompoundValueReadHandler)
+    if (module == null)
     {
+      //  || module instanceof CSSCompoundValueReadHandler
       // Compund handler are more important than simple handlers ..
       return null;
     }
@@ -392,7 +393,7 @@ public class CSSValueFactory
     }
     else if (isFunctionValue(value) && "attr".equals(value.getFunctionName()))
     {
-      // ATTR function.
+      // ATTR function (extended version).
       if (key == null)
       {
         Log.warn("Got no key for attribute-function " + normalizedName);
@@ -425,12 +426,12 @@ public class CSSValueFactory
     {
       if (key == null)
       {
-        Log.warn("Got no key for compound handler " + normalizedName);
+        Log.info("Unknown style-key: Neither compound handlers nor single-value handers are registered for " + normalizedName);
         return;
       }
       else
       {
-        Log.warn("Got no value for " + normalizedName + " (" + value + ")");
+        Log.warn("Unparsable value: Got no valid result for " + normalizedName + " (" + value + ")");
       }
       return; // ignore this rule ..
     }

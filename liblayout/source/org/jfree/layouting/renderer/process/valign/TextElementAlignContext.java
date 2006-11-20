@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextElementAlignContext.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 public class TextElementAlignContext extends AlignContext
 {
   private long[] baselines;
+  private long baselineShift;
 
   public TextElementAlignContext(final RenderableText text)
   {
@@ -62,24 +63,21 @@ public class TextElementAlignContext extends AlignContext
 
   public long getBaselineDistance(int baseline)
   {
-    return baselines[baseline] - baselines[getDominantBaseline()];
+    return (baselines[baseline] - baselines[getDominantBaseline()]) + baselineShift;
   }
 
   public void shift(final long delta)
   {
-    for (int i = 0; i < baselines.length; i++)
-    {
-      baselines[i] += delta;
-    }
+    baselineShift += delta;
   }
 
   public long getAfterEdge()
   {
-    return this.baselines[ExtendedBaselineInfo.AFTER_EDGE];
+    return this.baselines[ExtendedBaselineInfo.AFTER_EDGE] + baselineShift;
   }
 
   public long getBeforeEdge()
   {
-    return this.baselines[ExtendedBaselineInfo.BEFORE_EDGE];
+    return this.baselines[ExtendedBaselineInfo.BEFORE_EDGE] + baselineShift;
   }
 }

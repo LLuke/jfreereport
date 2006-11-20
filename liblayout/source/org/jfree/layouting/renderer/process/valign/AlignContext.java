@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AlignContext.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,7 @@ public abstract class AlignContext
 {
   private int dominantBaseline;
   private RenderNode node;
+  private AlignContext next;
 
   protected AlignContext(final RenderNode node)
   {
@@ -69,6 +70,16 @@ public abstract class AlignContext
   public RenderNode getNode()
   {
     return node;
+  }
+
+  public AlignContext getNext()
+  {
+    return next;
+  }
+
+  public void setNext(final AlignContext next)
+  {
+    this.next = next;
   }
 
   public abstract void shift (final long delta);

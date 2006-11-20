@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMinorAxisLayoutStep.java,v 1.5 2006/11/09 14:28:49 taqua Exp $
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -40,21 +40,21 @@
  */
 package org.jfree.layouting.renderer.process;
 
+import org.jfree.layouting.input.style.keys.text.TextAlign;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
-import org.jfree.layouting.renderer.model.BoxLayoutProperties;
+import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphPoolBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
+import org.jfree.layouting.renderer.model.PlaceholderRenderNode;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
-import org.jfree.layouting.renderer.model.PlaceholderRenderNode;
-import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -523,7 +523,7 @@ public class InfiniteMinorAxisLayoutStep
     // This aligns all direct childs. Once that is finished, we have to
     // check, whether possibly existing inner-paragraphs are still valid
     // or whether moving them violated any of the inner-pagebreak constraints.
-    LeftAlignmentProcessor processor = create(textAlignment, lastLineAlignment);
+    final TextAlignmentProcessor processor = create(textAlignment, lastLineAlignment);
     final InlineSequenceElement[] sequence = breakState.getSequence();
 
     final long lineStart = paragraph.getContentAreaX1();
@@ -553,10 +553,17 @@ public class InfiniteMinorAxisLayoutStep
     }
   }
 
-  protected LeftAlignmentProcessor create(CSSValue alignment,
+  protected TextAlignmentProcessor create(CSSValue alignment,
                                           CSSValue lastLine)
   {
-    // todo !
+   if (TextAlign.CENTER.equals(alignment))
+    {
+      return new CenterAlignmentProcessor();
+    }
+    else if (TextAlign.RIGHT.equals(alignment))
+   {
+     return new RightAlignmentProcessor();
+   }
     return new LeftAlignmentProcessor();
   }
 

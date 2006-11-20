@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginationStep.java,v 1.5 2006/11/09 14:28:49 taqua Exp $
+ * $Id: PaginationStep.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableColumnGroupNode;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
+import org.jfree.util.Log;
 
 /**
  * Computes the pagination. This step checks, whether content crosses an inner
@@ -143,11 +144,13 @@ public class PaginationStep extends IterateVisualProcessStep
     // Step one: layout the header-section. Record that height.
     final PageAreaRenderBox headerArea = pageBox.getHeaderArea();
     headerHeight = headerArea.getHeight();
+    headerArea.setHeight(headerHeight);
 
     // Step two: The footer. For the footer, we have to traverse the whole
     // thing backwards. Nonetheless, we've got the height.
     final PageAreaRenderBox footerArea = pageBox.getFooterArea();
     footerHeight = footerArea.getHeight();
+    footerArea.setHeight(footerHeight);
 
     // Step three: Perform the breaks. Make sure that at least one
     // line of the normal-flow content can be processed.
@@ -157,24 +160,37 @@ public class PaginationStep extends IterateVisualProcessStep
     physicalBreaks[0] = pageStartOffset;
     for (int i = 0; i < originalBreaks.length; i++)
     {
-      physicalBreaks[i + 1] = originalBreaks[i] -
-          headerHeight + pageStartOffset;
+      physicalBreaks[i + 1] = pageStartOffset +
+          (originalBreaks[i] - headerHeight);
     }
 
     // This is a bit hacky, isnt it?
     physicalBreaks[physicalBreaks.length - 1] -= footerHeight;
 
+    // assertation
+    long totalPageHeight = physicalBreaks[physicalBreaks.length - 1] - physicalBreaks[0];
+    if (totalPageHeight + headerHeight + footerHeight != pageBox.getPageHeight())
+    {
+      throw new IllegalStateException("Assertation failed: Page height");
+    }
+
     // now consume the usable height and stop if all space is used or the
     // end of the document has been reached. Process at least one line of
     // content.
-//    Log.debug("Usable Page-Sizes: ");
-//    for (int i = 0; i < physicalBreaks.length; i++)
-//    {
-//      long physicalBreak = physicalBreaks[i];
-//      Log.debug("BREAK: " + i + " " + physicalBreak);
-//    }
-    startProcessing(pageBox);
+
+    // now process all the other content (excluding the header and footer area)
+    if (startBlockLevelBox(pageBox))
+    {
+      processBoxChilds(pageBox);
+    }
+    finishBlockLevelBox(pageBox);
+    if (pageOverflow)
+    {
+      Log.debug ("Pagination: " + totalPageHeight);
+    }
   }
+
+
 
   protected boolean startInlineLevelBox(final RenderBox box)
   {

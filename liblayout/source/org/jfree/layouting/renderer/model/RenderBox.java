@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.22 2006/11/09 14:28:49 taqua Exp $
+ * $Id: RenderBox.java,v 1.23 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -75,39 +75,31 @@ import org.jfree.layouting.renderer.text.TextUtility;
  */
 public abstract class RenderBox extends RenderNode
 {
-  private BoxDefinition boxDefinition;
   private RenderNode firstChild;
   private RenderNode lastChild;
 
   private boolean open;
-  private boolean preserveSpace;
   private PageContext pageContext;
   private BoxLayoutProperties boxLayoutProperties;
   private StaticBoxLayoutProperties staticBoxLayoutProperties;
 
   private long contentAreaX1;
   private long contentAreaX2;
+  private BoxDefinition boxDefinition;
 
-  private CSSValue dominantBaseline;
-  private ExtendedBaselineInfo nominalBaselineInfo;
+  private int lineCount;
   private ExtendedBaselineInfo baselineInfo;
-
   private long widowsSize;
   private long orphansSize;
-  private int lineCount;
-  private int widows;
-  private int orphans;
-  private boolean avoidPagebreakInside;
 
   public RenderBox(final BoxDefinition boxDefinition)
   {
     if (boxDefinition == null)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("BoxDefinition must not be null");
     }
     this.boxDefinition = boxDefinition;
     this.open = true;
-    this.boxLayoutProperties = new BoxLayoutProperties();
     this.staticBoxLayoutProperties = new StaticBoxLayoutProperties();
   }
 
@@ -120,25 +112,28 @@ public abstract class RenderBox extends RenderNode
   {
     super.appyStyle(context, metaData);
 
-    this.preserveSpace = WhitespaceCollapse.PRESERVE.equals
-        (context.getStyle().getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE));
-    this.dominantBaseline =
-        context.getStyle().getValue(LineStyleKeys.DOMINANT_BASELINE);
+    staticBoxLayoutProperties.setPreserveSpace
+        (WhitespaceCollapse.PRESERVE.equals
+        (context.getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE)));
+    staticBoxLayoutProperties.setDominantBaseline
+        (context.getValue(LineStyleKeys.DOMINANT_BASELINE));
 
     final FontSpecification fontSpecification = context.getFontSpecification();
     final FontMetrics fontMetrics = metaData.getFontMetrics(fontSpecification);
-    nominalBaselineInfo = TextUtility.createBaselineInfo('x', fontMetrics);
+    staticBoxLayoutProperties.setNominalBaselineInfo
+        (TextUtility.createBaselineInfo('x', fontMetrics));
 
-    final CSSValue widowsValue = context.getStyle().getValue(PageStyleKeys.WIDOWS);
-    this.widows = Math.max (1, (int)
-        CSSValueResolverUtility.getNumericValue(widowsValue, 0));
+    final CSSValue widowsValue = context.getValue(PageStyleKeys.WIDOWS);
+    staticBoxLayoutProperties.setWidows(Math.max(1, (int)
+        CSSValueResolverUtility.getNumericValue(widowsValue, 0)));
 
-    final CSSValue orphansValue = context.getStyle().getValue(PageStyleKeys.ORPHANS);
-    this.orphans = Math.max (1, (int)
-        CSSValueResolverUtility.getNumericValue(orphansValue, 0));
+    final CSSValue orphansValue = context.getValue(PageStyleKeys.ORPHANS);
+    staticBoxLayoutProperties.setOrphans(Math.max(1, (int)
+        CSSValueResolverUtility.getNumericValue(orphansValue, 0)));
 
-    final CSSValue pageBreak = context.getStyle().getValue(PageStyleKeys.PAGE_BREAK_INSIDE);
-    this.avoidPagebreakInside = PageBreak.AVOID.equals(pageBreak);
+    final CSSValue pageBreak = context.getValue(PageStyleKeys.PAGE_BREAK_INSIDE);
+    staticBoxLayoutProperties.setAvoidPagebreakInside
+        (PageBreak.AVOID.equals(pageBreak));
   }
 
   public long getWidowsSize()
@@ -173,17 +168,17 @@ public abstract class RenderBox extends RenderNode
 
   public int getWidows()
   {
-    return widows;
+    return staticBoxLayoutProperties.getWidows();
   }
 
   public int getOrphans()
   {
-    return orphans;
+    return staticBoxLayoutProperties.getOrphans();
   }
 
   public boolean isAvoidPagebreakInside()
   {
-    return avoidPagebreakInside;
+    return staticBoxLayoutProperties.isAvoidPagebreakInside();
   }
 
   public ExtendedBaselineInfo getBaselineInfo()
@@ -198,17 +193,17 @@ public abstract class RenderBox extends RenderNode
 
   public ExtendedBaselineInfo getNominalBaselineInfo()
   {
-    return nominalBaselineInfo;
+    return staticBoxLayoutProperties.getNominalBaselineInfo();
   }
 
   public CSSValue getDominantBaseline()
   {
-    return dominantBaseline;
+    return staticBoxLayoutProperties.getDominantBaseline();
   }
 
   public boolean isPreserveSpace()
   {
-    return preserveSpace;
+    return staticBoxLayoutProperties.isPreserveSpace();
   }
 
   public BoxDefinition getBoxDefinition()
@@ -418,7 +413,7 @@ public abstract class RenderBox extends RenderNode
     {
       throw new IllegalArgumentException("None of my childs.");
     }
-    
+
     if (old == replacement)
     {
       // nothing to do ...
@@ -607,16 +602,9 @@ public abstract class RenderBox extends RenderNode
    */
   public Object clone()
   {
-    try
-    {
-      final RenderBox renderBox = (RenderBox) super.clone();
-      renderBox.boxLayoutProperties = (BoxLayoutProperties) boxLayoutProperties.clone();
-      return renderBox;
-    }
-    catch (CloneNotSupportedException e)
-    {
-      throw new IllegalStateException("Clone failed for some reason.");
-    }
+    final RenderBox renderBox = (RenderBox) super.clone();
+    renderBox.boxLayoutProperties = null;
+    return renderBox;
   }
 
   /**
@@ -663,6 +651,47 @@ public abstract class RenderBox extends RenderNode
     {
       box.firstChild = null;
       box.lastChild = null;
+    }
+    return box;
+  }
+
+
+  /**
+   * Derive creates a disconnected node that shares all the properties of the
+   * original node. The derived node will no longer have any parent, silbling,
+   * child or any other relationships with other nodes.
+   *
+   * @return
+   */
+  public RenderNode hibernate()
+  {
+    RenderBox box = (RenderBox) super.hibernate();
+
+    RenderNode node = firstChild;
+    RenderNode currentNode = null;
+    while (node != null)
+    {
+      RenderNode previous = currentNode;
+
+      currentNode = node.hibernate();
+      currentNode.setParent(box);
+      if (previous == null)
+      {
+        box.firstChild = currentNode;
+        currentNode.setPrev(null);
+      }
+      else
+      {
+        previous.setNext(currentNode);
+        currentNode.setPrev(previous);
+      }
+      node = node.getNext();
+    }
+
+    box.lastChild = currentNode;
+    if (lastChild != null)
+    {
+      box.lastChild.setNext(null);
     }
     return box;
   }
@@ -950,21 +979,6 @@ public abstract class RenderBox extends RenderNode
     this.open = open;
   }
 
-  public boolean isAlwaysPropagateEvents()
-  {
-    if (open == false)
-    {
-      return false;
-    }
-
-    final RenderBox parent = getParent();
-    if (parent == null)
-    {
-      return false;
-    }
-    return parent.isAlwaysPropagateEvents();
-  }
-
   public PageContext getPageContext()
   {
     if (pageContext != null)
@@ -997,6 +1011,10 @@ public abstract class RenderBox extends RenderNode
 
   public BoxLayoutProperties getBoxLayoutProperties()
   {
+    if (boxLayoutProperties == null)
+    {
+      this.boxLayoutProperties = new BoxLayoutProperties();
+    }
     return boxLayoutProperties;
   }
 
@@ -1046,4 +1064,13 @@ public abstract class RenderBox extends RenderNode
     return performSimpleSplit(axis);
   }
 
+  public long getEffectiveMarginTop()
+  {
+    return getBoxLayoutProperties().getEffectiveMarginTop();
+  }
+
+  public long getEffectiveMarginBottom()
+  {
+    return getBoxLayoutProperties().getEffectiveMarginBottom();
+  }
 }

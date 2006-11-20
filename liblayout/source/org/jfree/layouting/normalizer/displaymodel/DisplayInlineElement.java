@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayInlineElement.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
+ * $Id: DisplayInlineElement.java,v 1.2 2006/07/17 16:48:52 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 
 /**
@@ -61,8 +60,8 @@ public class DisplayInlineElement extends DisplayElement
 
   public void add(DisplayNode node) throws NormalizationException
   {
-    final LayoutStyle style = node.getLayoutContext().getStyle();
-    final CSSValue dr = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
+    final LayoutContext layoutContext = node.getLayoutContext();
+    final CSSValue dr = layoutContext.getValue(BoxStyleKeys.DISPLAY_ROLE);
     if ((node instanceof DisplayElement == false) ||
         DisplayRole.INLINE.equals(dr))
     {

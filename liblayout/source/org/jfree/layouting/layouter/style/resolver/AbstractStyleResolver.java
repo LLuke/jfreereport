@@ -21,8 +21,9 @@ import org.jfree.layouting.layouter.context.ContextId;
 import org.jfree.layouting.layouter.context.DefaultLayoutContext;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
+import org.jfree.layouting.layouter.style.LayoutStyleImpl;
 import org.jfree.layouting.layouter.style.LayoutStylePool;
 import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
 import org.jfree.layouting.layouter.style.functions.values.AttrValueFunction;
@@ -118,18 +119,10 @@ public abstract class AbstractStyleResolver implements StyleResolver
     this.documentContext = layoutProcess.getDocumentContext();
     this.namespaces = documentContext.getNamespaces();
   }
-
-  public LayoutStyle resolvePageStyle(CSSValue pageName,
-                                      PseudoPage[] pseudoPages,
-                                      PageAreaType pageArea)
-  {
-    // hey, we should implement that, shouldn't we?
-    return LayoutStylePool.getPool().getStyle();
-  }
-
+  
   protected void loadInitialStyle()
   {
-    this.initialStyle = new LayoutStyle(null);
+    this.initialStyle = new LayoutStyleImpl(null);
     try
     {
       final ResourceManager manager = layoutProcess.getResourceManager();

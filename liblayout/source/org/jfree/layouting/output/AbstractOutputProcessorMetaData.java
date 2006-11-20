@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractOutputProcessorMetaData.java,v 1.8 2006/11/12 14:05:28 taqua Exp $
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.9 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,7 @@ public abstract class AbstractOutputProcessorMetaData
   private HashMap numericFeatures;
   private HashMap fontFamilies;
   private FontStorage fontStorage;
+  private static final Class[] SUPPORTED_TYPES = new Class[] {Drawable.class, Image.class};
 
   protected AbstractOutputProcessorMetaData(final FontStorage fontStorage)
   {
@@ -308,7 +309,7 @@ public abstract class AbstractOutputProcessorMetaData
 
   public Class[] getSupportedResourceTypes()
   {
-    return new Class[] {Drawable.class, Image.class};
+    return (Class[]) SUPPORTED_TYPES.clone();
   }
 
   public boolean isIterative()

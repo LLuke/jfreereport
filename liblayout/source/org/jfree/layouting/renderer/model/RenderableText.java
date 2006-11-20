@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.8 2006/07/29 18:57:13 taqua Exp $
+ * $Id: RenderableText.java,v 1.9 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -181,7 +181,7 @@ public class RenderableText extends RenderNode
     NodeLayoutProperties nlp = getNodeLayoutProperties();
     nlp.setMaximumBoxWidth(maximumWidth);
     nlp.setMinimumChunkWidth(minimumChunkWidth);
-    nlp.setMetricsAge(1);
+    nlp.setIcmFinished(true);
   }
 
 
@@ -255,18 +255,6 @@ public class RenderableText extends RenderNode
       }
     }
     return b.toString();
-  }
-
-  /**
-   * Derive creates a disconnected node that shares all the properties of the
-   * original node. The derived node will no longer have any parent, silbling,
-   * child or any other relationships with other nodes.
-   *
-   * @return
-   */
-  public RenderNode derive(boolean deep)
-  {
-    return (RenderableText) super.derive(deep);
   }
 
   public boolean isEmpty()

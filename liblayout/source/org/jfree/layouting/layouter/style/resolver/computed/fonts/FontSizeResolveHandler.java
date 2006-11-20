@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontSizeResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: FontSizeResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,8 @@ import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 18.12.2005, 17:03:15
@@ -146,10 +146,10 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,
-                      LayoutStyle style,
                       StyleKey key)
   {
-    CSSValue value = style.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSConstant == false)
     {
       // fine, we're done here ...
@@ -164,14 +164,14 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
       if (RelativeFontSize.LARGER.equals(value))
       {
         final double scaleFactor = getScaleLargerFactor(parentFontSize);
-        style.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
+        layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
         return;
       }
 
       if (RelativeFontSize.SMALLER.equals(value))
       {
         final double scaleFactor = getScaleSmallerFactor(parentFontSize);
-        style.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
+        layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
         return;
       }
     }
@@ -180,13 +180,13 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
       // we might not have a parent, but that won't stop us ..
       if (RelativeFontSize.LARGER.equals(value))
       {
-        style.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 120));
+        layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 120));
         return ;
       }
 
       if (RelativeFontSize.SMALLER.equals(value))
       {
-        style.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 85));
+        layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 85));
         return;
       }
     }
@@ -194,12 +194,12 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
     final CSSValue resolvedValue = lookupValue(constant);
     if (resolvedValue != null)
     {
-      style.setValue(key, resolvedValue);
+      layoutContext.setValue(key, resolvedValue);
       return;
     }
 
     // do not change the font size..
-    style.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 100));
+    layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 100));
   }
 
   public double getScaleLargerFactor(double parentSize)

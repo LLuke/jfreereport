@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageableOutputProcessor.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
+ * $Id: PageableOutputProcessor.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,9 @@ import org.jfree.layouting.output.OutputProcessor;
  *
  * The page content should not be exposed to the caller.
  *
+ * An output processor has a page cursor attached. The cursor is used to
+ * synchronize restarted input-feeds with the current output state.
+ *
  * @author Thomas Morgner
  */
 public interface PageableOutputProcessor extends OutputProcessor
@@ -63,6 +66,9 @@ public interface PageableOutputProcessor extends OutputProcessor
 
   public LogicalPageKey getLogicalPage (int page);
   public PhysicalPageKey getPhysicalPage (int page);
+
+  public void setPageCursor (int cursor);
+  public int getPageCursor ();
 
   /**
    * Checks, whether the 'processingFinished' event had been received at least

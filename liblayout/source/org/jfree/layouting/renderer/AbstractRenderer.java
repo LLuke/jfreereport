@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractRenderer.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.6 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -51,8 +51,12 @@ import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedStringToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
 import org.jfree.layouting.layouter.content.type.GenericType;
 import org.jfree.layouting.layouter.content.type.ResourceType;
 import org.jfree.layouting.layouter.content.type.TextType;
@@ -68,6 +72,7 @@ import org.jfree.layouting.renderer.model.DefaultBoxDefinitionFactory;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.MarkerRenderBox;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
+import org.jfree.layouting.renderer.model.PageAreaRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
@@ -81,6 +86,7 @@ import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 import org.jfree.layouting.renderer.page.RenderPageContext;
+import org.jfree.layouting.renderer.process.ValidateModelStep;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
 import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.layouting.util.geom.StrictDimension;
@@ -88,6 +94,7 @@ import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.ui.Drawable;
 import org.jfree.ui.ExtendedDrawable;
+import org.jfree.util.Log;
 import org.jfree.util.WaitingImageObserver;
 
 /**
@@ -124,7 +131,7 @@ public abstract class AbstractRenderer implements Renderer
       if (renderer.logicalPageBox != null)
       {
         this.logicalPageBox = (LogicalPageBox)
-            renderer.logicalPageBox.derive(true);
+            renderer.logicalPageBox.hibernate();
       }
 
       try
@@ -204,7 +211,8 @@ public abstract class AbstractRenderer implements Renderer
   // Stateless components ..
   private RenderPageContext pageContext;
   private BoxDefinitionFactory boxDefinitionFactory;
-
+  private Object layoutFailureNodeId;
+  private int layoutFailureReason;
 
   protected AbstractRenderer(final LayoutProcess layoutProcess,
                              final boolean init)
@@ -242,6 +250,13 @@ public abstract class AbstractRenderer implements Renderer
     return pageContext;
   }
 
+  public void setLayoutFailureReason
+      (final int layoutFailureReason, final Object layoutFailureNodeId)
+  {
+    this.layoutFailureNodeId = layoutFailureNodeId;
+    this.layoutFailureReason = layoutFailureReason;
+  }
+
   public void startDocument(final PageContext pageContext)
   {
     if (pageContext == null)
@@ -261,26 +276,34 @@ public abstract class AbstractRenderer implements Renderer
   }
 
   /**
-   * Chances are good, that this one is never used.
-   *
-   * @param context
-   * @throws org.jfree.layouting.normalizer.content.NormalizationException
-   *
+   * @param instanceId can be null if there is no meaningful instanceid.
+   * @throws NormalizationException
    */
-  public void startedPhysicalPageFlow(final LayoutContext context)
+  protected final void tryValidateOutput(Object instanceId)
       throws NormalizationException
   {
-    final BoxDefinition definition =
-        boxDefinitionFactory.createBlockBoxDefinition
-            (context, layoutProcess.getOutputMetaData());
-    final NormalFlowRenderBox item = new NormalFlowRenderBox(definition);
-    item.appyStyle(context, layoutProcess.getOutputMetaData());
+    if (isValidatable(instanceId))
+    {
+      validateOutput();
+    }
+  }
 
-    this.pageContext = pageContext.update(context);
-    item.setPageContext(pageContext.getPageContext());
+  private boolean isValidatable(Object instanceId)
+  {
+    if (layoutFailureReason == ValidateModelStep.BOX_MUST_BE_CLOSED)
+    {
+      if (instanceId != layoutFailureNodeId)
+      {
+//        Log.debug("Validation impossible: waiting for close event" +
+//            " on node " +
+//            logicalPageBox.findNodeById(layoutFailureNodeId));
+        return false;
+      }
 
-    validateOutput();
-
+      layoutFailureReason = ValidateModelStep.LAYOUT_OK;
+      layoutFailureNodeId = null;
+    }
+    return true;
   }
 
   protected abstract void validateOutput() throws NormalizationException;
@@ -301,10 +324,12 @@ public abstract class AbstractRenderer implements Renderer
       }
       root = root.getParent();
     }
-    if (root != logicalPageBox)
-    {
-      throw new IllegalStateException("Root: " + root + " " + logicalPageBox);
-    }
+
+//    if (root != logicalPageBox)
+//    {
+//      // Root can also be a flow.
+//      // throw new IllegalStateException("Root: " + root + " " + logicalPageBox);
+//    }
 
     return insertationPoint;
   }
@@ -334,12 +359,26 @@ public abstract class AbstractRenderer implements Renderer
       // how to differentiate that (so that style-definitions are not that
       // complicated.
 
+      // For now, we keep it simple. running(header) means go to header
+      final CSSValue value = context.getValue(PositioningStyleKeys.POSITION);
+      if (value instanceof CSSFunctionValue)
+      {
+        CSSFunctionValue fnvalue = (CSSFunctionValue) value;
+        final CSSValue[] parameters = fnvalue.getParameters();
+        if (parameters.length > 0)
+        {
+          // Todo: Oh, thats so primitive ...
+          final CSSValue targetValue = parameters[0];
+          startHeaderFlow(targetValue.getCSSText(), context);
+          return;
+        }
+      }
+
+
       // The receiving element would define the content property as
       // 'content: elements(header)'
 
-      // A flow bottom?
-
-      // or an ordinary flow?
+      // an ordinary flow?
       final BoxDefinition contentRoot =
           boxDefinitionFactory.createBlockBoxDefinition
               (context, layoutProcess.getOutputMetaData());
@@ -361,9 +400,39 @@ public abstract class AbstractRenderer implements Renderer
 
       flowContexts.push(flowContext);
     }
+  }
 
-    validateOutput();
+  private void startHeaderFlow (final String target, final LayoutContext context)
+  {
+    final BoxDefinition contentRoot =
+        boxDefinitionFactory.createBlockBoxDefinition
+            (context, layoutProcess.getOutputMetaData());
 
+    NormalFlowRenderBox newFlow = new NormalFlowRenderBox(contentRoot);
+    newFlow.appyStyle(context, layoutProcess.getOutputMetaData());
+    newFlow.setPageContext(pageContext.getPageContext());
+
+    if ("header".equals(target))
+    {
+      final PageAreaRenderBox headerArea = logicalPageBox.getHeaderArea();
+      headerArea.clear();
+      headerArea.addChild(newFlow);
+    }
+    else if ("footer".equals(target))
+    {
+      final PageAreaRenderBox footerArea = logicalPageBox.getFooterArea();
+      footerArea.clear();
+      footerArea.addChild(newFlow);
+    }
+
+    final DefaultRenderableTextFactory textFactory =
+        new DefaultRenderableTextFactory(layoutProcess);
+    textFactory.startText();
+
+    FlowContext flowContext = new FlowContext
+        (textFactory, newFlow);
+
+    flowContexts.push(flowContext);
   }
 
   public void startedTable(final LayoutContext context)
@@ -386,7 +455,7 @@ public abstract class AbstractRenderer implements Renderer
 
     getInsertationPoint().addChild(tableRenderBox);
 
-    validateOutput();
+    // tryValidateOutput();
 
   }
 
@@ -413,7 +482,7 @@ public abstract class AbstractRenderer implements Renderer
     columnGroupNode.appyStyle(context, layoutProcess.getOutputMetaData());
     getInsertationPoint().addChild(columnGroupNode);
 
-    validateOutput();
+    // tryValidateOutput();
 
   }
 
@@ -433,7 +502,7 @@ public abstract class AbstractRenderer implements Renderer
     TableColumnNode columnGroupNode = new TableColumnNode(definition, context);
     getInsertationPoint().addChild(columnGroupNode);
 
-    validateOutput();
+    // tryValidateOutput();
 
   }
 
@@ -456,7 +525,7 @@ public abstract class AbstractRenderer implements Renderer
     tableRenderBox.setPageContext(pageContext.getPageContext());
     getInsertationPoint().addChild(tableRenderBox);
 
-    validateOutput();
+    // tryValidateOutput();
 
   }
 
@@ -478,7 +547,7 @@ public abstract class AbstractRenderer implements Renderer
     tableRenderBox.setPageContext(pageContext.getPageContext());
     getInsertationPoint().addChild(tableRenderBox);
 
-    validateOutput();
+    // tryValidateOutput();
 
   }
 
@@ -502,7 +571,7 @@ public abstract class AbstractRenderer implements Renderer
 
     getInsertationPoint().addChild(tableRenderBox);
 
-    validateOutput();
+    // tryValidateOutput();
 
   }
 
@@ -525,7 +594,7 @@ public abstract class AbstractRenderer implements Renderer
     blockBox.setPageContext(pageContext.getPageContext());
     getInsertationPoint().addChild(blockBox);
 
-    validateOutput();
+    // tryValidateOutput(blockBox.getInstanceId());
   }
 
   public void startedMarker(final LayoutContext context)
@@ -546,7 +615,7 @@ public abstract class AbstractRenderer implements Renderer
     markerBox.setPageContext(pageContext.getPageContext());
     getInsertationPoint().addChild(markerBox);
 
-    validateOutput();
+    // tryValidateOutput();
   }
 
   public void startedRootInline(final LayoutContext context)
@@ -568,7 +637,7 @@ public abstract class AbstractRenderer implements Renderer
 
     getInsertationPoint().addChild(paragraphBox);
 
-    validateOutput();
+    // tryValidateOutput();
   }
 
   public void startedInline(final LayoutContext context)
@@ -589,7 +658,7 @@ public abstract class AbstractRenderer implements Renderer
     final RenderBox insertationPoint = getInsertationPoint();
     insertationPoint.addChild(inlineBox);
 
-    validateOutput();
+    // tryValidateOutput();
   }
 
   public void addContent(final LayoutContext context,
@@ -606,6 +675,7 @@ public abstract class AbstractRenderer implements Renderer
         ResourceType resourceType = (ResourceType) content;
         source = resourceType.getContent().getSource();
       }
+
       final Object raw = generic.getRaw();
       if (raw instanceof Image)
       {
@@ -615,7 +685,7 @@ public abstract class AbstractRenderer implements Renderer
         {
           getInsertationPoint().addChilds(textFactory.finishText());
           getInsertationPoint().addChild(replacedContent);
-          validateOutput();
+          tryValidateOutput(null);
           return;
         }
       }
@@ -627,7 +697,7 @@ public abstract class AbstractRenderer implements Renderer
         {
           getInsertationPoint().addChilds(textFactory.finishText());
           getInsertationPoint().addChild(replacedContent);
-          validateOutput();
+          tryValidateOutput(null);
           return;
         }
       }
@@ -635,8 +705,18 @@ public abstract class AbstractRenderer implements Renderer
 
     if (content instanceof TextType)
     {
-      TextType textRaw = (TextType) content;
-      final String textStr = textRaw.getText();
+      final String textStr;
+      if (content instanceof ResolvedToken)
+      {
+        final ResolvedToken stringToken = (ResolvedToken) content;
+        textStr = resolveComputedToken(stringToken);
+      }
+      else
+      {
+        TextType textRaw = (TextType) content;
+        textStr = textRaw.getText();
+      }
+
       final RenderNode[] text = createText(textStr, context);
       if (text.length == 0)
       {
@@ -645,8 +725,13 @@ public abstract class AbstractRenderer implements Renderer
 
       final RenderBox insertationPoint = getInsertationPoint();
       insertationPoint.addChilds(text);
-      validateOutput();
+      tryValidateOutput(null);
     }
+  }
+
+  protected String resolveComputedToken (ResolvedToken stringToken)
+  {
+    return stringToken.getText();
   }
 
   private RenderNode[] createText(final String str,
@@ -674,17 +759,17 @@ public abstract class AbstractRenderer implements Renderer
       return null;
     }
 
-    final CSSValue widthVal = context.getStyle().getValue(BoxStyleKeys.WIDTH);
+    final CSSValue widthVal = context.getValue(BoxStyleKeys.WIDTH);
     final RenderLength width = DefaultBoxDefinitionFactory.computeWidth
         (widthVal, context, layoutProcess.getOutputMetaData(), true, false);
 
-    final CSSValue heightVal = context.getStyle().getValue(BoxStyleKeys.HEIGHT);
+    final CSSValue heightVal = context.getValue(BoxStyleKeys.HEIGHT);
     final RenderLength height = DefaultBoxDefinitionFactory.computeWidth
         (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
     final StrictDimension dims = StrictGeomUtility.createDimension
         (image.getWidth(null), image.getHeight(null));
     final CSSValue valign =
-        context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+        context.getValue(LineStyleKeys.VERTICAL_ALIGN);
     return new RenderableReplacedContent(image, source, dims, width, height, valign);
   }
 
@@ -702,16 +787,16 @@ public abstract class AbstractRenderer implements Renderer
       dims.setHeight(StrictGeomUtility.toInternalValue(preferredSize.getHeight()));
     }
 
-    final CSSValue widthVal = context.getStyle().getValue(BoxStyleKeys.WIDTH);
+    final CSSValue widthVal = context.getValue(BoxStyleKeys.WIDTH);
     final RenderLength width = DefaultBoxDefinitionFactory.computeWidth
         (widthVal, context, layoutProcess.getOutputMetaData(), true, false);
 
-    final CSSValue heightVal = context.getStyle().getValue(BoxStyleKeys.HEIGHT);
+    final CSSValue heightVal = context.getValue(BoxStyleKeys.HEIGHT);
     final RenderLength height = DefaultBoxDefinitionFactory.computeWidth
         (heightVal, context, layoutProcess.getOutputMetaData(), true, false);
 
     final CSSValue valign =
-        context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN);
+        context.getValue(LineStyleKeys.VERTICAL_ALIGN);
     return new RenderableReplacedContent(image, source, dims, width, height, valign);
   }
 
@@ -723,7 +808,7 @@ public abstract class AbstractRenderer implements Renderer
     insertationPoint.addChilds(nodes);
     insertationPoint.close();
     // currentBox = (RenderBox) currentBox.getParent();
-    validateOutput();
+    tryValidateOutput(insertationPoint.getInstanceId());
   }
 
   public void finishedRootInline() throws NormalizationException
@@ -733,6 +818,8 @@ public abstract class AbstractRenderer implements Renderer
     final RenderNode[] nodes = textFactory.finishText();
     insertationPoint.addChilds(nodes);
     insertationPoint.close();
+
+    tryValidateOutput(insertationPoint.getInstanceId());
   }
 
   public void finishedMarker() throws NormalizationException
@@ -743,7 +830,7 @@ public abstract class AbstractRenderer implements Renderer
     insertationPoint.addChilds(nodes);
 
     insertationPoint.close();
-    validateOutput();
+    tryValidateOutput(insertationPoint.getInstanceId());
   }
 
   public void finishedBlock() throws NormalizationException
@@ -752,7 +839,7 @@ public abstract class AbstractRenderer implements Renderer
     RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
-    validateOutput();
+    tryValidateOutput(insertationPoint.getInstanceId());
   }
 
   public void finishedTableCell() throws NormalizationException
@@ -761,7 +848,13 @@ public abstract class AbstractRenderer implements Renderer
     RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
-    validateOutput();
+
+    // A table cell is always inside a table row - and that one must be closed
+    // before the layouting can continue ..
+
+    // Update the validation tracker; but do not validate...
+    isValidatable(insertationPoint);
+
   }
 
   public void finishedTableRow() throws NormalizationException
@@ -770,7 +863,7 @@ public abstract class AbstractRenderer implements Renderer
     RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
-    validateOutput();
+    tryValidateOutput(insertationPoint.getInstanceId());
   }
 
   public void finishedTableSection() throws NormalizationException
@@ -779,7 +872,7 @@ public abstract class AbstractRenderer implements Renderer
     RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
-    validateOutput();
+    tryValidateOutput(insertationPoint.getInstanceId());
   }
 
   public void finishedTableColumnGroup() throws NormalizationException
@@ -788,7 +881,8 @@ public abstract class AbstractRenderer implements Renderer
     RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
-    validateOutput();
+    // Table Col-groups have no influence on the layout ..
+    // tryValidateOutput();
   }
 
   public void finishedTableColumn() throws NormalizationException
@@ -796,7 +890,7 @@ public abstract class AbstractRenderer implements Renderer
     final RenderBox insertationPoint = getInsertationPoint();
     RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
-    validateOutput();
+    // tryValidateOutput();
   }
 
   public void finishedTable() throws NormalizationException
@@ -805,7 +899,8 @@ public abstract class AbstractRenderer implements Renderer
     RenderableTextFactory textFactory = getCurrentTextFactory();
     insertationPoint.addChilds(textFactory.finishText());
     insertationPoint.close();
-    validateOutput();
+
+    tryValidateOutput(insertationPoint.getInstanceId());
   }
 
   public void finishedFlow() throws NormalizationException
@@ -817,22 +912,14 @@ public abstract class AbstractRenderer implements Renderer
 
     flowContexts.pop();
 
-    validateOutput();
-  }
-
-  public void finishedPhysicalPageFlow() throws NormalizationException
-  {
-    final RenderBox insertationPoint = getInsertationPoint();
-    RenderableTextFactory textFactory = getCurrentTextFactory();
-    insertationPoint.addChilds(textFactory.finishText());
-    insertationPoint.close();
-    validateOutput();
+    tryValidateOutput(insertationPoint.getInstanceId());
   }
 
   public void finishedDocument() throws NormalizationException
   {
     logicalPageBox.close();
-    validateOutput();
+    tryValidateOutput(logicalPageBox.getInstanceId());
+    //validateOutput();
     // At this point, we should have performed the necessary output.
 
     // Ok, lets play a little bit
@@ -856,5 +943,21 @@ public abstract class AbstractRenderer implements Renderer
     this.stringsStore = stringsStore.derive();
 
     this.logicalPageBox.updatePageArea(pageGrid);
+  }
+
+  public void startedPassThrough(final LayoutContext context)
+  {
+
+  }
+
+  public void addPassThroughContent(final LayoutContext context,
+                                    final ContentToken content)
+  {
+
+  }
+
+  public void finishedPassThrough()
+  {
+
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableSectionRenderBox.java,v 1.8 2006/07/27 17:56:27 taqua Exp $
+ * $Id: TableSectionRenderBox.java,v 1.9 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public class TableSectionRenderBox extends BlockRenderBox
   public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
   {
     super.appyStyle(context, metaData);
-    this.displayRole = context.getStyle().getValue(BoxStyleKeys.DISPLAY_ROLE);
+    this.displayRole = context.getValue(BoxStyleKeys.DISPLAY_ROLE);
   }
 
   public CSSValue getDisplayRole()

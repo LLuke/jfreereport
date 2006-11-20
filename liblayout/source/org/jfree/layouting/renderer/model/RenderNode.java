@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.21 2006/11/05 16:45:53 taqua Exp $
+ * $Id: RenderNode.java,v 1.22 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -95,15 +95,7 @@ public abstract class RenderNode implements Cloneable
   private Object instanceId;
 
   private NodeLayoutProperties layoutProperties;
-  private CSSValue alignmentBaseline;
-  private CSSValue alignmentAdjust;
-  private CSSValue baselineShift;
-  private CSSValue verticalAlignment;
-  private RenderLength baselineShiftResolved;
-  private RenderLength alignmentAdjustResolved;
 
-  private String namespace;
-  private String tagName;
   private boolean dirty;
 
   private long stickyMarker;
@@ -116,25 +108,29 @@ public abstract class RenderNode implements Cloneable
 
   public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
   {
-    alignmentBaseline = context.getStyle().getValue(LineStyleKeys.ALIGNMENT_BASELINE);
-    alignmentAdjust = context.getStyle().getValue(LineStyleKeys.ALIGNMENT_ADJUST);
+
+    layoutProperties.setAlignmentBaseline
+        (context.getValue(LineStyleKeys.ALIGNMENT_BASELINE));
+    final CSSValue alignmentAdjust = context.getValue(LineStyleKeys.ALIGNMENT_ADJUST);
+    layoutProperties.setAlignmentAdjust(alignmentAdjust);
     if (alignmentAdjust instanceof CSSNumericValue)
     {
-      alignmentAdjustResolved = RenderLength.convertToInternal
-          (alignmentAdjust, context, metaData);
+      layoutProperties.setAlignmentAdjustResolved
+          (RenderLength.convertToInternal (alignmentAdjust, context, metaData));
     }
-    baselineShift = context.getStyle().getValue(LineStyleKeys.BASELINE_SHIFT);
+    CSSValue baselineShift = context.getValue(LineStyleKeys.BASELINE_SHIFT);
+    layoutProperties.setBaselineShift(baselineShift);
     if (baselineShift instanceof CSSNumericValue)
     {
-      baselineShiftResolved = RenderLength.convertToInternal
-          (baselineShift, context, metaData);
+      layoutProperties.setBaselineShiftResolved(
+          RenderLength.convertToInternal(baselineShift, context, metaData));
     }
 
-    verticalAlignment = normalizeAlignment
-        (context.getStyle().getValue(LineStyleKeys.VERTICAL_ALIGN));
+    layoutProperties.setVerticalAlignment
+        (normalizeAlignment(context.getValue(LineStyleKeys.VERTICAL_ALIGN)));
 
-    namespace = context.getNamespace();
-    tagName = context.getTagName();
+    layoutProperties.setNamespace(context.getNamespace());
+    layoutProperties.setTagName (context.getTagName());
   }
 
   public boolean isDirty()
@@ -149,12 +145,12 @@ public abstract class RenderNode implements Cloneable
 
   public String getNamespace()
   {
-    return namespace;
+    return layoutProperties.getNamespace();
   }
 
   public String getTagName()
   {
-    return tagName;
+    return layoutProperties.getTagName();
   }
 
   protected CSSValue normalizeAlignment(CSSValue verticalAlignment)
@@ -164,32 +160,32 @@ public abstract class RenderNode implements Cloneable
 
   public CSSValue getVerticalAlignment()
   {
-    return verticalAlignment;
+    return layoutProperties.getVerticalAlignment();
   }
 
   public RenderLength getBaselineShiftResolved()
   {
-    return baselineShiftResolved;
+    return layoutProperties.getBaselineShiftResolved();
   }
 
   public CSSValue getAlignmentBaseline()
   {
-    return alignmentBaseline;
+    return layoutProperties.getAlignmentBaseline();
   }
 
   public CSSValue getBaselineShift()
   {
-    return baselineShift;
+    return layoutProperties.getBaselineShift();
   }
 
   public CSSValue getAlignmentAdjust()
   {
-    return alignmentAdjust;
+    return layoutProperties.getAlignmentAdjust();
   }
 
   public RenderLength getAlignmentAdjustResolved()
   {
-    return alignmentAdjustResolved;
+    return layoutProperties.getAlignmentAdjustResolved();
   }
 
   public PageContext getPageContext()
@@ -453,6 +449,22 @@ public abstract class RenderNode implements Cloneable
     return node;
   }
 
+  /**
+   * Derives an hibernation copy. The resulting object should get stripped of
+   * all unnecessary caching information and all objects, which will be
+   * regenerated when the layouting restarts. Size does matter here.
+   * 
+   * @return
+   */
+  public RenderNode hibernate ()
+  {
+    RenderNode node = (RenderNode) clone();
+    node.parent = null;
+    node.next = null;
+    node.prev = null;
+    return node;
+  }
+
   public RenderNode deriveFrozen(boolean deep)
   {
     RenderNode node = (RenderNode) clone();
@@ -545,7 +557,7 @@ public abstract class RenderNode implements Cloneable
     return true;
   }
 
-  public synchronized void updateChangeTracker()
+  public void updateChangeTracker()
   {
     changeTracker += 1;
     if (parent != null)
@@ -554,7 +566,7 @@ public abstract class RenderNode implements Cloneable
     }
   }
 
-  public synchronized long getChangeTracker()
+  public long getChangeTracker()
   {
     return changeTracker;
   }
@@ -567,5 +579,15 @@ public abstract class RenderNode implements Cloneable
   public void setStickyMarker(final long stickyMarker)
   {
     this.stickyMarker = stickyMarker;
+  }
+
+  public long getEffectiveMarginTop()
+  {
+    return 0;
+  }
+
+  public long getEffectiveMarginBottom()
+  {
+    return 0;
   }
 }

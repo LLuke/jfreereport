@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ComputeICMMetricsStep.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
+ * $Id: ComputeICMMetricsStep.java,v 1.3 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ import org.jfree.layouting.util.geom.StrictDimension;
  * That step produces the preferred size for the nodes.
  * <p/>
  * Todo: This must be a visual process step. Margins must be taken into account
- *
+ * This eats another 10% of the time ..
  * @author Thomas Morgner
  */
 public class ComputeICMMetricsStep extends IterateVisualProcessStep
@@ -112,13 +112,33 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
     NodeLayoutProperties nlp = box.getNodeLayoutProperties();
     nlp.setMinimumChunkWidth(hbp + minChunkWidth);
     nlp.setMaximumBoxWidth(hbp + maxBoxWidth);
-    nlp.setMetricsAge(box.getChangeTracker());
+    nlp.setIcmFinished(true);
+  }
+
+  protected boolean startBlockLevelBox(final RenderBox box)
+  {
+    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
+    if (box.isOpen() == false && nlp.isIcmFinished())
+    {
+      return false;
+    }
+    return true;
+  }
+
+  protected boolean startInlineLevelBox(final RenderBox box)
+  {
+    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
+    if (box.isOpen() == false && nlp.isIcmFinished())
+    {
+      return false;
+    }
+    return true;
   }
 
   protected void finishBlockLevelBox(final RenderBox box)
   {
     // Sum up the height; Maximize the width.; add borders and padding
-
+    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
     final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
 
     // horizontal border and padding ..
@@ -133,10 +153,9 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
       final ParagraphRenderBox paragraph = (ParagraphRenderBox) box;
       final NodeLayoutProperties linebox =
           paragraph.getLineboxContainer().getNodeLayoutProperties();
-      NodeLayoutProperties nlp = box.getNodeLayoutProperties();
       nlp.setMinimumChunkWidth(hbp + linebox.getMinimumChunkWidth());
       nlp.setMaximumBoxWidth(hbp + linebox.getMaximumBoxWidth());
-      nlp.setMetricsAge(box.getChangeTracker());
+      nlp.setIcmFinished(true);
       return;
     }
 
@@ -163,17 +182,16 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
       node = node.getVisibleNext();
     }
 
-    NodeLayoutProperties nlp = box.getNodeLayoutProperties();
     nlp.setMinimumChunkWidth(hbp + minChunkWidth);
     nlp.setMaximumBoxWidth(hbp + maxBoxWidth);
-    nlp.setMetricsAge(box.getChangeTracker());
+    nlp.setIcmFinished(true);
   }
 
   protected void processInlineLevelNode(final RenderNode node)
   {
     // These nodes have no real change tracker; they are almost immutable anyway
     final NodeLayoutProperties nlp = node.getNodeLayoutProperties();
-    if (nlp.getMetricsAge() != 0)
+    if (nlp.isIcmFinished())
     {
       return;
     }
@@ -194,7 +212,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
       }
 
       nlp.setMinimumChunkWidth(0);
-      nlp.setMetricsAge(1);
+      nlp.setIcmFinished(true);
     }
     // Text and spacer nodes have been computed at construction time ..
   }
@@ -203,7 +221,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
   {
     // These nodes have no real change tracker; they are almost immutable anyway
     final NodeLayoutProperties nlp = node.getNodeLayoutProperties();
-    if (nlp.getMetricsAge() != 0)
+    if (nlp.isIcmFinished())
     {
       return;
     }
@@ -224,7 +242,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
       }
 
       nlp.setMinimumChunkWidth(0);
-      nlp.setMetricsAge(1);
+      nlp.setIcmFinished(true);
     }
     // Text and spacer nodes have been computed at construction time ..
   }

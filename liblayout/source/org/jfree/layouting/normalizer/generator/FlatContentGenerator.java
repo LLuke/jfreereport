@@ -13,6 +13,7 @@ import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableCellElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayContent;
+import org.jfree.layouting.normalizer.displaymodel.DisplayPassThroughElement;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
@@ -23,12 +24,13 @@ import org.jfree.layouting.StateException;
  * <p/>
  * This transformation is needed for plain document output, like the StarWriter
  * export. It creates its own ambugities, as divs with multiple borders cannot
- * be expressed with this system.
+ * be expressed with this system. (Text processors have no paragraph stacking
+ * at all).
  * <p/>
  * So a smart engine would interfere here and would generated nested tables
  * instead.
  * <p/>
- * Todo: This implementation seems to be driven by madness - it needs a redesign...
+ * Todo: Implement me
  */
 public class FlatContentGenerator implements ContentGenerator
 {
@@ -43,20 +45,6 @@ public class FlatContentGenerator implements ContentGenerator
    * @param pageContext the page context for the default page.
    */
   public void startedDocument(final PageContext pageContext)
-      throws NormalizationException
-  {
-
-  }
-
-  /**
-   * Starts a special flow. A special flow receives content for the special and
-   * page areas; the renderer may have to update the content area size.
-   * <p/>
-   * Todo: This is not yet implemented.
-   *
-   * @param context
-   */
-  public void startedPhysicalPageFlow(final DisplayFlowElement element)
       throws NormalizationException
   {
 
@@ -189,11 +177,6 @@ public class FlatContentGenerator implements ContentGenerator
 
   }
 
-  public void finishedPhysicalPageFlow() throws NormalizationException
-  {
-
-  }
-
   /**
    * Receives notification, that a new flow has started. A new flow is started
    * for each flowing or absolutly positioned element.
@@ -223,5 +206,21 @@ public class FlatContentGenerator implements ContentGenerator
   public State saveState() throws StateException
   {
     return null;
+  }
+
+  public void startedPassThrough(final DisplayPassThroughElement element)
+      throws NormalizationException
+  {
+
+  }
+
+  public void addPassThroughContent(final DisplayContent node)
+  {
+
+  }
+
+  public void finishPassThrough()
+  {
+
   }
 }

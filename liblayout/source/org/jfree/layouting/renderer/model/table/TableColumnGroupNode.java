@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnGroupNode.java,v 1.6 2006/07/29 18:57:13 taqua Exp $
+ * $Id: TableColumnGroupNode.java,v 1.7 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class TableColumnGroupNode extends RenderBox
   public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
   {
     super.appyStyle(context, metaData);
-    final CSSValue value = context.getStyle().getValue(TableStyleKeys.COL_SPAN);
+    final CSSValue value = context.getValue(TableStyleKeys.COL_SPAN);
     this.colspan = (int) CSSValueResolverUtility.getNumericValue(value, 1);
   }
 

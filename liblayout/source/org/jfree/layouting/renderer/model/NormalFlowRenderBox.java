@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: NormalFlowRenderBox.java,v 1.10 2006/10/17 16:39:08 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.11 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,6 @@
 package org.jfree.layouting.renderer.model;
 
 import java.util.ArrayList;
-
-import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * A box that defines its own normal flow. All absolutly positioned or
@@ -100,6 +98,29 @@ public class NormalFlowRenderBox extends BlockRenderBox
   {
     return subFlows.size();
   }
+
+  /**
+   * Derive creates a disconnected node that shares all the properties of the
+   * original node. The derived node will no longer have any parent, silbling,
+   * child or any other relationships with other nodes.
+   *
+   * @return
+   */
+  public RenderNode hibernate()
+  {
+    NormalFlowRenderBox renderBox = (NormalFlowRenderBox) super.hibernate();
+    renderBox.subFlows = new ArrayList(subFlows.size());
+    for (int i = 0; i < subFlows.size(); i++)
+    {
+      NormalFlowRenderBox box = (NormalFlowRenderBox) subFlows.get(i);
+      renderBox.subFlows.add(box.derive(true));
+
+      box.placeHolder = (PlaceholderRenderNode) findNodeById(box.placeHolderId);
+    }
+    renderBox.placeHolder = null;
+    return renderBox;
+  }
+
 
   /**
    * Derive creates a disconnected node that shares all the properties of the
@@ -179,4 +200,17 @@ public class NormalFlowRenderBox extends BlockRenderBox
     return this;
   }
 
+  public RenderNode findNodeById(Object instanceId)
+  {
+    for (int i = 0; i < subFlows.size(); i++)
+    {
+      RenderNode node = (RenderNode) subFlows.get(i);
+      final RenderNode nodeById = node.findNodeById(instanceId);
+      if (nodeById != null)
+      {
+        return nodeById;
+      }
+    }
+    return super.findNodeById(instanceId);
+  }
 }

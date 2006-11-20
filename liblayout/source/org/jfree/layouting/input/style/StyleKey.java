@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleKey.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
+ * $Id: StyleKey.java,v 1.3 2006/07/11 13:29:46 taqua Exp $
  *
  * Changes
  * -------
@@ -140,7 +140,7 @@ public final class StyleKey implements Serializable, Cloneable
     return name;
   }
 
-  public final int getIndex()
+  public int getIndex()
   {
     return index;
   }

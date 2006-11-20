@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SizeReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
+ * $Id: SizeReadHandler.java,v 1.3 2006/07/26 16:59:46 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,6 @@ import org.jfree.layouting.input.style.parser.stylehandler.AbstractWidthReadHand
 import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.w3c.css.sac.LexicalUnit;
 
@@ -123,29 +122,29 @@ public class SizeReadHandler extends AbstractWidthReadHandler
     }
     else
     {
-      final CSSNumericValue topWidth = (CSSNumericValue) parseWidth(value);
-      if (topWidth == null)
+      final CSSNumericValue horizontalWidth = (CSSNumericValue) parseWidth(value);
+      if (horizontalWidth == null)
       {
         return null;
       }
 
       value = value.getNextLexicalUnit();
 
-      final CSSNumericValue rightWidth;
+      final CSSNumericValue verticalWidth;
       if (value == null)
       {
-        rightWidth = topWidth;
+        verticalWidth = horizontalWidth;
       }
       else
       {
-        rightWidth = (CSSNumericValue) parseWidth(value);
-        if (rightWidth == null)
+        verticalWidth = (CSSNumericValue) parseWidth(value);
+        if (verticalWidth == null)
         {
           return null;
         }
       }
 
-      return new CSSValuePair (topWidth, rightWidth);
+      return new CSSValuePair (horizontalWidth, verticalWidth);
     }
   }
 

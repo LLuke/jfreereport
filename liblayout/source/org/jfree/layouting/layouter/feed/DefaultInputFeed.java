@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultInputFeed.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
+ * $Id: DefaultInputFeed.java,v 1.4 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -464,6 +464,7 @@ public class DefaultInputFeed implements InputFeed
       try
       {
         getNormalizer().startElement (this.namespace, tagName, currentAttributes);
+        currentAttributes = null;
       }
       catch (NormalizationException e)
       {
@@ -522,6 +523,7 @@ public class DefaultInputFeed implements InputFeed
               oldState == ELEMENT_STARTED)
       {
         getNormalizer().startElement (this.namespace, tagName, currentAttributes);
+        currentAttributes = null;
       }
       else if (oldState == ELEMENT_EXPECTED ||
               oldState == META_EXPECTED)
@@ -559,8 +561,8 @@ public class DefaultInputFeed implements InputFeed
               oldState == ELEMENT_STARTED)
       {
         getNormalizer().startElement (this.namespace, tagName, currentAttributes);
+        currentAttributes = null;
       }
-
 
       performEndElement();
     }

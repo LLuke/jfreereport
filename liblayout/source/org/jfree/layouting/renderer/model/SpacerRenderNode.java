@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpacerRenderNode.java,v 1.8 2006/07/29 18:57:13 taqua Exp $
+ * $Id: SpacerRenderNode.java,v 1.9 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class SpacerRenderNode extends RenderNode
     NodeLayoutProperties nlp = getNodeLayoutProperties();
     nlp.setMaximumBoxWidth(width);
     nlp.setMinimumChunkWidth(0);
-    nlp.setMetricsAge(1);
+    nlp.setIcmFinished(true);
     empty = width == 0 && height == 0;
   }
 

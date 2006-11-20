@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MoveToResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
+ * $Id: MoveToResolveHandler.java,v 1.4 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -51,11 +51,10 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.content.computed.CounterToken;
 import org.jfree.layouting.layouter.content.computed.CountersToken;
-import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedCounterToken;
 import org.jfree.layouting.layouter.context.ContentSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 public class MoveToResolveHandler implements ResolveHandler
@@ -85,9 +84,11 @@ public class MoveToResolveHandler implements ResolveHandler
     for (int i = 0; i < contents.length; i++)
     {
       ContentToken content = contents[i];
-      if (content instanceof ResolvedToken)
+      if (content instanceof ResolvedCounterToken)
       {
-        ResolvedToken computedToken = (ResolvedToken) content;
+        // this should not happen, as the resolving of content-tokens happens
+        // after the style resolving process ..
+        ResolvedCounterToken computedToken = (ResolvedCounterToken) content;
         content = computedToken.getParent();
       }
 
@@ -119,11 +120,10 @@ public class MoveToResolveHandler implements ResolveHandler
    */
   public void resolve (LayoutProcess process,
                        LayoutElement currentNode,
-                       LayoutStyle style,
                        StyleKey key)
   {
-    final CSSValue value = style.getValue(ContentStyleKeys.MOVE_TO);
-    LayoutContext layoutContext = currentNode.getLayoutContext();
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue value = layoutContext.getValue(ContentStyleKeys.MOVE_TO);
 
     // Maybe this is a 'normal'.
     if (MoveToValues.NORMAL.equals(value))
@@ -135,7 +135,7 @@ public class MoveToResolveHandler implements ResolveHandler
         // value of 'move-to' is 'footnotes'.
         if (isCounterUsed(currentNode.getParent(), "footnote"))
         {
-          style.setValue(ContentStyleKeys.MOVE_TO,
+          layoutContext.setValue(ContentStyleKeys.MOVE_TO,
               new CSSStringValue(CSSStringType.STRING, "footnotes"));
           return;
         }
@@ -145,7 +145,7 @@ public class MoveToResolveHandler implements ResolveHandler
         // value of 'move-to' is 'endnotes'.
         if (isCounterUsed(currentNode.getParent(), "endnote"))
         {
-          style.setValue(ContentStyleKeys.MOVE_TO,
+          layoutContext.setValue(ContentStyleKeys.MOVE_TO,
               new CSSStringValue(CSSStringType.STRING, "endnotes"));
           return;
         }
@@ -155,12 +155,12 @@ public class MoveToResolveHandler implements ResolveHandler
         // computed value of 'move-to' is 'section-notes'.
         if (isCounterUsed(currentNode.getParent(), "section-note"))
         {
-          style.setValue(ContentStyleKeys.MOVE_TO,
+          layoutContext.setValue(ContentStyleKeys.MOVE_TO,
               new CSSStringValue(CSSStringType.STRING, "section-notes"));
           return;
         }
       }
-      style.setValue(ContentStyleKeys.MOVE_TO, MoveToValues.HERE);
+      layoutContext.setValue(ContentStyleKeys.MOVE_TO, MoveToValues.HERE);
     }
   }
 }

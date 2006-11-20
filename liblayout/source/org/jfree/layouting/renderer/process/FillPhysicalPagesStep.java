@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FillPhysicalPagesStep.java,v 1.2 2006/10/31 11:14:12 taqua Exp $
+ * $Id: FillPhysicalPagesStep.java,v 1.3 2006/11/09 14:28:49 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.util.Log;
 
 /**
  * This Step copies all content from the logical page into the page-grid. When
@@ -60,7 +59,8 @@ import org.jfree.util.Log;
  */
 public class FillPhysicalPagesStep extends IterateVisualProcessStep
 {
-  private long pageSize;
+  private long contentEnd;
+  private long contentStart;
 
   public FillPhysicalPagesStep()
   {
@@ -70,7 +70,8 @@ public class FillPhysicalPagesStep extends IterateVisualProcessStep
                                 final long pageStart,
                                 final long pageEnd)
   {
-    this.pageSize = pageEnd - pageStart;
+    this.contentStart = pagebox.getHeaderArea().getHeight();
+    this.contentEnd = (pageEnd - pageStart) + contentStart;
 
     // This is a simpel strategy.
     // Copy and relocate, then prune. (I whished we could prune first, but
@@ -80,25 +81,32 @@ public class FillPhysicalPagesStep extends IterateVisualProcessStep
     // phyiscal page. This would be an total overkill.
     final LogicalPageBox derived = (LogicalPageBox) pagebox.derive(true);
 
-    // reorganize ...
-    final long headerSize = derived.getHeaderArea().getHeight();
-
     // first, shift the normal-flow content downwards.
     // The start of the logical pagebox might be in the negative range now
+    // The header-size has already been taken into account by the pagination
+    // step.
     BoxShifter boxShifter = new BoxShifter();
-    final long normalFlowShift = -(pageStart - headerSize);
-    boxShifter.shiftBoxUnchecked(derived, normalFlowShift);
+    boxShifter.shiftBoxUnchecked(derived, -pageStart + contentStart);
+
+    // now remove all the content that will not be visible at all ..
+    if (startBlockLevelBox(derived))
+    {
+      // not processing the header and footer area: they are 'out-of-context' bands
+      processBoxChilds(derived);
+    }
+    finishBlockLevelBox(derived);
 
     // Then add the header at the top - it starts at (0,0) and thus it is
     // ok to leave it unshifted.
-    derived.insertFirst(derived.getHeaderArea());
+
     // finally, move the footer at the bottom (to the page's bottom, please!)
     final PageAreaRenderBox footerArea = derived.getFooterArea();
-    final long footerPosition = pageSize - (footerArea.getY() + footerArea.getHeight());
-    boxShifter.shiftBoxUnchecked(footerArea, footerPosition);
-    derived.insertLast(footerArea);
+    final long footerPosition = pagebox.getPageHeight() -
+        (footerArea.getY() + footerArea.getHeight());
+    final long footerShift = footerPosition - footerArea.getY();
+    boxShifter.shiftBoxUnchecked(footerArea, footerShift);
 
-    startProcessing(derived);
+    // the renderer is responsible for painting the page-header and footer ..
     return derived;
   }
 
@@ -118,13 +126,13 @@ public class FillPhysicalPagesStep extends IterateVisualProcessStep
     RenderNode node = box.getFirstChild();
     while (node != null)
     {
-      if ((node.getY() + node.getHeight()) <= 0)
+      if ((node.getY() + node.getHeight()) <= contentStart)
       {
         final RenderNode next = node.getNext();
         box.remove(node);
         node = next;
       }
-      else if (node.getY() >= pageSize)
+      else if (node.getY() >= contentEnd)
       {
         final RenderNode next = node.getNext();
         box.remove(node);

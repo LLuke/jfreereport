@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: EmptyRenderer.java,v 1.3 2006/10/27 18:25:50 taqua Exp $
+ * $Id: PrintingRenderer.java,v 1.1 2006/11/11 20:25:36 taqua Exp $
  *
  * Changes
  * -------
@@ -103,26 +103,6 @@ public class PrintingRenderer implements Renderer
   }
 
   /**
-   * Starts a special flow. A special flow receives content for the special and
-   * page areas; the renderer may have to update the content area size.
-   * <p/>
-   * When this method is called, it is up to the renderer to find out which page
-   * area needs to be updated. If the context cannot be resolved to a defined
-   * special area, the content is handled as if it is a block content.
-   * <p/>
-   * The special flow always addresses physical page areas. The logical page
-   * areas are not special in any way.
-   *
-   * @param context
-   */
-  public void startedPhysicalPageFlow(final LayoutContext context)
-          throws NormalizationException
-  {
-    Log.debug ("<physical-page-flow>");
-    parent.startedPhysicalPageFlow(context);
-  }
-
-  /**
    * Starts a floating, absolute or static element. This establishes a new
    * normal flow for the element.
    *
@@ -131,15 +111,17 @@ public class PrintingRenderer implements Renderer
   public void startedFlow(final LayoutContext context)
           throws NormalizationException
   {
-    Log.debug ("<flow>");
+    Log.debug ("<flow " +
+        "tag='" + context.getTagName() + "' namespace='" + context.getNamespace() + "'>");
     parent.startedFlow(context);
   }
 
-  public void startedTable(final LayoutContext layoutContext)
+  public void startedTable(final LayoutContext context)
           throws NormalizationException
   {
-    Log.debug ("<table>");
-    parent.startedTable(layoutContext);
+    Log.debug ("<table " +
+        "tag='" + context.getTagName() + "' namespace='" + context.getNamespace() + "'>");
+    parent.startedTable(context);
   }
 
   public void startedTableSection(final LayoutContext layoutContext)
@@ -166,7 +148,8 @@ public class PrintingRenderer implements Renderer
   public void startedBlock(final LayoutContext context)
           throws NormalizationException
   {
-    Log.debug ("<block>");
+    Log.debug ("<block " +
+        "tag='" + context.getTagName() + "' namespace='" + context.getNamespace() + "'>");
     parent.startedBlock(context);
   }
 
@@ -253,12 +236,6 @@ public class PrintingRenderer implements Renderer
     parent.finishedFlow();
   }
 
-  public void finishedPhysicalPageFlow() throws NormalizationException
-  {
-    Log.debug ("</physical-flow>");
-    parent.finishedPhysicalPageFlow();
-  }
-
   public void finishedDocument() throws NormalizationException
   {
     Log.debug ("</document>");
@@ -302,6 +279,25 @@ public class PrintingRenderer implements Renderer
   {
     Log.debug ("<!-- PAGEBREAK ENCOUNTERED -->");
     parent.handlePageBreak(pageContext);
+  }
+
+  public void startedPassThrough(final LayoutContext context)
+  {
+    Log.debug ("<pass-through>");
+    parent.startedPassThrough(context);
+  }
+
+  public void addPassThroughContent(final LayoutContext context,
+                                    final ContentToken content)
+  {
+    Log.debug ("<pass-through-content>" + content + "</pass-through-content>");
+    parent.addPassThroughContent(context, content);
+  }
+
+  public void finishedPassThrough()
+  {
+    Log.debug ("</pass-through>");
+    parent.finishedPassThrough();
   }
 
   public State saveState() throws StateException

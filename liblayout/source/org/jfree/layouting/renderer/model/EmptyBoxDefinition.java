@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: EmptyBoxDefinition.java,v 1.3 2006/07/18 14:40:28 taqua Exp $
+ * $Id: EmptyBoxDefinition.java,v 1.4 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -50,11 +50,22 @@ import org.jfree.layouting.renderer.border.RenderLength;
  *
  * @author Thomas Morgner
  */
-public class EmptyBoxDefinition implements BoxDefinition
+public final class EmptyBoxDefinition implements BoxDefinition
 {
+  private static EmptyBoxDefinition instance;
+
+  public static synchronized EmptyBoxDefinition getInstance()
+  {
+    if (instance == null)
+    {
+      instance = new EmptyBoxDefinition();
+    }
+    return instance;
+  }
+
   private Border border;
 
-  public EmptyBoxDefinition()
+  private EmptyBoxDefinition()
   {
     border = Border.createEmptyBorder();
   }

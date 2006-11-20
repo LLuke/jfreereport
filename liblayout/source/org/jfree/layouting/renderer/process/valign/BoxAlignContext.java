@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BoxAlignContext.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: BoxAlignContext.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -42,12 +42,11 @@ package org.jfree.layouting.renderer.process.valign;
 
 import java.util.ArrayList;
 
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.TextUtility;
-import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * Creation-Date: 13.10.2006, 22:22:10
@@ -56,15 +55,15 @@ import org.jfree.layouting.input.style.values.CSSValue;
  */
 public class BoxAlignContext extends AlignContext
 {
-  private ArrayList childs;
   private long insetsTop;
   private long insetsBottom;
   private long[] baselines;
+  private AlignContext firstChild;
+  private AlignContext lastChild;
 
   public BoxAlignContext(RenderBox box)
   {
     super(box);
-    this.childs = new ArrayList();
 
     ExtendedBaselineInfo baselineInfo = box.getBaselineInfo();
     if (baselineInfo == null)
@@ -80,7 +79,7 @@ public class BoxAlignContext extends AlignContext
     insetsTop = blp.getBorderTop() + blp.getPaddingTop();
     insetsBottom = blp.getBorderBottom() + blp.getPaddingBottom();
 
-    baselines = baselineInfo.getBaselines();
+    baselines = (long[]) baselineInfo.getBaselines().clone();
     for (int i = 1; i < baselines.length; i++)
     {
       baselines[i] += insetsTop;
@@ -91,12 +90,19 @@ public class BoxAlignContext extends AlignContext
 
   public void addChild(AlignContext context)
   {
-    childs.add(context);
+    if (lastChild == null)
+    {
+      firstChild = context;
+      lastChild = context;
+      return;
+    }
+    lastChild.setNext(context);
+    lastChild = context;
   }
 
-  public AlignContext[] getChilds ()
+  public AlignContext getFirstChild()
   {
-    return (AlignContext[]) childs.toArray(new AlignContext[childs.size()]);
+    return firstChild;
   }
 
   public long getInsetsTop()
@@ -121,10 +127,11 @@ public class BoxAlignContext extends AlignContext
       baselines[i] += delta;
     }
 
-    for (int i = 0; i < childs.size(); i++)
+    AlignContext child = getFirstChild();
+    while (child != null)
     {
-      AlignContext context = (AlignContext) childs.get(i);
-      context.shift(delta);
+      child.shift(delta);
+      child = child.getNext();
     }
   }
 
@@ -143,7 +150,7 @@ public class BoxAlignContext extends AlignContext
     this.baselines[ExtendedBaselineInfo.BEFORE_EDGE] = offset;
   }
 
-  public void setAfterEdge (final long offset)
+  public void setAfterEdge(final long offset)
   {
     this.baselines[ExtendedBaselineInfo.AFTER_EDGE] = offset;
   }

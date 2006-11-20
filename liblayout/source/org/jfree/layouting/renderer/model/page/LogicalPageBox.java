@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.13 2006/10/31 11:14:12 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.14 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -113,7 +113,7 @@ public class LogicalPageBox extends BlockRenderBox
 
   public LogicalPageBox(final PageGrid pageGrid)
   {
-    super(new EmptyBoxDefinition());
+    super(EmptyBoxDefinition.getInstance());
 
     if (pageGrid == null)
     {
@@ -122,11 +122,11 @@ public class LogicalPageBox extends BlockRenderBox
 
     this.subFlows = new ArrayList();
     NormalFlowRenderBox contentArea =
-        new NormalFlowRenderBox(new EmptyBoxDefinition());
+        new NormalFlowRenderBox(EmptyBoxDefinition.getInstance());
     this.contentAreaId = contentArea.getInstanceId();
-    this.headerArea = new PageAreaRenderBox(new EmptyBoxDefinition());
+    this.headerArea = new PageAreaRenderBox(EmptyBoxDefinition.getInstance());
     this.headerArea.setParent(this);
-    this.footerArea = new PageAreaRenderBox(new EmptyBoxDefinition());
+    this.footerArea = new PageAreaRenderBox(EmptyBoxDefinition.getInstance());
     this.footerArea.setParent(this);
 
     updatePageArea(pageGrid);
@@ -269,6 +269,15 @@ public class LogicalPageBox extends BlockRenderBox
     final LogicalPageBox box = (LogicalPageBox) super.deriveFrozen(deepDerive);
     box.headerArea = (PageAreaRenderBox) headerArea.deriveFrozen(deepDerive);
     box.footerArea = (PageAreaRenderBox) footerArea.deriveFrozen(deepDerive);
+
+    box.subFlows.clear();
+
+    for (int i = 0; i < subFlows.size(); i++)
+    {
+      NormalFlowRenderBox flowRenderBox = (NormalFlowRenderBox) subFlows.get(i);
+      box.subFlows.add(flowRenderBox.deriveFrozen(deepDerive));
+    }
+
     return box;
   }
 
@@ -284,6 +293,38 @@ public class LogicalPageBox extends BlockRenderBox
     final LogicalPageBox box = (LogicalPageBox) super.derive(deepDerive);
     box.headerArea = (PageAreaRenderBox) headerArea.derive(deepDerive);
     box.footerArea = (PageAreaRenderBox) footerArea.derive(deepDerive);
+    box.subFlows.clear();
+
+    for (int i = 0; i < subFlows.size(); i++)
+    {
+      NormalFlowRenderBox flowRenderBox = (NormalFlowRenderBox) subFlows.get(i);
+      box.subFlows.add(flowRenderBox.derive(deepDerive));
+    }
+
+    return box;
+  }
+
+  /**
+   * Derives an hibernation copy. The resulting object should get stripped of
+   * all unnecessary caching information and all objects, which will be
+   * regenerated when the layouting restarts. Size does matter here.
+   *
+   * @return
+   */
+  public RenderNode hibernate()
+  {
+    final LogicalPageBox box = (LogicalPageBox) super.hibernate();
+    box.headerArea = (PageAreaRenderBox) headerArea.hibernate();
+    box.footerArea = (PageAreaRenderBox) footerArea.hibernate();
+
+    box.subFlows.clear();
+
+    for (int i = 0; i < subFlows.size(); i++)
+    {
+      NormalFlowRenderBox flowRenderBox = (NormalFlowRenderBox) subFlows.get(i);
+      box.subFlows.add(flowRenderBox.hibernate());
+    }
+
     return box;
   }
 
@@ -301,6 +342,7 @@ public class LogicalPageBox extends BlockRenderBox
       o.pageHeights = (long[]) pageHeights.clone();
       o.pageWidths = (long[]) pageWidths.clone();
       o.pageGrid = (PageGrid) pageGrid.clone();
+      o.subFlows = (ArrayList) subFlows.clone();
       return o;
     }
     catch (CloneNotSupportedException e)
@@ -347,5 +389,23 @@ public class LogicalPageBox extends BlockRenderBox
   public void insertLast(RenderNode node)
   {
     insertAfter(getLastChild(), node);
+  }
+
+  public RenderNode findNodeById(Object instanceId)
+  {
+    // quick check
+    final RenderNode footerNode = footerArea.findNodeById(instanceId);
+    if (footerNode != null)
+    {
+      return footerNode;
+    }
+
+    final RenderNode headerNode = headerArea.findNodeById(instanceId);
+    if (headerNode != null)
+    {
+      return headerNode;
+    }
+    // then depth-first for ordinary content.
+    return super.findNodeById(instanceId);
   }
 }

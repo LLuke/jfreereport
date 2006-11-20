@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultContentGenerator.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
+ * $Id: DefaultContentGenerator.java,v 1.4 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnGroupElemen
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableSectionElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayPassThroughElement;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.util.Log;
 
@@ -143,18 +144,6 @@ public class DefaultContentGenerator implements ContentGenerator
   public void startedDocument(final PageContext pageContext)
   {
     renderer.startDocument(pageContext);
-  }
-
-  /**
-   * Starts a special flow. A special flow receives content for the special and
-   * page areas; the renderer may have to update the content area size.
-   *
-   * @param context
-   */
-  public void startedPhysicalPageFlow(final DisplayFlowElement element)
-          throws NormalizationException
-  {
-    renderer.startedPhysicalPageFlow(element.getLayoutContext());
   }
 
   public void startedFlow(final DisplayFlowElement element)
@@ -284,11 +273,6 @@ public class DefaultContentGenerator implements ContentGenerator
     renderer.finishedFlow();
   }
 
-  public void finishedPhysicalPageFlow() throws NormalizationException
-  {
-    renderer.finishedPhysicalPageFlow();
-  }
-
   /**
    * Receives notification, that a new flow has started. A new flow is started
    * for each flowing or absolutly positioned element.
@@ -303,6 +287,23 @@ public class DefaultContentGenerator implements ContentGenerator
   public void handlePageBreak(final PageContext pageContext)
   {
     renderer.handlePageBreak(pageContext);
+  }
+
+  public void startedPassThrough(final DisplayPassThroughElement element)
+      throws NormalizationException
+  {
+    renderer.startedPassThrough (element.getLayoutContext());
+  }
+
+  public void addPassThroughContent(final DisplayContent node)
+      throws NormalizationException
+  {
+    renderer.addPassThroughContent(node.getLayoutContext(), node.getContent());
+  }
+
+  public void finishPassThrough()
+  {
+    renderer.finishedPassThrough();
   }
 
   public State saveState() throws StateException

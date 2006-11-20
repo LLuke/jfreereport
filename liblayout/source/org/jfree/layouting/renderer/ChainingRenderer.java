@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingRenderer.java,v 1.4 2006/07/27 17:56:27 taqua Exp $
+ * $Id: ChainingRenderer.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -115,6 +115,10 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   private static final int MTH_ADD_CONTENT = 41;
   private static final int MTH_HANDLE_PAGEBREAK = 42;
 
+  private static final int MTH_START_PASSTHROUGH = 100;
+  private static final int MTH_ADD_PASSTHROUGH_CONTENT = 101;
+  private static final int MTH_END_PASSTHROUGH = 102;
+
   private Renderer renderer;
 
   public ChainingRenderer(final Renderer renderer)
@@ -130,21 +134,6 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   public void startDocument(final PageContext pageContext)
   {
     addCall(new RecordedCall (MTH_START_DOCUMENT, pageContext));
-  }
-
-  /**
-   * Starts a special flow. A special flow receives content for the special and
-   * page areas; the renderer may have to update the content area size.
-   * <p/>
-   * When this method is called, it is up to the renderer to find out which page
-   * area needs to be updated. If the context cannot be resolved to a defined
-   * special area, the content is handled as if it is a block content.
-   *
-   * @param context
-   */
-  public void startedPhysicalPageFlow(final LayoutContext context)
-  {
-    addCall(new RecordedCall (MTH_START_SPECIAL_FLOW, context));
   }
 
   /**
@@ -273,11 +262,6 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
     addCall(new RecordedCall (MTH_END_FLOW, null));
   }
 
-  public void finishedPhysicalPageFlow()
-  {
-    addCall(new RecordedCall (MTH_END_SPECIAL_FLOW, null));
-  }
-
   public void finishedDocument()
   {
     addCall(new RecordedCall (MTH_END_DOCUMENT, null));
@@ -296,11 +280,6 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
       case MTH_START_DOCUMENT:
       {
         renderer.startDocument((PageContext) parameters);
-        break;
-      }
-      case MTH_START_SPECIAL_FLOW:
-      {
-        renderer.startedPhysicalPageFlow((LayoutContext) parameters);
         break;
       }
       case MTH_START_FLOW:
@@ -419,11 +398,6 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
         renderer.finishedFlow();
         break;
       }
-      case MTH_END_SPECIAL_FLOW:
-      {
-        renderer.finishedPhysicalPageFlow();
-        break;
-      }
       case MTH_END_DOCUMENT:
       {
         renderer.finishedDocument();
@@ -434,6 +408,19 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
         renderer.handlePageBreak((PageContext) parameters);
         break;
       }
+      case MTH_START_PASSTHROUGH:
+      {
+        renderer.startedPassThrough((LayoutContext) parameters);
+      }
+      case MTH_ADD_PASSTHROUGH_CONTENT:
+      {
+        final Object[] parms = (Object[]) parameters;
+        renderer.addPassThroughContent((LayoutContext) parms[0], (ContentToken) parms[1]);
+      }
+      case MTH_END_PASSTHROUGH:
+      {
+        renderer.finishedPassThrough();
+      }
       default:
       {
         throw new IllegalArgumentException("No such method!");
@@ -441,7 +428,21 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
     }
   }
 
+  public void startedPassThrough(final LayoutContext context)
+  {
+    addCall(new RecordedCall(MTH_START_PASSTHROUGH, context));
+  }
 
+  public void addPassThroughContent(final LayoutContext context,
+                                    final ContentToken content)
+  {
+    addCall(new RecordedCall (MTH_ADD_PASSTHROUGH_CONTENT, new Object[]{ context, content}));
+  }
+
+  public void finishedPassThrough()
+  {
+    addCall(new RecordedCall (MTH_END_PASSTHROUGH, null));
+  }
 
   public State saveState() throws StateException
   {

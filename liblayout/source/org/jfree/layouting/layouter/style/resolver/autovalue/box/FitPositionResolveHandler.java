@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FitPositionResolveHandler.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
+ * $Id: FitPositionResolveHandler.java,v 1.3 2006/07/11 13:29:51 taqua Exp $
  *
  * Changes
  * -------
@@ -51,8 +51,8 @@ import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValuePair;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
+import org.jfree.layouting.layouter.context.LayoutContext;
 
 public class FitPositionResolveHandler implements ResolveHandler
 {
@@ -85,43 +85,44 @@ public class FitPositionResolveHandler implements ResolveHandler
    */
   public void resolve (LayoutProcess process,
                        LayoutElement currentNode,
-                       LayoutStyle style,
                        StyleKey key)
   {
-    final boolean rightToLeft = Direction.RTL.equals(style.getValue(TextStyleKeys.DIRECTION));
-    final CSSValue blockProgression = style.getValue(TextStyleKeys.BLOCK_PROGRESSION);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final boolean rightToLeft = Direction.RTL.equals
+        (layoutContext.getValue(TextStyleKeys.DIRECTION));
+    final CSSValue blockProgression = layoutContext.getValue(TextStyleKeys.BLOCK_PROGRESSION);
     // this might be invalid ...
     if (BlockProgression.TB.equals(blockProgression))
     {
       if (rightToLeft)
       {
-        style.setValue(key, new CSSValuePair(RIGHT_BOTTOM, LEFT_TOP));
+        layoutContext.setValue(key, new CSSValuePair(RIGHT_BOTTOM, LEFT_TOP));
       }
       else
       {
-        style.setValue(key, new CSSValuePair(LEFT_TOP, LEFT_TOP));
+        layoutContext.setValue(key, new CSSValuePair(LEFT_TOP, LEFT_TOP));
       }
     }
     else if (BlockProgression.RL.equals(blockProgression))
     {
       if (rightToLeft)
       {
-        style.setValue(key, new CSSValuePair(LEFT_TOP, LEFT_TOP));
+        layoutContext.setValue(key, new CSSValuePair(LEFT_TOP, LEFT_TOP));
       }
       else
       {
-        style.setValue(key, new CSSValuePair(RIGHT_BOTTOM, LEFT_TOP));
+        layoutContext.setValue(key, new CSSValuePair(RIGHT_BOTTOM, LEFT_TOP));
       }
     }
     else if (BlockProgression.LR.equals(blockProgression))
     {
       if (rightToLeft)
       {
-        style.setValue(key, new CSSValuePair(RIGHT_BOTTOM, RIGHT_BOTTOM));
+        layoutContext.setValue(key, new CSSValuePair(RIGHT_BOTTOM, RIGHT_BOTTOM));
       }
       else
       {
-        style.setValue(key, new CSSValuePair(LEFT_TOP, LEFT_TOP));
+        layoutContext.setValue(key, new CSSValuePair(LEFT_TOP, LEFT_TOP));
       }
     }
   }

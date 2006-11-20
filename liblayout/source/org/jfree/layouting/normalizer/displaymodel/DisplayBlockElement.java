@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayBlockElement.java,v 1.3 2006/07/17 16:48:52 taqua Exp $
+ * $Id: DisplayBlockElement.java,v 1.4 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.ContextId;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.LayoutProcess;
@@ -82,8 +81,8 @@ public class DisplayBlockElement extends DisplayElement
 
   public void add(DisplayNode node) throws NormalizationException
   {
-    final LayoutStyle style = node.getLayoutContext().getStyle();
-    final CSSValue dr = style.getValue(BoxStyleKeys.DISPLAY_ROLE);
+    final LayoutContext layoutContext = node.getLayoutContext();
+    final CSSValue dr = layoutContext.getValue(BoxStyleKeys.DISPLAY_ROLE);
     if ((node instanceof DisplayElement == false) ||
         DisplayRole.INLINE.equals(dr))
     {

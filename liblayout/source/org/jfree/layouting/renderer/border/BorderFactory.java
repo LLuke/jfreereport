@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BorderFactory.java,v 1.1 2006/07/11 13:51:01 taqua Exp $
+ * $Id: BorderFactory.java,v 1.2 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.style.LayoutStyle;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
@@ -64,41 +63,40 @@ public class BorderFactory
   public Border createBorder(final LayoutContext layoutContext,
                              final OutputProcessorMetaData metaData)
   {
-    final LayoutStyle style = layoutContext.getStyle();
-    CSSValue borderTopStyle = style.getValue(BorderStyleKeys.BORDER_TOP_STYLE);
-    CSSValue borderTopWidth = style.getValue(BorderStyleKeys.BORDER_TOP_WIDTH);
-    CSSValue borderTopColor = style.getValue(BorderStyleKeys.BORDER_TOP_COLOR);
+    CSSValue borderTopStyle = layoutContext.getValue(BorderStyleKeys.BORDER_TOP_STYLE);
+    CSSValue borderTopWidth = layoutContext.getValue(BorderStyleKeys.BORDER_TOP_WIDTH);
+    CSSValue borderTopColor = layoutContext.getValue(BorderStyleKeys.BORDER_TOP_COLOR);
     BorderEdge topEdge = createEdge(borderTopStyle, borderTopWidth,
             borderTopColor, layoutContext, metaData);
 
-    CSSValue borderLeftStyle = style.getValue(BorderStyleKeys.BORDER_LEFT_STYLE);
-    CSSValue borderLeftWidth = style.getValue(BorderStyleKeys.BORDER_LEFT_WIDTH);
-    CSSValue borderLeftColor = style.getValue(BorderStyleKeys.BORDER_LEFT_COLOR);
+    CSSValue borderLeftStyle = layoutContext.getValue(BorderStyleKeys.BORDER_LEFT_STYLE);
+    CSSValue borderLeftWidth = layoutContext.getValue(BorderStyleKeys.BORDER_LEFT_WIDTH);
+    CSSValue borderLeftColor = layoutContext.getValue(BorderStyleKeys.BORDER_LEFT_COLOR);
     BorderEdge leftEdge = createEdge (borderLeftStyle, borderLeftWidth,
             borderLeftColor, layoutContext, metaData);
 
-    CSSValue borderBottomStyle = style.getValue(BorderStyleKeys.BORDER_BOTTOM_STYLE);
-    CSSValue borderBottomWidth = style.getValue(BorderStyleKeys.BORDER_BOTTOM_WIDTH);
-    CSSValue borderBottomColor = style.getValue(BorderStyleKeys.BORDER_BOTTOM_COLOR);
+    CSSValue borderBottomStyle = layoutContext.getValue(BorderStyleKeys.BORDER_BOTTOM_STYLE);
+    CSSValue borderBottomWidth = layoutContext.getValue(BorderStyleKeys.BORDER_BOTTOM_WIDTH);
+    CSSValue borderBottomColor = layoutContext.getValue(BorderStyleKeys.BORDER_BOTTOM_COLOR);
     BorderEdge bottomEdge = createEdge(borderBottomStyle, borderBottomWidth,
             borderBottomColor, layoutContext, metaData);
 
-    CSSValue borderRightStyle = style.getValue(BorderStyleKeys.BORDER_RIGHT_STYLE);
-    CSSValue borderRightWidth = style.getValue(BorderStyleKeys.BORDER_RIGHT_WIDTH);
-    CSSValue borderRightColor = style.getValue(BorderStyleKeys.BORDER_RIGHT_COLOR);
+    CSSValue borderRightStyle = layoutContext.getValue(BorderStyleKeys.BORDER_RIGHT_STYLE);
+    CSSValue borderRightWidth = layoutContext.getValue(BorderStyleKeys.BORDER_RIGHT_WIDTH);
+    CSSValue borderRightColor = layoutContext.getValue(BorderStyleKeys.BORDER_RIGHT_COLOR);
     BorderEdge rightEdge = createEdge(borderRightStyle, borderRightWidth,
             borderRightColor, layoutContext, metaData);
 
-    CSSValue borderBreakStyle = style.getValue(BorderStyleKeys.BORDER_BREAK_STYLE);
-    CSSValue borderBreakWidth = style.getValue(BorderStyleKeys.BORDER_BREAK_WIDTH);
-    CSSValue borderBreakColor = style.getValue(BorderStyleKeys.BORDER_BREAK_COLOR);
+    CSSValue borderBreakStyle = layoutContext.getValue(BorderStyleKeys.BORDER_BREAK_STYLE);
+    CSSValue borderBreakWidth = layoutContext.getValue(BorderStyleKeys.BORDER_BREAK_WIDTH);
+    CSSValue borderBreakColor = layoutContext.getValue(BorderStyleKeys.BORDER_BREAK_COLOR);
     BorderEdge breakEdge = createEdge(borderBreakStyle, borderBreakWidth,
             borderBreakColor, layoutContext, metaData);
 
-    CSSValue topLeftRadius = style.getValue(BorderStyleKeys.BORDER_TOP_LEFT_RADIUS);
-    CSSValue topRightRadius = style.getValue(BorderStyleKeys.BORDER_TOP_RIGHT_RADIUS);
-    CSSValue bottomLeftRadius = style.getValue(BorderStyleKeys.BORDER_BOTTOM_LEFT_RADIUS);
-    CSSValue bottomRightRadius = style.getValue(BorderStyleKeys.BORDER_BOTTOM_RIGHT_RADIUS);
+    CSSValue topLeftRadius = layoutContext.getValue(BorderStyleKeys.BORDER_TOP_LEFT_RADIUS);
+    CSSValue topRightRadius = layoutContext.getValue(BorderStyleKeys.BORDER_TOP_RIGHT_RADIUS);
+    CSSValue bottomLeftRadius = layoutContext.getValue(BorderStyleKeys.BORDER_BOTTOM_LEFT_RADIUS);
+    CSSValue bottomRightRadius = layoutContext.getValue(BorderStyleKeys.BORDER_BOTTOM_RIGHT_RADIUS);
     BorderCorner topLeftCorner = createCorner(topLeftRadius, layoutContext, metaData);
     BorderCorner topRightCorner = createCorner(topRightRadius, layoutContext, metaData);
     BorderCorner bottomLeftCorner = createCorner(bottomLeftRadius, layoutContext, metaData);

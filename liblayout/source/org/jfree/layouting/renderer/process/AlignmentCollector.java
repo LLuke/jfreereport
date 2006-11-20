@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AlignmentCollector.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: AlignmentCollector.java,v 1.2 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,7 @@ public class AlignmentCollector
   private long height;
   private long[] baselinePositions;
   private int dominantBaseline;
+  private long baselineShift;
 
   /**
    *
@@ -147,10 +148,7 @@ public class AlignmentCollector
       this.baselinePositions = baselineInfo.getBaselines();
       if (delta > 0)
       {
-        for (int i = 0; i < baselinePositions.length; i++)
-        {
-          baselinePositions[i] += delta;
-        }
+        baselineShift += delta;
       }
       //this.initialBaselinePositions = (long[]) baselinePositions.clone();
       return delta;
@@ -207,16 +205,13 @@ public class AlignmentCollector
     }
 
     final long[] baselines = baselineInfo.getBaselines();
-    long myAscent = baselinePositions[localBase];
+    long myAscent = baselinePositions[localBase] + baselineShift;
     long nodeAscent = baselines[nodeBase];
 
     if (nodeAscent > myAscent)
     {
       long delta = nodeAscent - myAscent;
-      for (int i = 0; i < baselinePositions.length; i++)
-      {
-        baselinePositions[i] += delta;
-      }
+      baselineShift += delta;
     }
 
     if (preferredSize > height)
@@ -240,10 +235,7 @@ public class AlignmentCollector
       final long delta = preferredSize - height;
       if (delta > 0)
       {
-        for (int i = 0; i < baselinePositions.length; i++)
-        {
-          baselinePositions[i] += delta;
-        }
+        this.baselineShift += delta;
         this.height += delta;
       }
       return 0;
@@ -266,10 +258,7 @@ public class AlignmentCollector
       {
         // The new element is greater than the old line ..
         final long deltaHalf = delta / 2;
-        for (int i = 0; i < baselinePositions.length; i++)
-        {
-          baselinePositions[i] -= deltaHalf;
-        }
+        this.baselineShift -= deltaHalf;
         this.height += delta;
         return 0;
       }
@@ -285,16 +274,12 @@ public class AlignmentCollector
       // Well, we can do this by using the last dominant baseline and by
       // assuming that the element's content will be all ascending.
       final long baselineDelta =
-              preferredSize - baselinePositions[dominantBaseline];
+              preferredSize - (baselinePositions[dominantBaseline] + baselineShift);
       if (baselineDelta > 0)
       {
         // the preferred size is greater than the current baseline pos
         // we have to shift ...
-        for (int i = 0; i < baselinePositions.length; i++)
-        {
-          baselinePositions[i] += baselineDelta;
-//          initialBaselinePositions[i] -= baselineDelta;
-        }
+        baselineShift += baselineDelta;
         height += baselineDelta;
         return 0;
       }
