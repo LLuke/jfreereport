@@ -89,6 +89,8 @@ public class XmlWriterSupport
 
   private boolean lineEmpty;
 
+  private boolean alwaysAddNamespace;
+
   /**
    * Default Constructor. The created XMLWriterSupport will not have no safe
    * tags and starts with an indention level of 0.
@@ -137,6 +139,16 @@ public class XmlWriterSupport
     namespaces.put(namespaceUri, prefix);
   }
 
+
+  public boolean isAlwaysAddNamespace()
+  {
+    return alwaysAddNamespace;
+  }
+
+  public void setAlwaysAddNamespace(final boolean alwaysAddNamespace)
+  {
+    this.alwaysAddNamespace = alwaysAddNamespace;
+  }
 
   /**
    * Returns the line separator.
@@ -378,7 +390,8 @@ public class XmlWriterSupport
   private String buildAttributeName(AttributeList.AttributeEntry entry)
   {
     ElementLevel rootElement = (ElementLevel) openTags.peek();
-    if (ObjectUtilities.equal(rootElement.getNamespace(), entry.getNamespace()))
+    if (isAlwaysAddNamespace() == false &&
+        ObjectUtilities.equal(rootElement.getNamespace(), entry.getNamespace()))
     {
       return entry.getName();
     }
