@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageFooterReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,8 @@
 package org.jfree.report.modules.factories.report.flow;
 
 import org.jfree.report.structure.Element;
-import org.jfree.report.structure.OutOfOrderSection;
+import org.jfree.report.structure.Section;
+import org.jfree.report.JFreeReportInfo;
 import org.xml.sax.SAXException;
 
 /**
@@ -51,7 +52,7 @@ import org.xml.sax.SAXException;
  */
 public class PageFooterReadHandler extends SectionReadHandler
 {
-  private OutOfOrderSection outOfOrderSection;
+  private Section outOfOrderSection;
 
   /**
    * Creates a new generic read handler. The given namespace and tagname can be
@@ -63,7 +64,7 @@ public class PageFooterReadHandler extends SectionReadHandler
    */
   public PageFooterReadHandler()
   {
-    outOfOrderSection = new OutOfOrderSection();
+    outOfOrderSection = new Section();
   }
 
   /**
@@ -75,9 +76,9 @@ public class PageFooterReadHandler extends SectionReadHandler
   protected void doneParsing() throws SAXException
   {
     super.doneParsing();
-    final OutOfOrderSection outOfOrderSection = (OutOfOrderSection) getElement();
-    outOfOrderSection.setPrintInflow(false);
-    outOfOrderSection.setRole("page-footer");
+    final Section outOfOrderSection = (Section) getElement();
+    outOfOrderSection.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "print-in-flow", "false");
+    outOfOrderSection.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "role", "page-footer");
   }
 
   protected Element getElement()

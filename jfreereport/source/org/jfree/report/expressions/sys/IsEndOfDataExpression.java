@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: IsEndOfDataExpression.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
+ * $Id: IsEndOfDataExpression.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,7 +61,7 @@ public class IsEndOfDataExpression extends AbstractExpression
     ReportData data = getRuntime().getData();
     synchronized(data)
     {
-      if (data.getCurrentRow() >= (data.getRowCount() - 1))
+      if (data.isAdvanceable())
       {
         return Boolean.TRUE;
       }

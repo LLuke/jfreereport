@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SQLReportData.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,8 @@ public class SQLReportData implements ReportData
   private boolean labelMapping;
 
   public SQLReportData(final ResultSet resultSet,
-                       final boolean labelMapping) throws SQLException
+                       final boolean labelMapping)
+      throws SQLException, DataSourceException
   {
     if (resultSet == null)
     {
@@ -99,7 +100,10 @@ public class SQLReportData implements ReportData
       }
     }
 
-    resultSet.first();
+    if (resultSet.first() == false)
+    {
+      throw new DataSourceException("Unable to reset the dataset.");
+    }
     cursor = 0;
   }
 
@@ -113,31 +117,43 @@ public class SQLReportData implements ReportData
     return rowCount;
   }
 
+  /**
+   * This operation checks, whether a call to next will be likely to succeed. If
+   * there is a next data row, this should return true.
+   *
+   * @return
+   * @throws org.jfree.report.DataSourceException
+   *
+   */
+  public boolean isAdvanceable() throws DataSourceException
+  {
+    return cursor < (rowCount - 1);
+  }
+
   public int getColumnCount() throws DataSourceException
   {
     return columnCount;
   }
 
-  public boolean absolute(int row) throws DataSourceException
+  public void setCursorPosition(int row) throws DataSourceException
   {
     if (row < 0)
     {
-      return false;
+      throw new DataSourceException("Negative row number is not valid");
     }
     if (row >= rowCount)
     {
-      return false;
+      throw new DataSourceException("OutOfBounds:");
     }
     try
     {
       if (resultSet.absolute(row + 1))
       {
         cursor = row;
-        return true;
       }
       else
       {
-        return false;
+        throw new DataSourceException("Unable to scroll the resultset.");
       }
     }
     catch (SQLException e)
@@ -200,7 +216,7 @@ public class SQLReportData implements ReportData
     }
   }
 
-  public int getCurrentRow() throws DataSourceException
+  public int getCursorPosition() throws DataSourceException
   {
     return cursor;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.42 2006/04/21 17:31:22 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.43 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes:
  * --------
@@ -45,6 +45,7 @@ package org.jfree.report;
 import java.util.Arrays;
 
 import org.jfree.JCommon;
+import org.jfree.layouting.LibLayoutInfo;
 import org.jfree.base.BootableProjectInfo;
 import org.jfree.resourceloader.LibLoaderInfo;
 import org.jfree.serializer.JCommonSerializerInfo;
@@ -130,6 +131,7 @@ public class JFreeReportInfo extends ProjectInfo
     addLibrary(JCommon.INFO);
     addLibrary(JCommonSerializerInfo.getInstance());
     addLibrary(LibLoaderInfo.getInstance());
+    addLibrary(LibLayoutInfo.getInstance());
 
     final BootableProjectInfo pixieLibraryInfo = tryLoadPixieInfo();
     if (pixieLibraryInfo != null)

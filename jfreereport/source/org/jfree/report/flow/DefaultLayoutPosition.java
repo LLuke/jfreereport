@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutPosition.java,v 1.3 2006/07/11 13:24:40 taqua Exp $
+ * $Id: DefaultLayoutPosition.java,v 1.4 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ public final class DefaultLayoutPosition implements LayoutPosition
   /** The parent layout position. This builds a backlinked tree of nodes. */
   private DefaultLayoutPosition parent;
   /** The current flow controler */
-  private FlowControler flowControler;
+  private FlowController flowController;
   /** A flag indicating whether the current element has been opened successfully. */
   private boolean elementOpen;
   public static final EmptyReportData EMPTY_REPORT_DATA = new EmptyReportData();
@@ -68,26 +68,26 @@ public final class DefaultLayoutPosition implements LayoutPosition
   /**
    * This is the initial layout position.
    *
-   * @param flowControler
+   * @param flowController
    * @param node
    */
-  public DefaultLayoutPosition(final FlowControler flowControler,
+  public DefaultLayoutPosition(final FlowController flowController,
                                final Node node)
   {
-    if (flowControler == null)
+    if (flowController == null)
     {
       throw new NullPointerException();
     }
     // node can be null, if we are at the end of the report ...
     this.node = node;
-    this.flowControler = flowControler;
+    this.flowController = flowController;
   }
 
-  private DefaultLayoutPosition(final FlowControler flowControler,
+  private DefaultLayoutPosition(final FlowController flowController,
                                 final Node node,
                                 final DefaultLayoutPosition parent)
   {
-    this(flowControler, node);
+    this(flowController, node);
     this.parent = parent;
   }
 
@@ -95,45 +95,45 @@ public final class DefaultLayoutPosition implements LayoutPosition
    * Lets dive into the current node's childs. The current layout position will
    * be the parent node.
    *
-   * @param flowControler
+   * @param flowController
    * @param node
    * @return
    */
-  public DefaultLayoutPosition deriveChildPosition (final FlowControler flowControler,
+  public DefaultLayoutPosition deriveChildPosition (final FlowController flowController,
                                                     final Node node)
   {
-    return new DefaultLayoutPosition(flowControler, node, this);
+    return new DefaultLayoutPosition(flowController, node, this);
   }
 
   /**
    * A silbling element should be processed. The previous and the new node share
    * the same parent.
    *
-   * @param flowControler
+   * @param flowController
    * @param node
    * @return
    */
-  public DefaultLayoutPosition deriveSilblingPosition (final FlowControler flowControler,
+  public DefaultLayoutPosition deriveSilblingPosition (final FlowController flowController,
                                                        final Node node)
   {
-    return new DefaultLayoutPosition(flowControler, node, this.parent);
+    return new DefaultLayoutPosition(flowController, node, this.parent);
   }
 
   /**
    * The current element has been opened successfully. The engine will now
    * process the childs of the current element.
    *
-   * @param flowControler
+   * @param flowController
    * @return
    */
-  public DefaultLayoutPosition createOpenParent (final FlowControler flowControler)
+  public DefaultLayoutPosition createOpenParent (final FlowController flowController)
   {
-    if (flowControler == null)
+    if (flowController == null)
     {
       throw new NullPointerException();
     }
 
-    final DefaultLayoutPosition position = new DefaultLayoutPosition(flowControler, node);
+    final DefaultLayoutPosition position = new DefaultLayoutPosition(flowController, node);
     position.elementOpen = true;
     position.parent = parent;
     return position;
@@ -146,7 +146,7 @@ public final class DefaultLayoutPosition implements LayoutPosition
    * @return
    * @param fc
    */
-  public DefaultLayoutPosition createRepeatPosition(final FlowControler fc)
+  public DefaultLayoutPosition createRepeatPosition(final FlowController fc)
   {
     final DefaultLayoutPosition position = new DefaultLayoutPosition(fc, node);
     position.elementOpen = false;
@@ -164,9 +164,9 @@ public final class DefaultLayoutPosition implements LayoutPosition
     return parent;
   }
 
-  public FlowControler getFlowControler()
+  public FlowController getFlowControler()
   {
-    return flowControler;
+    return flowController;
   }
 
   public boolean isElementOpen()
@@ -174,7 +174,7 @@ public final class DefaultLayoutPosition implements LayoutPosition
     return elementOpen;
   }
 
-  public DefaultLayoutPosition derive(final FlowControler fc)
+  public DefaultLayoutPosition derive(final FlowController fc)
   {
     final DefaultLayoutPosition position = new DefaultLayoutPosition(fc, node);
     position.elementOpen = elementOpen;
@@ -182,13 +182,15 @@ public final class DefaultLayoutPosition implements LayoutPosition
     return position;
   }
 
-  public LayoutExpressionRuntime getExpressionRuntime(final FlowControler fc)
+  public LayoutExpressionRuntime getExpressionRuntime(final FlowController fc)
   {
     final ReportDefinition report = node.getReport();
 
     LayoutExpressionRuntime ler = new LayoutExpressionRuntime();
     ler.setConfiguration(fc.getReportJob().getConfiguration());
     ler.setResourceBundleFactory(report.getResourceBundleFactory());
+    ler.setGlobalContext(fc.getGlobalContext());
+    ler.setExportDescriptor(fc.getExportDescriptor());
 
     final GlobalMasterRow masterRow = fc.getMasterRow();
     ler.setDataRow(masterRow.getGlobalView());
@@ -219,11 +221,5 @@ public final class DefaultLayoutPosition implements LayoutPosition
   public boolean isFinalPosition()
   {
     return node == null;
-  }
-
-  public int compareTo(Object o)
-  {
-    // todo ..
-    return 0;
   }
 }

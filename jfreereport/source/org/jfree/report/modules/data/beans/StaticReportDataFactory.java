@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StaticReportDataFactory.java,v 1.2 2006/07/30 13:09:50 taqua Exp $
+ * $Id: StaticReportDataFactory.java,v 1.3 2006/10/12 11:17:23 mimil Exp $
  *
  * Changes
  * -------
@@ -215,5 +215,17 @@ public class StaticReportDataFactory implements ReportDataFactory
   public void close()
   {
 
+  }
+
+  /**
+   * Derives a freshly initialized report data factory, which is independend of
+   * the original data factory. Opening or Closing one data factory must not
+   * affect the other factories.
+   *
+   * @return
+   */
+  public ReportDataFactory derive()
+  {
+    return this;
   }
 }

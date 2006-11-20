@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportTarget.java,v 1.4 2006/07/11 13:24:40 taqua Exp $
+ * $Id: ReportTarget.java,v 1.5 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -79,6 +79,7 @@ public interface ReportTarget
           throws DataSourceException, ReportProcessingException;
 
   public ReportJob getReportJob ();
-
+  public String getExportDescriptor();
+  
   public void commit() throws ReportProcessingException;
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleExpressionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: StyleExpressionReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@
 package org.jfree.report.modules.factories.report.flow;
 
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.xmlns.parser.XmlReadHandler;
+import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -52,7 +52,6 @@ import org.xml.sax.SAXException;
  */
 public class StyleExpressionReadHandler extends AbstractExpressionReadHandler
 {
-  private StyleKeyReadHandler styleKeyReadHandler;
   private StyleKey styleKey;
 
   public StyleExpressionReadHandler()
@@ -60,52 +59,22 @@ public class StyleExpressionReadHandler extends AbstractExpressionReadHandler
   }
 
   /**
-   * Returns the handler for a child element.
+   * Starts parsing.
    *
-   * @param tagName the tag name.
-   * @param atts    the attributes.
-   * @return the handler or null, if the tagname is invalid.
-   * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
+   * @param attrs the attributes.
+   * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected XmlReadHandler getHandlerForChild(final String uri,
-                                              final String tagName,
-                                              final Attributes atts)
-          throws SAXException
+  protected void startParsing(final Attributes attrs) throws SAXException
   {
-    if (isSameNamespace(uri) == false)
-    {
-      return null;
-    }
-    if (tagName.equals("style-key"))
-    {
-      styleKeyReadHandler = new StyleKeyReadHandler();
-      return styleKeyReadHandler;
-    }
-    return super.getHandlerForChild(uri, tagName, atts);
-  }
-
-
-  /**
-   * Done parsing.
-   *
-   * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
-   */
-  protected void doneParsing() throws SAXException
-  {
-    super.doneParsing();
-    if (styleKeyReadHandler == null)
-    {
-      throw new SAXException("Required element 'style-key' is missing.");
-    }
-
-    styleKey = styleKeyReadHandler.getStyleKey();
+    final String styleKey = attrs.getValue
+        (FlowReportFactoryModule.NAMESPACE, "style-key");
     if (styleKey == null)
     {
-      // or should we simply create a dummy for that? // todo
-      throw new SAXException("That stylekey is not recognized");
+      throw new SAXException("Required attribute stylekey is missing.");
     }
+    this.styleKey =
+        StyleKeyRegistry.getRegistry().findKeyByName(styleKey);
+    super.startParsing(attrs);
   }
 
   public StyleKey getStyleKey()

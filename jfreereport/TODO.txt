@@ -3,14 +3,11 @@ Pending:
   * Implement JFreeChart adapter and Barcode stuff
   * Generic/On-The-Fly reports
   * Out-of-the-box Label printing (as seen in the card-demo)
-  * ttc-files are always lost files in the iText font cache. Fix it!
 
 LibLayout dependent features:
   * Formated Text support for printing (RTF, HTML or other jx.swing.doc)
   * Expand Tab-Stops
   * Columns
-  * PageBreaks within a band
-  * Sub-Reporting
   * Better Support for international Fonts
     - parse TTF-Files for supported Charsets/Unicode-Ranges
     - automaticly adjust encoding if nessesary
@@ -19,11 +16,6 @@ LibLayout dependent features:
   * LTR and RTL text, vertical text
   
   ( Multithreading )
-  ( Simplify the datasource to a sequential object with reset )
-  ( Refactor the output processing out of report state sequence
-    into the parent handler )	
-  ( Remove cloning and simplify function processing )
-  ( No more page functions, if possible )
 
 Optional:
   * Simple parser writer and comment handler ...
@@ -33,17 +25,6 @@ Optional:
   * PDF: Fast Web View, PDF 1.2
   * Rotated Text elements (Non-Dynamic/Drawable?)
   
-Obsolete: (Solved by LibLayout capabilities)
-  * Smarter PageLayouting:
-    - FlowLayouter, LayoutAgents
-    - ContentDistribution over multiple physical pages
-  * more BandLayoutManagers for smarter layouting
-    - FlowLayout
-    - BoxLayout
-    - GridBagLayout
-? * Implement function sets (see #note-1030630) (May not be needed)
-  * PreviewBase update (get rid of the Image in the PreviewFrame)
-
 general:
   * Start a poll what functions are needed ...
 
@@ -52,17 +33,7 @@ general:
     on the server and only the minimum of data is sent to the client ...
 
 
------------------------------------------------------------------------------
-To be implemented before the release is ready:
-
-Next minor release:
-
-Known bugs:
-  * Non-Area shapes, which are not instances of Line2D cannot be
-    drawn right now. The clipping fails for these shapes. [Not fixable yet]
-
-
------------------------------------------------------------------------------
+-------------------------------------------------------------------------
 
 Crosstab-Component:
 

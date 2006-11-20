@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutExpressionRuntime.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
+ * $Id: LayoutExpressionRuntime.java,v 1.3 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,13 @@
  */
 package org.jfree.report.flow;
 
-import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.DataRow;
 import org.jfree.report.ReportData;
-import org.jfree.report.structure.Element;
+import org.jfree.report.expressions.ExpressionRuntime;
+import org.jfree.report.expressions.GlobalReportContext;
 import org.jfree.report.i18n.ResourceBundleFactory;
+import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
-import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
  * Creation-Date: 04.03.2006, 16:41:49
@@ -60,8 +60,9 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
   private ResourceBundleFactory resourceBundleFactory;
   private ReportData reportData;
   private Element declaringParent;
-  private OutputProcessorMetaData metaData;
   private int currentRow;
+  private String exportDescriptor;
+  private GlobalReportContext globalContext;
 
   public LayoutExpressionRuntime()
   {
@@ -95,11 +96,6 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
   public void setDeclaringParent(final Element declaringParent)
   {
     this.declaringParent = declaringParent;
-  }
-
-  public void setOutputMetaData(final OutputProcessorMetaData metaData)
-  {
-    this.metaData = metaData;
   }
 
 
@@ -143,13 +139,28 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
     return declaringParent;
   }
 
-  public OutputProcessorMetaData getOutputMetaData()
-  {
-    return metaData;
-  }
-
   public int getCurrentRow()
   {
     return currentRow;
+  }
+
+  public String getExportDescriptor()
+  {
+    return exportDescriptor;
+  }
+
+  public void setExportDescriptor(final String exportDescriptor)
+  {
+    this.exportDescriptor = exportDescriptor;
+  }
+
+  public GlobalReportContext getGlobalContext()
+  {
+    return globalContext;
+  }
+
+  public void setGlobalContext(final GlobalReportContext globalContext)
+  {
+    this.globalContext = globalContext;
   }
 }

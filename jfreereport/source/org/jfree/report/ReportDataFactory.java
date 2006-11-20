@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDataFactory.java,v 1.1 2006/04/18 11:45:14 taqua Exp $
+ * $Id: ReportDataFactory.java,v 1.2 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,8 @@
 package org.jfree.report;
 
 /**
- * Creation-Date: 19.02.2006, 17:04:40
+ * The report data-factory is responsible for querying the data from arbitary
+ * datasources. 
  *
  * @author Thomas Morgner
  */
@@ -62,5 +63,18 @@ public interface ReportDataFactory
   public ReportData queryData (final String query, final DataSet parameters)
           throws ReportDataFactoryException;
 
+  /**
+   * Closes the report data factory and all report data instances that have
+   * been returned by this instance.
+   */
   public void close();
+
+  /**
+   * Derives a freshly initialized report data factory, which is independend
+   * of the original data factory. Opening or Closing one data factory must not
+   * affect the other factories. 
+   *
+   * @return
+   */
+  public ReportDataFactory derive ();
 }

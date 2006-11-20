@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ExpressionRuntime.java,v 1.4 2006/04/22 16:18:14 taqua Exp $
+ * $Id: ExpressionRuntime.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -72,6 +72,6 @@ public interface ExpressionRuntime
   public ReportData getData();
   public int getCurrentRow();
   public Element getDeclaringParent();
-
-  public OutputProcessorMetaData getOutputMetaData();
+  public GlobalReportContext getGlobalContext();
+  public String getExportDescriptor();
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GroupByExpression.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.report.expressions.AbstractExpression;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataFlags;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 08.10.2006, 16:28:37
@@ -84,6 +85,7 @@ public class GroupByExpression extends AbstractExpression
       }
       if (df.isChanged())
       {
+        Log.debug ("Field: " + df.getName() + " has changed to " + df.getValue()); 
         return Boolean.FALSE;
       }
     }

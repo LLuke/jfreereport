@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDataRow.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
+ * $Id: ReportDataRow.java,v 1.3 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,9 @@ import org.jfree.report.DataFlags;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportData;
+import org.jfree.report.ReportDataFactory;
+import org.jfree.report.DataSet;
+import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.util.IntegerCache;
 import org.jfree.util.ObjectUtilities;
 
@@ -72,7 +75,7 @@ public final class ReportDataRow implements DataRow
     synchronized (reportData)
     {
       this.reportData = reportData;
-      this.cursor = reportData.getCurrentRow();
+      this.cursor = reportData.getCursorPosition();
     }
   }
 
@@ -125,9 +128,12 @@ public final class ReportDataRow implements DataRow
     }
   }
 
-  public static ReportDataRow createDataRow(final ReportData reportData)
-          throws DataSourceException
+  public static ReportDataRow createDataRow(final ReportDataFactory dataFactory,
+                                            final String query,
+                                            final DataSet parameters)
+      throws DataSourceException, ReportDataFactoryException
   {
+    final ReportData reportData = dataFactory.queryData(query, parameters);
     final ReportDataRow dataRow = new ReportDataRow(reportData);
     dataRow.rebuildFromScratch();
     return dataRow;
@@ -226,14 +232,10 @@ public final class ReportDataRow implements DataRow
   {
     synchronized (reportData)
     {
-      if (reportData.getCurrentRow() != cursor)
+      if (reportData.getCursorPosition() != cursor)
       {
         // directly go to the position we need.
-        if (reportData.absolute(cursor + 1) == false)
-        {
-          throw new DataSourceException(
-                  "Unable to roll back to cursor position");
-        }
+        reportData.setCursorPosition(cursor + 1);
       }
       else
       {
@@ -249,7 +251,15 @@ public final class ReportDataRow implements DataRow
 
   public boolean isAdvanceable() throws DataSourceException
   {
-    return ((cursor + 1) < reportData.getRowCount());
+    synchronized (reportData)
+    {
+      if (reportData.getCursorPosition() != cursor)
+      {
+        // directly go to the position we need.
+        reportData.setCursorPosition(cursor);
+      }
+      return reportData.isAdvanceable();
+    }
   }
 
   public ReportData getReportData()

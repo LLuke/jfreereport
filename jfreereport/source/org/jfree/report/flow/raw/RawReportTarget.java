@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RawReportTarget.java,v 1.4 2006/07/30 13:09:50 taqua Exp $
+ * $Id: RawReportTarget.java,v 1.5 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -107,5 +107,10 @@ public class RawReportTarget implements ReportTarget
   public void commit()
   {
 
+  }
+
+  public String getExportDescriptor()
+  {
+    return "raw";
   }
 }

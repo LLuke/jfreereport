@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PageState.java,v 1.1 2006/11/11 20:41:14 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,12 +44,20 @@ public class PageState implements Serializable
 {
   private ReportTargetState targetState;
   private LayoutPosition layoutPosition;
+  private int pageCursor;
 
   public PageState(final ReportTargetState targetState,
-                   final LayoutPosition layoutPosition)
+                   final LayoutPosition layoutPosition,
+                   final int pageCursor)
   {
+    this.pageCursor = pageCursor;
     this.targetState = targetState;
     this.layoutPosition = layoutPosition;
+  }
+
+  public int getPageCursor()
+  {
+    return pageCursor;
   }
 
   public ReportTargetState getTargetState()

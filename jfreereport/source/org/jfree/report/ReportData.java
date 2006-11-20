@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportData.java,v 1.1 2006/04/18 11:45:14 taqua Exp $
  *
  * Changes
  * -------
@@ -41,17 +41,41 @@
 package org.jfree.report;
 
 /**
- * This replaces the good ol' TableModel of JFreeReport 0.8.7. It is a
- * minimalistic interface for querying data. It almost smells like a
- * ResultSet, doesnt it?
+ * A report data source is a ordered set of rows. For a report, we assume that
+ * the report dataset does not change while the report is processed. Concurrent
+ * updates will invalidate the whole precomputed layout.
+ *
+ * A report dataset will be accessed in a linear fashion. On certain points, the
+ * cursor will be reset to the a previously read position, and processing the
+ * data will restart from there. It is guaranteed, that the cursor will never
+ * be set to a row that is beyond the last row that has been read with 'next()'.
  *
  * @author Thomas Morgner
  */
 public interface ReportData extends DataSet
 {
-  public int getCurrentRow() throws DataSourceException;
-  public int getRowCount() throws DataSourceException;
-  public boolean absolute (int row) throws DataSourceException;
+  public int getCursorPosition() throws DataSourceException;
+
+  public void setCursorPosition(int cursor) throws DataSourceException;
+
+  /**
+   * This operation checks, whether a call to next will be likely to succeed.
+   * If there is a next data row, this should return true.
+   *
+   * @return
+   * @throws DataSourceException
+   */
+  public boolean isAdvanceable () throws DataSourceException;
+
   public boolean next() throws DataSourceException;
+
+  /**
+   * Closes the datasource. This should be called at the end of each report
+   * processing run. Whether this closes the underlying data-source backend
+   * depends on the ReportDataFactory. Calling 'close()' on the ReportDataFactory
+   * *must* close all report data objects.
+   *  
+   * @throws DataSourceException
+   */
   public void close() throws DataSourceException;
 }

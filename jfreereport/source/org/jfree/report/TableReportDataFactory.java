@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableReportDataFactory.java,v 1.1 2006/04/18 11:45:14 taqua Exp $
+ * $Id: TableReportDataFactory.java,v 1.2 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import javax.swing.table.TableModel;
  *
  * @author Thomas Morgner
  */
-public class TableReportDataFactory implements ReportDataFactory
+public class TableReportDataFactory implements ReportDataFactory, Cloneable
 {
   private HashMap tables;
 
@@ -103,5 +103,31 @@ public class TableReportDataFactory implements ReportDataFactory
   public void close()
   {
 
+  }
+
+  /**
+   * Derives a freshly initialized report data factory, which is independend of
+   * the original data factory. Opening or Closing one data factory must not
+   * affect the other factories.
+   *
+   * @return
+   */
+  public ReportDataFactory derive()
+  {
+    try
+    {
+      return (ReportDataFactory) clone();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalStateException("Clone should not fail.");
+    }
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    TableReportDataFactory dataFactory = (TableReportDataFactory) super.clone();
+    dataFactory.tables = (HashMap) tables.clone();
+    return dataFactory;
   }
 }

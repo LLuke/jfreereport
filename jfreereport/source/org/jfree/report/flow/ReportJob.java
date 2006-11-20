@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportJob.java,v 1.2 2006/04/21 17:31:23 taqua Exp $
+ * $Id: ReportJob.java,v 1.3 2006/07/11 13:24:40 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  *
  */
 package org.jfree.report.flow;
+
+import java.io.Serializable;
 
 import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.config.ModifiableConfiguration;
@@ -51,7 +53,7 @@ import org.jfree.report.util.ReportParameters;
  *
  * @author Thomas Morgner
  */
-public class ReportJob
+public class ReportJob implements Serializable, Cloneable
 {
   private JFreeReport report;
   private ReportDataFactory dataFactory;
@@ -61,7 +63,11 @@ public class ReportJob
   public ReportJob(final JFreeReport report)
   {
     this.report = report;
-    this.dataFactory = report.getDataFactory();
+    final ReportDataFactory dataFactory = report.getDataFactory();
+    if (dataFactory != null)
+    {
+      this.dataFactory = dataFactory.derive();
+    }
     this.parameters = new ReportParameters(report.getInputParameters());
     this.configuration = new HierarchicalConfiguration(report.getConfiguration());
   }
@@ -89,5 +95,30 @@ public class ReportJob
   public void setDataFactory(final ReportDataFactory dataFactory)
   {
     this.dataFactory = dataFactory;
+  }
+
+  public Object clone() throws CloneNotSupportedException
+  {
+    ReportJob job = (ReportJob) super.clone();
+    if (dataFactory != null)
+    {
+      job.dataFactory = dataFactory.derive();
+    }
+    job.parameters = (ReportParameters) parameters.clone();
+    job.configuration = (ModifiableConfiguration) configuration.clone();
+    return job;
+  }
+
+  public ReportJob derive ()
+  {
+    try
+    {
+      return (ReportJob) clone();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalStateException
+          ("A report job should always be cloneable.");
+    }
   }
 }

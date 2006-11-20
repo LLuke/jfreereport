@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GlobalView.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -237,15 +237,14 @@ public final class GlobalView implements DataRow
   public DataFlags getFlags(String col)
   {
     final LazyNameMap.NameCarrier idx = nameCache.get(col);
-    if (idx == null)
+    if (idx != null)
     {
-      return null;
-    }
-    final int idxVal = idx.getValue();
-    final DataFlags df = data[idxVal];
-    if (df != null)
-    {
-      return df;
+      final int idxVal = idx.getValue();
+      final DataFlags df = data[idxVal];
+      if (df != null)
+      {
+        return df;
+      }
     }
 
     final LazyNameMap.NameCarrier oidx = oldCache.get(col);
@@ -254,7 +253,7 @@ public final class GlobalView implements DataRow
       return null;
     }
 
-    final int oidxVal = idx.getValue();
+    final int oidxVal = oidx.getValue();
     if (oidxVal < oldData.length)
     {
       return oldData[oidxVal];
@@ -269,7 +268,7 @@ public final class GlobalView implements DataRow
     {
       return df;
     }
-    return null;
+    return oldData[col];
   }
 
   public GlobalView derive()

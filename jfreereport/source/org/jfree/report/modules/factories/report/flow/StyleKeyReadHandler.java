@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleKeyReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: StyleKeyReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import org.jfree.xmlns.parser.StringReadHandler;
  * Creation-Date: 09.04.2006, 13:48:17
  *
  * @author Thomas Morgner
+ * @deprecated remove me..
  */
 public class StyleKeyReadHandler extends StringReadHandler
 {
@@ -55,10 +56,6 @@ public class StyleKeyReadHandler extends StringReadHandler
   {
   }
 
-  public StyleKey getStyleKey ()
-  {
-    return StyleKeyRegistry.getRegistry().findKeyByName(getResult().trim());
-  }
 
   /**
    * Returns the object for this element.
@@ -67,6 +64,6 @@ public class StyleKeyReadHandler extends StringReadHandler
    */
   public Object getObject()
   {
-    return getStyleKey();
+    return null;
   }
 }

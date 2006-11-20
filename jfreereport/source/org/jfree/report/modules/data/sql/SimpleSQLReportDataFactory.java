@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleSQLReportDataFactory.java,v 1.2 2006/04/18 13:32:51 taqua Exp $
+ * $Id: SimpleSQLReportDataFactory.java,v 1.3 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ import org.jfree.util.Configuration;
  *
  * @author Thomas Morgner
  */
-public class SimpleSQLReportDataFactory implements ReportDataFactory
+public class SimpleSQLReportDataFactory implements ReportDataFactory, Cloneable
 {
   private static final Object NULL_TOKEN = new Object();
 
@@ -318,4 +318,30 @@ public class SimpleSQLReportDataFactory implements ReportDataFactory
     return new DefaultTableModel(rowMap, header.toArray());
   }
 
+  /**
+   * Derives a freshly initialized report data factory, which is independend of
+   * the original data factory. Opening or Closing one data factory must not
+   * affect the other factories.
+   *
+   * @return
+   */
+  public ReportDataFactory derive()
+  {
+    try
+    {
+      return (ReportDataFactory) clone();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalStateException("Clone failed?", e);
+    }
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    SimpleSQLReportDataFactory dataFactory = (SimpleSQLReportDataFactory) super.clone();
+    dataFactory.connection = null;
+    dataFactory.preparedStatements = new HashMap();
+    return dataFactory;
+  }
 }

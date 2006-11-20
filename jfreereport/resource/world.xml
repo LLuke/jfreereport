@@ -18,6 +18,21 @@
     table {
       border-spacing: 0;
     }
+
+    .page-header-section {
+      position: running(header);
+      font-size: 17pt;
+    }
+
+    .page-footer-section {
+      position: running(footer);
+      font-size: 17pt;
+    }
+
+    @page {
+       margin: 2cm;
+       size: A4;
+    }
   </report:inline-stylesheet>
 
   <!--
@@ -29,49 +44,55 @@
     <div class="page-header">
       <report:content>
         <report:attribute name="format">yyyy-MM-dd</report:attribute>
-        <report:value-expression>
-          <report:property name="field">report.date</report:property>
-        </report:value-expression>
+        <report:value-expression formula="[report.date]"/>
       </report:content>
     </div>
 
   </report:out-of-order-section>
   -->
-
   <!--
   page footers are not yet accepted by the layouter (in their special
   role). The layouter treats them as ordinary bands instead.
 
   Page-counters are maintained by the layouter itself. There is no
-  sane way to receive page events from the layouter. (Sure, it can
-  be hacked, but this will kill the performance.)
-  -->
-  <!--
-  <report:out-of-order-section role="page-footer">
-    <div class="page-footer"/>
+  sane way to receive page events from the layouter. Doing this would break
+  the separation of the layouter and the feeder.
+-->
 
-  </report:out-of-order-section>
-  -->
+  <div class="page-header-section">
+    <!--
+    This section is removed from the content flow and added to the
+    page header
+    -->
+    <div class="page-footer"/>
+  </div>
+
+  <div class="page-footer-section">
+    <!--
+    This section is removed from the content flow and added to the
+    page header
+    -->
+    <div> This is a page footer. </div>
+  </div>
 
   <!--
   There is no special report header. Everything before an group
   declaration will behave like a report header.
   -->
-<!--
-  <h1 style="background-color: #afafaf;">
+
+  <h1 style="background-color: #afafaf; text-align: center">
     List of Countries by Continent
   </h1>
+  <!--
+    <p>
+      This report lists a selected set of countries and produces a running
+      total from the given population numbers. The original JFreeReport
+      demo report supported percentages as well. Percentages need a
+      precomputation step to compute the grand total, before the current
+      value can be set in relation to the total population. The <i>precomputation</i>
+      is not yet implemented.
+    </p>
   -->
-<!--
-  <p>
-    This report lists a selected set of countries and produces a running
-    total from the given population numbers. The original JFreeReport
-    demo report supported percentages as well. Percentages need a
-    precomputation step to compute the grand total, before the current
-    value can be set in relation to the total population. The <i>precomputation</i>
-    is not yet implemented.
-  </p>
--->
   <!--
   Groups are nested.
   -->
@@ -87,7 +108,7 @@
                        initial="jfreereport:[Population]"
                        name="PopulationSum"/>
 
-    <h2>Continent:
+    <h2 style="background-color: #C8FAF4; font-size: 14pt">Country:
       <report:content>
         <report:value-expression formula="jfreereport:[Continent]"/>
       </report:content>
@@ -98,17 +119,32 @@
       A table that does not declare its column widths will trigger
       the auto-width mode. If that happens, the performance will go down.
        -->
-      <col style="width: 60%"/>
+      <col style="width: 55%"/>
       <col style="width: 10%"/>
-      <col style="width: 30%"/>
+      <col style="width: 35%"/>
       <tbody>
         <!--
         A virtual element will not be sent to the layouter. However,
         all childs will be layouted as usual. (This way, the element
         behaves like a JSP tag, which is quite usefull sometimes.
         -->
+        <report:expression name="showBand"
+                           formula="jfreereport:if([showBand];FALSE();TRUE())"/>
+
         <report:detail-section virtual="true">
+          <!-- Shows how expressions can manupilate the style at runtime -->
+          <!-- Be aware:
+           This is not recommended for the general case, as this creates ugly
+           results. It is better to rely on the avanced stylesheet selectors
+           for such purposes. However, true freedom to shoot yourself in the
+           foot is possible ..
+           -->
+
           <tr>
+            <!--
+            <report:style-expression style-key="background-color"
+                                     formula="jfreereport:if ([showBand];&quot;red&quot;;&quot;transparent&quot;)"></report:style-expression>
+                                     -->
             <td>
               <report:content>
                 <report:value-expression formula="jfreereport:[Country]"/>
@@ -140,6 +176,15 @@
     <hr/>
 
   </report:group>
+
+  <div class="page-header-section">
+    <!--
+    This section is removed from the content flow and added to the
+    page header. As you see, newer content replaces the older one.
+    -->
+    My funny header ...
+  </div>
+
 
   <h2>End of Report</h2>
 

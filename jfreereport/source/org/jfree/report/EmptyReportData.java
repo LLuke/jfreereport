@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: EmptyReportData.java,v 1.1 2006/04/30 09:49:10 taqua Exp $
  *
  * Changes
  * -------
@@ -51,17 +51,25 @@ public class EmptyReportData implements ReportData
   {
   }
 
-  public int getCurrentRow() throws DataSourceException
+  public int getCursorPosition() throws DataSourceException
   {
     return 0;
   }
 
-  public int getRowCount() throws DataSourceException
+  public void setCursorPosition(int cursor) throws DataSourceException
   {
-    return 0;
+    throw new DataSourceException("This beast is empty!");
   }
 
-  public boolean absolute(int row) throws DataSourceException
+  /**
+   * This operation checks, whether a call to next will be likely to succeed. If
+   * there is a next data row, this should return true.
+   *
+   * @return
+   * @throws org.jfree.report.DataSourceException
+   *
+   */
+  public boolean isAdvanceable() throws DataSourceException
   {
     return false;
   }

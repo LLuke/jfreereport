@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractReportTarget.java,v 1.1 2006/07/11 13:25:50 taqua Exp $
+ * $Id: AbstractReportTarget.java,v 1.2 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -258,6 +258,12 @@ public abstract class AbstractReportTarget implements ReportTarget
           retval.setAttribute(namespace, key, entry.getValue());
         }
       }
+    }
+
+    // Just in case there was no style-attribute but there are style-expressions
+    if (rule == null)
+    {
+      rule = processStyleAttribute(null, node, runtime, rule);
     }
 
     if (rule != null && rule.getSize() > 0)

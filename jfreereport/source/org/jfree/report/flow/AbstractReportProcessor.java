@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractReportProcessor.java,v 1.1 2006/11/11 20:41:14 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -52,25 +52,25 @@ public abstract class AbstractReportProcessor implements ReportProcessor
     synchronized (job)
     {
       // set up the scene
-      final LayoutControler layoutControler = new DefaultLayoutControler();
+      final LayoutController layoutController = new DefaultLayoutController();
 
       // we have the data and we have our position inside the report.
       // lets generate something ...
-      final FlowControler flowControler = createFlowControler(job);
-      LayoutPosition position = layoutControler.createInitialPosition
-              (flowControler, job.getReport());
+      final FlowController flowController = createFlowControler(job, target);
+      LayoutPosition position = layoutController.createInitialPosition
+              (flowController, job.getReport());
       while (position.isFinalPosition() == false)
       {
-        position = layoutControler.process(target, position);
+        position = layoutController.process(target, position);
         target.commit();
       }
     }
   }
 
-  protected FlowControler createFlowControler(ReportJob job)
+  protected FlowController createFlowControler(ReportJob job, ReportTarget target)
           throws DataSourceException
   {
-    return new DefaultFlowControler(job);
+    return new DefaultFlowController(job, target.getExportDescriptor());
   }
 
 }

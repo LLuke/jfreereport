@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CountryDataTableModel.java,v 1.2 2006/07/30 13:09:50 taqua Exp $
+ * $Id: CountryDataTableModel.java,v 1.3 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ package org.jfree.report.test;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
+
+import org.jfree.util.Log;
 
 /**
  * A sample data source for the JFreeReport Demo Application.
@@ -58,18 +60,18 @@ public class CountryDataTableModel extends AbstractTableModel
   private ArrayList data;
 
   /**
-   * Default constructor - builds the sample data source using incomplete (and possibly
-   * inaccurate) data for countries of the world.
+   * Default constructor - builds the sample data source using incomplete (and
+   * possibly inaccurate) data for countries of the world.
    */
-  public CountryDataTableModel ()
+  public CountryDataTableModel()
   {
     data = new ArrayList();
-//    data.add(new Object[]{"Morocco", "MA", "Africa", new Integer(29114497)});
-//    data.add(new Object[]{"South Africa", "ZA", "Africa", new Integer(40583573)});
-//    data.add(new Object[]{"China", "CN", "Asia", new Integer(1254400000)});
-//    data.add(new Object[]{"Iran", "IR", "Asia", new Integer(66000000)});
-//    data.add(new Object[]{"Iraq", "IQ", "Asia", new Integer(19700000)});
-//    data.add(new Object[]{"Australia", "AU", "Australia", new Integer(18751000)});
+    data.add(new Object[]{"Morocco", "MA", "Africa", new Integer(29114497)});
+    data.add(new Object[]{"South Africa", "ZA", "Africa", new Integer(40583573)});
+    data.add(new Object[]{"China", "CN", "Asia", new Integer(1254400000)});
+    data.add(new Object[]{"Iran", "IR", "Asia", new Integer(66000000)});
+    data.add(new Object[]{"Iraq", "IQ", "Asia", new Integer(19700000)});
+    data.add(new Object[]{"Australia", "AU", "Australia", new Integer(18751000)});
     data.add(new Object[]{"Austria", "AT", "Europe", new Integer(8015000)});
     data.add(new Object[]{"Belgium", "BE", "Europe", new Integer(10213752)});
     data.add(new Object[]{"Estonia", "EE", "Europe", new Integer(1445580)});
@@ -86,8 +88,12 @@ public class CountryDataTableModel extends AbstractTableModel
     data.add(new Object[]{"Switzerland", "CH", "Europe", new Integer(7123500)});
     data.add(new Object[]{"Canada", "CA", "North America", new Integer(30491300)});
     data.add(new Object[]{"United States of America",
-                            "US", "North America", new Integer(273866000)});
+        "US", "North America", new Integer(273866000)});
     data.add(new Object[]{"Brazil", "BR", "South America", new Integer(165715400)});
+//    for (int i = 0; i < 200; i++)
+//    {
+//      data.add(new Object[]{"Brazil", "BR", "South America", new Integer(165715400)});
+//    }
   }
 
   /**
@@ -95,7 +101,7 @@ public class CountryDataTableModel extends AbstractTableModel
    *
    * @return the row count.
    */
-  public int getRowCount ()
+  public int getRowCount()
   {
     return data.size();
   }
@@ -105,7 +111,7 @@ public class CountryDataTableModel extends AbstractTableModel
    *
    * @return the column count.
    */
-  public int getColumnCount ()
+  public int getColumnCount()
   {
     return 4;
   }
@@ -116,7 +122,7 @@ public class CountryDataTableModel extends AbstractTableModel
    * @param column the column (zero-based index).
    * @return the column class.
    */
-  public Class getColumnClass (final int column)
+  public Class getColumnClass(final int column)
   {
     if (column == 3)
     {
@@ -134,7 +140,7 @@ public class CountryDataTableModel extends AbstractTableModel
    * @param column the column (zero-based index).
    * @return the column name.
    */
-  public String getColumnName (final int column)
+  public String getColumnName(final int column)
   {
     if (column == 0)
     {
@@ -165,7 +171,7 @@ public class CountryDataTableModel extends AbstractTableModel
    * @param column the column index (zero based).
    * @return the value.
    */
-  public Object getValueAt (final int row, final int column)
+  public Object getValueAt(final int row, final int column)
   {
     Object[] rowData = (Object[]) data.get(row);
     return rowData[column];

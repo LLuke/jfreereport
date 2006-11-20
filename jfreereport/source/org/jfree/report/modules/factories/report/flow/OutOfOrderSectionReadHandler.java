@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: OutOfOrderSectionReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,8 @@
 package org.jfree.report.modules.factories.report.flow;
 
 import org.jfree.report.structure.Element;
-import org.jfree.report.structure.OutOfOrderSection;
+import org.jfree.report.structure.Section;
+import org.jfree.report.JFreeReportInfo;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -52,7 +53,7 @@ import org.xml.sax.SAXException;
  */
 public class OutOfOrderSectionReadHandler extends SectionReadHandler
 {
-  private OutOfOrderSection outOfOrderSection;
+  private Section outOfOrderSection;
   private String role;
   private boolean printInFlow;
 
@@ -66,7 +67,7 @@ public class OutOfOrderSectionReadHandler extends SectionReadHandler
    */
   public OutOfOrderSectionReadHandler()
   {
-    outOfOrderSection = new OutOfOrderSection();
+    outOfOrderSection = new Section();
   }
 
   /**
@@ -100,9 +101,9 @@ public class OutOfOrderSectionReadHandler extends SectionReadHandler
   protected void doneParsing() throws SAXException
   {
     super.doneParsing();
-    final OutOfOrderSection outOfOrderSection = (OutOfOrderSection) getElement();
-    outOfOrderSection.setPrintInflow(printInFlow);
-    outOfOrderSection.setRole(role);
+    final Section outOfOrderSection = (Section) getElement();
+    outOfOrderSection.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "print-in-flow", String.valueOf(printInFlow));
+    outOfOrderSection.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "role", role);
   }
 
   protected Element getElement()

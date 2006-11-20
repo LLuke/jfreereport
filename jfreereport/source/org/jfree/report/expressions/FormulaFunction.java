@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FormulaFunction.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,19 @@
  */
 package org.jfree.report.expressions;
 
-import org.jfree.formula.DefaultFormulaContext;
 import org.jfree.formula.Formula;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.LocalizationContext;
+import org.jfree.formula.function.FunctionRegistry;
+import org.jfree.formula.operators.OperatorFactory;
+import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
 import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 04.11.2006, 19:24:04
@@ -53,15 +61,51 @@ import org.jfree.util.Configuration;
  */
 public class FormulaFunction extends AbstractExpression implements Function
 {
-  private static class ReportFormulaContext extends DefaultFormulaContext
+  private static class ReportFormulaContext implements FormulaContext
   {
+    private FormulaContext backend;
     private DataRow dataRow;
 
-    public ReportFormulaContext(Configuration config,
+    public ReportFormulaContext(FormulaContext backend,
                                 DataRow dataRow)
     {
-      super(config);
+      this.backend = backend;
       this.dataRow = dataRow;
+    }
+
+    public LocalizationContext getLocalizationContext()
+    {
+      return backend.getLocalizationContext();
+    }
+
+    public Configuration getConfiguration()
+    {
+      return backend.getConfiguration();
+    }
+
+    public FunctionRegistry getFunctionRegistry()
+    {
+      return backend.getFunctionRegistry();
+    }
+
+    public TypeRegistry getTypeRegistry()
+    {
+      return backend.getTypeRegistry();
+    }
+
+    public OperatorFactory getOperatorFactory()
+    {
+      return backend.getOperatorFactory();
+    }
+
+    public boolean isReferenceDirty(String name)
+    {
+      return true;
+    }
+
+    public Type resolveReferenceType(String name)
+    {
+      return AnyType.TYPE;
     }
 
     public Object resolveReference(String name)
@@ -72,7 +116,9 @@ public class FormulaFunction extends AbstractExpression implements Function
       }
       catch (DataSourceException e)
       {
-        return null;
+        Log.debug ("Error while resolving formula reference: ", e);
+        return new LibFormulaErrorValue
+            (LibFormulaErrorValue.ERROR_REFERENCE_NOT_RESOLVABLE);
       }
     }
 
@@ -99,6 +145,12 @@ public class FormulaFunction extends AbstractExpression implements Function
 
   public FormulaFunction()
   {
+  }
+
+  private synchronized FormulaContext getFormulaContext()
+  {
+    final GlobalReportContext globalContext = getRuntime().getGlobalContext();
+    return (FormulaContext) globalContext.getAttribute(GlobalReportContext.FORMULA_CONTEXT);
   }
 
   public String getInitial()
@@ -213,7 +265,7 @@ public class FormulaFunction extends AbstractExpression implements Function
       {
         Formula initFormula = new Formula(initialExpression);
         final ReportFormulaContext context =
-            new ReportFormulaContext(getReportConfiguration(), getDataRow());
+            new ReportFormulaContext(getFormulaContext(), getDataRow());
         try
         {
           initFormula.initialize(context);
@@ -230,6 +282,7 @@ public class FormulaFunction extends AbstractExpression implements Function
     }
     catch (Exception e)
     {
+      Log.debug ("Failed to compute the initial value.");
       return null;
     }
   }
@@ -244,7 +297,7 @@ public class FormulaFunction extends AbstractExpression implements Function
       }
 
       final ReportFormulaContext context =
-          new ReportFormulaContext(getReportConfiguration(), getDataRow());
+          new ReportFormulaContext(getFormulaContext(), getDataRow());
       try
       {
         compiledFormula.initialize(context);
@@ -257,6 +310,7 @@ public class FormulaFunction extends AbstractExpression implements Function
     }
     catch (Exception e)
     {
+      Log.debug ("Failed to compute the regular value.", e);
       return null;
     }
   }

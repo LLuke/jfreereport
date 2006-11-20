@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: QuadrantDemoTest.java,v 1.1 2006/07/30 13:12:49 taqua Exp $
+ * $Id: QuadrantDemoTest.java,v 1.2 2006/11/13 19:20:59 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportDataFactory;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.flowing.FlowReportProcessor;
 import org.jfree.resourceloader.ResourceKeyCreationException;
@@ -87,13 +88,15 @@ public class QuadrantDemoTest
     manager.registerDefaults();
     Resource res = manager.createDirectly(url, JFreeReport.class);
     final JFreeReport resource = (JFreeReport) res.getResource();
-
+    final ReportDataFactory dataFactory = resource.getDataFactory();
+    dataFactory.open();
+    
     final ReportJob job = new ReportJob(resource);
     final FlowHtmlOutputProcessor out = new FlowHtmlOutputProcessor(null, null);
     final FlowReportProcessor rp = new FlowReportProcessor();
     rp.setOutputProcessor(out);
     rp.processReport(job);
 
-    resource.getDataFactory().close();
+    dataFactory.close();
   }
 }

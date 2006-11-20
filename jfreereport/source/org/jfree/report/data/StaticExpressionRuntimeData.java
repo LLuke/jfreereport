@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StaticExpressionRuntimeData.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: StaticExpressionRuntimeData.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@
  */
 package org.jfree.report.data;
 
-import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.report.ReportData;
+import org.jfree.report.expressions.GlobalReportContext;
 import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.structure.Element;
-import org.jfree.report.ReportData;
 import org.jfree.util.Configuration;
 
 /**
@@ -58,9 +58,10 @@ public class StaticExpressionRuntimeData
   private Element declaringParent;
   private Configuration configuration;
   private ResourceBundleFactory resourceBundleFactory;
-  private OutputProcessorMetaData metaData;
   private ReportData data;
   private int currentRow;
+  private GlobalReportContext globalReportContext;
+  private String exportDescriptor;
 
   public StaticExpressionRuntimeData()
   {
@@ -97,23 +98,14 @@ public class StaticExpressionRuntimeData
    */
   public String getExportDescriptor()
   {
-    OutputProcessorMetaData metaData = getOutputProcessorMetaData();
-    if (metaData == null)
-    {
-      return null;
-    }
-    return metaData.getExportDescriptor();
+    return exportDescriptor;
   }
 
-  public OutputProcessorMetaData getOutputProcessorMetaData()
+  public void setExportDescriptor(final String exportDescriptor)
   {
-    return metaData;
+    this.exportDescriptor = exportDescriptor;
   }
 
-  public void setOutputProcessorMetaData(final OutputProcessorMetaData metaData)
-  {
-    this.metaData = metaData;
-  }
 
   public ResourceBundleFactory getResourceBundleFactory()
   {
@@ -143,5 +135,15 @@ public class StaticExpressionRuntimeData
   public Configuration getConfiguration()
   {
     return configuration;
+  }
+
+  public GlobalReportContext getGlobalReportContext()
+  {
+    return globalReportContext;
+  }
+
+  public void setGlobalReportContext(final GlobalReportContext globalReportContext)
+  {
+    this.globalReportContext = globalReportContext;
   }
 }

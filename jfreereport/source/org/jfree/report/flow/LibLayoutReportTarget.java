@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibLayoutReportTarget.java,v 1.7 2006/07/11 13:24:40 taqua Exp $
+ * $Id: LibLayoutReportTarget.java,v 1.8 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -375,5 +375,8 @@ public class LibLayoutReportTarget extends AbstractReportTarget
     getInputFeed().resetPageBreakFlag();
   }
 
-
+  public String getExportDescriptor()
+  {
+    return getLayoutProcess().getOutputMetaData().getExportDescriptor();
+  }
 }

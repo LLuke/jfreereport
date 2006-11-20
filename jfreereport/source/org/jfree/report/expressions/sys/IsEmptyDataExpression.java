@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: IsEmptyDataExpression.java,v 1.1 2006/04/18 11:45:15 taqua Exp $
+ * $Id: IsEmptyDataExpression.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,7 +73,11 @@ public class IsEmptyDataExpression extends AbstractExpression
     }
     synchronized(data)
     {
-      if (data.getRowCount() == 0)
+      if (data.getCursorPosition() > 0)
+      {
+        return Boolean.FALSE;
+      }
+      if (data.isAdvanceable() == false)
       {
         return Boolean.TRUE;
       }

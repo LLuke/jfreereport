@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.33 2006/04/22 16:18:14 taqua Exp $
+ * $Id: JFreeReport.java,v 1.34 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -120,6 +120,7 @@ public class JFreeReport extends ReportDefinition implements Serializable
     this.styleSheets = new ArrayList();
     this.parameters = new ReportParameters();
     this.resourceBundleFactory = new DefaultResourceBundleFactory();
+    this.dataFactory = new EmptyReportDataFactory();
   }
 
   /**
@@ -197,6 +198,11 @@ public class JFreeReport extends ReportDefinition implements Serializable
 
   public void setDataFactory(final ReportDataFactory dataFactory)
   {
+    if (dataFactory == null)
+    {
+      throw new NullPointerException();
+    }
+
     this.dataFactory = dataFactory;
   }
 

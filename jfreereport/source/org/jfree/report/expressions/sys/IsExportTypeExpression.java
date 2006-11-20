@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: IsExportTypeExpression.java,v 1.2 2006/04/18 11:28:40 taqua Exp $
+ * $Id: IsExportTypeExpression.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -74,7 +74,7 @@ public class IsExportTypeExpression extends AbstractExpression
     {
       return Boolean.FALSE;
     }
-    if (getRuntime().getOutputMetaData().getExportDescriptor().startsWith(exportType))
+    if (getRuntime().getExportDescriptor().startsWith(exportType))
     {
       return Boolean.TRUE;
     }

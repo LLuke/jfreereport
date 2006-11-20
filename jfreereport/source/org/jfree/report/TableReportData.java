@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableReportData.java,v 1.1 2006/04/18 11:45:14 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@
 package org.jfree.report;
 
 import javax.swing.table.TableModel;
+
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 19.02.2006, 17:00:10
@@ -71,9 +73,30 @@ public class TableReportData implements ReportData
     return tableModel.getColumnCount();
   }
 
-  public int getRowCount() throws DataSourceException
+  public void setCursorPosition(int row) throws DataSourceException
   {
-    return tableModel.getRowCount();
+    if (row >= rowMax)
+    {
+      throw new DataSourceException("> Max");
+    }
+    else if (row < rowMin)
+    {
+      throw new DataSourceException("< Min");
+    }
+    cursor = row;
+  }
+
+  /**
+   * This operation checks, whether a call to next will be likely to succeed. If
+   * there is a next data row, this should return true.
+   *
+   * @return
+   * @throws org.jfree.report.DataSourceException
+   *
+   */
+  public boolean isAdvanceable() throws DataSourceException
+  {
+    return cursor < (tableModel.getRowCount() - 1);
   }
 
   public String getColumnName(int column) throws DataSourceException
@@ -84,20 +107,6 @@ public class TableReportData implements ReportData
   public Object get(int column) throws DataSourceException
   {
     return tableModel.getValueAt(cursor, column);
-  }
-
-  public boolean absolute(int row) throws DataSourceException
-  {
-    if (row >= rowMax)
-    {
-      return false;
-    }
-    else if (row < rowMin)
-    {
-      return false;
-    }
-    cursor = row;
-    return true;
   }
 
   public boolean next() throws DataSourceException
@@ -115,7 +124,7 @@ public class TableReportData implements ReportData
     // does nothing ...
   }
 
-  public int getCurrentRow() throws DataSourceException
+  public int getCursorPosition() throws DataSourceException
   {
     return cursor;
   }

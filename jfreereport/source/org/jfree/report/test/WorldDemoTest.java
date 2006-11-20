@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: WorldDemoTest.java,v 1.2 2006/11/11 20:37:23 taqua Exp $
+ * $Id: WorldDemoTest.java,v 1.3 2006/11/12 14:36:21 taqua Exp $
  *
  * Changes
  * -------
@@ -42,20 +42,16 @@ package org.jfree.report.test;
 
 import java.net.URL;
 
-import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.ReportDataFactoryException;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.TableReportDataFactory;
 import org.jfree.report.flow.ReportJob;
-import org.jfree.report.flow.paginating.PaginatingReportProcessor;
+import org.jfree.report.modules.gui.swing.preview.PreviewDialog;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.layouting.modules.output.graphics.GraphicsOutputProcessor;
 
 /**
  * Creation-Date: 21.02.2006, 14:11:22
@@ -69,9 +65,9 @@ public class WorldDemoTest
   }
 
   public static void main(String[] args)
-          throws ReportDataFactoryException, DataSourceException,
+          throws
           ResourceKeyCreationException, ResourceCreationException,
-          ResourceLoadingException, ReportProcessingException
+          ResourceLoadingException
   {
     JFreeReportBoot.getInstance().start();
 
@@ -80,8 +76,7 @@ public class WorldDemoTest
 
   private static void processReport(String file)
           throws ResourceLoadingException,
-          ResourceCreationException, ResourceKeyCreationException,
-          ReportDataFactoryException, DataSourceException, ReportProcessingException
+          ResourceCreationException, ResourceKeyCreationException
   {
     URL url = WorldDemoTest.class.getResource(file);
     ResourceManager manager = new ResourceManager();
@@ -94,13 +89,17 @@ public class WorldDemoTest
             new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);
 
-    final GraphicsOutputProcessor out = new GraphicsOutputProcessor(null);
-    final PaginatingReportProcessor rp = new PaginatingReportProcessor();
-    rp.setOutputProcessor(out);
-    long startTime = System.currentTimeMillis();
-    rp.processReport(job);
-    long endTime = System.currentTimeMillis();
+    PreviewDialog dialog = new PreviewDialog();
+    dialog.setModal(true);
+    dialog.setReportJob(job);
+    dialog.setSize(500, 300);
+    dialog.setVisible(true);
 
-    System.out.println ("Time: " + ((endTime - startTime) / 1000f));
+    dialog = new PreviewDialog();
+    dialog.setModal(true);
+    dialog.setReportJob(job);
+    dialog.setSize(500, 300);
+    dialog.setVisible(true);
+    System.exit(0);
   }
 }
