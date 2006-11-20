@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFunctionRegistry.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
+ * $Id: DefaultFunctionRegistry.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -92,12 +92,22 @@ public class DefaultFunctionRegistry implements FunctionRegistry
 
   public Function createFunction(String name)
   {
-    return new SumFunction();
+    if (name == null)
+    {
+      throw new NullPointerException();
+    }
+    final String functionClass = (String) functions.get(name.toUpperCase());
+    return (Function) ObjectUtilities.loadAndInstantiate
+        (functionClass, DefaultFunctionRegistry.class);
   }
 
   public FunctionDescription getMetaData(String name)
   {
-    return new SumFunctionDescription();
+    if (name == null)
+    {
+      throw new NullPointerException();
+    }
+    return (FunctionDescription) functionMetaData.get(name.toUpperCase());
   }
 
   public void initialize(final Configuration configuration)

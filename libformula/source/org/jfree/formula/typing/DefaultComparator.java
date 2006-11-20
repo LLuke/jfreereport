@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultComparator.java,v 1.1 2006/11/04 15:43:46 taqua Exp $
  *
  * Changes
  * -------
@@ -77,6 +77,14 @@ public class DefaultComparator implements ExtendedComparator
       final TypeRegistry typeRegistry = context.getTypeRegistry();
       final Number number1 = typeRegistry.convertToNumber(type1, value1);
       final Number number2 = typeRegistry.convertToNumber(type2, value2);
+      if (number1 == null && number2 == null)
+      {
+        return true;
+      }
+      if (number1 == null || number2 == null)
+      {
+        return false;
+      }
       final BigDecimal bd1 = new BigDecimal(number1.toString());
       final BigDecimal bd2 = new BigDecimal(number2.toString());
       if (bd1.signum() != bd2.signum())
@@ -95,6 +103,15 @@ public class DefaultComparator implements ExtendedComparator
       final TypeRegistry typeRegistry = context.getTypeRegistry();
       final String text1 = typeRegistry.convertToText(type1, value1);
       final String text2 = typeRegistry.convertToText(type2, value2);
+
+      if (text1 == null && text2 == null)
+      {
+        return true;
+      }
+      if (text1 == null || text2 == null)
+      {
+        return false;
+      }
       return (ObjectUtilities.equal(text1, text2));
     }
 
@@ -123,6 +140,20 @@ public class DefaultComparator implements ExtendedComparator
       final TypeRegistry typeRegistry = context.getTypeRegistry();
       final Number number1 = typeRegistry.convertToNumber(type1, value1);
       final Number number2 = typeRegistry.convertToNumber(type2, value2);
+
+      if (number1 == null && number2 == null)
+      {
+        return EQUAL;
+      }
+      if (number1 == null)
+      {
+        return LESS;
+      }
+      if (number2 == null)
+      {
+        return MORE;
+      }
+
       final BigDecimal bd1 = new BigDecimal(number1.toString());
       final BigDecimal bd2 = new BigDecimal(number2.toString());
       if (bd1.signum() != bd2.signum())
@@ -156,6 +187,20 @@ public class DefaultComparator implements ExtendedComparator
       final TypeRegistry typeRegistry = context.getTypeRegistry();
       final String text1 = typeRegistry.convertToText(type1, value1);
       final String text2 = typeRegistry.convertToText(type2, value2);
+
+      if (text1 == null && text2 == null)
+      {
+        return EQUAL;
+      }
+      if (text1 == null)
+      {
+        return LESS;
+      }
+      if (text2 == null)
+      {
+        return MORE;
+      }
+
       final int result = text1.compareTo(text2);
       if (result == 0)
       {
@@ -178,6 +223,7 @@ public class DefaultComparator implements ExtendedComparator
       if (value1 instanceof Comparable && value2 instanceof Comparable)
       {
         Comparable c1 = (Comparable) value1;
+        
         try
         {
           final int result = c1.compareTo(value2);

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FormulaParser.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
+ * $Id: FormulaParser.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -75,6 +75,7 @@ public class FormulaParser extends GeneratedFormulaParser {
       throws ParseException, EvaluationException
   {
     FormulaParser parser = new FormulaParser();
+
     LValue x = parser.parse("1 * 2 + 3 * 4");
     x.initialize(new DefaultFormulaContext());
     System.out.println (x);
@@ -82,5 +83,11 @@ public class FormulaParser extends GeneratedFormulaParser {
     x = parser.parse("[a] * [b] + [c] * [d]");
     x.initialize(new DefaultFormulaContext());
     System.out.println (x);
+
+    x = parser.parse("IF([A];[B];[C])");
+    x.initialize(new DefaultFormulaContext());
+    System.out.println (x);
+
+
   }
 }

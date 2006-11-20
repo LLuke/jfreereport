@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DivideOperator.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
+ * $Id: DivideOperator.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,8 @@ import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
- * Creation-Date: 31.10.2006, 16:34:11
+ * A division operation. This operation expects two valid numbers.
+ *
  *
  * @author Thomas Morgner
  */
@@ -67,17 +68,30 @@ public class DivideOperator implements InfixOperator
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
+    final Object raw1 = value1.getValue();
+    final Object raw2 = value2.getValue();
+
     final Number number1 =
-        typeRegistry.convertToNumber(value1.getType(), value1.getValue());
+        typeRegistry.convertToNumber(value1.getType(), raw1);
     final Number number2 =
-        typeRegistry.convertToNumber(value2.getType(), value2.getValue());
-    if (number1 == null || number2 == null)
+        typeRegistry.convertToNumber(value2.getType(), raw2);
+    if (number1 == null && number2 == null)
     {
       throw new EvaluationException
           (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
 
     final Type resultType = NumberType.GENERIC_NUMBER;
+    if (number1 == null)
+    {
+      return new TypeValuePair(resultType, new BigDecimal(0));
+    }
+    if (number2 == null)
+    {
+      throw new EvaluationException
+          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARITHMETIC));
+    }
+
     final BigDecimal bd1 = new BigDecimal(number1.toString());
     final BigDecimal bd2 = new BigDecimal(number2.toString());
     if (bd2.signum() == 0)

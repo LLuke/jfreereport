@@ -228,14 +228,14 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
       label_2:
       while (true) {
         switch (jj_nt.kind) {
-        case COMMA:
+        case SEMICOLON:
           ;
           break;
         default:
           jj_la1[5] = jj_gen;
           break label_2;
         }
-        jj_consume_token(COMMA);
+        jj_consume_token(SEMICOLON);
         parameter = getExpression(0);
           params.add(parameter);
       }
@@ -291,7 +291,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
       jj_la1_1();
    }
    private static void jj_la1_0() {
-      jj_la1_0 = new int[] {0xff000000,0xff000000,0x3000000,0x80100,0x0,0x2000,0x3080100,0x3000000,};
+      jj_la1_0 = new int[] {0xff000000,0xff000000,0x3000000,0x80100,0x0,0x40000,0x3080100,0x3000000,};
    }
    private static void jj_la1_1() {
       jj_la1_1 = new int[] {0xf,0xf,0x0,0x21e0,0x10,0x0,0x21e0,0x0,};

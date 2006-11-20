@@ -248,7 +248,7 @@ LValue parseFunction (String name) :
         params.add(parameter);
       }
       (
-        <COMMA> parameter = getExpression(0)
+        <SEMICOLON> parameter = getExpression(0)
         {
           params.add(parameter);
         }

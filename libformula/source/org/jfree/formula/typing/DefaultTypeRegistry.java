@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultTypeRegistry.java,v 1.1 2006/11/04 15:43:46 taqua Exp $
  *
  * Changes
  * -------
@@ -158,7 +158,7 @@ public class DefaultTypeRegistry implements TypeRegistry
         }
       }
     }
-    return null;
+    return new Integer(0);
   }
 
   private Date convertNumberToDate(final Number number)
@@ -272,7 +272,7 @@ public class DefaultTypeRegistry implements TypeRegistry
 
     if (value == null)
     {
-      return null;
+      return "";
     }
 
     Number n = convertToNumber(type1, value);
@@ -336,6 +336,7 @@ public class DefaultTypeRegistry implements TypeRegistry
       {
         return value;
       }
+
       final String text = convertToText(type, value);
       if (text == null)
       {
@@ -357,6 +358,7 @@ public class DefaultTypeRegistry implements TypeRegistry
       {
         return null;
       }
+
       final Date date = convertNumberToDate(number);
       if (date == null)
       {
@@ -379,6 +381,7 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
       return number;
     }
+
     // Unknown type - ignore it, crash later :)
     return value;
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LibFormulaErrorValue.java,v 1.1 2006/11/04 15:40:58 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,8 @@ import java.util.Locale;
  */
 public class LibFormulaErrorValue implements ErrorValue
 {
+  public static final int ERROR_REFERENCE_NOT_RESOLVABLE = 499;
+
   /** A parse error */
   public static final int ERROR_INVALID_CHARACTER = 501;
   /** Parameter types are invalid. */
@@ -57,7 +59,6 @@ public class LibFormulaErrorValue implements ErrorValue
   public static final int ERROR_ARITHMETIC = 503;
 
   private int errorCode;
-  private String errorMessage;
 
   public LibFormulaErrorValue(final int errorCode)
   {
@@ -76,6 +77,14 @@ public class LibFormulaErrorValue implements ErrorValue
 
   public String getErrorMessage(Locale locale)
   {
-    return errorMessage;
+    return "TODO";
+  }
+
+
+  public String toString()
+  {
+    return "LibFormulaErrorValue{" +
+        "errorCode=" + errorCode +
+        '}';
   }
 }

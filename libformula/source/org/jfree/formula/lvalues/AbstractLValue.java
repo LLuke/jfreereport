@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractLValue.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,7 @@ public abstract class AbstractLValue implements LValue
 
   public FormulaContext getContext()
   {
+    if (context == null) throw new NullPointerException();
     return context;
   }
 

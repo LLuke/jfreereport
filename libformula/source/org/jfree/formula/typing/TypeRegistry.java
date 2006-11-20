@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: TypeRegistry.java,v 1.1 2006/11/04 15:43:46 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -54,22 +54,30 @@ public interface TypeRegistry
   public ExtendedComparator getComparator(Type type1, Type type2);
 
   /**
-   * converts the object of the given type into a number. If the object is not
-   * convertible, a NumberFormatException is thrown.
+   * Converts the object of the given type into a number. If the object is not
+   * convertible, a NumberFormatException is thrown. (This conversion is used
+   * by the operator implementations.)
    *
    * @param type1
    * @param value
-   * @return
+   * @return the value as number or ZERO if the value is unconvertible.
    * @throws NumberFormatException if the type cannot be represented as number.
    */
   public Number convertToNumber (Type type1, Object value)
       throws NumberFormatException;
 
+  /**
+   * (This conversion is used by the operator implementations.)
+   *
+   * @param type1
+   * @param value
+   * @return the value as string or an empty string.
+   */
   public String convertToText (Type type1, Object value);
 
   /**
    * Checks, whether the target type would accept the specified value object
-   * and value type.
+   * and value type. (This conversion is used by the functions.)
    *
    * @param targetType
    * @param valuePair

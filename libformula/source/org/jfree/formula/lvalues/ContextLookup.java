@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContextLookup.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
+ * $Id: ContextLookup.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.formula.lvalues;
 
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.FormulaContext;
 
 /**
  * A reference that queries the datarow.
@@ -58,8 +59,9 @@ public class ContextLookup extends AbstractLValue
 
   public TypeValuePair evaluate()
   {
-    final Object value = getContext().resolveReference(name);
-    final Type type = getContext().resolveReferenceType(name);
+    final FormulaContext context = getContext();
+    final Object value = context.resolveReference(name);
+    final Type type = context.resolveReferenceType(name);
     return new TypeValuePair(type, value);
   }
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FormulaFunction.java,v 1.3 2006/11/05 14:27:27 taqua Exp $
+ * $Id: FormulaFunction.java,v 1.4 2006/11/13 19:15:25 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public class FormulaFunction extends AbstractLValue
       this.backend = new TypeValuePair[function.parameters.length];
     }
 
-    private TypeValuePair get (int pos) throws EvaluationException
+    private TypeValuePair get(int pos) throws EvaluationException
     {
       final LValue parameter = function.parameters[pos];
       final Type paramType = function.metaData.getParameterType(pos);
@@ -155,6 +155,11 @@ public class FormulaFunction extends AbstractLValue
     final FunctionRegistry registry = context.getFunctionRegistry();
     function = registry.createFunction(functionName);
     metaData = registry.getMetaData(functionName);
+
+    for (int i = 0; i < parameters.length; i++)
+    {
+      parameters[i].initialize(context);
+    }
   }
 
   public Object clone() throws CloneNotSupportedException
@@ -197,7 +202,7 @@ public class FormulaFunction extends AbstractLValue
     {
       if (i > 0)
       {
-        b.append(",");
+        b.append(";");
       }
       LValue parameter = parameters[i];
       b.append(parameter);
@@ -229,5 +234,5 @@ public class FormulaFunction extends AbstractLValue
     return true;
   }
 
-  
+
 }

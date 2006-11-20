@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PowerOperator.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
+ * $Id: PowerOperator.java,v 1.3 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,7 @@ public class PowerOperator implements InfixOperator
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
+    
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), value1.getValue());
     final Number number2 =

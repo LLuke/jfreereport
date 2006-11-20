@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SumFunction.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
+ * $Id: SumFunction.java,v 1.3 2006/11/13 19:15:25 taqua Exp $
  *
  * Changes
  * -------
@@ -105,11 +105,17 @@ public class SumFunction implements Function
   private BigDecimal compute(Object value,
                              final BigDecimal computedResult)
   {
-    if (value instanceof Number == false)
+    if (value == null)
     {
-      throw new IllegalArgumentException(String.valueOf(value));
+      // no-op ..
+      return computedResult;
     }
 
+    if (value instanceof Number == false)
+    {
+      // Paranoid checks can be disabled later ..
+      throw new IllegalArgumentException(String.valueOf(value));
+    }
 
     if (value instanceof BigDecimal)
     {

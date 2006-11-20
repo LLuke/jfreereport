@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MultiplyOperator.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
+ * $Id: MultiplyOperator.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
@@ -66,15 +67,33 @@ public class MultiplyOperator implements InfixOperator
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
+    final Object raw1 = value1.getValue();
+    final Object raw2 = value2.getValue();
+    if (raw1 == null && raw2 == null)
+    {
+      return null;
+    }
+
     final Number number1 =
-        typeRegistry.convertToNumber(value1.getType(), value1.getValue());
+        typeRegistry.convertToNumber(value1.getType(), raw1);
     final Number number2 =
-        typeRegistry.convertToNumber(value2.getType(), value2.getValue());
-    if (number1 == null || number2 == null)
+        typeRegistry.convertToNumber(value2.getType(), raw2);
+    if (number1 == null && number2 == null)
     {
       throw new EvaluationException
           (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
+
+    final Type resultType = NumberType.GENERIC_NUMBER;
+    if (number1 == null)
+    {
+      return new TypeValuePair(resultType, number2);
+    }
+    if (number2 == null)
+    {
+      return new TypeValuePair(resultType, number1);
+    }
+
 
     if ((number1 instanceof Integer || number1 instanceof Short) &&
         (number2 instanceof Integer || number2 instanceof Short))

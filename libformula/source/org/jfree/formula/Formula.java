@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Formula.java,v 1.1 2006/11/04 15:40:57 taqua Exp $
+ * $Id: Formula.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.formula.lvalues.LValue;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.parser.FormulaParser;
 import org.jfree.formula.parser.ParseException;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 31.10.2006, 14:43:05
@@ -77,10 +78,19 @@ public class Formula implements Serializable, Cloneable
     try
     {
       final TypeValuePair typeValuePair = rootReference.evaluate();
+      if (typeValuePair.getValue() instanceof LibFormulaErrorValue)
+      {
+        Log.debug ("Error: " + typeValuePair.getValue());
+      }
       return typeValuePair.getValue();
+    }
+    catch(EvaluationException ee)
+    {
+      return ee.getErrorValue();
     }
     catch (Exception e)
     {
+      e.printStackTrace();
       return new LibFormulaErrorValue(0);
     }
   }

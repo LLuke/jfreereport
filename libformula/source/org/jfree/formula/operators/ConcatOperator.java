@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConcatOperator.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
+ * $Id: ConcatOperator.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -65,14 +65,29 @@ public class ConcatOperator implements InfixOperator
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
+    final Object raw1 = value1.getValue();
+    final Object raw2 = value2.getValue();
+    if (raw1 == null && raw2 == null)
+    {
+      return null;
+    }
+
     final String text1 =
-        typeRegistry.convertToText(value1.getType(), value1.getValue());
+        typeRegistry.convertToText(value1.getType(), raw1);
     final String text2 =
-        typeRegistry.convertToText(value2.getType(), value2.getValue());
-    if (text1 == null || text2 == null)
+        typeRegistry.convertToText(value2.getType(), raw2);
+    if (text1 == null && text2 == null)
     {
       throw new EvaluationException
           (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+    }
+    if (text1 == null)
+    {
+      return new TypeValuePair(TextType.TYPE, text2);
+    }
+    if (text2 == null)
+    {
+      return new TypeValuePair(TextType.TYPE, text1);
     }
 
     return new TypeValuePair(TextType.TYPE, text1 + text2);
