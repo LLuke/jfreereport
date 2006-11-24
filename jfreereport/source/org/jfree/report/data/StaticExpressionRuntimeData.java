@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StaticExpressionRuntimeData.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
+ * $Id: StaticExpressionRuntimeData.java,v 1.3 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@
 package org.jfree.report.data;
 
 import org.jfree.report.ReportData;
-import org.jfree.report.expressions.GlobalReportContext;
+import org.jfree.report.flow.ReportContext;
 import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
@@ -60,7 +60,7 @@ public class StaticExpressionRuntimeData
   private ResourceBundleFactory resourceBundleFactory;
   private ReportData data;
   private int currentRow;
-  private GlobalReportContext globalReportContext;
+  private ReportContext reportContext;
   private String exportDescriptor;
 
   public StaticExpressionRuntimeData()
@@ -137,13 +137,13 @@ public class StaticExpressionRuntimeData
     return configuration;
   }
 
-  public GlobalReportContext getGlobalReportContext()
+  public ReportContext getReportContext()
   {
-    return globalReportContext;
+    return reportContext;
   }
 
-  public void setGlobalReportContext(final GlobalReportContext globalReportContext)
+  public void setReportContext(final ReportContext reportContext)
   {
-    this.globalReportContext = globalReportContext;
+    this.reportContext = reportContext;
   }
 }

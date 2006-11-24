@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PreviewPane.java,v 1.1 2006/11/13 19:27:45 taqua Exp $
+ * $Id: PreviewPane.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -67,6 +67,7 @@ import org.jfree.report.modules.gui.swing.common.ActionFactory;
 import org.jfree.report.modules.gui.swing.common.ActionPlugin;
 import org.jfree.report.modules.gui.swing.common.ExportActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingGuiContext;
+import org.jfree.report.modules.gui.swing.common.SwingUtil;
 import org.jfree.report.modules.gui.swing.printing.PrintReportProcessor;
 import org.jfree.report.util.Worker;
 import org.jfree.ui.Drawable;
@@ -93,7 +94,7 @@ public class PreviewPane extends JPanel
 
     public Window getWindow()
     {
-      return SwingUtilities.getWindowAncestor(PreviewPane.this);
+      return SwingUtil.getWindowAncestor(PreviewPane.this);
     }
 
     public Locale getLocale()

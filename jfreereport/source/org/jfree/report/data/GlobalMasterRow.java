@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: GlobalMasterRow.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: GlobalMasterRow.java,v 1.2 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.report.data;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
+import org.jfree.report.flow.ReportContext;
 
 /**
  * This data row holds all statefull information from the datasources of the
@@ -66,17 +67,18 @@ public final class GlobalMasterRow
   {
   }
 
-  public static GlobalMasterRow createReportRow()
+  public static GlobalMasterRow createReportRow(final ReportContext reportContext)
   {
     GlobalMasterRow gmr = new GlobalMasterRow();
     gmr.globalView = GlobalView.createView();
-    gmr.expressionDataRow = new ExpressionDataRow(gmr, 10);
+    gmr.expressionDataRow = new ExpressionDataRow(gmr, reportContext, 10);
     return gmr;
   }
 
-  public static GlobalMasterRow createReportRow(final GlobalMasterRow parentRow)
+  public static GlobalMasterRow createReportRow(final GlobalMasterRow parentRow,
+                                                final ReportContext reportContext)
   {
-    GlobalMasterRow gmr = createReportRow();
+    GlobalMasterRow gmr = createReportRow(reportContext);
     gmr.parentDataRow = parentRow;
     return gmr;
   }

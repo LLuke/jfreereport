@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Node.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ import java.util.Locale;
 import org.jfree.report.JFreeReport;
 
 /**
- * A node is the most basic unit in a report. It acts as general superclass
- * for all other elements.
+ * A node is the most basic unit in a report. It acts as general superclass for
+ * all other elements.
  *
  * @author Thomas Morgner
  */
@@ -65,6 +65,17 @@ public abstract class Node implements Serializable
   }
 
   protected void setParent(final Section parent)
+  {
+    this.parent = parent;
+  }
+
+  /**
+   * This is an extra method to allow me to track all *illegal* write-accesses
+   * to the parent. 
+   *
+   * @param parent
+   */
+  public void updateParent(final Section parent)
   {
     this.parent = parent;
   }
@@ -114,7 +125,7 @@ public abstract class Node implements Serializable
     return null;
   }
 
-  public Locale getLocale ()
+  public Locale getLocale()
   {
     if (parent != null)
     {

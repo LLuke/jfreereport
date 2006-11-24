@@ -23,16 +23,23 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractReportProcessor.java,v 1.1 2006/11/11 20:41:14 taqua Exp $
+ * $Id: AbstractReportProcessor.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.flow;
 
-import org.jfree.report.ReportDataFactoryException;
+import org.jfree.formula.DefaultFormulaContext;
 import org.jfree.report.DataSourceException;
+import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.data.PrecomputedValueRegistryBuilder;
+import org.jfree.report.data.ReportContextImpl;
+import org.jfree.report.flow.layoutprocessor.DefaultLayoutControllerFactory;
+import org.jfree.report.flow.layoutprocessor.LayoutController;
+import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 10.11.2006, 16:07:26
@@ -45,32 +52,51 @@ public abstract class AbstractReportProcessor implements ReportProcessor
   {
   }
 
-  protected void processReportRun(final ReportJob job, final ReportTarget target)
+  protected void processReportRun
+      (final ReportJob job, final ReportTarget target)
       throws ReportDataFactoryException,
       DataSourceException, ReportProcessingException
   {
     synchronized (job)
     {
-      // set up the scene
-      final LayoutController layoutController = new DefaultLayoutController();
-
+      final ReportContext context = createReportContext(job, target);
+      final LayoutControllerFactory layoutFactory =
+          context.getLayoutControllerFactory();
       // we have the data and we have our position inside the report.
       // lets generate something ...
-      final FlowController flowController = createFlowControler(job, target);
-      LayoutPosition position = layoutController.createInitialPosition
-              (flowController, job.getReport());
-      while (position.isFinalPosition() == false)
+      final FlowController flowController = createFlowControler(context, job);
+
+      LayoutController layoutController =
+          layoutFactory.create(flowController, job.getReport(), null);
+
+      while (layoutController.isAdvanceable())
       {
-        position = layoutController.process(target, position);
+        layoutController = layoutController.advance(target);
         target.commit();
       }
     }
   }
 
-  protected FlowController createFlowControler(ReportJob job, ReportTarget target)
+  protected ReportContext createReportContext (final ReportJob job,
+                                               final ReportTarget target)
+  {
+    ReportContextImpl context = new ReportContextImpl();
+    context.setExportDescriptor(target.getExportDescriptor());
+    final DefaultLayoutControllerFactory lcf = new DefaultLayoutControllerFactory();
+    lcf.initialize(job);
+    context.setLayoutControllerFactory(lcf);
+    context.setPrecomputedValueRegistry(new PrecomputedValueRegistryBuilder());
+    final DefaultFormulaContext formulaContext = new DefaultFormulaContext();
+    context.setFormulaContext(formulaContext);
+    context.setResourceBundleFactory(job.getReport().getResourceBundleFactory());
+    return context;
+  }
+
+  protected FlowController createFlowControler(final ReportContext context,
+                                               final ReportJob job)
           throws DataSourceException
   {
-    return new DefaultFlowController(job, target.getExportDescriptor());
+    return new DefaultFlowController(context, job);
   }
 
 }

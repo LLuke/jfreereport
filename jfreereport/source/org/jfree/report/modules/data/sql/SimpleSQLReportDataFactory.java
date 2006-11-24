@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleSQLReportDataFactory.java,v 1.3 2006/07/30 13:09:50 taqua Exp $
+ * $Id: SimpleSQLReportDataFactory.java,v 1.4 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -333,7 +333,8 @@ public class SimpleSQLReportDataFactory implements ReportDataFactory, Cloneable
     }
     catch (CloneNotSupportedException e)
     {
-      throw new IllegalStateException("Clone failed?", e);
+      // this should not happen ..
+      throw new IllegalStateException("Clone failed?");
     }
   }
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractExpressionReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
+ * $Id: AbstractExpressionReadHandler.java,v 1.3 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,10 @@ package org.jfree.report.modules.factories.report.flow;
 import java.beans.IntrospectionException;
 
 import org.jfree.report.expressions.Expression;
+import org.jfree.report.expressions.FormulaExpression;
 import org.jfree.report.expressions.FormulaFunction;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.beans.BeanUtility;
-import org.jfree.report.util.beans.BeanException;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
 import org.jfree.xmlns.parser.ParseException;
@@ -91,7 +91,20 @@ public abstract class AbstractExpressionReadHandler
     {
       if (formula != null)
       {
-        className = FormulaFunction.class.getName();
+        String initial = attrs.getValue(getUri(), "initial");
+        if (initial != null)
+        {
+          FormulaFunction function = new FormulaFunction();
+          function.setInitial(initial);
+          function.setFormula(formula);
+          this.expression = function;
+        }
+        else
+        {
+          FormulaExpression expression = new FormulaExpression();
+          expression.setFormula(formula);
+          this.expression = expression;
+        }
       }
       else
       {
@@ -104,41 +117,31 @@ public abstract class AbstractExpressionReadHandler
       }
     }
 
-    try
+    if (expression == null)
     {
-      final Class fnC = ObjectUtilities.getClassLoader
-          (getClass()).loadClass(className);
-      expression = (Expression) fnC.newInstance();
-      expression.setName(name);
-      expressionBeanUtility = new BeanUtility(expression);
-
-      if (formula != null)
+      try
       {
-        expressionBeanUtility.setPropertyAsString("formula", formula);
-        String initial = attrs.getValue(getUri(), "initial");
-        if (initial != null)
+        expression = (Expression) ObjectUtilities.loadAndInstantiate
+            (className, AbstractExpressionReadHandler.class);
+        if (expression == null)
         {
-          expressionBeanUtility.setPropertyAsString("initial", initial);
+          throw new ParseException("Expression '" + className +
+              "' is not valid. The specified class is not an expression or function.",
+               getRootHandler().getDocumentLocator());
         }
       }
+      catch (ClassCastException e)
+      {
+        throw new ParseException("Expression '" + className +
+            "' is not valid. The specified class is not an expression or function.",
+            e, getRootHandler().getDocumentLocator());
+      }
     }
-    catch (ClassNotFoundException e)
+
+    expression.setName(name);
+    try
     {
-      throw new ParseException("Expression '" + className +
-          "' is not valid. The specified class was not found.",
-          e, getRootHandler().getDocumentLocator());
-    }
-    catch (IllegalAccessException e)
-    {
-      throw new ParseException("Expression " + className +
-          "' is not valid. The specified class does not define a public default constructor.",
-          e, getRootHandler().getDocumentLocator());
-    }
-    catch (InstantiationException e)
-    {
-      throw new ParseException("Expression '" + className +
-          "' is not valid. The specified class cannot be instantiated.",
-          e, getRootHandler().getDocumentLocator());
+      expressionBeanUtility = new BeanUtility(expression);
     }
     catch (ClassCastException e)
     {
@@ -151,11 +154,6 @@ public abstract class AbstractExpressionReadHandler
       throw new ParseException("Expression '" + className +
           "' is not valid. Introspection failed for this expression.",
           e, getRootHandler().getDocumentLocator());
-    }
-    catch (BeanException e)
-    {
-      throw new SAXException("Unable to assign formula properties " +
-          "to expression '" + className + "'", e);
     }
 
   }

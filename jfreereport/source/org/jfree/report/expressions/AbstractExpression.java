@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AbstractExpression.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ public abstract class AbstractExpression implements Expression
   private ExpressionRuntime runtime;
   private boolean deepTraversing;
   private boolean precompute;
+  private boolean preserve;
 
   public AbstractExpression()
   {
@@ -193,5 +194,15 @@ public abstract class AbstractExpression implements Expression
   public void setDeepTraversing(final boolean deepTraversing)
   {
     this.deepTraversing = deepTraversing;
+  }
+
+  public boolean isPreserve()
+  {
+    return preserve;
+  }
+
+  public void setPreserve(final boolean preserve)
+  {
+    this.preserve = preserve;
   }
 }

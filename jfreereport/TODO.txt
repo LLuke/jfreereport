@@ -65,3 +65,302 @@ Crosstab-Component:
   first is the outer dimension.
 
   The data cell is always the last one ..
+
+-----------------------------------------------------------------------------
+
+Roadmap: JFreeReport 0.9
+
+The first release of JFreeReport 0.9 (JFR09 for short) is now only a few days away. This release, still being some iterations away from being production ready, is the first of a series of releases for that development branch to bring the next generation of reporting to our users.
+
+
+What is JFreeReport 0.9 and how is it different from JFreeReport 0.8
+
+The JFreeReport 0.9 core is for reporting what is assembly for programming languages. It is a very low-level, but highly flexible data-centric content
+processor.
+
+JFreeReport 0.9 is driven by the idea, that the main focus on reporting should not be on the data, but on the content the user wants to generate.
+
+In classical reporting engines the content has to be broken down into layout chunks (sometimes called Bands). These chunks get inserted into predefined
+slots the reporting engine offers. The engine finally iterates over its data and whenever it reached some arbitary  states, it would select the correct
+chunk, fill it with data and print it.
+
+For all of us, who ever worked with COBOL or Mainframes, this apporach is natural and sound. For all non-engineers, however, this approach is hard to
+understand and not all users are willing to learn the algorithms behind that approach.
+
+JFreeReport 0.9 inverts that view and uses the content to feed the reporting process. The report description contains the necessary information on which
+sections are repeatable along with the rules, when (and whether) they should be repeated at all.
+
+The reporting core assumes, that there is a Document-Object-Model (DOM) which organizes the whole report definition as a tree of nodes.
+
+A JFreeReport 0.9 report definition is a description on how to merge the content of the definition with the data from the datasources. In the simple cases, a user will just mark the repeatable sections on existing content by adding some report control elements to the document and adds report element definitions whereever the engine should fill in data from the datasources. (This is very similiar to what a JSP-Processor does with HTML or XML content in servlet environments.)
+
+The result of a JFreeReport processing run is a transformed DOM-tree where all repeating sections have been expanded to a non-repeating sequence and all data from the data-sources has been merged into the report definition.
+
+The JFreeReport object model does not define how the content is displayed. This task is handled by LibLayout - a layouting engine based on the Cascading StyleSheets layout system. The CSS-System is able to layout any DOM structures. A CSS-DOM is a tree of nodes, where Elements (non-leaf nodes) can have attributes and can have other nodes as childs.
+
+The combination of JFreeReport 0.9 and LibLayout allows the engine to handle almost any incomming definition structures.
+
+
+The Roadmap
+
+"What's cooking, doc?"
+   - B. Bunny
+
+The JFreeReport 0.9 branch consists of several sub-projects. I will start with the most high-level projects and dive down from there to the low-level code.
+
+1. JFreeReport-Server
+
+Objectives: Provide a simple method to deploy reports in Servlet-Container.
+Status    : not started
+Target    : Feb 2007
+
+The old and awfull servlet code of JFreeReport 0.8 is gone and will not come back in JFreeReport 0.9. It was a mess and hard to use.
+
+2. JFreeReport-Charting
+
+Objectives: Create specialized chart-elements for JFreeReport.
+Status    : not started
+Target    : Feb 2007
+
+No, we wont continue the long and painfull way of creating ChartExpressions. The aim of this project is to provide a way to define Charts in XML and to fill these charts from the report processing (without having to worry about DataSetCollectorFunctions or other similarily weird stuff). Drop in the chart definition, possibly connect the chart with the respective source fields and then enjoy the beauty of business graphics - that's how it should be.
+
+
+3. JFreeReport-Compatiblity-Layer: JFreeReport-0.8
+
+Objectives: Support the JFreeReport 0.8 report definitions
+Status    : not started
+Target    : Feb 2007
+
+When this project is finished, JFreeReport 0.9 will be able to understand report definitions from the old branch. We will not support to execute old
+functions or to access the old API. Functions and expressions that were present in JFreeReport 0.8 will be automaticly ported to equivalent
+expression in JFreeReport 0.9. For user-defined functions, an extensible plugin mechanism will be provided - but the converter has to be implemented
+manually. (We can't tell what the function may or may not want to do inside, so we cant apply magic here.)
+
+
+4. JFreeReport-BarCode
+
+Objectives: Support the generation of BarCodes from within the report engine (without having to fall back to barcode-fonts).
+Status    : not started
+Target    : May 2007
+
+Barcodes were already planned for JFreeReport 0.8 some time ago, but somehow never made it to the final stage.
+
+5. JFreeReport-Pentaho
+
+Objectives: Bring the power of JFreeReport to the Pentaho-Plattform and bring the power of the Pentaho-Plattform to JFreeReport.
+Status    : not started
+Target    : Jan 2007 - Feb 2007
+
+This project involves building datasources to read data from the plattform and updating the Pentaho-JFreeReportComponent to work with the new engine.
+
+6. JFreeReport-Ext
+
+JFreeReport-Ext is the well-known collector project for all the small modules which haven't got their own projects.
+
+6.1 SWT-GUI Support
+
+Objectives: Print-Preview and all ExportDialogs for the SWT-toolkit
+Status    : not started
+Target    : Jan 2007
+
+6.2 Hibernate-Datasources
+
+Objectives: Use HQL to query objects from a hibernate repository.
+Status    : not started
+Target    : Feb 2007
+
+6.3 XML-DataSources
+
+Objectives: Use XPath to query objects from arbitary XML-files
+Status    : not started
+Target    : Mar 2007
+
+6.4 Kettle-Integration
+
+Objectives: Use Kettle-Transformations as input source. This will allow to read and combine data from almost any datasource (including CSV, Excel-Workbooks and other weird sources)
+Status    : not started
+Target    : Feb 2007
+
+
+7. JFreeReport-Core
+
+The JFreeReport Core contains the heart of the report processing engine.
+
+7.1 Report-Archives
+
+Objectives: Deploying reports which consist of several files is always a pain.
+Status    : not started
+Target    : Dec 2006
+
+With JFreeReport 0.9, a report has at least three files: (1) ReportDefinition (2) StyleSheet (3) DataSource. Complex reports with a lot of images may easily consist of 20 or 30 files. Keeping them in sync is difficult. If Reports are packed as single JAR-files (like OpenOffice and the OpenDocument-Format does it), handling and deploying reports becomes a lot easier.
+
+7.2 User-definable Formula-Functions
+
+Objectives: Define functions from within a report definition
+Status    : not started
+Target    : Feb 2007
+
+Excel-Formula support is nice, but even the whole range of predefined functions will no cover everything. By combining the BeanScriptingFramework with LibFormula, users can define their own functions inside the report definitions (like Excel allows you to define functions using VBA from inside a Workbook).
+
+7.3 Precomputed functions
+
+Objectives: Evaluate functions in a parallel flow, Precompute functions
+Status    : not started
+Target    : ASAP, Dec 2006
+
+At the moment, functions are evaluated while the report is being processed. Results are computed as the data passes by, and therefore it is not possible to use the result of a computation before the data processing is finished. (Simple Example: It is not possible to do what the  TotalItemSumFunction did in JFreeReport 0.8; therefore we cannot (yet) print group sums or group counts in the headers and it is not possible to  compute formulas which depend on a global result (like averages)).
+
+7.4 Output-Targets
+
+Objectives: Export to Excel, PDF, HTML (streaming, flowing and pageable), PlainText, RTF and of course printers.
+Status    : Partially implemented
+Target    : Dec 2006 - Apr 2007
+
+This is a big chunk and most of the time will be spent hunting bugs. This task is connected to the various LibLayout output-releated tasks.
+
+8. LibLayout
+
+LibLayout is the layouting layer. For now, that engine does only support to most primitive layouting rules. A full implementation implements all CSS2 features and therefore handles floats and (ofcourse) passes the ACID 2 browser test.
+
+
+8.1 Output and Rendering-Support
+
+8.1.1 Pass-Through nodes
+
+Objectives: Allow non-layoutable content
+Status    : Not started
+Target    : Jan 2006
+
+Although LibLayout does not and will not support scripting inside the layouting engine, it is sometimes a nice thing to embed JavaScript, comments or other non-layoutable content into the generated output.
+
+8.1.2 Browser-Optimized HTML output
+
+Objectives: Make sure every browser displays the generated content properly
+Status    : Partially implemented
+Target    : Dec 2006 - Apr 2007
+
+Some HTML viewers out there have a strange view about CSS2. None of the HTML-Viewers supports CSS3, the CSS3 output has to be converted into HTML-Viewer-specific CSS2.
+
+8.1.3 RTF output
+
+Objectives: Implement RTF output using iText, later switch to an streaming output
+Status    : not started
+Target    : Jan 2007; Apr 2007-May 2007
+
+As first version, generate RTF using the methods and object model provided by iText.
+
+RTF supports some very complex layouts, which cannot be expressed in iText without getting mad about the object model. By directly generating RTF-documents, we can greatly reduce the memory and performance footprint on this output.
+
+8.1.4 PDF Output
+
+Objectives: Implement RTF output using iText, later switch to libPDF for output
+Status    : not started
+Target    : Dec 2006; Apr 2007-May 2007
+
+As first version, generate PDF using the methods and object model provided by iText.
+
+iText's PDF generation is (due to the limitations of their architecture) slower and more resource intensive than necessary. Advanced features of PDF cannot be utilized easily using the methods provided by iText. Therefore we will start a simplified PDF Writer (without a document model or any layouting capabilities) to produce PDFs faster than before.
+
+This will result in the LibPostscript and LibPDF subprojects.
+
+8.2 Layouting capabilities
+
+8.2.1 Support for Floats and Absolutely positioned elements
+
+Objectives: Support for Floats and Absolutely positioned elements, as they are needed to produce complex layouts.
+Status    : not started
+Target    : Feb 2007
+
+8.2.2 Support for Page-Spanning layouts
+
+Objectives: Page-Spanning output over multiple physical pages (poster printing)
+Status    : not started
+Target    : Mar 2007
+
+Right now, the horizontal layouting fails on page definitions that span more than a single physical page (as the Aligment in the renderer is too primitive to handle these cases properly) Tables do not take horizontally spanned pages into account when computing the column sizes and positions.
+
+In the current state, this exposes the same layouting bugs as JFreeReport 0.8 - but this time we have a chance to fix it.
+
+8.2.3 CSS2 and (partially) CSS3 compliance; Pass the ACID2 test
+
+Objectives: Fight the bugs in the layouting engine.
+Status    : not started
+Target    : now - May 2007
+
+Standards must be obeyd and every violation of the standard is a bug.
+
+8.3 Performance optimizations, Caching, etc
+
+Objectives: Make LibLayout the fastest renderer on earth
+Status    : not started
+Target    : Mar 2007 - May 2007
+
+In LibLayout, most of the algorithms and data structures used are simple and primitive. They are easy to write this way, but waste performance where they shouldn't. This task replaces the worst of those algorithms with better (in terms of footprint) alternatives.
+
+8.4 Generated lists
+
+Objectives: Implement auto-generated lists.
+Status    : not started
+Target    : Dec 2006 - Feb 2007
+
+Generate 'Table-Of-Contents', Indexes and other content lists usually found in text processing applications. (This project has a counterpart in JFreeReport 0.8)
+
+http://www.w3.org/TR/css3-gcpm/
+
+9. LibFonts
+
+9.1 Full support for reading raw font metrics (TrueType, Type1, Type2, OpenType)
+
+Objectives: Read Font-Files to get all metrics (and that faster than usual)
+Status    : not started
+Target    : Apr 2007 - May 2007
+
+The AWT is exceptionally slow when it comes to dealing with fonts; using iText is (due to limitations in the API) also slower than necessary. By reading font metrics directly from the files, we can produce better content and can still be faster than anyone else.
+
+9.2 Full Unicode support
+
+Objectives: The font layer must support layouting related unicode classifications.
+Status    : not started
+Target    : May 2007 - ..
+
+This is a prequesite to implement non-latin font support later.
+
+9.3 Caching
+
+Objectives: Querying font data is highly iterative and we should get easy performance gains by adding low-level caching.
+Status    : not started
+Target    : Mar 2007
+
+
+10. LibFormula
+
+10.1 Function library
+
+Objectives: Implement the OpenFormula Level 3 set of functions.
+Status    : not started
+Target    : now - Mar 2007
+
+10.2 Database and OLAP access
+
+Objectives: Add generic interfaces to access database tables and OLAP cubes from within an formula.
+Status    : not started
+Target    : now - Mar 2007
+
+
+11. LibLoader
+
+11.1 Error Management
+
+Objectives: LibLoader needs some better way to pass loading errors to the user.
+Status    : not started
+Target    : Jan 2007
+
+At the moment, a user does not see for what reason loading failed and therefore is not able to take actions on that.
+
+11.2 Better Caching, Better handling of large files
+
+Objectives: Caching and better access to files.
+Status    : not started
+Target    : now - Mar 2007
+
+For performance reasons, LibLoader should get some smarter caching and should be smarter when dealing with large files. Loading them into the memory is not smart at all.

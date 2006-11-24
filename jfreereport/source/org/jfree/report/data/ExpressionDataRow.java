@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ExpressionDataRow.java,v 1.4 2006/11/11 20:37:23 taqua Exp $
+ * $Id: ExpressionDataRow.java,v 1.5 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.report.data;
 
 import java.util.HashMap;
 
-import org.jfree.formula.DefaultFormulaContext;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
@@ -50,7 +49,7 @@ import org.jfree.report.ReportData;
 import org.jfree.report.expressions.Expression;
 import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.expressions.Function;
-import org.jfree.report.expressions.GlobalReportContext;
+import org.jfree.report.flow.ReportContext;
 import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
@@ -184,9 +183,9 @@ public final class ExpressionDataRow implements DataRow
       return staticRuntimeData.getCurrentRow();
     }
 
-    public GlobalReportContext getGlobalContext()
+    public ReportContext getReportContext()
     {
-      return staticRuntimeData.getGlobalReportContext();
+      return staticRuntimeData.getReportContext();
     }
   }
 
@@ -194,26 +193,23 @@ public final class ExpressionDataRow implements DataRow
   private int length;
   private HashMap nameCache;
   private GlobalMasterRow masterRow;
-  private GlobalReportContext globalReportContext;
+  private ReportContext reportContext;
 
-  public ExpressionDataRow(final GlobalMasterRow masterRow, int capacity)
+  public ExpressionDataRow(final GlobalMasterRow masterRow,
+                           final ReportContext reportContext,
+                           int capacity)
   {
     this.masterRow = masterRow;
     this.nameCache = new HashMap(capacity);
     this.expressions = new ExpressionSlot[capacity];
-    final ReportContextImpl reportContext = new ReportContextImpl();
-    // todo: Replace the default context by something own to allow user-defined
-    // formula-functions.
-    reportContext.setSystemAttribute(GlobalReportContext.FORMULA_CONTEXT, new DefaultFormulaContext());
-    reportContext.setSystemAttribute(GlobalReportContext.PRECOMPUTE_REGISTRY, new PrecomputedValueRegistry());
-    this.globalReportContext = reportContext;
+    this.reportContext = reportContext;
   }
 
   private ExpressionDataRow(final GlobalMasterRow masterRow,
                             final ExpressionDataRow previousRow)
       throws CloneNotSupportedException
   {
-    this.globalReportContext = previousRow.globalReportContext;
+    this.reportContext = previousRow.reportContext;
     this.masterRow = masterRow;
     this.nameCache = (HashMap) previousRow.nameCache.clone();
     this.expressions = new ExpressionSlot[previousRow.expressions.length];
@@ -489,10 +485,5 @@ public final class ExpressionDataRow implements DataRow
     {
       throw new DataSourceException("Cloning failed", e);
     }
-  }
-
-  public GlobalReportContext getGlobalReportContext()
-  {
-    return globalReportContext;
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AboutActionPlugin.java,v 1.1 2006/11/20 21:17:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,6 +41,7 @@ import javax.swing.SwingUtilities;
 import org.jfree.report.JFreeReportInfo;
 import org.jfree.report.modules.gui.swing.common.AbstractActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingGuiContext;
+import org.jfree.report.modules.gui.swing.common.SwingUtil;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.about.AboutDialog;
 import org.jfree.util.ResourceBundleSupport;
@@ -140,7 +141,7 @@ public class AboutActionPlugin extends AbstractActionPlugin
     {
       final String title = getDisplayName();
       // look where we have been added ...
-      Window w = SwingUtilities.getWindowAncestor(reportPane);
+      Window w = SwingUtil.getWindowAncestor(reportPane);
       if (w instanceof Frame)
       {
         aboutFrame = new AboutDialog

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ElementReadHandler.java,v 1.4 2006/07/30 13:09:50 taqua Exp $
+ * $Id: ElementReadHandler.java,v 1.5 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -44,11 +44,10 @@ import java.util.ArrayList;
 
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
+import org.jfree.report.structure.Element;
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
 import org.jfree.xmlns.parser.PropertyReadHandler;
-import org.jfree.xmlns.parser.StringReadHandler;
 import org.jfree.xmlns.parser.XmlReadHandler;
-import org.jfree.report.structure.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

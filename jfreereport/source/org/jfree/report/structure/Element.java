@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.5 2006/07/30 13:09:50 taqua Exp $
+ * $Id: Element.java,v 1.6 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -128,12 +128,12 @@ public abstract class Element extends Node
 
   public String getId()
   {
-    return (String) getAttribute("", ID_ATTRIBUTE);
+    return (String) getAttribute(Namespaces.XML_NAMESPACE, ID_ATTRIBUTE);
   }
 
   public void setId(final String id)
   {
-    setAttribute("", ID_ATTRIBUTE, id);
+    setAttribute(Namespaces.XML_NAMESPACE, ID_ATTRIBUTE, id);
   }
 
   public String getType()
@@ -153,16 +153,11 @@ public abstract class Element extends Node
    * Names can be used to lookup an element within a band. There is no
    * requirement for element names to be unique.
    *
-   * @param name the name of this self (null not permitted)
-   * @throws NullPointerException if the given name is null.
+   * @param name the name of this element
    */
   public void setName(final String name)
   {
-    if (name == null)
-    {
-      throw new NullPointerException("Element.setName(...): name is null.");
-    }
-    setAttribute("", NAME_ATTRIBUTE, name);
+    setAttribute(Namespaces.XML_NAMESPACE, NAME_ATTRIBUTE, name);
   }
 
 
@@ -173,7 +168,7 @@ public abstract class Element extends Node
    */
   public String getName()
   {
-    return (String) getAttribute("", NAME_ATTRIBUTE);
+    return (String) getAttribute(Namespaces.XML_NAMESPACE, NAME_ATTRIBUTE);
   }
 
   public void setAttribute(String name, Object value)
@@ -420,16 +415,16 @@ public abstract class Element extends Node
     {
       return (Locale) mayBeXhtmlLang;
     }
-
-    final Object mayBeHtmlLang = getAttribute(Namespaces.XHTML_NAMESPACE, "lang");
-    if (mayBeHtmlLang instanceof String)
-    {
-      return LocaleUtility.createLocale((String) mayBeHtmlLang);
-    }
-    else if (mayBeHtmlLang instanceof Locale)
-    {
-      return (Locale) mayBeHtmlLang;
-    }
+//
+//    final Object mayBeHtmlLang = getAttribute(Namespaces.XHTML_NAMESPACE, "lang");
+//    if (mayBeHtmlLang instanceof String)
+//    {
+//      return LocaleUtility.createLocale((String) mayBeHtmlLang);
+//    }
+//    else if (mayBeHtmlLang instanceof Locale)
+//    {
+//      return (Locale) mayBeHtmlLang;
+//    }
 
     return null;
   }

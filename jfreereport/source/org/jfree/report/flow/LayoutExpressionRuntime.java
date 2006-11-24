@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutExpressionRuntime.java,v 1.3 2006/11/11 20:37:23 taqua Exp $
+ * $Id: LayoutExpressionRuntime.java,v 1.4 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ package org.jfree.report.flow;
 import org.jfree.report.DataRow;
 import org.jfree.report.ReportData;
 import org.jfree.report.expressions.ExpressionRuntime;
-import org.jfree.report.expressions.GlobalReportContext;
 import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
@@ -62,7 +61,7 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
   private Element declaringParent;
   private int currentRow;
   private String exportDescriptor;
-  private GlobalReportContext globalContext;
+  private ReportContext reportContext;
 
   public LayoutExpressionRuntime()
   {
@@ -154,13 +153,13 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
     this.exportDescriptor = exportDescriptor;
   }
 
-  public GlobalReportContext getGlobalContext()
+  public ReportContext getReportContext()
   {
-    return globalContext;
+    return reportContext;
   }
 
-  public void setGlobalContext(final GlobalReportContext globalContext)
+  public void setReportContext (final ReportContext reportContext)
   {
-    this.globalContext = globalContext;
+    this.reportContext = reportContext;
   }
 }

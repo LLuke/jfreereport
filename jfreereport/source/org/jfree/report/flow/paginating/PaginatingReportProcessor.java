@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginatingReportProcessor.java,v 1.5 2006/11/12 14:36:21 taqua Exp $
+ * $Id: PaginatingReportProcessor.java,v 1.6 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -50,13 +50,13 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.flow.AbstractReportProcessor;
-import org.jfree.report.flow.DefaultLayoutController;
 import org.jfree.report.flow.FlowController;
-import org.jfree.report.flow.LayoutController;
-import org.jfree.report.flow.LayoutPosition;
 import org.jfree.report.flow.LibLayoutReportTarget;
+import org.jfree.report.flow.ReportContext;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.ReportTargetState;
+import org.jfree.report.flow.layoutprocessor.LayoutController;
+import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.Log;
@@ -189,24 +189,27 @@ public class PaginatingReportProcessor extends AbstractReportProcessor
       physicalMapping = new IntList(40);
       logicalMapping = new IntList(20);
 
-      // set up the scene
-      final LayoutController layoutController = new DefaultLayoutController();
+      final ReportContext context = createReportContext(job, target);
+      final LayoutControllerFactory layoutFactory =
+          context.getLayoutControllerFactory();
 
       // we have the data and we have our position inside the report.
       // lets generate something ...
-      final FlowController flowController = createFlowControler(job, target);
-      LayoutPosition position = layoutController.createInitialPosition
-          (flowController, job.getReport());
+      final FlowController flowController = createFlowControler(context, job);
+
+      LayoutController layoutController =
+          layoutFactory.create(flowController, job.getReport(), null);
+
       try
       {
-        stateList.add(new PageState(target.saveState(), position,
+        stateList.add(new PageState(target.saveState(), layoutController,
             outputProcessor.getPageCursor()));
         int logPageCount = outputProcessor.getLogicalPageCount();
         int physPageCount = outputProcessor.getPhysicalPageCount();
 
-        while (position.isFinalPosition() == false)
+        while (layoutController.isAdvanceable())
         {
-          position = layoutController.process(target, position);
+          layoutController = layoutController.advance(target);
           target.commit();
 
           // check whether a pagebreak has been encountered.
@@ -229,7 +232,7 @@ public class PaginatingReportProcessor extends AbstractReportProcessor
               logicalMapping.add(result);
             }
 
-            stateList.add(new PageState(target.saveState(), position,
+            stateList.add(new PageState(target.saveState(), layoutController,
                 outputProcessor.getPageCursor()));
             target.resetPagebreakFlag();
           }
@@ -279,21 +282,19 @@ public class PaginatingReportProcessor extends AbstractReportProcessor
       throws StateException, ReportProcessingException,
       ReportDataFactoryException, DataSourceException
   {
-    LayoutPosition position = previousState.getLayoutPosition();
     final ReportTargetState targetState = previousState.getTargetState();
     final LibLayoutReportTarget target =
         (LibLayoutReportTarget) targetState.restore(outputProcessor);
     outputProcessor.setPageCursor(previousState.getPageCursor());
 
-    // set up the scene
-    final LayoutController layoutController = new DefaultLayoutController();
+    LayoutController position = previousState.getLayoutController();
 
     // we have the data and we have our position inside the report.
     // lets generate something ...
 
-    while (position.isFinalPosition() == false)
+    while (position.isAdvanceable())
     {
-      position = layoutController.process(target, position);
+      position = position.advance(target);
       target.commit();
 
       // check whether a pagebreak has been encountered.

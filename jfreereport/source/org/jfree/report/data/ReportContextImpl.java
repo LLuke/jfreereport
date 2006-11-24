@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportContextImpl.java,v 1.1 2006/11/20 21:10:40 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,14 +32,18 @@ package org.jfree.report.data;
 
 import java.util.HashMap;
 
-import org.jfree.report.expressions.GlobalReportContext;
+import org.jfree.formula.FormulaContext;
+import org.jfree.report.flow.ReportContext;
+import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
+import org.jfree.report.i18n.ResourceBundleFactory;
 
 /**
  * Creation-Date: 20.11.2006, 12:19:34
  *
  * @author Thomas Morgner
  */
-public class ReportContextImpl implements GlobalReportContext
+public class ReportContextImpl implements ReportContext
 {
   private static class DataCarrier
   {
@@ -73,10 +77,55 @@ public class ReportContextImpl implements GlobalReportContext
   }
 
   private HashMap backend;
+  private String exportDescriptor;
+  private FormulaContext formulaContext;
+  private LayoutControllerFactory layoutControllerFactory;
+  private PrecomputedValueRegistry precomputedValueRegistry;
+  private ResourceBundleFactory resourceBundleFactory;
 
   public ReportContextImpl()
   {
     backend = new HashMap();
+  }
+
+  public String getExportDescriptor()
+  {
+    return exportDescriptor;
+  }
+
+  public void setExportDescriptor(final String exportDescriptor)
+  {
+    this.exportDescriptor = exportDescriptor;
+  }
+
+  public FormulaContext getFormulaContext()
+  {
+    return formulaContext;
+  }
+
+  public void setFormulaContext(final FormulaContext formulaContext)
+  {
+    this.formulaContext = formulaContext;
+  }
+
+  public LayoutControllerFactory getLayoutControllerFactory()
+  {
+    return layoutControllerFactory;
+  }
+
+  public void setLayoutControllerFactory(final LayoutControllerFactory layoutControllerFactory)
+  {
+    this.layoutControllerFactory = layoutControllerFactory;
+  }
+
+  public PrecomputedValueRegistry getPrecomputedValueRegistry()
+  {
+    return precomputedValueRegistry;
+  }
+
+  public void setPrecomputedValueRegistry(final PrecomputedValueRegistry precomputedValueRegistry)
+  {
+    this.precomputedValueRegistry = precomputedValueRegistry;
   }
 
   public void setAttribute(Object key, Object value)
@@ -144,4 +193,13 @@ public class ReportContextImpl implements GlobalReportContext
     return dc.isLocked();
   }
 
+  public ResourceBundleFactory getResourceBundleFactory()
+  {
+    return resourceBundleFactory;
+  }
+
+  public void setResourceBundleFactory(final ResourceBundleFactory resourceBundleFactory)
+  {
+    this.resourceBundleFactory = resourceBundleFactory;
+  }
 }

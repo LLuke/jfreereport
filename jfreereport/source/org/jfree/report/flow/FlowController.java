@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FlowControler.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
+ * $Id: FlowController.java,v 1.1 2006/11/20 21:10:40 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ package org.jfree.report.flow;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
-import org.jfree.report.expressions.GlobalReportContext;
 import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.SubReport;
@@ -61,7 +60,9 @@ public interface FlowController
       throws DataSourceException;
 
   public GlobalMasterRow getMasterRow();
-  public GlobalReportContext getGlobalContext();
+
+  public ReportContext getReportContext();
+
   public String getExportDescriptor();
 
   public boolean isAdvanceRequested();

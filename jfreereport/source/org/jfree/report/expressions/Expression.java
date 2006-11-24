@@ -24,7 +24,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.11 2006/04/18 11:28:39 taqua Exp $
+ * $Id: Expression.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
  *
  * ChangeLog
  * ------------
@@ -45,7 +45,10 @@ import org.jfree.report.DataSourceException;
  * Expressions can use a dataRow to access other fields, expressions or
  * functions within the current row in the report.
  *
+ * Statefull computations can be implemented using functions.
+ *
  * @author Thomas Morgner
+ * @see Function
  */
 public interface Expression extends Cloneable
 {
@@ -102,9 +105,63 @@ public interface Expression extends Cloneable
    */
   public void setRuntime(ExpressionRuntime runtime);
 
+  /**
+   * A deep-traversing expression declares that it should receive updates from
+   * all subreports. This mode should be activated if the expression's result
+   * depends on values contained in the subreport.
+   *
+   * @return true, if the expression is deep-traversing, false otherwise.
+   */
   public boolean isDeepTraversing ();
-  public void setDeepTraversing (boolean deep);
 
+  /**
+   * Defines, whether the expression is deep-traversing.
+   *
+   * @param deepTraversing true, if the expression is deep-traversing, false
+   * otherwise.
+   */
+  public void setDeepTraversing (boolean deepTraversing);
+
+  /**
+   * Returns, whether the expression will be precomputed. For precomputed
+   * expressions a parallel evaluation process is started and the result to
+   * which the expression evaluates before it gets out of scope will be used
+   * whenever an other expression queries this expression's value.
+   *
+   * @return true, if the expression is precomputed, false otherwise.
+   */
   public boolean isPrecompute();
+
+  /**
+   * Defines, whether the expression will be precomputed. For precomputed
+   * expressions a parallel evaluation process is started and the result to
+   * which the expression evaluates before it gets out of scope will be used
+   * whenever an other expression queries this expression's value.
+   *
+   * @param precompute true, if the expression is precomputed, false otherwise.
+   */
   public void setPrecompute(boolean precompute);
+
+  /**
+   * Checks, whether the expression's result should be preserved in the
+   * precomputed value registry. This way, the last value for that expression
+   * can be retrieved after the report has been finished.
+   *
+   * The preserve-function will only preserve the last value that has been
+   * evaluated before the expression went out of scope.
+   *
+   * @return true, if the expression's results should be preserved,
+   * false otherwise.
+   */
+  public boolean isPreserve();
+
+  /**
+   * Defines, whether the expression's result should be preserved in the
+   * precomputed value registry. This way, the last value for that expression
+   * can be retrieved after the report has been finished.
+   *
+   * @param preserve true, if the expression's results should be preserved,
+   * false otherwise.
+   */
+  public void setPreserve(boolean preserve);
 }

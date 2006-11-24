@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FormulaFunction.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
+ * $Id: FormulaFunction.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
+import org.jfree.report.flow.ReportContext;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 
@@ -98,21 +99,22 @@ public class FormulaFunction extends AbstractExpression implements Function
       return backend.getOperatorFactory();
     }
 
-    public boolean isReferenceDirty(String name)
+    public boolean isReferenceDirty(Object name)
     {
       return true;
     }
 
-    public Type resolveReferenceType(String name)
+    public Type resolveReferenceType(Object name)
     {
       return AnyType.TYPE;
     }
 
-    public Object resolveReference(String name)
+    public Object resolveReference(Object name)
     {
+      if (name == null) throw new NullPointerException();
       try
       {
-        return dataRow.get(name);
+        return dataRow.get(String.valueOf(name));
       }
       catch (DataSourceException e)
       {
@@ -149,8 +151,8 @@ public class FormulaFunction extends AbstractExpression implements Function
 
   private synchronized FormulaContext getFormulaContext()
   {
-    final GlobalReportContext globalContext = getRuntime().getGlobalContext();
-    return (FormulaContext) globalContext.getAttribute(GlobalReportContext.FORMULA_CONTEXT);
+    final ReportContext globalContext = getRuntime().getReportContext();
+    return (FormulaContext) globalContext.getFormulaContext();
   }
 
   public String getInitial()

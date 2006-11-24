@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: ExpressionRuntime.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
+ * $Id: ExpressionRuntime.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,7 @@ package org.jfree.report.expressions;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.report.ReportData;
 import org.jfree.report.DataRow;
+import org.jfree.report.flow.ReportContext;
 import org.jfree.report.structure.Element;
 import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.util.Configuration;
@@ -71,7 +72,8 @@ public interface ExpressionRuntime
    */
   public ReportData getData();
   public int getCurrentRow();
+  
   public Element getDeclaringParent();
-  public GlobalReportContext getGlobalContext();
+  public ReportContext getReportContext();
   public String getExportDescriptor();
 }

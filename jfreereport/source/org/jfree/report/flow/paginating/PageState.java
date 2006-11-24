@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PageState.java,v 1.1 2006/11/11 20:41:14 taqua Exp $
+ * $Id: PageState.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import java.io.Serializable;
 
 import org.jfree.report.flow.LayoutPosition;
 import org.jfree.report.flow.ReportTargetState;
+import org.jfree.report.flow.layoutprocessor.LayoutController;
 
 /**
  * Creation-Date: 11.11.2006, 19:01:53
@@ -43,16 +44,17 @@ import org.jfree.report.flow.ReportTargetState;
 public class PageState implements Serializable
 {
   private ReportTargetState targetState;
-  private LayoutPosition layoutPosition;
+  private LayoutController layoutController;
   private int pageCursor;
 
   public PageState(final ReportTargetState targetState,
-                   final LayoutPosition layoutPosition,
+                   final LayoutController layoutController,
                    final int pageCursor)
   {
+    this.layoutController = layoutController;
     this.pageCursor = pageCursor;
     this.targetState = targetState;
-    this.layoutPosition = layoutPosition;
+
   }
 
   public int getPageCursor()
@@ -65,8 +67,8 @@ public class PageState implements Serializable
     return targetState;
   }
 
-  public LayoutPosition getLayoutPosition()
+  public LayoutController getLayoutController()
   {
-    return layoutPosition;
+    return layoutController;
   }
 }

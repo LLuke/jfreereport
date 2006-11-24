@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FlowControlOperation.java,v 1.1 2006/04/18 11:49:11 taqua Exp $
  *
  * Changes
  * -------
@@ -55,8 +55,12 @@ public class FlowControlOperation
   public static final FlowControlOperation MARK =
           new FlowControlOperation("mark");
   /**
-   * Advances the cursor of the current datasource. Advance will fail with an
-   * error if the cursor is behind the last row.
+   * Requests that the datasource should be moved to the next row. An advance
+   * operation does not change the current cursor position. The cursor is not
+   * moved until a 'COMMIT' operation has been reached.
+   *
+   * Repeatable sections will perform an auto-commit based on the group in which
+   * they are in.
    */
   public static final FlowControlOperation ADVANCE =
           new FlowControlOperation("advance");

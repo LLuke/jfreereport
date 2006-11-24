@@ -23,18 +23,29 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrecomputedValueRegistry.java,v 1.1 2006/11/20 21:10:40 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.data;
 
+import org.jfree.report.structure.Element;
+
 /**
- * Placeholder. Todo.
+ * Expression precomputation processes the report in a parallel process to
+ * retrieve the final value of an function. The final value of an expression
+ * is the value the expression would return before it goes out of scope.
+ *
+ * Precomputation can be generally considered expensive, so it should be done
+ * only once. During the precomputation run, no output is generated at all.
+ * Only named data-row expressions can be precomputed.
  *
  * @author Thomas Morgner
  */
-public class PrecomputedValueRegistry
+public interface PrecomputedValueRegistry
 {
+  public void startElement (Element element);
+  public void finishElement (Element element);
+  public PrecomputeNode currentNode ();
 }

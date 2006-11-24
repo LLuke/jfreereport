@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ProxyExpressionRuntime.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
+ * $Id: ProxyExpressionRuntime.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.report.expressions;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.ReportData;
+import org.jfree.report.flow.ReportContext;
 import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
@@ -109,9 +110,9 @@ public class ProxyExpressionRuntime implements ExpressionRuntime
     return parent.getDeclaringParent();
   }
 
-  public GlobalReportContext getGlobalContext()
+  public ReportContext getReportContext()
   {
-    return parent.getGlobalContext();
+    return parent.getReportContext();
   }
 
   public String getExportDescriptor()

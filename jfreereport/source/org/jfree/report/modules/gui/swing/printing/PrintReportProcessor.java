@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrintReportProcessor.java,v 1.1 2006/11/20 21:17:55 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,12 +42,10 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactory;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.flow.DefaultLayoutController;
-import org.jfree.report.flow.LayoutController;
-import org.jfree.report.flow.LayoutPosition;
 import org.jfree.report.flow.LibLayoutReportTarget;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.ReportTargetState;
+import org.jfree.report.flow.layoutprocessor.LayoutController;
 import org.jfree.report.flow.paginating.PageState;
 import org.jfree.report.flow.paginating.PaginatingReportProcessor;
 import org.jfree.util.Log;
@@ -95,6 +93,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
 
   public void close()
   {
+    final ReportJob job = getJob();
     synchronized(job)
     {
       final ReportDataFactory dataFactory = job.getDataFactory();
@@ -110,11 +109,9 @@ public class PrintReportProcessor extends PaginatingReportProcessor
       DataSourceException, ReportProcessingException, StateException
   {
     final ReportJob job = getJob();
-
     synchronized (job)
     {
       // set up the scene
-      final LayoutController layoutController = new DefaultLayoutController();
       final PageState state = getPhysicalPageState(page);
 
       final ReportTargetState targetState = state.getTargetState();
@@ -127,13 +124,14 @@ public class PrintReportProcessor extends PaginatingReportProcessor
 
       final LibLayoutReportTarget target =
           (LibLayoutReportTarget) targetState.restore(outputProcessor);
-      LayoutPosition position = state.getLayoutPosition();
+
+      LayoutController position = state.getLayoutController();
 
       // we have the data and we have our position inside the report.
       // lets generate something ...
-      while (position.isFinalPosition() == false)
+      while (position.isAdvanceable())
       {
-        position = layoutController.process(target, position);
+        position = position.advance(target);
         target.commit();
         if (interceptor.isMoreContentNeeded() == false)
         {
@@ -166,7 +164,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
     {
       try
       {
-        prepareReportProcessing(job);
+        prepareReportProcessing(getJob());
       }
       catch (Exception e)
       {
@@ -191,7 +189,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
     {
       try
       {
-        prepareReportProcessing(job);
+        prepareReportProcessing(getJob());
         return true;
       }
       catch (Exception e)
@@ -225,7 +223,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
     {
       try
       {
-        prepareReportProcessing(job);
+        prepareReportProcessing(getJob());
       }
       catch (Exception e)
       {
@@ -267,7 +265,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
     {
       try
       {
-        prepareReportProcessing(job);
+        prepareReportProcessing(getJob());
       }
       catch (Exception e)
       {
@@ -298,7 +296,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
     {
       try
       {
-        prepareReportProcessing(job);
+        prepareReportProcessing(getJob());
       }
       catch (Exception e)
       {

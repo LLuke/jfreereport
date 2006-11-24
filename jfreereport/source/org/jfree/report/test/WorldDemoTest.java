@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: WorldDemoTest.java,v 1.3 2006/11/12 14:36:21 taqua Exp $
+ * $Id: WorldDemoTest.java,v 1.4 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -45,13 +45,18 @@ import java.net.URL;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.TableReportDataFactory;
+import org.jfree.report.ReportProcessingException;
+import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.DataSourceException;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.streaming.StreamingReportProcessor;
 import org.jfree.report.modules.gui.swing.preview.PreviewDialog;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.layouting.modules.output.html.StreamingHtmlOutputProcessor;
 
 /**
  * Creation-Date: 21.02.2006, 14:11:22
@@ -65,9 +70,13 @@ public class WorldDemoTest
   }
 
   public static void main(String[] args)
-          throws
-          ResourceKeyCreationException, ResourceCreationException,
-          ResourceLoadingException
+      throws
+      ResourceKeyCreationException,
+      ResourceCreationException,
+      ResourceLoadingException,
+      ReportProcessingException,
+      ReportDataFactoryException,
+      DataSourceException
   {
     JFreeReportBoot.getInstance().start();
 
@@ -75,8 +84,12 @@ public class WorldDemoTest
   }
 
   private static void processReport(String file)
-          throws ResourceLoadingException,
-          ResourceCreationException, ResourceKeyCreationException
+      throws ResourceLoadingException,
+      ResourceCreationException,
+      ResourceKeyCreationException,
+      ReportProcessingException,
+      ReportDataFactoryException,
+      DataSourceException
   {
     URL url = WorldDemoTest.class.getResource(file);
     ResourceManager manager = new ResourceManager();
@@ -100,6 +113,12 @@ public class WorldDemoTest
     dialog.setReportJob(job);
     dialog.setSize(500, 300);
     dialog.setVisible(true);
+//    StreamingReportProcessor sp = new StreamingReportProcessor();
+//    sp.setOutputProcessor(new StreamingHtmlOutputProcessor
+//        (job.getConfiguration(), System.out));
+//    sp.processReport(job);
+
+
     System.exit(0);
   }
 }

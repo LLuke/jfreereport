@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFlowControler.java,v 1.6 2006/11/11 20:37:23 taqua Exp $
+ * $Id: DefaultFlowController.java,v 1.1 2006/11/20 21:10:40 taqua Exp $
  *
  * Changes
  * -------
@@ -44,20 +44,16 @@ import java.util.Stack;
 
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportData;
-import org.jfree.report.ReportDataFactory;
 import org.jfree.report.ReportDataFactoryException;
-import org.jfree.report.expressions.Expression;
-import org.jfree.report.expressions.GlobalReportContext;
+import org.jfree.report.data.CachingReportDataFactory;
 import org.jfree.report.data.ExpressionDataRow;
 import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.data.ImportedVariablesDataRow;
 import org.jfree.report.data.ParameterDataRow;
 import org.jfree.report.data.ReportDataRow;
 import org.jfree.report.data.StaticExpressionRuntimeData;
-import org.jfree.report.data.CachingReportDataFactory;
+import org.jfree.report.expressions.Expression;
 import org.jfree.report.structure.Element;
-import org.jfree.report.structure.ReportDefinition;
 import org.jfree.report.structure.SubReport;
 import org.jfree.report.util.IntegerCache;
 
@@ -68,11 +64,11 @@ import org.jfree.report.util.IntegerCache;
  */
 public class DefaultFlowController implements FlowController
 {
-  private static class ReportContext
+  private static class ReportDataContext
   {
     private Stack markStack;
 
-    public ReportContext(final Stack markStack)
+    public ReportDataContext(final Stack markStack)
     {
       this.markStack = markStack;
     }
@@ -84,31 +80,37 @@ public class DefaultFlowController implements FlowController
   }
 
   private CachingReportDataFactory reportDataFactory;
-  private ReportJob job;
   private GlobalMasterRow dataRow;
   private boolean advanceRequested;
   private Stack reportStack;
   private Stack markStack;
   private Stack expressionsStack;
   private String exportDescriptor;
+  private ReportContext reportContext;
+  private ReportJob job;
 
-  public DefaultFlowController(final ReportJob job,
-                               final String exportDescriptor)
+  public DefaultFlowController(final ReportContext reportContext,
+                               final ReportJob job)
       throws DataSourceException
   {
-    this.exportDescriptor = exportDescriptor;
     if (job == null)
     {
       throw new NullPointerException();
     }
+    if (reportContext == null)
+    {
+      throw new NullPointerException();
+    }
 
+    this.reportContext = reportContext;
+    this.job = job;
+    this.exportDescriptor = reportContext.getExportDescriptor();
     this.reportDataFactory = new CachingReportDataFactory(job.getDataFactory());
     this.reportStack = new Stack();
     this.markStack = new Stack();
     this.expressionsStack = new Stack();
-    this.dataRow = GlobalMasterRow.createReportRow();
+    this.dataRow = GlobalMasterRow.createReportRow(reportContext);
     this.dataRow.setParameterDataRow(new ParameterDataRow(job.getParameters()));
-    this.job = job;
   }
 
   protected DefaultFlowController(final DefaultFlowController fc,
@@ -117,9 +119,10 @@ public class DefaultFlowController implements FlowController
     this.reportStack = (Stack) fc.reportStack.clone();
     this.markStack = (Stack) fc.markStack.clone();
     this.expressionsStack = (Stack) fc.expressionsStack.clone();
-    this.job = fc.job;
+    this.reportContext = fc.reportContext;
     this.advanceRequested = fc.advanceRequested;
     this.dataRow = dataRow;
+    this.job = fc.job;
     this.exportDescriptor = fc.exportDescriptor;
   }
 
@@ -180,10 +183,6 @@ public class DefaultFlowController implements FlowController
     return dataRow;
   }
 
-  public GlobalReportContext getGlobalContext()
-  {
-    return dataRow.getExpressionDataRow().getGlobalReportContext();
-  }
 
   public boolean isAdvanceRequested()
   {
@@ -207,15 +206,16 @@ public class DefaultFlowController implements FlowController
   {
 
     final GlobalMasterRow masterRow =
-            GlobalMasterRow.createReportRow(dataRow);
-    masterRow.setParameterDataRow(new ParameterDataRow(job.getParameters()));
+            GlobalMasterRow.createReportRow(dataRow, reportContext);
+    masterRow.setParameterDataRow(new ParameterDataRow
+        (getReportJob().getParameters()));
 
     final String query = report.getQuery();
     masterRow.setReportDataRow(ReportDataRow.createDataRow
         (reportDataFactory, query, dataRow.getGlobalView()));
 
     DefaultFlowController fc = new DefaultFlowController(this, masterRow);
-    fc.reportStack.push(new ReportContext(fc.markStack));
+    fc.reportStack.push(new ReportDataContext(fc.markStack));
     fc.markStack = new Stack();
     fc.dataRow = masterRow;
     return fc;
@@ -228,7 +228,7 @@ public class DefaultFlowController implements FlowController
 
     // create a view for the parameters of the report ...
     final GlobalMasterRow masterRow =
-            GlobalMasterRow.createReportRow(outerRow);
+            GlobalMasterRow.createReportRow(outerRow, reportContext);
 
     if (report.isGlobalImport())
     {
@@ -269,7 +269,7 @@ public class DefaultFlowController implements FlowController
     }
 
     DefaultFlowController fc = new DefaultFlowController(this, masterRow);
-    fc.reportStack.push(new ReportContext(fc.markStack));
+    fc.reportStack.push(new ReportDataContext(fc.markStack));
     fc.markStack = new Stack();
     fc.dataRow = masterRow;
     return fc;
@@ -283,7 +283,7 @@ public class DefaultFlowController implements FlowController
     {
       throw new IllegalStateException("An element without an assigned report.");
     }
-    final ReportDefinition report = element.getReport();
+
     final Expression[] expressions = element.getExpressions();
     if (expressions.length == 0)
     {
@@ -295,9 +295,9 @@ public class DefaultFlowController implements FlowController
     final StaticExpressionRuntimeData sdd = new StaticExpressionRuntimeData();
     sdd.setData(dataRow.getReportDataRow().getReportData());
     sdd.setDeclaringParent(element);
-    sdd.setConfiguration(job.getConfiguration());
-    sdd.setResourceBundleFactory(report.getResourceBundleFactory());
-    sdd.setGlobalReportContext(dataRow.getExpressionDataRow().getGlobalReportContext());
+    sdd.setConfiguration(getReportJob().getConfiguration());
+    sdd.setResourceBundleFactory(getReportContext().getResourceBundleFactory());
+    sdd.setReportContext(getReportContext());
     sdd.setExportDescriptor(exportDescriptor);
 
     final GlobalMasterRow dataRow = this.dataRow.derive();
@@ -345,7 +345,7 @@ public class DefaultFlowController implements FlowController
 //    final ReportData reportData = reportDataRow.getReportData();
 //    reportData.close();
     
-    ReportContext context = (ReportContext) fc.reportStack.pop();
+    ReportDataContext context = (ReportDataContext) fc.reportStack.pop();
     fc.dataRow = dataRow.getParentDataRow();
     fc.dataRow = fc.dataRow.derive();
     fc.dataRow.setExportedDataRow(null);
@@ -361,5 +361,10 @@ public class DefaultFlowController implements FlowController
   public String getExportDescriptor()
   {
     return exportDescriptor;
+  }
+
+  public ReportContext getReportContext()
+  {
+    return reportContext;
   }
 }

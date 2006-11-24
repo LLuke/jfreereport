@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StreamingReportProcessor.java,v 1.5 2006/11/11 20:37:23 taqua Exp $
+ * $Id: StreamingReportProcessor.java,v 1.6 2006/11/12 14:36:21 taqua Exp $
  *
  * Changes
  * -------
@@ -79,13 +79,23 @@ public class StreamingReportProcessor extends AbstractReportProcessor
   public void processReport(ReportJob job)
       throws ReportDataFactoryException, DataSourceException, ReportProcessingException
   {
-    // first, compute the globals ..
-    processReportRun(job, createReportTarget(job));
-    // second, generate the content. (no pagination needed for streaming)
-    processReportRun(job, createReportTarget(job));
+    if (job == null)
+    {
+      throw new NullPointerException();
+    }
+
+    synchronized (job)
+    {
+      // first, compute the globals
+      processReportRun(job, createTarget(job));
+      // second, paginate (this splits the stream into flows)
+      processReportRun(job, createTarget(job));
+      // third, generate the content.
+      processReportRun(job, createTarget(job));
+    }
   }
 
-  protected LibLayoutReportTarget createReportTarget(final ReportJob job)
+  protected LibLayoutReportTarget createTarget(final ReportJob job)
           throws ReportProcessingException
   {
     if (outputProcessor == null)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SubReport.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
+ * $Id: SubReport.java,v 1.2 2006/04/22 16:18:15 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,8 @@ public class SubReport extends ReportDefinition
       Section parent = getParent();
       if (parent != null)
       {
-        return parent.getReport().getResourceBundleFactory();
+        resourceBundleFactory = parent.getReport().getResourceBundleFactory();
+        return resourceBundleFactory;
       }
       return null;
     }
