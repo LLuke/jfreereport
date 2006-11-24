@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PageState.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
+ * $Id: PageState.java,v 1.3 2006/11/24 17:12:12 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,7 +32,6 @@ package org.jfree.report.flow.paginating;
 
 import java.io.Serializable;
 
-import org.jfree.report.flow.LayoutPosition;
 import org.jfree.report.flow.ReportTargetState;
 import org.jfree.report.flow.layoutprocessor.LayoutController;
 
