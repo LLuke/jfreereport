@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFlowController.java,v 1.1 2006/11/20 21:10:40 taqua Exp $
+ * $Id: DefaultFlowController.java,v 1.2 2006/11/24 17:12:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,22 +40,22 @@
  */
 package org.jfree.report.flow;
 
-import java.util.Stack;
-
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.data.CachingReportDataFactory;
 import org.jfree.report.data.ExpressionDataRow;
+import org.jfree.report.data.ExpressionSlot;
 import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.data.ImportedVariablesDataRow;
 import org.jfree.report.data.ParameterDataRow;
 import org.jfree.report.data.ReportDataRow;
-import org.jfree.report.data.StaticExpressionRuntimeData;
-import org.jfree.report.expressions.Expression;
+import org.jfree.report.data.PrecomputedValueRegistry;
+import org.jfree.report.data.PrecomputedValueRegistryBuilder;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.SubReport;
 import org.jfree.report.util.IntegerCache;
+import org.jfree.util.FastStack;
 
 /**
  * Creation-Date: 20.02.2006, 15:30:21
@@ -64,16 +64,18 @@ import org.jfree.report.util.IntegerCache;
  */
 public class DefaultFlowController implements FlowController
 {
+  private static final boolean STRICT_ASSERTATIONS = false;
+
   private static class ReportDataContext
   {
-    private Stack markStack;
+    private FastStack markStack;
 
-    public ReportDataContext(final Stack markStack)
+    public ReportDataContext(final FastStack markStack)
     {
       this.markStack = markStack;
     }
 
-    public Stack getMarkStack()
+    public FastStack getMarkStack()
     {
       return markStack;
     }
@@ -82,12 +84,13 @@ public class DefaultFlowController implements FlowController
   private CachingReportDataFactory reportDataFactory;
   private GlobalMasterRow dataRow;
   private boolean advanceRequested;
-  private Stack reportStack;
-  private Stack markStack;
-  private Stack expressionsStack;
+  private FastStack reportStack;
+  private FastStack markStack;
+  private FastStack expressionsStack;
   private String exportDescriptor;
   private ReportContext reportContext;
   private ReportJob job;
+  private PrecomputedValueRegistry precomputedValueRegistry;
 
   public DefaultFlowController(final ReportContext reportContext,
                                final ReportJob job)
@@ -106,24 +109,28 @@ public class DefaultFlowController implements FlowController
     this.job = job;
     this.exportDescriptor = reportContext.getExportDescriptor();
     this.reportDataFactory = new CachingReportDataFactory(job.getDataFactory());
-    this.reportStack = new Stack();
-    this.markStack = new Stack();
-    this.expressionsStack = new Stack();
+    this.reportStack = new FastStack();
+    this.markStack = new FastStack();
+    this.expressionsStack = new FastStack();
+    this.advanceRequested = false;
     this.dataRow = GlobalMasterRow.createReportRow(reportContext);
     this.dataRow.setParameterDataRow(new ParameterDataRow(job.getParameters()));
+    this.precomputedValueRegistry = new PrecomputedValueRegistryBuilder();
   }
 
   protected DefaultFlowController(final DefaultFlowController fc,
                                   final GlobalMasterRow dataRow)
   {
-    this.reportStack = (Stack) fc.reportStack.clone();
-    this.markStack = (Stack) fc.markStack.clone();
-    this.expressionsStack = (Stack) fc.expressionsStack.clone();
     this.reportContext = fc.reportContext;
-    this.advanceRequested = fc.advanceRequested;
-    this.dataRow = dataRow;
     this.job = fc.job;
     this.exportDescriptor = fc.exportDescriptor;
+    this.reportDataFactory = fc.reportDataFactory;
+    this.reportStack = (FastStack) fc.reportStack.clone();
+    this.markStack = (FastStack) fc.markStack.clone();
+    this.expressionsStack = (FastStack) fc.expressionsStack.clone();
+    this.advanceRequested = fc.advanceRequested;
+    this.dataRow = dataRow;
+    this.precomputedValueRegistry = fc.precomputedValueRegistry;
   }
 
 
@@ -151,7 +158,7 @@ public class DefaultFlowController implements FlowController
       {
         return this;
       }
-      
+
       DefaultFlowController fc = new DefaultFlowController(this, dataRow);
       fc.dataRow = (GlobalMasterRow) fc.markStack.pop();
       fc.advanceRequested = false;
@@ -216,7 +223,7 @@ public class DefaultFlowController implements FlowController
 
     DefaultFlowController fc = new DefaultFlowController(this, masterRow);
     fc.reportStack.push(new ReportDataContext(fc.markStack));
-    fc.markStack = new Stack();
+    fc.markStack = new FastStack();
     fc.dataRow = masterRow;
     return fc;
   }
@@ -270,21 +277,24 @@ public class DefaultFlowController implements FlowController
 
     DefaultFlowController fc = new DefaultFlowController(this, masterRow);
     fc.reportStack.push(new ReportDataContext(fc.markStack));
-    fc.markStack = new Stack();
+    fc.markStack = new FastStack();
     fc.dataRow = masterRow;
     return fc;
   }
 
-  public FlowController activateExpressions(final Element element)
+  public FlowController activateExpressions(final Element element,
+                                            final ExpressionSlot[] expressions)
           throws DataSourceException
   {
-    final JFreeReport rootReport = element.getRootReport();
-    if (rootReport == null)
+    if (STRICT_ASSERTATIONS)
     {
-      throw new IllegalStateException("An element without an assigned report.");
+      final JFreeReport rootReport = element.getRootReport();
+      if (rootReport == null)
+      {
+        throw new IllegalStateException("An element without an assigned report.");
+      }
     }
 
-    final Expression[] expressions = element.getExpressions();
     if (expressions.length == 0)
     {
       DefaultFlowController fc = new DefaultFlowController(this, dataRow);
@@ -292,18 +302,9 @@ public class DefaultFlowController implements FlowController
       return fc;
     }
 
-    final StaticExpressionRuntimeData sdd = new StaticExpressionRuntimeData();
-    sdd.setData(dataRow.getReportDataRow().getReportData());
-    sdd.setDeclaringParent(element);
-    sdd.setConfiguration(getReportJob().getConfiguration());
-    sdd.setResourceBundleFactory(getReportContext().getResourceBundleFactory());
-    sdd.setReportContext(getReportContext());
-    sdd.setExportDescriptor(exportDescriptor);
-
     final GlobalMasterRow dataRow = this.dataRow.derive();
     final ExpressionDataRow edr = dataRow.getExpressionDataRow();
-    edr.pushExpressions(expressions, sdd);
-
+    edr.pushExpressions(expressions);
 
     DefaultFlowController fc = new DefaultFlowController(this, dataRow);
     final Integer exCount = IntegerCache.getInteger(expressions.length);
@@ -340,11 +341,9 @@ public class DefaultFlowController implements FlowController
       return this;
     }
     // We dont close the report data, as some previously saved states may
-    // still reference it.
-//
-//    final ReportData reportData = reportDataRow.getReportData();
-//    reportData.close();
-    
+    // still reference it. (The caching report data factory takes care of
+    // that later.)
+
     ReportDataContext context = (ReportDataContext) fc.reportStack.pop();
     fc.dataRow = dataRow.getParentDataRow();
     fc.dataRow = fc.dataRow.derive();
@@ -366,5 +365,29 @@ public class DefaultFlowController implements FlowController
   public ReportContext getReportContext()
   {
     return reportContext;
+  }
+
+  /**
+   * Returns the current expression slots of all currently active expressions.
+   *
+   * @return
+   * @throws org.jfree.report.DataSourceException
+   *
+   */
+  public ExpressionSlot[] getActiveExpressions() throws DataSourceException
+  {
+    return dataRow.getExpressionDataRow().getSlots();
+  }
+
+  public FlowController createPrecomputeInstance() throws DataSourceException
+  {
+    final DefaultFlowController precompute = new DefaultFlowController(this, dataRow.derive());
+    precompute.precomputedValueRegistry = new PrecomputedValueRegistryBuilder();
+    return precompute;
+  }
+
+  public PrecomputedValueRegistry getPrecomputedValueRegistry()
+  {
+    return precomputedValueRegistry;
   }
 }

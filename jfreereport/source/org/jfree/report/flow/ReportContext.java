@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportContext.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,7 +32,6 @@ package org.jfree.report.flow;
 
 import org.jfree.formula.FormulaContext;
 import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
-import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.i18n.ResourceBundleFactory;
 
 /**
@@ -44,7 +43,6 @@ public interface ReportContext
 {
   public FormulaContext getFormulaContext();
   public LayoutControllerFactory getLayoutControllerFactory();
-  public PrecomputedValueRegistry getPrecomputedValueRegistry();
   public String getExportDescriptor();
   public ResourceBundleFactory getResourceBundleFactory();
 

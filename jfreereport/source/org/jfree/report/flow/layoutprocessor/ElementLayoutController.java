@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ElementLayoutController.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,9 +33,16 @@ package org.jfree.report.flow.layoutprocessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.data.StaticExpressionRuntimeData;
+import org.jfree.report.data.GlobalMasterRow;
+import org.jfree.report.data.PrecomputedValueRegistry;
+import org.jfree.report.data.PrecomputeNode;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.ReportTarget;
+import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.EmptyReportTarget;
 import org.jfree.report.structure.Node;
+import org.jfree.report.structure.Element;
 import org.jfree.util.Log;
 
 /**
@@ -55,8 +62,9 @@ public abstract class ElementLayoutController
 
   private int processingState;
   private FlowController flowController;
-  private Node node;
+  private Element node;
   private LayoutController parent;
+  private boolean precomputing;
 
   protected ElementLayoutController()
   {
@@ -92,7 +100,7 @@ public abstract class ElementLayoutController
       throw new IllegalStateException();
     }
 
-    this.node = node;
+    this.node = (Element) node;
     this.flowController = flowController;
     this.parent = parent;
   }
@@ -166,7 +174,7 @@ public abstract class ElementLayoutController
     this.flowController = flowController;
   }
 
-  public void setNode(final Node node)
+  public void setNode(final Element node)
   {
     this.node = node;
   }
@@ -188,4 +196,59 @@ public abstract class ElementLayoutController
       throw new IllegalStateException("Clone must be supported.");
     }
   }
+
+  protected StaticExpressionRuntimeData createRuntimeData(final FlowController fc)
+  {
+    final GlobalMasterRow dataRow = fc.getMasterRow();
+    final ReportJob reportJob = fc.getReportJob();
+    final StaticExpressionRuntimeData sdd = new StaticExpressionRuntimeData();
+    sdd.setData(dataRow.getReportDataRow().getReportData());
+    sdd.setDeclaringParent((Element) getNode());
+    sdd.setConfiguration(reportJob.getConfiguration());
+    sdd.setReportContext(fc.getReportContext());
+    return sdd;
+  }
+
+  public boolean isPrecomputing()
+  {
+    return precomputing;
+  }
+
+  protected void setPrecomputing(final boolean precomputing)
+  {
+    this.precomputing = precomputing;
+  }
+
+
+  protected Object precompute(final int expressionPosition)
+      throws ReportProcessingException, ReportDataFactoryException, DataSourceException
+  {
+    final FlowController fc = getFlowController().createPrecomputeInstance();
+    final PrecomputedValueRegistry pcvr =
+        fc.getPrecomputedValueRegistry();
+
+    final Element element = (Element) getNode();
+    pcvr.startElementPrecomputation(element);
+
+    final ElementLayoutController layoutController =
+        (ElementLayoutController) this.clone();
+    layoutController.setPrecomputing(true);
+    layoutController.setFlowController(fc);
+    layoutController.setParent(null);
+
+    final ReportTarget target =
+        new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
+
+    LayoutController lc = layoutController;
+    while (lc.isAdvanceable())
+    {
+      lc = lc.advance(target);
+    }
+
+    final PrecomputeNode precomputeNode = pcvr.currentNode();
+    final Object functionResult = precomputeNode.getFunctionResult(expressionPosition);
+    pcvr.finishElementPrecomputation(element);
+    return functionResult;
+  }
+
 }

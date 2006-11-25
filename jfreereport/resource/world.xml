@@ -106,7 +106,10 @@
     -->
     <report:expression formula="jfreereport:[Population] + [PopulationSum]"
                        initial="jfreereport:[Population]"
-                       name="PopulationSum"/>
+                       name="PopulationSum"
+                       deep-traversing="false"
+                       precompute="true"
+                       preserve="false"/>
 
     <h2 style="background-color: #C8FAF4; font-size: 14pt">Country:
       <report:content>
@@ -114,6 +117,12 @@
       </report:content>
     </h2>
 
+    <p>
+      The precomputed result of the sum-function is
+      <report:content>
+        <report:value-expression formula="jfreereport:[PopulationSum]"/>
+      </report:content>
+    </p>
     <table>
       <!--
       A table that does not declare its column widths will trigger

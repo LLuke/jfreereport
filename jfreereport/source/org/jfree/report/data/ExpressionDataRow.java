@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ExpressionDataRow.java,v 1.5 2006/11/20 21:07:48 taqua Exp $
+ * $Id: ExpressionDataRow.java,v 1.6 2006/11/24 17:12:12 taqua Exp $
  *
  * Changes
  * -------
@@ -45,14 +45,7 @@ import java.util.HashMap;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.ReportData;
-import org.jfree.report.expressions.Expression;
-import org.jfree.report.expressions.ExpressionRuntime;
-import org.jfree.report.expressions.Function;
 import org.jfree.report.flow.ReportContext;
-import org.jfree.report.i18n.ResourceBundleFactory;
-import org.jfree.report.structure.Element;
-import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 
 /**
@@ -64,131 +57,6 @@ import org.jfree.util.Log;
  */
 public final class ExpressionDataRow implements DataRow
 {
-  private static class ExpressionSlot
-      implements ExpressionRuntime, Cloneable
-  {
-    private StaticExpressionRuntimeData staticRuntimeData;
-    private Expression expression;
-    private Object value;
-    private String name;
-    private boolean queried;
-    private DataRow dataRow;
-
-    public ExpressionSlot(final Expression expression,
-                          final StaticExpressionRuntimeData runtimeData)
-    {
-      this.staticRuntimeData = runtimeData;
-      this.expression = expression;
-      this.name = expression.getName();
-      this.expression.setRuntime(this);
-      this.expression.setRuntime(null);
-    }
-
-    public Expression getExpression()
-    {
-      return expression;
-    }
-
-    public Object getValue() throws DataSourceException
-    {
-      if (queried == false)
-      {
-        synchronized (expression)
-        {
-          expression.setRuntime(this);
-          value = expression.computeValue();
-          expression.setRuntime(null);
-        }
-        queried = true;
-      }
-      return value;
-    }
-
-    public String getName()
-    {
-      return name;
-    }
-
-    public DataRow getDataRow()
-    {
-      return dataRow;
-    }
-
-    public Object clone() throws CloneNotSupportedException
-    {
-      return super.clone();
-    }
-
-    public void setDataRow(final DataRow dataRow)
-    {
-      this.dataRow = dataRow;
-    }
-
-    /**
-     * Returns the report data used in this section. If subreports are used,
-     * this does not reflect the complete report data.
-     * <p/>
-     * All access to the report data must be properly synchronized. Failure to
-     * do so may result in funny results. Do not assume that the report data
-     * will be initialized on the current cursor positon.
-     *
-     * @return
-     */
-    public ReportData getData()
-    {
-      return staticRuntimeData.getData();
-    }
-
-    public String getExportDescriptor()
-    {
-      return staticRuntimeData.getExportDescriptor();
-    }
-
-    public Element getDeclaringParent()
-    {
-      return staticRuntimeData.getDeclaringParent();
-    }
-
-    public Configuration getConfiguration()
-    {
-      return staticRuntimeData.getConfiguration();
-    }
-
-    public ResourceBundleFactory getResourceBundleFactory()
-    {
-      return staticRuntimeData.getResourceBundleFactory();
-    }
-
-    public void advance() throws DataSourceException
-    {
-      if (expression instanceof Function)
-      {
-        Function f = (Function) expression;
-        expression.setRuntime(this);
-        expression = f.advance();
-        f.setRuntime(null);
-        expression.setRuntime(null);
-      }
-      value = null;
-      queried = false;
-    }
-
-    public boolean isDeepTraversing()
-    {
-      return expression.isDeepTraversing();
-    }
-
-    public int getCurrentRow()
-    {
-      return staticRuntimeData.getCurrentRow();
-    }
-
-    public ReportContext getReportContext()
-    {
-      return staticRuntimeData.getReportContext();
-    }
-  }
-
   private ExpressionSlot[] expressions;
   private int length;
   private HashMap nameCache;
@@ -216,7 +84,7 @@ public final class ExpressionDataRow implements DataRow
     this.length = previousRow.length;
     for (int i = 0; i < length; i++)
     {
-      ExpressionSlot expression = previousRow.expressions[i];
+      final ExpressionSlot expression = previousRow.expressions[i];
       if (expression == null)
       {
         Log.debug("Error: Expression is null...");
@@ -251,28 +119,25 @@ public final class ExpressionDataRow implements DataRow
    * @param rd
    * @throws DataSourceException
    */
-  public synchronized void pushExpression(final Expression ex,
-                                          final StaticExpressionRuntimeData rd)
+  public synchronized void pushExpression(final ExpressionSlot expressionSlot)
       throws DataSourceException
   {
-    if (ex == null)
+    if (expressionSlot == null)
     {
       throw new NullPointerException();
     }
 
     ensureCapacity(length + 1);
 
-    final ExpressionSlot expressionSlot =
-        new ExpressionSlot(ex.getInstance(), rd);
     this.expressions[length] = expressionSlot;
-    final String name = ex.getName();
+    final String name = expressionSlot.getName();
     if (name != null)
     {
       nameCache.put(name, expressionSlot);
     }
     length += 1;
 
-    expressionSlot.setDataRow(masterRow.getGlobalView());
+    expressionSlot.updateDataRow(masterRow.getGlobalView());
     // A manual advance to initialize the function.
     expressionSlot.advance();
     if (name != null)
@@ -284,24 +149,23 @@ public final class ExpressionDataRow implements DataRow
     }
   }
 
-  public synchronized void pushExpressions(final Expression[] ex,
-                                           final StaticExpressionRuntimeData rd)
+  public synchronized void pushExpressions(final ExpressionSlot[] expressionSlots)
       throws DataSourceException
   {
-    if (ex == null)
+    if (expressionSlots == null)
     {
       throw new NullPointerException();
     }
 
-    ensureCapacity(length + ex.length);
-    for (int i = 0; i < ex.length; i++)
+    ensureCapacity(length + expressionSlots.length);
+    for (int i = 0; i < expressionSlots.length; i++)
     {
-      Expression expression = ex[i];
+      ExpressionSlot expression = expressionSlots[i];
       if (expression == null)
       {
         continue;
       }
-      pushExpression(expression, rd);
+      pushExpression(expression);
     }
   }
 
@@ -343,10 +207,7 @@ public final class ExpressionDataRow implements DataRow
       {
         nameCache.put(originalName, expressions[otherIndex]);
       }
-    }
 
-    if (originalName != null)
-    {
       final MasterDataRowChangeEvent chEvent = new MasterDataRowChangeEvent
           (MasterDataRowChangeEvent.COLUMN_REMOVED, originalName, null);
       masterRow.dataRowChanged(chEvent);
@@ -443,26 +304,26 @@ public final class ExpressionDataRow implements DataRow
   {
     try
     {
-      ExpressionDataRow edr = new ExpressionDataRow(master, this);
+      final ExpressionDataRow edr = new ExpressionDataRow(master, this);
 
       // It is defined, that new expressions get evaluated before any older
       // expression.
       for (int i = edr.length - 1; i >= 0; i--)
       {
         ExpressionSlot expressionSlot = edr.expressions[i];
-        expressionSlot.setDataRow(master.getGlobalView());
-        if (deepTraversing && expressionSlot.isDeepTraversing() ||
-            deepTraversing == false)
+        expressionSlot.updateDataRow(master.getGlobalView());
+        if (deepTraversing == false ||
+            (deepTraversing && expressionSlot.isDeepTraversing()))
         {
           expressionSlot.advance();
         }
         // Query the value (once per advance) ..
         final Object value = expressionSlot.getValue();
-        if (expressionSlot.getName() != null)
+        final String name = expressionSlot.getName();
+        if (name != null)
         {
           final MasterDataRowChangeEvent chEvent = new MasterDataRowChangeEvent
-              (MasterDataRowChangeEvent.COLUMN_UPDATED,
-                  expressionSlot.getName(), value);
+              (MasterDataRowChangeEvent.COLUMN_UPDATED, name, value);
           master.dataRowChanged(chEvent);
         }
       }
@@ -485,5 +346,14 @@ public final class ExpressionDataRow implements DataRow
     {
       throw new DataSourceException("Cloning failed", e);
     }
+  }
+
+  public ExpressionSlot[] getSlots()
+  {
+    // to be totally safe from any tampering, we would have to do some sort of
+    // deep-copy here.
+    ExpressionSlot[] slots = new ExpressionSlot[length];
+    System.arraycopy(expressions, 0, slots, 0, length);
+    return slots;
   }
 }

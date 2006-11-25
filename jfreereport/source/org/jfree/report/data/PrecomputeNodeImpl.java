@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrecomputeNodeImpl.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,10 +45,10 @@ import org.jfree.report.structure.Element;
  */
 public class PrecomputeNodeImpl implements PrecomputeNode
 {
-  private PrecomputeNode parent;
-  private PrecomputeNode next;
-  private PrecomputeNode firstChild;
-  private PrecomputeNode lastChild;
+  private PrecomputeNodeImpl parent;
+  private PrecomputeNodeImpl next;
+  private PrecomputeNodeImpl firstChild;
+  private PrecomputeNodeImpl lastChild;
 
   private Element element;
   private String id;
@@ -58,14 +58,12 @@ public class PrecomputeNodeImpl implements PrecomputeNode
   private ArrayList functionResults;
   private ArrayList functionNames;
 
-  public PrecomputeNodeImpl(final Element element,
-                            final PrecomputeNode parent)
+  public PrecomputeNodeImpl(final Element element)
   {
     if (element == null)
     {
       throw new NullPointerException();
     }
-    this.parent = parent;
     this.element = element;
     this.id = this.element.getId();
     this.namespace = this.element.getNamespace();
@@ -103,12 +101,17 @@ public class PrecomputeNodeImpl implements PrecomputeNode
     return parent;
   }
 
+  protected void setParent(final PrecomputeNodeImpl parent)
+  {
+    this.parent = parent;
+  }
+
   public PrecomputeNode getNext()
   {
     return next;
   }
 
-  public void setNext(final PrecomputeNode next)
+  protected void setNext(final PrecomputeNodeImpl next)
   {
     this.next = next;
   }
@@ -118,7 +121,7 @@ public class PrecomputeNodeImpl implements PrecomputeNode
     return firstChild;
   }
 
-  public void setFirstChild(final PrecomputeNode firstChild)
+  protected void setFirstChild(final PrecomputeNodeImpl firstChild)
   {
     this.firstChild = firstChild;
   }
@@ -128,9 +131,23 @@ public class PrecomputeNodeImpl implements PrecomputeNode
     return lastChild;
   }
 
-  public void setLastChild(final PrecomputeNode lastChild)
+  protected void setLastChild(final PrecomputeNodeImpl lastChild)
   {
     this.lastChild = lastChild;
+  }
+
+  public void add (PrecomputeNodeImpl node)
+  {
+    if (firstChild == null)
+    {
+      firstChild = node;
+      firstChild.setParent(this);
+      lastChild = node;
+      return;
+    }
+
+    lastChild.setNext(node);
+    lastChild.setParent(this);
   }
 
   public void addFunction(final String name, final Object value)
@@ -142,7 +159,7 @@ public class PrecomputeNodeImpl implements PrecomputeNode
     }
 
     this.functionNames.add(name);
-    this.functionResults.add(name);
+    this.functionResults.add(value);
   }
 
   public int getFunctionCount()
@@ -170,5 +187,23 @@ public class PrecomputeNodeImpl implements PrecomputeNode
       throw new IndexOutOfBoundsException();
     }
     return functionResults.get(idx);
+  }
+
+  public void prune ()
+  {
+    if (parent == null)
+    {
+      return;
+    }
+
+    if (parent.getLastChild() != this)
+    {
+      throw new IllegalStateException("Cannot prune. Not the last child.");
+    }
+    if (parent.getFirstChild() == this)
+    {
+      parent.setFirstChild(null);
+    }
+    parent.setLastChild(null);
   }
 }

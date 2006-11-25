@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StaticExpressionRuntimeData.java,v 1.3 2006/11/20 21:07:48 taqua Exp $
+ * $Id: StaticExpressionRuntimeData.java,v 1.4 2006/11/24 17:12:12 taqua Exp $
  *
  * Changes
  * -------
@@ -57,11 +57,9 @@ public class StaticExpressionRuntimeData
 {
   private Element declaringParent;
   private Configuration configuration;
-  private ResourceBundleFactory resourceBundleFactory;
   private ReportData data;
   private int currentRow;
   private ReportContext reportContext;
-  private String exportDescriptor;
 
   public StaticExpressionRuntimeData()
   {
@@ -98,18 +96,12 @@ public class StaticExpressionRuntimeData
    */
   public String getExportDescriptor()
   {
-    return exportDescriptor;
+    return reportContext.getExportDescriptor();
   }
-
-  public void setExportDescriptor(final String exportDescriptor)
-  {
-    this.exportDescriptor = exportDescriptor;
-  }
-
 
   public ResourceBundleFactory getResourceBundleFactory()
   {
-    return resourceBundleFactory;
+    return reportContext.getResourceBundleFactory();
   }
 
   public void setDeclaringParent(final Element declaringParent)
@@ -120,11 +112,6 @@ public class StaticExpressionRuntimeData
   public void setConfiguration(final Configuration configuration)
   {
     this.configuration = configuration;
-  }
-
-  public void setResourceBundleFactory(final ResourceBundleFactory resourceBundleFactory)
-  {
-    this.resourceBundleFactory = resourceBundleFactory;
   }
 
   public Element getDeclaringParent()

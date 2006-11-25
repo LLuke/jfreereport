@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrecomputedValueRegistryBuilder.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,30 +33,51 @@ package org.jfree.report.data;
 import org.jfree.report.structure.Element;
 
 /**
- * Creation-Date: 24.11.2006, 13:53:18
+ * This class is currently very primitive and enforces a recomputation of
+ * precomputed values each time.
  *
  * @author Thomas Morgner
  */
 public class PrecomputedValueRegistryBuilder implements PrecomputedValueRegistry
 {
-  private PrecomputeNode node;
+  private PrecomputeNodeImpl node;
 
   public PrecomputedValueRegistryBuilder()
   {
   }
 
+  public void startElementPrecomputation(final Element element)
+  {
+    startElement(element);
+  }
+
+  public void finishElementPrecomputation(final Element element)
+  {
+    finishElement(element);
+  }
+
   public void startElement(Element element)
   {
-    node = new PrecomputeNodeImpl (element, node);
+    PrecomputeNodeImpl newNode = new PrecomputeNodeImpl (element);
+    if (node != null)
+    {
+      newNode.setParent(node);
+    }
+    node = newNode;
   }
 
   public void finishElement(Element element)
   {
-    node = node.getParent();
+    node = (PrecomputeNodeImpl) node.getParent();
   }
 
   public PrecomputeNode currentNode()
   {
     return node;
+  }
+
+  public void addFunction(final String name, final Object value)
+  {
+    node.addFunction(name, value);
   }
 }

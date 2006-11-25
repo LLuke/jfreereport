@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SectionLayoutController.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,13 +31,19 @@
 package org.jfree.report.flow.layoutprocessor;
 
 import org.jfree.report.DataSourceException;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
+import org.jfree.report.data.PrecomputedValueRegistry;
+import org.jfree.report.data.ExpressionSlot;
+import org.jfree.report.data.StaticExpressionRuntimeData;
+import org.jfree.report.data.PrecomputedExpressionSlot;
+import org.jfree.report.data.RunningExpressionSlot;
+import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.LayoutExpressionRuntime;
-import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.ReportContext;
+import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
 import org.jfree.report.structure.Section;
@@ -53,6 +59,7 @@ public class SectionLayoutController extends ElementLayoutController
   // it is safer this way ..
   private Node[] nodes;
   private int index;
+  private int expressionsCount;
 
   public SectionLayoutController()
   {
@@ -68,8 +75,39 @@ public class SectionLayoutController extends ElementLayoutController
     // will work on the queried dataset.
     fc = startData(target, fc);
 
-    fc = fc.activateExpressions(s);
+    final PrecomputedValueRegistry pcvr =
+        fc.getPrecomputedValueRegistry();
+    if (isPrecomputing() == false)
+    {
+      pcvr.startElement(s);
+    }
 
+    final Expression[] expressions = s.getExpressions();
+    if (expressions.length > 0)
+    {
+      final ExpressionSlot[] slots = new ExpressionSlot[expressions.length];
+      final StaticExpressionRuntimeData runtimeData = createRuntimeData(fc);
+
+      for (int i = 0; i < expressions.length; i++)
+      {
+        final Expression expression = expressions[i];
+        if (isPrecomputing() == false && expression.isPrecompute())
+        {
+          // ok, we have to precompute the expression's value. For that
+          // we fork a new layout process, compute the value and then come
+          // back with the result.
+          Object value = precompute (i);
+          slots[i] = new PrecomputedExpressionSlot(expression.getName(), value);
+        }
+        else
+        {
+          // thats a bit easier; we dont have to do anything special ..
+          slots[i] = new RunningExpressionSlot(expression, runtimeData, pcvr.currentNode());
+        }
+      }
+
+      fc = fc.activateExpressions(s, slots);
+    }
 
     if (s.isVirtual() == false)
     {
@@ -81,6 +119,7 @@ public class SectionLayoutController extends ElementLayoutController
     SectionLayoutController derived = (SectionLayoutController) clone();
     derived.setProcessingState(OPENED);
     derived.setFlowController(fc);
+    derived.expressionsCount = expressions.length;
     return derived;
   }
 
@@ -139,14 +178,25 @@ public class SectionLayoutController extends ElementLayoutController
       target.endElement(e, ler);
     }
 
+    final PrecomputedValueRegistry pcvr =
+        fc.getPrecomputedValueRegistry();
     // Step 2: Remove the expressions of this element
-    fc = fc.deactivateExpressions();
+    if (expressionsCount != 0)
+    {
+      final ExpressionSlot[] activeExpressions = fc.getActiveExpressions();
+      for (int i = activeExpressions.length - expressionsCount; i < activeExpressions.length; i++)
+      {
+        final ExpressionSlot slot = activeExpressions[i];
+        pcvr.addFunction(slot.getName(), slot.getValue());
+      }
+      fc = fc.deactivateExpressions();
+    }
 
     // unwind the stack ..
     final Section s = (Section) e;
     fc = finishData(target, fc);
 
-    if (s.isRepeat())
+    if (isPrecomputing() == false && s.isRepeat())
     {
 
       // ok, the user wanted us to repeat. So we repeat if the group in which

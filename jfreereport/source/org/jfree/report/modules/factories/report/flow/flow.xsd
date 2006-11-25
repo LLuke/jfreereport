@@ -134,6 +134,9 @@
       <xsd:attribute name="name" type="xsd:string" use="optional"/>
       <xsd:attribute ref="formula" use="optional"/>
       <xsd:attribute ref="initial" use="optional"/>
+      <xsd:attribute name="deep-traversing" type="xsd:boolean" default="false" use="optional"/>
+      <xsd:attribute name="precompute" type="xsd:boolean" default="false" use="optional"/>
+      <xsd:attribute name="preserve" type="xsd:boolean" default="false" use="optional"/>
     </xsd:complexType>
   </xsd:element>
 

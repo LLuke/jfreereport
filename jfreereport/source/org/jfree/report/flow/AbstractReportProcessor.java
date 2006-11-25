@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractReportProcessor.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
+ * $Id: AbstractReportProcessor.java,v 1.3 2006/11/24 17:12:12 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,12 +34,10 @@ import org.jfree.formula.DefaultFormulaContext;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.data.PrecomputedValueRegistryBuilder;
 import org.jfree.report.data.ReportContextImpl;
 import org.jfree.report.flow.layoutprocessor.DefaultLayoutControllerFactory;
 import org.jfree.report.flow.layoutprocessor.LayoutController;
 import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 10.11.2006, 16:07:26
@@ -85,7 +83,7 @@ public abstract class AbstractReportProcessor implements ReportProcessor
     final DefaultLayoutControllerFactory lcf = new DefaultLayoutControllerFactory();
     lcf.initialize(job);
     context.setLayoutControllerFactory(lcf);
-    context.setPrecomputedValueRegistry(new PrecomputedValueRegistryBuilder());
+
     final DefaultFormulaContext formulaContext = new DefaultFormulaContext();
     context.setFormulaContext(formulaContext);
     context.setResourceBundleFactory(job.getReport().getResourceBundleFactory());

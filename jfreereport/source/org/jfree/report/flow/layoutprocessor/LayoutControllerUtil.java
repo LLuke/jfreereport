@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LayoutControllerUtil.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.EmptyReportData;
 import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.data.ReportDataRow;
+import org.jfree.report.data.StaticExpressionRuntimeData;
 import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.FlowController;
@@ -72,7 +73,6 @@ public class LayoutControllerUtil
     }
     return -1;
   }
-
 
   public static LayoutExpressionRuntime getExpressionRuntime
       (final FlowController fc, final Node node)

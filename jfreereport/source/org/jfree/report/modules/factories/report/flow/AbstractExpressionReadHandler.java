@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractExpressionReadHandler.java,v 1.3 2006/11/11 20:37:23 taqua Exp $
+ * $Id: AbstractExpressionReadHandler.java,v 1.4 2006/11/24 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -139,6 +139,10 @@ public abstract class AbstractExpressionReadHandler
     }
 
     expression.setName(name);
+    expression.setDeepTraversing("true".equals(attrs.getValue(getUri(), "deep-traversing")));
+    expression.setPrecompute("true".equals(attrs.getValue(getUri(), "precompute")));
+    expression.setPreserve("true".equals(attrs.getValue(getUri(), "preserve")));
+    
     try
     {
       expressionBeanUtility = new BeanUtility(expression);

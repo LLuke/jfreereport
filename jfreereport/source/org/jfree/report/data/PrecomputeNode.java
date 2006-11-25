@@ -9,27 +9,27 @@ import org.jfree.report.structure.Element;
  */
 public interface PrecomputeNode
 {
-  Element getElement();
+  public Element getElement();
 
-  String getId();
+  public String getId();
 
-  String getName();
+  public String getName();
 
-  String getTag();
+  public String getTag();
 
-  String getNamespace();
+  public String getNamespace();
 
-  PrecomputeNode getParent();
+  public PrecomputeNode getParent();
 
-  PrecomputeNode getNext();
+  public PrecomputeNode getNext();
 
-  PrecomputeNode getFirstChild();
+  public PrecomputeNode getFirstChild();
 
-  PrecomputeNode getLastChild();
+  public PrecomputeNode getLastChild();
 
-  int getFunctionCount();
+  public int getFunctionCount();
 
-  String getFunctionName(int idx);
+  public String getFunctionName(int idx);
 
-  Object getFunctionResult(int idx);
+  public Object getFunctionResult(int idx);
 }

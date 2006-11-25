@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportContextImpl.java,v 1.1 2006/11/20 21:10:40 taqua Exp $
+ * $Id: ReportContextImpl.java,v 1.2 2006/11/24 17:12:12 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -80,7 +80,6 @@ public class ReportContextImpl implements ReportContext
   private String exportDescriptor;
   private FormulaContext formulaContext;
   private LayoutControllerFactory layoutControllerFactory;
-  private PrecomputedValueRegistry precomputedValueRegistry;
   private ResourceBundleFactory resourceBundleFactory;
 
   public ReportContextImpl()
@@ -116,16 +115,6 @@ public class ReportContextImpl implements ReportContext
   public void setLayoutControllerFactory(final LayoutControllerFactory layoutControllerFactory)
   {
     this.layoutControllerFactory = layoutControllerFactory;
-  }
-
-  public PrecomputedValueRegistry getPrecomputedValueRegistry()
-  {
-    return precomputedValueRegistry;
-  }
-
-  public void setPrecomputedValueRegistry(final PrecomputedValueRegistry precomputedValueRegistry)
-  {
-    this.precomputedValueRegistry = precomputedValueRegistry;
   }
 
   public void setAttribute(Object key, Object value)

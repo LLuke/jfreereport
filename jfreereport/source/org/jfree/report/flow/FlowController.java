@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FlowController.java,v 1.1 2006/11/20 21:10:40 taqua Exp $
+ * $Id: FlowController.java,v 1.2 2006/11/24 17:12:12 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,9 @@ package org.jfree.report.flow;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.data.ExpressionSlot;
 import org.jfree.report.data.GlobalMasterRow;
+import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.SubReport;
 
@@ -73,12 +75,34 @@ public interface FlowController
   public FlowController performQuery(final SubReport report)
       throws ReportDataFactoryException, DataSourceException;
 
-  public FlowController activateExpressions(final Element element)
-      throws DataSourceException;
+  /**
+   * Activates expressions that compute running values. This does not activate
+   * precomputed expressions.
+   *
+   * @param element
+   * @param expressions
+   * @return
+   * @throws DataSourceException
+   */
+  public FlowController activateExpressions(final Element element,
+                                            final ExpressionSlot[] expressions)
+    throws DataSourceException;
+
+  /**
+   * Returns the current expression slots of all currently active expressions.
+   *
+   * @return
+   * @throws DataSourceException
+   */
+  public ExpressionSlot[] getActiveExpressions () throws DataSourceException;
 
   public FlowController deactivateExpressions() throws DataSourceException;
 
   public ReportJob getReportJob();
 
   public FlowController performReturnFromQuery() throws DataSourceException;
+
+  public FlowController createPrecomputeInstance () throws DataSourceException;
+
+  public PrecomputedValueRegistry getPrecomputedValueRegistry();
 }

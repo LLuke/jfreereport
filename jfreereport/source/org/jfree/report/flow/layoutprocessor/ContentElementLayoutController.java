@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ContentElementLayoutController.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,9 +32,14 @@ package org.jfree.report.flow.layoutprocessor;
 
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.data.DefaultDataFlags;
+import org.jfree.report.data.ExpressionSlot;
+import org.jfree.report.data.PrecomputedExpressionSlot;
+import org.jfree.report.data.PrecomputedValueRegistry;
+import org.jfree.report.data.RunningExpressionSlot;
+import org.jfree.report.data.StaticExpressionRuntimeData;
 import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.LayoutExpressionRuntime;
@@ -51,19 +56,54 @@ import org.jfree.report.structure.Node;
  */
 public class ContentElementLayoutController extends ElementLayoutController
 {
+  private int expressionsCount;
 
   public ContentElementLayoutController()
   {
   }
 
   protected LayoutController startElement(final ReportTarget target)
-      throws DataSourceException, ReportProcessingException
+      throws DataSourceException, ReportProcessingException, ReportDataFactoryException
   {
     final Element e = (Element) getNode();
     FlowController fc = getFlowController();
     // Step 3: Add the expressions. Any expressions defined for the subreport
     // will work on the queried dataset.
-    fc = fc.activateExpressions(e);
+
+    final ReportContext reportContext = fc.getReportContext();
+    final PrecomputedValueRegistry pcvr =
+        fc.getPrecomputedValueRegistry();
+    if (isPrecomputing() == false)
+    {
+      pcvr.startElement(e);
+    }
+
+    final Expression[] expressions = e.getExpressions();
+    if (expressions.length > 0)
+    {
+      final ExpressionSlot[] slots = new ExpressionSlot[expressions.length];
+      final StaticExpressionRuntimeData runtimeData = createRuntimeData(fc);
+
+      for (int i = 0; i < expressions.length; i++)
+      {
+        final Expression expression = expressions[i];
+        if (isPrecomputing() == false && expression.isPrecompute())
+        {
+          // ok, we have to precompute the expression's value. For that
+          // we fork a new layout process, compute the value and then come
+          // back with the result.
+          Object value = precompute (i);
+          slots[i] = new PrecomputedExpressionSlot(expression.getName(), value);
+        }
+        else
+        {
+          // thats a bit easier; we dont have to do anything special ..
+          slots[i] = new RunningExpressionSlot(expression, runtimeData, pcvr.currentNode());
+        }
+      }
+
+      fc = fc.activateExpressions(e, slots);
+    }
 
     if (e.isVirtual() == false)
     {
@@ -74,6 +114,7 @@ public class ContentElementLayoutController extends ElementLayoutController
     ContentElementLayoutController derived = (ContentElementLayoutController) clone();
     derived.setProcessingState(OPENED);
     derived.setFlowController(fc);
+    derived.expressionsCount = expressions.length;
     return derived;
   }
 
@@ -186,15 +227,34 @@ public class ContentElementLayoutController extends ElementLayoutController
       target.endElement(e, ler);
     }
 
+    final PrecomputedValueRegistry pcvr =
+        fc.getPrecomputedValueRegistry();
+    // grab all values from the expressionsdatarow
+
+
     // Step 2: Remove the expressions of this element
-    fc = fc.deactivateExpressions();
+    if (expressionsCount != 0)
+    {
+      final ExpressionSlot[] activeExpressions = fc.getActiveExpressions();
+      for (int i = 0; i < activeExpressions.length; i++)
+      {
+        final ExpressionSlot slot = activeExpressions[i];
+        pcvr.addFunction(slot.getName(), slot.getValue());
+      }
+      fc = fc.deactivateExpressions();
+    }
+
+    if (isPrecomputing() == false)
+    {
+      pcvr.finishElement(e);
+    }
 
     final LayoutController parent = getParent();
     if (parent != null)
     {
       return parent.join(fc);
     }
-    
+
     ContentElementLayoutController derived = (ContentElementLayoutController) clone();
     derived.setProcessingState(FINISHED);
     derived.setFlowController(fc);
