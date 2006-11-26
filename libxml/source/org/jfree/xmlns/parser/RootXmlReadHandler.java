@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RootXmlReadHandler.java,v 1.1.1.1 2006/05/15 12:28:36 taqua Exp $
+ * $Id: RootXmlReadHandler.java,v 1.2 2006/11/13 19:07:25 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,12 @@
 package org.jfree.xmlns.parser;
 
 import java.util.HashMap;
-import java.util.Stack;
 
 import org.jfree.resourceloader.DependencyCollector;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.DefaultConfiguration;
+import org.jfree.util.FastStack;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -62,10 +62,10 @@ public class RootXmlReadHandler extends DefaultHandler
   private Locator documentLocator;
 
   /** The current handlers. */
-  private Stack currentHandlers;
+  private FastStack currentHandlers;
 
   /** ??. */
-  private Stack outerScopes;
+  private FastStack outerScopes;
 
   /** The root handler. */
   private XmlReadHandler rootHandler;
@@ -234,7 +234,7 @@ public class RootXmlReadHandler extends DefaultHandler
     }
 
     this.outerScopes.push(this.currentHandlers);
-    this.currentHandlers = new Stack();
+    this.currentHandlers = new FastStack();
     this.currentHandlers.push(handler);
     handler.startElement(uri, tagName, attrs);
 
@@ -278,7 +278,7 @@ public class RootXmlReadHandler extends DefaultHandler
     {
       // if empty, but "recurse" had been called, then restore the old handler stack ..
       // but do not end the recursed element ..
-      this.currentHandlers = (Stack) this.outerScopes.pop();
+      this.currentHandlers = (FastStack) this.outerScopes.pop();
     }
     else if (!this.currentHandlers.isEmpty())
     {
@@ -304,8 +304,8 @@ public class RootXmlReadHandler extends DefaultHandler
    */
   public void startDocument() throws SAXException
   {
-    this.outerScopes = new Stack();
-    this.currentHandlers = new Stack();
+    this.outerScopes = new FastStack();
+    this.currentHandlers = new FastStack();
     if (rootHandler != null)
     {
       // When dealing with the multiplexing beast, we cant define a

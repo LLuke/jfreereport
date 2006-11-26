@@ -5,8 +5,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Stack;
 
+import org.jfree.util.FastStack;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xmlns.common.AttributeList;
 
@@ -78,7 +78,7 @@ public class XmlWriterSupport
   /**
    * The indent level for that writer.
    */
-  private Stack openTags;
+  private FastStack openTags;
 
   /**
    * The indent string.
@@ -90,6 +90,7 @@ public class XmlWriterSupport
   private boolean lineEmpty;
 
   private boolean alwaysAddNamespace;
+  private boolean assumeDefaultNamespace;
 
   /**
    * Default Constructor. The created XMLWriterSupport will not have no safe
@@ -120,7 +121,7 @@ public class XmlWriterSupport
     }
 
     this.safeTags = safeTags;
-    this.openTags = new Stack();
+    this.openTags = new FastStack();
     this.indentString = indentString;
     this.namespaces = new HashMap();
     this.lineEmpty = true;
@@ -181,7 +182,7 @@ public class XmlWriterSupport
   public void writeTag(final Writer w,
                        final String namespaceUri,
                        final String name)
-          throws IOException
+      throws IOException
   {
     writeTag(w, namespaceUri, name, null, OPEN);
   }
@@ -193,15 +194,11 @@ public class XmlWriterSupport
    * @throws java.io.IOException if there is an I/O problem.
    */
   public void writeCloseTag(final Writer w)
-          throws IOException
+      throws IOException
   {
+    indentForClose(w);
     ElementLevel level = (ElementLevel) openTags.pop();
 
-    // check whether the tag contains CData - we ma not indent such tags
-    if (getTagDescription().hasCData(level.getNamespace(), level.getTagName()) == false)
-    {
-      indent(w);
-    }
     setLineEmpty(false);
 
     w.write("</");
@@ -212,7 +209,7 @@ public class XmlWriterSupport
   }
 
   public void writeNewLine(Writer writer)
-          throws IOException
+      throws IOException
   {
     if (isLineEmpty() == false)
     {
@@ -227,6 +224,11 @@ public class XmlWriterSupport
     return lineEmpty;
   }
 
+  /**
+   * A marker flag to track, wether the current line is empty.
+   *
+   * @param lineEmpty
+   */
   public void setLineEmpty(boolean lineEmpty)
   {
     this.lineEmpty = lineEmpty;
@@ -248,7 +250,7 @@ public class XmlWriterSupport
                        final String attributeName,
                        final String attributeValue,
                        final boolean close)
-          throws IOException
+      throws IOException
   {
     if (attributeName != null)
     {
@@ -276,7 +278,7 @@ public class XmlWriterSupport
                        final String name,
                        AttributeList attributes,
                        final boolean close)
-          throws IOException
+      throws IOException
   {
     if (name == null)
     {
@@ -316,28 +318,7 @@ public class XmlWriterSupport
 
     if (empty && (namespaces.isEmpty() == false))
     {
-      Iterator entries = namespaces.entrySet().iterator();
-      while (entries.hasNext())
-      {
-        w.write(" ");
-
-        Map.Entry entry = (Map.Entry) entries.next();
-        final String nsUri = (String) entry.getKey();
-        final String nsPrfx = (String) entry.getValue();
-
-        if (nsPrfx != null && "".equals(nsPrfx) == false)
-        {
-          w.write("xmlns:" + nsPrfx);
-        }
-        else
-        {
-          w.write("xmlns");
-        }
-
-        w.write("=\"");
-        w.write(normalize(nsUri, true));
-        w.write("\"");
-      }
+      writeNamespaceDeclarations(w);
     }
 
     if (attributes != null)
@@ -346,7 +327,7 @@ public class XmlWriterSupport
       while (keys.hasNext())
       {
         final AttributeList.AttributeEntry entry =
-                (AttributeList.AttributeEntry) keys.next();
+            (AttributeList.AttributeEntry) keys.next();
         w.write(" ");
         w.write(buildAttributeName(entry));
         w.write("=\"");
@@ -369,8 +350,57 @@ public class XmlWriterSupport
     }
   }
 
+  private void writeNamespaceDeclarations(final Writer w)
+      throws IOException
+  {
+    if (isAssumeDefaultNamespace())
+    {
+      if (namespaces.size() == 1)
+      {
+        Iterator entries = namespaces.entrySet().iterator();
+        Map.Entry entry = (Map.Entry) entries.next();
+        final String nsUri = (String) entry.getKey();
+        final String nsPrfx = (String) entry.getValue();
+
+        if (nsPrfx != null && "".equals(nsPrfx) == false)
+        {
+          w.write(" ");
+          w.write("xmlns:" + nsPrfx);
+          w.write("=\"");
+          w.write(normalize(nsUri, true));
+          w.write("\"");
+        }
+
+        return;
+      }
+    }
+
+    Iterator entries = namespaces.entrySet().iterator();
+    while (entries.hasNext())
+    {
+      w.write(" ");
+
+      Map.Entry entry = (Map.Entry) entries.next();
+      final String nsUri = (String) entry.getKey();
+      final String nsPrfx = (String) entry.getValue();
+
+      if (nsPrfx != null && "".equals(nsPrfx) == false)
+      {
+        w.write("xmlns:" + nsPrfx);
+      }
+      else
+      {
+        w.write("xmlns");
+      }
+
+      w.write("=\"");
+      w.write(normalize(nsUri, true));
+      w.write("\"");
+    }
+  }
+
   private void doEndOfLine(Writer w)
-          throws IOException
+      throws IOException
   {
     if (openTags.isEmpty())
     {
@@ -380,7 +410,7 @@ public class XmlWriterSupport
     {
       ElementLevel level = (ElementLevel) openTags.peek();
       if (getTagDescription().hasCData
-              (level.getNamespace(), level.getTagName()) == false)
+          (level.getNamespace(), level.getTagName()) == false)
       {
         writeNewLine(w);
       }
@@ -403,7 +433,7 @@ public class XmlWriterSupport
                                     final String name)
   {
     final String namespacePrefix =
-            (String) namespaces.get(namespaceUri);
+        (String) namespaces.get(namespaceUri);
 
     if (namespacePrefix != null && "".equals(namespacePrefix) == false)
     {
@@ -483,21 +513,54 @@ public class XmlWriterSupport
    * @throws java.io.IOException if writing the stream failed.
    */
   public void indent(final Writer writer)
-          throws IOException
+      throws IOException
   {
     if (openTags.isEmpty())
     {
       return;
     }
 
-    doEndOfLine(writer);
-
-    for (int i = 0; i < this.openTags.size(); i++)
+    ElementLevel level = (ElementLevel) openTags.peek();
+    if (getTagDescription().hasCData(level.getNamespace(), level.getTagName()) == false)
     {
-      writer.write(this.indentString);
-      // 4 spaces, we could also try tab,
-      // but I do not know whether this works
-      // with our XML edit pane
+      doEndOfLine(writer);
+
+      for (int i = 0; i < this.openTags.size(); i++)
+      {
+        writer.write(this.indentString);
+        // 4 spaces, we could also try tab,
+        // but I do not know whether this works
+        // with our XML edit pane
+      }
+    }
+  }
+
+    /**
+   * Indent the line. Called for proper indenting in various places.
+   *
+   * @param writer the writer which should receive the indentention.
+   * @throws java.io.IOException if writing the stream failed.
+   */
+  public void indentForClose(final Writer writer)
+      throws IOException
+  {
+    if (openTags.isEmpty())
+    {
+      return;
+    }
+
+    ElementLevel level = (ElementLevel) openTags.peek();
+    if (getTagDescription().hasCData(level.getNamespace(), level.getTagName()) == false)
+    {
+      doEndOfLine(writer);
+
+      for (int i = 1; i < this.openTags.size(); i++)
+      {
+        writer.write(this.indentString);
+        // 4 spaces, we could also try tab,
+        // but I do not know whether this works
+        // with our XML edit pane
+      }
     }
   }
 
@@ -512,7 +575,7 @@ public class XmlWriterSupport
   }
 
   public void writeComment(Writer writer, String s)
-          throws IOException
+      throws IOException
   {
     if (openTags.isEmpty() == false)
     {
@@ -529,5 +592,15 @@ public class XmlWriterSupport
     writer.write(normalize(s, false));
     writer.write(" -->");
     doEndOfLine(writer);
+  }
+
+  public boolean isAssumeDefaultNamespace()
+  {
+    return assumeDefaultNamespace;
+  }
+
+  public void setAssumeDefaultNamespace(final boolean assumeDefaultNamespace)
+  {
+    this.assumeDefaultNamespace = assumeDefaultNamespace;
   }
 }

@@ -29,6 +29,15 @@ public class XmlWriter extends XmlWriterSupport
   }
 
   /**
+   * Default Constructor. The created XMLWriterSupport will not have no safe
+   * tags and starts with an indention level of 0.
+   */
+  public XmlWriter(final Writer writer, final TagDescription tagDescription)
+  {
+    this(writer, tagDescription, "  ");
+  }
+
+  /**
    * Creates a new XML writer for the specified character stream.
    *
    * @param writer       the character stream.
@@ -67,7 +76,9 @@ public class XmlWriter extends XmlWriterSupport
   public void writeXmlDeclaration (String encoding)
           throws IOException
   {
-    this.writer.write("<?xml version=\"1.0\" encoding=\""+ encoding + "\"?>");
+    this.writer.write("<?xml version=\"1.0\" encoding=\"");
+    this.writer.write(encoding);
+    this.writer.write ("\"?>");
     this.writer.write(getLineSeparator());
   }
 
@@ -85,11 +96,11 @@ public class XmlWriter extends XmlWriterSupport
   {
     if (close)
     {
-      writeTag(this.writer, namespace, name, null, close);
+      writeTag(this.writer, namespace, name, null, CLOSE);
     }
     else
     {
-      writeTag(this.writer, namespace, name);
+      writeTag(this.writer, namespace, name, null, OPEN);
     }
   }
 
