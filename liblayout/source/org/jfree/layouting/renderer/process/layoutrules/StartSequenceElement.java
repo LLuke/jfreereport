@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StartSequenceElement.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: StartSequenceElement.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@
  */
 package org.jfree.layouting.renderer.process.layoutrules;
 
-import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;

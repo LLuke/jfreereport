@@ -23,20 +23,20 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ComputeBreakabilityStep.java,v 1.1 2006/11/07 19:54:29 taqua Exp $
+ * $Id: ComputeBreakabilityStep.java,v 1.2 2006/11/09 14:28:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.renderer.process;
 
+import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.FinishedRenderNode;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
-import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 /**
  * Computes the size of the non-breakable areas at the beginning and end

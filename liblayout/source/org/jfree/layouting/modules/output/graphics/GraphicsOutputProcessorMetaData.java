@@ -23,17 +23,17 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: GraphicsOutputProcessorMetaData.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: GraphicsOutputProcessorMetaData.java,v 1.2 2006/11/13 19:14:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.graphics;
 
-import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
-import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
-import org.jfree.fonts.registry.FontStorage;
 import org.jfree.fonts.registry.FontFamily;
+import org.jfree.fonts.registry.FontStorage;
+import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
+import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
 
 /**
  * Creation-Date: 02.01.2006, 19:57:08
@@ -43,9 +43,13 @@ import org.jfree.fonts.registry.FontFamily;
 public class GraphicsOutputProcessorMetaData
     extends AbstractOutputProcessorMetaData
 {
-  public GraphicsOutputProcessorMetaData(FontStorage storage)
+  private boolean iterative;
+
+  public GraphicsOutputProcessorMetaData(final FontStorage storage,
+                                         final boolean iterative)
   {
     super(storage);
+    this.iterative = iterative;
 
     setFamilyMapping(FontFamilyValues.CURSIVE, "sans-serif");
     setFamilyMapping(FontFamilyValues.FANTASY, "Verdana");
@@ -67,5 +71,10 @@ public class GraphicsOutputProcessorMetaData
   public boolean isPagebreakAware()
   {
     return true;
+  }
+
+  public boolean isIterative()
+  {
+    return iterative;
   }
 }

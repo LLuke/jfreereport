@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleRuleMatcher.java,v 1.2 2006/07/11 13:29:48 taqua Exp $
+ * $Id: StyleRuleMatcher.java,v 1.3 2006/07/26 16:59:47 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,11 @@
  */
 package org.jfree.layouting.layouter.style.resolver;
 
-import org.jfree.layouting.input.style.CSSStyleRule;
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.CSSPageRule;
+import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.model.LayoutElement;
 
 /**

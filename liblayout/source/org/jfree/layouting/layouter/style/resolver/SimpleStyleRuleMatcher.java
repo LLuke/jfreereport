@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SimpleStyleRuleMatcher.java,v 1.7 2006/07/26 16:59:47 taqua Exp $
+ * $Id: SimpleStyleRuleMatcher.java,v 1.8 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -443,7 +443,6 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   private boolean isMatch(final LayoutElement node, final Selector selector)
   {
     final short selectorType = selector.getSelectorType();
-    final LayoutContext layoutContext = node.getLayoutContext();
     switch (selectorType)
     {
       case Selector.SAC_ANY_NODE_SELECTOR:
@@ -462,16 +461,16 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
       case Selector.SAC_PSEUDO_ELEMENT_SELECTOR:
       {
-        Selector s;
+        final LayoutContext layoutContext = node.getLayoutContext();
         return layoutContext.isPseudoElement();
       }
       case Selector.SAC_ELEMENT_NODE_SELECTOR:
       {
-        ElementSelector es = (ElementSelector) selector;
+        final ElementSelector es = (ElementSelector) selector;
+        final LayoutContext layoutContext = node.getLayoutContext();
         final String localName = es.getLocalName();
         if (localName != null)
         {
-
           if (localName.equals(layoutContext.getTagName()) == false)
           {
             return false;
@@ -489,17 +488,17 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
       case Selector.SAC_CHILD_SELECTOR:
       {
-        DescendantSelector ds = (DescendantSelector) selector;
+        final DescendantSelector ds = (DescendantSelector) selector;
         if (isMatch(node, ds.getSimpleSelector()) == false)
         {
           return false;
         }
-        LayoutElement parent = node.getParent();
+        final LayoutElement parent = node.getParent();
         return (isMatch(parent, ds.getAncestorSelector()));
       }
       case Selector.SAC_DESCENDANT_SELECTOR:
       {
-        DescendantSelector ds = (DescendantSelector) selector;
+        final DescendantSelector ds = (DescendantSelector) selector;
         if (isMatch(node, ds.getSimpleSelector()) == false)
         {
           return false;
@@ -508,7 +507,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
       case Selector.SAC_CONDITIONAL_SELECTOR:
       {
-        ConditionalSelector cs = (ConditionalSelector) selector;
+        final ConditionalSelector cs = (ConditionalSelector) selector;
         if (evaluateCondition(node, cs.getCondition()) == false)
         {
           return false;
@@ -527,7 +526,6 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
   private boolean evaluateCondition(final LayoutElement node,
                                     final Condition condition)
   {
-    final LayoutContext layoutContext = node.getLayoutContext();
     switch (condition.getConditionType())
     {
       case Condition.SAC_AND_CONDITION:
@@ -545,6 +543,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Condition.SAC_ATTRIBUTE_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
+        final LayoutContext layoutContext = node.getLayoutContext();
         String namespaceURI = ac.getNamespaceURI();
         if (namespaceURI == null)
         {
@@ -567,6 +566,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Condition.SAC_CLASS_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
+        final LayoutContext layoutContext = node.getLayoutContext();
         final String namespace = layoutContext.getNamespace();
         if (namespace == null)
         {
@@ -595,6 +595,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Condition.SAC_ID_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
+        final LayoutContext layoutContext = node.getLayoutContext();
         final AttributeMap attributes = layoutContext.getAttributes();
         final Object id = attributes.getAttribute(Namespaces.XML_NAMESPACE,
             "id");
@@ -603,6 +604,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Condition.SAC_LANG_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
+        final LayoutContext layoutContext = node.getLayoutContext();
         final Locale locale = layoutContext.getLanguage();
         final String lang = locale.getLanguage();
         return isBeginHyphenAttribute(lang, ac.getValue());
@@ -615,20 +617,22 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       case Condition.SAC_ONE_OF_ATTRIBUTE_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
+        final LayoutContext layoutContext = node.getLayoutContext();
         final String attr = (String)
-            layoutContext.getAttributes().getAttribute(
-                ac.getNamespaceURI(), ac.getLocalName());
+            layoutContext.getAttributes().getAttribute
+                (ac.getNamespaceURI(), ac.getLocalName());
         return isOneOfAttributes(attr, ac.getValue());
       }
       case Condition.SAC_PSEUDO_CLASS_CONDITION:
       {
         final AttributeCondition ac = (AttributeCondition) condition;
+        final LayoutContext layoutContext = node.getLayoutContext();
         final String pseudoClass = layoutContext.getPseudoElement();
         if (pseudoClass == null)
         {
           return false;
         }
-        if (ObjectUtilities.equal(ac.getValue(), pseudoClass))
+        if (pseudoClass.equals(ac.getValue()))
         {
           return true;
         }
@@ -652,11 +656,16 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
     {
       return false;
     }
-    StringTokenizer strTok = new StringTokenizer(attrValue);
+    if (attrValue.equals(value))
+    {
+      return true;
+    }
+
+    final StringTokenizer strTok = new StringTokenizer(attrValue);
     while (strTok.hasMoreTokens())
     {
       String token = strTok.nextToken();
-      if (ObjectUtilities.equal(token, value))
+      if (token.equals(value))
       {
         return true;
       }
@@ -735,7 +744,6 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
           if (pseudoPage.toString().equalsIgnoreCase(rulePseudoPage))
           {
             rules.add(rule);
-            continue;
           }
         }
         continue;

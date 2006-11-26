@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageableOutputProcessor.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
+ * $Id: PageableOutputProcessor.java,v 1.6 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -43,17 +43,17 @@ package org.jfree.layouting.output.pageable;
 import org.jfree.layouting.output.OutputProcessor;
 
 /**
- * A pageable processor generates zero or more pages per event. For the sake
- * of performance, an PageableOutputProcessor should implement some sort of
- * caching so that requesting pages from the same chunk does not result in a
- * full recomputation.
- *
- * For each logical page, a set of one or more physical pages is generated.
- * The pageable output processor allows to query pages by their logical
- * page number and by their physical number.
- *
+ * A pageable processor generates zero or more *pysical* pages per event. For
+ * the sake of performance, an PageableOutputProcessor should implement some
+ * sort of caching so that requesting pages from the same chunk does not result
+ * in a full recomputation.
+ * <p/>
+ * For each logical page, a set of one or more physical pages is generated. The
+ * pageable output processor allows to query pages by their logical page number
+ * and by their physical number.
+ * <p/>
  * The page content should not be exposed to the caller.
- *
+ * <p/>
  * An output processor has a page cursor attached. The cursor is used to
  * synchronize restarted input-feeds with the current output state.
  *
@@ -61,20 +61,7 @@ import org.jfree.layouting.output.OutputProcessor;
  */
 public interface PageableOutputProcessor extends OutputProcessor
 {
-  public int getLogicalPageCount();
   public int getPhysicalPageCount();
 
-  public LogicalPageKey getLogicalPage (int page);
-  public PhysicalPageKey getPhysicalPage (int page);
-
-  public void setPageCursor (int cursor);
-  public int getPageCursor ();
-
-  /**
-   * Checks, whether the 'processingFinished' event had been received at least
-   * once.
-   * 
-   * @return
-   */
-  public boolean isPaginationFinished();
+  public PhysicalPageKey getPhysicalPage(int page);
 }

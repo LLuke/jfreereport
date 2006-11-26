@@ -23,15 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: GraphicsContentInterceptor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: GraphicsContentInterceptor.java,v 1.2 2006/11/12 14:33:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.graphics;
 
-import org.jfree.layouting.output.pageable.PageFlowSelector;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
+import org.jfree.layouting.output.pageable.PageFlowSelector;
 import org.jfree.layouting.output.pageable.PhysicalPageKey;
 
 /**

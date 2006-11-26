@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMajorAxisLayoutStep.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
+ * $Id: InfiniteMajorAxisLayoutStep.java,v 1.6 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,8 @@
  */
 package org.jfree.layouting.renderer.process;
 
-import java.util.Stack;
-
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
-import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.NodeLayoutProperties;
@@ -62,6 +59,7 @@ import org.jfree.layouting.renderer.process.valign.InlineBlockAlignContext;
 import org.jfree.layouting.renderer.process.valign.NodeAlignContext;
 import org.jfree.layouting.renderer.process.valign.TextElementAlignContext;
 import org.jfree.layouting.renderer.process.valign.VerticalAlignmentProcessor;
+import org.jfree.util.FastStack;
 
 /**
  * This process-step computes the vertical alignment and corrects the
@@ -78,7 +76,7 @@ public class InfiniteMajorAxisLayoutStep
   public class ParagraphBreakState
   {
     private Object suspendItem;
-    private Stack contexts;
+    private FastStack contexts;
     private ParagraphRenderBox paragraph;
 
     public ParagraphBreakState(final ParagraphRenderBox paragraph)
@@ -88,7 +86,7 @@ public class InfiniteMajorAxisLayoutStep
         throw new NullPointerException();
       }
       this.paragraph = paragraph;
-      this.contexts = new Stack();
+      this.contexts = new FastStack();
     }
 
     public ParagraphRenderBox getParagraph()

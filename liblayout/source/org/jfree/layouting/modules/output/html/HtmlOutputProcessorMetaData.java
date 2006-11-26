@@ -23,17 +23,17 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: HtmlOutputProcessorMetaData.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: HtmlOutputProcessorMetaData.java,v 1.2 2006/11/13 19:14:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.html;
 
-import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
-import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
-import org.jfree.fonts.registry.FontStorage;
 import org.jfree.fonts.registry.FontFamily;
+import org.jfree.fonts.registry.FontStorage;
+import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
+import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
 
 /**
  * Creation-Date: 02.01.2006, 18:38:20
@@ -42,13 +42,17 @@ import org.jfree.fonts.registry.FontFamily;
  */
 public class HtmlOutputProcessorMetaData extends AbstractOutputProcessorMetaData
 {
-  private boolean pagebreakAware;
+  public static final int PAGINATION_NONE = 0;
+  public static final int PAGINATION_MANUAL = 1;
+  public static final int PAGINATION_FULL = 2;
+
+  private int paginationMode;
 
   public HtmlOutputProcessorMetaData(final FontStorage fontStorage,
-                                     final boolean pagebreakAware)
+                                     final int paginationMode)
   {
     super(fontStorage);
-    this.pagebreakAware = pagebreakAware;
+    this.paginationMode = paginationMode;
 
     setFamilyMapping(FontFamilyValues.CURSIVE, "sans-serif");
     setFamilyMapping(FontFamilyValues.FANTASY, "fantasy");
@@ -64,7 +68,7 @@ public class HtmlOutputProcessorMetaData extends AbstractOutputProcessorMetaData
 
   public String getExportDescriptor()
   {
-    if (pagebreakAware)
+    if (paginationMode == PAGINATION_FULL)
     {
       return "pageable/html";
     }
@@ -72,8 +76,15 @@ public class HtmlOutputProcessorMetaData extends AbstractOutputProcessorMetaData
     return "streaming/html";
   }
 
-  public boolean isPagebreakAware()
+  /**
+   * An iterative output processor accepts and processes small content chunks.
+   * If this method returns false, the output processor will not receive the
+   * content until the whole document is processed.
+   *
+   * @return
+   */
+  public boolean isIterative()
   {
-    return pagebreakAware;
+    return paginationMode != PAGINATION_NONE;
   }
 }

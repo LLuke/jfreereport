@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FunctionFactory.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.2 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -44,11 +44,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
 import org.jfree.layouting.layouter.style.functions.content.ContentFunction;
+import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
 import org.jfree.util.Configuration;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Creation-Date: 16.04.2006, 14:15:37

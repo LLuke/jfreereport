@@ -23,15 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: QueryLogicalPageInterceptor.java,v 1.1 2006/11/17 20:15:52 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.graphics;
 
-import org.jfree.layouting.output.pageable.PhysicalPageKey;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
+import org.jfree.layouting.output.pageable.PhysicalPageKey;
 
 /**
  * Creation-Date: 10.11.2006, 20:41:29

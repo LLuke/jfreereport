@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSConstant.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
+ * $Id: CSSConstant.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public final class CSSConstant implements CSSValue
 
     final CSSConstant that = (CSSConstant) o;
 
-    if (!constant.equalsIgnoreCase(that.constant))
+    if (!constant.equals(that.constant))
     {
       return false;
     }

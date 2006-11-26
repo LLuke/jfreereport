@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.10 2006/11/11 20:23:46 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.11 2006/11/20 21:02:01 taqua Exp $
  *
  * Changes
  * -------
@@ -440,13 +440,17 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       // the next element.
       if (forceLinebreak)
       {
-        words.add(new RenderableText
-            (layoutContext, TextUtility.createBaselineInfo('\n', fontMetrics), new Glyph[0], 0,
-                0, lastLanguage, forceLinebreak));
+        final RenderableText text = new RenderableText
+            (TextUtility.createBaselineInfo('\n', fontMetrics), new Glyph[0], 0,
+                0, lastLanguage, forceLinebreak);
+        text.appyStyle(layoutContext, layoutProcess.getOutputMetaData());
+        words.add(text);
       }
       else if (produced == true)
       {
-        words.add(new SpacerRenderNode(leadingMargin, 0, false));
+        final SpacerRenderNode spacer = new SpacerRenderNode(leadingMargin, 0, false);
+        spacer.appyStyle(layoutContext, layoutProcess.getOutputMetaData());
+        words.add(spacer);
       }
     }
     else
@@ -455,15 +459,19 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
       Glyph[] glyphs = (Glyph[]) glyphList.toArray(new Glyph[glyphList.size()]);
       if (leadingMargin > 0)// && words.isEmpty() == false)
       {
-        words.add(new SpacerRenderNode(leadingMargin, 0, false));
+        final SpacerRenderNode spacer = new SpacerRenderNode(leadingMargin, 0, false);
+        spacer.appyStyle(layoutContext, layoutProcess.getOutputMetaData());
+        words.add(spacer);
       }
 
       // todo: this is cheating ..
       final int codePoint = glyphs[0].getCodepoint();
 
-      words.add(new RenderableText
-          (layoutContext, TextUtility.createBaselineInfo(codePoint, fontMetrics), glyphs, 0,
-              glyphs.length, lastLanguage, forceLinebreak));
+      final RenderableText text = new RenderableText
+          (TextUtility.createBaselineInfo(codePoint, fontMetrics), glyphs, 0,
+              glyphs.length, lastLanguage, forceLinebreak);
+      text.appyStyle(layoutContext, layoutProcess.getOutputMetaData());
+      words.add(text);
       glyphList.clear();
     }
     leadingMargin = 0;

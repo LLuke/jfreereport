@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractRenderer.java,v 1.6 2006/11/17 20:14:56 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.7 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -42,20 +42,19 @@ package org.jfree.layouting.renderer;
 
 import java.awt.Dimension;
 import java.awt.Image;
-import java.util.Stack;
 
 import org.jfree.fonts.encoding.CodePointBuffer;
 import org.jfree.fonts.encoding.manual.Utf16LE;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
+import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.content.ContentToken;
-import org.jfree.layouting.layouter.content.resolved.ResolvedStringToken;
 import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
 import org.jfree.layouting.layouter.content.type.GenericType;
 import org.jfree.layouting.layouter.content.type.ResourceType;
@@ -94,7 +93,7 @@ import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.ui.Drawable;
 import org.jfree.ui.ExtendedDrawable;
-import org.jfree.util.Log;
+import org.jfree.util.FastStack;
 import org.jfree.util.WaitingImageObserver;
 
 /**
@@ -145,7 +144,7 @@ public abstract class AbstractRenderer implements Renderer
         throw new StateException();
       }
 
-      final Stack renderFlowContexts = renderer.flowContexts;
+      final FastStack renderFlowContexts = renderer.flowContexts;
       this.flowContexts = new FlowContext.FlowContextState
           [renderFlowContexts.size()];
       for (int i = 0; i < renderFlowContexts.size(); i++)
@@ -182,7 +181,7 @@ public abstract class AbstractRenderer implements Renderer
             this.logicalPageBox.derive(true);
       }
 
-      renderer.flowContexts = new Stack();
+      renderer.flowContexts = new FastStack();
       for (int i = 0; i < flowContexts.length; i++)
       {
         FlowContext.FlowContextState state = flowContexts[i];
@@ -204,7 +203,7 @@ public abstract class AbstractRenderer implements Renderer
   private StringStore stringsStore;
   private ContentStore elementsStore;
   private ContentStore pendingStore;
-  private Stack flowContexts;
+  private FastStack flowContexts;
 
   // to be recreated
   private CodePointBuffer buffer;
@@ -223,7 +222,7 @@ public abstract class AbstractRenderer implements Renderer
     }
 
     this.layoutProcess = layoutProcess;
-    this.flowContexts = new Stack();
+    this.flowContexts = new FastStack();
 
     if (init)
     {
@@ -264,10 +263,14 @@ public abstract class AbstractRenderer implements Renderer
       throw new NullPointerException();
     }
 
+    final LayoutProcess layoutProcess = getLayoutProcess();
+    final OutputProcessor outputProcessor = layoutProcess.getOutputProcessor();
+    outputProcessor.processDocumentMetaData(layoutProcess.getDocumentContext());
+
     this.pageContext = new RenderPageContext(pageContext);
     // create the initial pagegrid.
     final PageGrid pageGrid =
-        this.pageContext.createPageGrid(layoutProcess.getOutputMetaData());
+        this.pageContext.createPageGrid(this.layoutProcess.getOutputMetaData());
 
     // initialize the logical page. The logical page needs the page grid,
     // as this contains the hints for the physical page sizes.
@@ -665,7 +668,7 @@ public abstract class AbstractRenderer implements Renderer
                          final ContentToken content)
       throws NormalizationException
   {
-    RenderableTextFactory textFactory = getCurrentTextFactory();
+    final RenderableTextFactory textFactory = getCurrentTextFactory();
     if (content instanceof GenericType)
     {
       GenericType generic = (GenericType) content;
@@ -683,6 +686,8 @@ public abstract class AbstractRenderer implements Renderer
             createImage((Image) raw, source, context);
         if (replacedContent != null)
         {
+          replacedContent.appyStyle(context, layoutProcess.getOutputMetaData());
+
           getInsertationPoint().addChilds(textFactory.finishText());
           getInsertationPoint().addChild(replacedContent);
           tryValidateOutput(null);
@@ -695,6 +700,8 @@ public abstract class AbstractRenderer implements Renderer
             createDrawable((Drawable) raw, source, context);
         if (replacedContent != null)
         {
+          replacedContent.appyStyle(context, layoutProcess.getOutputMetaData());
+
           getInsertationPoint().addChilds(textFactory.finishText());
           getInsertationPoint().addChild(replacedContent);
           tryValidateOutput(null);

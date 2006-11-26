@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListStyleTypeReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,12 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.list;
 
-import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
-import org.jfree.layouting.input.style.keys.list.ListStyleTypeOther;
+import org.jfree.layouting.input.style.keys.list.ListStyleTypeAlgorithmic;
+import org.jfree.layouting.input.style.keys.list.ListStyleTypeAlphabetic;
 import org.jfree.layouting.input.style.keys.list.ListStyleTypeGlyphs;
 import org.jfree.layouting.input.style.keys.list.ListStyleTypeNumeric;
-import org.jfree.layouting.input.style.keys.list.ListStyleTypeAlphabetic;
-import org.jfree.layouting.input.style.keys.list.ListStyleTypeAlgorithmic;
+import org.jfree.layouting.input.style.keys.list.ListStyleTypeOther;
+import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 
 /**
  * Creation-Date: 01.12.2005, 19:22:31

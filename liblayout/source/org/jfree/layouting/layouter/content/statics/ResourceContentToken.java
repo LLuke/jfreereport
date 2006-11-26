@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceContentToken.java,v 1.1 2006/04/17 21:01:19 taqua Exp $
+ * $Id: ResourceContentToken.java,v 1.1 2006/07/11 13:39:58 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@
 
 package org.jfree.layouting.layouter.content.statics;
 
-import org.jfree.resourceloader.Resource;
-import org.jfree.layouting.layouter.content.type.ResourceType;
 import org.jfree.layouting.layouter.content.type.GenericType;
+import org.jfree.layouting.layouter.content.type.ResourceType;
+import org.jfree.resourceloader.Resource;
 
 public class ResourceContentToken extends StaticToken
         implements ResourceType, GenericType

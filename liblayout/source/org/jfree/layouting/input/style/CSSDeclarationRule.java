@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSDeclarationRule.java,v 1.4 2006/05/15 12:45:12 taqua Exp $
+ * $Id: CSSDeclarationRule.java,v 1.5 2006/07/20 17:50:51 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,7 @@ public abstract class CSSDeclarationRule extends StyleRule
 {
   private HashMap declarations;
   private HashSet importantDeclarations;
+  private transient StyleKey[] declaredKeys;
 
   protected CSSDeclarationRule(final StyleSheet parentStyle,
                                final StyleRule parentRule)
@@ -94,28 +95,34 @@ public abstract class CSSDeclarationRule extends StyleRule
   }
 
   /**
-   * Parses the given value for the stylekey. As stylekeys are only defined for atomic
-   * style declarations, this method will only affect a single name-value pair.  
+   * Parses the given value for the stylekey. As stylekeys are only defined for
+   * atomic style declarations, this method will only affect a single name-value
+   * pair.
    *
    * @param styleKey
    * @param value
    */
-  public void setPropertyValueAsString(final StyleKey styleKey, final String value)
+  public void setPropertyValueAsString(final StyleKey styleKey,
+                                       final String value)
   {
     setPropertyValueAsString(styleKey.getName(), value);
   }
 
   /**
-   * Parses the given name and value and updates the style rule. The name may reference
-   * a compound style, which has no direct representation in the style system; the
-   * definition is split into corresponding atomic style declarations instead.
+   * Parses the given name and value and updates the style rule. The name may
+   * reference a compound style, which has no direct representation in the style
+   * system; the definition is split into corresponding atomic style
+   * declarations instead.
    *
    * @param name
    * @param value
    */
   public void setPropertyValueAsString(final String name, final String value)
   {
-    if (value == null) throw new NullPointerException();
+    if (value == null)
+    {
+      throw new NullPointerException();
+    }
 
     final StyleSheet parentStyle = getParentStyle();
     final ResourceKey source;
@@ -134,7 +141,7 @@ public abstract class CSSDeclarationRule extends StyleRule
     if (parent != null)
     {
       final CSSStyleRule cssValues = StyleSheetParserUtil.parseStyles
-              (parent.getNamespaces(), name, value, resourceManager, source);
+          (parent.getNamespaces(), name, value, resourceManager, source);
       if (cssValues != null)
       {
         final Iterator keys = cssValues.getPropertyKeys();
@@ -149,7 +156,7 @@ public abstract class CSSDeclarationRule extends StyleRule
     else
     {
       final CSSStyleRule cssValues = StyleSheetParserUtil.parseStyles
-              (null, name, value, resourceManager, source);
+          (null, name, value, resourceManager, source);
       if (cssValues != null)
       {
         final Iterator keys = cssValues.getPropertyKeys();
@@ -173,11 +180,13 @@ public abstract class CSSDeclarationRule extends StyleRule
     {
       declarations.put(propertyName, value);
     }
+    declaredKeys = null;
   }
 
   public void removeProperty(StyleKey name)
   {
     declarations.remove(name);
+    declaredKeys = null;
   }
 
   public Iterator getPropertyKeys()
@@ -187,8 +196,12 @@ public abstract class CSSDeclarationRule extends StyleRule
 
   public StyleKey[] getPropertyKeysAsArray()
   {
-    return (StyleKey[]) declarations.keySet().toArray
-            (new StyleKey[declarations.size()]);
+    if (declaredKeys == null)
+    {
+      declaredKeys = (StyleKey[]) declarations.keySet().toArray
+        (new StyleKey[declarations.size()]);
+    }
+    return (StyleKey[]) declaredKeys.clone();
   }
 
   public Iterator getImportantKeys()

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PseudoclassReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@
 package org.jfree.layouting.input.style.parser.stylehandler.internal;
 
 import org.jfree.layouting.input.style.parser.stylehandler.ListOfValuesReadHandler;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSStringType;
+import org.jfree.layouting.input.style.values.CSSStringValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

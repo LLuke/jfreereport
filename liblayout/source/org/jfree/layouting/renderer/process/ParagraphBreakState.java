@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ParagraphBreakState.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ package org.jfree.layouting.renderer.process;
 import java.util.ArrayList;
 
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
+import org.jfree.layouting.renderer.process.layoutrules.InlineNodeSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.TextSequenceElement;
-import org.jfree.layouting.renderer.process.layoutrules.InlineNodeSequenceElement;
 
 /**
  * Used in the Infinite*AxisLayoutSteps.

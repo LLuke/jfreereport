@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ModelBuilder.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -43,11 +43,11 @@ package org.jfree.layouting.normalizer.displaymodel;
 import java.io.IOException;
 
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.normalizer.content.NormalizationException;
-import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.renderer.Renderer;
 
 /**
  * The model builder is the second stage in the layout process.

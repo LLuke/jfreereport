@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextDecorationWidthReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
+ * $Id: TextDecorationWidthReadHandler.java,v 1.3 2006/05/06 13:02:46 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,9 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.text;
 
+import org.jfree.layouting.input.style.keys.text.TextDecorationWidth;
 import org.jfree.layouting.input.style.parser.stylehandler.border.BorderWidthReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.keys.border.BorderWidth;
-import org.jfree.layouting.input.style.keys.text.TextDecorationWidth;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

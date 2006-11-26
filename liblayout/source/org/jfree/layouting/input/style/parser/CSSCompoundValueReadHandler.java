@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSCompoundValueReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
+ * $Id: CSSCompoundValueReadHandler.java,v 1.3 2006/07/11 13:29:47 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ package org.jfree.layouting.input.style.parser;
 
 import java.util.Map;
 
-import org.w3c.css.sac.LexicalUnit;
 import org.jfree.layouting.input.style.StyleKey;
+import org.w3c.css.sac.LexicalUnit;
 
 /**
  * Creation-Date: 26.11.2005, 19:45:45

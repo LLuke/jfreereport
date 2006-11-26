@@ -23,17 +23,17 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PdfOutputProcessorMetaData.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: PdfOutputProcessorMetaData.java,v 1.2 2006/11/13 19:14:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.pdf;
 
-import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
-import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
-import org.jfree.fonts.registry.FontStorage;
 import org.jfree.fonts.registry.FontFamily;
+import org.jfree.fonts.registry.FontStorage;
+import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
+import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
 
 /**
  * Creation-Date: 12.11.2006, 13:28:55
@@ -63,7 +63,14 @@ public class PdfOutputProcessorMetaData extends AbstractOutputProcessorMetaData
     return "pageable/pdf";
   }
 
-  public boolean isPagebreakAware()
+  /**
+   * An iterative output processor accepts and processes small content chunks.
+   * If this method returns false, the output processor will not receive the
+   * content until the whole document is processed.
+   *
+   * @return
+   */
+  public boolean isIterative()
   {
     return true;
   }

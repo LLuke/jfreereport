@@ -23,41 +23,43 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FlowGraphicsOutputProcessor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: FlowGraphicsOutputProcessor.java,v 1.2 2006/11/17 20:14:56 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.graphics;
 
-import org.jfree.layouting.output.pageable.AbstractPageableProcessor;
-import org.jfree.layouting.output.pageable.PageFlowSelector;
-import org.jfree.layouting.output.pageable.PhysicalPageKey;
-import org.jfree.layouting.output.pageable.LogicalPageKey;
+import org.jfree.fonts.awt.AWTFontRegistry;
+import org.jfree.fonts.registry.DefaultFontStorage;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.output.AbstractOutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
-import org.jfree.layouting.renderer.model.page.PageGrid;
-import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
+import org.jfree.layouting.output.pageable.LogicalPageKey;
+import org.jfree.layouting.renderer.PaginatingRenderer;
+import org.jfree.layouting.renderer.PrototypeBuildingRenderer;
+import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.util.Configuration;
-import org.jfree.fonts.registry.DefaultFontStorage;
-import org.jfree.fonts.awt.AWTFontRegistry;
 
 /**
  * Creation-Date: 02.01.2006, 19:55:14
  *
  * @author Thomas Morgner
  */
-public class FlowGraphicsOutputProcessor extends AbstractPageableProcessor
+public class FlowGraphicsOutputProcessor extends AbstractOutputProcessor
 {
-  private int pageCursor;
   private OutputProcessorMetaData metaData;
   private GraphicsContentInterceptor interceptor;
+  private PrototypeBuildingRenderer prototypeBuilder;
 
   public FlowGraphicsOutputProcessor(Configuration configuration)
   {
     super(configuration);
     DefaultFontStorage fontStorage = new DefaultFontStorage(new AWTFontRegistry());
-    metaData = new GraphicsOutputProcessorMetaData(fontStorage);
+
+    // Todo:
+    metaData = new GraphicsOutputProcessorMetaData(fontStorage, true);
   }
 
   public OutputProcessorMetaData getMetaData()
@@ -75,29 +77,34 @@ public class FlowGraphicsOutputProcessor extends AbstractPageableProcessor
     this.interceptor = interceptor;
   }
 
-  protected PageFlowSelector getFlowSelector()
+  protected void processPageContent(final LogicalPageKey logicalPageKey,
+                                    final LogicalPageBox logicalPage)
   {
-    return getInterceptor();
+    if (interceptor != null)
+    {
+      final LogicalPageDrawable page = new LogicalPageDrawable(logicalPage);
+      interceptor.processLogicalPage(logicalPageKey, page);
+    }
+  }
+
+  public PrototypeBuildingRenderer getPrototypeBuilder()
+  {
+    return prototypeBuilder;
+  }
+
+  public Renderer createRenderer(LayoutProcess layoutProcess)
+  {
+    if (isGlobalStateComputed() == false)
+    {
+      prototypeBuilder = new PrototypeBuildingRenderer(layoutProcess);
+      return prototypeBuilder;
+    }
+    else
+    {
+      //return new PrintingRenderer (new PaginatingRenderer(layoutProcess));
+      return new PaginatingRenderer(layoutProcess);
+    }
   }
 
 
-  protected void processPhysicalPage(final PageGrid pageGrid,
-                                     final LogicalPageBox logicalPage,
-                                     final int row,
-                                     final int col,
-                                     final PhysicalPageKey pageKey)
-  {
-    final PhysicalPageBox page = pageGrid.getPage(row, col);
-    final LogicalPageDrawable drawable = new LogicalPageDrawable
-        (logicalPage);
-    final PhysicalPageDrawable physicalPageDrawable =
-        new PhysicalPageDrawable(drawable, page);
-    interceptor.processPhysicalPage(pageKey, physicalPageDrawable);
-  }
-
-  protected void processLogicalPage (LogicalPageKey key, LogicalPageBox logicalPage)
-  {
-    final LogicalPageDrawable page = new LogicalPageDrawable(logicalPage);
-    interceptor.processLogicalPage(key, page);
-  }
 }

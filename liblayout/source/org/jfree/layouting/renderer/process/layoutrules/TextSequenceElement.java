@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextSequenceElement.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.renderer.process.layoutrules;
 
-import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderableText;
 
 /**
  * Text in a line. A text item is special as it may shrink or stretch to

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ComputeTableICMMetricsStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.process;
-
-import java.util.Stack;
 
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
@@ -57,6 +55,7 @@ import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.model.table.rows.TableRow;
 import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
+import org.jfree.util.FastStack;
 
 /**
  * Computes the table-column base-size ratios. These ratios cannot be computed
@@ -122,12 +121,12 @@ public class ComputeTableICMMetricsStep extends IterateStructuralProcessStep
     }
   }
 
-  private Stack tableStack;
+  private FastStack tableStack;
   private TableInfoStructure currentTable;
 
   public ComputeTableICMMetricsStep()
   {
-    tableStack = new Stack();
+    tableStack = new FastStack();
   }
 
   public void compute(LogicalPageBox root)
@@ -220,7 +219,7 @@ public class ComputeTableICMMetricsStep extends IterateStructuralProcessStep
 
       column.updateMinimumChunkSize(colSpan, nlp.getMinimumChunkWidth());
       column.updateMaxBoxSize(colSpan, nlp.getMaximumBoxWidth());
-      
+
       final RenderLength computedWidth = nlp.getComputedWidth();
       if (computedWidth == RenderLength.AUTO == false)
       {

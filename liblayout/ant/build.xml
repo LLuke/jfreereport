@@ -51,6 +51,15 @@
     </isClassAndFileAvailable>
     <fail unless="lib.libloader.present"/>
 
+    <isClassAndFileAvailable class-name="org.jfree.repository.LibRepositoryInfo"
+                             property-name="lib.librepository.present"
+                             file-name="${libdir}/${librepository-jar-file}">
+      <test-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </test-classpath>
+    </isClassAndFileAvailable>
+    <fail unless="lib.librepository.present"/>
+
     <isClassAndFileAvailable class-name="org.w3c.css.sac.Parser"
                              property-name="lib.sac.present"
                              file-name="${libdir}/${sac-jar-file}"/>
@@ -79,6 +88,7 @@
         <pathelement location="${libdir}/${sac-jar-file}"/>
         <pathelement location="${libdir}/${flute-jar-file}"/>
         <pathelement location="${libdir}/${junit-jar-file}"/>
+        <pathelement location="${libdir}/${librepository-jar-file}"/>
         
       </all-classpath>
       <all-resources>
@@ -104,6 +114,7 @@
         <pathelement location="${libdir}/${libloader-jar-file}"/>
         <pathelement location="${libdir}/${sac-jar-file}"/>
         <pathelement location="${libdir}/${flute-jar-file}"/>
+        <pathelement location="${libdir}/${librepository-jar-file}"/>
       </classpath>
       <packageset dir="source" defaultexcludes="yes">
         <include name="org/jfree/layouting"/>

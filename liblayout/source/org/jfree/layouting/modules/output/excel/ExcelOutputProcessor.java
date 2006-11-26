@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ExcelOutputProcessor.java,v 1.1 2006/11/12 14:41:33 taqua Exp $
+ * $Id: ExcelOutputProcessor.java,v 1.2 2006/11/13 19:14:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -32,11 +32,12 @@ package org.jfree.layouting.modules.output.excel;
 
 import java.io.OutputStream;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.output.AbstractOutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.layouting.LayoutProcess;
 import org.jfree.util.Configuration;
 
 /**
@@ -70,44 +71,9 @@ public class ExcelOutputProcessor extends AbstractOutputProcessor
     return null;
   }
 
-  public void processContent(LogicalPageBox logicalPage)
+  protected void processPageContent(final LogicalPageKey logicalPageKey,
+                                    final LogicalPageBox logicalPage)
   {
 
-  }
-
-  /**
-   * Notifies the output processor, that the processing has been finished and
-   * that the input-feed received the last event.
-   */
-  public void processingFinished()
-  {
-
-  }
-
-  /**
-   * This flag indicates, whether the global content has been computed. Global
-   * content consists of global counters (except the pages counter) and derived
-   * information like table of contents, the global directory of images or
-   * tables etc.
-   * <p/>
-   * The global state must be computed before paginating can be attempted (if
-   * the output target is paginating at all).
-   *
-   * @return true, if the global state has been computed, false otherwise.
-   */
-  public boolean isGlobalStateComputed()
-  {
-    return false;
-  }
-
-  /**
-   * This flag indicates, whether the output processor has collected enough
-   * information to start the content generation.
-   *
-   * @return
-   */
-  public boolean isContentGeneratable()
-  {
-    return false;
   }
 }

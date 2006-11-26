@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ColumnSpaceDistributionReadHandler.java,v 1.2 2006/04/17 20:51:07 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.column;
 
-import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.keys.column.ColumnSpaceDistribution;
+import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 
 /**
  * Creation-Date: 08.12.2005, 17:36:20

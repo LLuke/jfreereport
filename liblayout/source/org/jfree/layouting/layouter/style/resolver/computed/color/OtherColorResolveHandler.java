@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OtherColorResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
+ * $Id: OtherColorResolveHandler.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,8 @@ import org.jfree.layouting.input.style.keys.color.ColorStyleKeys;
 import org.jfree.layouting.input.style.keys.color.HtmlColors;
 import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
 
 /**
  * Creation-Date: 11.12.2005, 23:28:29

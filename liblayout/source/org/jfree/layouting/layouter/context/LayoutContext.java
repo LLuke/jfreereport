@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutContext.java,v 1.2 2006/07/26 11:52:07 taqua Exp $
+ * $Id: LayoutContext.java,v 1.3 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.layouting.util.AttributeMap;
  *
  * @author Thomas Morgner
  */
-public interface LayoutContext extends LayoutStyle, Cloneable
+public interface LayoutContext extends LayoutStyle
 {
   public ContextId getContextId();
 
@@ -95,11 +95,7 @@ public interface LayoutContext extends LayoutStyle, Cloneable
 
   public boolean isPseudoElement();
 
-  public Object clone();
-
   public LayoutContext derive();
-
-  public LayoutContext deriveAnonymous();
 
   public void dispose();
 }

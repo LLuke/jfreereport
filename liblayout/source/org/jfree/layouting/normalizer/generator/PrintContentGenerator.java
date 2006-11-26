@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PrintContentGenerator.java,v 1.4 2006/11/11 20:23:46 taqua Exp $
+ * $Id: PrintContentGenerator.java,v 1.5 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -44,21 +44,21 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.layouter.context.PageContext;
+import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.normalizer.displaymodel.DisplayBlockElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayContent;
 import org.jfree.layouting.normalizer.displaymodel.DisplayElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayFlowElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableSectionElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableCellElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayPassThroughElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayRootInlineElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableCellElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnElement;
 import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnGroupElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayPassThroughElement;
-import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
+import org.jfree.layouting.normalizer.displaymodel.DisplayTableSectionElement;
+import org.jfree.layouting.renderer.Renderer;
 import org.jfree.util.Log;
 
 /**

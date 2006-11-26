@@ -27,15 +27,13 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: TableValidationStep.java,v 1.2 2006/11/09 14:28:50 taqua Exp $
+ * $Id: TableValidationStep.java,v 1.3 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------------------------
  * 08.09.2006 : Initial version
  */
 package org.jfree.layouting.renderer.process;
-
-import java.util.Stack;
 
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.RenderLength;
@@ -52,8 +50,6 @@ import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowInfoStructure;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
-import org.jfree.layouting.renderer.model.table.rows.TableRow;
 import org.jfree.layouting.renderer.model.table.cells.ConflictingCell;
 import org.jfree.layouting.renderer.model.table.cells.DataCell;
 import org.jfree.layouting.renderer.model.table.cells.PlaceHolderCell;
@@ -61,6 +57,9 @@ import org.jfree.layouting.renderer.model.table.cells.TableCell;
 import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnGroup;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
+import org.jfree.layouting.renderer.model.table.rows.TableRow;
+import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
+import org.jfree.util.FastStack;
 
 /**
  * Another static processing step which validates the table structure.
@@ -103,12 +102,12 @@ public class TableValidationStep extends IterateStructuralProcessStep
     }
   }
 
-  private Stack tableStack;
+  private FastStack tableStack;
   private TableInfoStructure currentTable;
 
   public TableValidationStep()
   {
-    tableStack = new Stack();
+    tableStack = new FastStack();
   }
 
   public void validate(LogicalPageBox box)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ListSpecification.java,v 1.2 2006/04/17 20:51:18 taqua Exp $
+ * $Id: ListSpecification.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 
 package org.jfree.layouting.layouter.context;
 
-import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.input.style.keys.list.ListStylePosition;
+import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.ui.Drawable;
 
 public class ListSpecification

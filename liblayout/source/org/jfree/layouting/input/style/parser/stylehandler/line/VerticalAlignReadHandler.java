@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: VerticalAlignReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
+ * $Id: VerticalAlignReadHandler.java,v 1.3 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -40,21 +40,21 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.line;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
-import org.jfree.layouting.input.style.keys.line.VerticalAlign;
-import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.line.AlignmentBaseline;
 import org.jfree.layouting.input.style.keys.line.BaselineShift;
-import org.jfree.layouting.input.style.parser.CSSValueFactory;
+import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
+import org.jfree.layouting.input.style.parser.CSSValueFactory;
 import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
+import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSAutoValue;
-import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

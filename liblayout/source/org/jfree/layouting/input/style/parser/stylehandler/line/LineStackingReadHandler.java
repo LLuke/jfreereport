@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LineStackingReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
+ * $Id: LineStackingReadHandler.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,10 @@ package org.jfree.layouting.input.style.parser.stylehandler.line;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

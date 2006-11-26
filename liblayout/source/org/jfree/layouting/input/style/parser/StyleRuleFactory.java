@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleRuleFactory.java,v 1.2 2006/05/15 12:45:12 taqua Exp $
+ * $Id: StyleRuleFactory.java,v 1.3 2006/05/19 11:33:26 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ package org.jfree.layouting.input.style.parser;
 import java.io.IOException;
 
 import org.jfree.layouting.input.style.CSSDeclarationRule;
+import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleRule;
-import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.resourceloader.CompoundResource;
 import org.jfree.resourceloader.DependencyCollector;
 import org.jfree.resourceloader.Resource;

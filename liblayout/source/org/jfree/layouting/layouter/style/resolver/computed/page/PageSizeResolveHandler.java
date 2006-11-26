@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageSizeResolveHandler.java,v 1.2 2006/07/26 16:59:47 taqua Exp $
+ * $Id: PageSizeResolveHandler.java,v 1.3 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -46,13 +46,13 @@ import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.input.style.keys.page.PageSizeFactory;
 import org.jfree.layouting.input.style.keys.page.PageStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValuePair;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 16.06.2006, 13:56:31

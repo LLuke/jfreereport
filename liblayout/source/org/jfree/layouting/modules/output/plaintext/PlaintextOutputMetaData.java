@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PlaintextOutputMetaData.java,v 1.1 2006/11/13 19:14:47 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -65,8 +65,15 @@ public class PlaintextOutputMetaData extends AbstractOutputProcessorMetaData
     return "pageable/plaintext";
   }
 
-  public boolean isPagebreakAware()
+  /**
+   * An iterative output processor accepts and processes small content chunks.
+   * If this method returns false, the output processor will not receive the
+   * content until the whole document is processed.
+   *
+   * @return
+   */
+  public boolean isIterative()
   {
-    return true;
+    return false;
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageSizeFactory.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
  */
 package org.jfree.layouting.input.style.keys.page;
 
-import java.util.HashMap;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 
 /**
  * This will be replaced by a 'media-names' implementation according to

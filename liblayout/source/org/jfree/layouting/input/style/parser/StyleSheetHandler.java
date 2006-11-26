@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetHandler.java,v 1.5 2006/10/17 16:39:07 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.6 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -43,35 +43,35 @@ package org.jfree.layouting.input.style.parser;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Stack;
 import java.util.StringTokenizer;
 
 import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSFontFaceRule;
 import org.jfree.layouting.input.style.CSSMediaRule;
+import org.jfree.layouting.input.style.CSSPageAreaRule;
 import org.jfree.layouting.input.style.CSSPageRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
+import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleRule;
 import org.jfree.layouting.input.style.StyleSheet;
-import org.jfree.layouting.input.style.CSSPageAreaRule;
-import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.input.style.selectors.CSSSelector;
 import org.jfree.resourceloader.DependencyCollector;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceException;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.FastStack;
 import org.jfree.util.Log;
 import org.w3c.css.sac.CSSException;
+import org.w3c.css.sac.CSSParseException;
 import org.w3c.css.sac.DocumentHandler;
+import org.w3c.css.sac.ErrorHandler;
 import org.w3c.css.sac.InputSource;
 import org.w3c.css.sac.LexicalUnit;
 import org.w3c.css.sac.SACMediaList;
 import org.w3c.css.sac.Selector;
 import org.w3c.css.sac.SelectorList;
-import org.w3c.css.sac.ErrorHandler;
-import org.w3c.css.sac.CSSParseException;
 
 /**
  * Creation-Date: 23.11.2005, 13:06:06
@@ -83,7 +83,7 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
   private HashMap namespaces;
   private StyleKeyRegistry registry;
   private StyleSheet styleSheet;
-  private Stack parentRules;
+  private FastStack parentRules;
   private CSSDeclarationRule styleRule;
   private ResourceKey source;
   private DependencyCollector dependencies;
@@ -103,7 +103,7 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
 
     this.manager = manager;
     this.registry = registry;
-    this.parentRules = new Stack();
+    this.parentRules = new FastStack();
     if (parentRule != null)
     {
       parentRules.push(parentRule);

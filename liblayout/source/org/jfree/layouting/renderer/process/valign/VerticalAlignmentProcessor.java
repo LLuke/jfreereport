@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: VerticalAlignmentProcessor.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
+ * $Id: VerticalAlignmentProcessor.java,v 1.3 2006/11/20 21:02:01 taqua Exp $
  *
  * Changes
  * -------
@@ -46,12 +46,12 @@ import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.process.BoxShifter;
+import org.jfree.layouting.renderer.process.InfiniteMajorAxisLayoutStep;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.TextUtility;
-import org.jfree.layouting.renderer.process.InfiniteMajorAxisLayoutStep;
-import org.jfree.layouting.renderer.process.BoxShifter;
 import org.jfree.util.Log;
 
 /**

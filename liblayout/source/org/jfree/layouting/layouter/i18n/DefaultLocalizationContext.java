@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultLocalizationContext.java,v 1.2 2006/04/17 20:51:13 taqua Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,10 @@
 package org.jfree.layouting.layouter.i18n;
 
 import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class DefaultLocalizationContext implements LocalizationContext

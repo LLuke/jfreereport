@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BoxSizingReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 
 package org.jfree.layouting.input.style.parser.stylehandler.box;
 
-import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.keys.box.BoxSizing;
+import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 
 public class BoxSizingReadHandler extends OneOfConstantsReadHandler
 {

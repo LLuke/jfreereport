@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OutputProcessorMetaData.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
+ * $Id: OutputProcessorMetaData.java,v 1.7 2006/11/13 19:14:05 taqua Exp $
  *
  * Changes
  * -------
@@ -127,6 +127,4 @@ public interface OutputProcessorMetaData
    * @return
    */
   public boolean isIterative();
-
-  public boolean isPagebreakAware();
 }

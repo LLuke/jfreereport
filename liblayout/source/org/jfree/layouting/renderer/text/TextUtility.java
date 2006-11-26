@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextUtility.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: TextUtility.java,v 1.2 2006/11/20 21:02:01 taqua Exp $
  *
  * Changes
  * -------
@@ -42,11 +42,11 @@ package org.jfree.layouting.renderer.text;
 
 import org.jfree.fonts.registry.BaselineInfo;
 import org.jfree.fonts.registry.FontMetrics;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSAutoValue;
-import org.jfree.layouting.input.style.keys.line.DominantBaseline;
 import org.jfree.layouting.input.style.keys.line.AlignmentBaseline;
+import org.jfree.layouting.input.style.keys.line.DominantBaseline;
+import org.jfree.layouting.input.style.values.CSSAutoValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
 
 /**
  * Creation-Date: 12.10.2006, 17:23:30

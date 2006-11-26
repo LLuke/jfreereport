@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BackgroundSpecification.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
+ * $Id: BackgroundSpecification.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ import org.jfree.layouting.input.style.keys.border.BackgroundAttachment;
 import org.jfree.layouting.input.style.keys.border.BackgroundClip;
 import org.jfree.layouting.input.style.keys.border.BackgroundOrigin;
 import org.jfree.layouting.input.style.keys.border.BackgroundRepeat;
-import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.jfree.layouting.util.geom.StrictDimension;
 import org.jfree.resourceloader.Resource;
 import org.jfree.util.ObjectList;

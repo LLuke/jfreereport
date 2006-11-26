@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderLength.java,v 1.4 2006/07/29 18:57:12 taqua Exp $
+ * $Id: RenderLength.java,v 1.5 2006/10/17 16:39:07 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 09.07.2006, 21:03:12

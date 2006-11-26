@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResolvedStringToken.java,v 1.1 2006/07/11 13:39:58 taqua Exp $
+ * $Id: ResolvedStringToken.java,v 1.2 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.layouter.content.resolved;
 
-import org.jfree.layouting.layouter.content.type.TextType;
 import org.jfree.layouting.layouter.content.computed.ComputedToken;
+import org.jfree.layouting.layouter.content.type.TextType;
 
 /**
  * Creation-Date: 12.06.2006, 14:38:29

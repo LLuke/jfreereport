@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractOutputProcessorMetaData.java,v 1.9 2006/11/17 20:14:56 taqua Exp $
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.10 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
  */
 package org.jfree.layouting.output;
 
+import java.awt.Image;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.awt.Image;
 
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontMetrics;
@@ -55,9 +55,9 @@ import org.jfree.layouting.input.style.keys.font.FontSizeConstant;
 import org.jfree.layouting.input.style.keys.page.PageSize;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.layouter.context.FontSpecification;
+import org.jfree.ui.Drawable;
 import org.jfree.util.ExtendedConfiguration;
 import org.jfree.util.Log;
-import org.jfree.ui.Drawable;
 
 /**
  * Creation-Date: 02.01.2006, 18:39:46
@@ -310,10 +310,5 @@ public abstract class AbstractOutputProcessorMetaData
   public Class[] getSupportedResourceTypes()
   {
     return (Class[]) SUPPORTED_TYPES.clone();
-  }
-
-  public boolean isIterative()
-  {
-    return false;
   }
 }

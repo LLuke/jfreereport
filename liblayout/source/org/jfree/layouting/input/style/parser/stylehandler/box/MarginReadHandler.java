@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MarginReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
+ * $Id: MarginReadHandler.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -43,11 +43,11 @@ package org.jfree.layouting.input.style.parser.stylehandler.box;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.parser.stylehandler.AbstractWidthReadHandler;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.StyleKey;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

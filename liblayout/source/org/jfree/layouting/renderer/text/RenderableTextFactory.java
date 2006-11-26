@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableTextFactory.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
+ * $Id: RenderableTextFactory.java,v 1.4 2006/10/22 14:58:26 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
  */
 package org.jfree.layouting.renderer.text;
 
+import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.StatefullComponent;
 
 /**
  * Problem: Text may span more than one chunk, and text may influence the break

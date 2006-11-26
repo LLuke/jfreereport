@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleResolver.java,v 1.5 2006/07/26 16:59:47 taqua Exp $
+ * $Id: StyleResolver.java,v 1.6 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -42,13 +42,13 @@ package org.jfree.layouting.layouter.style.resolver;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.StatefullComponent;
+import org.jfree.layouting.input.style.PageAreaType;
 import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyleImpl;
-import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.ContextId;
-import org.jfree.layouting.input.style.PageAreaType;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.LayoutStyle;
+import org.jfree.layouting.layouter.model.LayoutElement;
 
 /**
  * Creation-Date: 05.12.2005, 18:03:52
@@ -81,9 +81,12 @@ public interface StyleResolver extends StatefullComponent
 
   public void initialize(LayoutProcess layoutProcess);
 
-  public LayoutStyleImpl resolvePageStyle
+  public LayoutStyle resolvePageStyle
           (CSSValue pageName, PseudoPage[] pseudoPages, PageAreaType pageArea);
 
   public LayoutContext createAnonymousContext(final ContextId id,
                                               final LayoutContext parent);
+
+  public LayoutStyle getInitialStyle();
+
 }

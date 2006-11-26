@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InlineRenderBox.java,v 1.11 2006/07/29 18:57:13 taqua Exp $
+ * $Id: InlineRenderBox.java,v 1.12 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.model;
-
-import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * An inline box is some floating text that might be broken down into lines. The

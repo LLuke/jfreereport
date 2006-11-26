@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: XAlternateTextReadHandler.java,v 1.1 2006/07/11 13:33:03 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,9 @@ import org.jfree.layouting.input.style.parser.CSSValueFactory;
 import org.jfree.layouting.input.style.parser.CSSValueReadHandler;
 import org.jfree.layouting.input.style.values.CSSAttrFunction;
 import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
+import org.jfree.layouting.input.style.values.CSSStringValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
 import org.w3c.css.sac.LexicalUnit;
 

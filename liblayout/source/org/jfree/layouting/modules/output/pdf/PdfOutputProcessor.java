@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PdfOutputProcessor.java,v 1.1 2006/11/12 14:22:10 taqua Exp $
+ * $Id: PdfOutputProcessor.java,v 1.2 2006/11/17 20:14:56 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -32,18 +32,17 @@ package org.jfree.layouting.modules.output.pdf;
 
 import java.io.OutputStream;
 
-import org.jfree.layouting.output.pageable.AbstractPageableProcessor;
-import org.jfree.layouting.output.pageable.PageFlowSelector;
-import org.jfree.layouting.output.pageable.AllPageFlowSelector;
-import org.jfree.layouting.output.pageable.PhysicalPageKey;
-import org.jfree.layouting.output.pageable.LogicalPageKey;
-import org.jfree.layouting.output.OutputProcessorMetaData;
-import org.jfree.layouting.renderer.model.page.PageGrid;
-import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
-import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.util.Configuration;
-import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.awt.AWTFontRegistry;
+import org.jfree.fonts.registry.DefaultFontStorage;
+import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.output.pageable.AbstractPageableProcessor;
+import org.jfree.layouting.output.pageable.AllPageFlowSelector;
+import org.jfree.layouting.output.pageable.LogicalPageKey;
+import org.jfree.layouting.output.pageable.PageFlowSelector;
+import org.jfree.layouting.output.pageable.PhysicalPageKey;
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.model.page.PageGrid;
+import org.jfree.util.Configuration;
 
 /**
  * A streaming target, which produces a PDF document.

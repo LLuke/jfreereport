@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DocumentContextUtility.java,v 1.1 2006/04/17 21:06:12 taqua Exp $
+ * $Id: DocumentContextUtility.java,v 1.2 2006/07/11 13:29:46 taqua Exp $
  *
  * Changes
  * -------
@@ -42,13 +42,12 @@ package org.jfree.layouting;
 
 import java.util.Date;
 
+import org.jfree.layouting.layouter.context.DocumentContext;
+import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.i18n.DefaultLocalizationContext;
 import org.jfree.layouting.layouter.i18n.LocalizationContext;
-import org.jfree.layouting.layouter.style.resolver.StyleResolver;
-import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
-import org.jfree.layouting.layouter.style.resolver.StyleRuleMatcher;
 import org.jfree.layouting.layouter.style.resolver.SimpleStyleRuleMatcher;
-import org.jfree.layouting.layouter.context.DocumentContext;
+import org.jfree.layouting.layouter.style.resolver.StyleRuleMatcher;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
 
@@ -123,6 +122,16 @@ public class DocumentContextUtility
       return value;
     }
     return (StyleRuleMatcher) o;
+  }
+
+  public static LayoutStyle getInitialStyle(DocumentContext context)
+  {
+    final Object o = context.getMetaAttribute(DocumentContext.INITIAL_STYLE);
+    if (o instanceof LayoutStyle == false)
+    {
+      throw new IllegalStateException();
+    }
+    return (LayoutStyle) o;
   }
 
 }

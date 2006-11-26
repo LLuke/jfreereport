@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InputFeed.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
+ * $Id: InputFeed.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,11 @@
 package org.jfree.layouting.layouter.feed;
 
 import org.jfree.layouting.StatefullComponent;
+import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.normalizer.content.Normalizer;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.PseudoPage;
-import org.jfree.layouting.namespace.NamespaceCollection;
 
 /**
  * The input feed shields the internal processing from users errors. It

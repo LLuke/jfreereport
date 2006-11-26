@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FitReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.box;
 
-import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.keys.box.Fit;
+import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 
 /**
  * Creation-Date: 27.11.2005, 21:47:35

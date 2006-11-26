@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineStackingStrategyReadHandler.java,v 1.2 2006/04/17 20:51:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.line;
 
-import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.keys.line.LineStackingStrategy;
+import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 
 /**
  * Creation-Date: 28.11.2005, 18:02:53

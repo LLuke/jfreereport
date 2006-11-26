@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AlignmentCollector.java,v 1.2 2006/10/22 14:58:25 taqua Exp $
+ * $Id: AlignmentCollector.java,v 1.3 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -40,18 +40,17 @@
  */
 package org.jfree.layouting.renderer.process;
 
-import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
+import org.jfree.layouting.input.style.keys.line.VerticalAlign;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
-import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
-import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
-import org.jfree.layouting.renderer.process.layoutrules.TextSequenceElement;
-import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.EndSequenceElement;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.keys.line.VerticalAlign;
+import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
+import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
+import org.jfree.layouting.renderer.process.layoutrules.TextSequenceElement;
+import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 
 /**
  * The collector holds the total height of all elements and the baseline

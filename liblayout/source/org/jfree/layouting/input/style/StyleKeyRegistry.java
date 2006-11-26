@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleKeyRegistry.java,v 1.3 2006/07/11 13:29:46 taqua Exp $
+ * $Id: StyleKeyRegistry.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import java.util.Iterator;
 
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.util.Configuration;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * This class should not be static, or we might create a memory leak.

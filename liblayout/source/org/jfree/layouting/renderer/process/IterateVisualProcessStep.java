@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IterateVisualProcessStep.java,v 1.3 2006/10/31 11:14:12 taqua Exp $
+ * $Id: IterateVisualProcessStep.java,v 1.4 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.layouting.renderer.process;
 
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
+import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
@@ -149,6 +150,17 @@ public abstract class IterateVisualProcessStep
       }
       finishBlockLevelBox(box);
     }
+    else if (node instanceof NormalFlowRenderBox)
+    {
+      NormalFlowRenderBox box = (NormalFlowRenderBox) node;
+      final NormalFlowRenderBox[] flows = box.getFlows();
+      for (int i = 0; i < flows.length; i++)
+      {
+        final NormalFlowRenderBox flow = flows[i];
+        processFlow(flow);
+      }
+      processFlow(box);
+    }
     else if (node instanceof ParagraphRenderBox)
     {
       ParagraphRenderBox box = (ParagraphRenderBox) node;
@@ -171,6 +183,15 @@ public abstract class IterateVisualProcessStep
     {
       processBlockLevelNode(node);
     }
+  }
+
+  protected void processFlow(final NormalFlowRenderBox flow)
+  {
+    if (startBlockLevelBox(flow))
+    {
+      processBoxChilds(flow);
+    }
+    finishBlockLevelBox(flow);
   }
 
   protected abstract void processParagraphChilds(final ParagraphRenderBox box);

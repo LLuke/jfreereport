@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PaginatingRenderer.java,v 1.2 2006/11/17 20:14:56 taqua Exp $
+ * $Id: PaginatingRenderer.java,v 1.3 2006/11/20 21:01:53 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -40,7 +40,6 @@ import org.jfree.layouting.layouter.content.resolved.ResolvedCounterToken;
 import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
 import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.context.PageContext;
-import org.jfree.layouting.modules.output.graphics.LogicalPageDrawable;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
@@ -204,7 +203,6 @@ public class PaginatingRenderer extends AbstractRenderer
     paragraphLinebreakStep.compute(logicalPageBox);
 
     boolean repeat = true;
-    boolean gotBreak = false;
     while (repeat)
     {
       icmMetricsStep.compute(logicalPageBox);
@@ -237,8 +235,8 @@ public class PaginatingRenderer extends AbstractRenderer
         repeat = logicalPageBox.isOpen();
         if (repeat)
         {
-          Log.debug(new MemoryUsageMessage("PAGEBREAK ENCOUNTERED"));
-          Log.debug("Page-Offset: " + pageOffset + " -> " + nextOffset);
+//          Log.debug(new MemoryUsageMessage("PAGEBREAK ENCOUNTERED"));
+//          Log.debug("Page-Offset: " + pageOffset + " -> " + nextOffset);
           firePagebreak();
 
           logicalPageBox.setPageOffset(nextOffset);

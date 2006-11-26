@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderBox.java,v 1.23 2006/11/11 20:23:46 taqua Exp $
+ * $Id: RenderBox.java,v 1.24 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -114,7 +114,7 @@ public abstract class RenderBox extends RenderNode
 
     staticBoxLayoutProperties.setPreserveSpace
         (WhitespaceCollapse.PRESERVE.equals
-        (context.getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE)));
+            (context.getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE)));
     staticBoxLayoutProperties.setDominantBaseline
         (context.getValue(LineStyleKeys.DOMINANT_BASELINE));
 
@@ -602,9 +602,20 @@ public abstract class RenderBox extends RenderNode
    */
   public Object clone()
   {
-    final RenderBox renderBox = (RenderBox) super.clone();
-    renderBox.boxLayoutProperties = null;
-    return renderBox;
+    try
+    {
+      final RenderBox renderBox = (RenderBox) super.clone();
+      if (boxLayoutProperties != null)
+      {
+        renderBox.boxLayoutProperties =
+            (BoxLayoutProperties) boxLayoutProperties.clone();
+      }
+      return renderBox;
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalStateException();
+    }
   }
 
   /**

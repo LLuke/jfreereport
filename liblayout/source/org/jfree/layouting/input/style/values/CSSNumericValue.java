@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSNumericValue.java,v 1.3 2006/07/26 16:59:47 taqua Exp $
+ * $Id: CSSNumericValue.java,v 1.4 2006/11/02 23:13:31 mimil Exp $
  *
  * Changes
  * -------
@@ -97,7 +97,21 @@ public class CSSNumericValue extends Number implements CSSValue
 
   public String getCSSText()
   {
-    return value + " " + type.getType();
+    final String typeText = type.getType();
+    if (typeText.length() == 0)
+    {
+      if (Math.floor(value) == value)
+      {
+        return String.valueOf((long)value);
+      }
+      return String.valueOf(value);
+    }
+
+    if (Math.floor(value) == value)
+    {
+      return ((long)value) + " " + typeText;
+    }
+    return value + " " + typeText;
   }
 
   public String toString ()

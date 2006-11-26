@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSConditionFactory.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
  *
  * Changes
  * -------
@@ -40,15 +40,15 @@
  */
 package org.jfree.layouting.input.style.selectors.conditions;
 
-import org.w3c.css.sac.ConditionFactory;
+import org.w3c.css.sac.AttributeCondition;
 import org.w3c.css.sac.CSSException;
 import org.w3c.css.sac.CombinatorCondition;
 import org.w3c.css.sac.Condition;
+import org.w3c.css.sac.ConditionFactory;
+import org.w3c.css.sac.ContentCondition;
+import org.w3c.css.sac.LangCondition;
 import org.w3c.css.sac.NegativeCondition;
 import org.w3c.css.sac.PositionalCondition;
-import org.w3c.css.sac.AttributeCondition;
-import org.w3c.css.sac.LangCondition;
-import org.w3c.css.sac.ContentCondition;
 
 /**
  * Creation-Date: 24.11.2005, 19:43:13

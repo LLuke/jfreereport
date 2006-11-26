@@ -23,20 +23,18 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: IllegalDisplayModelTest.java,v 1.1 2006/11/20 21:04:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.junit;
 
-import org.jfree.layouting.modules.output.graphics.GraphicsOutputProcessor;
-import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.DefaultLayoutProcess;
-import org.jfree.layouting.namespace.NamespaceDefinition;
-import org.jfree.layouting.namespace.NamespaceCollection;
+import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.InputFeedException;
+import org.jfree.layouting.modules.output.graphics.GraphicsOutputProcessor;
 
 /**
  * Creation-Date: 19.11.2006, 13:58:31

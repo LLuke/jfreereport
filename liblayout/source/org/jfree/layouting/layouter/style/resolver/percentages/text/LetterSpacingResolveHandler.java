@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LetterSpacingResolveHandler.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
+ * $Id: LetterSpacingResolveHandler.java,v 1.5 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -42,17 +42,17 @@ package org.jfree.layouting.layouter.style.resolver.percentages.text;
 
 import org.jfree.fonts.registry.FontMetrics;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 /**
  * Creation-Date: 21.12.2005, 15:12:04

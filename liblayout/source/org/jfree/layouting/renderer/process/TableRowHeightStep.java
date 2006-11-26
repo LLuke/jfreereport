@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableRowHeightStep.java,v 1.4 2006/11/09 14:28:50 taqua Exp $
+ * $Id: TableRowHeightStep.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.process;
-
-import java.util.Stack;
 
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
@@ -53,7 +51,7 @@ import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.model.table.rows.TableRow;
 import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
-import org.jfree.util.Log;
+import org.jfree.util.FastStack;
 
 /**
  * Creation-Date: 10.10.2006, 14:10:08
@@ -123,13 +121,13 @@ public class TableRowHeightStep extends IterateVisualProcessStep
     }
   }
 
-  private Stack tableStack;
+  private FastStack tableStack;
   private TableInfoStructure currentTable;
   private long shiftDistance;
 
   public TableRowHeightStep()
   {
-    tableStack = new Stack();
+    tableStack = new FastStack();
   }
 
   public void compute(final LogicalPageBox box)

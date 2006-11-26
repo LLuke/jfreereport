@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginationStep.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
+ * $Id: PaginationStep.java,v 1.7 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -184,10 +184,10 @@ public class PaginationStep extends IterateVisualProcessStep
       processBoxChilds(pageBox);
     }
     finishBlockLevelBox(pageBox);
-    if (pageOverflow)
-    {
-      Log.debug ("Pagination: " + totalPageHeight);
-    }
+//    if (pageOverflow)
+//    {
+//      Log.debug ("Pagination: " + totalPageHeight);
+//    }
   }
 
 

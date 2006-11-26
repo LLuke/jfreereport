@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentResolveHandler.java,v 1.6 2006/10/27 18:25:50 taqua Exp $
+ * $Id: ContentResolveHandler.java,v 1.7 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -59,18 +59,18 @@ import org.jfree.layouting.input.style.values.CSSValueList;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.content.computed.CloseQuoteToken;
 import org.jfree.layouting.layouter.content.computed.ContentsToken;
-import org.jfree.layouting.layouter.content.computed.OpenQuoteToken;
 import org.jfree.layouting.layouter.content.computed.CounterToken;
+import org.jfree.layouting.layouter.content.computed.OpenQuoteToken;
 import org.jfree.layouting.layouter.content.statics.StaticTextToken;
 import org.jfree.layouting.layouter.context.ContentSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.counters.CounterStyle;
+import org.jfree.layouting.layouter.counters.CounterStyleFactory;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
 import org.jfree.layouting.layouter.style.functions.FunctionFactory;
 import org.jfree.layouting.layouter.style.functions.content.ContentFunction;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.counters.CounterStyle;
-import org.jfree.layouting.layouter.counters.CounterStyleFactory;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.loader.URLResourceKey;
 import org.jfree.util.Log;

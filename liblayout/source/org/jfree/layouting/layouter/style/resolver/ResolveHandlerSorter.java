@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResolveHandlerSorter.java,v 1.2 2006/04/17 20:51:14 taqua Exp $
+ * $Id: ResolveHandlerSorter.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@
 package org.jfree.layouting.layouter.style.resolver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Arrays;
 
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.util.Log;

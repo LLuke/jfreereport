@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TableColumnGroupNode.java,v 1.7 2006/10/17 16:39:08 taqua Exp $
+ * $Id: TableColumnGroupNode.java,v 1.8 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,13 @@
  */
 package org.jfree.layouting.renderer.model.table;
 
-import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.model.BoxDefinition;
 import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
  * Creation-Date: 17.07.2006, 18:32:42

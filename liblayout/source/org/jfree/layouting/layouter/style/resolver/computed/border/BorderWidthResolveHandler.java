@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BorderWidthResolveHandler.java,v 1.4 2006/07/11 13:29:52 taqua Exp $
+ * $Id: BorderWidthResolveHandler.java,v 1.5 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -44,16 +44,16 @@ import java.util.HashMap;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.keys.border.BorderWidth;
-import org.jfree.layouting.input.style.keys.border.BorderStyleKeys;
 import org.jfree.layouting.input.style.keys.border.BorderStyle;
+import org.jfree.layouting.input.style.keys.border.BorderStyleKeys;
+import org.jfree.layouting.input.style.keys.border.BorderWidth;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 /**
  * Creation-Date: 11.12.2005, 22:20:16

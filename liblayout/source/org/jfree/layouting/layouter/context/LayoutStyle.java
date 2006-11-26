@@ -1,7 +1,7 @@
 package org.jfree.layouting.layouter.context;
 
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * Creation-Date: 18.11.2006, 18:55:03
@@ -10,7 +10,9 @@ import org.jfree.layouting.input.style.StyleKey;
  */
 public interface LayoutStyle
 {
-  CSSValue getValue(StyleKey key);
+  public CSSValue getValue(StyleKey key);
 
-  void setValue(StyleKey key, CSSValue value);
+  public void setValue(StyleKey key, CSSValue value);
+
+  public boolean copyFrom(LayoutStyle style);
 }

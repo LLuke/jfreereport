@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
+ * $Id: DefaultLayoutContext.java,v 1.2 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -46,14 +46,13 @@ import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.style.LayoutStyleImpl;
 import org.jfree.layouting.util.AttributeMap;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 14.12.2005, 13:42:06
  *
  * @author Thomas Morgner
  */
-public class DefaultLayoutContext implements LayoutContext
+public class DefaultLayoutContext implements LayoutContext, Cloneable
 {
   private BackgroundSpecification backgroundSpecification;
   private FontSpecification fontSpecification;
@@ -88,7 +87,7 @@ public class DefaultLayoutContext implements LayoutContext
     this.attributeMap = attributeMap;
 
     this.contextId = contextId;
-    this.style = new LayoutStyleImpl(null);
+    this.style = new LayoutStyleImpl();
     this.fontSpecification = new FontSpecification(style);
     this.backgroundSpecification = new BackgroundSpecification();
     this.contentSpecification = new ContentSpecification();
@@ -137,6 +136,10 @@ public class DefaultLayoutContext implements LayoutContext
 
   public void setValue(final StyleKey key, final CSSValue value)
   {
+    if (derived)
+    {
+      throw new IllegalStateException();
+    }
     style.setValue(key, value);
   }
 
@@ -178,12 +181,9 @@ public class DefaultLayoutContext implements LayoutContext
     // todo: Is this sane the way it is now?
     try
     {
-      if (!safeClone)
-      {
-        Log.debug ("Clone called ", new Exception());
-      }
       final DefaultLayoutContext lc = (DefaultLayoutContext) super.clone();
-      lc.style = style.createCopy();
+      //lc.style = style.createCopy();
+      lc.derived = true;
       return lc;
     }
     catch (CloneNotSupportedException e)
@@ -193,25 +193,10 @@ public class DefaultLayoutContext implements LayoutContext
     }
   }
 
-  private boolean safeClone;
-
   public LayoutContext derive()
   {
-    safeClone = true;
     DefaultLayoutContext lc = (DefaultLayoutContext) clone();
     lc.tagName = tagName + "*";
-    safeClone = false;
-    lc.safeClone = false;
-    return lc;
-  }
-
-  public LayoutContext deriveAnonymous()
-  {
-    safeClone = true;
-    DefaultLayoutContext lc = (DefaultLayoutContext) clone();
-
-    safeClone = false;
-    lc.safeClone = false;
     return lc;
   }
 
@@ -219,4 +204,15 @@ public class DefaultLayoutContext implements LayoutContext
   {
     style.dispose();
   }
+
+  public boolean copyFrom(LayoutStyle style)
+  {
+    if (derived)
+    {
+      throw new IllegalStateException();
+    }
+
+    return this.style.copyFrom(style);
+  }
+
 }

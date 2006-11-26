@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextIndentResolveHandler.java,v 1.3 2006/07/11 13:29:54 taqua Exp $
+ * $Id: TextIndentResolveHandler.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 /**
  * Creation-Date: 21.12.2005, 16:05:25

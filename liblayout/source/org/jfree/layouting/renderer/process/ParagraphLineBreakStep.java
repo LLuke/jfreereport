@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphLineBreakStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: ParagraphLineBreakStep.java,v 1.2 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.util.Log;
+import org.jfree.util.FastStack;
 
 /**
  * This static computation step performs manual linebreaks on all paragraphs.
@@ -150,12 +150,12 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
     }
   }
 
-  private Stack paragraphNesting;
+  private FastStack paragraphNesting;
   private ParagraphBreakState breakState;
 
   public ParagraphLineBreakStep()
   {
-    paragraphNesting = new Stack();
+    paragraphNesting = new FastStack();
   }
 
   public void compute(LogicalPageBox root)
@@ -378,7 +378,7 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
         throw new IllegalStateException
                 ("Confused: I expect InlineBoxes ..");
       }
-      
+
       InlineRenderBox inline = (InlineRenderBox) context;
       contexts.push(inline.split(RenderNode.HORIZONTAL_AXIS));
       context = context.getParent();

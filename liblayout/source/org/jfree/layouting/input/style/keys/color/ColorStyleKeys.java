@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ColorStyleKeys.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
+ * $Id: ColorStyleKeys.java,v 1.3 2006/07/11 13:29:46 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import org.jfree.layouting.input.style.StyleKeyRegistry;
  *
  * @author Thomas Morgner
  */
-public class ColorStyleKeys
+public final class ColorStyleKeys
 {
   public static final StyleKey COLOR =
           StyleKeyRegistry.getRegistry().createKey

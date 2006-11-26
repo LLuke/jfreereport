@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutStyle.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
+ * $Id: LayoutStyleImpl.java,v 1.1 2006/11/20 21:04:29 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,13 @@
 
 package org.jfree.layouting.layouter.style;
 
-import java.util.Arrays;
-
+import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
+import org.jfree.layouting.input.style.keys.border.BorderStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutStyle;
+import org.jfree.util.Log;
 
 /**
  * Unlike the old JFreeReport stylesheet, this implementation has no inheritance
@@ -57,18 +58,11 @@ import org.jfree.layouting.layouter.context.LayoutStyle;
  */
 public final class LayoutStyleImpl implements LayoutStyle
 {
-  //private LayoutStyleImpl parent;
   private CSSValue[] values;
-  private LayoutStylePool layoutStylePool;
   private Object reference;
 
-//  public LayoutStyleImpl()
-//  {
-//  }
-
-  public LayoutStyleImpl(final LayoutStylePool layoutStylePool)
+  public LayoutStyleImpl()
   {
-    this.layoutStylePool = layoutStylePool;
   }
 
   public Object getReference()
@@ -83,10 +77,6 @@ public final class LayoutStyleImpl implements LayoutStyle
 
   public synchronized CSSValue getValue(StyleKey key)
   {
-//    if (parent != null)
-//    {
-//      return parent.getValue(key);
-//    }
     if (values == null)
     {
       return null;
@@ -100,33 +90,17 @@ public final class LayoutStyleImpl implements LayoutStyle
     {
       values = new CSSValue[StyleKeyRegistry.getRegistry().getKeyCount()];
     }
-//    if (parent != null)
-//    {
-//      System.arraycopy(parent.values, 0, values, 0, values.length);
-//      parent = null;
-//    }
     values[key.getIndex()] = value;
   }
 
   // todo: Make sure we call dispose once the layout style goes out of context
   public synchronized void dispose()
   {
-    //parent = null;
-    if (layoutStylePool == null)
-    {
-      return;
-    }
-    if (values == null)
-    {
-      return;
-    }
-    Arrays.fill(values, null);
-    layoutStylePool.reclaim(this, reference);
   }
 
   public synchronized LayoutStyleImpl createCopy()
   {
-    final LayoutStyleImpl style = new LayoutStyleImpl(null);
+    final LayoutStyleImpl style = new LayoutStyleImpl();
     if (values == null)
     {
       style.values = null;
@@ -139,10 +113,6 @@ public final class LayoutStyleImpl implements LayoutStyle
 
   public boolean isClean()
   {
-//    if (parent != null)
-//    {
-//      return false;
-//    }
     if (values == null)
     {
       return true;
@@ -156,4 +126,31 @@ public final class LayoutStyleImpl implements LayoutStyle
     }
     return true;
   }
+
+  public boolean copyFrom(LayoutStyle style)
+  {
+    if (style instanceof LayoutStyleImpl == false)
+    {
+      return false;
+    }
+
+    final LayoutStyleImpl rawstyle = (LayoutStyleImpl) style;
+    final int length = rawstyle.values.length;
+    if (values == null)
+    {
+      values = (CSSValue[]) rawstyle.values.clone();
+      return true;
+    }
+
+    for (int i = 0; i < length; i++)
+    {
+      final CSSValue o = rawstyle.values[i];
+      if (o != null)
+      {
+        values[i] = o;
+      }
+    }
+    return true;
+  }
+
 }

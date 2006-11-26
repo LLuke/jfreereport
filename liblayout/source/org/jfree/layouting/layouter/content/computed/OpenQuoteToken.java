@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OpenQuoteToken.java,v 1.2 2006/04/17 20:51:17 taqua Exp $
+ * $Id: OpenQuoteToken.java,v 1.1 2006/07/11 13:39:58 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,6 @@
  */
 
 package org.jfree.layouting.layouter.content.computed;
-
-import org.jfree.layouting.layouter.content.computed.ComputedToken;
 
 public class OpenQuoteToken extends ComputedToken
 {

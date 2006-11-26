@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TextAlignmentProcessor.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.renderer.process;
 
-import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 
 /**

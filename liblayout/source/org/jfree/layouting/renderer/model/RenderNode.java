@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderNode.java,v 1.22 2006/11/09 14:28:49 taqua Exp $
+ * $Id: RenderNode.java,v 1.23 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -95,6 +95,7 @@ public abstract class RenderNode implements Cloneable
   private Object instanceId;
 
   private NodeLayoutProperties layoutProperties;
+  private LayoutContext layoutContext;
 
   private boolean dirty;
 
@@ -109,28 +110,35 @@ public abstract class RenderNode implements Cloneable
   public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
   {
 
-    layoutProperties.setAlignmentBaseline
+    this.layoutProperties.setAlignmentBaseline
         (context.getValue(LineStyleKeys.ALIGNMENT_BASELINE));
     final CSSValue alignmentAdjust = context.getValue(LineStyleKeys.ALIGNMENT_ADJUST);
-    layoutProperties.setAlignmentAdjust(alignmentAdjust);
+    this.layoutProperties.setAlignmentAdjust(alignmentAdjust);
     if (alignmentAdjust instanceof CSSNumericValue)
     {
-      layoutProperties.setAlignmentAdjustResolved
+      this.layoutProperties.setAlignmentAdjustResolved
           (RenderLength.convertToInternal (alignmentAdjust, context, metaData));
     }
     CSSValue baselineShift = context.getValue(LineStyleKeys.BASELINE_SHIFT);
-    layoutProperties.setBaselineShift(baselineShift);
+    this.layoutProperties.setBaselineShift(baselineShift);
     if (baselineShift instanceof CSSNumericValue)
     {
-      layoutProperties.setBaselineShiftResolved(
+      this.layoutProperties.setBaselineShiftResolved(
           RenderLength.convertToInternal(baselineShift, context, metaData));
     }
 
-    layoutProperties.setVerticalAlignment
+    this.layoutProperties.setVerticalAlignment
         (normalizeAlignment(context.getValue(LineStyleKeys.VERTICAL_ALIGN)));
 
-    layoutProperties.setNamespace(context.getNamespace());
-    layoutProperties.setTagName (context.getTagName());
+    this.layoutProperties.setNamespace(context.getNamespace());
+    this.layoutProperties.setTagName (context.getTagName());
+
+    this.layoutContext = context;
+  }
+
+  public LayoutContext getLayoutContext()
+  {
+    return layoutContext;
   }
 
   public boolean isDirty()

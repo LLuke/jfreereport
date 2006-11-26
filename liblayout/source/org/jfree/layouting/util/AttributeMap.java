@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AttributeMap.java,v 1.1 2006/04/17 21:04:28 taqua Exp $
  *
  * Changes
  * -------
@@ -40,27 +40,33 @@
  */
 package org.jfree.layouting.util;
 
+import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Collections;
 
 /**
  * Creation-Date: 09.04.2006, 16:12:13
  *
  * @author Thomas Morgner
  */
-public class AttributeMap
+public class AttributeMap implements Serializable
 {
   private HashMap namespaces;
+  private static final String[] EMPTY_NAMESPACES = new String[0];
 
   public AttributeMap()
   {
-    namespaces = new HashMap();
   }
 
   public AttributeMap(final AttributeMap copy)
   {
+    if (copy.namespaces == null)
+    {
+      return;
+    }
+
     namespaces = (HashMap) copy.namespaces.clone();
     Iterator entries = namespaces.entrySet().iterator();
     while (entries.hasNext())
@@ -71,8 +77,15 @@ public class AttributeMap
     }
   }
 
-  public synchronized void setAttribute(String namespace, String attribute, Object value)
+  public synchronized void setAttribute(String namespace,
+                                        String attribute,
+                                        Object value)
   {
+    if (namespaces == null)
+    {
+      namespaces = new HashMap();
+    }
+
     final HashMap attrs = (HashMap) namespaces.get(namespace);
     if (attrs == null)
     {
@@ -102,8 +115,13 @@ public class AttributeMap
     }
   }
 
-  public synchronized Object getAttribute (String namespace, String attribute)
+  public synchronized Object getAttribute(String namespace, String attribute)
   {
+    if (namespaces == null)
+    {
+      return null;
+    }
+
     final HashMap attrs = (HashMap) namespaces.get(namespace);
     if (attrs == null)
     {
@@ -115,8 +133,13 @@ public class AttributeMap
     }
   }
 
-  public synchronized Object getFirstAttribute (String attribute)
+  public synchronized Object getFirstAttribute(String attribute)
   {
+    if (namespaces == null)
+    {
+      return null;
+    }
+
     final Iterator entries = namespaces.entrySet().iterator();
     while (entries.hasNext())
     {
@@ -133,6 +156,11 @@ public class AttributeMap
 
   public synchronized Map getAttributes(final String namespace)
   {
+    if (namespaces == null)
+    {
+      return null;
+    }
+
     final HashMap attrs = (HashMap) namespaces.get(namespace);
     if (attrs == null)
     {
@@ -146,6 +174,10 @@ public class AttributeMap
 
   public synchronized String[] getNameSpaces()
   {
+    if (namespaces == null)
+    {
+      return EMPTY_NAMESPACES;
+    }
     return (String[]) namespaces.keySet().toArray(new String[namespaces.size()]);
   }
 }

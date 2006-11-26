@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SelectorTest.java,v 1.2 2006/07/11 13:29:55 taqua Exp $
+ * $Id: SelectorTest.java,v 1.3 2006/07/17 13:27:25 taqua Exp $
  *
  * Changes
  * -------
@@ -44,14 +44,14 @@ package org.jfree.layouting.tools;
 import java.io.IOException;
 import java.net.URL;
 
+import org.jfree.layouting.input.style.StyleKeyRegistry;
+import org.jfree.layouting.input.style.parser.CSSParserFactory;
+import org.jfree.layouting.input.style.parser.CSSParserInstantiationException;
+import org.jfree.layouting.input.style.parser.StringInputSource;
+import org.jfree.layouting.input.style.parser.StyleSheetHandler;
+import org.jfree.resourceloader.ResourceManager;
 import org.w3c.css.sac.Parser;
 import org.w3c.css.sac.SelectorList;
-import org.jfree.layouting.input.style.parser.CSSParserFactory;
-import org.jfree.layouting.input.style.parser.StyleSheetHandler;
-import org.jfree.layouting.input.style.parser.StringInputSource;
-import org.jfree.layouting.input.style.parser.CSSParserInstantiationException;
-import org.jfree.layouting.input.style.StyleKeyRegistry;
-import org.jfree.resourceloader.ResourceManager;
 
 public class SelectorTest
 {

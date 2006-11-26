@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetParserUtil.java,v 1.4 2006/05/15 12:45:12 taqua Exp $
+ * $Id: StyleSheetParserUtil.java,v 1.5 2006/07/26 16:59:46 taqua Exp $
  *
  * Changes
  * -------
@@ -45,10 +45,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
-import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;

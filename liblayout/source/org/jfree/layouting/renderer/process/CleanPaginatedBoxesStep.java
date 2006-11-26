@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CleanPaginatedBoxesStep.java,v 1.4 2006/11/11 20:23:46 taqua Exp $
+ * $Id: CleanPaginatedBoxesStep.java,v 1.5 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 27.10.2006, 18:19:24

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSValueFactory.java,v 1.7 2006/10/17 16:39:07 taqua Exp $
+ * $Id: CSSValueFactory.java,v 1.8 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.values.CSSAttrFunction;
+import org.jfree.layouting.input.style.values.CSSCompoundAttrFunction;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
@@ -58,7 +59,6 @@ import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSStringType;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSCompoundAttrFunction;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;

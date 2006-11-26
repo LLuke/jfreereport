@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Normalizer.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
+ * $Id: Normalizer.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ package org.jfree.layouting.normalizer.content;
 import java.io.IOException;
 
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.util.AttributeMap;
 

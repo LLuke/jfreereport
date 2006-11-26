@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ListStyleImageResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
+ * $Id: ListStyleImageResolveHandler.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,10 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.lists;
 
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 public class ListStyleImageResolveHandler implements ResolveHandler
 {

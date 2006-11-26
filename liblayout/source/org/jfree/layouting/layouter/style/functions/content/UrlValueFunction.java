@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: UrlValueFunction.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -40,16 +40,16 @@
  */
 package org.jfree.layouting.layouter.style.functions.content;
 
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
+import org.jfree.layouting.input.style.values.CSSStringValue;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.layouting.layouter.content.statics.ResourceContentToken;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
 import org.jfree.layouting.layouter.style.functions.FunctionUtilities;
 import org.jfree.layouting.layouter.style.values.CSSResourceValue;
-import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.content.ContentToken;
-import org.jfree.layouting.layouter.content.statics.ResourceContentToken;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSFunctionValue;
-import org.jfree.layouting.input.style.values.CSSStringValue;
-import org.jfree.layouting.LayoutProcess;
 import org.jfree.resourceloader.Resource;
 
 /**

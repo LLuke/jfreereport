@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConstantsResolveHandler.java,v 1.3 2006/07/11 13:29:51 taqua Exp $
+ * $Id: ConstantsResolveHandler.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -42,13 +42,13 @@ package org.jfree.layouting.layouter.style.resolver.computed;
 
 import java.util.HashMap;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.context.LayoutContext;
 
 /**
  * Creation-Date: 11.12.2005, 23:15:57

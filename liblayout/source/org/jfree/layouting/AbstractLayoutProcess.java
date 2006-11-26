@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractLayoutProcess.java,v 1.4 2006/10/22 14:58:25 taqua Exp $
+ * $Id: AbstractLayoutProcess.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.DefaultDocumentContext;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.feed.InputFeed;
-import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.normalizer.content.Normalizer;

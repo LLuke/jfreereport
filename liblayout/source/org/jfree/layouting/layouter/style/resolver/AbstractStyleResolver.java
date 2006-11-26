@@ -1,17 +1,18 @@
 package org.jfree.layouting.layouter.style.resolver;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.CSSDeclarationRule;
-import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleRule;
 import org.jfree.layouting.input.style.StyleSheet;
+import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.input.style.values.CSSAttrFunction;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSValue;
@@ -24,13 +25,10 @@ import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyleImpl;
-import org.jfree.layouting.layouter.style.LayoutStylePool;
 import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
 import org.jfree.layouting.layouter.style.functions.values.AttrValueFunction;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.Namespaces;
-import org.jfree.layouting.input.style.PageAreaType;
-import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.util.AttributeMap;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceManager;
@@ -95,6 +93,8 @@ public abstract class AbstractStyleResolver implements StyleResolver
   private DocumentContext documentContext;
   private NamespaceCollection namespaces;
   private StyleKey[] keys;
+  private AttrValueFunction attrFunction;
+
 
   protected AbstractStyleResolver()
   {
@@ -118,11 +118,12 @@ public abstract class AbstractStyleResolver implements StyleResolver
     this.layoutProcess = layoutProcess;
     this.documentContext = layoutProcess.getDocumentContext();
     this.namespaces = documentContext.getNamespaces();
+    this.attrFunction = new AttrValueFunction();
   }
   
   protected void loadInitialStyle()
   {
-    this.initialStyle = new LayoutStyleImpl(null);
+    this.initialStyle = new LayoutStyleImpl();
     try
     {
       final ResourceManager manager = layoutProcess.getResourceManager();
@@ -146,6 +147,9 @@ public abstract class AbstractStyleResolver implements StyleResolver
       // Not yet handled ...
       // e.printStackTrace();
     }
+
+    final DocumentContext documentContext = layoutProcess.getDocumentContext();
+    documentContext.setMetaAttribute(DocumentContext.INITIAL_STYLE, initialStyle);
   }
 
   protected void copyStyleInformation
@@ -160,12 +164,22 @@ public abstract class AbstractStyleResolver implements StyleResolver
         copyStyleInformation(target, (CSSDeclarationRule) parentRule, element);
       }
 
-
-      StyleKey[] keys = rule.getPropertyKeysAsArray();
-      CSSValue[] values = new CSSValue[keys.length];
-      for (int i = 0; i < keys.length; i++)
+      if (element == null)
       {
-        StyleKey key = keys[i];
+        final StyleKey[] propertyKeys = rule.getPropertyKeysAsArray();
+        for (int i = 0; i < propertyKeys.length; i++)
+        {
+          final StyleKey key = propertyKeys[i];
+          target.setValue(key, rule.getPropertyCSSValue(key));
+        }
+        return;
+      }
+
+      final StyleKey[] propertyKeys = rule.getPropertyKeysAsArray();
+      final CSSValue[] values = new CSSValue[rule.getSize()];
+      for (int i = 0; i < values.length; i++)
+      {
+        final StyleKey key = propertyKeys[i];
         CSSValue value = rule.getPropertyCSSValue(key);
         if (ContentStyleKeys.CONTENT.equals(key) ||
             ContentStyleKeys.STRING_DEFINE.equals(key) ||
@@ -180,9 +194,9 @@ public abstract class AbstractStyleResolver implements StyleResolver
         }
       }
 
-      for (int i = 0; i < keys.length; i++)
+      for (int i = 0; i < values.length; i++)
       {
-        StyleKey key = keys[i];
+        final StyleKey key = propertyKeys[i];
         target.setValue(key, values[i]);
       }
     }
@@ -214,15 +228,15 @@ public abstract class AbstractStyleResolver implements StyleResolver
     if (value instanceof CSSAttrFunction)
     {
       // thats plain and simple - resolve it directly.
-      AttrValueFunction function = new AttrValueFunction();
-      return function.evaluate
+      return attrFunction.evaluate
               (getLayoutProcess(), element, (CSSFunctionValue) value);
     }
     else if (value instanceof CSSValueList)
     {
       final CSSValueList list = (CSSValueList) value;
       final ArrayList retValus = new ArrayList();
-      for (int i = 0; i < list.getLength(); i++)
+      final int length = list.getLength();
+      for (int i = 0; i < length; i++)
       {
         final CSSValue item = list.getItem(i);
         retValus.add(resolveValue(item, element));
@@ -252,10 +266,12 @@ public abstract class AbstractStyleResolver implements StyleResolver
     {
       return true;
     }
-    else if (value instanceof CSSValueList)
+
+    if (value instanceof CSSValueList)
     {
       final CSSValueList list = (CSSValueList) value;
-      for (int i = 0; i < list.getLength(); i++)
+      final int length = list.getLength();
+      for (int i = 0; i < length; i++)
       {
         final CSSValue item = list.getItem(i);
         if (containsAttrFunction(item))
@@ -265,7 +281,8 @@ public abstract class AbstractStyleResolver implements StyleResolver
       }
       return false;
     }
-    else if (value instanceof CSSValuePair)
+
+    if (value instanceof CSSValuePair)
     {
       CSSValuePair pair = (CSSValuePair) value;
       if (containsAttrFunction(pair.getFirstValue()))
@@ -286,7 +303,7 @@ public abstract class AbstractStyleResolver implements StyleResolver
     return layoutProcess;
   }
 
-  protected LayoutStyle getInitialStyle()
+  public LayoutStyle getInitialStyle()
   {
     return initialStyle;
   }

@@ -3,14 +3,13 @@ package org.jfree.layouting.layouter.style.resolver;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
-import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.PageAreaType;
+import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.LayoutStyle;
-import org.jfree.layouting.layouter.style.LayoutStyleImpl;
+import org.jfree.layouting.layouter.model.LayoutElement;
 
 /**
  * Not yet used. Needs to be implemented. Its my fast resolver, but that
@@ -38,7 +37,7 @@ public class FlatStyleResolver extends AbstractStyleResolver
 
   }
 
-  public LayoutStyleImpl resolvePageStyle(CSSValue pageName,
+  public LayoutStyle resolvePageStyle(CSSValue pageName,
                                                                              PseudoPage[] pseudoPages,
                                                                              PageAreaType pageArea)
   {

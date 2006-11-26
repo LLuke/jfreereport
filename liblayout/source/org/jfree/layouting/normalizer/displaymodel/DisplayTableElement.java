@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayTableElement.java,v 1.3 2006/07/18 17:26:32 taqua Exp $
+ * $Id: DisplayTableElement.java,v 1.4 2006/11/07 19:53:54 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,7 @@
 package org.jfree.layouting.normalizer.displaymodel;
 
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.context.ContextId;
-import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.content.NormalizationException;
-import org.jfree.layouting.LayoutProcess;
 
 /**
  * A table.

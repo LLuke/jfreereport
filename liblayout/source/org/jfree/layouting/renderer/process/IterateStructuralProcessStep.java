@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: IterateStructuralProcessStep.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
+ * $Id: IterateStructuralProcessStep.java,v 1.2 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,12 @@
  */
 package org.jfree.layouting.renderer.process;
 
-import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
+import org.jfree.layouting.renderer.model.RenderBox;
+import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 
 /**

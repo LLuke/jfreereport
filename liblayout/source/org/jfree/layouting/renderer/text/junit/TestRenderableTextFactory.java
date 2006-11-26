@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TestRenderableTextFactory.java,v 1.6 2006/11/12 14:45:23 taqua Exp $
+ * $Id: TestRenderableTextFactory.java,v 1.7 2006/11/13 19:14:05 taqua Exp $
  *
  * Changes
  * -------
@@ -40,16 +40,16 @@
  */
 package org.jfree.layouting.renderer.text.junit;
 
+import org.jfree.layouting.DefaultLayoutProcess;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.DefaultLayoutProcess;
-import org.jfree.layouting.modules.output.html.FlowHtmlOutputProcessor;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.layouter.context.ContextId;
 import org.jfree.layouting.layouter.context.DefaultLayoutContext;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.modules.output.html.FlowHtmlOutputProcessor;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;

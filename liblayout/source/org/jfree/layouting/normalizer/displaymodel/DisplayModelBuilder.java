@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayModelBuilder.java,v 1.5 2006/11/11 20:23:46 taqua Exp $
+ * $Id: DisplayModelBuilder.java,v 1.6 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ package org.jfree.layouting.normalizer.displaymodel;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Stack;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
@@ -53,8 +52,8 @@ import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayModel;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.box.Floating;
-import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
 import org.jfree.layouting.input.style.keys.positioning.Position;
+import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.context.LayoutContext;
@@ -65,7 +64,7 @@ import org.jfree.layouting.normalizer.generator.ContentGenerator;
 import org.jfree.layouting.normalizer.generator.EmptyContentGenerator;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.util.AttributeMap;
-import org.jfree.util.Log;
+import org.jfree.util.FastStack;
 
 /**
  * Builds the display model. The display model guarantees, that block and inline
@@ -133,7 +132,7 @@ public class DisplayModelBuilder implements ModelBuilder
     }
   }
 
-  private Stack stack;
+  private FastStack stack;
   private ContentGenerator contentGenerator;
   private LayoutProcess layoutProcess;
 
@@ -150,7 +149,7 @@ public class DisplayModelBuilder implements ModelBuilder
     }
     this.contentGenerator = contentGenerator;
     this.layoutProcess = layoutProcess;
-    this.stack = new Stack();
+    this.stack = new FastStack();
   }
 
   public ContentGenerator getContentGenerator()

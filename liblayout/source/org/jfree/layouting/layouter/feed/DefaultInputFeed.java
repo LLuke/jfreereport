@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultInputFeed.java,v 1.4 2006/11/11 20:23:46 taqua Exp $
+ * $Id: DefaultInputFeed.java,v 1.5 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -41,20 +41,19 @@
 package org.jfree.layouting.layouter.feed;
 
 import java.io.IOException;
-import java.util.Stack;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
-import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.input.style.PseudoPage;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.layouter.context.DefaultDocumentMetaNode;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.context.DocumentMetaNode;
 import org.jfree.layouting.namespace.NamespaceCollection;
+import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.util.AttributeMap;
 
 /**
@@ -86,7 +85,6 @@ public class DefaultInputFeed implements InputFeed
   {
     private boolean initialized;
     private int state;
-    private Stack elements;
     private DocumentMetaNode metaNode;
     private State normalizerState;
     private boolean pagebreakEncountered;
@@ -167,16 +165,6 @@ public class DefaultInputFeed implements InputFeed
     public void setState(final int state)
     {
       this.state = state;
-    }
-
-    public Stack getElements()
-    {
-      return elements;
-    }
-
-    public void setElements(final Stack elements)
-    {
-      this.elements = elements;
     }
 
     public DocumentMetaNode getMetaNode()

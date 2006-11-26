@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ParagraphPoolBox.java,v 1.2 2006/10/27 18:25:50 taqua Exp $
+ * $Id: ParagraphPoolBox.java,v 1.3 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,8 @@ package org.jfree.layouting.renderer.model;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.renderer.border.RenderLength;
 
 /**
  * Creation-Date: 04.10.2006, 17:50:44

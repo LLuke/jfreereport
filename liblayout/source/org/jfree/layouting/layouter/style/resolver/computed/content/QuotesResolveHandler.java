@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: QuotesResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
+ * $Id: QuotesResolveHandler.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -43,14 +43,14 @@ package org.jfree.layouting.layouter.style.resolver.computed.content;
 
 import java.util.ArrayList;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.QuotesPair;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 public class QuotesResolveHandler extends ConstantsResolveHandler

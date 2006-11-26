@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ChainingOutputProcessor.java,v 1.4 2006/11/11 20:23:46 taqua Exp $
+ * $Id: ChainingOutputProcessor.java,v 1.5 2006/11/12 14:05:28 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,11 @@ package org.jfree.layouting.output;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.normalizer.ChainingNormalizer;
 import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
+import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.renderer.ChainingRenderer;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
@@ -153,5 +155,41 @@ public class ChainingOutputProcessor implements OutputProcessor
   public Configuration getConfiguration()
   {
     return outputProcessor.getConfiguration();
+  }
+
+  public int getLogicalPageCount()
+  {
+    return outputProcessor.getLogicalPageCount();
+  }
+
+  public LogicalPageKey getLogicalPage(int page)
+  {
+    return outputProcessor.getLogicalPage(page);
+  }
+
+  public void setPageCursor(int cursor)
+  {
+    outputProcessor.setPageCursor(cursor);
+  }
+
+  public int getPageCursor()
+  {
+    return outputProcessor.getPageCursor();
+  }
+
+  /**
+   * Checks, whether the 'processingFinished' event had been received at least
+   * once.
+   *
+   * @return
+   */
+  public boolean isPaginationFinished()
+  {
+    return outputProcessor.isPaginationFinished();
+  }
+
+  public void processDocumentMetaData(DocumentContext documentContext)
+  {
+    outputProcessor.processDocumentMetaData(documentContext);
   }
 }

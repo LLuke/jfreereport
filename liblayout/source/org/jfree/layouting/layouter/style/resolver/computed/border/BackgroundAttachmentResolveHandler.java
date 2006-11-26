@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BackgroundAttachmentResolveHandler.java,v 1.3 2006/07/11 13:29:51 taqua Exp $
+ * $Id: BackgroundAttachmentResolveHandler.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,12 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.border;
 
-import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.keys.border.BackgroundAttachment;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.border.BackgroundAttachment;
+import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.layouter.context.BackgroundSpecification;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.resolver.computed.ListOfConstantsResolveHandler;
 
 /**

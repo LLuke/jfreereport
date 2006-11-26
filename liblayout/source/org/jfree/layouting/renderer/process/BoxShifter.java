@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BoxShifter.java,v 1.5 2006/11/09 14:28:49 taqua Exp $
+ * $Id: BoxShifter.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,6 @@ package org.jfree.layouting.renderer.process;
 
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
-import org.jfree.layouting.renderer.model.table.TableRenderBox;
-import org.jfree.util.Log;
 
 /**
  * By keeping the shifting in a separate class, we can optimize it later without

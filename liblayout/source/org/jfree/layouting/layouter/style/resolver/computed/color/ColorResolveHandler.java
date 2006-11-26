@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ColorResolveHandler.java,v 1.4 2006/07/30 13:13:47 taqua Exp $
+ * $Id: ColorResolveHandler.java,v 1.5 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,14 @@ import org.jfree.layouting.input.style.keys.color.ColorStyleKeys;
 import org.jfree.layouting.input.style.keys.color.HtmlColors;
 import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
-import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
-import org.jfree.layouting.layouter.style.functions.FunctionFactory;
-import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
-import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
-import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
+import org.jfree.layouting.layouter.style.functions.FunctionFactory;
+import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
+import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.util.ColorUtil;
 
 /**

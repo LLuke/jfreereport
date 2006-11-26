@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSAutoValue.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
+ * $Id: CSSAutoValue.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -67,5 +67,11 @@ public final class CSSAutoValue implements CSSValue
   public String getCSSText()
   {
     return "auto";
+  }
+
+
+  public String toString()
+  {
+    return getCSSText();
   }
 }

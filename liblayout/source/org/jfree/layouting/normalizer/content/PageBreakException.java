@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageBreakException.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.normalizer.content;
 
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.PseudoPage;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * A pagebreak exception is a cheap out-of-order-return (some kind of GoTo,

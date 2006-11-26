@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSParserFactory.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
+ * $Id: CSSParserFactory.java,v 1.3 2006/04/23 15:18:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 package org.jfree.layouting.input.style.parser;
 
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.input.style.selectors.conditions.CSSConditionFactory;
 import org.jfree.layouting.input.style.selectors.CSSSelectorFactory;
+import org.jfree.layouting.input.style.selectors.conditions.CSSConditionFactory;
 import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;
 import org.w3c.css.sac.Parser;

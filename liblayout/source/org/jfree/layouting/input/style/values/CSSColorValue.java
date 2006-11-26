@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSColorValue.java,v 1.2 2006/04/17 20:51:10 taqua Exp $
+ * $Id: CSSColorValue.java,v 1.3 2006/11/02 23:13:31 mimil Exp $
  *
  * Changes
  * -------
@@ -74,24 +74,36 @@ public class CSSColorValue extends Color implements CSSValue
     super(r, g, b);
   }
 
-  public CSSColorValue(Color color) {
+  public CSSColorValue(Color color)
+  {
     super(color.getRGB());
   }
 
   public String getCSSText()
   {
-    return "rgb(" + getRed() + "," + getGreen() + "," + getBlue()+")";
+    if (getAlpha() == 0)
+    {
+      return "transparent";
+    }
+    else if (getAlpha() == 255)
+    {
+      return "rgb(" + getRed() + "," + getGreen() + "," + getBlue() + ")";
+    }
+    else
+    {
+      return "rgba(" + getRed() + "," + getGreen() + "," + getBlue() + "," + getAlpha() + ")";
+    }
   }
 
   /**
-   * Returns a string representation of this <code>Color</code>. This method is intended
-   * to be used only for debugging purposes.  The content and format of the returned
-   * string might vary between implementations. The returned string might be empty but
-   * cannot be <code>null</code>.
+   * Returns a string representation of this <code>Color</code>. This method is
+   * intended to be used only for debugging purposes.  The content and format of
+   * the returned string might vary between implementations. The returned string
+   * might be empty but cannot be <code>null</code>.
    *
    * @return a string representation of this <code>Color</code>.
    */
-  public String toString ()
+  public String toString()
   {
     return getCSSText();
   }

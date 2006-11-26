@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSParseTest.java,v 1.6 2006/07/20 17:50:52 taqua Exp $
+ * $Id: CSSParseTest.java,v 1.7 2006/07/24 12:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,17 +40,15 @@
  */
 package org.jfree.layouting.tools;
 
-import java.util.HashMap;
-import java.io.StringReader;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.HashMap;
 
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
-import org.jfree.layouting.input.style.keys.table.TableStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.parser.StyleSheetParserUtil;
-import org.w3c.flute.parser.Parser;
 import org.w3c.css.sac.InputSource;
+import org.w3c.flute.parser.Parser;
 
 /**
  * Creation-Date: 23.11.2005, 13:00:17

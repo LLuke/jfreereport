@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ListOfConstantsReadHandler.java,v 1.2 2006/04/17 20:51:03 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,9 @@ package org.jfree.layouting.input.style.parser.stylehandler;
 
 import java.util.HashMap;
 
+import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

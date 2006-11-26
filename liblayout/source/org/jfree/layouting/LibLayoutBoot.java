@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibLayoutBoot.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
+ * $Id: LibLayoutBoot.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,12 @@ package org.jfree.layouting;
 
 import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
-import org.jfree.util.Configuration;
+import org.jfree.base.config.HierarchicalConfiguration;
+import org.jfree.base.config.PropertyFileConfiguration;
+import org.jfree.base.config.SystemPropertyConfiguration;
+import org.jfree.base.modules.PackageManager;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
+import org.jfree.util.Configuration;
 
 public class LibLayoutBoot extends AbstractBoot
 {
@@ -80,9 +84,20 @@ public class LibLayoutBoot extends AbstractBoot
    */
   protected Configuration loadConfiguration ()
   {
-    return createDefaultHierarchicalConfiguration
-            ("/org/jfree/layouting/layout.properties",
-             "/layout.properties", true);
+    HierarchicalConfiguration globalConfig = new HierarchicalConfiguration();
+
+    final PropertyFileConfiguration rootProperty = new PropertyFileConfiguration();
+    rootProperty.load("/org/jfree/layouting/layout.properties");
+    globalConfig.insertConfiguration(rootProperty);
+    globalConfig.insertConfiguration(getPackageManager().getPackageConfiguration());
+
+    final PropertyFileConfiguration baseProperty = new PropertyFileConfiguration();
+    baseProperty.load("/layout.properties");
+    globalConfig.insertConfiguration(baseProperty);
+
+    final SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
+    globalConfig.insertConfiguration(systemConfig);
+    return globalConfig;
   }
 
   /**
@@ -91,5 +106,16 @@ public class LibLayoutBoot extends AbstractBoot
   protected void performBoot ()
   {
     StyleKeyRegistry.getRegistry().registerDefaults();
+
+    final PackageManager mgr = getPackageManager();
+    mgr.addModule(LibLayoutCoreModule.class.getName());
+    mgr.load("org.jfree.layouting.modules.");
+    mgr.load("org.jfree.layouting.userdefined.modules.");
+    mgr.initializeModules();
+  }
+
+  public static void main(String[] args)
+  {
+    LibLayoutBoot.getInstance().start();
   }
 }

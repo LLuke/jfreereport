@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ComputeMarginsStep.java,v 1.3 2006/11/09 14:28:49 taqua Exp $
+ * $Id: ComputeMarginsStep.java,v 1.4 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -42,19 +42,15 @@ package org.jfree.layouting.renderer.process;
 
 import java.util.ArrayList;
 
-import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
-import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.layouting.renderer.model.table.TableRenderBox;
-import org.jfree.util.Log;
 
 /**
  * This semi-dynamic step computes the effective margins. It requires that the

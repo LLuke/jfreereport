@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: XhtmlInputDriver.java,v 1.7 2006/11/12 14:33:09 taqua Exp $
+ * $Id: XhtmlInputDriver.java,v 1.8 2006/11/13 19:14:05 taqua Exp $
  *
  * Changes
  * -------
@@ -45,14 +45,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 
-import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.DefaultLayoutProcess;
-import org.jfree.layouting.modules.output.html.StreamingHtmlOutputProcessor;
-import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.layouter.context.DocumentContext;
-import org.jfree.layouting.util.NullOutputStream;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.InputFeedException;
+import org.jfree.layouting.modules.output.html.StreamingHtmlOutputProcessor;
+import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.util.NullOutputStream;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

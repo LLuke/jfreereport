@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BoxAlignContext.java,v 1.2 2006/10/22 14:58:26 taqua Exp $
+ * $Id: BoxAlignContext.java,v 1.3 2006/11/20 21:02:01 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.process.valign;
-
-import java.util.ArrayList;
 
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.model.RenderBox;

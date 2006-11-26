@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextDecorationReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
+ * $Id: TextDecorationReadHandler.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -40,19 +40,19 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.text;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
-import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
-import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
-import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSAutoValue;
-import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.color.CSSSystemColors;
 import org.jfree.layouting.input.style.keys.text.TextDecorationMode;
 import org.jfree.layouting.input.style.keys.text.TextDecorationStyle;
-import org.jfree.layouting.input.style.keys.color.CSSSystemColors;
-import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
+import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
+import org.jfree.layouting.input.style.values.CSSAutoValue;
+import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

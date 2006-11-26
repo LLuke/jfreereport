@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: MoveToReadHandler.java,v 1.2 2006/04/17 20:51:07 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.content;
 
-import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.keys.content.MoveToValues;
-import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.parser.stylehandler.OneOfConstantsReadHandler;
 import org.jfree.layouting.input.style.values.CSSConstant;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

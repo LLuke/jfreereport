@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PositionResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
+ * $Id: PositionResolveHandler.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@
 package org.jfree.layouting.layouter.style.resolver.computed.position;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayModel;
@@ -51,10 +50,11 @@ import org.jfree.layouting.input.style.keys.box.Floating;
 import org.jfree.layouting.input.style.keys.positioning.Position;
 import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
-import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 public class PositionResolveHandler extends ConstantsResolveHandler
 {

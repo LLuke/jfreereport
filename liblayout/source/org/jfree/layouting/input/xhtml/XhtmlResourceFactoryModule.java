@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: XhtmlResourceFactoryModule.java,v 1.2 2006/04/17 20:51:13 taqua Exp $
+ * $Id: XhtmlResourceFactoryModule.java,v 1.3 2006/05/19 11:33:26 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,8 @@ package org.jfree.layouting.input.xhtml;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceData;
-import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.factory.AbstractFactoryModule;
 

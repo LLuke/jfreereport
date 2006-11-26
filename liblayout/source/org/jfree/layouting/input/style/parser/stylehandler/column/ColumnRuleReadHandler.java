@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ColumnRuleReadHandler.java,v 1.2 2006/04/17 20:51:07 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,12 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.column;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
+import org.jfree.layouting.input.style.keys.column.ColumnStyleKeys;
 import org.jfree.layouting.input.style.parser.stylehandler.AbstractCompoundValueReadHandler;
 import org.jfree.layouting.input.style.values.CSSInheritValue;
-import org.jfree.layouting.input.style.keys.column.ColumnStyleKeys;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

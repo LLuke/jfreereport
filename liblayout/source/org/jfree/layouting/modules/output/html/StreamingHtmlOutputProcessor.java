@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: StreamingHtmlOutputProcessor.java,v 1.2 2006/11/12 14:33:09 taqua Exp $
+ * $Id: StreamingHtmlOutputProcessor.java,v 1.3 2006/11/13 19:14:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -39,12 +39,14 @@ import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.output.AbstractOutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.output.pageable.LogicalPageKey;
+import org.jfree.layouting.renderer.PrototypeBuildingRenderer;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.StreamingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.repository.ContentLocation;
-import org.jfree.repository.NameGenerator;
 import org.jfree.repository.DefaultNameGenerator;
+import org.jfree.repository.NameGenerator;
 import org.jfree.repository.dummy.DummyRepository;
 import org.jfree.repository.stream.StreamRepository;
 import org.jfree.util.Configuration;
@@ -62,10 +64,10 @@ public class StreamingHtmlOutputProcessor extends AbstractOutputProcessor
   private NameGenerator dataNameGenerator;
 
   private HtmlOutputProcessorMetaData metaData;
-  private boolean globalStateComputed;
+  private PrototypeBuildingRenderer prototypeBuilder;
 
   public StreamingHtmlOutputProcessor(final Configuration configuration,
-                                     final OutputStream out)
+                                      final OutputStream out)
   {
     super(configuration);
     this.contentLocation = new StreamRepository(null, out).getRoot();
@@ -108,7 +110,8 @@ public class StreamingHtmlOutputProcessor extends AbstractOutputProcessor
   {
     FontRegistry fontRegistry = new AWTFontRegistry();
     FontStorage fontStorage = new DefaultFontStorage(fontRegistry);
-    this.metaData = new HtmlOutputProcessorMetaData(fontStorage, false);
+    this.metaData = new HtmlOutputProcessorMetaData
+        (fontStorage, HtmlOutputProcessorMetaData.PAGINATION_NONE);
   }
 
   public OutputProcessorMetaData getMetaData()
@@ -118,47 +121,18 @@ public class StreamingHtmlOutputProcessor extends AbstractOutputProcessor
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
+    if (isGlobalStateComputed() == false)
+    {
+      prototypeBuilder = new PrototypeBuildingRenderer(layoutProcess);
+      return prototypeBuilder;
+    }
+
     return new StreamingRenderer(layoutProcess);
   }
 
-  public void processContent(LogicalPageBox logicalPage)
+  protected void processPageContent(final LogicalPageKey logicalPageKey,
+                                    final LogicalPageBox logicalPage)
   {
 
-  }
-
-  /**
-   * Notifies the output processor, that the processing has been finished and
-   * that the input-feed received the last event.
-   */
-  public void processingFinished()
-  {
-    globalStateComputed = true;
-  }
-
-  /**
-   * This flag indicates, whether the global content has been computed. Global
-   * content consists of global counters (except the pages counter) and derived
-   * information like table of contents, the global directory of images or
-   * tables etc.
-   * <p/>
-   * The global state must be computed before paginating can be attempted (if
-   * the output target is paginating at all).
-   *
-   * @return true, if the global state has been computed, false otherwise.
-   */
-  public boolean isGlobalStateComputed()
-  {
-    return globalStateComputed;
-  }
-
-  /**
-   * This flag indicates, whether the output processor has collected enough
-   * information to start the content generation.
-   *
-   * @return
-   */
-  public boolean isContentGeneratable()
-  {
-    return globalStateComputed;
   }
 }

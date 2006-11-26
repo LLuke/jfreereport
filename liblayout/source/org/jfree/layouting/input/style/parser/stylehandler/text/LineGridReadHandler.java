@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LineGridReadHandler.java,v 1.2 2006/04/17 20:51:09 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.text;
 
-import org.jfree.layouting.input.style.parser.stylehandler.AbstractCompoundValueReadHandler;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
+import org.jfree.layouting.input.style.parser.stylehandler.AbstractCompoundValueReadHandler;
 
 /**
  * Creation-Date: 03.12.2005, 19:53:30

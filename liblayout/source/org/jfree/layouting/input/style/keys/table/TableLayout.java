@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: TableLayout.java,v 1.1 2006/07/18 17:26:32 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.input.style.keys.table;
 
-import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
+import org.jfree.layouting.input.style.values.CSSConstant;
 
 /**
  * Creation-Date: 18.07.2006, 19:04:01

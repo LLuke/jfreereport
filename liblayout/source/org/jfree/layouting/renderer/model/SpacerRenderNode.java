@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SpacerRenderNode.java,v 1.9 2006/10/17 16:39:08 taqua Exp $
+ * $Id: SpacerRenderNode.java,v 1.10 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,6 @@
  *
  */
 package org.jfree.layouting.renderer.model;
-
-import org.jfree.layouting.input.style.keys.line.VerticalAlign;
-import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * A spacer reserves space for whitespaces found in the text. When encountered

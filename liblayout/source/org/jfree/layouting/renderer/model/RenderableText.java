@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.9 2006/10/17 16:39:08 taqua Exp $
+ * $Id: RenderableText.java,v 1.10 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,6 @@ public class RenderableText extends RenderNode
   private Glyph[] glyphs;
   private int offset;
   private int length;
-  private LayoutContext layoutContext;
   private boolean ltr;
   private int script;
 
@@ -86,8 +85,7 @@ public class RenderableText extends RenderNode
   private boolean forceLinebreak;
   private ExtendedBaselineInfo baselineInfo;
 
-  public RenderableText(final LayoutContext layoutContext,
-                        final ExtendedBaselineInfo baselineInfo,
+  public RenderableText(final ExtendedBaselineInfo baselineInfo,
                         final Glyph[] glyphs,
                         final int offset,
                         final int length,
@@ -95,10 +93,6 @@ public class RenderableText extends RenderNode
                         final boolean forceLinebreak)
   {
     if (glyphs == null)
-    {
-      throw new NullPointerException();
-    }
-    if (layoutContext == null)
     {
       throw new NullPointerException();
     }
@@ -111,7 +105,6 @@ public class RenderableText extends RenderNode
     this.ltr = true; // this depends on the script value
     this.script = script;
 
-    this.layoutContext = layoutContext;
     this.glyphs = glyphs;
     this.offset = offset;
     this.length = length;
@@ -193,11 +186,6 @@ public class RenderableText extends RenderNode
   public boolean isLtr()
   {
     return ltr;
-  }
-
-  public LayoutContext getLayoutContext()
-  {
-    return layoutContext;
   }
 
   public Glyph[] getGlyphs()
@@ -337,9 +325,9 @@ public class RenderableText extends RenderNode
       return result;
     }
 
-    result[0] = new RenderableText(layoutContext, baselineInfo, glyphs,
+    result[0] = new RenderableText(baselineInfo, glyphs,
             offset, breakPos - offset, script, false);
-    result[1] = new RenderableText(layoutContext, baselineInfo, glyphs,
+    result[1] = new RenderableText(baselineInfo, glyphs,
             breakPos, length - (breakPos - offset), script, forceLinebreak);
     return result;
   }

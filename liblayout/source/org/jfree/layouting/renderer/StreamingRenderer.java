@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StreamingRenderer.java,v 1.2 2006/11/13 19:14:05 taqua Exp $
+ * $Id: StreamingRenderer.java,v 1.3 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -45,18 +45,17 @@ import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.PseudoPage;
-import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.layouter.context.LayoutStyle;
+import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.layouting.renderer.process.CleanPaginatedBoxesStep;
+import org.jfree.layouting.renderer.process.CleanStreamedBoxesStep;
 import org.jfree.layouting.renderer.process.ComputeBreakabilityStep;
 import org.jfree.layouting.renderer.process.ComputeICMMetricsStep;
 import org.jfree.layouting.renderer.process.ComputeMarginsStep;
 import org.jfree.layouting.renderer.process.ComputeStaticPropertiesStep;
 import org.jfree.layouting.renderer.process.ComputeTableICMMetricsStep;
-import org.jfree.layouting.renderer.process.FillPhysicalPagesStep;
 import org.jfree.layouting.renderer.process.InfiniteMajorAxisLayoutStep;
 import org.jfree.layouting.renderer.process.InfiniteMinorAxisLayoutStep;
 import org.jfree.layouting.renderer.process.ParagraphLineBreakStep;
@@ -87,7 +86,7 @@ public class StreamingRenderer extends AbstractRenderer
     private TableRowHeightStep tableRowHeightStep;
     private ComputeBreakabilityStep breakabilityStep;
     private SimplePaginationStep paginationStep;
-    private CleanPaginatedBoxesStep cleanPaginatedBoxesStep;
+    private CleanStreamedBoxesStep cleanBoxesStep;
 
     public DefaultFlowRendererState(StreamingRenderer renderer)
         throws StateException
@@ -106,7 +105,7 @@ public class StreamingRenderer extends AbstractRenderer
       this.tableRowHeightStep = renderer.tableRowHeightStep;
       this.breakabilityStep = renderer.breakabilityStep;
       this.paginationStep = renderer.paginationStep;
-      this.cleanPaginatedBoxesStep = renderer.cleanPaginatedBoxesStep;
+      this.cleanBoxesStep = renderer.cleanBoxesStep;
     }
 
     /**
@@ -135,7 +134,7 @@ public class StreamingRenderer extends AbstractRenderer
       defaultRenderer.majorAxisLayoutStep = this.majorAxisLayoutStep;
       defaultRenderer.tableRowHeightStep = this.tableRowHeightStep;
       defaultRenderer.paginationStep = this.paginationStep;
-      defaultRenderer.cleanPaginatedBoxesStep = this.cleanPaginatedBoxesStep;
+      defaultRenderer.cleanBoxesStep = this.cleanBoxesStep;
       defaultRenderer.breakabilityStep = this.breakabilityStep;
       return defaultRenderer;
     }
@@ -153,8 +152,7 @@ public class StreamingRenderer extends AbstractRenderer
   private TableRowHeightStep tableRowHeightStep;
   private ComputeBreakabilityStep breakabilityStep;
   private SimplePaginationStep paginationStep;
-  private FillPhysicalPagesStep fillPhysicalPagesStep;
-  private CleanPaginatedBoxesStep cleanPaginatedBoxesStep;
+  private CleanStreamedBoxesStep cleanBoxesStep;
 
   protected StreamingRenderer(final LayoutProcess layoutProcess, boolean init)
   {
@@ -173,8 +171,7 @@ public class StreamingRenderer extends AbstractRenderer
       this.tableRowHeightStep = new TableRowHeightStep();
       this.breakabilityStep = new ComputeBreakabilityStep();
       this.paginationStep = new SimplePaginationStep();
-      this.fillPhysicalPagesStep = new FillPhysicalPagesStep();
-      this.cleanPaginatedBoxesStep = new CleanPaginatedBoxesStep();
+      this.cleanBoxesStep = new CleanStreamedBoxesStep();
     }
   }
 
@@ -237,7 +234,7 @@ public class StreamingRenderer extends AbstractRenderer
     {
       Log.debug ("PAGEBREAK ENCOUNTERED");
       firePagebreak();
-      cleanPaginatedBoxesStep.compute(logicalPageBox);
+      cleanBoxesStep.compute(logicalPageBox);
     }
     else
     {

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SizeReadHandler.java,v 1.3 2006/07/26 16:59:46 taqua Exp $
+ * $Id: SizeReadHandler.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,8 @@ import org.jfree.layouting.input.style.keys.page.PageSizeFactory;
 import org.jfree.layouting.input.style.parser.CSSValueReadHandler;
 import org.jfree.layouting.input.style.parser.stylehandler.AbstractWidthReadHandler;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
-import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValuePair;
 import org.w3c.css.sac.LexicalUnit;
 

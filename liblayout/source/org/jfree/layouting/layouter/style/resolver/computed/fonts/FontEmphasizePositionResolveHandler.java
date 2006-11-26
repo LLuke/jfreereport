@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FontEmphasizePositionResolveHandler.java,v 1.2 2006/04/17 20:51:15 taqua Exp $
+ * $Id: FontEmphasizePositionResolveHandler.java,v 1.3 2006/05/15 12:45:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.layouter.style.resolver.computed.fonts;
 
-import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 import org.jfree.layouting.input.style.keys.font.FontEmphasizePosition;
+import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 /**
  * Creation-Date: 18.12.2005, 16:31:08

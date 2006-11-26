@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractPageableProcessor.java,v 1.2 2006/11/17 20:14:56 taqua Exp $
+ * $Id: AbstractPageableProcessor.java,v 1.3 2006/11/20 21:01:53 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -37,8 +37,8 @@ import java.util.List;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.output.AbstractOutputProcessor;
 import org.jfree.layouting.renderer.PaginatingRenderer;
+import org.jfree.layouting.renderer.PrototypeBuildingRenderer;
 import org.jfree.layouting.renderer.Renderer;
-import org.jfree.layouting.renderer.PrintingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.util.Configuration;
@@ -51,109 +51,43 @@ import org.jfree.util.Configuration;
 public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
     implements PageableOutputProcessor
 {
-  protected static final int PROCESSING_GLOBAL_CONTENT = 0;
-  protected static final int PROCESSING_PAGES = 1;
-  protected static final int PROCESSING_CONTENT = 2;
-  private int processingState;
   private List physicalPages;
-  private List logicalPages;
-  private int pageCursor;
+  private PrototypeBuildingRenderer prototypeBuilder;
 
   protected AbstractPageableProcessor(final Configuration configuration)
   {
     super(configuration);
     this.physicalPages = new ArrayList();
-    this.logicalPages = new ArrayList();
   }
 
   public Renderer createRenderer(LayoutProcess layoutProcess)
   {
-    //return new PrintingRenderer (new PaginatingRenderer(layoutProcess));
-    return new PaginatingRenderer(layoutProcess);
-  }
-
-  /**
-   * Checks, whether the 'processingFinished' event had been received at least
-   * once.
-   *
-   * @return
-   */
-  public boolean isPaginationFinished()
-  {
-    return processingState == PROCESSING_CONTENT;
-  }
-
-  /**
-   * Notifies the output processor, that the processing has been finished and
-   * that the input-feed received the last event.
-   */
-  public void processingFinished()
-  {
-    pageCursor = 0;
-    if (processingState == PROCESSING_GLOBAL_CONTENT)
+    if (isGlobalStateComputed() == false)
     {
-      // the global content is complete. fine, lets repaginate ...
-      processingState = PROCESSING_PAGES;
+      prototypeBuilder = new PrototypeBuildingRenderer(layoutProcess);
+      return prototypeBuilder;
     }
-    else if (processingState == PROCESSING_PAGES)
+    else
     {
-      // the pagination is complete. So, now we can produce real content.
-      processingState = PROCESSING_CONTENT;
-      logicalPages = Collections.unmodifiableList(logicalPages);
-      physicalPages = Collections.unmodifiableList(physicalPages);
+      //return new PrintingRenderer (new PaginatingRenderer(layoutProcess));
+      return new PaginatingRenderer(layoutProcess);
     }
   }
 
-  /**
-   * This flag indicates, whether the global content has been computed. Global
-   * content consists of global counters (except the pages counter) and derived
-   * information like table of contents, the global directory of images or
-   * tables etc.
-   * <p/>
-   * The global state must be computed before paginating can be attempted (if
-   * the output target is paginating at all).
-   *
-   * @return true, if the global state has been computed, false otherwise.
-   */
-  public boolean isGlobalStateComputed()
+  public PrototypeBuildingRenderer getPrototypeBuilder()
   {
-    return processingState > PROCESSING_GLOBAL_CONTENT;
+    return prototypeBuilder;
   }
 
-  public int getProcessingState()
+  protected void processingPagesFinished()
   {
-    return processingState;
-  }
-
-  /**
-   * This flag indicates, whether the output processor has collected enough
-   * information to start the content generation.
-   *
-   * @return
-   */
-  public boolean isContentGeneratable()
-  {
-    return processingState == PROCESSING_CONTENT;
-  }
-
-  public int getLogicalPageCount()
-  {
-    return logicalPages.size();
+    super.processingPagesFinished();
+    physicalPages = Collections.unmodifiableList(physicalPages);
   }
 
   public int getPhysicalPageCount()
   {
     return physicalPages.size();
-  }
-
-  public LogicalPageKey getLogicalPage(int page)
-  {
-    if (isPaginationFinished() == false)
-    {
-      throw new IllegalStateException();
-    }
-
-    return (LogicalPageKey) logicalPages.get(page);
   }
 
   public PhysicalPageKey getPhysicalPage(int page)
@@ -169,9 +103,7 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
   protected LogicalPageKey createLogicalPage(final int width,
                                              final int height)
   {
-    final LogicalPageKey key =
-        new LogicalPageKey(logicalPages.size(), width, height);
-    logicalPages.add(key);
+    final LogicalPageKey key = super.createLogicalPage(width, height);
     for (int h = 0; h < key.getHeight(); h++)
     {
       for (int w = 0; w < key.getWidth(); w++)
@@ -182,51 +114,37 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
     return key;
   }
 
-
-  public void processContent(LogicalPageBox logicalPage)
+  protected void processPageContent(final LogicalPageKey logicalPageKey,
+                                    final LogicalPageBox logicalPage)
   {
     final PageGrid pageGrid = logicalPage.getPageGrid();
     final int rowCount = pageGrid.getRowCount();
     final int colCount = pageGrid.getColumnCount();
 
-    if (getProcessingState() == PROCESSING_PAGES)
+    final PageFlowSelector selector = getFlowSelector();
+    if (selector != null)
     {
-      final LogicalPageKey key = createLogicalPage(colCount, rowCount);
-      if (key.getPosition() != pageCursor)
+      if (selector.isLogicalPageAccepted(logicalPageKey))
       {
-        throw new IllegalStateException("Expected position " + pageCursor + " is not the key's position " + key.getPosition());
+        processLogicalPage(logicalPageKey, logicalPage);
       }
-      pageCursor += 1;
-      return;
-    }
 
-    if (isContentGeneratable())
-    {
-      final PageFlowSelector selector = getFlowSelector();
-      if (selector != null)
+      for (int row = 0; row < rowCount; row++)
       {
-        LogicalPageKey logicalPageKey = getLogicalPage(pageCursor);
-        if (selector.isLogicalPageAccepted(logicalPageKey))
+        for (int col = 0; col < colCount; col++)
         {
-          processLogicalPage(logicalPageKey, logicalPage);
-        }
-
-        for (int row = 0; row < rowCount; row++)
-        {
-          for (int col = 0; col < colCount; col++)
+          PhysicalPageKey pageKey = logicalPageKey.getPage(col, row);
+          if (selector.isPhysicalPageAccepted(pageKey))
           {
-            PhysicalPageKey pageKey = logicalPageKey.getPage(col, row);
-            if (selector.isPhysicalPageAccepted(pageKey))
-            {
-              processPhysicalPage(pageGrid, logicalPage, row, col, pageKey);
-            }
+            processPhysicalPage(pageGrid, logicalPage, row, col, pageKey);
           }
         }
       }
-
-      pageCursor += 1;
     }
   }
+
+  protected abstract PageFlowSelector getFlowSelector();
+
 
   protected abstract void processPhysicalPage(final PageGrid pageGrid,
                                               final LogicalPageBox logicalPage,
@@ -237,16 +155,4 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
   protected abstract void processLogicalPage(final LogicalPageKey key,
                                              final LogicalPageBox logicalPage);
 
-
-  public int getPageCursor()
-  {
-    return pageCursor;
-  }
-
-  public void setPageCursor(final int pageCursor)
-  {
-    this.pageCursor = pageCursor;
-  }
-
-  protected abstract PageFlowSelector getFlowSelector();
 }

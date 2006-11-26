@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutStylePool.java,v 1.1 2006/04/17 21:01:50 taqua Exp $
+ * $Id: LayoutStylePool.java,v 1.2 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -102,78 +102,80 @@ public class LayoutStylePool
     return pool;
   }
 
-  private LayoutStyleReference[] storage;
+//  private LayoutStyleReference[] storage;
   private int cursor;
 
   private LayoutStylePool ()
   {
-    storage = new LayoutStyleReference[32];
+//    storage = new LayoutStyleReference[32];
   }
 
   public synchronized LayoutStyleImpl getStyle ()
   {
-    final int oldCursor = cursor;
-    if (oldCursor == 0)
-    {
-      final LayoutStyleImpl retval = seekUpTo(storage.length);
-      if (retval == null)
-      {
-       // return new LayoutStyle();
-        // todo: This is a deadly stupid construct.
-        throw new OutOfMemoryError("Pool was invalid.");
-      }
-      return retval;
-    }
-
-    final LayoutStyleImpl retval = seekUpTo(storage.length);
-    if (retval != null)
-    {
-      return retval;
-    }
-    cursor = 0;
-    final LayoutStyleImpl secondRun = seekUpTo(oldCursor - 1);
-    if (secondRun == null)
-    {
-      throw new OutOfMemoryError("Pool was invalid.");
-    }
-    return secondRun;
+    return new LayoutStyleImpl();
+//
+//    final int oldCursor = cursor;
+//    if (oldCursor == 0)
+//    {
+//      final LayoutStyleImpl retval = seekUpTo(storage.length);
+//      if (retval == null)
+//      {
+//       // return new LayoutStyle();
+//        // todo: This is a deadly stupid construct.
+//        throw new OutOfMemoryError("Pool was invalid.");
+//      }
+//      return retval;
+//    }
+//
+//    final LayoutStyleImpl retval = seekUpTo(storage.length);
+//    if (retval != null)
+//    {
+//      return retval;
+//    }
+//    cursor = 0;
+//    final LayoutStyleImpl secondRun = seekUpTo(oldCursor - 1);
+//    if (secondRun == null)
+//    {
+//      throw new OutOfMemoryError("Pool was invalid.");
+//    }
+//    return secondRun;
   }
-
-  private LayoutStyleImpl seekUpTo (final int limit)
-  {
-    for (; cursor < limit; cursor++)
-    {
-      LayoutStyleReference reference = storage[cursor];
-      if (reference == null)
-      {
-        final LayoutStyleImpl referent = new LayoutStyleImpl(this);
-        storage[cursor] = new LayoutStyleReference(referent);
-        referent.setReference(storage[cursor]);
-        cursor += 1;
-        return referent;
-      }
-      if (reference.isInUse())
-      {
-        continue;
-      }
-
-      final LayoutStyleImpl style = (LayoutStyleImpl) reference.get();
-      if (style != null)
-      {
-        reference.setInUse(true);
-        return style;
-      }
-      else
-      {
-        final LayoutStyleImpl referent = new LayoutStyleImpl(this);
-        storage[cursor] = new LayoutStyleReference(referent);
-        referent.setReference(storage[cursor]);
-        cursor += 1;
-        return referent;
-      }
-    }
-    return null;
-  }
+//
+//  private LayoutStyleImpl seekUpTo (final int limit)
+//  {
+//    for (; cursor < limit; cursor++)
+//    {
+//      LayoutStyleReference reference = storage[cursor];
+//      if (reference == null)
+//      {
+//        final LayoutStyleImpl referent = new LayoutStyleImpl();
+//        storage[cursor] = new LayoutStyleReference(referent);
+//        referent.setReference(storage[cursor]);
+//        cursor += 1;
+//        return referent;
+//      }
+//      if (reference.isInUse())
+//      {
+//        continue;
+//      }
+//
+//      final LayoutStyleImpl style = (LayoutStyleImpl) reference.get();
+//      if (style != null)
+//      {
+//        reference.setInUse(true);
+//        return style;
+//      }
+//      else
+//      {
+//        final LayoutStyleImpl referent = new LayoutStyleImpl();
+//        storage[cursor] = new LayoutStyleReference(referent);
+//        referent.setReference(storage[cursor]);
+//        cursor += 1;
+//        return referent;
+//      }
+//    }
+//    return null;
+//  }
 
   public synchronized void reclaim (LayoutStyle layoutStyle,
                                     Object reference)

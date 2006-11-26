@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StringStore.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
+ * $Id: StringStore.java,v 1.2 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.renderer;
 
-import java.util.HashMap;
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * For the first throw, the content remains very simple. We support the 4 modes:

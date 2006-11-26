@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: BorderDefinition.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.layouting.layouter.context;
 
 import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.keys.border.BorderStyle;
 
 /**
  * Creation-Date: 22.05.2006, 13:05:52

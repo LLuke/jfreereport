@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultStyleResolver.java,v 1.12 2006/10/17 16:39:07 taqua Exp $
+ * $Id: DefaultStyleResolver.java,v 1.13 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.layouter.style.resolver;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
@@ -64,7 +65,6 @@ import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.CSSStyleRuleComparator;
 import org.jfree.layouting.layouter.style.LayoutStyleImpl;
-import org.jfree.layouting.layouter.style.LayoutStylePool;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.NamespaceDefinition;
 import org.jfree.layouting.namespace.Namespaces;
@@ -128,8 +128,8 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
   }
 
   private boolean strictStyleMode;
-
   private StyleRuleMatcher styleRuleMatcher;
+  private StyleKey[] inheritedKeys;
 
   public DefaultStyleResolver ()
   {
@@ -192,27 +192,31 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     // Stage 1a: Add the parent styles (but only the one marked as inheritable).
     final LayoutElement parent = element.getParent();
     final LayoutStyle initialStyle = getInitialStyle();
+    if (layoutContext.copyFrom(initialStyle) == false)
+    {
+      // ok, manual copy ..
+      Log.debug ("Failed to use fast-copy");
+      for (int i = 0; i < keys.length; i++)
+      {
+        final StyleKey key = keys[i];
+        layoutContext.setValue(key, initialStyle.getValue(key));
+      }
+    }
+
     final LayoutStyle parentStyle;
     if (parent != null)
     {
       parentStyle = parent.getLayoutContext();
+      final StyleKey[] inheritedKeys = getInheritedKeys();
+      for (int i = 0; i < inheritedKeys.length; i++)
+      {
+        final StyleKey key = inheritedKeys[i];
+        layoutContext.setValue(key, parentStyle.getValue(key));
+      }
     }
     else
     {
       parentStyle = initialStyle;
-    }
-
-    for (int i = 0; i < keys.length; i++)
-    {
-      final StyleKey key = keys[i];
-      if (key.isInherited())
-      {
-        layoutContext.setValue(key, parentStyle.getValue(key));
-      }
-      else
-      {
-        layoutContext.setValue(key, initialStyle.getValue(key));
-      }
     }
 
     // Stage 1b: Find all matching stylesheets for the given element
@@ -222,7 +226,7 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     // the libLayout style is always added: This is a computed style and the hook
     // for a element neutral user defined tweaking ..
 
-    final AttributeMap attributes = element.getLayoutContext().getAttributes();
+    final AttributeMap attributes = layoutContext.getAttributes();
     final Object libLayoutStyleValue = attributes.getAttribute
             (Namespaces.LIBLAYOUT_NAMESPACE, "style");
     // You cannot override element specific styles with that. So an HTML-style
@@ -254,6 +258,26 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     // Stage 3:  Compute the computed value set.
     ResolverFactory.getInstance().performResolve
             (getLayoutProcess(), element);
+  }
+
+  private StyleKey[] getInheritedKeys()
+  {
+    if (inheritedKeys == null)
+    {
+      final StyleKey[] keys = getKeys();
+      final ArrayList inheritedKeysList = new ArrayList();
+      for (int i = 0; i < keys.length; i++)
+      {
+        final StyleKey key = keys[i];
+        if (key.isInherited())
+        {
+          inheritedKeysList.add(key);
+        }
+      }
+      inheritedKeys = (StyleKey[])
+          inheritedKeysList.toArray(new StyleKey[inheritedKeysList.size()]);
+    }
+    return inheritedKeys;
   }
 
   /**
@@ -333,6 +357,11 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
   private void addStyleFromAttribute(final LayoutElement node,
                                      final Object styleValue)
   {
+    if (styleValue == null)
+    {
+      return;
+    }
+
     if (styleValue instanceof String)
     {
       final String styleText = (String) styleValue;
@@ -416,11 +445,11 @@ public class DefaultStyleResolver extends AbstractStyleResolver implements Style
     return state;
   }
 
-  public LayoutStyleImpl resolvePageStyle(CSSValue pageName,
+  public LayoutStyle resolvePageStyle(CSSValue pageName,
                                       PseudoPage[] pseudoPages,
                                       PageAreaType pageArea)
   {
-    final LayoutStyleImpl style = new LayoutStyleImpl(null);
+    final LayoutStyleImpl style = new LayoutStyleImpl();
 
     final CSSPageRule[] pageRule =
             styleRuleMatcher.getPageRule(pageName, pseudoPages);

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Namespaces.java,v 1.2 2006/04/21 17:29:37 taqua Exp $
+ * $Id: Namespaces.java,v 1.3 2006/07/26 11:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.namespace;
 
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jfree.resourceloader.ResourceException;
 import org.jfree.resourceloader.ResourceKey;

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LogicalPageBox.java,v 1.14 2006/11/17 20:14:56 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.15 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -137,12 +137,12 @@ public class LogicalPageBox extends BlockRenderBox
     setMinorAxis(HORIZONTAL_AXIS);
   }
 
-  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
-  {
-    headerArea.appyStyle(context, metaData);
-    footerArea.appyStyle(context, metaData);
-    getContentArea().appyStyle(context, metaData);
-  }
+//  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+//  {
+//    headerArea.appyStyle(context, metaData);
+//    footerArea.appyStyle(context, metaData);
+//    getContentArea().appyStyle(context, metaData);
+//  }
 
   public void updatePageArea(PageGrid pageGrid)
   {

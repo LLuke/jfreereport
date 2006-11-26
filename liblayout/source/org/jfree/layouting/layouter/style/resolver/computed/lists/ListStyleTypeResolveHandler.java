@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ListStyleTypeResolveHandler.java,v 1.3 2006/07/11 13:29:52 taqua Exp $
+ * $Id: ListStyleTypeResolveHandler.java,v 1.4 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 
 package org.jfree.layouting.layouter.style.resolver.computed.lists;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.list.ListStyleTypeAlgorithmic;
 import org.jfree.layouting.input.style.keys.list.ListStyleTypeAlphabetic;
@@ -48,13 +49,12 @@ import org.jfree.layouting.input.style.keys.list.ListStyleTypeGlyphs;
 import org.jfree.layouting.input.style.keys.list.ListStyleTypeNumeric;
 import org.jfree.layouting.input.style.keys.list.ListStyleTypeOther;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.ListSpecification;
 import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.layouter.counters.CounterStyleFactory;
 import org.jfree.layouting.layouter.counters.numeric.DecimalCounterStyle;
-import org.jfree.layouting.layouter.context.ListSpecification;
-import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.resolver.computed.ConstantsResolveHandler;
 
 public class ListStyleTypeResolveHandler extends ConstantsResolveHandler

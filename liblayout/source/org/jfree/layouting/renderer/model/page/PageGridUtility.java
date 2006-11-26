@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageGridUtility.java,v 1.1 2006/10/22 14:59:20 taqua Exp $
+ * $Id: PageGridUtility.java,v 1.2 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,11 @@
 package org.jfree.layouting.renderer.model.page;
 
 import org.jfree.layouting.input.style.keys.page.PageSize;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValuePair;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
  * Creation-Date: 20.10.2006, 20:46:30

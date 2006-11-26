@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CSSSystemColors.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
  *
  * Changes
  * -------
@@ -51,12 +51,12 @@ import org.jfree.layouting.input.style.values.CSSConstant;
  *
  * @author Thomas Morgner
  */
-public class CSSSystemColors
+public final class CSSSystemColors
 {
   private CSSSystemColors()
   {
   }
 
-  public static CSSColorValue TRANSPARENT = new CSSColorValue(0,0,0,0);
-  public static CSSConstant CURRENT_COLOR = new CSSConstant("currentColor");
+  public static final CSSColorValue TRANSPARENT = new CSSColorValue(0,0,0,0);
+  public static final CSSConstant CURRENT_COLOR = new CSSConstant("currentColor");
 }

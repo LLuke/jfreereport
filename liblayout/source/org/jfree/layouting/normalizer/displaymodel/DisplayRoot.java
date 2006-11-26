@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DisplayRoot.java,v 1.1 2006/07/11 13:45:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
  */
 package org.jfree.layouting.normalizer.displaymodel;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.normalizer.generator.ContentGenerator;
-import org.jfree.layouting.LayoutProcess;
 
 /**
  * The root is the first element in a display-model-tree. Although it is

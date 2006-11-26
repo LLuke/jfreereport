@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ResourceType.java,v 1.1 2006/07/11 13:39:58 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.layouter.content.type;
 
-import org.jfree.resourceloader.Resource;
 import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.resourceloader.Resource;
 
 /**
  * Content, that has been loaded from a resource-key. This is always something

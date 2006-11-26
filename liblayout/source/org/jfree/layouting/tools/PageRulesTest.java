@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PageRulesTest.java,v 1.2 2006/07/20 17:50:52 taqua Exp $
+ * $Id: PageRulesTest.java,v 1.3 2006/11/17 20:14:56 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ package org.jfree.layouting.tools;
 import java.io.File;
 
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.layouter.style.resolver.ResolverFactory;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleSheet;
+import org.jfree.layouting.layouter.style.resolver.ResolverFactory;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKeyCreationException;

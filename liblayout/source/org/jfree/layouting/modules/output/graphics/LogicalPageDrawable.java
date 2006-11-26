@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LogicalPageDrawable.java,v 1.1 2006/11/17 20:15:52 taqua Exp $
+ * $Id: LogicalPageDrawable.java,v 1.2 2006/11/20 21:01:53 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -35,14 +35,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
-import java.awt.geom.Rectangle2D;
 
 import org.jfree.layouting.input.style.keys.color.ColorStyleKeys;
 import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.pageable.BorderShapeFactory;
 import org.jfree.layouting.renderer.model.ParagraphPoolBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
@@ -60,7 +61,6 @@ import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
-import org.jfree.layouting.output.pageable.BorderShapeFactory;
 import org.jfree.ui.Drawable;
 import org.jfree.util.Log;
 

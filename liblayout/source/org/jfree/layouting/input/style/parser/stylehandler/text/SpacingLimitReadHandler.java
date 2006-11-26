@@ -27,7 +27,7 @@
  * Original Author:  Thomas Morgner;
  * Contributors: -;
  *
- * $Id: Anchor.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
+ * $Id: SpacingLimitReadHandler.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -35,17 +35,17 @@
  */
 package org.jfree.layouting.input.style.parser.stylehandler.text;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
+import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.parser.CSSCompoundValueReadHandler;
 import org.jfree.layouting.input.style.parser.CSSValueFactory;
-import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSConstant;
-import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
-import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.values.CSSNumericType;
+import org.jfree.layouting.input.style.values.CSSNumericValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.w3c.css.sac.LexicalUnit;
 
 /**

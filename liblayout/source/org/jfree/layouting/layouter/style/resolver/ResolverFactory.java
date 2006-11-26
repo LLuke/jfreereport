@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResolverFactory.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
+ * $Id: ResolverFactory.java,v 1.5 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -51,8 +51,8 @@ import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;

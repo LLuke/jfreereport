@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FunctionUtilities.java,v 1.2 2006/07/17 16:48:52 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.3 2006/07/29 18:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -42,20 +42,20 @@ package org.jfree.layouting.layouter.style.functions;
 
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
-import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSStringType;
-import org.jfree.layouting.input.style.values.CSSFunctionValue;
-import org.jfree.layouting.layouter.style.values.CSSResourceValue;
-import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
-import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.input.style.values.CSSStringValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.DocumentContext;
+import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.functions.values.StyleValueFunction;
+import org.jfree.layouting.layouter.style.values.CSSResourceValue;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceKey;
-import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.ResourceKeyCreationException;
+import org.jfree.resourceloader.ResourceManager;
 
 /**
  * Creation-Date: 04.07.2006, 14:30:10

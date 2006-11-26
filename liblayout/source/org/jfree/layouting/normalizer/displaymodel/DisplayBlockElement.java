@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayBlockElement.java,v 1.4 2006/07/26 11:52:07 taqua Exp $
+ * $Id: DisplayBlockElement.java,v 1.5 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,14 @@
  */
 package org.jfree.layouting.normalizer.displaymodel;
 
+import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.ContextId;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.content.NormalizationException;
-import org.jfree.layouting.LayoutProcess;
 
 /**
  * Note: Although the linebox is also some kind of auto-generated content,

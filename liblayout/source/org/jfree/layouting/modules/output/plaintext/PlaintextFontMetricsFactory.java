@@ -23,18 +23,18 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PlaintextFontMetricsFactory.java,v 1.1 2006/11/13 19:14:47 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.plaintext;
 
-import org.jfree.fonts.registry.FontMetricsFactory;
-import org.jfree.fonts.registry.FontMetrics;
-import org.jfree.fonts.registry.FontIdentifier;
-import org.jfree.fonts.registry.FontContext;
 import org.jfree.fonts.registry.EmptyFontMetrics;
+import org.jfree.fonts.registry.FontContext;
+import org.jfree.fonts.registry.FontIdentifier;
+import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.fonts.registry.FontMetricsFactory;
 
 /**
  * Creation-Date: 13.11.2006, 12:51:41

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.9 2006/11/17 20:14:56 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.10 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,6 @@
 package org.jfree.layouting.normalizer.content;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
@@ -65,19 +64,18 @@ import org.jfree.layouting.layouter.content.computed.CounterToken;
 import org.jfree.layouting.layouter.content.computed.CountersToken;
 import org.jfree.layouting.layouter.content.computed.OpenQuoteToken;
 import org.jfree.layouting.layouter.content.computed.VariableToken;
-import org.jfree.layouting.layouter.content.resolved.ResolvedStringToken;
-import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
 import org.jfree.layouting.layouter.content.resolved.ResolvedCounterToken;
 import org.jfree.layouting.layouter.content.resolved.ResolvedCountersToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedStringToken;
 import org.jfree.layouting.layouter.content.statics.StaticTextToken;
 import org.jfree.layouting.layouter.context.ContentSpecification;
 import org.jfree.layouting.layouter.context.ContextId;
 import org.jfree.layouting.layouter.context.DefaultLayoutContext;
 import org.jfree.layouting.layouter.context.DefaultPageContext;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.context.QuotesPair;
 import org.jfree.layouting.layouter.context.LayoutStyle;
-import org.jfree.layouting.layouter.counters.CounterStyle;
+import org.jfree.layouting.layouter.context.QuotesPair;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.layouter.style.LayoutStyleImpl;
 import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
@@ -288,7 +286,7 @@ public class ContentNormalizer implements Normalizer
     for (int i = 0; i < pat.length; i++)
     {
       final PageAreaType pageAreaType = pat[i];
-      final LayoutStyleImpl style = styleResolver.resolvePageStyle
+      final LayoutStyle style = styleResolver.resolvePageStyle
           (CSSAutoValue.getInstance(), new PseudoPage[0], pageAreaType);
       dpc.setAreaDefinition(pageAreaType, style);
     }
@@ -1033,7 +1031,7 @@ public class ContentNormalizer implements Normalizer
         throw new IllegalStateException();
       }
 
-      final LayoutStyleImpl style = styleResolver.resolvePageStyle
+      final LayoutStyle style = styleResolver.resolvePageStyle
           (pageName, pseudoPages, pageAreaType);
       dpc.setAreaDefinition(pageAreaType, style);
     }

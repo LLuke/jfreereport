@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: NumericCounterStyle.java,v 1.2 2006/04/17 20:51:13 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,6 @@
 
 package org.jfree.layouting.layouter.counters.numeric;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.jfree.layouting.layouter.counters.CounterStyle;

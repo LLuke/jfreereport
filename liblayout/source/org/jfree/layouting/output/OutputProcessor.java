@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: OutputProcessor.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
+ * $Id: OutputProcessor.java,v 1.7 2006/11/12 14:05:28 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,12 @@
  */
 package org.jfree.layouting.output;
 
-import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.context.DocumentContext;
+import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
+import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.util.Configuration;
@@ -116,4 +117,19 @@ public interface OutputProcessor
   public boolean isContentGeneratable();
 
   public Configuration getConfiguration();
+
+  public int getLogicalPageCount();
+  public LogicalPageKey getLogicalPage (int page);
+  public void setPageCursor (int cursor);
+  public int getPageCursor ();
+
+  /**
+   * Checks, whether the 'processingFinished' event had been received at least
+   * once.
+   *
+   * @return
+   */
+  public boolean isPaginationFinished();
+
+  public void processDocumentMetaData(DocumentContext documentContext);
 }

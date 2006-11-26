@@ -23,16 +23,16 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PlaintextFontRegistry.java,v 1.1 2006/11/13 19:14:47 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.plaintext;
 
-import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontMetricsFactory;
+import org.jfree.fonts.registry.FontRegistry;
 
 /**
  * Creation-Date: 13.11.2006, 12:50:35
