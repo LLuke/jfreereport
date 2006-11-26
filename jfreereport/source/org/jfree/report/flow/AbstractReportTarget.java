@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractReportTarget.java,v 1.2 2006/11/11 20:37:23 taqua Exp $
+ * $Id: AbstractReportTarget.java,v 1.3 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.util.Map;
 import org.jfree.layouting.input.style.CSSDeclarationRule;
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleRule;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.namespace.NamespaceDefinition;
@@ -93,8 +94,8 @@ public abstract class AbstractReportTarget implements ReportTarget
     }
   }
 
-  private void mergeDeclarationRule (final CSSDeclarationRule target,
-                                     final CSSDeclarationRule source)
+  private void mergeDeclarationRule(final CSSDeclarationRule target,
+                                    final CSSDeclarationRule source)
   {
     Iterator it = source.getPropertyKeys();
     while (it.hasNext())
@@ -113,11 +114,11 @@ public abstract class AbstractReportTarget implements ReportTarget
   }
 
   private CSSDeclarationRule processStyleAttribute
-          (final Object styleAttributeValue,
-           final Element node,
-           final ExpressionRuntime runtime,
-           CSSDeclarationRule targetRule)
-          throws DataSourceException
+      (final Object styleAttributeValue,
+       final Element node,
+       final ExpressionRuntime runtime,
+       CSSDeclarationRule targetRule)
+      throws DataSourceException
   {
     if (targetRule == null)
     {
@@ -141,10 +142,10 @@ public abstract class AbstractReportTarget implements ReportTarget
         final byte[] bytes = styleText.getBytes("UTF-8");
         final ResourceKey key = resourceManager.createKey(bytes);
         final Resource resource = resourceManager.create
-                (key, baseResource, StyleRule.class);
+            (key, baseResource, StyleRule.class);
 
         final CSSDeclarationRule parsedRule =
-                (CSSDeclarationRule) resource.getResource();
+            (CSSDeclarationRule) resource.getResource();
         mergeDeclarationRule(targetRule, parsedRule);
       }
       catch (Exception e)
@@ -156,7 +157,7 @@ public abstract class AbstractReportTarget implements ReportTarget
     else if (styleAttributeValue instanceof CSSStyleRule)
     {
       final CSSStyleRule styleRule =
-              (CSSStyleRule) styleAttributeValue;
+          (CSSStyleRule) styleAttributeValue;
       mergeDeclarationRule(targetRule, styleRule);
     }
 
@@ -167,7 +168,7 @@ public abstract class AbstractReportTarget implements ReportTarget
     while (styleExIt.hasNext())
     {
       final Map.Entry entry = (Map.Entry) styleExIt.next();
-      final StyleKey name = (StyleKey) entry.getKey();
+      final String name = (String) entry.getKey();
       final Expression expression = (Expression) entry.getValue();
       try
       {
@@ -175,7 +176,17 @@ public abstract class AbstractReportTarget implements ReportTarget
         final Object value = expression.computeValue();
         if (value instanceof CSSValue)
         {
-          targetRule.setPropertyValue(name, (CSSValue) value);
+          final CSSValue cssvalue = (CSSValue) value;
+          final StyleKey keyByName =
+              StyleKeyRegistry.getRegistry().findKeyByName(name);
+          if (keyByName != null)
+          {
+            targetRule.setPropertyValue(keyByName, cssvalue);
+          }
+          else
+          {
+            targetRule.setPropertyValueAsString(name, cssvalue.getCSSText());
+          }
         }
         else if (value != null)
         {
@@ -190,9 +201,9 @@ public abstract class AbstractReportTarget implements ReportTarget
     return targetRule;
   }
 
-  private AttributeMap collectAttributes (final Element node,
-                                          final ExpressionRuntime runtime)
-          throws DataSourceException
+  private AttributeMap collectAttributes(final Element node,
+                                         final ExpressionRuntime runtime)
+      throws DataSourceException
   {
     final AttributeMap attributes = node.getAttributeMap();
     final AttributeMap attributeExpressions = node.getAttributeExpressionMap();
@@ -223,9 +234,9 @@ public abstract class AbstractReportTarget implements ReportTarget
     return attributes;
   }
 
-  protected AttributeMap processAttributes (final Element node,
-                                    final ExpressionRuntime runtime)
-          throws DataSourceException, ReportProcessingException
+  protected AttributeMap processAttributes(final Element node,
+                                           final ExpressionRuntime runtime)
+      throws DataSourceException, ReportProcessingException
   {
     final AttributeMap attributes = collectAttributes(node, runtime);
     CSSDeclarationRule rule = null;
@@ -274,9 +285,9 @@ public abstract class AbstractReportTarget implements ReportTarget
     return retval;
   }
 
-  private boolean isStyleAttribute (NamespaceDefinition def,
-                                    String elementName,
-                                    String attrName)
+  private boolean isStyleAttribute(NamespaceDefinition def,
+                                   String elementName,
+                                   String attrName)
   {
     if (def == null)
     {
@@ -295,13 +306,13 @@ public abstract class AbstractReportTarget implements ReportTarget
     return false;
   }
 
-  protected abstract NamespaceDefinition findNamespace (String namespace);
+  protected abstract NamespaceDefinition findNamespace(String namespace);
 
   protected NamespaceDefinition[] createDefaultNameSpaces()
   {
     return Namespaces.createFromConfig
-            (reportJob.getConfiguration(), "org.jfree.report.namespaces.",
-                    getResourceManager());
+        (reportJob.getConfiguration(), "org.jfree.report.namespaces.",
+            getResourceManager());
   }
 
   protected ResourceManager getResourceManager()
@@ -314,7 +325,7 @@ public abstract class AbstractReportTarget implements ReportTarget
     return baseResource;
   }
 
-  public ReportJob getReportJob ()
+  public ReportJob getReportJob()
   {
     return reportJob;
   }

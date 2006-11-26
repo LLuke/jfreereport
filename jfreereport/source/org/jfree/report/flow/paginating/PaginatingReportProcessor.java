@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PaginatingReportProcessor.java,v 1.6 2006/11/20 21:07:48 taqua Exp $
+ * $Id: PaginatingReportProcessor.java,v 1.7 2006/11/24 17:12:12 taqua Exp $
  *
  * Changes
  * -------
@@ -175,7 +175,7 @@ public class PaginatingReportProcessor extends AbstractReportProcessor
     }
 
     long end = System.currentTimeMillis();
-    System.out.println("Pagination: " + (end - start));
+    System.out.println("Pagination-Time: " + (end - start));
   }
 
   protected PageStateList processPaginationRun(final ReportJob job,

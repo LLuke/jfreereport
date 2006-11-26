@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CountryDataTableModel.java,v 1.4 2006/11/20 21:07:48 taqua Exp $
+ * $Id: CountryDataTableModel.java,v 1.5 2006/11/24 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -90,9 +90,10 @@ public class CountryDataTableModel extends AbstractTableModel
     data.add(new Object[]{"United States of America",
         "US", "North America", new Integer(273866000)});
     data.add(new Object[]{"Brazil", "BR", "South America", new Integer(165715400)});
+//    final Object[] o = new Object[]{"Brazil", "BR", "South America", new Integer(165715400)};
 //    for (int i = 0; i < 20000; i++)
 //    {
-//      data.add(new Object[]{"Brazil", "BR", "South America", new Integer(165715400)});
+//      data.add(o);
 //    }
   }
 

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutExpressionRuntime.java,v 1.4 2006/11/20 21:07:48 taqua Exp $
+ * $Id: LayoutExpressionRuntime.java,v 1.5 2006/11/24 17:12:12 taqua Exp $
  *
  * Changes
  * -------
@@ -56,11 +56,9 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
 {
   private DataRow dataRow;
   private Configuration configuration;
-  private ResourceBundleFactory resourceBundleFactory;
   private ReportData reportData;
   private Element declaringParent;
   private int currentRow;
-  private String exportDescriptor;
   private ReportContext reportContext;
 
   public LayoutExpressionRuntime()
@@ -80,11 +78,6 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
   public void setConfiguration(final Configuration configuration)
   {
     this.configuration = configuration;
-  }
-
-  public void setResourceBundleFactory(final ResourceBundleFactory resourceBundleFactory)
-  {
-    this.resourceBundleFactory = resourceBundleFactory;
   }
 
   public void setData(final ReportData reportData)
@@ -115,7 +108,7 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
 
   public ResourceBundleFactory getResourceBundleFactory()
   {
-    return resourceBundleFactory;
+    return reportContext.getResourceBundleFactory();
   }
 
   /**
@@ -145,12 +138,7 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
 
   public String getExportDescriptor()
   {
-    return exportDescriptor;
-  }
-
-  public void setExportDescriptor(final String exportDescriptor)
-  {
-    this.exportDescriptor = exportDescriptor;
+    return reportContext.getExportDescriptor();
   }
 
   public ReportContext getReportContext()

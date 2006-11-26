@@ -29,6 +29,10 @@
       font-size: 17pt;
     }
 
+    * {
+      font-family: "Arial", Sans-Serif;
+    }
+
     @page {
        margin: 2cm;
        size: A4;
@@ -83,16 +87,18 @@
   <h1 style="background-color: #afafaf; text-align: center">
     List of Countries by Continent
   </h1>
-  <!--
-    <p>
-      This report lists a selected set of countries and produces a running
-      total from the given population numbers. The original JFreeReport
-      demo report supported percentages as well. Percentages need a
-      precomputation step to compute the grand total, before the current
-      value can be set in relation to the total population. The <i>precomputation</i>
-      is not yet implemented.
-    </p>
-  -->
+
+  <p>
+    This report lists a selected set of countries and produces a running
+    total from the given population numbers. The original JFreeReport
+    demo report supported percentages as well. Percentages need a
+    precomputation step to compute the grand total, before the current
+    value can be set in relation to the total population. The <i>precomputation</i>
+    is not yet implemented.
+  </p>
+
+  <img src="gorilla.jpg" alt="A gorilla"/>
+
   <!--
   Groups are nested.
   -->

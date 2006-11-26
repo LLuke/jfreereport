@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleExpressionReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
+ * $Id: StyleExpressionReadHandler.java,v 1.3 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.xml.sax.SAXException;
  */
 public class StyleExpressionReadHandler extends AbstractExpressionReadHandler
 {
-  private StyleKey styleKey;
+  private String styleKey;
 
   public StyleExpressionReadHandler()
   {
@@ -72,12 +72,11 @@ public class StyleExpressionReadHandler extends AbstractExpressionReadHandler
     {
       throw new SAXException("Required attribute stylekey is missing.");
     }
-    this.styleKey =
-        StyleKeyRegistry.getRegistry().findKeyByName(styleKey);
+    this.styleKey = styleKey;
     super.startParsing(attrs);
   }
 
-  public StyleKey getStyleKey()
+  public String getStyleKey()
   {
     return styleKey;
   }

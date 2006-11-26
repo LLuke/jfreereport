@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
+ * $Id: LayoutControllerUtil.java,v 1.2 2006/11/25 17:11:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,16 +34,13 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.EmptyReportData;
 import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.data.ReportDataRow;
-import org.jfree.report.data.StaticExpressionRuntimeData;
 import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.LayoutExpressionRuntime;
-import org.jfree.report.flow.ReportContext;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Group;
 import org.jfree.report.structure.Node;
-import org.jfree.report.structure.ReportDefinition;
 import org.jfree.report.structure.Section;
 
 /**
@@ -79,13 +76,11 @@ public class LayoutControllerUtil
   {
     LayoutExpressionRuntime ler = new LayoutExpressionRuntime();
     ler.setConfiguration(fc.getReportJob().getConfiguration());
-    final ReportContext reportContext = fc.getReportContext();
-    ler.setResourceBundleFactory(reportContext.getResourceBundleFactory());
-    ler.setReportContext(reportContext);
-    ler.setExportDescriptor(fc.getExportDescriptor());
+    ler.setReportContext(fc.getReportContext());
 
     final GlobalMasterRow masterRow = fc.getMasterRow();
     ler.setDataRow(masterRow.getGlobalView());
+    
     final ReportDataRow reportDataRow = masterRow.getReportDataRow();
     if (reportDataRow == null)
     {

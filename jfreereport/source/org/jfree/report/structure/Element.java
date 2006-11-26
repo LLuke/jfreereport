@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.6 2006/11/11 20:37:23 taqua Exp $
+ * $Id: Element.java,v 1.7 2006/11/24 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.jfree.layouting.input.style.CSSStyleRule;
-import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.namespace.Namespaces;
@@ -282,16 +281,16 @@ public abstract class Element extends Node
    *
    * @param function the function.
    */
-  public void setStyleExpression(final StyleKey stylename,
+  public void setStyleExpression(final String property,
                                  final Expression function)
   {
     if (function == null)
     {
-      styleExpressions.remove(stylename);
+      styleExpressions.remove(property);
     }
     else
     {
-      styleExpressions.put(stylename, function);
+      styleExpressions.put(property, function);
     }
   }
 
@@ -300,9 +299,9 @@ public abstract class Element extends Node
    *
    * @return the expressions.
    */
-  public Expression getStyleExpression(final StyleKey stylename)
+  public Expression getStyleExpression(final String property)
   {
-    return (Expression) styleExpressions.get(stylename);
+    return (Expression) styleExpressions.get(property);
   }
 
   public Map getStyleExpressions()

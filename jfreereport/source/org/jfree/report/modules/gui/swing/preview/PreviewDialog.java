@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PreviewDialog.java,v 1.1 2006/11/13 19:27:45 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,6 +39,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.flow.ReportJob;
@@ -261,9 +262,11 @@ public class PreviewDialog extends JDialog
     extensionArea.setLayout(new BorderLayout());
     extensionArea.add(progressBar);
 
-    setLayout(new BorderLayout());
-    add(previewPane, BorderLayout.CENTER);
-    add(statusBar, BorderLayout.SOUTH);
+    JComponent contentPane = new JPanel();
+    contentPane.setLayout(new BorderLayout());
+    contentPane.add(previewPane, BorderLayout.CENTER);
+    contentPane.add(statusBar, BorderLayout.SOUTH);
+    setContentPane(contentPane);
   }
 
   public ReportController getReportController()

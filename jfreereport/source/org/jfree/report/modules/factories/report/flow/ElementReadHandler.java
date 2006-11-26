@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ElementReadHandler.java,v 1.5 2006/11/11 20:37:23 taqua Exp $
+ * $Id: ElementReadHandler.java,v 1.6 2006/11/24 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,6 @@ package org.jfree.report.modules.factories.report.flow;
 
 import java.util.ArrayList;
 
-import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.report.structure.Element;
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
 import org.jfree.xmlns.parser.PropertyReadHandler;
@@ -196,10 +194,7 @@ public abstract class ElementReadHandler extends AbstractXmlReadHandler
 
       final PropertyReadHandler handler =
               (PropertyReadHandler) stylePropertyHandlers .get(i);
-
-      final StyleKey key =
-              StyleKeyRegistry.getRegistry().findKeyByName(handler.getName());
-      e.getStyle().setPropertyValueAsString(key, handler.getResult());
+      e.getStyle().setPropertyValueAsString(handler.getName(), handler.getResult());
     }
     for (int i = 0; i < attributeExpressionHandlers.size(); i++)
     {
