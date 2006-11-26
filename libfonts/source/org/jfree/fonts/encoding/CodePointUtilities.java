@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CodePointUtilities.java,v 1.1 2006/06/08 18:06:56 taqua Exp $
+ * $Id: CodePointUtilities.java,v 1.2 2006/06/28 16:50:27 taqua Exp $
  *
  * Changes
  * -------
@@ -147,7 +147,7 @@ public class CodePointUtilities
     return buffer.getData();
   }
 
-  public static String codepointToCharts(int[] text)
+  public static String codepointToChars(int[] text)
   {
     CodePointBuffer buffer = new CodePointBuffer(text);
     return Utf16LE.getInstance().encodeString(buffer);

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Utf16LE.java,v 1.1 2006/04/29 15:12:58 taqua Exp $
+ * $Id: Utf16LE.java,v 1.2 2006/04/30 09:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@
  */
 package org.jfree.fonts.encoding.manual;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 import org.jfree.fonts.encoding.ByteBuffer;
@@ -50,7 +49,6 @@ import org.jfree.fonts.encoding.CodePointStream;
 import org.jfree.fonts.encoding.ComplexEncoding;
 import org.jfree.fonts.encoding.EncodingErrorType;
 import org.jfree.fonts.encoding.EncodingException;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 20.04.2006, 18:01:39
@@ -250,23 +248,29 @@ public class Utf16LE implements ComplexEncoding
   {
     final char[] chars = text.toCharArray();
     final int textLength = chars.length;
+    return decode(chars, 0, textLength, buffer);
+  }
+
+  public CodePointBuffer decode (char[] chars, int offset, int length, CodePointBuffer buffer)
+  {
     if (buffer == null)
     {
-      buffer = new CodePointBuffer(textLength);
+      buffer = new CodePointBuffer(length);
     }
-    else if ((buffer.getLength()) < textLength)
+    else if ((buffer.getLength()) < length)
     {
-      buffer.ensureSize(textLength);
+      buffer.ensureSize(length);
     }
 
     CodePointStream cps = new CodePointStream(buffer, 10);
-    for (int i = 0; i < chars.length; i++)
+    final int maxPos = offset + length;
+    for (int i = offset; i < maxPos; i++)
     {
       final char c = chars[i];
       if ((c & 0xFC00) == 0xD800)
       {
         i += 1;
-        if (i < chars.length)
+        if (i < maxPos)
         {
           final char c2 = chars[i];
           if ((c2 & 0xFC00) == 0xDC00)
