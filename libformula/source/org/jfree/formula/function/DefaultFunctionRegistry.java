@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFunctionRegistry.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
+ * $Id: DefaultFunctionRegistry.java,v 1.3 2006/11/20 21:05:30 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import org.jfree.formula.function.userdefined.DefaultFunctionDescription;
 import org.jfree.util.Configuration;
 import org.jfree.util.HashNMap;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 02.11.2006, 12:48:32
@@ -97,8 +98,13 @@ public class DefaultFunctionRegistry implements FunctionRegistry
       throw new NullPointerException();
     }
     final String functionClass = (String) functions.get(name.toUpperCase());
-    return (Function) ObjectUtilities.loadAndInstantiate
+    final Function function = (Function) ObjectUtilities.loadAndInstantiate
         (functionClass, DefaultFunctionRegistry.class);
+    if (function == null)
+    {
+      Log.debug ("There is no such function: " + name);
+    }
+    return function;
   }
 
   public FunctionDescription getMetaData(String name)

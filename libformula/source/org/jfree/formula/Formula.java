@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: Formula.java,v 1.2 2006/11/05 14:27:27 taqua Exp $
+ * $Id: Formula.java,v 1.3 2006/11/20 21:05:30 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class Formula implements Serializable, Cloneable
     }
     catch (Exception e)
     {
-      e.printStackTrace();
+      Log.warn ("Evaluation failed: ", e);
       return new LibFormulaErrorValue(0);
     }
   }

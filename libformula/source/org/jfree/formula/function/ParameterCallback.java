@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ParameterCallback.java,v 1.1 2006/11/13 19:15:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -33,6 +33,7 @@ package org.jfree.formula.function;
 
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.EvaluationException;
+import org.jfree.formula.lvalues.LValue;
 
 /**
  * Creation-Date: 13.11.2006, 13:52:21
@@ -41,6 +42,7 @@ import org.jfree.formula.EvaluationException;
  */
 public interface ParameterCallback
 {
+  public LValue getRaw (int position);
   public Object getValue (int position) throws EvaluationException;
   public Type getType (int position) throws EvaluationException;
   public int getParameterCount();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FormulaFunction.java,v 1.4 2006/11/13 19:15:25 taqua Exp $
+ * $Id: FormulaFunction.java,v 1.5 2006/11/20 21:05:30 taqua Exp $
  *
  * Changes
  * -------
@@ -104,6 +104,11 @@ public class FormulaFunction extends AbstractLValue
       {
         return new TypeValuePair(paramType, function.metaData.getDefaultValue(pos));
       }
+    }
+
+    public LValue getRaw(int position)
+    {
+      return function.parameters[position];
     }
 
     public Object getValue(int position) throws EvaluationException
@@ -179,6 +184,7 @@ public class FormulaFunction extends AbstractLValue
     // First, grab the parameters and their types.
     final FormulaContext context = getContext();
     // And if everything is ok, compute the stuff ..
+    // todo ..
     return function.evaluate(context, new FormulaParameterCallback(this));
   }
 

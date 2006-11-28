@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFormulaContext.java,v 1.1 2006/11/04 15:40:56 taqua Exp $
+ * $Id: DefaultFormulaContext.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class DefaultFormulaContext implements FormulaContext
     return operatorFactory;
   }
 
-  public void defineReference(String name, Object value)
+  public void defineReference(Object name, Object value)
   {
     if (references == null)
     {
@@ -97,7 +97,7 @@ public class DefaultFormulaContext implements FormulaContext
     references.put(name, value);
   }
 
-  public Object resolveReference(String name)
+  public Object resolveReference(Object name)
   {
     if (references == null)
     {
@@ -116,7 +116,7 @@ public class DefaultFormulaContext implements FormulaContext
     return functionRegistry;
   }
 
-  public Type resolveReferenceType(String name)
+  public Type resolveReferenceType(Object name)
   {
     return AnyType.TYPE;
   }
@@ -131,7 +131,7 @@ public class DefaultFormulaContext implements FormulaContext
     return localizationContext;
   }
 
-  public boolean isReferenceDirty(String name)
+  public boolean isReferenceDirty(Object name)
   {
     return true;
   }

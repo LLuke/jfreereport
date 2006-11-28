@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContextLookup.java,v 1.2 2006/11/04 17:27:37 taqua Exp $
+ * $Id: ContextLookup.java,v 1.3 2006/11/20 21:05:30 taqua Exp $
  *
  * Changes
  * -------
@@ -80,5 +80,10 @@ public class ContextLookup extends AbstractLValue
   public boolean isConstant()
   {
     return false;
+  }
+
+  public String getName()
+  {
+    return name;
   }
 }

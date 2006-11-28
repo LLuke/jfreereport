@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultTypeRegistry.java,v 1.1 2006/11/04 15:43:46 taqua Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.2 2006/11/20 21:05:30 taqua Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class DefaultTypeRegistry implements TypeRegistry
 {
   private LocalizationContext localizationContext;
   private static final long MILLISECS_PER_DAY = 24 * 60 * 60 * 1000;
-  private static final BigDecimal MILLISECS = new BigDecimal(MILLISECS_PER_DAY);
+  private static final BigDecimal MILLISECS = new BigDecimal((double) MILLISECS_PER_DAY);
   private NumberFormat[] numberFormats;
   private DateFormat[] dateFormats;
 

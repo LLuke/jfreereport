@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: FormulaContext.java,v 1.1 2006/11/04 15:40:58 taqua Exp $
  *
  * Changes
  * -------
@@ -53,9 +53,9 @@ import org.jfree.util.Configuration;
  */
 public interface FormulaContext
 {
-  public boolean isReferenceDirty(String name);
-  public Object resolveReference (String name);
-  public Type resolveReferenceType (String name);
+  public boolean isReferenceDirty(Object name);
+  public Object resolveReference (Object name);
+  public Type resolveReferenceType (Object name);
 
   public LocalizationContext getLocalizationContext();
   public Configuration getConfiguration();
