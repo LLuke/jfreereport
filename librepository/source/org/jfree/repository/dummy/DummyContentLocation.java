@@ -73,7 +73,7 @@ public class DummyContentLocation implements ContentLocation
 
   public ContentItem createItem(String name) throws ContentCreationException
   {
-    return null;
+    throw new ContentCreationException("Cannot create item");
   }
 
   public ContentLocation createLocation(String name)

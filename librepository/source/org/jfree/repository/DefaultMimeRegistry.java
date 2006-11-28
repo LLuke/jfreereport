@@ -48,6 +48,35 @@ public class DefaultMimeRegistry implements MimeRegistry
 
   public String getSuffix(String mimeType)
   {
-    return null;
+    // needs 'libMagic'
+    if ("image/png".equals(mimeType))
+    {
+      return "png";
+    }
+    if ("image/jpeg".equals(mimeType))
+    {
+      return "jpg";
+    }
+    if ("image/jpg".equals(mimeType))
+    {
+      return "jpg";
+    }
+    if ("image/gif".equals(mimeType))
+    {
+      return "gif";
+    }
+    if ("text/html".equals(mimeType))
+    {
+      return "html";
+    }
+    if ("text/plain".equals(mimeType))
+    {
+      return "txt";
+    }
+    if ("application/pdf".equals(mimeType))
+    {
+      return "pdf";
+    }
+    return "dat";
   }
 }

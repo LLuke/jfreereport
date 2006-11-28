@@ -30,14 +30,13 @@
 
 package org.jfree.repository.stream;
 
-import java.io.OutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 
-import org.jfree.repository.Repository;
 import org.jfree.repository.ContentLocation;
-import org.jfree.repository.ContentIOException;
-import org.jfree.repository.MimeRegistry;
 import org.jfree.repository.DefaultMimeRegistry;
+import org.jfree.repository.MimeRegistry;
+import org.jfree.repository.Repository;
 
 /**
  * A repository that feeds a single source.
@@ -47,19 +46,32 @@ import org.jfree.repository.DefaultMimeRegistry;
 public class StreamRepository implements Repository
 {
   private MimeRegistry mimeRegistry;
-  private OutputStream outputStream;
-  private InputStream inputStream;
+  private WrappedOutputStream outputStream;
+  private WrappedInputStream inputStream;
+  private StreamContentLocation rootLocation;
 
   public StreamRepository(final InputStream inputStream, final OutputStream outputStream)
   {
-    this.inputStream = inputStream;
-    this.outputStream = outputStream;
+    this.inputStream = new WrappedInputStream(inputStream);
+    this.outputStream = new WrappedOutputStream(outputStream);
     this.mimeRegistry = new DefaultMimeRegistry();
+
+    this.rootLocation = new StreamContentLocation(this);
+  }
+
+  public WrappedOutputStream getOutputStream()
+  {
+    return outputStream;
+  }
+
+  public WrappedInputStream getInputStream()
+  {
+    return inputStream;
   }
 
   public ContentLocation getRoot()
   {
-    return null;
+    return rootLocation;
   }
 
   public MimeRegistry getMimeRegistry()

@@ -23,35 +23,22 @@
  * in the United States and other countries.]
  *
  * ------------
- * ContentLocation.java
+ * UrlRepository.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.repository;
 
+import java.net.URL;
+import java.net.MalformedURLException;
+
 /**
- * This represents a container in the repository. If the repository is a
- * filesystem, this will be a directory.
+ * A repository that can be globally identified by an URL.
  *
  * @author Thomas Morgner
  */
-public interface ContentLocation extends ContentEntity
+public interface UrlRepository extends Repository
 {
-  public ContentEntity[] listContents() throws ContentIOException;
-
-  public ContentEntity getEntry (String name) throws ContentIOException;
-
-  /**
-   * Creates a new data item in the current location. This method must never
-   * return null.
-   *
-   * @param name
-   * @return
-   * @throws ContentCreationException if the item could not be created.
-   */
-  public ContentItem createItem (String name) throws ContentCreationException;
-  public ContentLocation createLocation (String name) throws ContentCreationException;
-
-  public boolean exists(final String name);
+  public URL getURL() throws MalformedURLException;
 }

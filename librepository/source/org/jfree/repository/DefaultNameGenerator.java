@@ -33,10 +33,26 @@ package org.jfree.repository;
 public class DefaultNameGenerator implements NameGenerator
 {
   private ContentLocation location;
+  private String defaultNameHint;
 
   public DefaultNameGenerator(final ContentLocation location)
   {
+    this(location, "file");
+  }
+
+  public DefaultNameGenerator(final ContentLocation location,
+                              final String defaultNameHint)
+  {
+    if (location == null)
+    {
+      throw new NullPointerException();
+    }
+    if (defaultNameHint == null)
+    {
+      throw new NullPointerException();
+    }
     this.location = location;
+    this.defaultNameHint = defaultNameHint;
   }
 
   /**
@@ -50,7 +66,7 @@ public class DefaultNameGenerator implements NameGenerator
    * @return the generated, fully qualified name.
    */
   public String generateName(String nameHint, String mimeType)
-          throws ContentIOException
+      throws ContentIOException
   {
     String name;
     if (nameHint != null)
@@ -59,7 +75,7 @@ public class DefaultNameGenerator implements NameGenerator
     }
     else
     {
-      name = "file";
+      name = defaultNameHint;
     }
 
     String suffix = getSuffixForType(mimeType, location);
@@ -73,7 +89,7 @@ public class DefaultNameGenerator implements NameGenerator
     {
       if (counter < 0) // wraparound should not happen..
       {
-        throw new ContentIOException ();
+        throw new ContentIOException();
       }
 
       final String filename = name + counter + "." + suffix;

@@ -31,19 +31,21 @@
 package org.jfree.repository.file;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-import org.jfree.repository.Repository;
-import org.jfree.repository.ContentLocation;
 import org.jfree.repository.ContentIOException;
-import org.jfree.repository.MimeRegistry;
+import org.jfree.repository.ContentLocation;
 import org.jfree.repository.DefaultMimeRegistry;
+import org.jfree.repository.MimeRegistry;
+import org.jfree.repository.UrlRepository;
 
 /**
  * Creation-Date: 13.11.2006, 12:00:40
  *
  * @author Thomas Morgner
  */
-public class FileRepository implements Repository
+public class FileRepository implements UrlRepository
 {
   private MimeRegistry mimeRegistry;
   private FileContentLocation root;
@@ -67,5 +69,10 @@ public class FileRepository implements Repository
   public ContentLocation getRoot() throws ContentIOException
   {
     return root;
+  }
+
+  public URL getURL() throws MalformedURLException
+  {
+    return root.getBackend().toURL();
   }
 }

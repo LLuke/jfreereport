@@ -30,14 +30,11 @@
 
 package org.jfree.repository.stream;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.jfree.repository.ContentLocation;
+import org.jfree.repository.ContentCreationException;
 import org.jfree.repository.ContentEntity;
 import org.jfree.repository.ContentIOException;
 import org.jfree.repository.ContentItem;
-import org.jfree.repository.ContentCreationException;
+import org.jfree.repository.ContentLocation;
 import org.jfree.repository.Repository;
 
 /**
@@ -48,47 +45,74 @@ import org.jfree.repository.Repository;
 public class StreamContentLocation implements ContentLocation
 {
   private ContentItem contentItem;
-  private Repository repository;
+  private StreamRepository repository;
 
-  public StreamContentLocation(Repository repository)
+  public StreamContentLocation(final StreamRepository repository)
   {
     this.repository = repository;
   }
 
   public ContentEntity[] listContents() throws ContentIOException
   {
-    return new ContentEntity[0];
+    if (contentItem == null)
+    {
+      return new ContentEntity[0];
+    }
+    else
+    {
+      return new ContentEntity[]{contentItem};
+    }
   }
 
   public ContentEntity getEntry(String name) throws ContentIOException
   {
-    return null;
+    if (contentItem == null)
+    {
+      throw new ContentIOException("No such item");
+    }
+    if (contentItem.getName().equals(name))
+    {
+      return contentItem;
+    }
+    throw new ContentIOException("No such item");
   }
 
   public ContentItem createItem(String name) throws ContentCreationException
   {
-    return null;
+    if (contentItem == null)
+    {
+      contentItem = new StreamContentItem(name, this,
+          repository.getInputStream(), repository.getOutputStream());
+      return contentItem;
+    }
+    throw new ContentCreationException
+        ("Failed to create the item. Item already there");
   }
 
   public ContentLocation createLocation(String name)
       throws ContentCreationException
   {
-    return null;
+    throw new ContentCreationException
+        ("Failed to create the item. Item already there");
   }
 
   public boolean exists(final String name)
   {
-    return false;
+    if (contentItem == null)
+    {
+      return false;
+    }
+    return contentItem.getName().equals(name);
   }
 
   public String getName()
   {
-    return null;
+    return "root";
   }
 
   public Object getContentId()
   {
-    return null;
+    return getName();
   }
 
   public Object getAttribute(String domain, String key)
@@ -108,7 +132,7 @@ public class StreamContentLocation implements ContentLocation
 
   public Repository getRepository()
   {
-    return null;
+    return repository;
   }
 
   public boolean delete()

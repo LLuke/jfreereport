@@ -30,8 +30,6 @@
 
 package org.jfree.repository;
 
-import java.util.Locale;
-
 import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
 import org.jfree.util.Configuration;
@@ -46,6 +44,7 @@ public class LibRepositoryBoot extends AbstractBoot
   public static final String REPOSITORY_DOMAIN = "org.jfree.repository";
   public static final String SIZE_ATTRIBUTE = "size";
   public static final String VERSION_ATTRIBUTE = "version";
+  public static final String CONTENT_TYPE = "content-type";
 
   private static LibRepositoryBoot instance;
 
