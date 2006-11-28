@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SectionReadHandler.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
+ * $Id: SectionReadHandler.java,v 1.3 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -42,12 +42,12 @@ package org.jfree.report.modules.factories.report.flow;
 
 import java.util.ArrayList;
 
-import org.jfree.report.JFreeReportInfo;
-import org.jfree.xmlns.parser.XmlReadHandler;
+import org.jfree.report.modules.factories.report.base.NodeReadHandler;
+import org.jfree.report.modules.factories.report.base.NodeReadHandlerFactory;
 import org.jfree.report.structure.Element;
-import org.jfree.report.structure.Node;
 import org.jfree.report.structure.Section;
 import org.jfree.report.structure.StaticText;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -56,45 +56,8 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner
  */
-public class SectionReadHandler extends ElementReadHandler
+public class SectionReadHandler extends AbstractElementReadHandler
 {
-  private static interface NodeWrapper
-  {
-    public Node getNode();
-  }
-
-  private static class TextNodeWrapper implements NodeWrapper
-  {
-    private StaticText text;
-
-    public TextNodeWrapper(final String text)
-    {
-      this.text = new StaticText(text);
-    }
-
-    public Node getNode()
-    {
-      return text;
-    }
-  }
-
-  private static class ElementWrapper implements NodeWrapper
-  {
-    private ElementReadHandler readHandler;
-
-    public ElementWrapper(final ElementReadHandler readHandler)
-    {
-      this.readHandler = readHandler;
-    }
-
-    public Node getNode()
-    {
-      return readHandler.getElement();
-    }
-  }
-
-  private String namespace;
-  private String tagName;
   private Section section;
   private StringBuffer textBuffer;
   private ArrayList nodes;
@@ -109,38 +72,12 @@ public class SectionReadHandler extends ElementReadHandler
     operationsBefore = new ArrayList();
   }
 
-
-  /**
-   * Creates a new generic read handler. The given namespace and tagname can be
-   * arbitary values and should not be confused with the ones provided by the
-   * XMLparser itself.
-   *
-   * @param namespace
-   * @param tagName
-   */
-  public SectionReadHandler(final String namespace,
-                            final String tagName)
-  {
-    this();
-    this.namespace = namespace;
-    this.tagName = tagName;
-    this.section = new Section();
-    this.section.setNamespace(namespace);
-    this.section.setType(tagName);
-  }
-
-  public String getSectionNamespace()
-  {
-    return namespace;
-  }
-
-  public String getSectionTagName()
-  {
-    return tagName;
-  }
-
   protected Element getElement()
   {
+    if (section == null)
+    {
+      section = new Section();
+    }
     return section;
   }
 
@@ -153,6 +90,7 @@ public class SectionReadHandler extends ElementReadHandler
   protected void startParsing(final Attributes attrs) throws SAXException
   {
     super.startParsing(attrs);
+
     final String repeatValue = attrs.getValue(getUri(), "repeat");
     if (repeatValue != null)
     {
@@ -201,7 +139,7 @@ public class SectionReadHandler extends ElementReadHandler
   {
     if (textBuffer != null)
     {
-      nodes.add(new TextNodeWrapper(textBuffer.toString()));
+      nodes.add(new StaticText(textBuffer.toString()));
       textBuffer = null;
     }
 
@@ -211,6 +149,7 @@ public class SectionReadHandler extends ElementReadHandler
     {
       return elementTypeHanders;
     }
+
     if (FlowReportFactoryModule.NAMESPACE.equals(uri))
     {
       if ("operation-after".equals(tagName))
@@ -225,74 +164,85 @@ public class SectionReadHandler extends ElementReadHandler
         operationsBefore.add(frh);
         return frh;
       }
-      else if ("content".equals(tagName))
-      {
-        final ContentElementReadHandler contentHandler = new ContentElementReadHandler();
-        nodes.add(new ElementWrapper(contentHandler));
-        return contentHandler;
-      }
-      else if ("section".equals(tagName))
-      {
-        final SectionReadHandler genericHandler =
-                new SectionReadHandler
-                        (JFreeReportInfo.REPORT_NAMESPACE, tagName);
-        nodes.add(new ElementWrapper(genericHandler));
-        return genericHandler;
-      }
-      else if ("detail-section".equals(tagName))
-      {
-        final SectionReadHandler genericHandler =
-                new DetailSectionReadHandler();
-        nodes.add(new ElementWrapper(genericHandler));
-        return genericHandler;
-      }
-      else if ("out-of-order-section".equals(tagName))
-      {
-        final OutOfOrderSectionReadHandler genericHandler =
-                new OutOfOrderSectionReadHandler();
-        nodes.add(new ElementWrapper(genericHandler));
-        return genericHandler;
-      }
-      else if ("page-header".equals(tagName))
-      {
-        final PageHeaderReadHandler genericHandler =
-                new PageHeaderReadHandler();
-        nodes.add(new ElementWrapper(genericHandler));
-        return genericHandler;
-      }
-      else if ("page-footer".equals(tagName))
-      {
-        final PageFooterReadHandler genericHandler =
-                new PageFooterReadHandler();
-        nodes.add(new ElementWrapper(genericHandler));
-        return genericHandler;
-      }
-      else if ("group".equals(tagName))
-      {
-        final GroupReadHandler genericHandler =
-                new GroupReadHandler();
-        nodes.add(new ElementWrapper(genericHandler));
-        return genericHandler;
-      }
-      else if ("sub-report".equals(tagName))
-      {
-        final SubReportReadHandler genericHandler =
-                new SubReportReadHandler();
-        nodes.add(new ElementWrapper(genericHandler));
-        return genericHandler;
-      }
-      else
-      {
-        return null;
-      }
     }
-    else // something else ..
+
+    final NodeReadHandlerFactory factory = NodeReadHandlerFactory.getInstance();
+    final NodeReadHandler handler = factory.getHandler(uri, tagName);
+    if (handler != null)
     {
-      final SectionReadHandler genericHandler =
-              new SectionReadHandler(uri, tagName);
-      nodes.add(new ElementWrapper(genericHandler));
-      return genericHandler;
+      nodes.add(handler);
+      return handler;
     }
+    return null;
+//
+//    else if ("content".equals(tagName))
+//      {
+//        final ContentElementReadHandler contentHandler = new ContentElementReadHandler();
+//        nodes.add(new ElementWrapper(contentHandler));
+//        return contentHandler;
+//      }
+//      else if ("section".equals(tagName))
+//      {
+//        final SectionReadHandler genericHandler =
+//                new SectionReadHandler
+//                        (JFreeReportInfo.REPORT_NAMESPACE, tagName);
+//        nodes.add(new ElementWrapper(genericHandler));
+//        return genericHandler;
+//      }
+//      else if ("detail-section".equals(tagName))
+//      {
+//        final SectionReadHandler genericHandler =
+//                new DetailSectionReadHandler();
+//        nodes.add(new ElementWrapper(genericHandler));
+//        return genericHandler;
+//      }
+//      else if ("out-of-order-section".equals(tagName))
+//      {
+//        final OutOfOrderSectionReadHandler genericHandler =
+//                new OutOfOrderSectionReadHandler();
+//        nodes.add(new ElementWrapper(genericHandler));
+//        return genericHandler;
+//      }
+//      else if ("page-header".equals(tagName))
+//      {
+//        final PageHeaderReadHandler genericHandler =
+//                new PageHeaderReadHandler();
+//        nodes.add(new ElementWrapper(genericHandler));
+//        return genericHandler;
+//      }
+//      else if ("page-footer".equals(tagName))
+//      {
+//        final PageFooterReadHandler genericHandler =
+//                new PageFooterReadHandler();
+//        nodes.add(new ElementWrapper(genericHandler));
+//        return genericHandler;
+//      }
+//      else if ("group".equals(tagName))
+//      {
+//        final GroupReadHandler genericHandler =
+//                new GroupReadHandler();
+//        nodes.add(new ElementWrapper(genericHandler));
+//        return genericHandler;
+//      }
+//      else if ("sub-report".equals(tagName))
+//      {
+//        final SubReportReadHandler genericHandler =
+//                new SubReportReadHandler();
+//        nodes.add(new ElementWrapper(genericHandler));
+//        return genericHandler;
+//      }
+//      else
+//      {
+//        return null;
+//      }
+//    }
+//    else // something else ..
+//    {
+//      final SectionReadHandler genericHandler =
+//              new SectionReadHandler(uri, tagName);
+//      nodes.add(new ElementWrapper(genericHandler));
+//      return genericHandler;
+//    }
   }
 
   /**
@@ -305,7 +255,7 @@ public class SectionReadHandler extends ElementReadHandler
   {
     if (textBuffer != null)
     {
-      nodes.add(new TextNodeWrapper(textBuffer.toString()));
+      nodes.add(new StaticText(textBuffer.toString()));
       textBuffer = null;
     }
 
@@ -314,8 +264,16 @@ public class SectionReadHandler extends ElementReadHandler
 
     for (int i = 0; i < nodes.size(); i++)
     {
-      final NodeWrapper wrapper = (NodeWrapper) nodes.get(i);
-      section.addNode(wrapper.getNode());
+      final Object wrapper = nodes.get(i);
+      if (wrapper instanceof StaticText)
+      {
+        section.addNode((StaticText) wrapper);
+      }
+      else if (wrapper instanceof NodeReadHandler)
+      {
+        NodeReadHandler nr = (NodeReadHandler) wrapper;
+        section.addNode(nr.getNode());
+      }
     }
     for (int i = 0; i < operationsAfter.size(); i++)
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.43 2006/11/11 20:37:23 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.44 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes:
  * --------
@@ -70,7 +70,7 @@ public class JFreeReportInfo extends ProjectInfo
    * namespace. It is purely internal.
    */
   public static final String REPORT_NAMESPACE =
-          "http://jfreereport.sourceforge.net/namespaces/engine/flow";
+          "http://jfreereport.sourceforge.net/namespaces/engine";
 
   /**
    * This namespace contains the compatibility layer for the old JFreeReport

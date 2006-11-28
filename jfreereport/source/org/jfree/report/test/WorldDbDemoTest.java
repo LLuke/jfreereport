@@ -2,16 +2,15 @@ package org.jfree.report.test;
 
 import java.net.URL;
 
-import org.jfree.resourceloader.ResourceKeyCreationException;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.flow.ReportJob;
+import org.jfree.report.modules.gui.swing.preview.PreviewDialog;
+import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
+import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.resourceloader.Resource;
-import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.TableReportDataFactory;
-import org.jfree.report.modules.gui.swing.preview.PreviewDialog;
-import org.jfree.report.flow.ReportJob;
 
 /**
  * Creation-Date: 21.02.2006, 14:11:22
@@ -54,12 +53,12 @@ public class WorldDbDemoTest
     dialog.setReportJob(job);
     dialog.setSize(500, 300);
     dialog.setVisible(true);
-
-    dialog = new PreviewDialog();
-    dialog.setModal(true);
-    dialog.setReportJob(job);
-    dialog.setSize(500, 300);
-    dialog.setVisible(true);
+//
+//    dialog = new PreviewDialog();
+//    dialog.setModal(true);
+//    dialog.setReportJob(job);
+//    dialog.setSize(500, 300);
+//    dialog.setVisible(true);
     System.exit(0);
   }
 }

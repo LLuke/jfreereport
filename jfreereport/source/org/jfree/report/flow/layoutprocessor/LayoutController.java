@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutController.java,v 1.1 2006/11/20 21:10:40 taqua Exp $
+ * $Id: LayoutController.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,14 @@ import org.jfree.report.structure.Node;
  */
 public interface LayoutController
 {
+  /**
+   * Retrieves the parent of this layout controller. This allows childs
+   * to query their context.
+   * 
+   * @return
+   */
+  public LayoutController getParent();
+
   /**
    * Calling initialize after the first advance must result in a
    * IllegalStateException.

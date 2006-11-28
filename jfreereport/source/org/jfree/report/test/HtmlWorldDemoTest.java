@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlWorldDemoTest.java,v 1.1 2006/11/26 19:51:24 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,21 +31,27 @@
 package org.jfree.report.test;
 
 import java.net.URL;
+import java.io.File;
 
-import org.jfree.resourceloader.ResourceKeyCreationException;
-import org.jfree.resourceloader.ResourceCreationException;
-import org.jfree.resourceloader.ResourceLoadingException;
-import org.jfree.resourceloader.ResourceManager;
-import org.jfree.resourceloader.Resource;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.report.ReportDataFactoryException;
+import org.jfree.layouting.modules.output.html.PageableHtmlOutputProcessor;
+import org.jfree.layouting.modules.output.html.HtmlPrinter;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.TableReportDataFactory;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.streaming.StreamingReportProcessor;
-import org.jfree.layouting.modules.output.html.PageableHtmlOutputProcessor;
+import org.jfree.resourceloader.Resource;
+import org.jfree.resourceloader.ResourceCreationException;
+import org.jfree.resourceloader.ResourceKeyCreationException;
+import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
+import org.jfree.repository.file.FileRepository;
+import org.jfree.repository.DefaultNameGenerator;
+import org.jfree.repository.ContentLocation;
+import org.jfree.repository.ContentIOException;
 
 /**
  * Creation-Date: 21.02.2006, 14:11:22
@@ -59,17 +65,17 @@ public class HtmlWorldDemoTest
   }
 
   public static void main(String[] args)
-      throws
-      ResourceKeyCreationException,
-      ResourceCreationException,
-      ResourceLoadingException,
-      ReportProcessingException,
-      ReportDataFactoryException,
-      DataSourceException
   {
     JFreeReportBoot.getInstance().start();
 
-    HtmlWorldDemoTest.processReport("/world.xml");
+    try
+    {
+      HtmlWorldDemoTest.processReport("/world.xml");
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
   }
 
   private static void processReport(String file)
@@ -78,7 +84,7 @@ public class HtmlWorldDemoTest
       ResourceKeyCreationException,
       ReportProcessingException,
       ReportDataFactoryException,
-      DataSourceException
+      DataSourceException, ContentIOException
   {
     URL url = HtmlWorldDemoTest.class.getResource(file);
     ResourceManager manager = new ResourceManager();
@@ -88,26 +94,20 @@ public class HtmlWorldDemoTest
 
     ReportJob job = new ReportJob(resource);
     final TableReportDataFactory dataFactory =
-            new TableReportDataFactory("default", new CountryDataTableModel());
+        new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);
 
-//    PreviewDialog dialog = new PreviewDialog();
-//    dialog.setModal(true);
-//    dialog.setReportJob(job);
-//    dialog.setSize(500, 300);
-//    dialog.setVisible(true);
-//
-//    dialog = new PreviewDialog();
-//    dialog.setModal(true);
-//    dialog.setReportJob(job);
-//    dialog.setSize(500, 300);
-//    dialog.setVisible(true);
-//
-    StreamingReportProcessor sp = new StreamingReportProcessor();
-    sp.setOutputProcessor(new PageableHtmlOutputProcessor
-        (job.getConfiguration(), System.out));
-    sp.processReport(job);
+    final FileRepository fileRepository = new FileRepository(new File("/tmp"));
+    final ContentLocation root = fileRepository.getRoot();
 
+    StreamingReportProcessor sp = new StreamingReportProcessor();
+    final PageableHtmlOutputProcessor outputProcessor = new PageableHtmlOutputProcessor(job.getConfiguration());
+    final HtmlPrinter printer = outputProcessor.getPrinter();
+    printer.setContentWriter(root, new DefaultNameGenerator(root, "index"));
+    printer.setDataWriter(root, new DefaultNameGenerator(root, "images"));
+    printer.setEncoding("ASCII");
+    sp.setOutputProcessor(outputProcessor);
+    sp.processReport(job);
 
     System.exit(0);
   }

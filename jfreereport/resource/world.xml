@@ -102,7 +102,7 @@
   <!--
   Groups are nested.
   -->
-  <report:group virtual="true">
+  <report:group virtual="true" style="page-break-before: always">
     <report:grouping-expression>
       <report:property name="field[0]">Continent</report:property>
     </report:grouping-expression>

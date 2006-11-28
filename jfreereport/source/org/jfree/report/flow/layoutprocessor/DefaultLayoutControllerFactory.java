@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultLayoutControllerFactory.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,13 +33,12 @@ package org.jfree.report.flow.layoutprocessor;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.jfree.report.DataSourceException;
+import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.structure.Node;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.report.ReportDataFactoryException;
-import org.jfree.report.DataSourceException;
-import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;
 

@@ -7,8 +7,9 @@
  * namespace '../namespaces/engine/flow', regardless what namespace the element
  * itself is in.
  */
-@namespace url(http://jfreereport.sourceforge.net/namespaces/engine/flow); /* set default namespace to HTML */
+@namespace url(http://jfreereport.sourceforge.net/namespaces/reports/flow); /* set default namespace to HTML */
 @namespace xml url(http://www.w3.org/XML/1998/namespace);
+@namespace report url(http://jfreereport.sourceforge.net/namespaces/engine);
 
 /**
  * The quoting of the attribute's name constant is an intentional violation
@@ -18,42 +19,42 @@
  */
 
 resource-node {
-  content: attr("content", url);
+  content: attr("report|content", url);
   display: inline;
 }
 
 external-node {
-  content: attr("content", raw);
+  content: attr("report|content", raw);
   display: inline;
 }
 
-content-node {
-  content: attr("content");
+content {
+  content: attr("report|content");
   display: inline;
 }
 
-content-node[isDate=true] {
-  content: format(attr("content", date), date);
+content[report|isDate=true] {
+  content: format(attr("report|content", date), date);
 }
 
-content-node[isDate=true][format] {
-  content: format(attr("content", date), date, attr("format",string));
+content[report|isDate=true][report|format] {
+  content: format(attr("report|content", date), date, attr("report|format",string));
 }
 
-content-node[isNumber=true] {
-  content: format(attr("content", number), number, "#,##0.00");
+content[report|isNumber=true] {
+  content: format(attr("report|content", number), number, "#,##0.00");
 }
 
-content-node[isNumber=true][format] {
-  content: format(attr("content", number), number, attr("format",string));
+content[report|isNumber=true][report|format] {
+  content: format(attr("report|content", number), number, attr("report|format",string));
 }
 
-content-node[isNumber=true][isInteger=true] {
-  content: format(attr("content", number), number, "#,##0");
+content[report|isNumber=true][report|isInteger=true] {
+  content: format(attr("report|content", number), number, "#,##0");
 }
 
-content-node[isNumber=true][isInteger=true][format] {
-  content: format(attr("content", number), number, attr("format",string));
+content[report|isNumber=true][report|isInteger=true][format] {
+  content: format(attr("report|content", number), number, attr("report|format",string));
 }
 
 inner-stylesheet {

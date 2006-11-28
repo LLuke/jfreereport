@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: WorldDemoTest.java,v 1.5 2006/11/24 17:12:13 taqua Exp $
+ * $Id: WorldDemoTest.java,v 1.6 2006/11/26 19:49:23 taqua Exp $
  *
  * Changes
  * -------
@@ -105,12 +105,12 @@ public class WorldDemoTest
     dialog.setReportJob(job);
     dialog.setSize(500, 300);
     dialog.setVisible(true);
-
-    dialog = new PreviewDialog();
-    dialog.setModal(true);
-    dialog.setReportJob(job);
-    dialog.setSize(500, 300);
-    dialog.setVisible(true);
+//
+//    dialog = new PreviewDialog();
+//    dialog.setModal(true);
+//    dialog.setReportJob(job);
+//    dialog.setSize(500, 300);
+//    dialog.setVisible(true);
 
 
     System.exit(0);

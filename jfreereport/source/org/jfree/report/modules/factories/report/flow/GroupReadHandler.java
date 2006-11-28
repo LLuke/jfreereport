@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: GroupReadHandler.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
+ * $Id: GroupReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
  */
 package org.jfree.report.modules.factories.report.flow;
 
-import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Group;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -73,7 +73,7 @@ public class GroupReadHandler extends SectionReadHandler
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
                                               final Attributes atts)
-          throws SAXException
+      throws SAXException
   {
     XmlReadHandler base = super.getHandlerForChild(uri, tagName, atts);
     if (base != null)
@@ -100,7 +100,9 @@ public class GroupReadHandler extends SectionReadHandler
   protected void doneParsing() throws SAXException
   {
     if (groupingExpressionReadHandler == null)
+    {
       throw new SAXException("Required element 'grouping-expression' is missing.");
+    }
 
     super.doneParsing();
     Group group = (Group) getElement();

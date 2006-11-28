@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: QuadrantDemoTest.java,v 1.2 2006/11/13 19:20:59 taqua Exp $
+ * $Id: QuadrantDemoTest.java,v 1.3 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,8 @@ public class QuadrantDemoTest
     dataFactory.open();
     
     final ReportJob job = new ReportJob(resource);
-    final FlowHtmlOutputProcessor out = new FlowHtmlOutputProcessor(null, null);
+    final FlowHtmlOutputProcessor out =
+        new FlowHtmlOutputProcessor(job.getConfiguration());
     final FlowReportProcessor rp = new FlowReportProcessor();
     rp.setOutputProcessor(out);
     rp.processReport(job);

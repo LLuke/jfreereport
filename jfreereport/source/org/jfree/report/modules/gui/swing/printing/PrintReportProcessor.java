@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrintReportProcessor.java,v 1.1 2006/11/20 21:17:55 taqua Exp $
+ * $Id: PrintReportProcessor.java,v 1.2 2006/11/24 17:12:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -117,7 +117,6 @@ public class PrintReportProcessor extends PaginatingReportProcessor
       final ReportTargetState targetState = state.getTargetState();
       final GraphicsOutputProcessor outputProcessor = getGraphicsProcessor();
       outputProcessor.setPageCursor(state.getPageCursor());
-      Log.debug ("Setting page cursor: " + state.getPageCursor());
       final QueryPhysicalPageInterceptor interceptor =
           new QueryPhysicalPageInterceptor(outputProcessor.getPhysicalPage(page));
       outputProcessor.setInterceptor(interceptor);

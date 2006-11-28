@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentElementReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
+ * $Id: ContentElementReadHandler.java,v 1.3 2006/07/30 13:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -51,13 +51,14 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner
  */
-public class ContentElementReadHandler extends ElementReadHandler
+public class ContentElementReadHandler extends AbstractElementReadHandler
 {
   private ValueExpressionReadHandler valueExpressionReadHandler;
   private ContentElement ce;
 
   public ContentElementReadHandler()
   {
+    ce = new ContentElement();
   }
 
   /**
@@ -100,7 +101,6 @@ public class ContentElementReadHandler extends ElementReadHandler
     }
 
     super.doneParsing();
-    ce = new ContentElement();
     configureElement(ce);
     ce.setValueExpression(valueExpressionReadHandler.getExpression());
   }

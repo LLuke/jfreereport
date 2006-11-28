@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TextProcessingTest.java,v 1.3 2006/11/11 20:37:23 taqua Exp $
+ * $Id: TextProcessingTest.java,v 1.4 2006/11/13 19:20:59 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,8 @@ public class TextProcessingTest
             new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);
 
-    final FlowHtmlOutputProcessor out = new FlowHtmlOutputProcessor(null, null);
+    final FlowHtmlOutputProcessor out =
+        new FlowHtmlOutputProcessor(job.getConfiguration());
     final FlowReportProcessor rp = new FlowReportProcessor();
     rp.setOutputProcessor(out);
     rp.processReport(job);

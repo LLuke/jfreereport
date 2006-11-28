@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportDefining.java,v 1.8 2006/07/30 13:09:50 taqua Exp $
+ * $Id: ReportDefining.java,v 1.9 2006/11/13 19:20:59 taqua Exp $
  *
  * Changes
  * -------
@@ -140,7 +140,8 @@ public class ReportDefining
     dataFactory.addTable("subreport", new CountryDataTableModel());
     job.setDataFactory(dataFactory);
 
-    final FlowHtmlOutputProcessor out = new FlowHtmlOutputProcessor(null, null);
+    final FlowHtmlOutputProcessor out =
+        new FlowHtmlOutputProcessor(job.getConfiguration());
     final FlowReportProcessor rp = new FlowReportProcessor();
     rp.setOutputProcessor(out);
     rp.processReport(job);
