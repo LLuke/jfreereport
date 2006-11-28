@@ -23,20 +23,26 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FileSystemURLRewriter.java,v 1.1 2006/11/13 19:14:47 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.html;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import org.jfree.io.IOUtils;
 import org.jfree.repository.ContentEntity;
 import org.jfree.repository.ContentLocation;
+import org.jfree.repository.Repository;
+import org.jfree.repository.UrlRepository;
 
 /**
- * Todo: Not yet complete.
+ * This URL rewriter assumes that the content repository is an URL based
+ * repository and that each content entity can be resolved to an URL.
  *
  * @author Thomas Morgner
  */
@@ -48,20 +54,65 @@ public class FileSystemURLRewriter implements URLRewriter
 
   public String rewrite(ContentEntity content, ContentEntity entity)
   {
-    ArrayList names = new ArrayList();
-    names.add(entity.getName());
+    final Repository entityRepository = entity.getRepository();
+    if (entityRepository instanceof UrlRepository == false)
+    {
+      // cannot proceed ..
+      return null;
+    }
+
+    final UrlRepository entityUrlRepo = (UrlRepository) entityRepository;
+    final String entityPath = buildPath(entity);
+    final URL entityUrl;
+    try
+    {
+      entityUrl = new URL(entityUrlRepo.getURL(), entityPath);
+    }
+    catch (MalformedURLException e)
+    {
+      // cannot proceed ..
+      return null;
+    }
+
+    final Repository contentRepository = content.getRepository();
+    if (contentRepository instanceof UrlRepository == false)
+    {
+      // If at least the data entity has an URL, we can always fall back
+      // to an global URL..
+      return entityUrl.toExternalForm();
+    }
+
+    try
+    {
+      final UrlRepository contentUrlRepo = (UrlRepository) contentRepository;
+      final String contentPath = buildPath(content);
+      return IOUtils.getInstance().createRelativeURL
+          (new URL(contentUrlRepo.getURL(), contentPath), entityUrl);
+    }
+    catch (MalformedURLException e)
+    {
+      // If at least the data entity has an URL, we can always fall back
+      // to an global URL..
+      return entityUrl.toExternalForm();
+    }
+  }
+
+  private String buildPath(final ContentEntity entity)
+  {
+    final ArrayList entityNames = new ArrayList();
+    entityNames.add(entity.getName());
 
     ContentLocation location = entity.getParent();
     while (location != null)
     {
-      names.add(location.getName());
-      location = entity.getParent();
+      entityNames.add(location.getName());
+      location = location.getParent();
     }
 
     StringBuffer b = new StringBuffer();
-    for (int i = names.size() - 1; i >= 0; i--)
+    for (int i = entityNames.size() - 1; i >= 0; i--)
     {
-      String name = (String) names.get(i);
+      String name = (String) entityNames.get(i);
       b.append(name);
       if (i != 0)
       {

@@ -23,14 +23,12 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PageableHtmlOutputProcessor.java,v 1.3 2006/11/17 20:14:56 taqua Exp $
+ * $Id: PageableHtmlOutputProcessor.java,v 1.4 2006/11/26 19:43:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.modules.output.html;
-
-import java.io.OutputStream;
 
 import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.DefaultFontStorage;
@@ -44,12 +42,10 @@ import org.jfree.layouting.output.pageable.PageFlowSelector;
 import org.jfree.layouting.output.pageable.PhysicalPageKey;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
-import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.repository.ContentLocation;
 import org.jfree.repository.DefaultNameGenerator;
 import org.jfree.repository.NameGenerator;
 import org.jfree.repository.dummy.DummyRepository;
-import org.jfree.repository.stream.StreamRepository;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 
@@ -60,61 +56,39 @@ import org.jfree.util.Log;
  */
 public class PageableHtmlOutputProcessor extends AbstractPageableProcessor
 {
-  private ContentLocation contentLocation;
-  private NameGenerator contentNameGenerator;
-  private ContentLocation dataLocation;
-  private NameGenerator dataNameGenerator;
   private HtmlOutputProcessorMetaData metaData;
   private PageFlowSelector flowSelector;
+  private HtmlPrinter printer;
 
-  public PageableHtmlOutputProcessor(final Configuration configuration,
-                                     final OutputStream out)
+  public PageableHtmlOutputProcessor(final Configuration configuration)
   {
     super(configuration);
-    this.contentLocation = new StreamRepository(null, out).getRoot();
-    this.contentNameGenerator = new DefaultNameGenerator(this.contentLocation);
-    this.dataLocation = new DummyRepository().getRoot();
-    this.dataNameGenerator = new DefaultNameGenerator(this.dataLocation);
-
-    initialize();
-  }
-
-  public PageableHtmlOutputProcessor(final Configuration configuration,
-                                     final ContentLocation contentLocation,
-                                     final NameGenerator contentNameGenerator)
-  {
-    super(configuration);
-    this.contentLocation = contentLocation;
-    this.contentNameGenerator = contentNameGenerator;
-    this.dataLocation = new DummyRepository().getRoot();
-    this.dataNameGenerator = new DefaultNameGenerator(this.dataLocation);
-
-    initialize();
-  }
-
-  public PageableHtmlOutputProcessor(final Configuration configuration,
-                                     final ContentLocation contentLocation,
-                                     final NameGenerator contentNameGenerator,
-                                     final ContentLocation dataLocation,
-                                     final NameGenerator dataNameGenerator)
-  {
-    super(configuration);
-    this.contentLocation = contentLocation;
-    this.contentNameGenerator = contentNameGenerator;
-    this.dataLocation = dataLocation;
-    this.dataNameGenerator = dataNameGenerator;
-
-    initialize();
-  }
-
-  private void initialize()
-  {
     this.flowSelector = new AllPageFlowSelector(true);
 
-    FontRegistry fontRegistry = new AWTFontRegistry();
-    FontStorage fontStorage = new DefaultFontStorage(fontRegistry);
+    final FontRegistry fontRegistry = new AWTFontRegistry();
+    final FontStorage fontStorage = new DefaultFontStorage(fontRegistry);
     this.metaData = new HtmlOutputProcessorMetaData
         (fontStorage, HtmlOutputProcessorMetaData.PAGINATION_FULL);
+
+
+    ContentLocation contentLocation = new DummyRepository().getRoot();
+    NameGenerator contentNameGenerator = new DefaultNameGenerator(contentLocation);
+    ContentLocation dataLocation = new DummyRepository().getRoot();
+    NameGenerator dataNameGenerator = new DefaultNameGenerator(dataLocation);
+
+    this.printer = new HtmlPrinter();
+    this.printer.setContentWriter(contentLocation, contentNameGenerator);
+    this.printer.setDataWriter(dataLocation, dataNameGenerator);
+  }
+
+  public HtmlPrinter getPrinter()
+  {
+    return printer;
+  }
+
+  public void setPrinter(final HtmlPrinter printer)
+  {
+    this.printer = printer;
   }
 
   protected void processPhysicalPage(final PageGrid pageGrid,
@@ -131,12 +105,7 @@ public class PageableHtmlOutputProcessor extends AbstractPageableProcessor
   {
     try
     {
-//      final ContentItem item = contentLocation.createItem
-//          (contentNameGenerator.generateName(null, "text/html"));
-//      final OutputStream outputStream = item.getOutputStream();
-      HtmlPrinter printer = new HtmlPrinter();
-      printer.generate(logicalPage, System.out, "UTF-8", getDocumentContext());
-//      outputStream.close();
+      printer.generate(logicalPage, getDocumentContext());
     }
     catch (Exception e)
     {

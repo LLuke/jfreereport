@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlPrinter.java,v 1.1 2006/11/26 19:45:11 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -31,7 +31,13 @@
 package org.jfree.layouting.modules.output.html;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.geom.Rectangle2D;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
@@ -39,8 +45,12 @@ import java.lang.reflect.Modifier;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 
+import com.keypoint.PngEncoder;
+import org.jfree.io.IOUtils;
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.style.StyleKey;
@@ -63,14 +73,15 @@ import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
-import org.jfree.layouting.renderer.model.BoxLayoutProperties;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
@@ -79,9 +90,21 @@ import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 import org.jfree.layouting.renderer.model.table.cols.TableColumn;
 import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.process.IterateStructuralProcessStep;
+import org.jfree.layouting.util.ImageUtils;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
+import org.jfree.repository.ContentIOException;
+import org.jfree.repository.ContentItem;
+import org.jfree.repository.ContentLocation;
+import org.jfree.repository.LibRepositoryBoot;
+import org.jfree.repository.NameGenerator;
+import org.jfree.resourceloader.ResourceData;
+import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceManager;
+import org.jfree.ui.Drawable;
 import org.jfree.util.FastStack;
 import org.jfree.util.StackableRuntimeException;
+import org.jfree.util.WaitingImageObserver;
 import org.jfree.xmlns.common.AttributeList;
 import org.jfree.xmlns.writer.DefaultTagDescription;
 import org.jfree.xmlns.writer.XmlWriter;
@@ -93,38 +116,152 @@ import org.jfree.xmlns.writer.XmlWriter;
  */
 public class HtmlPrinter extends IterateStructuralProcessStep
 {
+  private static final String[] XHTML_HEADER = {
+          "<!DOCTYPE html",
+          "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
+          "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"};
+
   public static final String TAG_DEF_PREFIX = "org.jfree.layouting.modules.output.html.";
+  public static final float CORRECTION_FACTOR_PX_TO_POINT = 72f/96f;
+  public static final float CORRECTION_FACTOR_POINT_TO_PX = 96f/72f;
 
   private XmlWriter xmlWriter;
   private FastStack contexts;
   private DecimalFormat pointConverter;
   private NumberFormat pointIntConverter;
+  private boolean assumeZeroMargins;
+  private boolean assumeZeroBorders;
+  private boolean assumeZeroPaddings;
+
+  private ContentLocation contentLocation;
+  private NameGenerator contentNameGenerator;
+  private ContentLocation dataLocation;
+  private NameGenerator dataNameGenerator;
+  private ResourceManager resourceManager;
+  private HashMap knownResources;
+  private HashSet validRawTypes;
+
+  private String encoding;
+  private URLRewriter urlRewriter;
+  private ContentItem documentContentItem;
+  private boolean generateFragment;
 
   public HtmlPrinter()
   {
+    this.encoding = "ASCII";
+    this.knownResources = new HashMap();
+    this.validRawTypes = new HashSet();
+    this.validRawTypes.add("image/gif");
+    this.validRawTypes.add("image/x-xbitmap");
+    this.validRawTypes.add("image/gi_");
+    this.validRawTypes.add("image/jpeg");
+    this.validRawTypes.add("image/jpg");
+    this.validRawTypes.add("image/jp_");
+    this.validRawTypes.add("application/jpg");
+    this.validRawTypes.add("application/x-jpg");
+    this.validRawTypes.add("image/pjpeg");
+    this.validRawTypes.add("image/pipeg");
+    this.validRawTypes.add("image/vnd.swiftview-jpeg");
+    this.validRawTypes.add("image/x-xbitmap");
+    this.validRawTypes.add("image/png");
+    this.validRawTypes.add("application/png");
+    this.validRawTypes.add("application/x-png");
+
     contexts = new FastStack();
     pointConverter = new DecimalFormat
         ("0.####", new DecimalFormatSymbols(Locale.US));
     pointIntConverter = new DecimalFormat
         ("0", new DecimalFormatSymbols(Locale.US));
+
+    assumeZeroMargins = true;
+    assumeZeroBorders = true;
+    assumeZeroPaddings = true;
+
+    // this primitive implementation assumes that the both repositories are
+    // the same ..
+    urlRewriter = new FileSystemURLRewriter();
+
+    generateFragment = false;
+  }
+
+  public URLRewriter getUrlRewriter()
+  {
+    return urlRewriter;
+  }
+
+  public void setUrlRewriter(final URLRewriter urlRewriter)
+  {
+    this.urlRewriter = urlRewriter;
+  }
+
+  public NameGenerator getDataNameGenerator()
+  {
+    return dataNameGenerator;
+  }
+
+  public ContentLocation getDataLocation()
+  {
+    return dataLocation;
+  }
+
+  public NameGenerator getContentNameGenerator()
+  {
+    return contentNameGenerator;
+  }
+
+  public ContentLocation getContentLocation()
+  {
+    return contentLocation;
+  }
+
+  public String getEncoding()
+  {
+    return encoding;
+  }
+
+  public void setEncoding(final String encoding)
+  {
+    this.encoding = encoding;
   }
 
   public void generate(final LogicalPageBox box,
-                       final OutputStream out,
-                       final String encoding,
                        final DocumentContext documentContext)
-      throws IOException
+      throws IOException, ContentIOException
   {
+    // update the resource manager, we may need it later ..
+    resourceManager = documentContext.getResourceManager();
+
     final DefaultTagDescription tagDescription = new DefaultTagDescription();
     tagDescription.configure
         (LibLayoutBoot.getInstance().getGlobalConfig(), HtmlPrinter.TAG_DEF_PREFIX);
 
+    documentContentItem = contentLocation.createItem
+        (contentNameGenerator.generateName(null, "text/html"));
+    OutputStream out = documentContentItem.getOutputStream();
 
     final OutputStreamWriter writer = new OutputStreamWriter(out, encoding);
     xmlWriter = new XmlWriter(writer, tagDescription);
     xmlWriter.setAlwaysAddNamespace(false);
     xmlWriter.setAssumeDefaultNamespace(true);
     xmlWriter.addNamespace(Namespaces.XHTML_NAMESPACE, "");
+
+
+    if (generateFragment == false)
+    {
+      xmlWriter.writeXmlDeclaration(encoding);
+      for (int i = 0; i < XHTML_HEADER.length; i++)
+      {
+        xmlWriter.writeText(XHTML_HEADER[i]);
+        xmlWriter.writeNewLine();
+      }
+      xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "html", XmlWriter.OPEN);
+      xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "head", XmlWriter.OPEN);
+      xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "title", XmlWriter.OPEN);
+      xmlWriter.writeText("Yeah, sure, I *should* grab a sensible title from somewhere");
+      xmlWriter.writeCloseTag();
+      xmlWriter.writeCloseTag();
+      xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "body", XmlWriter.OPEN);
+    }
 
     contexts.clear();
 
@@ -146,10 +283,29 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     startBlockBox(box);
     processBoxChilds(box);
     finishBlockBox(box);
+
+    if (generateFragment == false)
+    {
+      xmlWriter.writeCloseTag();
+      xmlWriter.writeCloseTag();
+    }
+
     xmlWriter = null;
     writer.flush();
+
+
   }
   // Todo: Text height is not yet applied by the layouter ..
+
+  public boolean isGenerateFragment()
+  {
+    return generateFragment;
+  }
+
+  public void setGenerateFragment(final boolean generateFragment)
+  {
+    this.generateFragment = generateFragment;
+  }
 
   protected boolean startInlineBox(InlineRenderBox box)
   {
@@ -205,16 +361,28 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         sblp.getPaddingBottom() > 0 ||
         sblp.getPaddingRight() > 0)
     {
-      builder.append(BoxStyleKeys.PADDING_TOP,
-          toPointString(sblp.getPaddingTop()), "pt");
-      builder.append(BoxStyleKeys.PADDING_LEFT,
-          toPointString(sblp.getPaddingLeft()), "pt");
-      builder.append(BoxStyleKeys.PADDING_BOTTOM,
-          toPointString(sblp.getPaddingBottom()), "pt");
-      builder.append(BoxStyleKeys.PADDING_RIGHT,
-          toPointString(sblp.getPaddingRight()), "pt");
+      if (sblp.getPaddingTop() > 0 || assumeZeroPaddings == false)
+      {
+        builder.append(BoxStyleKeys.PADDING_TOP,
+            toPointString(sblp.getPaddingTop()), "pt");
+      }
+      if (sblp.getPaddingLeft() > 0 || assumeZeroPaddings == false)
+      {
+        builder.append(BoxStyleKeys.PADDING_LEFT,
+            toPointString(sblp.getPaddingLeft()), "pt");
+      }
+      if (sblp.getPaddingBottom() > 0 || assumeZeroPaddings == false)
+      {
+        builder.append(BoxStyleKeys.PADDING_BOTTOM,
+            toPointString(sblp.getPaddingBottom()), "pt");
+      }
+      if (sblp.getPaddingRight() > 0 || assumeZeroPaddings == false)
+      {
+        builder.append(BoxStyleKeys.PADDING_RIGHT,
+            toPointString(sblp.getPaddingRight()), "pt");
+      }
     }
-    else
+    else if (assumeZeroPaddings == false)
     {
       builder.append("padding", false, "0");
     }
@@ -224,16 +392,28 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         sblp.getMarginTop() != 0 ||
         sblp.getMarginBottom() != 0)
     {
-      builder.append(BoxStyleKeys.MARGIN_LEFT,
-          toPointString(sblp.getMarginLeft()), "pt");
-      builder.append(BoxStyleKeys.MARGIN_RIGHT,
-          toPointString(sblp.getMarginRight()), "pt");
-      builder.append(BoxStyleKeys.MARGIN_TOP,
-          toPointString(sblp.getMarginTop()), "pt");
-      builder.append(BoxStyleKeys.MARGIN_BOTTOM,
-          toPointString(sblp.getMarginBottom()), "pt");
+      if (sblp.getMarginLeft() > 0 || assumeZeroMargins == false)
+      {
+        builder.append(BoxStyleKeys.MARGIN_LEFT,
+            toPointString(sblp.getMarginLeft()), "pt");
+      }
+      if (sblp.getMarginRight() > 0 || assumeZeroMargins == false)
+      {
+        builder.append(BoxStyleKeys.MARGIN_RIGHT,
+            toPointString(sblp.getMarginRight()), "pt");
+      }
+      if (sblp.getMarginTop() > 0 || assumeZeroMargins == false)
+      {
+        builder.append(BoxStyleKeys.MARGIN_TOP,
+            toPointString(sblp.getMarginTop()), "pt");
+      }
+      if (sblp.getMarginBottom() > 0 || assumeZeroMargins == false)
+      {
+        builder.append(BoxStyleKeys.MARGIN_BOTTOM,
+            toPointString(sblp.getMarginBottom()), "pt");
+      }
     }
-    else
+    else if (assumeZeroMargins == false)
     {
       builder.append("margin", false, "0");
     }
@@ -259,7 +439,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         builder.append(BorderStyleKeys.BORDER_TOP_STYLE, layoutContext.getValue(BorderStyleKeys.BORDER_TOP_STYLE));
         builder.append(BorderStyleKeys.BORDER_TOP_WIDTH, toPointString(sblp.getBorderTop()), "pt");
       }
-      else
+      else if (assumeZeroBorders == false)
       {
         builder.append(BorderStyleKeys.BORDER_TOP_STYLE, BorderStyle.NONE);
       }
@@ -270,7 +450,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         builder.append(BorderStyleKeys.BORDER_LEFT_STYLE, layoutContext.getValue(BorderStyleKeys.BORDER_LEFT_STYLE));
         builder.append(BorderStyleKeys.BORDER_LEFT_WIDTH, toPointString(sblp.getBorderLeft()), "pt");
       }
-      else
+      else if (assumeZeroBorders == false)
       {
         builder.append(BorderStyleKeys.BORDER_LEFT_STYLE, BorderStyle.NONE);
       }
@@ -281,7 +461,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         builder.append(BorderStyleKeys.BORDER_BOTTOM_STYLE, layoutContext.getValue(BorderStyleKeys.BORDER_BOTTOM_STYLE));
         builder.append(BorderStyleKeys.BORDER_BOTTOM_WIDTH, toPointString(sblp.getBorderBottom()), "pt");
       }
-      else
+      else if (assumeZeroBorders == false)
       {
         builder.append(BorderStyleKeys.BORDER_BOTTOM_STYLE, BorderStyle.NONE);
       }
@@ -292,12 +472,12 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         builder.append(BorderStyleKeys.BORDER_RIGHT_STYLE, layoutContext.getValue(BorderStyleKeys.BORDER_RIGHT_STYLE));
         builder.append(BorderStyleKeys.BORDER_RIGHT_WIDTH, toPointString(sblp.getBorderRight()), "pt");
       }
-      else
+      else if (assumeZeroBorders == false)
       {
         builder.append(BorderStyleKeys.BORDER_RIGHT_STYLE, BorderStyle.NONE);
       }
     }
-    else
+    else if (assumeZeroBorders == false)
     {
       builder.append("border-style", true, "none");
     }
@@ -363,18 +543,6 @@ public class HtmlPrinter extends IterateStructuralProcessStep
       //
     }
 
-//    // no defined constant color, so this must be a user defined color
-//    final String colorText = Integer.toHexString(colorValue.getRGB() & 0x00ffffff);
-//    final StringBuffer retval = new StringBuffer(7);
-//    retval.append("#");
-//
-//    final int fillUp = 6 - colorText.length();
-//    for (int i = 0; i < fillUp; i++)
-//    {
-//      retval.append("0");
-//    }
-//
-//    retval.append(colorText);
     return colorValue.getCSSText();
   }
 
@@ -746,21 +914,290 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         final LayoutContext layoutContext = text.getLayoutContext();
         final CSSValue wsCollapse =
             layoutContext.getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE);
-        if (WhitespaceCollapse.DISCARD.equals(wsCollapse) == false)
+      }
+      else if (node instanceof SpacerRenderNode)
+      {
+        xmlWriter.writeText(" ");
+      }
+      else if (node instanceof RenderableReplacedContent)
+      {
+        RenderableReplacedContent rc = (RenderableReplacedContent) node;
+        final ResourceKey source = rc.getSource();
+        // We have to do three things here. First, w have to check what kind
+        // of content we deal with.
+        if (source != null)
         {
-          xmlWriter.writeText(" ");
+          // Cool, we have access to the raw-data. Thats always nice as we
+          // dont have to recode the whole thing.
+
+          if (knownResources.containsKey(source) == false)
+          {
+
+            // Write image reference; return the name of the reference ..
+            String name = writeRaw(source);
+            if (name != null)
+            {
+              // Write image reference ..
+              final AttributeList attrList = new AttributeList();
+              attrList.setAttribute(Namespaces.XHTML_NAMESPACE, "src", name);
+              // width and height and scaling and so on ..
+              xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "img", attrList, XmlWriter.CLOSE);
+
+              knownResources.put(source, name);
+              return;
+            }
+          }
+        }
+        // Fallback: (At the moment, we only support drawables and images.)
+        final Object rawObject = rc.getRawObject();
+        if (rawObject instanceof Image)
+        {
+          // Make it a PNG file ..
+          xmlWriter.writeComment("Image content:" + source);
+          String name = writeImage((Image) rawObject);
+          if (name != null)
+          {
+            // Write image reference ..
+            final AttributeList attrList = new AttributeList();
+            attrList.setAttribute(Namespaces.XHTML_NAMESPACE, "src", name);
+            // width and height and scaling and so on ..
+            xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "img", attrList, XmlWriter.CLOSE);
+          }
+        }
+        else if (rawObject instanceof Drawable)
+        {
+          // render it into an Buffered image and make it a PNG file.
+          xmlWriter.writeComment("Drawable content:" + source);
+          Image image = generateImage(node, (Drawable) rawObject);
+          String name = writeImage(image);
+          if (name != null)
+          {
+            // Write image reference ..
+            final AttributeList attrList = new AttributeList();
+            attrList.setAttribute(Namespaces.XHTML_NAMESPACE, "src", name);
+            // width and height and scaling and so on ..
+            xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "img", attrList, XmlWriter.CLOSE);
+          }
         }
       }
-//      else if (node instanceof TableColumnNode)
-//      {
-//        // maybe write that ..
-//        xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "col", XmlWriter.CLOSE);
-//      }
     }
     catch (IOException e)
     {
       throw new StackableRuntimeException("Failed", e);
     }
+    catch (ContentIOException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
+  private String writeRaw (ResourceKey source) throws IOException
+  {
+    try
+    {
+      final ResourceData resourceData = resourceManager.load(source);
+      final String mimeType = queryMimeType (resourceData);
+      if (isValidImage(mimeType))
+      {
+
+        // lets do some voodo ..
+        final ContentItem item = dataLocation.createItem
+            (dataNameGenerator.generateName(extractFilename(resourceData), mimeType));
+        if (item.isWriteable())
+        {
+          item.setAttribute(LibRepositoryBoot.REPOSITORY_DOMAIN,
+              LibRepositoryBoot.CONTENT_TYPE, mimeType);
+
+          // write it out ..
+          final InputStream stream =
+              resourceData.getResourceAsStream(resourceManager);
+          final OutputStream outputStream = item.getOutputStream();
+          IOUtils.getInstance().copyStreams
+              (stream, outputStream);
+          outputStream.close();
+          stream.close();
+
+          return urlRewriter.rewrite(documentContentItem, item);
+        }
+      }
+    }
+    catch (ResourceLoadingException e)
+    {
+      // Ok, loading the resource failed. Not a problem, so we will
+      // recode the raw-object instead ..
+    }
+    catch (ContentIOException e)
+    {
+      // ignore it ..
+    }
+    return null;
+  }
+
+  private String writeImage (Image image)
+      throws ContentIOException, IOException
+  {
+    // encode the image into a PNG
+        // quick caching ... use a weak list ...
+    final WaitingImageObserver obs = new WaitingImageObserver(image);
+    obs.waitImageLoaded();
+
+    final PngEncoder encoder = new PngEncoder(image,
+            PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
+    final byte[] data = encoder.pngEncode();
+
+    // write the encoded picture ...
+    final ContentItem dataFile = dataLocation.createItem
+        (dataNameGenerator.generateName("picture", "image/png"));
+
+    // a png encoder is included in JCommon ...
+    final OutputStream out = new BufferedOutputStream(dataFile.getOutputStream());
+    out.write(data);
+    out.flush();
+    out.close();
+
+    return urlRewriter.rewrite(documentContentItem, dataFile);
+  }
+
+  private Image generateImage (RenderNode node, Drawable drawable)
+  {
+    final int imageWidthPt = (int) StrictGeomUtility.toExternalValue(node.getWidth());
+    final int imageHeightPt = (int) StrictGeomUtility.toExternalValue(node.getHeight());
+    // dont know whether we will need that one ..
+    final boolean iResMapActive = false;
+        // getLayoutSupport().isImageResolutionMappingActive();
+
+    if (imageWidthPt == 0 || imageHeightPt == 0)
+    {
+      return null;
+    }
+    final double scale = CORRECTION_FACTOR_POINT_TO_PX;
+    final Image image = ImageUtils.createTransparentImage
+            ((int)(imageWidthPt * scale), (int)(imageHeightPt * scale));
+    final Graphics2D g2 = (Graphics2D) image.getGraphics();
+
+    // the clipping bounds are a sub-area of the whole drawable
+    // we only want to print a certain area ...
+//    g2.setFont(style.getFontDefinitionProperty().getFont());
+//    g2.setStroke((Stroke) style.getStyleProperty(ElementStyleSheet.STROKE));
+//    Paint extPaint = (Paint) style.getStyleProperty(ElementStyleSheet.EXTPAINT);
+//    if (extPaint != null)
+//    {
+//      g2.setPaint(extPaint);
+//    }
+//    else
+//    {
+//      g2.setPaint((Paint) style.getStyleProperty(ElementStyleSheet.PAINT));
+//    }
+
+    g2.scale(scale, scale);
+    final Rectangle2D.Double drawBounds =
+            new Rectangle2D.Double(0, 0, imageWidthPt, imageHeightPt);
+    g2.clip(drawBounds);
+    drawable.draw(g2, drawBounds);
+    g2.dispose();
+    return image;
+  }
+
+  private String extractFilename(ResourceData resourceData)
+  {
+    final String filename = (String)
+        resourceData.getAttribute(ResourceData.FILENAME);
+    if (filename == null)
+    {
+      return "image";
+    }
+
+    return IOUtils.getInstance().stripFileExtension(filename);
+  }
+
+  private String queryMimeType(final ResourceData resourceData)
+      throws ResourceLoadingException, IOException
+  {
+    final Object contentType =
+        resourceData.getAttribute(ResourceData.CONTENT_TYPE);
+    if (contentType instanceof String)
+    {
+      return (String) contentType;
+    }
+
+    // now we are getting very primitive .. (Kids, dont do this at home)
+    final byte[] data = new byte[12];
+    resourceData.getResource(resourceManager, data, 0, data.length);
+    if (isGIF(new ByteArrayInputStream(data)))
+    {
+      return "image/gif";
+    }
+    if (isJPEG(new ByteArrayInputStream(data)))
+    {
+      return "image/jpeg";
+    }
+    if (isPNG(new ByteArrayInputStream(data)))
+    {
+      return "image/png";
+    }
+    return null;
+  }
+
+  private boolean isPNG(final ByteArrayInputStream data)
+  {
+    final int[] PNF_FINGERPRINT = {137, 80, 78, 71, 13, 10, 26, 10};
+    for (int i = 0; i < PNF_FINGERPRINT.length; i++)
+    {
+      if (PNF_FINGERPRINT[i] != data.read())
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean isJPEG(final InputStream data) throws IOException
+  {
+    final int[] JPG_FINGERPRINT_1 = {0xFF, 0xD8, 0xFF, 0xE0};
+    for (int i = 0; i < JPG_FINGERPRINT_1.length; i++)
+    {
+      if (JPG_FINGERPRINT_1[i] != data.read())
+      {
+        return false;
+      }
+    }
+    // then skip two bytes ..
+    if (data.read() == -1)
+    {
+      return false;
+    }
+    if (data.read() == -1)
+    {
+      return false;
+    }
+
+    final int[] JPG_FINGERPRINT_2 = {0x4A, 0x46, 0x49, 0x46, 0x00};
+    for (int i = 0; i < JPG_FINGERPRINT_2.length; i++)
+    {
+      if (JPG_FINGERPRINT_2[i] != data.read())
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean isGIF (final InputStream data) throws IOException
+  {
+    final int[] GIF_FINGERPRINT = {'G', 'I', 'F', '8'};
+    for (int i = 0; i < GIF_FINGERPRINT.length; i++)
+    {
+      if (GIF_FINGERPRINT[i] != data.read())
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean isValidImage(String data)
+  {
+    return validRawTypes.contains(data);
   }
 
   protected boolean startOtherBox(RenderBox box)
@@ -790,5 +1227,17 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
   }
 
+  public void setDataWriter(final ContentLocation dataLocation,
+                            final NameGenerator dataNameGenerator)
+  {
+    this.dataNameGenerator = dataNameGenerator;
+    this.dataLocation = dataLocation;
+  }
 
+  public void setContentWriter(final ContentLocation contentLocation,
+                               final NameGenerator contentNameGenerator)
+  {
+    this.contentNameGenerator = contentNameGenerator;
+    this.contentLocation = contentLocation;
+  }
 }

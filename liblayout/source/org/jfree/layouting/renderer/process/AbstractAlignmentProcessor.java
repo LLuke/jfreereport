@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractAlignmentProcessor.java,v 1.3 2006/11/17 20:14:56 taqua Exp $
+ * $Id: AbstractAlignmentProcessor.java,v 1.4 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ package org.jfree.layouting.renderer.process;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Stack;
 
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
@@ -54,6 +53,7 @@ import org.jfree.layouting.renderer.process.layoutrules.EndSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
 import org.jfree.layouting.util.LongList;
+import org.jfree.util.FastStack;
 
 /**
  * Todo: The whole horizontal alignment is not suitable for spanned page
@@ -291,7 +291,7 @@ public abstract class AbstractAlignmentProcessor
 
     // now, build the line and update the array ..
     final ArrayList pendingElements = new ArrayList();
-    final Stack contexts = new Stack();
+    final FastStack contexts = new FastStack();
     RenderBox firstBox = null;
     RenderBox box = null;
     for (int i = 0; i < lastPosition; i++)

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMinorAxisLayoutStep.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.7 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -68,6 +69,8 @@ import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.SpacerSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.TextSequenceElement;
+import org.jfree.layouting.renderer.process.layoutrules.ReplacedContentSequenceElement;
+import org.jfree.layouting.renderer.process.valign.ReplacedContentAlignContext;
 import org.jfree.util.Log;
 
 /**
@@ -434,6 +437,12 @@ public class InfiniteMinorAxisLayoutStep
     {
       breakState.add(new TextSequenceElement((RenderableText) node));
     }
+    else if (node instanceof RenderableReplacedContent)
+    {
+      breakState.add
+          (new ReplacedContentSequenceElement((RenderableReplacedContent) node));
+    }
+
     else if (node instanceof PlaceholderRenderNode)
     {
       breakState.add(new InlineNodeSequenceElement(node));

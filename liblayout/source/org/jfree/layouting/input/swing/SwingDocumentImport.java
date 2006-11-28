@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: SwingDocumentImport.java,v 1.10 2006/11/12 15:17:46 mimil Exp $
+ * $Id: SwingDocumentImport.java,v 1.12 2006/11/17 00:08:29 mimil Exp $
  *
  * Changes
  * -------
@@ -492,13 +492,11 @@ public class SwingDocumentImport
     frame.setVisible(true);
 
     LibLayoutBoot.getInstance().start();
-    OutputStream out = new NullOutputStream();
-
 
     long startTime = System.currentTimeMillis();
 
     final StreamingHtmlOutputProcessor outputProcessor =
-        new StreamingHtmlOutputProcessor(null, System.out);
+        new StreamingHtmlOutputProcessor(LibLayoutBoot.getInstance().getGlobalConfig());
     final LayoutProcess process = new DefaultLayoutProcess(outputProcessor);
 
 

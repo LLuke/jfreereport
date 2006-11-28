@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: NodeAlignContext.java,v 1.1 2006/10/17 17:31:57 taqua Exp $
  *
  * Changes
  * -------
@@ -43,12 +43,15 @@ package org.jfree.layouting.renderer.process.valign;
 import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
- * A generic align context for images and other nodes.
+ * A generic align context for images and other nodes. (Renderable-Content
+ * should have been aligned by the parent.
  *
  * @author Thomas Morgner
  */
 public class NodeAlignContext extends AlignContext
 {
+  private long shift;
+
   public NodeAlignContext(RenderNode node)
   {
     super(node);
@@ -61,16 +64,16 @@ public class NodeAlignContext extends AlignContext
 
   public void shift(final long delta)
   {
-
+    this.shift += delta;
   }
 
   public long getAfterEdge()
   {
-    return 0;
+    return shift;
   }
 
   public long getBeforeEdge()
   {
-    return 0;
+    return shift;
   }
 }

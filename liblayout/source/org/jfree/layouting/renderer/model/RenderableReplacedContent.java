@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableReplacedContent.java,v 1.6 2006/07/29 18:57:13 taqua Exp $
+ * $Id: RenderableReplacedContent.java,v 1.7 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ package org.jfree.layouting.renderer.model;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.util.geom.StrictDimension;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.resourceloader.ResourceKey;
 
 /**
@@ -50,6 +52,11 @@ import org.jfree.resourceloader.ResourceKey;
  * drawables. It is assumed, that the image can be split on any position,
  * although this is avoided as far as possible.
  *
+ * Flame me, but 'crop', 'fit' and 'fit-position' will be implemented later.
+ * Yes, they are powerfull, but nothing I want to deal with for the initial
+ * throw.
+ *
+ * @see http://www.w3.org/TR/css3-box/#the-fit
  * @author Thomas Morgner
  */
 public class RenderableReplacedContent extends RenderNode
@@ -93,6 +100,11 @@ public class RenderableReplacedContent extends RenderNode
     this.verticalAlign = verticalAlign;
   }
 
+  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  {
+    super.appyStyle(context, metaData);
+  }
+
   public Object getRawObject()
   {
     return rawObject;
@@ -116,5 +128,10 @@ public class RenderableReplacedContent extends RenderNode
   public RenderLength getRequestedHeight()
   {
     return requestedHeight;
+  }
+
+  public CSSValue getVerticalAlign()
+  {
+    return verticalAlign;
   }
 }

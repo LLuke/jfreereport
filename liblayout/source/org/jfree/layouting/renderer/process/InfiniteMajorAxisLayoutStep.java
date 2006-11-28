@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMajorAxisLayoutStep.java,v 1.6 2006/11/20 21:01:54 taqua Exp $
+ * $Id: InfiniteMajorAxisLayoutStep.java,v 1.7 2006/11/26 19:43:15 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.process.valign.BoxAlignContext;
@@ -59,6 +60,7 @@ import org.jfree.layouting.renderer.process.valign.InlineBlockAlignContext;
 import org.jfree.layouting.renderer.process.valign.NodeAlignContext;
 import org.jfree.layouting.renderer.process.valign.TextElementAlignContext;
 import org.jfree.layouting.renderer.process.valign.VerticalAlignmentProcessor;
+import org.jfree.layouting.renderer.process.valign.ReplacedContentAlignContext;
 import org.jfree.util.FastStack;
 
 /**
@@ -186,6 +188,7 @@ public class InfiniteMajorAxisLayoutStep
     if (box != continuedElement)
     {
       computeYPosition(box);
+
       // We have an valid y position now
       // we do not recompute the y-position of the continued element yet as we
       // would not have all context-information here (and it had been done in
@@ -420,6 +423,11 @@ public class InfiniteMajorAxisLayoutStep
     {
       breakState.getCurrentLine().addChild
           (new TextElementAlignContext((RenderableText) node));
+    }
+    else if (node instanceof RenderableReplacedContent)
+    {
+      breakState.getCurrentLine().addChild
+          (new ReplacedContentAlignContext((RenderableReplacedContent) node));
     }
     else if (node instanceof SpacerRenderNode)
     {

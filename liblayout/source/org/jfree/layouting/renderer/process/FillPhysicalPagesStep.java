@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FillPhysicalPagesStep.java,v 1.3 2006/11/09 14:28:49 taqua Exp $
+ * $Id: FillPhysicalPagesStep.java,v 1.4 2006/11/20 21:01:54 taqua Exp $
  *
  * Changes
  * -------
@@ -126,6 +126,10 @@ public class FillPhysicalPagesStep extends IterateVisualProcessStep
     RenderNode node = box.getFirstChild();
     while (node != null)
     {
+      if (node.isIgnorableForRendering())
+      {
+        node = node.getNext();
+      }
       if ((node.getY() + node.getHeight()) <= contentStart)
       {
         final RenderNode next = node.getNext();
