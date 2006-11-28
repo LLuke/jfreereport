@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceData.java,v 1.1.1.1 2006/04/17 16:48:27 taqua Exp $
+ * $Id: ResourceData.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,30 @@ public interface ResourceData
   public static final String FILENAME = "filename";
 
   public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException;
+
+  /**
+   * This is dangerous, especially if the resource is large.
+   *
+   * @param caller
+   * @return
+   * @throws ResourceLoadingException
+   */
   public byte[] getResource(ResourceManager caller) throws ResourceLoadingException;
+
+  /**
+   * Tries to read data into the given byte-array.
+   *
+   * @param caller
+   * @param target
+   * @param offset
+   * @param length
+   * @return the number of bytes read or -1 if no more data can be read.
+   * @throws ResourceLoadingException
+   */
+  public int getResource
+      (ResourceManager caller, byte[] target, int offset, int length)
+      throws ResourceLoadingException;
+
   public Object getAttribute (String key);
   public ResourceKey getKey();
   public long getVersion(ResourceManager caller)

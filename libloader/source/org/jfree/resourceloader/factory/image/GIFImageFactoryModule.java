@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: GIFImageFactoryModule.java,v 1.1.1.1 2006/04/17 16:48:40 taqua Exp $
+ * $Id: GIFImageFactoryModule.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -42,16 +42,14 @@ package org.jfree.resourceloader.factory.image;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.util.Hashtable;
 
-import org.jfree.resourceloader.factory.AbstractFactoryModule;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceData;
-import org.jfree.resourceloader.ResourceLoadingException;
-import org.jfree.resourceloader.SimpleResource;
-import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKey;
+import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.SimpleResource;
+import org.jfree.resourceloader.factory.AbstractFactoryModule;
 
 /**
  * Creation-Date: 05.04.2006, 17:35:12

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResourceManager.java,v 1.7 2006/07/30 13:15:43 taqua Exp $
+ * $Id: ResourceManager.java,v 1.8 2006/11/07 20:09:46 taqua Exp $
  *
  * Changes
  * -------
@@ -310,6 +310,10 @@ public class ResourceManager
         {
           return performCreate(data, fact, context);
         }
+        catch(ContentNotRecognizedException ce)
+        {
+          // Ignore it, unless it is the last one.
+        }
         catch(ResourceCreationException rex)
         {
           // ignore it, try the next factory ...
@@ -319,7 +323,7 @@ public class ResourceManager
           }
         }
       }
-      throw new ResourceCreationException
+      throw new ContentNotRecognizedException
               ("None of the selected factories was able to handle the given data: " + key);
     }
   }

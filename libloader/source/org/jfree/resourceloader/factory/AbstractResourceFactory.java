@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractResourceFactory.java,v 1.1.1.1 2006/04/17 16:48:39 taqua Exp $
+ * $Id: AbstractResourceFactory.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.resourceloader.ResourceFactory;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.ContentNotRecognizedException;
 import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.util.Log;
@@ -210,7 +211,7 @@ public abstract class AbstractResourceFactory implements ResourceFactory
         // ok, that one failed, try the next one ...
       }
     }
-    throw new ResourceCreationException
+    throw new ContentNotRecognizedException
             ("No valid handler for the given content.");
   }
 }

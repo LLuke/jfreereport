@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CachingResourceData.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
+ * $Id: CachingResourceData.java,v 1.3 2006/09/26 11:35:06 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,35 @@ public class CachingResourceData implements ResourceData, Serializable
     {
       rawData = data.getResource(caller);
     }
-    return rawData;
+    return (byte[]) rawData.clone();
+  }
+
+  public synchronized int getResource
+      (ResourceManager caller, byte[] target, int offset, int length)
+      throws ResourceLoadingException
+  {
+    if (target == null)
+    {
+      throw new NullPointerException();
+    }
+    if (target.length < (offset + length))
+    {
+      throw new IndexOutOfBoundsException();
+    }
+
+    if (rawData == null)
+    {
+      rawData = data.getResource(caller);
+    }
+
+    final int maxLength = Math.min (rawData.length - offset, length);
+    if (maxLength <= 0)
+    {
+      return -1;
+    }
+
+    System.arraycopy(rawData, offset, target, 0, maxLength);
+    return maxLength;
   }
 
   public synchronized Object getAttribute(String key)

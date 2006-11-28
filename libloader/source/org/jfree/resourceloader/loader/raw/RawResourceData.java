@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RawResourceData.java,v 1.1.1.1 2006/04/17 16:48:39 taqua Exp $
+ * $Id: RawResourceData.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,10 @@ public class RawResourceData implements ResourceData
 
   public RawResourceData(final RawResourceKey rawKey)
   {
-    if (rawKey == null) throw new NullPointerException();
+    if (rawKey == null)
+    {
+      throw new NullPointerException();
+    }
     this.rawKey = rawKey;
   }
 
@@ -71,6 +74,25 @@ public class RawResourceData implements ResourceData
   public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
     return new ByteArrayInputStream (rawKey.getData());
+  }
+
+  /**
+   * Tries to read data into the given byte-array.
+   *
+   * @param caller
+   * @param target
+   * @param offset
+   * @param length
+   * @return the number of bytes read or -1 if no more data can be read.
+   * @throws org.jfree.resourceloader.ResourceLoadingException
+   *
+   */
+  public int getResource(ResourceManager caller,
+                         byte[] target,
+                         int offset,
+                         int length) throws ResourceLoadingException
+  {
+    return 0;
   }
 
   /**

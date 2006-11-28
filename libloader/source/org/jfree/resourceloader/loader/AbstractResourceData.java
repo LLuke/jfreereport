@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractResourceData.java,v 1.2 2006/04/29 15:07:39 taqua Exp $
+ * $Id: AbstractResourceData.java,v 1.3 2006/05/16 17:13:30 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,8 @@ public abstract class AbstractResourceData implements ResourceData, Serializable
   {
   }
 
-  public byte[] getResource(ResourceManager caller) throws ResourceLoadingException
+  public byte[] getResource(ResourceManager caller)
+      throws ResourceLoadingException
   {
     try
     {
@@ -75,7 +76,7 @@ public abstract class AbstractResourceData implements ResourceData, Serializable
       in.close();
       return bout.toByteArray();
     }
-    catch(ResourceLoadingException rle)
+    catch (ResourceLoadingException rle)
     {
       throw rle;
     }
@@ -85,4 +86,67 @@ public abstract class AbstractResourceData implements ResourceData, Serializable
     }
   }
 
+  public int getResource(final ResourceManager caller,
+                         final byte[] target,
+                         int offset,
+                         int length) throws ResourceLoadingException
+  {
+    try
+    {
+      if (target == null)
+      {
+        throw new NullPointerException();
+      }
+      if (target.length < (offset + length))
+      {
+        throw new IndexOutOfBoundsException();
+      }
+
+      final InputStream in = getResourceAsStream(caller);
+      if (in == null)
+      {
+        throw new ResourceLoadingException("Unable to read Stream: No input stream: " + getKey());
+      }
+
+      if (offset > 0)
+      {
+        long toBeSkipped = offset;
+        long skipResult = in.skip(toBeSkipped);
+        toBeSkipped -= skipResult;
+        while (skipResult > 0 && toBeSkipped > 0)
+        {
+          skipResult = in.skip(offset);
+          toBeSkipped -= skipResult;
+        }
+
+        if (toBeSkipped > 0)
+        {
+          // failed to read up to the offset ..
+          throw new ResourceLoadingException
+              ("Unable to read Stream: Skipping content failed: " + getKey());
+        }
+      }
+
+      int bytesToRead = length;
+      // the input stream does not supply accurate available() data
+      // the zip entry does not know the size of the data
+      int bytesRead = in.read(target, length - bytesToRead, bytesToRead);
+      while (bytesRead > -1 && bytesToRead > 0)
+      {
+        bytesToRead -= bytesRead;
+        bytesRead = in.read(target, length - bytesToRead, bytesToRead);
+      }
+
+      in.close();
+      return length - bytesRead;
+    }
+    catch (ResourceLoadingException rle)
+    {
+      throw rle;
+    }
+    catch (IOException e)
+    {
+      throw new ResourceLoadingException("Unable to read Stream: ", e);
+    }
+  }
 }
