@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: EncodingGenerator.java,v 1.1 2006/04/29 15:12:58 taqua Exp $
  *
  * Changes
  * -------
@@ -95,9 +95,9 @@ public class EncodingGenerator
     {
       throw new IllegalArgumentException("Not a directory: " + sourceDirectory);
     }
-    if (sourceDirectory.canWrite() == false)
+    if (sourceDirectory.canRead() == false)
     {
-      throw new IllegalArgumentException("Not writable: " + sourceDirectory);
+      throw new IllegalArgumentException("Not readable: " + sourceDirectory);
     }
 
     this.sourceDirectory = sourceDirectory;
