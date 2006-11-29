@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: NodeReadHandlerFactory.java,v 1.1 2006/11/28 13:22:20 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,7 +36,6 @@ import java.util.Iterator;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.util.Log;
 import org.xml.sax.SAXException;
 
 /**
@@ -225,11 +224,7 @@ public class NodeReadHandlerFactory
       namespace = defaultNamespace;
     }
 
-    if (tagname.equals("div"))
-    {
-      Log.debug ("ERE");
-    }
-    TagDefinitionKey key = new TagDefinitionKey(namespace, tagname);
+    final TagDefinitionKey key = new TagDefinitionKey(namespace, tagname);
     String tagVal = (String) tagData.get(key);
     if (tagVal != null)
     {

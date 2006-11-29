@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FormulaExpression.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,17 +32,8 @@ package org.jfree.report.expressions;
 
 import org.jfree.formula.Formula;
 import org.jfree.formula.FormulaContext;
-import org.jfree.formula.LibFormulaErrorValue;
-import org.jfree.formula.LocalizationContext;
-import org.jfree.formula.function.FunctionRegistry;
-import org.jfree.formula.operators.OperatorFactory;
-import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.AnyType;
-import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.flow.ReportContext;
-import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 
 /**
@@ -52,83 +43,6 @@ import org.jfree.util.Log;
  */
 public class FormulaExpression extends AbstractExpression
 {
-  private static class ReportFormulaContext implements FormulaContext
-  {
-    private FormulaContext backend;
-    private DataRow dataRow;
-
-    public ReportFormulaContext(FormulaContext backend,
-                                DataRow dataRow)
-    {
-      this.backend = backend;
-      this.dataRow = dataRow;
-    }
-
-    public LocalizationContext getLocalizationContext()
-    {
-      return backend.getLocalizationContext();
-    }
-
-    public Configuration getConfiguration()
-    {
-      return backend.getConfiguration();
-    }
-
-    public FunctionRegistry getFunctionRegistry()
-    {
-      return backend.getFunctionRegistry();
-    }
-
-    public TypeRegistry getTypeRegistry()
-    {
-      return backend.getTypeRegistry();
-    }
-
-    public OperatorFactory getOperatorFactory()
-    {
-      return backend.getOperatorFactory();
-    }
-
-    public boolean isReferenceDirty(Object name)
-    {
-      return true;
-    }
-
-    public Type resolveReferenceType(Object name)
-    {
-      return AnyType.TYPE;
-    }
-
-    public Object resolveReference(Object name)
-    {
-      if (name == null)
-      {
-        throw new NullPointerException();
-      }
-
-      try
-      {
-        return dataRow.get(String.valueOf(name));
-      }
-      catch (DataSourceException e)
-      {
-        Log.debug("Error while resolving formula reference: ", e);
-        return new LibFormulaErrorValue
-            (LibFormulaErrorValue.ERROR_REFERENCE_NOT_RESOLVABLE);
-      }
-    }
-
-    public DataRow getDataRow()
-    {
-      return dataRow;
-    }
-
-    public void setDataRow(final DataRow dataRow)
-    {
-      this.dataRow = dataRow;
-    }
-  }
-
   private transient Formula compiledFormula;
   private String formulaNamespace;
   private String formulaExpression;
@@ -194,8 +108,8 @@ public class FormulaExpression extends AbstractExpression
         compiledFormula = new Formula(formulaExpression);
       }
 
-      final FormulaExpression.ReportFormulaContext context =
-          new FormulaExpression.ReportFormulaContext(getFormulaContext(), getDataRow());
+      final ReportFormulaContext context =
+          new ReportFormulaContext(getFormulaContext(), getDataRow());
       try
       {
         compiledFormula.initialize(context);
