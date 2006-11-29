@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractStore.java,v 1.1 2006/11/29 23:24:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -40,7 +40,7 @@ import java.util.Map;
  *
  * @author Thomas Morgner
  */
-public class AbstractStore implements Cloneable, Serializable
+public abstract class AbstractStore implements Cloneable, Serializable
 {
   private Map initialSet;
   private HashMap firstSet;
@@ -89,9 +89,16 @@ public class AbstractStore implements Cloneable, Serializable
 
   public AbstractStore derive()
   {
-    final AbstractStore contentStore = new AbstractStore();
-    contentStore.initialSet = Collections.unmodifiableMap(lastSet);
-    return contentStore;
+    try
+    {
+      final AbstractStore contentStore = (AbstractStore) clone();
+      contentStore.initialSet = Collections.unmodifiableMap(lastSet);
+      return contentStore;
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalStateException("Must not happen");
+    }
   }
 
   public Object clone () throws CloneNotSupportedException

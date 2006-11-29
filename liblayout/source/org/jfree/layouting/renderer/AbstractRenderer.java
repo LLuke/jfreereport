@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractRenderer.java,v 1.8 2006/11/26 19:43:15 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.9 2006/11/29 23:23:36 taqua Exp $
  *
  * Changes
  * -------
@@ -295,6 +295,12 @@ public abstract class AbstractRenderer implements Renderer
     // as this contains the hints for the physical page sizes.
     logicalPageBox = new LogicalPageBox(pageGrid);
     logicalPageBox.setPageContext(this.pageContext.getPageContext());
+
+    this.counterStore.add("page", new Integer
+        (layoutProcess.getOutputProcessor().getPageCursor() + 1));
+    this.counterStore.add("pages", new Integer
+        (layoutProcess.getOutputProcessor().getLogicalPageCount()));
+
   }
 
   /**
@@ -354,6 +360,11 @@ public abstract class AbstractRenderer implements Renderer
 //    }
 
     return insertationPoint;
+  }
+
+  protected boolean isProcessingNormalFlow()
+  {
+    return this.flowContexts.size() <= 1;
   }
 
   public void startedFlow(final LayoutContext context)
@@ -740,7 +751,7 @@ public abstract class AbstractRenderer implements Renderer
             new Integer(resolvedToken.getCounterValue()));
       }
 
-      if (logicalPageBox.isNormalFlowActive() == false)
+      if (isProcessingNormalFlow() == false)
       {
         getInsertationPoint().addChilds(textFactory.finishText());
         try
@@ -769,7 +780,7 @@ public abstract class AbstractRenderer implements Renderer
       {
         final VariableToken vtoken = (VariableToken) parent;
         getStringsStore().add(vtoken.getVariable(), resolvedToken.getText());
-        if (logicalPageBox.isNormalFlowActive() == false)
+        if (isProcessingNormalFlow() == false)
         {
           getInsertationPoint().addChilds(textFactory.finishText());
           try
@@ -1028,7 +1039,11 @@ public abstract class AbstractRenderer implements Renderer
     this.pendingStore = (ContentStore) pendingStore.derive();
     this.elementsStore = (ContentStore) elementsStore.derive();
     this.stringsStore = (StringStore) stringsStore.derive();
-
+    this.counterStore = (CounterStore) counterStore.derive();
+    this.counterStore.add("page", new Integer
+        (layoutProcess.getOutputProcessor().getPageCursor() + 1));
+    this.counterStore.add("pages", new Integer
+        (layoutProcess.getOutputProcessor().getLogicalPageCount()));
     this.logicalPageBox.updatePageArea(pageGrid);
   }
 
