@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentStore.java,v 1.1 2006/10/27 18:28:08 taqua Exp $
+ * $Id: ContentStore.java,v 1.2 2006/11/11 20:23:46 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.renderer;
 
-import java.util.HashMap;
-
+import org.jfree.layouting.input.style.keys.page.PagePolicy;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.model.RenderNode;
 
 /**
@@ -53,44 +53,51 @@ import org.jfree.layouting.renderer.model.RenderNode;
  *
  * @author Thomas Morgner
  */
-public class ContentStore implements Cloneable
+public class ContentStore extends AbstractStore
 {
-  private HashMap initialSet;
-  private HashMap firstSet;
-  private HashMap lastSet;
-
   public ContentStore()
   {
-    initialSet = new HashMap();
-    firstSet = new HashMap();
-    lastSet = new HashMap();
   }
 
-  public void add(String name, RenderNode[] contents)
+  public void add(String name, RenderNode[] value)
   {
-    if (firstSet.containsKey(name) == false)
-    {
-      firstSet.put(name, contents);
-    }
-    lastSet.put(name, contents);
+    super.addInternal(name, value);
   }
 
-  public RenderNode[] getLast(String name)
+  public RenderNode[] get(String name)
   {
-    if (lastSet.containsKey(name))
-    {
-      return deriveRetval((RenderNode[]) lastSet.get(name));
-    }
-    return deriveRetval((RenderNode[]) initialSet.get(name));
+    return get(name, PagePolicy.LAST);
   }
 
-  public RenderNode[] getFirst(String name)
+  public RenderNode[] get(String name, CSSValue pagePolicy)
   {
-    if (firstSet.containsKey(name))
+    if (PagePolicy.START.equals(pagePolicy))
     {
-      return deriveRetval((RenderNode[]) firstSet.get(name));
+      final RenderNode[] initial = (RenderNode[]) getInitialInternal(name);
+      if (initial == null)
+      {
+        return null;
+      }
+      return deriveRetval(initial);
     }
-    return deriveRetval((RenderNode[]) initialSet.get(name));
+    else if (PagePolicy.FIRST.equals(pagePolicy))
+    {
+      final RenderNode[] first = (RenderNode[]) getFirstInternal(name);
+      if (first == null)
+      {
+        return null;
+      }
+      return deriveRetval(first);
+    }
+    else
+    {
+      final RenderNode[] last = (RenderNode[]) getLastInternal(name);
+      if (last == null)
+      {
+        return null;
+      }
+      return deriveRetval(last);
+    }
   }
 
   private RenderNode[] deriveRetval(RenderNode[] val)
@@ -106,24 +113,6 @@ public class ContentStore implements Cloneable
       reval[i] = node.derive(true);
     }
     return val;
-  }
-
-  public ContentStore derive()
-  {
-    final ContentStore contentStore = new ContentStore();
-    contentStore.initialSet.putAll(lastSet);
-    return contentStore;
-  }
-
-
-  public Object clone () throws CloneNotSupportedException
-  {
-    ContentStore store = (ContentStore) super.clone();
-    store.firstSet = (HashMap) firstSet.clone();
-    store.lastSet = (HashMap) lastSet.clone();
-    // initial set is immutable.
-    store.initialSet = initialSet;
-    return store;
   }
 
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: PreserveBreaksWhiteSpaceFilter.java,v 1.4 2006/07/30 13:13:47 taqua Exp $
+ * $Id: PreserveBreaksWhiteSpaceFilter.java,v 1.5 2006/10/17 16:39:08 taqua Exp $
  *
  * Changes
  * -------
@@ -94,6 +94,15 @@ public class PreserveBreaksWhiteSpaceFilter implements WhiteSpaceFilter
 
   public PreserveBreaksWhiteSpaceFilter()
   {
+  }
+
+  /**
+   * Reset the filter to the same state as if the filter had been constructed
+   * but not used yet.
+   */
+  public void reset()
+  {
+    collapse = false;
   }
 
   /**

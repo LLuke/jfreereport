@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: InfiniteMinorAxisLayoutStep.java,v 1.7 2006/11/20 21:01:54 taqua Exp $
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.8 2006/11/28 13:13:45 taqua Exp $
  *
  * Changes
  * -------
@@ -52,10 +52,10 @@ import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.PlaceholderRenderNode;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
-import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -66,11 +66,10 @@ import org.jfree.layouting.renderer.process.layoutrules.EndSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineBoxSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineNodeSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
+import org.jfree.layouting.renderer.process.layoutrules.ReplacedContentSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.SpacerSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.TextSequenceElement;
-import org.jfree.layouting.renderer.process.layoutrules.ReplacedContentSequenceElement;
-import org.jfree.layouting.renderer.process.valign.ReplacedContentAlignContext;
 import org.jfree.util.Log;
 
 /**

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractRenderer.java,v 1.7 2006/11/20 21:01:53 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.8 2006/11/26 19:43:15 taqua Exp $
  *
  * Changes
  * -------
@@ -48,20 +48,23 @@ import org.jfree.fonts.encoding.manual.Utf16LE;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
-import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.content.ContentToken;
-import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
+import org.jfree.layouting.layouter.content.computed.ComputedToken;
+import org.jfree.layouting.layouter.content.computed.VariableToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedCounterToken;
+import org.jfree.layouting.layouter.content.resolved.ResolvedStringToken;
 import org.jfree.layouting.layouter.content.type.GenericType;
 import org.jfree.layouting.layouter.content.type.ResourceType;
 import org.jfree.layouting.layouter.content.type.TextType;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.normalizer.content.NormalizationException;
+import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.renderer.border.BorderFactory;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
@@ -76,6 +79,7 @@ import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
+import org.jfree.layouting.renderer.model.RenderableTextBox;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -113,6 +117,7 @@ public abstract class AbstractRenderer implements Renderer
     private StringStore stringsStore;
     private ContentStore elementsStore;
     private ContentStore pendingStore;
+    private CounterStore counterStore;
 
     // todo:!
     private FlowContext.FlowContextState[] flowContexts;
@@ -138,6 +143,7 @@ public abstract class AbstractRenderer implements Renderer
         this.stringsStore = (StringStore) renderer.stringsStore.clone();
         this.elementsStore = (ContentStore) renderer.elementsStore.clone();
         this.pendingStore = (ContentStore) renderer.pendingStore.clone();
+        this.counterStore = (CounterStore) renderer.counterStore.clone();
       }
       catch (CloneNotSupportedException e)
       {
@@ -168,6 +174,7 @@ public abstract class AbstractRenderer implements Renderer
         renderer.stringsStore = (StringStore) this.stringsStore.clone();
         renderer.elementsStore = (ContentStore) this.elementsStore.clone();
         renderer.pendingStore = (ContentStore) this.pendingStore.clone();
+        renderer.counterStore = (CounterStore) this.counterStore.clone();
       }
       catch (CloneNotSupportedException e)
       {
@@ -201,6 +208,7 @@ public abstract class AbstractRenderer implements Renderer
   // statefull ..
   private LogicalPageBox logicalPageBox;
   private StringStore stringsStore;
+  private CounterStore counterStore;
   private ContentStore elementsStore;
   private ContentStore pendingStore;
   private FastStack flowContexts;
@@ -226,12 +234,18 @@ public abstract class AbstractRenderer implements Renderer
 
     if (init)
     {
+      this.counterStore = new CounterStore();
       this.stringsStore = new StringStore();
       this.elementsStore = new ContentStore();
       this.pendingStore = new ContentStore();
       this.boxDefinitionFactory =
           new DefaultBoxDefinitionFactory(new BorderFactory());
     }
+  }
+
+  public CounterStore getCounterStore()
+  {
+    return counterStore;
   }
 
   public LogicalPageBox getLogicalPageBox()
@@ -254,6 +268,11 @@ public abstract class AbstractRenderer implements Renderer
   {
     this.layoutFailureNodeId = layoutFailureNodeId;
     this.layoutFailureReason = layoutFailureReason;
+  }
+
+  public StringStore getStringsStore()
+  {
+    return stringsStore;
   }
 
   public void startDocument(final PageContext pageContext)
@@ -377,7 +396,6 @@ public abstract class AbstractRenderer implements Renderer
         }
       }
 
-
       // The receiving element would define the content property as
       // 'content: elements(header)'
 
@@ -405,7 +423,7 @@ public abstract class AbstractRenderer implements Renderer
     }
   }
 
-  private void startHeaderFlow (final String target, final LayoutContext context)
+  private void startHeaderFlow(final String target, final LayoutContext context)
   {
     final BoxDefinition contentRoot =
         boxDefinitionFactory.createBlockBoxDefinition
@@ -710,19 +728,73 @@ public abstract class AbstractRenderer implements Renderer
       }
     }
 
+
+    if (content instanceof ResolvedCounterToken)
+    {
+      final ResolvedCounterToken resolvedToken = (ResolvedCounterToken) content;
+      final String name = resolvedToken.getParent().getName();
+
+      if (isReservedCounter(name) == false)
+      {
+        getCounterStore().add(name,
+            new Integer(resolvedToken.getCounterValue()));
+      }
+
+      if (logicalPageBox.isNormalFlowActive() == false)
+      {
+        getInsertationPoint().addChilds(textFactory.finishText());
+        try
+        {
+          final RenderableTextBox token = new RenderableTextBox
+              (textFactory.saveState(), resolvedToken, context);
+          token.appyStyle(context, getLayoutProcess().getOutputMetaData());
+          getInsertationPoint().addChild(token);
+          token.close();
+          tryValidateOutput(null);
+          return;
+        }
+        catch (StateException se)
+        {
+          // Should not happen ..
+          throw new NormalizationException("State failed.", se);
+        }
+      }
+    }
+
+    if (context instanceof ResolvedStringToken)
+    {
+      final ResolvedStringToken resolvedToken = (ResolvedStringToken) context;
+      final ComputedToken parent = resolvedToken.getParent();
+      if (parent instanceof VariableToken)
+      {
+        final VariableToken vtoken = (VariableToken) parent;
+        getStringsStore().add(vtoken.getVariable(), resolvedToken.getText());
+        if (logicalPageBox.isNormalFlowActive() == false)
+        {
+          getInsertationPoint().addChilds(textFactory.finishText());
+          try
+          {
+            final RenderableTextBox token = new RenderableTextBox
+                (textFactory.saveState(), resolvedToken, context);
+            token.appyStyle(context, getLayoutProcess().getOutputMetaData());
+            getInsertationPoint().addChild(token);
+            token.close();
+            tryValidateOutput(null);
+            return;
+          }
+          catch (StateException se)
+          {
+            // Should not happen ..
+            throw new NormalizationException("State failed.", se);
+          }
+        }
+      }
+    }
+
     if (content instanceof TextType)
     {
-      final String textStr;
-      if (content instanceof ResolvedToken)
-      {
-        final ResolvedToken stringToken = (ResolvedToken) content;
-        textStr = resolveComputedToken(stringToken);
-      }
-      else
-      {
-        TextType textRaw = (TextType) content;
-        textStr = textRaw.getText();
-      }
+      final TextType textRaw = (TextType) content;
+      final String textStr = textRaw.getText();
 
       final RenderNode[] text = createText(textStr, context);
       if (text.length == 0)
@@ -736,9 +808,17 @@ public abstract class AbstractRenderer implements Renderer
     }
   }
 
-  protected String resolveComputedToken (ResolvedToken stringToken)
+  protected boolean isReservedCounter(String name)
   {
-    return stringToken.getText();
+    if (name.equals("pages"))
+    {
+      return true;
+    }
+    if (name.equals("page"))
+    {
+      return true;
+    }
+    return false;
   }
 
   private RenderNode[] createText(final String str,
@@ -751,8 +831,8 @@ public abstract class AbstractRenderer implements Renderer
     buffer = Utf16LE.getInstance().decodeString(str, buffer);
     final int[] data = buffer.getBuffer();
 
-    RenderableTextFactory textFactory = getCurrentTextFactory();
-    return textFactory.createText(data, 0, data.length, context);
+    final RenderableTextFactory textFactory = getCurrentTextFactory();
+    return textFactory.createText(data, 0, buffer.getLength(), context);
   }
 
   private RenderableReplacedContent createImage(Image image,
@@ -945,9 +1025,9 @@ public abstract class AbstractRenderer implements Renderer
     final PageGrid pageGrid =
         this.pageContext.createPageGrid(layoutProcess.getOutputMetaData());
 
-    this.pendingStore = pendingStore.derive();
-    this.elementsStore = elementsStore.derive();
-    this.stringsStore = stringsStore.derive();
+    this.pendingStore = (ContentStore) pendingStore.derive();
+    this.elementsStore = (ContentStore) elementsStore.derive();
+    this.stringsStore = (StringStore) stringsStore.derive();
 
     this.logicalPageBox.updatePageArea(pageGrid);
   }

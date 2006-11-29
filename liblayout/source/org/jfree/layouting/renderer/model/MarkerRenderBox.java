@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: MarkerRenderBox.java,v 1.4 2006/10/17 16:39:08 taqua Exp $
+ * $Id: MarkerRenderBox.java,v 1.5 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.jfree.layouting.output.OutputProcessorMetaData;
  *
  * @author Thomas Morgner
  */
-public class MarkerRenderBox extends InlineRenderBox
+public class MarkerRenderBox extends BlockRenderBox
 {
   private boolean outside;
 

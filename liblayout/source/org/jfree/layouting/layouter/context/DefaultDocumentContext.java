@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultDocumentContext.java,v 1.3 2006/04/21 17:29:37 taqua Exp $
+ * $Id: DefaultDocumentContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.input.style.keys.page.PagePolicy;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.layouter.counters.numeric.DecimalCounterStyle;
 import org.jfree.layouting.layouter.i18n.DefaultLocalizationContext;
@@ -95,22 +95,22 @@ public class DefaultDocumentContext extends DefaultDocumentMetaNode
     setMetaAttribute(LOCALIZATION_ATTR, new DefaultLocalizationContext());
   }
 
-  public PagePolicy getStringPolicy(String name)
+  public CSSValue getStringPolicy(String name)
   {
-    return (PagePolicy) stringPolicy.get(name);
+    return (CSSValue) stringPolicy.get(name);
   }
 
-  public void setStringPolicy(String name, PagePolicy policy)
+  public void setStringPolicy(String name, CSSValue policy)
   {
     stringPolicy.put(name, policy);
   }
 
-  public PagePolicy getCounterPolicy(String name)
+  public CSSValue getCounterPolicy(String name)
   {
-    return (PagePolicy) counterPolicy.get(name);
+    return (CSSValue) counterPolicy.get(name);
   }
 
-  public void setCounterPolicy(String name, PagePolicy policy)
+  public void setCounterPolicy(String name, CSSValue policy)
   {
     counterPolicy.put(name, policy);
   }

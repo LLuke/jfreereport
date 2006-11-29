@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResolvedStringToken.java,v 1.2 2006/11/20 21:01:53 taqua Exp $
+ * $Id: ResolvedStringToken.java,v 1.3 2006/11/26 19:43:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.layouter.content.resolved;
 
 import org.jfree.layouting.layouter.content.computed.ComputedToken;
+import org.jfree.layouting.layouter.content.computed.VariableToken;
 import org.jfree.layouting.layouter.content.type.TextType;
 
 /**
@@ -51,7 +52,6 @@ import org.jfree.layouting.layouter.content.type.TextType;
 public class ResolvedStringToken implements ResolvedToken, TextType
 {
   private ComputedToken parent;
-
   private String text;
 
   public ResolvedStringToken(final ComputedToken parent, final String text)

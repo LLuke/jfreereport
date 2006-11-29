@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Cedric Pronzato;
  *
- * $Id: Converter.java,v 1.1 2006/11/07 22:38:11 mimil Exp $
+ * $Id: DocumentConverter.java,v 1.1 2006/11/17 00:08:30 mimil Exp $
  *
  * Changes
  * -------
@@ -112,8 +112,8 @@ public class DocumentConverter implements Converter
 
       if (pageSize != null)
       {
-        width = pageSize.getWidth();
-        height = pageSize.getHeight();
+        width = (int) pageSize.getWidth();
+        height = (int) pageSize.getHeight();
       }
 
       if (styleKey.equals(RTF_PAGEWIDTH))

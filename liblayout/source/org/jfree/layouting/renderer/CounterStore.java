@@ -23,15 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CounterStore.java,v 1.1 2006/11/20 21:03:43 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
 
 package org.jfree.layouting.renderer;
 
-import java.io.Serializable;
-import java.util.HashMap;
+import org.jfree.layouting.input.style.keys.page.PagePolicy;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * For the first throw, the content remains very simple. We support the 4 modes:
@@ -39,65 +39,55 @@ import java.util.HashMap;
  * is used (else the initial content) last - the last value is used. last-except
  * - the last value is used on the next page. (Contrary to the specification, we
  * fall back to the start-value instead of using an empty value).
- *
+ * <p/>
  * The string store is used for all counter, counters and string properties.
  *
  * @author Thomas Morgner
  */
-public class CounterStore implements Cloneable, Serializable
+public class CounterStore extends AbstractStore
 {
-  private HashMap initialSet;
-  private HashMap firstSet;
-  private HashMap lastSet;
+  private static final Integer ZERO = new Integer(0);
 
   public CounterStore()
   {
-    initialSet = new HashMap();
-    firstSet = new HashMap();
-    lastSet = new HashMap();
   }
 
-  public void add(String name, int counterValue)
+  public void add(String name, Integer counterValue)
   {
-    if (firstSet.containsKey(name) == false)
+    super.addInternal(name, counterValue);
+  }
+
+  public Integer get(String name)
+  {
+    return get(name, PagePolicy.LAST);
+  }
+
+  public Integer get(String name, CSSValue pagePolicy)
+  {
+    if (PagePolicy.START.equals(pagePolicy))
     {
-      firstSet.put(name, new Integer(counterValue));
+      final Integer initial = (Integer) getInitialInternal(name);
+      if (initial == null)
+      {
+        return ZERO;
+      }
+      return initial;
     }
-    lastSet.put(name, new Integer(counterValue));
-  }
-
-  public Integer getLast(String name)
-  {
-    if (lastSet.containsKey(name))
+    else if (PagePolicy.FIRST.equals(pagePolicy))
     {
-      return (Integer) lastSet.get(name);
+      final Integer first = (Integer) getFirstInternal(name);
+      if (first == null)
+      {
+        return ZERO;
+      }
+      return first;
     }
-    return (Integer) initialSet.get(name);
-  }
 
-  public Integer getFirst(String name)
-  {
-    if (firstSet.containsKey(name))
+    final Integer last = (Integer) getLastInternal(name);
+    if (last == null)
     {
-      return (Integer) firstSet.get(name);
+      return ZERO;
     }
-    return (Integer) initialSet.get(name);
-  }
-
-  public CounterStore derive()
-  {
-    final CounterStore contentStore = new CounterStore();
-    contentStore.initialSet.putAll(lastSet);
-    return contentStore;
-  }
-
-  public Object clone () throws CloneNotSupportedException
-  {
-    CounterStore store = (CounterStore) super.clone();
-    store.firstSet = (HashMap) firstSet.clone();
-    store.lastSet = (HashMap) lastSet.clone();
-    // initial set is immutable.
-    store.initialSet = initialSet;
-    return store;
+    return last;
   }
 }

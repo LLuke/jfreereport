@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StringStore.java,v 1.2 2006/11/11 20:23:46 taqua Exp $
+ * $Id: StringStore.java,v 1.3 2006/11/26 19:43:15 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
  */
 package org.jfree.layouting.renderer;
 
-import java.io.Serializable;
-import java.util.HashMap;
+import org.jfree.layouting.input.style.keys.page.PagePolicy;
+import org.jfree.layouting.input.style.values.CSSValue;
 
 /**
  * For the first throw, the content remains very simple. We support the 4 modes:
@@ -54,60 +54,35 @@ import java.util.HashMap;
  *
  * @author Thomas Morgner
  */
-public class StringStore implements Cloneable, Serializable
+public class StringStore extends AbstractStore
 {
-  private HashMap initialSet;
-  private HashMap firstSet;
-  private HashMap lastSet;
-
   public StringStore()
   {
-    initialSet = new HashMap();
-    firstSet = new HashMap();
-    lastSet = new HashMap();
   }
 
   public void add(String name, String contents)
   {
-    if (firstSet.containsKey(name) == false)
+    addInternal(name, contents);
+  }
+
+  public String get(String name)
+  {
+    return get(name, PagePolicy.LAST);
+  }
+
+  public String get(String name, CSSValue pagePolicy)
+  {
+    if (PagePolicy.START.equals(pagePolicy))
     {
-      firstSet.put(name, contents);
+      return (String) getInitialInternal(name);
     }
-    lastSet.put(name, contents);
-  }
-
-  public String getLast(String name)
-  {
-    if (lastSet.containsKey(name))
+    else if (PagePolicy.FIRST.equals(pagePolicy))
     {
-      return (String) lastSet.get(name);
+      return (String) getFirstInternal(name);
     }
-    return (String) initialSet.get(name);
-  }
-
-  public String getFirst(String name)
-  {
-    if (firstSet.containsKey(name))
+    else
     {
-      return (String) firstSet.get(name);
+      return (String) getLastInternal(name);
     }
-    return (String) initialSet.get(name);
-  }
-
-  public StringStore derive()
-  {
-    final StringStore contentStore = new StringStore();
-    contentStore.initialSet.putAll(lastSet);
-    return contentStore;
-  }
-
-  public Object clone () throws CloneNotSupportedException
-  {
-    StringStore store = (StringStore) super.clone();
-    store.firstSet = (HashMap) firstSet.clone();
-    store.lastSet = (HashMap) lastSet.clone();
-    // initial set is immutable.
-    store.initialSet = initialSet;
-    return store;
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PaginatingRenderer.java,v 1.3 2006/11/20 21:01:53 taqua Exp $
+ * $Id: PaginatingRenderer.java,v 1.4 2006/11/26 19:43:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -43,6 +43,7 @@ import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.process.CleanPaginatedBoxesStep;
 import org.jfree.layouting.renderer.process.ComputeBreakabilityStep;
 import org.jfree.layouting.renderer.process.ComputeICMMetricsStep;
@@ -57,6 +58,7 @@ import org.jfree.layouting.renderer.process.ParagraphLineBreakStep;
 import org.jfree.layouting.renderer.process.TableRowHeightStep;
 import org.jfree.layouting.renderer.process.TableValidationStep;
 import org.jfree.layouting.renderer.process.ValidateModelStep;
+import org.jfree.layouting.renderer.process.UpdateTokensStep;
 import org.jfree.util.Log;
 
 
@@ -83,6 +85,7 @@ public class PaginatingRenderer extends AbstractRenderer
     private PaginationStep paginationStep;
     private FillPhysicalPagesStep fillPhysicalPagesStep;
     private CleanPaginatedBoxesStep cleanPaginatedBoxesStep;
+    private UpdateTokensStep updateTokensStep;
 
     public DefaultFlowRendererState(PaginatingRenderer renderer)
         throws StateException
@@ -103,6 +106,7 @@ public class PaginatingRenderer extends AbstractRenderer
       this.paginationStep = renderer.paginationStep;
       this.fillPhysicalPagesStep = renderer.fillPhysicalPagesStep;
       this.cleanPaginatedBoxesStep = renderer.cleanPaginatedBoxesStep;
+      this.updateTokensStep = renderer.updateTokensStep;
     }
 
     /**
@@ -134,6 +138,7 @@ public class PaginatingRenderer extends AbstractRenderer
       defaultRenderer.fillPhysicalPagesStep = this.fillPhysicalPagesStep;
       defaultRenderer.cleanPaginatedBoxesStep = this.cleanPaginatedBoxesStep;
       defaultRenderer.breakabilityStep = this.breakabilityStep;
+      defaultRenderer.updateTokensStep = this.updateTokensStep;
       return defaultRenderer;
     }
   }
@@ -153,6 +158,7 @@ public class PaginatingRenderer extends AbstractRenderer
   private PaginationStep paginationStep;
   private FillPhysicalPagesStep fillPhysicalPagesStep;
   private CleanPaginatedBoxesStep cleanPaginatedBoxesStep;
+  private UpdateTokensStep updateTokensStep;
 
   protected PaginatingRenderer(final LayoutProcess layoutProcess, boolean init)
   {
@@ -173,6 +179,7 @@ public class PaginatingRenderer extends AbstractRenderer
       this.paginationStep = new PaginationStep();
       this.fillPhysicalPagesStep = new FillPhysicalPagesStep();
       this.cleanPaginatedBoxesStep = new CleanPaginatedBoxesStep();
+      this.updateTokensStep = new UpdateTokensStep();
     }
   }
 
@@ -186,18 +193,20 @@ public class PaginatingRenderer extends AbstractRenderer
     LogicalPageBox logicalPageBox = getLogicalPageBox();
     if (validateModelStep.isLayoutable(logicalPageBox) == false)
     {
-//      Log.debug ("Validation impossible: Reason-id: " +
-//          validateModelStep.getLayoutFailureResolution() +
-//          " on node " +
-//          logicalPageBox.findNodeById(validateModelStep.getLayoutFailureNodeId()));
-//
+      final RenderNode nodeById = logicalPageBox.findNodeById(validateModelStep.getLayoutFailureNodeId());
+      Log.debug ("Validation impossible: Reason-id: " +
+          validateModelStep.getLayoutFailureResolution() +
+          " on node " +
+          nodeById);
+
       setLayoutFailureReason(validateModelStep.getLayoutFailureResolution(),
           validateModelStep.getLayoutFailureNodeId());
       return;
     }
 
     tableValidationStep.validate(logicalPageBox);
-
+    updateTokensStep.compute(logicalPageBox, getLayoutProcess(),
+        getStringsStore(), getCounterStore());
     staticPropertiesStep.compute(logicalPageBox);
     marginsStep.compute(logicalPageBox);
     paragraphLinebreakStep.compute(logicalPageBox);
@@ -235,8 +244,8 @@ public class PaginatingRenderer extends AbstractRenderer
         repeat = logicalPageBox.isOpen();
         if (repeat)
         {
-//          Log.debug(new MemoryUsageMessage("PAGEBREAK ENCOUNTERED"));
-//          Log.debug("Page-Offset: " + pageOffset + " -> " + nextOffset);
+          Log.debug(new MemoryUsageMessage("PAGEBREAK ENCOUNTERED"));
+          Log.debug("Page-Offset: " + pageOffset + " -> " + nextOffset);
           firePagebreak();
 
           logicalPageBox.setPageOffset(nextOffset);
@@ -262,25 +271,6 @@ public class PaginatingRenderer extends AbstractRenderer
 
     // todo: Update the pseudo-pages (left | right, first)
     getLayoutProcess().pageBreakEncountered(null, new PseudoPage[0]);
-  }
-
-
-  protected String resolveComputedToken(ResolvedToken token)
-  {
-    // yet again: Very primitive ..
-    if (token instanceof ResolvedCounterToken)
-    {
-      ResolvedCounterToken counterToken = (ResolvedCounterToken) token;
-      if ("page".equals(counterToken.getParent().getName()))
-      {
-        return "IMPLEMENT ME";
-      }
-      if ("pages".equals(counterToken.getParent().getName()))
-      {
-        return "IMPLEMENT ME";
-      }
-    }
-    return super.resolveComputedToken(token);
   }
 
   public State saveState() throws StateException

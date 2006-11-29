@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DocumentContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
+ * $Id: DocumentContext.java,v 1.2 2006/11/26 19:43:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  */
 package org.jfree.layouting.layouter.context;
 
-import org.jfree.layouting.input.style.keys.page.PagePolicy;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.resourceloader.ResourceManager;
@@ -113,9 +113,9 @@ public interface DocumentContext extends DocumentMetaNode
    * @param name
    * @return
    */
-  public PagePolicy getStringPolicy(String name);
+  public CSSValue getStringPolicy(String name);
 
-  public void setStringPolicy(String name, PagePolicy policy);
+  public void setStringPolicy(String name, CSSValue policy);
 
   /**
    * Returns the counter policy for this counter. The is either one of the
@@ -125,9 +125,9 @@ public interface DocumentContext extends DocumentMetaNode
    * @param name
    * @return
    */
-  public PagePolicy getCounterPolicy(String name);
+  public CSSValue getCounterPolicy(String name);
 
-  public void setCounterPolicy(String name, PagePolicy policy);
+  public void setCounterPolicy(String name, CSSValue policy);
 
   public ResourceManager getResourceManager();
 

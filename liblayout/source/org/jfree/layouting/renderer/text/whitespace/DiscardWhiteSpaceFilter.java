@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DiscardWhiteSpaceFilter.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
+ * $Id: DiscardWhiteSpaceFilter.java,v 1.2 2006/07/30 13:13:47 taqua Exp $
  *
  * Changes
  * -------
@@ -87,6 +87,15 @@ public class DiscardWhiteSpaceFilter implements WhiteSpaceFilter
 
   public DiscardWhiteSpaceFilter()
   {
+  }
+
+  /**
+   * Reset the filter to the same state as if the filter had been constructed
+   * but not used yet.
+   */
+  public void reset()
+  {
+    lastWasWhiteSpace = false;
   }
 
   /**

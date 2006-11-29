@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WhiteSpaceFilter.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
  *
  * Changes
  * -------
@@ -61,4 +61,10 @@ public interface WhiteSpaceFilter extends StatefullComponent
    * @return
    */
   public int filter (int codepoint);
+
+  /**
+   * Reset the filter to the same state as if the filter had been constructed
+   * but not used yet.
+   */
+  public void reset();
 }

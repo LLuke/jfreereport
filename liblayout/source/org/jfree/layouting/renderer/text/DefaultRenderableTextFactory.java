@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultRenderableTextFactory.java,v 1.11 2006/11/20 21:02:01 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.12 2006/11/26 19:43:15 taqua Exp $
  *
  * Changes
  * -------
@@ -202,6 +202,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   private transient FontMetrics fontMetrics;
   private static final int[] EMPTY_EXTRA_CHARS = new int[0];
   private static final RenderNode[] EMPTY_RENDER_NODE = new RenderNode[0];
+  private static final RenderableText[] EMPTY_TEXT = new RenderableText[0];
 
   public DefaultRenderableTextFactory(final LayoutProcess layoutProcess)
   {
@@ -495,6 +496,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     {
       if (whitespaceFilter != null)
       {
+        whitespaceFilter.reset();
         return whitespaceFilter;
       }
     }
@@ -597,10 +599,10 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
   {
     if (layoutContext == null)
     {
-      return new RenderableText[0];
+      return EMPTY_TEXT;
     }
 
-    RenderNode[] text = processText
+    final RenderNode[] text = processText
         (new int[]{ClassificationProducer.END_OF_TEXT}, 0, 1);
     layoutContext = null;
     classificationProducer = null;

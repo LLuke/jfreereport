@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderableText.java,v 1.10 2006/11/20 21:01:54 taqua Exp $
+ * $Id: RenderableText.java,v 1.11 2006/11/26 19:43:15 taqua Exp $
  *
  * Changes
  * -------
@@ -85,12 +85,25 @@ public class RenderableText extends RenderNode
   private boolean forceLinebreak;
   private ExtendedBaselineInfo baselineInfo;
 
+  protected RenderableText()
+  {
+  }
+
   public RenderableText(final ExtendedBaselineInfo baselineInfo,
                         final Glyph[] glyphs,
                         final int offset,
                         final int length,
                         final int script,
                         final boolean forceLinebreak)
+  {
+    initialize(glyphs, offset, length, baselineInfo, script, forceLinebreak);
+  }
+
+  protected void initialize(final Glyph[] glyphs,
+                            final int offset,
+                            final int length,
+                            final ExtendedBaselineInfo baselineInfo,
+                            final int script, final boolean forceLinebreak)
   {
     if (glyphs == null)
     {
@@ -129,8 +142,8 @@ public class RenderableText extends RenderNode
     {
       Glyph glyph = glyphs[i];
       Spacing spacing = glyph.getSpacing();
-//      heightAbove = Math.max(glyph.getBaseLine(), heightAbove);
-//      heightBelow = Math.max(glyph.getHeight() - glyph.getBaseLine(), heightBelow);
+    //      heightAbove = Math.max(glyph.getBaseLine(), heightAbove);
+    //      heightBelow = Math.max(glyph.getHeight() - glyph.getBaseLine(), heightBelow);
       final int kerning = glyph.getKerning();
       final int width = glyph.getWidth();
       // Log.debug ("Glyph: " + width + " - " + kerning);
