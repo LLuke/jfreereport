@@ -64,7 +64,6 @@
     <path id="module.cache.ehcache.Classpath">
       <path refid="core.Classpath"/>
       <pathelement location="${libdir}/${commons-logging-jar-file}"/>
-      <pathelement location="${libdir}/${commons-collections-jar-file}"/>
       <pathelement location="${libdir}/${ehcache-jar-file}"/>
     </path>
     <isClassAvailableEx
@@ -76,7 +75,6 @@
         <available classname="java.util.LinkedHashMap"/>
         <available file="${libdir}/${ehcache-jar-file}"/>
         <available file="${libdir}/${commons-logging-jar-file}"/>
-        <available file="${libdir}/${commons-collections-jar-file}"/>
       </additional-tests>
     </isClassAvailableEx>
 
