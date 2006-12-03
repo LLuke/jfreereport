@@ -35,7 +35,6 @@ import java.io.InputStream;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.modules.misc.beanshell.BSHExpression;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -69,8 +68,9 @@ public class BeanShellModule extends AbstractModule
   public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
+    final ClassLoader classLoader = ObjectUtilities.getClassLoader(getClass());
     final InputStream in =
-            ObjectUtilities.getClassLoader(getClass()).getResourceAsStream(BSHExpression.BSHHEADERFILE);
+            classLoader.getResourceAsStream(BeanShellExpression.BSHHEADERFILE);
     if (in == null)
     {
       throw new ModuleInitializeException("Unable to locate BSHHeaderFile. " +
@@ -78,7 +78,7 @@ public class BeanShellModule extends AbstractModule
     }
     try
     {
-      ObjectUtilities.getClassLoader(getClass()).loadClass("bsh.Interpreter");
+      classLoader.loadClass("bsh.Interpreter");
     }
     catch (Exception e)
     {
