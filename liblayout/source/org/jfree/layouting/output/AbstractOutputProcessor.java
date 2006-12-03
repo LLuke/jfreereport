@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractOutputProcessor.java,v 1.2 2006/11/20 21:01:53 taqua Exp $
+ * $Id: AbstractOutputProcessor.java,v 1.3 2006/11/26 19:43:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -114,8 +114,16 @@ public abstract class AbstractOutputProcessor implements OutputProcessor
       processingPagesFinished();
       processingState = PROCESSING_CONTENT;
     }
-
+    else
+    {
+      processingContentFinished();
+    }
     documentContext = null;
+  }
+
+  protected void processingContentFinished()
+  {
+
   }
 
   public DocumentContext getDocumentContext()

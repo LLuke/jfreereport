@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CounterStyleFactory.java,v 1.2 2006/04/17 20:51:13 taqua Exp $
+ * $Id: CounterStyleFactory.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -85,8 +85,8 @@ public class CounterStyleFactory
       {
         continue;
       }
-      final Object o =
-              ObjectUtilities.loadAndInstantiate(counterClass, CounterStyleFactory.class);
+      final Object o = ObjectUtilities.loadAndInstantiate
+          (counterClass, CounterStyleFactory.class, CounterStyle.class);
       if (o instanceof CounterStyle)
       {
         final String name = key.substring(PREFIX.length());

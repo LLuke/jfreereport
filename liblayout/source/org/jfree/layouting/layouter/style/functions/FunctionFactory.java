@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FunctionFactory.java,v 1.2 2006/07/11 13:29:48 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.3 2006/11/26 19:43:13 taqua Exp $
  *
  * Changes
  * -------
@@ -91,8 +91,8 @@ public class FunctionFactory
       final String key = (String) valueKeys.next();
       final String value = config.getConfigProperty(key);
       final String name = key.substring(VALUE_FUNCTIONS_KEY_RANGE.length());
-      final Object maybeFunction =
-              ObjectUtilities.loadAndInstantiate(value, FunctionFactory.class);
+      final Object maybeFunction = ObjectUtilities.loadAndInstantiate
+          (value, FunctionFactory.class, StyleValueFunction.class);
       if (maybeFunction instanceof StyleValueFunction)
       {
         styleFunctions.put (name.toLowerCase(), maybeFunction);
@@ -105,8 +105,8 @@ public class FunctionFactory
       final String key = (String) contentKeys.next();
       final String value = config.getConfigProperty(key);
       final String name = key.substring(CONTENT_FUNCTIONS_KEY_RANGE.length());
-      final Object maybeFunction =
-              ObjectUtilities.loadAndInstantiate(value, FunctionFactory.class);
+      final Object maybeFunction = ObjectUtilities.loadAndInstantiate
+          (value, FunctionFactory.class, ContentFunction.class);
       if (maybeFunction instanceof ContentFunction)
       {
         contentFunctions.put (name.toLowerCase(), maybeFunction);

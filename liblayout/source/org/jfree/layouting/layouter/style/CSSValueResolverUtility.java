@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSValueResolverUtility.java,v 1.2 2006/07/27 17:56:27 taqua Exp $
+ * $Id: CSSValueResolverUtility.java,v 1.3 2006/11/26 19:43:12 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public class CSSValueResolverUtility
       return true;
     }
     // PX is relative to the device, so during a layouting process, it can
-    // be considered absolute 
+    // be considered absolute
     return CSSNumericType.PX.equals(value.getType());
   }
 
@@ -121,6 +121,11 @@ public class CSSValueResolverUtility
     // PX is relative to the device, so during a layouting process, it can
     // be considered absolute
     return CSSNumericType.PX.equals(value.getType());
+  }
+
+  public static double convertLengthToDouble(final CSSValue rawValue)
+  {
+    return convertLengthToDouble(rawValue, null, null);
   }
 
   /**
@@ -161,10 +166,16 @@ public class CSSValueResolverUtility
     {
       return (value.getValue() * (72d / 254d) * 10d);
     }
+
+    if (metaData == null)
+    {
+      return 0;
+    }
+
     if (CSSNumericType.PX.equals(value.getType()))
     {
       final int pixelPerInch = (int) metaData.getNumericFeatureValue
-              (OutputProcessorFeature.DEVICE_RESOLUTION);
+          (OutputProcessorFeature.DEVICE_RESOLUTION);
       if (pixelPerInch <= 0)
       {
         // we assume 72 pixel per inch ...
@@ -178,14 +189,14 @@ public class CSSValueResolverUtility
       if (CSSNumericType.EM.equals(value.getType()))
       {
         final FontSpecification fspec =
-                context.getFontSpecification();
+            context.getFontSpecification();
         final double fontSize = fspec.getFontSize();
         return (fontSize * value.getValue());
       }
       if (CSSNumericType.EX.equals(value.getType()))
       {
         final FontSpecification fspec =
-                context.getFontSpecification();
+            context.getFontSpecification();
         final FontMetrics fontMetrics = metaData.getFontMetrics(fspec);
         if (fontMetrics == null)
         {
@@ -207,7 +218,7 @@ public class CSSValueResolverUtility
                                               final OutputProcessorMetaData metaData)
   {
     return new CSSNumericValue(CSSNumericType.PT,
-            convertLengthToDouble(rawValue, context, metaData));
+        convertLengthToDouble(rawValue, context, metaData));
   }
 
   public static CSSNumericValue getLength(CSSValue value)
@@ -226,7 +237,7 @@ public class CSSValueResolverUtility
     return nval;
   }
 
-  public static boolean isNumericType (CSSNumericType type, CSSValue value)
+  public static boolean isNumericType(CSSNumericType type, CSSValue value)
   {
     if (value instanceof CSSNumericValue == false)
     {
@@ -235,7 +246,6 @@ public class CSSValueResolverUtility
     CSSNumericValue nval = (CSSNumericValue) value;
     return nval.getType().equals(type);
   }
-
 
 
   public static CSSNumericValue getLength(final CSSValue value,
@@ -256,7 +266,7 @@ public class CSSValueResolverUtility
 
       final double percentage = nval.getValue();
       return new CSSNumericValue(percentageBase.getType(),
-              percentageBase.getValue() * percentage / 100d);
+          percentageBase.getValue() * percentage / 100d);
     }
 
     return nval;
@@ -285,7 +295,7 @@ public class CSSValueResolverUtility
     return sval.getType().equals(CSSStringType.URI);
   }
 
-  public static double getNumericValue (CSSValue value, double defaultValue)
+  public static double getNumericValue(CSSValue value, double defaultValue)
   {
     if (value instanceof CSSNumericValue)
     {

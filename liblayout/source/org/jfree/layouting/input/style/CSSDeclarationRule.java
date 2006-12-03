@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSDeclarationRule.java,v 1.5 2006/07/20 17:50:51 taqua Exp $
+ * $Id: CSSDeclarationRule.java,v 1.6 2006/11/26 19:43:10 taqua Exp $
  *
  * Changes
  * -------
@@ -186,6 +186,12 @@ public abstract class CSSDeclarationRule extends StyleRule
   public void removeProperty(StyleKey name)
   {
     declarations.remove(name);
+    declaredKeys = null;
+  }
+
+  public void clear()
+  {
+    declarations.clear();
     declaredKeys = null;
   }
 

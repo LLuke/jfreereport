@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FileSystemURLRewriter.java,v 1.1 2006/11/13 19:14:47 taqua Exp $
+ * $Id: FileSystemURLRewriter.java,v 1.2 2006/11/28 13:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -52,48 +52,49 @@ public class FileSystemURLRewriter implements URLRewriter
   {
   }
 
-  public String rewrite(ContentEntity content, ContentEntity entity)
+  public String rewrite(ContentEntity sourceDocument, ContentEntity dataEntity)
+      throws URLRewriteException
   {
-    final Repository entityRepository = entity.getRepository();
-    if (entityRepository instanceof UrlRepository == false)
+    final Repository dataRepository = dataEntity.getRepository();
+    if (dataRepository instanceof UrlRepository == false)
     {
       // cannot proceed ..
-      return null;
+      throw new URLRewriteException("DataRepository is no URL-Repository.");
     }
 
-    final UrlRepository entityUrlRepo = (UrlRepository) entityRepository;
-    final String entityPath = buildPath(entity);
-    final URL entityUrl;
+    final UrlRepository dataUrlRepo = (UrlRepository) dataRepository;
+    final String dataPath = buildPath(dataEntity);
+    final URL dataItemUrl;
     try
     {
-      entityUrl = new URL(entityUrlRepo.getURL(), entityPath);
+      dataItemUrl = new URL(dataUrlRepo.getURL(), dataPath);
     }
     catch (MalformedURLException e)
     {
       // cannot proceed ..
-      return null;
+      throw new URLRewriteException("DataEntity has no valid URL.");
     }
 
-    final Repository contentRepository = content.getRepository();
-    if (contentRepository instanceof UrlRepository == false)
+    final Repository documentRepository = sourceDocument.getRepository();
+    if (documentRepository instanceof UrlRepository == false)
     {
       // If at least the data entity has an URL, we can always fall back
       // to an global URL..
-      return entityUrl.toExternalForm();
+      return dataItemUrl.toExternalForm();
     }
 
     try
     {
-      final UrlRepository contentUrlRepo = (UrlRepository) contentRepository;
-      final String contentPath = buildPath(content);
-      return IOUtils.getInstance().createRelativeURL
-          (new URL(contentUrlRepo.getURL(), contentPath), entityUrl);
+      final UrlRepository documentUrlRepo = (UrlRepository) documentRepository;
+      final String documentPath = buildPath(sourceDocument);
+      final URL documentUrl = new URL(documentUrlRepo.getURL(), documentPath);
+      return IOUtils.getInstance().createRelativeURL(dataItemUrl, documentUrl);
     }
     catch (MalformedURLException e)
     {
       // If at least the data entity has an URL, we can always fall back
       // to an global URL..
-      return entityUrl.toExternalForm();
+      return dataItemUrl.toExternalForm();
     }
   }
 

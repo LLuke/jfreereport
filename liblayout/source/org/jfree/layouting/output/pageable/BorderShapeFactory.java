@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: BorderShapeFactory.java,v 1.7 2006/10/17 16:39:07 taqua Exp $
+ * $Id: BorderShapeFactory.java,v 1.8 2006/10/22 14:58:25 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import java.util.ArrayList;
 
 import org.jfree.layouting.input.style.keys.border.BorderStyle;
 import org.jfree.layouting.input.style.values.CSSColorValue;
+import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.BorderCorner;
 import org.jfree.layouting.renderer.border.BorderEdge;
@@ -61,7 +62,8 @@ import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.util.geom.StrictInsets;
 
 /**
- * Creation-Date: 11.07.2006, 13:32:31
+ * This class needs attention. Maybe it is wise to split it into several
+ * border implementations to reduce the complexity of the whole process.
  *
  * @author Thomas Morgner
  */
@@ -76,15 +78,15 @@ public class BorderShapeFactory
   private static final int CORNER_BOTTOM_RIGHT = 6;
   private static final int CORNER_RIGHT_BOTTOM = 7;
 
-  private static final byte[][] CORNER_FACTORS = new byte[][] {
-          { +1, +1}, // RIGHT_TOP
-          { +1, +1}, // TOP_RIGHT
-          { -1, +1}, // TOP_LEFT
-          { -1, +1}, // LEFT_TOP
-          { +1, -1}, // LEFT_BOTTOM
-          { +1, -1}, // BOTTOM_LEFT
-          { -1, -1}, // BOTTOM_RIGHT
-          { -1, -1}, // RIGHT_BOTTOM
+  private static final byte[][] CORNER_FACTORS = new byte[][]{
+      {+1, +1}, // RIGHT_TOP
+      {+1, +1}, // TOP_RIGHT
+      {-1, +1}, // TOP_LEFT
+      {-1, +1}, // LEFT_TOP
+      {+1, -1}, // LEFT_BOTTOM
+      {+1, -1}, // BOTTOM_LEFT
+      {-1, -1}, // BOTTOM_RIGHT
+      {-1, -1}, // RIGHT_BOTTOM
   };
 
 
@@ -105,9 +107,18 @@ public class BorderShapeFactory
 
     public void draw(Graphics2D g2)
     {
-      if (shape == null) return;
-      if (stroke.getLineWidth() == 0) return;
-      if (color.getAlpha() == 0) return;
+      if (shape == null)
+      {
+        return;
+      }
+      if (stroke.getLineWidth() == 0)
+      {
+        return;
+      }
+      if (color.getAlpha() == 0)
+      {
+        return;
+      }
 
       g2.setStroke(stroke);
       g2.setColor(color);
@@ -116,9 +127,18 @@ public class BorderShapeFactory
 
     public void fill(final Graphics2D g2)
     {
-      if (shape == null) return;
-      if (stroke.getLineWidth() == 0) return;
-      if (color.getAlpha() == 0) return;
+      if (shape == null)
+      {
+        return;
+      }
+      if (stroke.getLineWidth() == 0)
+      {
+        return;
+      }
+      if (color.getAlpha() == 0)
+      {
+        return;
+      }
 
       g2.setStroke(stroke);
       g2.setColor(color);
@@ -146,57 +166,58 @@ public class BorderShapeFactory
     border = box.getBorder();
     final StaticBoxLayoutProperties layoutProperties = box.getStaticBoxLayoutProperties();
     final StrictInsets bWidths = new StrictInsets
-            (layoutProperties.getBorderTop(), layoutProperties.getBorderLeft(),
-             layoutProperties.getBorderBottom(), layoutProperties.getBorderRight());
+        (layoutProperties.getBorderTop(), layoutProperties.getBorderLeft(),
+            layoutProperties.getBorderBottom(), layoutProperties.getBorderRight());
 
     x = StrictGeomUtility.toExternalValue
-            (box.getX() + (bWidths.getLeft() / 2));
+        (box.getX() + (bWidths.getLeft() / 2));
     y = StrictGeomUtility.toExternalValue
-            (box.getY() + (bWidths.getTop() / 2));
+        (box.getY() + (bWidths.getTop() / 2));
     width = StrictGeomUtility.toExternalValue
-            (box.getWidth() - (bWidths.getLeft() + bWidths.getRight())/2);
+        (box.getWidth() - (bWidths.getLeft() + bWidths.getRight()) / 2);
     height = StrictGeomUtility.toExternalValue
-            (box.getHeight() - (bWidths.getTop() + bWidths.getBottom())/2);
+        (box.getHeight() - (bWidths.getTop() + bWidths.getBottom()) / 2);
     borderSizes = bWidths;
 
     // todo: Change this to the real background ..
     backgroundColor = box.getBoxDefinition().getBackgroundColor();
   }
 
-  private Arc2D generateCorner (int type,
-                                double cornerX,
-                                double cornerY,
-                                BorderCorner corner,
-                                boolean fillShape)
+  private Arc2D generateCorner(int type,
+                               double cornerX,
+                               double cornerY,
+                               BorderCorner corner,
+                               boolean fillShape)
   {
-    if (corner.getHeight().getValue() > 0 && corner.getWidth().getValue() > 0)
+    if (corner.getHeight().getValue() == 0 || corner.getWidth().getValue() == 0)
     {
-      byte[] cornerFactors = CORNER_FACTORS[type];
-
-      final double widthTopLeft =
-              StrictGeomUtility.toExternalValue(corner.getWidth().getValue());
-      final double heightTopLeft =
-              StrictGeomUtility.toExternalValue(corner.getHeight().getValue());
-
-      final int open;
-      if (fillShape)
-      {
-        open = Arc2D.PIE;
-      }
-      else
-      {
-        open = Arc2D.OPEN;
-      }
-      return new Arc2D.Double
-              (cornerX + widthTopLeft * cornerFactors[0],
-                      cornerY + heightTopLeft * cornerFactors[1],
-                      widthTopLeft, heightTopLeft,
-                      Math.PI * type / 4.0, Math.PI / 4.0, open);
+      return null;
     }
-    return null;
+    byte[] cornerFactors = CORNER_FACTORS[type];
+
+    final double widthTopLeft =
+        StrictGeomUtility.toExternalValue(corner.getWidth().getValue());
+    final double heightTopLeft =
+        StrictGeomUtility.toExternalValue(corner.getHeight().getValue());
+
+    final int open;
+    if (fillShape)
+    {
+      open = Arc2D.PIE;
+    }
+    else
+    {
+      open = Arc2D.OPEN;
+    }
+
+    return new Arc2D.Double
+        (cornerX + widthTopLeft * cornerFactors[0],
+            cornerY + heightTopLeft * cornerFactors[1],
+            widthTopLeft, heightTopLeft,
+            Math.PI * type / 4.0, Math.PI / 4.0, open);
   }
 
-  private BasicStroke createStroke (BorderEdge edge, long internalWidth)
+  private BasicStroke createStroke(BorderEdge edge, long internalWidth)
   {
     final float effectiveWidth = (float) StrictGeomUtility.toExternalValue(internalWidth);
     // todo: depending on the stroke type, we need other strokes instead.
@@ -204,41 +225,41 @@ public class BorderShapeFactory
 
     if (BorderStyle.DASHED.equals(edge.getBorderStyle()))
     {
-        return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
-                BasicStroke.JOIN_MITER,
-                10.0f, new float[]
-                {6*effectiveWidth, 6*effectiveWidth}, 0.0f);
+      return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
+          BasicStroke.JOIN_MITER,
+          10.0f, new float[]
+          {6 * effectiveWidth, 6 * effectiveWidth}, 0.0f);
     }
     if (BorderStyle.DOTTED.equals(edge.getBorderStyle()))
     {
-        return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
-              BasicStroke.JOIN_MITER,
-              5.0f, new float[]{0.0f, 2*effectiveWidth}, 0.0f);
+      return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
+          BasicStroke.JOIN_MITER,
+          5.0f, new float[]{0.0f, 2 * effectiveWidth}, 0.0f);
     }
     if (BorderStyle.DOT_DASH.equals(edge.getBorderStyle()))
     {
-        return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
-                BasicStroke.JOIN_MITER,
-                10.0f, new float[]
-                {0, 2*effectiveWidth, 6*effectiveWidth, 2*effectiveWidth}, 0.0f);
+      return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
+          BasicStroke.JOIN_MITER,
+          10.0f, new float[]
+          {0, 2 * effectiveWidth, 6 * effectiveWidth, 2 * effectiveWidth}, 0.0f);
     }
     if (BorderStyle.DOT_DOT_DASH.equals(edge.getBorderStyle()))
     {
-        return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
-                BasicStroke.JOIN_MITER,
-                10.0f, new float[]{0, 2*effectiveWidth,
-                                   0, 2*effectiveWidth,
-                                   6*effectiveWidth, 2*effectiveWidth}, 0.0f);
+      return new BasicStroke(effectiveWidth, BasicStroke.CAP_SQUARE,
+          BasicStroke.JOIN_MITER,
+          10.0f, new float[]{0, 2 * effectiveWidth,
+          0, 2 * effectiveWidth,
+          6 * effectiveWidth, 2 * effectiveWidth}, 0.0f);
     }
     return new BasicStroke(effectiveWidth);
   }
 
-  public void generateBorder (Graphics2D g2)
+  public void generateBorder(Graphics2D g2)
   {
     generateTopEdge();
     generateLeftEdge();
     generateBottomEdge();
-    geenrateRightEdge();
+    generateRightEdge();
 
     for (int i = 0; i < drawOps.size(); i++)
     {
@@ -256,6 +277,7 @@ public class BorderShapeFactory
     {
       return;
     }
+
     // now we need some geometry stuff (yeah, I'm lazy!)
     Area globalArea = new Area(new Rectangle2D.Double(x, y, width, height));
 
@@ -273,7 +295,7 @@ public class BorderShapeFactory
       }
 
       Area cornerArea = new Area(shape.getBounds2D());
-      cornerArea.subtract(new Area (shape));
+      cornerArea.subtract(new Area(shape));
       globalArea.subtract(cornerArea);
     }
     // oh, yeah, I know, there are faster ways than that.
@@ -283,17 +305,25 @@ public class BorderShapeFactory
     g2.fill(globalArea);
   }
 
-  private void draw (Shape s)
+  private void draw(Shape s)
   {
+    if (s == null)
+    {
+      return;
+    }
     drawOps.add(new BorderDrawOperation(s, color, stroke));
   }
 
-  private void fill (Shape s)
+  private void fill(Shape s)
   {
+    if (s == null)
+    {
+      return;
+    }
     fillOps.add(new BorderDrawOperation(s, color, stroke));
   }
 
-  private void geenrateRightEdge ()
+  private void generateRightEdge()
   {
     final BorderEdge rightEdge = border.getRight();
     color = rightEdge.getColor();
@@ -307,15 +337,15 @@ public class BorderShapeFactory
     fill(generateCorner(CORNER_RIGHT_BOTTOM, x + width, y + height, firstCorner, true));
     fill(generateCorner(CORNER_RIGHT_TOP, x + width, y, secondCorner, true));
 
-    draw (new Line2D.Double
-            (x + width - firstCorner.getWidth().getValue(),
-             y + height - firstCorner.getHeight().getValue(),
-             x + width - secondCorner.getWidth().getValue(),
-             y + secondCorner.getHeight().getValue()));
+    draw(new Line2D.Double
+        (x + width - firstCorner.getWidth().getValue(),
+            y + height - firstCorner.getHeight().getValue(),
+            x + width - secondCorner.getWidth().getValue(),
+            y + secondCorner.getHeight().getValue()));
 
   }
 
-  private void generateBottomEdge ()
+  private void generateBottomEdge()
   {
     final BorderEdge bottomEdge = border.getBottom();
     final BorderCorner firstCorner = border.getBottomLeft();
@@ -329,15 +359,15 @@ public class BorderShapeFactory
     fill(generateCorner(CORNER_BOTTOM_LEFT, x, y + height, firstCorner, true));
     fill(generateCorner(CORNER_BOTTOM_RIGHT, x + width, y + height, secondCorner, true));
 
-    draw (new Line2D.Double
-            (x + firstCorner.getWidth().getValue(),
-             y + height - firstCorner.getHeight().getValue(),
-             x + width - secondCorner.getWidth().getValue(),
-             y + height - secondCorner.getHeight().getValue()));
+    draw(new Line2D.Double
+        (x + firstCorner.getWidth().getValue(),
+            y + height - firstCorner.getHeight().getValue(),
+            x + width - secondCorner.getWidth().getValue(),
+            y + height - secondCorner.getHeight().getValue()));
 
   }
 
-  private void generateLeftEdge ()
+  private void generateLeftEdge()
   {
     final BorderEdge leftEdge = border.getLeft();
 
@@ -348,30 +378,43 @@ public class BorderShapeFactory
     color = leftEdge.getColor();
 
     draw(generateCorner
-      (CORNER_LEFT_TOP, x, y, firstCorner, false));
+        (CORNER_LEFT_TOP, x, y, firstCorner, false));
     draw(generateCorner
-      (CORNER_LEFT_BOTTOM, x, y + height, secondCorner, false));
+        (CORNER_LEFT_BOTTOM, x, y + height, secondCorner, false));
     fill(generateCorner
-      (CORNER_LEFT_TOP, x, y, firstCorner, true));
+        (CORNER_LEFT_TOP, x, y, firstCorner, true));
     fill(generateCorner
-      (CORNER_LEFT_BOTTOM, x, y + height, secondCorner, true));
+        (CORNER_LEFT_BOTTOM, x, y + height, secondCorner, true));
 
     final double firstWidth =
-            StrictGeomUtility.toInternalValue(firstCorner.getWidth().getValue());
+        StrictGeomUtility.toInternalValue(firstCorner.getWidth().getValue());
     final double firstHeight =
-            StrictGeomUtility.toInternalValue(firstCorner.getHeight().getValue());
+        StrictGeomUtility.toInternalValue(firstCorner.getHeight().getValue());
     final double secondWidth =
-            StrictGeomUtility.toInternalValue(secondCorner.getWidth().getValue());
+        StrictGeomUtility.toInternalValue(secondCorner.getWidth().getValue());
     final double secondHeight =
-            StrictGeomUtility.toInternalValue(secondCorner.getHeight().getValue());
+        StrictGeomUtility.toInternalValue(secondCorner.getHeight().getValue());
     draw(new Line2D.Double
-            (x + firstWidth,
-             y + firstHeight,
-             x + secondWidth,
-             y + height - secondHeight));
+        (x + firstWidth,
+            y + firstHeight,
+            x + secondWidth,
+            y + height - secondHeight));
   }
 
-  private void generateTopEdge ()
+  private boolean isSimpleStyle (CSSValue value)
+  {
+    if (BorderStyle.GROOVE.equals(value))
+    {
+      return false;
+    }
+    else if (BorderStyle.RIDGE.equals(value))
+    {
+      return false;
+    }
+    return true;
+  }
+
+  private void generateTopEdge()
   {
     final BorderEdge topEdge = border.getTop();
     stroke = createStroke(topEdge, borderSizes.getTop());
@@ -381,26 +424,26 @@ public class BorderShapeFactory
     final BorderCorner secondCorner = border.getBottomLeft();
 
     draw(generateCorner
-            (CORNER_TOP_RIGHT, x + width, y, border.getTopRight(), false));
+        (CORNER_TOP_RIGHT, x + width, y, border.getTopRight(), false));
     draw(generateCorner
-            (CORNER_TOP_LEFT, x, y, border.getTopLeft(), false));
-
-    fill(generateCorner
-            (CORNER_TOP_RIGHT, x + width, y, border.getTopRight(), true));
-    fill(generateCorner
-            (CORNER_TOP_LEFT, x, y, border.getTopLeft(), true));
+        (CORNER_TOP_LEFT, x, y, border.getTopLeft(), false));
 
     final double firstWidth =
-            StrictGeomUtility.toInternalValue(firstCorner.getWidth().getValue());
+        StrictGeomUtility.toInternalValue(firstCorner.getWidth().getValue());
     final double firstHeight =
-            StrictGeomUtility.toInternalValue(firstCorner.getHeight().getValue());
+        StrictGeomUtility.toInternalValue(firstCorner.getHeight().getValue());
     final double secondWidth =
-            StrictGeomUtility.toInternalValue(secondCorner.getWidth().getValue());
+        StrictGeomUtility.toInternalValue(secondCorner.getWidth().getValue());
     final double secondHeight =
-            StrictGeomUtility.toInternalValue(secondCorner.getHeight().getValue());
+        StrictGeomUtility.toInternalValue(secondCorner.getHeight().getValue());
     draw(new Line2D.Double
-            (x + firstWidth, y + firstHeight,
-             x + width - secondWidth, y + secondHeight));
+        (x + firstWidth, y + firstHeight,
+            x + width - secondWidth, y + secondHeight));
+
+    fill(generateCorner
+        (CORNER_TOP_RIGHT, x + width, y, border.getTopRight(), true));
+    fill(generateCorner
+        (CORNER_TOP_LEFT, x, y, border.getTopLeft(), true));
   }
 
 

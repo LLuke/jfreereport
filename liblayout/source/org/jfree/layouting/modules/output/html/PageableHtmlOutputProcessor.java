@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PageableHtmlOutputProcessor.java,v 1.4 2006/11/26 19:43:13 taqua Exp $
+ * $Id: PageableHtmlOutputProcessor.java,v 1.5 2006/11/28 13:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -55,6 +55,7 @@ import org.jfree.util.Log;
  * @author Thomas Morgner
  */
 public class PageableHtmlOutputProcessor extends AbstractPageableProcessor
+  implements HtmlOutputProcessor
 {
   private HtmlOutputProcessorMetaData metaData;
   private PageFlowSelector flowSelector;

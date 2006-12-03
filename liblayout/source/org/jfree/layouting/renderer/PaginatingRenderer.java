@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PaginatingRenderer.java,v 1.4 2006/11/26 19:43:15 taqua Exp $
+ * $Id: PaginatingRenderer.java,v 1.5 2006/11/29 23:23:36 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -36,14 +36,11 @@ import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.PseudoPage;
-import org.jfree.layouting.layouter.content.resolved.ResolvedCounterToken;
-import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
 import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.process.CleanPaginatedBoxesStep;
 import org.jfree.layouting.renderer.process.ComputeBreakabilityStep;
 import org.jfree.layouting.renderer.process.ComputeICMMetricsStep;
@@ -57,8 +54,8 @@ import org.jfree.layouting.renderer.process.PaginationStep;
 import org.jfree.layouting.renderer.process.ParagraphLineBreakStep;
 import org.jfree.layouting.renderer.process.TableRowHeightStep;
 import org.jfree.layouting.renderer.process.TableValidationStep;
-import org.jfree.layouting.renderer.process.ValidateModelStep;
 import org.jfree.layouting.renderer.process.UpdateTokensStep;
+import org.jfree.layouting.renderer.process.ValidateModelStep;
 import org.jfree.util.Log;
 
 
@@ -193,11 +190,11 @@ public class PaginatingRenderer extends AbstractRenderer
     LogicalPageBox logicalPageBox = getLogicalPageBox();
     if (validateModelStep.isLayoutable(logicalPageBox) == false)
     {
-      final RenderNode nodeById = logicalPageBox.findNodeById(validateModelStep.getLayoutFailureNodeId());
-      Log.debug ("Validation impossible: Reason-id: " +
-          validateModelStep.getLayoutFailureResolution() +
-          " on node " +
-          nodeById);
+//      final RenderNode nodeById = logicalPageBox.findNodeById(validateModelStep.getLayoutFailureNodeId());
+//      Log.debug ("Validation impossible: Reason-id: " +
+//          validateModelStep.getLayoutFailureResolution() +
+//          " on node " +
+//          nodeById);
 
       setLayoutFailureReason(validateModelStep.getLayoutFailureResolution(),
           validateModelStep.getLayoutFailureNodeId());
@@ -205,8 +202,8 @@ public class PaginatingRenderer extends AbstractRenderer
     }
 
     tableValidationStep.validate(logicalPageBox);
-    updateTokensStep.compute(logicalPageBox, getLayoutProcess(),
-        getStringsStore(), getCounterStore());
+    updateTokensStep.compute
+        (logicalPageBox, getLayoutProcess(), getPageContext());
     staticPropertiesStep.compute(logicalPageBox);
     marginsStep.compute(logicalPageBox);
     paragraphLinebreakStep.compute(logicalPageBox);

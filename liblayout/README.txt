@@ -12,14 +12,50 @@ content as a DOM structure (although it does not rely on the W3C-DOM API).
 
 For the latest news and information about LibLayout, please refer to:
 
-    http://www.jfree.org/jfreereport/liblayout/
+    http://jfreereport.pentaho.org/liblayout/
 
 
 Like all JFreeReport related projects, LibLayout upholds the good tradition
-of compatibility to JDK 1.2.2. 
+of compatibility to JDK 1.2.2.
 
-2. CHANGES
+
+2. SUPPORT
 ----------
+Free support is available via the JFreeReport forum, follow the link
+from the JFreeReport home page.  Please note that questions are
+answered by volunteers, so there is no guaranteed response time or
+level of service.
 
-30-Apr-2006: More namespace awareness
-14-Apr-2006: Initial version.
+Please avoid e-mailing the developers directly for support questions.
+If you post a message in the forum, then everyone can see the
+question, and everyone can see the answer.
+
+
+3. REPORTING BUGS
+-----------------
+If you find bugs in JFreeReport, we'd like to hear about it so that we
+can improve future releases of JFreeReport.  Please post a bug report
+at the JFreeReport project page on SourceForge:
+
+    http://sourceforge.net/projects/jfreereport
+
+Please be sure to provide as much information as you can.  We need to
+know the version of JFreeReport that you are using, the JDK version,
+and the steps required to replicate the bug.  Include any other
+information that you think is relevant.
+
+
+4. ANT
+------
+We use an open source build tool called Ant to build JFreeReport.  An
+Ant script (tested using Ant 1.5.4) is included in the distribution:
+
+    <libfonts-directory>/ant/build.xml
+
+You can find out more about Ant at:
+
+    http://ant.apache.org/
+
+Ant is licensed under the terms of the Apache Software License (a
+popular open source software license).
+

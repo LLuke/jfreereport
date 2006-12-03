@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LibLayoutInfo.java,v 1.2 2006/04/17 20:51:00 taqua Exp $
+ * $Id: LibLayoutInfo.java,v 1.3 2006/04/30 09:35:11 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ package org.jfree.layouting;
 import java.util.Arrays;
 
 import org.jfree.JCommon;
+import org.jfree.fonts.LibFontInfo;
+import org.jfree.repository.LibRepositoryInfo;
 import org.jfree.resourceloader.LibLoaderInfo;
 import org.jfree.ui.about.Contributor;
 import org.jfree.ui.about.ProjectInfo;
@@ -73,6 +75,8 @@ public class LibLayoutInfo extends ProjectInfo
 
     addLibrary(JCommon.INFO);
     addLibrary(LibLoaderInfo.getInstance());
+    addLibrary(LibRepositoryInfo.getInstance());
+    addLibrary(LibFontInfo.getInstance());
 
     setBootClass(LibLayoutBoot.class.getName());
     setAutoBoot(true);

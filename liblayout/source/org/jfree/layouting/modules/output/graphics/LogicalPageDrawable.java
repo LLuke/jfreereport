@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LogicalPageDrawable.java,v 1.3 2006/11/26 19:43:13 taqua Exp $
+ * $Id: LogicalPageDrawable.java,v 1.4 2006/11/28 13:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -91,7 +91,7 @@ public class LogicalPageDrawable implements PageDrawable
     this.pageFormat = new PageFormat();
     this.pageFormat.setPaper(paper);
 
-    print();
+    // print();
   }
 
   public PageFormat getPageFormat()

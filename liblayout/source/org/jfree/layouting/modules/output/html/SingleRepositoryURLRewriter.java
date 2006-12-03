@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SingleRepositoryURLRewriter.java,v 1.1 2006/11/28 13:14:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -48,18 +48,20 @@ public class SingleRepositoryURLRewriter implements URLRewriter
   {
   }
 
-  public String rewrite(ContentEntity content, ContentEntity entity)
+  public String rewrite(final ContentEntity sourceDocument,
+                        final ContentEntity dataEntity)
+      throws URLRewriteException
   {
-    if (content.getRepository().equals(entity.getRepository()) == false)
+    if (sourceDocument.getRepository().equals(dataEntity.getRepository()) == false)
     {
       // cannot proceed ..
-      return null;
+      throw new URLRewriteException("Content and data repository must be the same.");
     }
 
     final ArrayList entityNames = new ArrayList();
-    entityNames.add(entity.getName());
+    entityNames.add(dataEntity.getName());
 
-    ContentLocation location = entity.getParent();
+    ContentLocation location = dataEntity.getParent();
     while (location != null)
     {
       entityNames.add(location.getName());
@@ -67,7 +69,7 @@ public class SingleRepositoryURLRewriter implements URLRewriter
     }
 
     final ArrayList contentNames = new ArrayList();
-    location = content.getParent();
+    location = sourceDocument.getParent();
     while (location != null)
     {
       contentNames.add(location.getName());

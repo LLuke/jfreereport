@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractRenderer.java,v 1.9 2006/11/29 23:23:36 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.10 2006/11/29 23:41:07 taqua Exp $
  *
  * Changes
  * -------
@@ -110,14 +110,12 @@ public abstract class AbstractRenderer implements Renderer
   protected abstract static class RendererState implements State
   {
     private BoxDefinitionFactory boxDefinitionFactory;
-    private RenderPageContext pageContext;
+    private State pageContext;
     private int bufferLength;
     private LogicalPageBox logicalPageBox;
 
-    private StringStore stringsStore;
     private ContentStore elementsStore;
     private ContentStore pendingStore;
-    private CounterStore counterStore;
 
     // todo:!
     private FlowContext.FlowContextState[] flowContexts;
@@ -125,7 +123,10 @@ public abstract class AbstractRenderer implements Renderer
     public RendererState(AbstractRenderer renderer) throws StateException
     {
       this.boxDefinitionFactory = renderer.boxDefinitionFactory;
-      this.pageContext = renderer.pageContext;
+      if (renderer.pageContext != null)
+      {
+        this.pageContext = renderer.pageContext.saveState();
+      }
 
       if (renderer.buffer != null)
       {
@@ -140,10 +141,8 @@ public abstract class AbstractRenderer implements Renderer
 
       try
       {
-        this.stringsStore = (StringStore) renderer.stringsStore.clone();
         this.elementsStore = (ContentStore) renderer.elementsStore.clone();
         this.pendingStore = (ContentStore) renderer.pendingStore.clone();
-        this.counterStore = (CounterStore) renderer.counterStore.clone();
       }
       catch (CloneNotSupportedException e)
       {
@@ -171,17 +170,19 @@ public abstract class AbstractRenderer implements Renderer
 
       try
       {
-        renderer.stringsStore = (StringStore) this.stringsStore.clone();
         renderer.elementsStore = (ContentStore) this.elementsStore.clone();
         renderer.pendingStore = (ContentStore) this.pendingStore.clone();
-        renderer.counterStore = (CounterStore) this.counterStore.clone();
       }
       catch (CloneNotSupportedException e)
       {
         throw new StateException();
       }
       renderer.boxDefinitionFactory = this.boxDefinitionFactory;
-      renderer.pageContext = this.pageContext;
+      if (pageContext != null)
+      {
+        renderer.pageContext = (RenderPageContext)
+            this.pageContext.restore(layoutProcess);
+      }
       if (logicalPageBox != null)
       {
         renderer.logicalPageBox = (LogicalPageBox)
@@ -207,8 +208,6 @@ public abstract class AbstractRenderer implements Renderer
   private LayoutProcess layoutProcess;
   // statefull ..
   private LogicalPageBox logicalPageBox;
-  private StringStore stringsStore;
-  private CounterStore counterStore;
   private ContentStore elementsStore;
   private ContentStore pendingStore;
   private FastStack flowContexts;
@@ -234,18 +233,11 @@ public abstract class AbstractRenderer implements Renderer
 
     if (init)
     {
-      this.counterStore = new CounterStore();
-      this.stringsStore = new StringStore();
       this.elementsStore = new ContentStore();
       this.pendingStore = new ContentStore();
       this.boxDefinitionFactory =
           new DefaultBoxDefinitionFactory(new BorderFactory());
     }
-  }
-
-  public CounterStore getCounterStore()
-  {
-    return counterStore;
   }
 
   public LogicalPageBox getLogicalPageBox()
@@ -270,11 +262,6 @@ public abstract class AbstractRenderer implements Renderer
     this.layoutFailureReason = layoutFailureReason;
   }
 
-  public StringStore getStringsStore()
-  {
-    return stringsStore;
-  }
-
   public void startDocument(final PageContext pageContext)
   {
     if (pageContext == null)
@@ -286,7 +273,7 @@ public abstract class AbstractRenderer implements Renderer
     final OutputProcessor outputProcessor = layoutProcess.getOutputProcessor();
     outputProcessor.processDocumentMetaData(layoutProcess.getDocumentContext());
 
-    this.pageContext = new RenderPageContext(pageContext);
+    this.pageContext = new RenderPageContext(layoutProcess, pageContext);
     // create the initial pagegrid.
     final PageGrid pageGrid =
         this.pageContext.createPageGrid(this.layoutProcess.getOutputMetaData());
@@ -296,10 +283,6 @@ public abstract class AbstractRenderer implements Renderer
     logicalPageBox = new LogicalPageBox(pageGrid);
     logicalPageBox.setPageContext(this.pageContext.getPageContext());
 
-    this.counterStore.add("page", new Integer
-        (layoutProcess.getOutputProcessor().getPageCursor() + 1));
-    this.counterStore.add("pages", new Integer
-        (layoutProcess.getOutputProcessor().getLogicalPageCount()));
 
   }
 
@@ -352,12 +335,6 @@ public abstract class AbstractRenderer implements Renderer
       }
       root = root.getParent();
     }
-
-//    if (root != logicalPageBox)
-//    {
-//      // Root can also be a flow.
-//      // throw new IllegalStateException("Root: " + root + " " + logicalPageBox);
-//    }
 
     return insertationPoint;
   }
@@ -743,14 +720,6 @@ public abstract class AbstractRenderer implements Renderer
     if (content instanceof ResolvedCounterToken)
     {
       final ResolvedCounterToken resolvedToken = (ResolvedCounterToken) content;
-      final String name = resolvedToken.getParent().getName();
-
-      if (isReservedCounter(name) == false)
-      {
-        getCounterStore().add(name,
-            new Integer(resolvedToken.getCounterValue()));
-      }
-
       if (isProcessingNormalFlow() == false)
       {
         getInsertationPoint().addChilds(textFactory.finishText());
@@ -776,28 +745,24 @@ public abstract class AbstractRenderer implements Renderer
     {
       final ResolvedStringToken resolvedToken = (ResolvedStringToken) context;
       final ComputedToken parent = resolvedToken.getParent();
-      if (parent instanceof VariableToken)
+      // todo: The test should be: isProcessingPageFlow()
+      if (parent instanceof VariableToken && isProcessingNormalFlow() == false)
       {
-        final VariableToken vtoken = (VariableToken) parent;
-        getStringsStore().add(vtoken.getVariable(), resolvedToken.getText());
-        if (isProcessingNormalFlow() == false)
+        getInsertationPoint().addChilds(textFactory.finishText());
+        try
         {
-          getInsertationPoint().addChilds(textFactory.finishText());
-          try
-          {
-            final RenderableTextBox token = new RenderableTextBox
-                (textFactory.saveState(), resolvedToken, context);
-            token.appyStyle(context, getLayoutProcess().getOutputMetaData());
-            getInsertationPoint().addChild(token);
-            token.close();
-            tryValidateOutput(null);
-            return;
-          }
-          catch (StateException se)
-          {
-            // Should not happen ..
-            throw new NormalizationException("State failed.", se);
-          }
+          final RenderableTextBox token = new RenderableTextBox
+              (textFactory.saveState(), resolvedToken, context);
+          token.appyStyle(context, getLayoutProcess().getOutputMetaData());
+          getInsertationPoint().addChild(token);
+          token.close();
+          tryValidateOutput(null);
+          return;
+        }
+        catch (StateException se)
+        {
+          // Should not happen ..
+          throw new NormalizationException("State failed.", se);
         }
       }
     }
@@ -817,19 +782,6 @@ public abstract class AbstractRenderer implements Renderer
       insertationPoint.addChilds(text);
       tryValidateOutput(null);
     }
-  }
-
-  protected boolean isReservedCounter(String name)
-  {
-    if (name.equals("pages"))
-    {
-      return true;
-    }
-    if (name.equals("page"))
-    {
-      return true;
-    }
-    return false;
   }
 
   private RenderNode[] createText(final String str,
@@ -1025,6 +977,11 @@ public abstract class AbstractRenderer implements Renderer
     // here.
   }
 
+  public RenderPageContext getPageContext()
+  {
+    return pageContext;
+  }
+
   public void handlePageBreak(final PageContext pageContext)
   {
     if (pageContext == null)
@@ -1032,18 +989,13 @@ public abstract class AbstractRenderer implements Renderer
       throw new NullPointerException();
     }
 
-    this.pageContext = this.pageContext.update(pageContext);
+    this.pageContext = this.pageContext.update
+        (pageContext, layoutProcess.getOutputProcessor());
     final PageGrid pageGrid =
         this.pageContext.createPageGrid(layoutProcess.getOutputMetaData());
 
     this.pendingStore = (ContentStore) pendingStore.derive();
     this.elementsStore = (ContentStore) elementsStore.derive();
-    this.stringsStore = (StringStore) stringsStore.derive();
-    this.counterStore = (CounterStore) counterStore.derive();
-    this.counterStore.add("page", new Integer
-        (layoutProcess.getOutputProcessor().getPageCursor() + 1));
-    this.counterStore.add("pages", new Integer
-        (layoutProcess.getOutputProcessor().getLogicalPageCount()));
     this.logicalPageBox.updatePageArea(pageGrid);
   }
 

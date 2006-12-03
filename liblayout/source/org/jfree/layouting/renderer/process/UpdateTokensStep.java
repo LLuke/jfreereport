@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: UpdateTokensStep.java,v 1.1 2006/11/29 23:24:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -45,12 +45,11 @@ import org.jfree.layouting.layouter.content.resolved.ResolvedToken;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.counters.CounterStyle;
-import org.jfree.layouting.renderer.CounterStore;
-import org.jfree.layouting.renderer.StringStore;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableTextBox;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.page.RenderPageContext;
 import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
@@ -63,9 +62,8 @@ import org.jfree.util.ObjectUtilities;
 public class UpdateTokensStep extends IterateStructuralProcessStep
 {
   private LayoutProcess layoutProcess;
+  private RenderPageContext pageContext;
   private DocumentContext documentContext;
-  private StringStore stringStore;
-  private CounterStore counterStore;
   private CodePointBuffer buffer;
 
   public UpdateTokensStep()
@@ -74,13 +72,12 @@ public class UpdateTokensStep extends IterateStructuralProcessStep
 
   public void compute(final LogicalPageBox pageBox,
                       final LayoutProcess layoutProcess,
-                      final StringStore stringStore,
-                      final CounterStore counterStore)
+                      final RenderPageContext pageContext)
   {
     this.layoutProcess = layoutProcess;
+    this.pageContext = pageContext;
     this.documentContext = this.layoutProcess.getDocumentContext();
-    this.stringStore = stringStore;
-    this.counterStore = counterStore;
+
     try
     {
       startProcessing(pageBox);
@@ -91,8 +88,7 @@ public class UpdateTokensStep extends IterateStructuralProcessStep
       Log.error("Unable to update tokens..");
     }
     this.documentContext = null;
-    this.stringStore = null;
-    this.counterStore = null;
+    this.pageContext = null;
   }
 
   protected boolean startInlineBox(InlineRenderBox box)
@@ -164,7 +160,7 @@ public class UpdateTokensStep extends IterateStructuralProcessStep
         final VariableToken vt = (VariableToken) parent;
         final String variable = vt.getVariable();
         final CSSValue stringPolicy = documentContext.getStringPolicy(variable);
-        return stringStore.get(variable, stringPolicy);
+        return pageContext.getString(variable, stringPolicy);
       }
     }
     else if (resolvedToken instanceof ResolvedCounterToken)
@@ -174,7 +170,7 @@ public class UpdateTokensStep extends IterateStructuralProcessStep
       final String name = parent.getName();
       final CounterStyle style = parent.getStyle();
       final CSSValue counterPolicy = documentContext.getCounterPolicy(name);
-      final Integer counterValue = counterStore.get(name, counterPolicy);
+      final Integer counterValue = pageContext.getCounter(name, counterPolicy);
       return style.getCounterValue(counterValue.intValue());
     }
 

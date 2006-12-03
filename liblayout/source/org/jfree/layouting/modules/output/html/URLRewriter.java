@@ -10,5 +10,6 @@ import org.jfree.repository.ContentEntity;
  */
 public interface URLRewriter
 {
-  public String rewrite (ContentEntity content, ContentEntity dataEntity);
+  public String rewrite(ContentEntity sourceDocument, ContentEntity dataEntity)
+      throws URLRewriteException;
 }

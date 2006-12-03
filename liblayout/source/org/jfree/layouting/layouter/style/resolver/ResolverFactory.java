@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ResolverFactory.java,v 1.5 2006/11/20 21:01:53 taqua Exp $
+ * $Id: ResolverFactory.java,v 1.6 2006/11/26 19:43:13 taqua Exp $
  *
  * Changes
  * -------
@@ -142,7 +142,7 @@ public class ResolverFactory
 
       final String c = config.getConfigProperty(configkey);
       ResolveHandler module = (ResolveHandler)
-              ObjectUtilities.loadAndInstantiate(c, ResolverFactory.class);
+              ObjectUtilities.loadAndInstantiate(c, ResolverFactory.class, ResolveHandler.class);
       if (module != null)
       {
         Log.info("Loaded resolver: " + name + " (" + module + ")");

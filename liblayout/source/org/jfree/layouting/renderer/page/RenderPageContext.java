@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: RenderPageContext.java,v 1.2 2006/10/22 14:58:25 taqua Exp $
+ * $Id: RenderPageContext.java,v 1.3 2006/11/26 19:43:15 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,22 @@
  */
 package org.jfree.layouting.renderer.page;
 
+import java.util.Map;
+import java.util.Iterator;
+
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.renderer.model.page.DefaultPageGrid;
 import org.jfree.layouting.renderer.model.page.PageGrid;
+import org.jfree.layouting.renderer.CounterStore;
+import org.jfree.layouting.renderer.StringStore;
+import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.StatefullComponent;
+import org.jfree.layouting.State;
+import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.StateException;
 
 /**
  * This is a running page context, which contains a list of watched strings
@@ -57,20 +68,89 @@ import org.jfree.layouting.renderer.model.page.PageGrid;
  *
  * @author Thomas Morgner
  */
-public class RenderPageContext
+public class RenderPageContext implements StatefullComponent
 {
-  private PageContext pageContext;
-  private boolean firstPage;
-  private int pageCounter;
-  private boolean leftPage;
+  private static class RenderPageContextState implements State
+  {
+    private CounterStore counterStore;
+    private StringStore stringStore;
+    private PageContext pageContext;
 
-  public RenderPageContext(final PageContext pageContext)
+    public RenderPageContextState(RenderPageContext context)
+        throws StateException
+    {
+      try
+      {
+        this.pageContext = context.pageContext;
+        this.counterStore = (CounterStore) context.counterStore.clone();
+        this.stringStore = (StringStore) context.stringStore.clone();
+      }
+      catch (CloneNotSupportedException e)
+      {
+        throw new StateException("Clone failed.");
+      }
+    }
+
+    /**
+     * Creates a restored instance of the saved component.
+     * <p/>
+     * By using this factory-like approach, we gain independence from having to
+     * know the actual implementation. This makes things a lot easier.
+     *
+     * @param layoutProcess the layout process that controls it all
+     * @return the saved state
+     * @throws org.jfree.layouting.StateException
+     *
+     */
+    public StatefullComponent restore(LayoutProcess layoutProcess)
+        throws StateException
+    {
+      try
+      {
+        RenderPageContext rpc = new RenderPageContext();
+        rpc.pageContext = this.pageContext;
+        rpc.counterStore = (CounterStore) this.counterStore.clone();
+        rpc.stringStore = (StringStore) this.stringStore.clone();
+        rpc.counterStore.add("pages", new Integer
+            (layoutProcess.getOutputProcessor().getLogicalPageCount()));
+
+        return rpc;
+      }
+      catch (CloneNotSupportedException e)
+      {
+        throw new StateException("Clone failed.");
+      }
+    }
+  }
+
+  private PageContext pageContext;
+
+  private CounterStore counterStore;
+  private StringStore stringStore;
+
+  public RenderPageContext(final LayoutProcess layoutProcess,
+                           final PageContext pageContext)
   {
     if (pageContext == null)
     {
       throw new NullPointerException();
     }
+    if (layoutProcess == null)
+    {
+      throw new NullPointerException();
+    }
     this.pageContext = pageContext;
+    this.counterStore = new CounterStore();
+    this.stringStore = new StringStore();
+
+    this.counterStore.add("page", new Integer
+        (layoutProcess.getOutputProcessor().getPageCursor() + 1));
+    this.counterStore.add("pages", new Integer
+        (layoutProcess.getOutputProcessor().getLogicalPageCount()));
+  }
+
+  protected RenderPageContext()
+  {
   }
 
   public PageContext getPageContext()
@@ -78,10 +158,18 @@ public class RenderPageContext
     return pageContext;
   }
 
-  public RenderPageContext update (final PageContext pageContext)
+  public RenderPageContext update(final PageContext pageContext,
+                                  final OutputProcessor outputProcessor)
   {
     // this should preserve all recorded trails ..
-    return new RenderPageContext(pageContext);
+    final RenderPageContext renderPageContext = new RenderPageContext();
+    renderPageContext.pageContext = pageContext;
+    renderPageContext.counterStore = (CounterStore) counterStore.derive();
+    renderPageContext.stringStore = (StringStore) stringStore.derive();
+
+    renderPageContext.counterStore.add("page", new Integer
+        (outputProcessor.getPageCursor() + 1));
+    return renderPageContext;
   }
 
   /**
@@ -92,11 +180,61 @@ public class RenderPageContext
    */
   public RenderPageContext update(final LayoutContext layoutContext)
   {
+    Map counters = layoutContext.getCounters();
+    Map strings = layoutContext.getStrings();
+
+    Iterator counterIt = counters.entrySet().iterator();
+    while (counterIt.hasNext())
+    {
+      Map.Entry entry = (Map.Entry) counterIt.next();
+      final String name = (String) entry.getKey();
+      final Integer value = (Integer) entry.getValue();
+      counterStore.add(name, value);
+    }
+
+    Iterator stringsIt = strings.entrySet().iterator();
+    while (stringsIt.hasNext())
+    {
+      Map.Entry entry = (Map.Entry) stringsIt.next();
+      final String name = (String) entry.getKey();
+      final String value = (String) entry.getValue();
+      stringStore.add(name, value);
+    }
     return this;
   }
 
   public PageGrid createPageGrid(final OutputProcessorMetaData outputMetaData)
   {
     return new DefaultPageGrid(pageContext, outputMetaData);
+  }
+
+  public String getString(final String name, final CSSValue pagePolicy)
+  {
+    return stringStore.get(name, pagePolicy);
+  }
+
+  public Integer getCounter(final String name, final CSSValue pagePolicy)
+  {
+    return counterStore.get(name, pagePolicy);
+  }
+
+  public Object clone()
+  {
+    try
+    {
+      RenderPageContext pg =  (RenderPageContext) super.clone();
+      pg.counterStore = (CounterStore) counterStore.clone();
+      pg.stringStore = (StringStore) stringStore.clone();
+      return pg;
+    }
+    catch(CloneNotSupportedException cne)
+    {
+      throw new IllegalStateException("Clone must be supported.");
+    }
+  }
+
+  public State saveState() throws StateException
+  {
+    return new RenderPageContextState(this);
   }
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutElement.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
+ * $Id: LayoutElement.java,v 1.2 2006/10/27 18:25:50 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.layouting.layouter.model;
 import java.util.HashMap;
 
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.util.FastStack;
 
 /**
  * Represents a DOM element. The tree is only backward-traversable; non-element
@@ -89,6 +90,28 @@ public class LayoutElement extends LayoutNode
   public LayoutContext getLayoutContext()
   {
     return layoutContext;
+  }
+
+  public LayoutContext detachLayoutContext()
+  {
+//    LayoutElement parent = getParent();
+//    final FastStack list = new FastStack();
+//    list.push(this);
+//    while (parent != null)
+//    {
+//      list.push(parent);
+//      parent = parent.getParent();
+//    }
+//
+//    final HashMap allCounters = new HashMap();
+//    final HashMap allStrings = new HashMap();
+//    while (list.isEmpty() == false)
+//    {
+//      final LayoutElement element = (LayoutElement) list.pop();
+//      allCounters.putAll(element.counters);
+//      allStrings.putAll(element.strings);
+//    }
+    return layoutContext.detach(counters, strings);
   }
 
 

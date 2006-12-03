@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PdfOutputProcessor.java,v 1.2 2006/11/17 20:14:56 taqua Exp $
+ * $Id: PdfOutputProcessor.java,v 1.3 2006/11/26 19:43:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -34,6 +34,7 @@ import java.io.OutputStream;
 
 import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.DefaultFontStorage;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.pageable.AbstractPageableProcessor;
 import org.jfree.layouting.output.pageable.AllPageFlowSelector;
@@ -54,6 +55,7 @@ public class PdfOutputProcessor extends AbstractPageableProcessor
   private PdfOutputProcessorMetaData metaData;
   private PageFlowSelector flowSelector;
   private OutputStream outputStream;
+  private PdfDocumentWriter writer;
 
   public PdfOutputProcessor(final Configuration configuration,
                             final OutputStream outputStream)
@@ -65,7 +67,7 @@ public class PdfOutputProcessor extends AbstractPageableProcessor
     }
 
     this.outputStream = outputStream;
-    flowSelector = new AllPageFlowSelector();
+    this.flowSelector = new AllPageFlowSelector();
 
     // for the sake of simplicity, we use the AWT font registry for now.
     // This is less accurate than using the iText fonts, but completing
@@ -74,6 +76,7 @@ public class PdfOutputProcessor extends AbstractPageableProcessor
     final DefaultFontStorage fontStorage =
         new DefaultFontStorage(new AWTFontRegistry());
     metaData = new PdfOutputProcessorMetaData(fontStorage);
+
   }
 
   public OutputProcessorMetaData getMetaData()
@@ -96,18 +99,57 @@ public class PdfOutputProcessor extends AbstractPageableProcessor
     this.flowSelector = flowSelector;
   }
 
+  public void processDocumentMetaData(DocumentContext documentContext)
+  {
+    super.processDocumentMetaData(documentContext);
+    // we grab a few of them later ... like author, title etc
+  }
+
+  protected void processingContentFinished()
+  {
+    if (writer != null)
+    {
+      writer.close();
+    }
+  }
+
   protected void processPhysicalPage(final PageGrid pageGrid,
                                      final LogicalPageBox logicalPage,
                                      final int row,
                                      final int col,
                                      final PhysicalPageKey pageKey)
   {
-
+    try
+    {
+      if (writer == null)
+      {
+        writer = new PdfDocumentWriter(getConfiguration(), outputStream);
+        writer.open();
+      }
+      writer.processPhysicalPage(pageGrid,  logicalPage, row, col, pageKey);
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+    }
   }
 
   protected void processLogicalPage(LogicalPageKey key,
                                     LogicalPageBox logicalPage)
   {
-    // todo:
+    try
+    {
+      if (writer == null)
+      {
+        writer = new PdfDocumentWriter(getConfiguration(), outputStream);
+        writer.open();
+      }
+      writer.processLogicalPage(key, logicalPage);
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+    }
   }
+
 }

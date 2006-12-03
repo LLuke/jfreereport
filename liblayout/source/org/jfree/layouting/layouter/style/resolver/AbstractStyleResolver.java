@@ -74,6 +74,7 @@ public abstract class AbstractStyleResolver implements StyleResolver
       resolver.documentContext = layoutProcess.getDocumentContext();
       resolver.namespaces = layoutProcess.getDocumentContext().getNamespaces();
       resolver.keys = keys;
+      resolver.attrFunction = new AttrValueFunction();
     }
 
     public StyleKey[] getKeys()
@@ -120,7 +121,7 @@ public abstract class AbstractStyleResolver implements StyleResolver
     this.namespaces = documentContext.getNamespaces();
     this.attrFunction = new AttrValueFunction();
   }
-  
+
   protected void loadInitialStyle()
   {
     this.initialStyle = new LayoutStyleImpl();

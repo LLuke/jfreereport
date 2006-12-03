@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FlowHtmlOutputProcessor.java,v 1.3 2006/11/26 19:43:13 taqua Exp $
+ * $Id: FlowHtmlOutputProcessor.java,v 1.4 2006/11/28 13:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -47,6 +47,7 @@ import org.jfree.repository.DefaultNameGenerator;
 import org.jfree.repository.NameGenerator;
 import org.jfree.repository.dummy.DummyRepository;
 import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 12.11.2006, 14:12:38
@@ -54,6 +55,7 @@ import org.jfree.util.Configuration;
  * @author Thomas Morgner
  */
 public class FlowHtmlOutputProcessor extends AbstractOutputProcessor
+    implements HtmlOutputProcessor
 {
   private HtmlOutputProcessorMetaData metaData;
   private PrototypeBuildingRenderer prototypeBuilder;
@@ -95,9 +97,21 @@ public class FlowHtmlOutputProcessor extends AbstractOutputProcessor
     return new StreamingRenderer(layoutProcess);
   }
 
+  public HtmlPrinter getPrinter()
+  {
+    return printer;
+  }
+
   protected void processPageContent(final LogicalPageKey logicalPageKey,
                                     final LogicalPageBox logicalPage)
   {
-
+    try
+    {
+      printer.generate(logicalPage, getDocumentContext());
+    }
+    catch (Exception e)
+    {
+      Log.error ("Failed to generate content.", e);
+    }
   }
 }

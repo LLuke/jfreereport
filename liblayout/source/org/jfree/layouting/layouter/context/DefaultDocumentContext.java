@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultDocumentContext.java,v 1.1 2006/07/11 13:38:38 taqua Exp $
+ * $Id: DefaultDocumentContext.java,v 1.2 2006/11/29 23:23:36 taqua Exp $
  *
  * Changes
  * -------
@@ -46,10 +46,10 @@ import java.util.HashMap;
 
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.keys.page.PagePolicy;
 import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.layouter.counters.numeric.DecimalCounterStyle;
 import org.jfree.layouting.layouter.i18n.DefaultLocalizationContext;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.namespace.DefaultNamespaceCollection;
 import org.jfree.layouting.namespace.DefaultNamespaceDefinition;
 import org.jfree.layouting.namespace.NamespaceCollection;
@@ -57,7 +57,6 @@ import org.jfree.layouting.namespace.NamespaceDefinition;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.util.HashNMap;
 import org.jfree.util.Log;
 
 /**
@@ -68,12 +67,7 @@ import org.jfree.util.Log;
 public class DefaultDocumentContext extends DefaultDocumentMetaNode
         implements DocumentContext
 {
-
-  private static final LayoutElement[] EMPTY_ELEMENT_ARRAY =
-          new LayoutElement[0];
-
   private ArrayList metaNodes;
-  private HashNMap pendingContent;
 
   private HashMap counterStyles;
   private HashMap counterPolicy;
@@ -86,7 +80,6 @@ public class DefaultDocumentContext extends DefaultDocumentMetaNode
   {
     metaNodes = new ArrayList();
 
-    pendingContent = new HashNMap();
     counterStyles = new HashMap();
     counterPolicy = new HashMap();
     stringPolicy = new HashMap();
@@ -97,7 +90,12 @@ public class DefaultDocumentContext extends DefaultDocumentMetaNode
 
   public CSSValue getStringPolicy(String name)
   {
-    return (CSSValue) stringPolicy.get(name);
+    final CSSValue cssValue = (CSSValue) stringPolicy.get(name);
+    if (cssValue == null)
+    {
+      return PagePolicy.LAST;
+    }
+    return cssValue;
   }
 
   public void setStringPolicy(String name, CSSValue policy)
@@ -107,7 +105,12 @@ public class DefaultDocumentContext extends DefaultDocumentMetaNode
 
   public CSSValue getCounterPolicy(String name)
   {
-    return (CSSValue) counterPolicy.get(name);
+    final CSSValue cssValue = (CSSValue) counterPolicy.get(name);
+    if (cssValue == null)
+    {
+      return PagePolicy.LAST;
+    }
+    return cssValue;
   }
 
   public void setCounterPolicy(String name, CSSValue policy)
@@ -143,21 +146,21 @@ public class DefaultDocumentContext extends DefaultDocumentMetaNode
     return metaNodes.size();
   }
 
-  public void addPendingContent(String name, LayoutElement element)
-  {
-    pendingContent.add(name, element);
-  }
-
-  public void clearPendingContent(String name)
-  {
-    pendingContent.removeAll(name);
-  }
-
-  public LayoutElement[] getPendingContent(String name)
-  {
-    return (LayoutElement[])
-            pendingContent.toArray(name, EMPTY_ELEMENT_ARRAY);
-  }
+//  public void addPendingContent(String name, LayoutElement element)
+//  {
+//    pendingContent.add(name, element);
+//  }
+//
+//  public void clearPendingContent(String name)
+//  {
+//    pendingContent.removeAll(name);
+//  }
+//
+//  public LayoutElement[] getPendingContent(String name)
+//  {
+//    return (LayoutElement[])
+//            pendingContent.toArray(name, EMPTY_ELEMENT_ARRAY);
+//  }
 
   public ResourceManager getResourceManager()
   {

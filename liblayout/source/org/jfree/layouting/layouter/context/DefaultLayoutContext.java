@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultLayoutContext.java,v 1.2 2006/11/20 21:01:53 taqua Exp $
+ * $Id: DefaultLayoutContext.java,v 1.3 2006/11/26 19:43:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,10 @@
  */
 package org.jfree.layouting.layouter.context;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSValue;
@@ -54,6 +57,8 @@ import org.jfree.layouting.util.AttributeMap;
  */
 public class DefaultLayoutContext implements LayoutContext, Cloneable
 {
+  private static Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap());
+
   private BackgroundSpecification backgroundSpecification;
   private FontSpecification fontSpecification;
   private ContentSpecification contentSpecification;
@@ -65,6 +70,8 @@ public class DefaultLayoutContext implements LayoutContext, Cloneable
   private AttributeMap attributeMap;
   private String pseudoElement;
   private boolean derived;
+  private Map counters;
+  private Map strings;
 
   public DefaultLayoutContext(final ContextId contextId,
                               final String namespace,
@@ -92,6 +99,8 @@ public class DefaultLayoutContext implements LayoutContext, Cloneable
     this.backgroundSpecification = new BackgroundSpecification();
     this.contentSpecification = new ContentSpecification();
     this.listSpecification = new ListSpecification();
+    this.strings = EMPTY_MAP;
+    this.counters = EMPTY_MAP;
   }
 
   public String getPseudoElement()
@@ -178,11 +187,9 @@ public class DefaultLayoutContext implements LayoutContext, Cloneable
 
   public Object clone()
   {
-    // todo: Is this sane the way it is now?
     try
     {
       final DefaultLayoutContext lc = (DefaultLayoutContext) super.clone();
-      //lc.style = style.createCopy();
       lc.derived = true;
       return lc;
     }
@@ -215,4 +222,27 @@ public class DefaultLayoutContext implements LayoutContext, Cloneable
     return this.style.copyFrom(style);
   }
 
+  public Map getCounters()
+  {
+    return counters;
+  }
+
+  public Map getStrings()
+  {
+    return strings;
+  }
+
+  public LayoutContext detach(Map counters, Map strings)
+  {
+    final DefaultLayoutContext dlc = (DefaultLayoutContext) derive();
+    if (strings != null)
+    {
+      dlc.strings = Collections.unmodifiableMap(strings);
+    }
+    if (counters != null)
+    {
+      dlc.counters = Collections.unmodifiableMap(counters);
+    }
+    return dlc;
+  }
 }

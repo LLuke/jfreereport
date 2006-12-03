@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: LayoutContext.java,v 1.3 2006/11/20 21:01:53 taqua Exp $
+ * $Id: LayoutContext.java,v 1.4 2006/11/26 19:43:12 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,13 @@
 package org.jfree.layouting.layouter.context;
 
 import java.util.Locale;
+import java.util.Map;
 
 import org.jfree.layouting.util.AttributeMap;
 
 /**
  * This is where the computed style goes into.
+ * // todo: Produce the computed counterset!
  *
  * @author Thomas Morgner
  */
@@ -57,6 +59,9 @@ public interface LayoutContext extends LayoutStyle
   public FontSpecification getFontSpecification();
   public ContentSpecification getContentSpecification();
   public ListSpecification getListSpecification();
+
+  public Map getCounters();
+  public Map getStrings();
 
   /**
    * An element can be exactly one pseudo-element type. It is not possible
@@ -96,6 +101,7 @@ public interface LayoutContext extends LayoutStyle
   public boolean isPseudoElement();
 
   public LayoutContext derive();
+  public LayoutContext detach(Map counters, Map strings);
 
   public void dispose();
 }

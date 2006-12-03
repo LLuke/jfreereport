@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DisplayNode.java,v 1.2 2006/07/17 16:48:52 taqua Exp $
+ * $Id: DisplayNode.java,v 1.3 2006/11/20 21:01:53 taqua Exp $
  *
  * Changes
  * -------
@@ -79,10 +79,6 @@ public abstract class DisplayNode implements Cloneable
 
   public void markFinished() throws NormalizationException
   {
-    if ("span".equals(layoutContext.getTagName()))
-    {
-      Log.debug ("HERE");
-    }
     finished = true;
   }
 

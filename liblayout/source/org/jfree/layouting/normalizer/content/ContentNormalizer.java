@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentNormalizer.java,v 1.10 2006/11/20 21:01:53 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.11 2006/11/26 19:43:13 taqua Exp $
  *
  * Changes
  * -------
@@ -432,7 +432,7 @@ public class ContentNormalizer implements Normalizer
 //                  layoutContext.getTagName() + ":" +
 //                  layoutContext.getPseudoElement() +
 //                  " as it inhibits content creation.");
-          modelBuilder.startElement(currentElement.getLayoutContext());
+          modelBuilder.startElement(currentElement.detachLayoutContext());
           ignoreContext += 1;
         }
         else
@@ -441,7 +441,7 @@ public class ContentNormalizer implements Normalizer
 //                  layoutContext.getTagName() +
 //                  " as it inhibits content creation.");
           generateOutsidePseudoElements(currentElement);
-          modelBuilder.startElement(currentElement.getLayoutContext());
+          modelBuilder.startElement(currentElement.detachLayoutContext());
           generateBeforePseudoElements(currentElement);
           generateContentBefore(currentElement);
           ignoreContext += 1;
@@ -451,7 +451,7 @@ public class ContentNormalizer implements Normalizer
       {
         // normal content processing here ...
         generateOutsidePseudoElements(currentElement);
-        modelBuilder.startElement(currentElement.getLayoutContext());
+        modelBuilder.startElement(currentElement.detachLayoutContext());
         generateBeforePseudoElements(currentElement);
 
         // check, whether we have a 'contents' token inside the 'content'

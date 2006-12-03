@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: StyleSheetFactory.java,v 1.4 2006/07/20 17:50:52 taqua Exp $
+ * $Id: StyleSheetFactory.java,v 1.5 2006/11/26 19:43:10 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package org.jfree.layouting.input.style.parser;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.layouting.input.style.StyleSheet;
@@ -94,8 +95,9 @@ public class StyleSheetFactory implements ResourceFactory
       parser.setDocumentHandler(handler);
       parser.setErrorHandler(handler);
 
+      final InputStream stream = data.getResourceAsStream(manager);
       final InputSource inputSource = new InputSource();
-      inputSource.setByteStream(data.getResourceAsStream(manager));
+      inputSource.setByteStream(stream);
       parser.parseStyleSheet(inputSource);
 
       final DependencyCollector dependencies = handler.getDependencies();

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSValueFactory.java,v 1.8 2006/11/20 21:01:53 taqua Exp $
+ * $Id: CSSValueFactory.java,v 1.9 2006/11/26 19:43:10 taqua Exp $
  *
  * Changes
  * -------
@@ -101,7 +101,7 @@ public class CSSValueFactory
       final String name = key.substring(SIMPLE_PREFIX.length()).toLowerCase();
       final String c = config.getConfigProperty(key);
       Object module =
-              ObjectUtilities.loadAndInstantiate(c, CSSValueFactory.class);
+              ObjectUtilities.loadAndInstantiate(c, CSSValueFactory.class, CSSValueReadHandler.class);
       if (module instanceof CSSValueReadHandler)
       {
         handlers.put(name, module);
@@ -119,7 +119,7 @@ public class CSSValueFactory
       final String name = key.substring(COMPOUND_PREFIX.length()).toLowerCase();
       final String c = config.getConfigProperty(key);
       Object module = 
-              ObjectUtilities.loadAndInstantiate(c, CSSValueFactory.class);
+              ObjectUtilities.loadAndInstantiate(c, CSSValueFactory.class, CSSCompoundValueReadHandler.class);
       if (module instanceof CSSCompoundValueReadHandler)
       {
         compoundHandlers.put(name, module);

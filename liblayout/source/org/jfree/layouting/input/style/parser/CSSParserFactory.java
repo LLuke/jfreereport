@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: CSSParserFactory.java,v 1.3 2006/04/23 15:18:12 taqua Exp $
+ * $Id: CSSParserFactory.java,v 1.4 2006/11/26 19:43:10 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class CSSParserFactory
     if (parserClass != null)
     {
       Parser p = (Parser) ObjectUtilities.loadAndInstantiate
-            (parserClass, CSSParserFactory.class);
+            (parserClass, CSSParserFactory.class, Parser.class);
       if (p != null)
       {
         p.setConditionFactory(new FixNamespaceConditionFactory(new CSSConditionFactory()));

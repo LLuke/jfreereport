@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: HtmlPrinter.java,v 1.1 2006/11/26 19:45:11 taqua Exp $
+ * $Id: HtmlPrinter.java,v 1.2 2006/11/28 13:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corperation.
  */
@@ -64,7 +64,6 @@ import org.jfree.layouting.input.style.keys.color.HtmlColors;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
-import org.jfree.layouting.input.style.keys.text.WhitespaceCollapse;
 import org.jfree.layouting.input.style.values.CSSColorValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.DocumentContext;
@@ -74,14 +73,15 @@ import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
+import org.jfree.layouting.renderer.model.MarkerRenderBox;
 import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
-import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
+import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
@@ -105,9 +105,11 @@ import org.jfree.ui.Drawable;
 import org.jfree.util.FastStack;
 import org.jfree.util.StackableRuntimeException;
 import org.jfree.util.WaitingImageObserver;
+import org.jfree.util.Log;
 import org.jfree.xmlns.common.AttributeList;
 import org.jfree.xmlns.writer.DefaultTagDescription;
 import org.jfree.xmlns.writer.XmlWriter;
+import org.jfree.xmlns.writer.HtmlCharacterEntities;
 
 /**
  * Creation-Date: 25.11.2006, 18:17:57
@@ -116,14 +118,40 @@ import org.jfree.xmlns.writer.XmlWriter;
  */
 public class HtmlPrinter extends IterateStructuralProcessStep
 {
+  private static class ContextElement
+  {
+    private StyleBuilder builder;
+    private boolean omitted;
+
+    public ContextElement(final StyleBuilder builder)
+    {
+      this.builder = builder;
+    }
+
+    public StyleBuilder getBuilder()
+    {
+      return builder;
+    }
+
+    public boolean isOmitted()
+    {
+      return omitted;
+    }
+
+    public void setOmitted(final boolean omitted)
+    {
+      this.omitted = omitted;
+    }
+  }
+
   private static final String[] XHTML_HEADER = {
-          "<!DOCTYPE html",
-          "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
-          "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"};
+      "<!DOCTYPE html",
+      "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
+      "     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"};
 
   public static final String TAG_DEF_PREFIX = "org.jfree.layouting.modules.output.html.";
-  public static final float CORRECTION_FACTOR_PX_TO_POINT = 72f/96f;
-  public static final float CORRECTION_FACTOR_POINT_TO_PX = 96f/72f;
+  public static final float CORRECTION_FACTOR_PX_TO_POINT = 72f / 96f;
+  public static final float CORRECTION_FACTOR_POINT_TO_PX = 96f / 72f;
 
   private XmlWriter xmlWriter;
   private FastStack contexts;
@@ -278,7 +306,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         inialBuilder.append(key, initialStyle.getValue(key));
       }
     }
-    contexts.push(inialBuilder);
+    contexts.push(new ContextElement(inialBuilder));
 
     startBlockBox(box);
     processBoxChilds(box);
@@ -290,10 +318,8 @@ public class HtmlPrinter extends IterateStructuralProcessStep
       xmlWriter.writeCloseTag();
     }
 
+    xmlWriter.close();
     xmlWriter = null;
-    writer.flush();
-
-
   }
   // Todo: Text height is not yet applied by the layouter ..
 
@@ -312,7 +338,8 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     try
     {
       final StyleBuilder builder = createStyleBuilder();
-      contexts.push(builder);
+      final ContextElement context = new ContextElement(builder);
+      contexts.push(context);
 
       buildStyle(box, builder);
 
@@ -321,7 +348,15 @@ public class HtmlPrinter extends IterateStructuralProcessStep
       {
         attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
       }
-      xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "span", attList, false);
+
+      if (attList.isEmpty() == false)
+      {
+        xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "span", attList, false);
+      }
+      else
+      {
+        context.setOmitted(true);
+      }
       return true;
     }
     catch (IOException e)
@@ -492,7 +527,8 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
     else
     {
-      builder = new StyleBuilder(true, (StyleBuilder) contexts.peek());
+      ContextElement contextElement = (ContextElement) contexts.peek();
+      builder = new StyleBuilder(true, contextElement.getBuilder());
     }
     return builder;
   }
@@ -573,8 +609,11 @@ public class HtmlPrinter extends IterateStructuralProcessStep
   {
     try
     {
-      contexts.pop();
-      xmlWriter.writeCloseTag();
+      final ContextElement element = (ContextElement) contexts.pop();
+      if (element.isOmitted() == false)
+      {
+        xmlWriter.writeCloseTag();
+      }
     }
     catch (IOException e)
     {
@@ -587,11 +626,11 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     try
     {
       final StyleBuilder builder = createStyleBuilder();
-      contexts.push(builder);
+      contexts.push(new ContextElement(builder));
 
       if (box instanceof TableRenderBox)
       {
-        startTable((TableRenderBox) box, builder);
+        return startTable((TableRenderBox) box, builder);
       }
       else if (box instanceof TableSectionRenderBox)
       {
@@ -599,249 +638,47 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         final CSSValue displayRole = section.getDisplayRole();
         if (DisplayRole.TABLE_HEADER_GROUP.equals(displayRole))
         {
-          startTableHeader((TableSectionRenderBox) box, builder);
+          return startTableHeader((TableSectionRenderBox) box, builder);
         }
         else if (DisplayRole.TABLE_FOOTER_GROUP.equals(displayRole))
         {
-          startTableFooter((TableSectionRenderBox) box, builder);
+          return startTableFooter((TableSectionRenderBox) box, builder);
         }
         else
         {
-          startTableBody((TableSectionRenderBox) box, builder);
+          return startTableBody((TableSectionRenderBox) box, builder);
         }
       }
       else if (box instanceof TableRowRenderBox)
       {
-        startTableRow((TableRowRenderBox) box, builder);
+        return startTableRow((TableRowRenderBox) box, builder);
       }
       else if (box instanceof TableCellRenderBox)
       {
         // or a th, it depends ..
-        startTableCell((TableCellRenderBox) box, builder);
+        return startTableCell((TableCellRenderBox) box, builder);
       }
       else if (box instanceof ParagraphRenderBox)
       {
-        startParagraph((ParagraphRenderBox) box, builder);
+        return startParagraph((ParagraphRenderBox) box, builder);
       }
       else if (box instanceof LogicalPageBox)
       {
-        startPageBox(box, builder);
+        return startPageBox(box, builder);
+      }
+      else if (box instanceof MarkerRenderBox)
+      {
+        return startMarkerContents(box, builder);
       }
       else
       {
-        startOtherBlockBox(box, builder);
+        return startOtherBlockBox(box, builder);
       }
-      return true;
     }
     catch (IOException e)
     {
       throw new StackableRuntimeException("Failed", e);
     }
-  }
-
-  protected void startPageBox(final RenderBox box,
-                              final StyleBuilder builder) throws IOException
-  {
-    buildStyle(box, builder);
-    builder.append(BoxStyleKeys.WIDTH, toPointString(box.getWidth()), "pt");
-
-    final AttributeList attList = new AttributeList();
-    attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
-        "div", attList, XmlWriter.OPEN);
-  }
-
-  protected void finishPageBox(final RenderBox box) throws IOException
-  {
-    xmlWriter.writeCloseTag();
-  }
-
-  protected void startOtherBlockBox(BlockRenderBox box,
-                                    final StyleBuilder builder)
-      throws IOException
-  {
-    buildStyle(box, builder);
-    final AttributeList attList = new AttributeList();
-    if (builder.isEmpty() == false)
-    {
-      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
-    }
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
-        "div", attList, XmlWriter.OPEN);
-  }
-
-  protected void finishOtherBlockBox(final BlockRenderBox tableRenderBox)
-      throws IOException
-  {
-    xmlWriter.writeCloseTag();
-  }
-
-  protected void startParagraph(final ParagraphRenderBox box,
-                                final StyleBuilder builder) throws IOException
-  {
-    buildStyle(box, builder);
-    final AttributeList attList = new AttributeList();
-    if (builder.isEmpty() == false)
-    {
-      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
-    }
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
-        "p", attList, XmlWriter.OPEN);
-  }
-
-  protected void finishParagraph(final ParagraphRenderBox tableRenderBox)
-      throws IOException
-  {
-    xmlWriter.writeCloseTag();
-  }
-
-  protected void startTableCell(final TableCellRenderBox box,
-                                final StyleBuilder builder) throws IOException
-  {
-    final int colSpan = box.getColSpan();
-    final int rowSpan = box.getRowSpan();
-
-    final AttributeList attrList = new AttributeList();
-    if (colSpan != 0)
-    {
-      attrList.setAttribute(Namespaces.XHTML_NAMESPACE, "colspan", String.valueOf(colSpan));
-    }
-    if (rowSpan != 0)
-    {
-      attrList.setAttribute(Namespaces.XHTML_NAMESPACE, "rowspan", String.valueOf(rowSpan));
-    }
-
-    buildStyle(box, builder);
-    if (builder.isEmpty() == false)
-    {
-      attrList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
-    }
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "td", attrList, XmlWriter.OPEN);
-  }
-
-  protected void finishTableCell(final TableCellRenderBox tableRenderBox)
-      throws IOException
-  {
-    xmlWriter.writeCloseTag();
-  }
-
-  protected void startTableRow(final TableRowRenderBox box,
-                               final StyleBuilder builder) throws IOException
-  {
-    buildStyle(box, builder);
-    final AttributeList attList = new AttributeList();
-    if (builder.isEmpty() == false)
-    {
-      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
-    }
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
-        "tr", attList, XmlWriter.OPEN);
-  }
-
-  protected void finishTableRow(final TableRowRenderBox tableRenderBox)
-      throws IOException
-  {
-    xmlWriter.writeCloseTag();
-  }
-
-  protected void startTableHeader(final TableSectionRenderBox box,
-                                  final StyleBuilder builder)
-      throws IOException
-  {
-    buildStyle(box, builder);
-    final AttributeList attList = new AttributeList();
-    if (builder.isEmpty() == false)
-    {
-      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
-    }
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
-        "thead", attList, XmlWriter.OPEN);
-  }
-
-  protected void finishTableHeader(final TableSectionRenderBox tableRenderBox)
-      throws IOException
-  {
-    xmlWriter.writeCloseTag();
-  }
-
-  protected void startTableBody(final TableSectionRenderBox box,
-                                final StyleBuilder builder)
-      throws IOException
-  {
-    buildStyle(box, builder);
-    final AttributeList attList = new AttributeList();
-    if (builder.isEmpty() == false)
-    {
-      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
-    }
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
-        "tbody", attList, XmlWriter.OPEN);
-  }
-
-  protected void finishTableBody(final TableSectionRenderBox tableRenderBox)
-      throws IOException
-  {
-    xmlWriter.writeCloseTag();
-  }
-
-  protected void startTableFooter(final TableSectionRenderBox box,
-                                  final StyleBuilder builder)
-      throws IOException
-  {
-    buildStyle(box, builder);
-    final AttributeList attList = new AttributeList();
-    if (builder.isEmpty() == false)
-    {
-      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
-    }
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
-        "tfoot", attList, XmlWriter.OPEN);
-  }
-
-  protected void finishTableFooter(final TableSectionRenderBox tableRenderBox)
-      throws IOException
-  {
-    xmlWriter.writeCloseTag();
-  }
-
-  protected void startTable(final TableRenderBox box,
-                            final StyleBuilder builder)
-      throws IOException
-  {
-    buildStyle(box, builder);
-
-
-    final AttributeList attList = new AttributeList();
-    attList.setAttribute(Namespaces.XHTML_NAMESPACE, "cellspacing", "0");
-    attList.setAttribute(Namespaces.XHTML_NAMESPACE, "cellpadding", "0");
-
-    if (builder.isEmpty() == false)
-    {
-      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
-    }
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
-        "table", attList, XmlWriter.OPEN);
-
-    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "colgroup", XmlWriter.OPEN);
-
-    final TableColumnModel columnModel = box.getColumnModel();
-    final int columnCount = columnModel.getColumnCount();
-    for (int i = 0; i < columnCount; i++)
-    {
-      final TableColumn column = columnModel.getColumn(i);
-      final long effectiveSize = column.getEffectiveSize();
-      final StyleBuilder colbuilder = new StyleBuilder(true);
-      colbuilder.append(BoxStyleKeys.WIDTH, toPointString(effectiveSize), "pt");
-      xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
-          "col", "style", colbuilder.toString(), XmlWriter.CLOSE);
-    }
-    xmlWriter.writeCloseTag();
-  }
-
-  protected void finishTable(final TableRenderBox tableRenderBox)
-      throws IOException
-  {
-    xmlWriter.writeCloseTag();
   }
 
 
@@ -887,6 +724,10 @@ public class HtmlPrinter extends IterateStructuralProcessStep
       {
         finishPageBox(box);
       }
+      else if (box instanceof MarkerRenderBox)
+      {
+        finishMarkerBox(box);
+      }
       else
       {
         finishOtherBlockBox(box);
@@ -900,6 +741,279 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
   }
 
+  private void finishMarkerBox(final RenderBox box) throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
+
+  protected boolean startMarkerContents(final RenderBox box,
+                                        final StyleBuilder builder)
+      throws IOException
+  {
+    // This box is somewhat special ..
+    buildStyle(box, builder);
+    builder.append("white-space", false, "nowrap");
+
+    final AttributeList attList = new AttributeList();
+    if (builder.isEmpty() == false)
+    {
+      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    }
+    xmlWriter.writeComment("Marker-Box");
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
+        "span", attList, XmlWriter.OPEN);
+
+    // the next child is a block-level child ..
+    RenderNode node = box.getFirstChild();
+    while (node != null)
+    {
+      // process that node as well. It should be a paragraph ..
+      if (node instanceof ParagraphRenderBox)
+      {
+        processParagraphChilds((ParagraphRenderBox) node);
+      }
+      else if (node instanceof RenderBox)
+      {
+        processBoxChilds((RenderBox) node);
+      }
+      else
+      {
+        startProcessing(node);
+      }
+
+      RenderNode next = node.getNext();
+      if (next == null)
+      {
+        break;
+      }
+      if (next.isIgnorableForRendering() == false)
+      {
+        xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "br", XmlWriter.CLOSE);
+      }
+      node = next;
+    }
+    return false;
+  }
+
+  protected boolean startPageBox(final RenderBox box,
+                                 final StyleBuilder builder) throws IOException
+  {
+    buildStyle(box, builder);
+    builder.append(BoxStyleKeys.WIDTH, toPointString(box.getWidth()), "pt");
+
+    final AttributeList attList = new AttributeList();
+    attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
+        "div", attList, XmlWriter.OPEN);
+    return true;
+  }
+
+  protected void finishPageBox(final RenderBox box) throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
+  protected boolean startOtherBlockBox(BlockRenderBox box,
+                                       final StyleBuilder builder)
+      throws IOException
+  {
+    buildStyle(box, builder);
+    final AttributeList attList = new AttributeList();
+    if (builder.isEmpty() == false)
+    {
+      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    }
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
+        "div", attList, XmlWriter.OPEN);
+    return true;
+  }
+
+  protected void finishOtherBlockBox(final BlockRenderBox tableRenderBox)
+      throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
+  protected boolean startParagraph(final ParagraphRenderBox box,
+                                   final StyleBuilder builder)
+      throws IOException
+  {
+    buildStyle(box, builder);
+    final AttributeList attList = new AttributeList();
+    if (builder.isEmpty() == false)
+    {
+      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    }
+
+    // We have to use divs here, as paragraphs have margins by default.
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "div", attList, XmlWriter.OPEN);
+    return true;
+  }
+
+  protected void finishParagraph(final ParagraphRenderBox tableRenderBox)
+      throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
+  protected boolean startTableCell(final TableCellRenderBox box,
+                                   final StyleBuilder builder)
+      throws IOException
+  {
+    final int colSpan = box.getColSpan();
+    final int rowSpan = box.getRowSpan();
+
+    final AttributeList attrList = new AttributeList();
+    if (colSpan != 0)
+    {
+      attrList.setAttribute(Namespaces.XHTML_NAMESPACE, "colspan", String.valueOf(colSpan));
+    }
+    if (rowSpan != 0)
+    {
+      attrList.setAttribute(Namespaces.XHTML_NAMESPACE, "rowspan", String.valueOf(rowSpan));
+    }
+
+    buildStyle(box, builder);
+    if (builder.isEmpty() == false)
+    {
+      attrList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    }
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "td", attrList, XmlWriter.OPEN);
+    return true;
+
+  }
+
+  protected void finishTableCell(final TableCellRenderBox tableRenderBox)
+      throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
+  protected boolean startTableRow(final TableRowRenderBox box,
+                                  final StyleBuilder builder) throws IOException
+  {
+    buildStyle(box, builder);
+    final AttributeList attList = new AttributeList();
+    if (builder.isEmpty() == false)
+    {
+      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    }
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
+        "tr", attList, XmlWriter.OPEN);
+    return true;
+  }
+
+  protected void finishTableRow(final TableRowRenderBox tableRenderBox)
+      throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
+  protected boolean startTableHeader(final TableSectionRenderBox box,
+                                     final StyleBuilder builder)
+      throws IOException
+  {
+    buildStyle(box, builder);
+    final AttributeList attList = new AttributeList();
+    if (builder.isEmpty() == false)
+    {
+      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    }
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
+        "thead", attList, XmlWriter.OPEN);
+    return true;
+  }
+
+  protected void finishTableHeader(final TableSectionRenderBox tableRenderBox)
+      throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
+  protected boolean startTableBody(final TableSectionRenderBox box,
+                                   final StyleBuilder builder)
+      throws IOException
+  {
+    buildStyle(box, builder);
+    final AttributeList attList = new AttributeList();
+    if (builder.isEmpty() == false)
+    {
+      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    }
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
+        "tbody", attList, XmlWriter.OPEN);
+    return true;
+  }
+
+  protected void finishTableBody(final TableSectionRenderBox tableRenderBox)
+      throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
+  protected boolean startTableFooter(final TableSectionRenderBox box,
+                                     final StyleBuilder builder)
+      throws IOException
+  {
+    buildStyle(box, builder);
+    final AttributeList attList = new AttributeList();
+    if (builder.isEmpty() == false)
+    {
+      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    }
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
+        "tfoot", attList, XmlWriter.OPEN);
+    return true;
+  }
+
+  protected void finishTableFooter(final TableSectionRenderBox tableRenderBox)
+      throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
+  protected boolean startTable(final TableRenderBox box,
+                               final StyleBuilder builder)
+      throws IOException
+  {
+    buildStyle(box, builder);
+
+
+    final AttributeList attList = new AttributeList();
+    attList.setAttribute(Namespaces.XHTML_NAMESPACE, "cellspacing", "0");
+    attList.setAttribute(Namespaces.XHTML_NAMESPACE, "cellpadding", "0");
+
+    if (builder.isEmpty() == false)
+    {
+      attList.setAttribute(Namespaces.XHTML_NAMESPACE, "style", builder.toString());
+    }
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
+        "table", attList, XmlWriter.OPEN);
+
+    xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "colgroup", XmlWriter.OPEN);
+
+    final TableColumnModel columnModel = box.getColumnModel();
+    final int columnCount = columnModel.getColumnCount();
+    for (int i = 0; i < columnCount; i++)
+    {
+      final TableColumn column = columnModel.getColumn(i);
+      final long effectiveSize = column.getEffectiveSize();
+      final StyleBuilder colbuilder = new StyleBuilder(true);
+      colbuilder.append(BoxStyleKeys.WIDTH, toPointString(effectiveSize), "pt");
+      xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE,
+          "col", "style", colbuilder.toString(), XmlWriter.CLOSE);
+    }
+    xmlWriter.writeCloseTag();
+    return true;
+  }
+
+  protected void finishTable(final TableRenderBox tableRenderBox)
+      throws IOException
+  {
+    xmlWriter.writeCloseTag();
+  }
+
 
   protected void startOtherNode(RenderNode node)
   {
@@ -908,12 +1022,10 @@ public class HtmlPrinter extends IterateStructuralProcessStep
       if (node instanceof RenderableText)
       {
         final RenderableText text = (RenderableText) node;
-
-        // in a sane world, we would now process the glyphs ..
-        xmlWriter.writeText(text.getRawText());
-        final LayoutContext layoutContext = text.getLayoutContext();
-        final CSSValue wsCollapse =
-            layoutContext.getValue(TextStyleKeys.WHITE_SPACE_COLLAPSE);
+        final String rawText = text.getRawText();
+        final String encodedText =
+            HtmlCharacterEntities.getEntityParser().encodeEntities(rawText);
+        xmlWriter.writeText(encodedText);
       }
       else if (node instanceof SpacerRenderNode)
       {
@@ -987,16 +1099,21 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
     catch (ContentIOException e)
     {
-      e.printStackTrace();
+      throw new StackableRuntimeException("Failed", e);
+    }
+    catch (URLRewriteException e)
+    {
+      Log.warn ("Rewriting the URL failed.", e);
+      throw new StackableRuntimeException("Failed", e);
     }
   }
 
-  private String writeRaw (ResourceKey source) throws IOException
+  private String writeRaw(ResourceKey source) throws IOException
   {
     try
     {
       final ResourceData resourceData = resourceManager.load(source);
-      final String mimeType = queryMimeType (resourceData);
+      final String mimeType = queryMimeType(resourceData);
       if (isValidImage(mimeType))
       {
 
@@ -1030,19 +1147,24 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     {
       // ignore it ..
     }
+    catch (URLRewriteException e)
+    {
+      Log.warn ("Rewriting the URL failed.", e);
+      throw new StackableRuntimeException("Failed", e);
+    }
     return null;
   }
 
-  private String writeImage (Image image)
-      throws ContentIOException, IOException
+  private String writeImage(Image image)
+      throws ContentIOException, IOException, URLRewriteException
   {
     // encode the image into a PNG
-        // quick caching ... use a weak list ...
+    // quick caching ... use a weak list ...
     final WaitingImageObserver obs = new WaitingImageObserver(image);
     obs.waitImageLoaded();
 
     final PngEncoder encoder = new PngEncoder(image,
-            PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
+        PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
     final byte[] data = encoder.pngEncode();
 
     // write the encoded picture ...
@@ -1058,13 +1180,13 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     return urlRewriter.rewrite(documentContentItem, dataFile);
   }
 
-  private Image generateImage (RenderNode node, Drawable drawable)
+  private Image generateImage(RenderNode node, Drawable drawable)
   {
     final int imageWidthPt = (int) StrictGeomUtility.toExternalValue(node.getWidth());
     final int imageHeightPt = (int) StrictGeomUtility.toExternalValue(node.getHeight());
     // dont know whether we will need that one ..
     final boolean iResMapActive = false;
-        // getLayoutSupport().isImageResolutionMappingActive();
+    // getLayoutSupport().isImageResolutionMappingActive();
 
     if (imageWidthPt == 0 || imageHeightPt == 0)
     {
@@ -1072,26 +1194,12 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
     final double scale = CORRECTION_FACTOR_POINT_TO_PX;
     final Image image = ImageUtils.createTransparentImage
-            ((int)(imageWidthPt * scale), (int)(imageHeightPt * scale));
+        ((int) (imageWidthPt * scale), (int) (imageHeightPt * scale));
     final Graphics2D g2 = (Graphics2D) image.getGraphics();
-
-    // the clipping bounds are a sub-area of the whole drawable
-    // we only want to print a certain area ...
-//    g2.setFont(style.getFontDefinitionProperty().getFont());
-//    g2.setStroke((Stroke) style.getStyleProperty(ElementStyleSheet.STROKE));
-//    Paint extPaint = (Paint) style.getStyleProperty(ElementStyleSheet.EXTPAINT);
-//    if (extPaint != null)
-//    {
-//      g2.setPaint(extPaint);
-//    }
-//    else
-//    {
-//      g2.setPaint((Paint) style.getStyleProperty(ElementStyleSheet.PAINT));
-//    }
 
     g2.scale(scale, scale);
     final Rectangle2D.Double drawBounds =
-            new Rectangle2D.Double(0, 0, imageWidthPt, imageHeightPt);
+        new Rectangle2D.Double(0, 0, imageWidthPt, imageHeightPt);
     g2.clip(drawBounds);
     drawable.draw(g2, drawBounds);
     g2.dispose();
@@ -1182,7 +1290,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     return true;
   }
 
-  private boolean isGIF (final InputStream data) throws IOException
+  private boolean isGIF(final InputStream data) throws IOException
   {
     final int[] GIF_FINGERPRINT = {'G', 'I', 'F', '8'};
     for (int i = 0; i < GIF_FINGERPRINT.length; i++)
@@ -1223,6 +1331,19 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     {
       // A paragraph always has only its line-boxes as direct childs.
       processBoxChilds((RenderBox) node);
+      final RenderNode next = node.getNext();
+      if (next == null)
+      {
+        break;
+      }
+      try
+      {
+        xmlWriter.writeText(" ");
+      }
+      catch (IOException e)
+      {
+        throw new StackableRuntimeException("Failed", e);
+      }
       node = node.getNext();
     }
   }
