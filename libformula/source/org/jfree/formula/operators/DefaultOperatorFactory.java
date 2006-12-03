@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DefaultOperatorFactory.java,v 1.1 2006/11/04 15:44:33 taqua Exp $
  *
  * Changes
  * -------
@@ -108,7 +108,7 @@ public class DefaultOperatorFactory implements OperatorFactory
       }
 
       final Object operator = ObjectUtilities.loadAndInstantiate
-          (operatorClass, DefaultOperatorFactory.class);
+          (operatorClass, DefaultOperatorFactory.class, InfixOperator.class);
       if (operator instanceof InfixOperator)
       {
         infixOperators.put (tokenTrimmed, operator);
@@ -150,7 +150,7 @@ public class DefaultOperatorFactory implements OperatorFactory
       }
 
       final Object operator = ObjectUtilities.loadAndInstantiate
-          (operatorClass, DefaultOperatorFactory.class);
+          (operatorClass, DefaultOperatorFactory.class, PrefixOperator.class);
       if (operator instanceof PrefixOperator)
       {
         prefixOperators.put (tokenTrimmed, operator);
@@ -192,7 +192,7 @@ public class DefaultOperatorFactory implements OperatorFactory
       }
 
       final Object operator = ObjectUtilities.loadAndInstantiate
-          (operatorClass, DefaultOperatorFactory.class);
+          (operatorClass, DefaultOperatorFactory.class, PostfixOperator.class);
       if (operator instanceof PostfixOperator)
       {
         postfixOperators.put (tokenTrimmed, operator);

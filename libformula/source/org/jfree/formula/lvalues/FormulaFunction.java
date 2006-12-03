@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: FormulaFunction.java,v 1.5 2006/11/20 21:05:30 taqua Exp $
+ * $Id: FormulaFunction.java,v 1.6 2006/11/28 13:17:53 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.formula.function.FunctionRegistry;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.util.Log;
 
 /**
@@ -184,7 +185,12 @@ public class FormulaFunction extends AbstractLValue
     // First, grab the parameters and their types.
     final FormulaContext context = getContext();
     // And if everything is ok, compute the stuff ..
-    // todo ..
+    if (function == null)
+    {
+      final LibFormulaErrorValue value =
+          new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT);
+      return new TypeValuePair(ErrorType.TYPE, value);
+    }
     return function.evaluate(context, new FormulaParameterCallback(this));
   }
 

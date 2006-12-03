@@ -13,14 +13,14 @@ and others.
 
 For the latest news and information about JFreeReport, please refer to:
 
-    http://www.jfree.org/jfreereport/
+    http://jfreereport.pentaho.org/
 
 LibFormula provides Excel-Style-Expressions. The implementation provided
 here is very generic and can be used in any application that needs to
-compute formulas. 
+compute formulas.
 
 The syntax is based on the OpenFormula-specifications, but with carefully
-pruning away all the spreadsheet specific parts (like references to 
+pruning away all the spreadsheet specific parts (like references to
 cell-ranges).
 
 

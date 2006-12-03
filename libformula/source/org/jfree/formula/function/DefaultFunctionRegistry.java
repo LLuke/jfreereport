@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultFunctionRegistry.java,v 1.3 2006/11/20 21:05:30 taqua Exp $
+ * $Id: DefaultFunctionRegistry.java,v 1.4 2006/11/28 13:17:53 taqua Exp $
  *
  * Changes
  * -------
@@ -99,7 +99,7 @@ public class DefaultFunctionRegistry implements FunctionRegistry
     }
     final String functionClass = (String) functions.get(name.toUpperCase());
     final Function function = (Function) ObjectUtilities.loadAndInstantiate
-        (functionClass, DefaultFunctionRegistry.class);
+        (functionClass, DefaultFunctionRegistry.class, Function.class);
     if (function == null)
     {
       Log.debug ("There is no such function: " + name);
@@ -137,7 +137,7 @@ public class DefaultFunctionRegistry implements FunctionRegistry
         continue;
       }
       final Object fn = ObjectUtilities.loadAndInstantiate
-          (className, DefaultFunctionRegistry.class);
+          (className, DefaultFunctionRegistry.class, Function.class);
       if (fn instanceof Function == false)
       {
         continue;
@@ -148,7 +148,7 @@ public class DefaultFunctionRegistry implements FunctionRegistry
       final int endIndex = classKey.length() - ".class".length();
       final String descrKey = classKey.substring(0, endIndex) + ".description";
       final Object descr = ObjectUtilities.loadAndInstantiate
-          (descrKey, DefaultFunctionRegistry.class);
+          (descrKey, DefaultFunctionRegistry.class, FunctionDescription.class);
 
       final FunctionDescription description;
       if (descr instanceof FunctionDescription == false)
