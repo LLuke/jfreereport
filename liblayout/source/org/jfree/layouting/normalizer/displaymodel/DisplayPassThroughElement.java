@@ -5,7 +5,7 @@
  *
  * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -25,7 +25,7 @@
  * ------------
  * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corperation.
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.layouting.normalizer.displaymodel;
@@ -36,7 +36,7 @@ import org.jfree.layouting.normalizer.content.NormalizationException;
 /**
  * A marker element that indicates that the current flow is suspended
  * until this element has been handled. (Use this for all display:none
- * or comment nodes. 
+ * or comment nodes.
  *
  * @author Thomas Morgner
  */

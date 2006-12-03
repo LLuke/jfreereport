@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * LibLayoutInfo.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: LibLayoutInfo.java,v 1.3 2006/04/30 09:35:11 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 
 package org.jfree.layouting;
@@ -61,10 +50,9 @@ public class LibLayoutInfo extends ProjectInfo
   private LibLayoutInfo ()
   {
     setName("LibLayout");
-    setVersion("0.1.1");
-    setInfo("http://www.jfree.org/jfreereport/index.html");
-    setCopyright ("(C)opyright 2006, by Thomas Morgner, " +
-            "Object Refinery Limited and Contributors");
+    setVersion("0.2.0");
+    setInfo("http://jfreereport.pentaho.org/liblayout/");
+    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
 
     setContributors(Arrays.asList(
         new Contributor[]

@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * PageStyleKeys.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: PageStyleKeys.java,v 1.3 2006/07/11 13:29:47 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.input.style.keys.page;
 
@@ -54,7 +43,7 @@ public class PageStyleKeys
   public static final StyleKey SIZE =
           StyleKeyRegistry.getRegistry().createKey
                   ("size", false, false, StyleKey.PAGE_CONTEXT);
-  
+
   /** The logical Page Size */
   public static final StyleKey LOGICAL_SIZE =
           StyleKeyRegistry.getRegistry().createKey
@@ -81,7 +70,7 @@ public class PageStyleKeys
   public static final StyleKey PAGE_BREAK_INSIDE =
           StyleKeyRegistry.getRegistry().createKey
                   ("page-break-inside", false, true, StyleKey.BLOCK_ELEMENTS);
-  
+
   public static final StyleKey PAGE =
           StyleKeyRegistry.getRegistry().createKey
                   ("page", false, true, StyleKey.BLOCK_ELEMENTS);

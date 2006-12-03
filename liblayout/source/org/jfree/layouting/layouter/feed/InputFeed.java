@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * InputFeed.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: InputFeed.java,v 1.6 2006/11/11 20:23:46 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.layouter.feed;
 
@@ -146,7 +135,7 @@ public interface InputFeed extends StatefullComponent
    * Warning; This method is needed internally, mess with it from the outside
    * and you will run into trouble. The normalizer is a statefull component and
    * any call to it may mess up the state. From there on, 'Abandon every hope,
-   * ye who enter here'.  
+   * ye who enter here'.
    *
    * @return
    */

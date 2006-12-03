@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * DisplayModel.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: DisplayModel.java,v 1.2 2006/04/17 20:51:01 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 
 package org.jfree.layouting.input.style.keys.box;
@@ -81,7 +70,7 @@ public class DisplayModel
   public static final CSSConstant RUBY = new CSSConstant("ruby");
 
   /**
-   * A JFreeReport compatibility setting. Enables the absolute positioning mode. 
+   * A JFreeReport compatibility setting. Enables the absolute positioning mode.
    */
   public static final CSSConstant ABSOLUTE = new CSSConstant("absolute");
 

@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * ParagraphICMComputationStep.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ParagraphLineBreakStep.java,v 1.2 2006/11/11 20:23:46 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.renderer.process;
 
@@ -69,7 +58,7 @@ import org.jfree.util.FastStack;
  * paragraphs. The paragraph's pool contains the elements that should be
  * processed, and the line-container will receive the pool's content (contained
  * in an artificial inline element, as the linecontainer is a block-level
- * element). 
+ * element).
  * <p/>
  * Change-tracking should take place on the paragraph's pool element instead of
  * the paragraph itself. This way, only structural changes are taken into

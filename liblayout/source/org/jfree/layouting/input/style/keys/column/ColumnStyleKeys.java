@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * ColumnStyleKeys.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ColumnStyleKeys.java,v 1.3 2006/05/06 13:02:46 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.input.style.keys.column;
 
@@ -110,7 +99,7 @@ public class ColumnStyleKeys
   /**
    * Defines, whether column contents should be balanced.
    *
-   * Another idea stolen from OpenOffice :)  
+   * Another idea stolen from OpenOffice :)
    */
   public static final StyleKey COLUMN_BALANCE =
           StyleKeyRegistry.getRegistry().createKey

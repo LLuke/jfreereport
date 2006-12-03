@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * StrictInsets.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: StrictInsets.java,v 1.1 2006/07/11 13:51:02 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.util.geom;
 
@@ -166,7 +155,7 @@ public class StrictInsets implements Cloneable
    * getClass().getName() + '@' + Integer.toHexString(hashCode())
    * </pre></blockquote>
    *
-   * 
+   *
    * @return a string representation of the object.
    */
   public String toString()
@@ -203,5 +192,5 @@ public class StrictInsets implements Cloneable
       throw new InternalError("Clone must always be supported.");
     }
   }
-  
+
 }

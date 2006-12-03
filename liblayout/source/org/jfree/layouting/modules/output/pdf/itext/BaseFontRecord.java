@@ -1,12 +1,11 @@
 /**
- * ========================================
- * JFreeReport : a free Java report library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,22 +19,13 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
- * BaseFontRecord.java
- * -------------------
- * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
- *
- * $Id: BaseFontRecord.java,v 1.11 2006/01/24 14:17:38 taqua Exp $
- *
- * Changes
- * -------
- * 05-Dec-2002 : Added Javadocs (DG);
- * 01-Feb-2002 : Refactoring moved this class from package
- *               com.jefinery.report.targets.pageable.output
- *
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.layouting.modules.output.pdf.itext;

@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * StyleRuleMatcher.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: StyleRuleMatcher.java,v 1.3 2006/07/26 16:59:47 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.layouter.style.resolver;
 
@@ -73,5 +62,5 @@ public interface StyleRuleMatcher
   public StyleRuleMatcher deriveInstance();
   public CSSStyleRule[] getMatchingRules (LayoutElement element);
   public boolean isMatchingPseudoElement (LayoutElement element, String pseudo);
-  public CSSPageRule[] getPageRule (CSSValue pageName, PseudoPage[] pseudoPages); 
+  public CSSPageRule[] getPageRule (CSSValue pageName, PseudoPage[] pseudoPages);
 }

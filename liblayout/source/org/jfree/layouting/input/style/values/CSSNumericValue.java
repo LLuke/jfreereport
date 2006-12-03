@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * CSSNumericValue.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: CSSNumericValue.java,v 1.4 2006/11/02 23:13:31 mimil Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.input.style.values;
 
@@ -121,6 +110,6 @@ public class CSSNumericValue extends Number implements CSSValue
 
   public static CSSNumericValue createPtValue (double value)
   {
-    return new CSSNumericValue(CSSNumericType.PT,  value); 
+    return new CSSNumericValue(CSSNumericType.PT,  value);
   }
 }

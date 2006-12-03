@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * TableCellRenderBox.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: TableCellRenderBox.java,v 1.11 2006/10/31 11:14:12 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.renderer.model.table;
 
@@ -86,7 +75,7 @@ public class TableCellRenderBox extends BlockRenderBox
   public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
   {
     super.appyStyle(context, metaData);
-    // This one is a special value here ... 
+    // This one is a special value here ...
 
     final CSSValue csValue = context.getValue(TableStyleKeys.COL_SPAN);
     this.colSpan = (int) CSSValueResolverUtility.getNumericValue(csValue, 1);

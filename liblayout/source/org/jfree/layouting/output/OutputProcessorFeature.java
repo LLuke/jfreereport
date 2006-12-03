@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * OutputProcessorFeature.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id$
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.output;
 
@@ -68,7 +57,7 @@ public abstract class OutputProcessorFeature implements Serializable
   /**
    * Defines, whether the output target allows background images.
    * The 'excel' export and the plain-text export are known to ignore
-   * background images. 
+   * background images.
    */
   public static final BooleanOutputProcessorFeature BACKGROUND_IMAGE =
           new BooleanOutputProcessorFeature("background-image");

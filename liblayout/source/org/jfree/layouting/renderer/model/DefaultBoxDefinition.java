@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * BoxDefinition.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: DefaultBoxDefinition.java,v 1.5 2006/07/29 18:57:13 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.renderer.model;
 
@@ -454,7 +443,7 @@ public class DefaultBoxDefinition implements BoxDefinition
       empty = Boolean.FALSE;
       return false;
     }
-    
+
     empty = Boolean.TRUE;
     return true;
   }

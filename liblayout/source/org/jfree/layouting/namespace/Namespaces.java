@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * Namespaces.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: Namespaces.java,v 1.3 2006/07/26 11:52:07 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.namespace;
 
@@ -64,7 +53,7 @@ public final class Namespaces
           "http://www.w3.org/XML/1998/namespace";
 
   /** The XML-Namespace is used for the 'id' attribute. */
-// The old HTML namespace is not supported, use XHTML instead.  
+// The old HTML namespace is not supported, use XHTML instead.
 //  public static final String HTML_NAMESPACE =
 //          "http://www.w3.org/TR/REC-html40";
   public static final String XHTML_NAMESPACE =

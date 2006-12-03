@@ -1,12 +1,11 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * ===========================================
+ * LibLayout : a free Java layouting library
+ * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +19,13 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * Renderer.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  Thomas Morgner;
- * Contributors: -;
- *
- * $Id: Renderer.java,v 1.5 2006/10/22 14:58:25 taqua Exp $
- *
- * Changes
- * -------------------------
- * 12.06.2006 : Initial version
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer;
 
@@ -59,7 +53,7 @@ public interface Renderer extends StatefullComponent
 {
   /**
    * Starts the document and initalizes the default page context.
-   * 
+   *
    * @param pageContext
    */
   public void startDocument(final PageContext pageContext);

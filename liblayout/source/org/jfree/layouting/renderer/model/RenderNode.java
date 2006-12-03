@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * RenderNode.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: RenderNode.java,v 1.23 2006/11/20 21:01:54 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.renderer.model;
 
@@ -461,7 +450,7 @@ public abstract class RenderNode implements Cloneable
    * Derives an hibernation copy. The resulting object should get stripped of
    * all unnecessary caching information and all objects, which will be
    * regenerated when the layouting restarts. Size does matter here.
-   * 
+   *
    * @return
    */
   public RenderNode hibernate ()

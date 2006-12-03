@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * WhitespaceReadHandler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: WhitespaceReadHandler.java,v 1.3 2006/07/11 13:29:48 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.input.style.parser.stylehandler.text;
 
@@ -73,7 +62,7 @@ public class WhitespaceReadHandler implements CSSCompoundValueReadHandler
   {
     // http://cheeaun.phoenity.com/weblog/2005/06/whitespace-and-generated-content.html
     // is a good overview about the whitespace stuff ..
-    
+
     CSSValue whitespace;
     CSSValue textWrap;
     if (unit.getLexicalUnitType() == LexicalUnit.SAC_INHERIT)

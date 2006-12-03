@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * InlineSequenceElement.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id$
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.renderer.process.layoutrules;
 
@@ -47,7 +36,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
  * only a few special cases, where the minimum width needs to be considered:
  *
  * * The element is an inline-block and there is not enough space to print he
- *   complete element. The element is guaranteed to always get its minimum width. 
+ *   complete element. The element is guaranteed to always get its minimum width.
  *
  * @author Thomas Morgner
  */

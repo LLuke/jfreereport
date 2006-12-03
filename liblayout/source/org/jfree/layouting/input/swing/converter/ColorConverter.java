@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * ColorConverter.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   Cedric Pronzato;
- *
- * $Id: ColorConverter.java,v 1.1 2006/11/07 22:37:25 mimil Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.input.swing.converter;
 
@@ -92,7 +81,7 @@ public class ColorConverter implements Converter {
                                      Object value)
   {
     final ConverterAttributeSet attr = new ConverterAttributeSet();
-    
+
     if(colorConstant == StyleConstants.Foreground)
     {
       final CSSColorValue cssColorValue = new CSSColorValue((Color) value);

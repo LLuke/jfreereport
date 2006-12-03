@@ -5,7 +5,7 @@
  *
  * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FlowSelector.java,v 1.1 2006/11/12 14:29:58 taqua Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corperation.
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.layouting.output;

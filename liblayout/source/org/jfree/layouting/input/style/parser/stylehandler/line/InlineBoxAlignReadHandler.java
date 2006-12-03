@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * InlineBoxAlignReadHandler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id$
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.input.style.parser.stylehandler.line;
 
@@ -49,7 +38,7 @@ import org.w3c.css.sac.LexicalUnit;
 
 /**
  * Warning: This *is* a compound property, but one if its values depend on
- * the element structure and it changes its meaning if used in Tables. 
+ * the element structure and it changes its meaning if used in Tables.
  *
  * @author Thomas Morgner
  */

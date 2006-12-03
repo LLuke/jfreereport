@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * LineStyleKeys.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: LineStyleKeys.java,v 1.2 2006/04/17 20:51:02 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.input.style.keys.line;
 
@@ -67,7 +56,7 @@ public class LineStyleKeys
   public static final StyleKey LINE_HEIGHT =
           StyleKeyRegistry.getRegistry().createKey
                   ("line-height", false, true, StyleKey.All_ELEMENTS);
-  
+
   /**
    * This property determines the line stacking strategy for stacked line boxes
    * within a containing block element. The term 'stack-height' is used in the

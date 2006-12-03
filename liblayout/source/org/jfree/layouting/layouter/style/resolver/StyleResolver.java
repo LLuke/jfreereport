@@ -3,10 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * StyleResolver.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: StyleResolver.java,v 1.6 2006/11/20 21:01:53 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.layouting.layouter.style.resolver;
 
@@ -71,7 +60,7 @@ public interface StyleResolver extends StatefullComponent
   /**
    * Performs tests, whether there is a pseudo-element definition for the
    * given element. The element itself can be a pseudo-element as well.
-   * 
+   *
    * @param element
    * @param pseudo
    * @return
