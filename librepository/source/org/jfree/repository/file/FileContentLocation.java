@@ -5,7 +5,7 @@
  *
  * Project Info:  http://jfreereport.pentaho.org/librepository/
  *
- * (C) Copyright 2006, by Pentaho Corperation and Contributors.
+ * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -25,7 +25,7 @@
  * ------------
  * FileContentLocation.java
  * ------------
- * (C) Copyright 2006, by Pentaho Corperation.
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.repository.file;

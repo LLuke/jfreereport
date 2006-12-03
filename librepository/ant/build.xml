@@ -27,17 +27,6 @@
 
   </target>
 
-  <!-- Compile the JCommon classes -->
-  <target name="compile-jj" depends="initialise"
-          description="Compiles the librepository-Parser from the JavaCC specs.">
-    <javacc
-        target="source/org/jfree/repository/parser/Parser.jj"
-        outputdirectory="source/org/jfree/repository/parser/"
-        javacchome="${javacchome}"
-    />
-  </target>
-
-
   <target name="compile" depends="initialise">
 
     <fileset dir="source/" id="core.SourceFiles">

@@ -5,7 +5,7 @@
  *
  * Project Info:  http://jfreereport.pentaho.org/librepository/
  *
- * (C) Copyright 2006, by Pentaho Corperation and Contributors.
+ * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -25,7 +25,7 @@
  * ------------
  * DefaultNameGenerator.java
  * ------------
- * (C) Copyright 2006, by Pentaho Corperation.
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.repository;
@@ -34,6 +34,7 @@ public class DefaultNameGenerator implements NameGenerator
 {
   private ContentLocation location;
   private String defaultNameHint;
+  private String defaultSuffix;
 
   public DefaultNameGenerator(final ContentLocation location)
   {
@@ -43,6 +44,12 @@ public class DefaultNameGenerator implements NameGenerator
   public DefaultNameGenerator(final ContentLocation location,
                               final String defaultNameHint)
   {
+    this(location, defaultNameHint, null);
+  }
+
+  public DefaultNameGenerator(final ContentLocation location, final String defaultNameHint,
+                              final String defaultSuffix)
+  {
     if (location == null)
     {
       throw new NullPointerException();
@@ -51,8 +58,10 @@ public class DefaultNameGenerator implements NameGenerator
     {
       throw new NullPointerException();
     }
+
     this.location = location;
     this.defaultNameHint = defaultNameHint;
+    this.defaultSuffix = defaultSuffix;
   }
 
   /**
@@ -78,7 +87,16 @@ public class DefaultNameGenerator implements NameGenerator
       name = defaultNameHint;
     }
 
-    String suffix = getSuffixForType(mimeType, location);
+    String suffix;
+    if (defaultSuffix != null)
+    {
+      suffix = defaultSuffix;
+    }
+    else
+    {
+      suffix = getSuffixForType(mimeType, location);
+    }
+
     String firstFileName = name + "." + suffix;
     if (location.exists(firstFileName) == false)
     {

@@ -1,6 +1,12 @@
-LibRepository
+************************
+* LibXML 0.2.0         *
+************************
 
-This library provides a simple abstraction layer to access bulk content that
+03 December 2006
+
+1. INTRODUCTION
+---------------
+LibRepository provides a simple abstraction layer to access bulk content that
 is organized in a hierarchical layer.
 
 Unlike the JSR-000170, this library does not aim to solve all problems
@@ -11,3 +17,8 @@ where to store the generated content.
 
 The repositories described here should not be used to store other things than
 BLOBs.
+
+For the latest news and information about libRepository, please refer to:
+
+    http://jfreereport.pentaho.org/librepository/
+
