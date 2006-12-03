@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  -->
+
+<report:report xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:report="http://jfreereport.sourceforge.net/namespaces/reports/flow">
+  <report:datasource href="quad.sqlds"/>
+
+  <report:query>default</report:query>
+
+  <report:stylesheet href="quad.css"/>
+
+  <report:configuration>
+    <report:property name="org.jfree.SomeConfigProperty">SomeConfigValue</report:property>
+  </report:configuration>
+
+  <div class="page-footer-section">
+    <!--
+    This section is removed from the content flow and added to the
+    page header
+    -->
+    <div class="page-footer"/>
+  </div>
+
+  <!--
+  There is no special report header. Everything before an group
+  declaration will behave like a report header.
+  -->
+  <h1 class="report-header">
+    Exciting Quadrant Data
+  </h1>
+
+  <p>
+    This report demonstrates the new SQL-capabilities. The default query for
+    the report is set to <code>default</code>, as specified by the
+    <code>report:query</code> element.
+  </p>
+  <p>
+    The query itself along with the connection details is defined in the
+    datasource document (sample.sqlds).
+  </p>
+
+  <!--
+  Groups are nested.
+  -->
+  <report:group virtual="true">
+    <report:grouping-expression>
+      <report:property name="field[0]">REGION</report:property>
+    </report:grouping-expression>
+
+    <!--
+    This will be a little bit easier as soon as we have Excel-Style functions.
+    This one uses the excel expression but not the itemsum expression
+    -->
+    <report:expression name="ActualSum"
+                       formula="jfreereport:[ActualSum] + [ACTUAL]"
+                       initial="jfreereport:[ACTUAL]"/>
+
+    <!--
+     And this one uses the ItemSum (excel style, of course)
+     -->
+    <report:expression name="BudgetSum"
+                       formula="jfreereport:[BudgetSum] + [BUDGET]"
+                       initial="jfreereport:[BUDGET]"/>
+
+    <table>
+      <col style="width: 40%"/>
+      <col style="width: 20%"/>
+      <col style="width: 20%"/>
+      <col style="width: 20%"/>
+
+      <tbody>
+        <tr class="region-header">
+          <td colspan="4">
+            <report:content>
+              <report:value-expression formula="jfreereport:[REGION]"/>
+            </report:content>
+          </td>
+        </tr>
+
+        <report:group virtual="true">
+          <report:grouping-expression>
+            <report:property name="field[0]">DEPARTMENT</report:property>
+          </report:grouping-expression>
+
+          <tr class="department-header">
+            <td colspan="4">Department:
+              <report:content>
+                <report:value-expression formula="jfreereport:[DEPARTMENT]"/>
+              </report:content>
+            </td>
+          </tr>
+
+          <tr class="department-col-headings">
+            <td class="firstcol">
+              Position
+            </td>
+            <td class="othercol">
+              Actual
+            </td>
+            <td class="othercol">
+              Budget
+            </td>
+            <td class="othercol">
+              Variance
+            </td>
+          </tr>
+
+          <report:detail-section virtual="true">
+            <tr>
+              <td class="firstcol">
+                <report:content>
+                  <report:value-expression formula="jfreereport:[POSITIONTITLE]"/>
+                </report:content>
+              </td>
+              <td class="othercol">
+                <report:content>
+                  <report:value-expression formula="jfreereport:[ACTUAL]"/>
+                </report:content>
+              </td>
+              <td class="othercol">
+                <report:content>
+                  <report:value-expression formula="jfreereport:[BUDGET]"/>
+                </report:content>
+              </td>
+              <td class="othercol">
+                <report:content>
+                  <report:value-expression formula="jfreereport:[BUDGET] - [ACTUAL]"/>
+                </report:content>
+              </td>
+            </tr>
+          </report:detail-section>
+
+          <tr class="department-footer">
+            <td>Total</td>
+            <td class="othercol">
+              <report:content>
+                <report:value-expression formula="jfreereport:[ActualSum]"/>
+              </report:content>
+            </td>
+            <td class="othercol">
+              <report:content>
+                <report:value-expression formula="jfreereport:[BudgetSum]"/>
+              </report:content>
+            </td>
+            <td class="othercol">
+              <report:content>
+                <report:value-expression formula="jfreereport:[BudgetSum] - [ActualSum]"/>
+              </report:content>
+            </td>
+          </tr>
+        </report:group>
+
+        <tr>
+          <td>Total</td>
+          <td class="othercol">
+            <report:content>
+              <report:value-expression formula="jfreereport:[ActualSum]"/>
+            </report:content>
+          </td>
+          <td class="othercol">
+            <report:content>
+              <report:value-expression formula="jfreereport:[BudgetSum]"/>
+            </report:content>
+          </td>
+          <td class="othercol">
+            <report:content>
+              <report:value-expression formula="jfreereport:[BudgetSum] - [ActualSum]"/>
+            </report:content>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+
+  </report:group>
+
+  <h2>End of Report</h2>
+
+</report:report>

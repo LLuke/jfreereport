@@ -1,0 +1,179 @@
+<!--
+  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  -->
+
+<!-- An ANT build file for JFreeReport. -->
+
+<!-- Written by David Gilbert and modified for libFonts by Thomas Morgner. -->
+<!-- 09-Nov-2005 -->
+
+<!-- This script has been tested with Ant version 1.6.2. -->
+
+<!-- Several temporary directories are created while the script is -->
+<!-- running: "../build" and "../distribution".  -->
+
+<!-- A "../javadoc" directory will be created for the Javadoc -->
+<!-- HTML pages. -->
+
+<!-- The script should work for the distribution and also the CVS -->
+<!-- repository. -->
+
+<project name="jfreereport" default="all" basedir="..">
+
+  <import file="build-lib.xml"/>
+
+  <!-- Initialisation. -->
+  <target name="initialise" description="Initialise required settings.">
+    <tstamp/>
+
+    <property name="builddir" value="build"/>
+
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <property file="ant/build.properties"/>
+
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="lib.jcommon.present"
+                             file-name="${libdir}/${jcommon-jar-file}"/>
+    <fail unless="lib.jcommon.present"/>
+  </target>
+
+  <!-- Compile the libfonts classes -->
+  <target name="compile" depends="initialise">
+
+    <build-all target-jar="${jfreereport-demo-jar-file}"
+               source-dir="source">
+      <all-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-serializer-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${liblayout-jar-file}"/>
+        <pathelement location="${libdir}/${libformula-jar-file}"/>
+        <pathelement location="${libdir}/${libxml-jar-file}"/>
+        <pathelement location="${libdir}/${jaxp-jar-file}"/>
+        <pathelement location="${libdir}/${librepository-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+        <pathelement location="${libdir}/${jfreereport-jar-file}"/>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+      </all-classpath>
+      <all-resources>
+        <include name="*.properties"/>
+        <include name="**/*.properties"/>
+        <include name="*.bsh"/>
+        <include name="**/*.bsh"/>
+        <include name="*.xsd"/>
+        <include name="**/*.xsd"/>
+        <include name="*.xml"/>
+        <include name="**/*.xml"/>
+        <include name="*.css"/>
+        <include name="**/*.css"/>
+        <include name="*.gif"/>
+        <include name="**/*.gif"/>
+        <include name="*.png"/>
+        <include name="**/*.png"/>
+        <include name="*.jpg"/>
+        <include name="**/*.jpg"/>
+        <include name="*.svg"/>
+        <include name="**/*.svg"/>
+        <include name="*.wmf"/>
+        <include name="**/*.wmf"/>
+        <include name="*.sqlds"/>
+        <include name="**/*.sqlds"/>
+      </all-resources>
+      <jar-args>
+        <manifest>
+          <attribute name="Main-Class" value="org.jfree.report.demo.DemoFrontend"/>
+          <attribute name="Class-Path" value="${manifest-lib-prefix}${hsqldb-jar-file} ${manifest-lib-prefix}${itext-jar-file} ${manifest-lib-prefix}${pixie-jar-file} ${manifest-lib-prefix}${commons-logging-jar-file} ${manifest-lib-prefix}${oscache-jar-file} ${manifest-lib-prefix}${sac-jar-file} ${manifest-lib-prefix}${jfreereport-jar-file} ${manifest-lib-prefix}${flute-jar-file} ${manifest-lib-prefix}${librepository-jar-file} ${manifest-lib-prefix}${jaxp-jar-file} ${manifest-lib-prefix}${libxml-jar-file} ${manifest-lib-prefix}${libformula-jar-file} ${manifest-lib-prefix}${liblayout-jar-file} ${manifest-lib-prefix}${libloader-jar-file} ${manifest-lib-prefix}${libfonts-jar-file} ${manifest-lib-prefix}${jcommon-serializer-jar-file} ${manifest-lib-prefix}${jcommon-jar-file}"/>
+        </manifest>
+      </jar-args>
+    </build-all>
+  </target>
+
+  <!-- Generate the libfonts JavaDoc HTML pages -->
+  <target name="javadoc" depends="initialise">
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+      windowtitle="JFreeReport (version ${jfreereport.version})"
+      overview="source/overview.html"
+      linksource="true">
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-serializer-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${liblayout-jar-file}"/>
+        <pathelement location="${libdir}/${libformula-jar-file}"/>
+        <pathelement location="${libdir}/${libxml-jar-file}"/>
+        <pathelement location="${libdir}/${jaxp-jar-file}"/>
+        <pathelement location="${libdir}/${librepository-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+        <pathelement location="${libdir}/${jfreereport-jar-file}"/>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+      </classpath>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/report/**"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="fill-dist-dir">
+    <!-- copy across README -->
+    <copy file="README"
+      tofile="distribution/README"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="ChangeLog"
+      tofile="distribution/ChangeLog"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+      tofile="distribution/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${jfreereport-demo-jar-file}"
+      tofile="distribution/${jfreereport-demo-jar-file}"/>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/sql">
+      <fileset dir="sql"/>
+    </copy>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/lib">
+      <fileset dir="lib"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy file="ant/build.xml"
+      tofile="distribution/ant/build.xml" failonerror="false"/>
+    <copy file="ant/build-lib.xml"
+      tofile="distribution/ant/build-lib.xml"/>
+
+    <copy file="ant/build.properties"
+      tofile="distribution/ant/build.properties"/>
+  </target>
+
+  <!-- Make .zip distribution for libfonts -->
+  <target name="zip" depends="compile">
+    <make-zip lib.version="${jfreereport.version}" lib.name="${jfreereport.name}"/>
+  </target>
+
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="targz" depends="compile">
+    <make-targz lib.version="${jfreereport.version}" lib.name="${jfreereport.name}"/>
+  </target>
+
+
+  <!-- ALL -->
+  <target name="all"
+    depends="compile,javadoc,zip,targz"
+    description="Compiles JFreeReport, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+  </target>
+
+</project>

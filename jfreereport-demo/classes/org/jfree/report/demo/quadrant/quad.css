@@ -1,0 +1,78 @@
+div.page-header {
+  margin: 5pt;
+  background-color: #AFAFAF;
+  text-align: right;
+  border-bottom: 2pt solid #CFCFCF;
+}
+
+div.page-footer {
+  content: "Page " counter(page) " of " counter(pages);
+}
+
+.page-footer-section {
+  position: running(footer);
+  font-size: 15pt;
+}
+
+table {
+  border-spacing: 0;
+}
+
+.firstcol {
+  padding-left: 10pt;
+}
+
+.othercol {
+  text-align: right;
+}
+
+.report-header {
+  background-color: #0000CC;
+  padding-top: 10pt;
+  padding-bottom: 10pt;
+  color: white;
+  font-family: "Arial", serif;
+  font-weight: bold;
+  font-size: 18pt;
+}
+
+.region-header {
+  color: #009999;
+  font-family: "Arial", serif;
+  font-weight: bold;
+  font-size: 18pt;
+}
+
+.region-footer {
+  background-color: #009999;
+  color: white;
+  font-family: "Arial", serif;
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+.department-header {
+  background-color: #FF6600;
+  color: white;
+  font-family: "Arial", serif;
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+.department-col-headings {
+  background-color: #FF6600;
+  color: white;
+  font-family: "Arial", serif;
+  font-weight: bold;
+  font-size: 11pt;
+}
+
+.department-footer td {
+  padding-bottom: 10pt;
+  font-weight: bold;
+}
+
+@page {
+   margin: 2cm;
+   size: A4;
+}
