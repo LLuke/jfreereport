@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.44 2006/11/20 21:07:48 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.45 2006/11/28 13:21:10 taqua Exp $
  *
  * Changes:
  * --------
@@ -45,6 +45,8 @@ package org.jfree.report;
 import java.util.Arrays;
 
 import org.jfree.JCommon;
+import org.jfree.xmlns.LibXmlInfo;
+import org.jfree.formula.LibFormulaInfo;
 import org.jfree.layouting.LibLayoutInfo;
 import org.jfree.base.BootableProjectInfo;
 import org.jfree.resourceloader.LibLoaderInfo;
@@ -132,6 +134,8 @@ public class JFreeReportInfo extends ProjectInfo
     addLibrary(JCommonSerializerInfo.getInstance());
     addLibrary(LibLoaderInfo.getInstance());
     addLibrary(LibLayoutInfo.getInstance());
+    addLibrary(LibFormulaInfo.getInstance());
+    addLibrary(LibXmlInfo.getInstance());
 
     final BootableProjectInfo pixieLibraryInfo = tryLoadPixieInfo();
     if (pixieLibraryInfo != null)
@@ -143,6 +147,8 @@ public class JFreeReportInfo extends ProjectInfo
     {
       addLibrary(libfontsLibraryInfo);
     }
+
+    setBootClass(JFreeReportBoot.class.getName());
   }
 
   /**
@@ -156,7 +162,8 @@ public class JFreeReportInfo extends ProjectInfo
     try
     {
       return (BootableProjectInfo) ObjectUtilities.loadAndInstantiate
-              ("org.jfree.pixie.PixieInfo", JFreeReportInfo.class);
+              ("org.jfree.pixie.PixieInfo", JFreeReportInfo.class,
+                  BootableProjectInfo.class);
     }
     catch (Exception e)
     {
@@ -175,7 +182,8 @@ public class JFreeReportInfo extends ProjectInfo
     try
     {
       return (BootableProjectInfo) ObjectUtilities.loadAndInstantiate
-              ("org.jfree.fonts.LibFontInfo", JFreeReportInfo.class);
+              ("org.jfree.fonts.LibFontInfo",
+                  JFreeReportInfo.class, BootableProjectInfo.class);
     }
     catch (Exception e)
     {

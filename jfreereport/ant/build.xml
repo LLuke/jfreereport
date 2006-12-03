@@ -29,7 +29,7 @@
     <property name="builddir" value="build"/>
 
     <dirname property="antfile.dir" file="${ant.file}"/>
-    <property file="${antfile.dir}/build.properties"/>
+    <property file="ant/build.properties"/>
 
     <isClassAndFileAvailable class-name="org.jfree.JCommon"
                              property-name="lib.jcommon.present"
@@ -50,20 +50,23 @@
         <pathelement location="${libdir}/${liblayout-jar-file}"/>
         <pathelement location="${libdir}/${libformula-jar-file}"/>
         <pathelement location="${libdir}/${libxml-jar-file}"/>
-        <pathelement location="${libdir}/${beanshell-jar-file}"/>
-        <pathelement location="${libdir}/${bsf-jar-file}"/>
         <pathelement location="${libdir}/${jaxp-jar-file}"/>
         <pathelement location="${libdir}/${librepository-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
       </all-classpath>
       <all-resources>
         <include name="*.properties"/>
         <include name="**/*.properties"/>
-        <include name="*.bsh"/>
-        <include name="**/*.bsh"/>
         <include name="*.xsd"/>
         <include name="**/*.xsd"/>
         <include name="*.css"/>
         <include name="**/*.css"/>
+        <include name="*.gif"/>
+        <include name="**/*.gif"/>
+        <include name="*.png"/>
+        <include name="**/*.png"/>
+        <include name="*.jpg"/>
+        <include name="**/*.jpg"/>
       </all-resources>
     </build-all>
   </target>
@@ -84,10 +87,9 @@
         <pathelement location="${libdir}/${liblayout-jar-file}"/>
         <pathelement location="${libdir}/${libformula-jar-file}"/>
         <pathelement location="${libdir}/${libxml-jar-file}"/>
-        <pathelement location="${libdir}/${beanshell-jar-file}"/>
-        <pathelement location="${libdir}/${bsf-jar-file}"/>
         <pathelement location="${libdir}/${jaxp-jar-file}"/>
         <pathelement location="${libdir}/${librepository-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
       </classpath>
       <packageset dir="source" defaultexcludes="yes">
         <include name="org/jfree/report"/>

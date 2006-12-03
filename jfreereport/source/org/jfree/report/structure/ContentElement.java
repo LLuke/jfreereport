@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ContentElement.java,v 1.2 2006/04/22 16:18:14 taqua Exp $
+ * $Id: ContentElement.java,v 1.3 2006/11/11 20:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import org.jfree.report.expressions.Expression;
 /**
  * A element holding values from the report data sources. These values
  * can be URLs (pointing to text, images or drawables), Images, Text, Nodes,
- * Drawables or Shapes. 
+ * Drawables or Shapes.
  *
  * @author Thomas Morgner
  */
@@ -55,7 +55,7 @@ public class ContentElement extends Element
 
   public ContentElement()
   {
-    setType("content-node");
+    setType("content");
   }
 
   public Expression getValueExpression ()

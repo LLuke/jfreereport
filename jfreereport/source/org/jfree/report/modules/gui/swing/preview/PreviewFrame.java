@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PreviewFrame.java,v 1.1 2006/11/13 19:27:45 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,12 +31,16 @@
 package org.jfree.report.modules.gui.swing.preview;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.flow.ReportJob;
@@ -115,12 +119,22 @@ public class PreviewFrame extends JFrame
         if (Boolean.TRUE.equals(evt.getNewValue()))
         {
           progressBar.setVisible(true);
+          pageLabel.setVisible(false);
         }
         else
         {
           progressBar.setVisible(false);
+          pageLabel.setVisible(true);
         }
         progressBar.revalidate();
+        return;
+      }
+
+
+      if (PreviewPane.PAGE_NUMBER_PROPERTY.equals(propertyName) ||
+          PreviewPane.NUMBER_OF_PAGES_PROPERTY.equals(propertyName))
+      {
+        pageLabel.setText(previewPane.getPageNumber() + "/" + previewPane.getNumberOfPages());
         return;
       }
 
@@ -142,6 +156,7 @@ public class PreviewFrame extends JFrame
   private PreviewPane previewPane;
   private JStatusBar statusBar;
   private ReportProgressBar progressBar;
+  private JLabel pageLabel;
 
   /**
    * Creates a non-modal dialog without a title and without a specified
@@ -165,17 +180,23 @@ public class PreviewFrame extends JFrame
   {
     previewPane = new PreviewPane();
     statusBar = new JStatusBar(previewPane.getIconTheme());
-    progressBar = new ReportProgressBar();
 
+    progressBar = new ReportProgressBar();
+    progressBar.setVisible(false);
+
+    pageLabel = new JLabel();
     previewPane.addPropertyChangeListener(new PreviewPanePropertyChangeHandler());
 
     final JComponent extensionArea = statusBar.getExtensionArea();
-    extensionArea.setLayout(new BorderLayout());
+    extensionArea.setLayout(new BoxLayout(extensionArea, BoxLayout.X_AXIS));
     extensionArea.add(progressBar);
+    extensionArea.add(pageLabel);
 
-    setLayout(new BorderLayout());
-    add(previewPane, BorderLayout.CENTER);
-    add(statusBar, BorderLayout.SOUTH);
+    JComponent contentPane = new JPanel();
+    contentPane.setLayout(new BorderLayout());
+    contentPane.add(previewPane, BorderLayout.CENTER);
+    contentPane.add(statusBar, BorderLayout.SOUTH);
+    setContentPane(contentPane);
   }
 
   public ReportController getReportController()

@@ -3,3 +3,34 @@
  * active, if no namespace aware XML-parser touched the elements.
  */
 @namespace xml url(http://www.w3.org/XML/1998/namespace);
+@namespace report url(http://jfreereport.sourceforge.net/namespaces/engine);
+@namespace url(http://jfreereport.sourceforge.net/namespaces/engine);
+
+content {
+  content: attr("report|content");
+  display: inline;
+}
+
+content[report|isDate=true] {
+  content: format(attr("report|content", date), date);
+}
+
+content[report|isDate=true][report|format] {
+  content: format(attr("report|content", date), date, attr("report|format",string));
+}
+
+content[report|isNumber=true] {
+  content: format(attr("report|content", number), number, "#,##0.00");
+}
+
+content[report|isNumber=true][report|format] {
+  content: format(attr("report|content", number), number, attr("report|format",string));
+}
+
+content[report|isNumber=true][report|isInteger=true] {
+  content: format(attr("report|content", number), number, "#,##0");
+}
+
+content[report|isNumber=true][report|isInteger=true][format] {
+  content: format(attr("report|content", number), number, attr("report|format",string));
+}

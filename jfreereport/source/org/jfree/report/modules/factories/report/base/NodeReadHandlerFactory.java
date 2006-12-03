@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: NodeReadHandlerFactory.java,v 1.1 2006/11/28 13:22:20 taqua Exp $
+ * $Id: NodeReadHandlerFactory.java,v 1.2 2006/11/29 23:21:37 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -202,9 +202,9 @@ public class NodeReadHandlerFactory
     {
       return false;
     }
-    final Object o =
-        ObjectUtilities.loadAndInstantiate(className, NodeReadHandlerFactory.class);
-    return (o instanceof NodeReadHandler);
+    final Object o = ObjectUtilities.loadAndInstantiate
+        (className, NodeReadHandlerFactory.class, NodeReadHandler.class);
+    return o != null;
   }
 
 
@@ -229,7 +229,7 @@ public class NodeReadHandlerFactory
     if (tagVal != null)
     {
       final Object o = ObjectUtilities.loadAndInstantiate
-          (tagVal, NodeReadHandlerFactory.class);
+          (tagVal, NodeReadHandlerFactory.class, NodeReadHandler.class);
       return (NodeReadHandler) o;
     }
 
@@ -237,13 +237,13 @@ public class NodeReadHandlerFactory
     if (className != null)
     {
       final Object o = ObjectUtilities.loadAndInstantiate
-          (className, NodeReadHandlerFactory.class);
+          (className, NodeReadHandlerFactory.class, NodeReadHandler.class);
       return (NodeReadHandler) o;
     }
     
     final String fallbackName = (String) defaultDefinitions.get(null);
     final Object fallbackValue = ObjectUtilities.loadAndInstantiate
-        (fallbackName, NodeReadHandlerFactory.class);
+        (fallbackName, NodeReadHandlerFactory.class, NodeReadHandler.class);
     if (fallbackValue != null)
     {
       return (NodeReadHandler) fallbackValue;

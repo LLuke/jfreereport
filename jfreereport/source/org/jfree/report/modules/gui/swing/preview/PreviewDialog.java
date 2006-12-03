@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PreviewDialog.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.3 2006/11/26 19:49:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,6 +40,8 @@ import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.BoxLayout;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.flow.ReportJob;
@@ -57,7 +59,6 @@ public class PreviewDialog extends JDialog
   private class PreviewPanePropertyChangeHandler
       implements PropertyChangeListener
   {
-
     public PreviewPanePropertyChangeHandler()
     {
     }
@@ -118,12 +119,23 @@ public class PreviewDialog extends JDialog
         if (Boolean.TRUE.equals(evt.getNewValue()))
         {
           progressBar.setVisible(true);
+          pageLabel.setVisible(false);
+          statusBar.setStatus(JStatusBar.TYPE_INFORMATION, "Paginating ...");
         }
         else
         {
           progressBar.setVisible(false);
+          pageLabel.setVisible(true);
+          statusBar.setStatus(JStatusBar.TYPE_NONE, "");
         }
         progressBar.revalidate();
+        return;
+      }
+
+      if (PreviewPane.PAGE_NUMBER_PROPERTY.equals(propertyName) ||
+          PreviewPane.NUMBER_OF_PAGES_PROPERTY.equals(propertyName))
+      {
+        pageLabel.setText(previewPane.getPageNumber() + "/" + previewPane.getNumberOfPages());
         return;
       }
 
@@ -145,6 +157,7 @@ public class PreviewDialog extends JDialog
   private PreviewPane previewPane;
   private JStatusBar statusBar;
   private ReportProgressBar progressBar;
+  private JLabel pageLabel;
 
   /**
    * Creates a non-modal dialog without a title and without a specified
@@ -256,11 +269,14 @@ public class PreviewDialog extends JDialog
     progressBar = new ReportProgressBar();
     progressBar.setVisible(false);
 
+    pageLabel = new JLabel();
+
     previewPane.addPropertyChangeListener(new PreviewPanePropertyChangeHandler());
 
     final JComponent extensionArea = statusBar.getExtensionArea();
-    extensionArea.setLayout(new BorderLayout());
+    extensionArea.setLayout(new BoxLayout(extensionArea, BoxLayout.X_AXIS));
     extensionArea.add(progressBar);
+    extensionArea.add(pageLabel);
 
     JComponent contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ActionPlugin.java,v 1.1 2006/11/20 21:15:44 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,8 +33,6 @@ package org.jfree.report.modules.gui.swing.common;
 import java.beans.PropertyChangeListener;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
-
-import org.jfree.report.modules.gui.common.GuiContext;
 
 /**
  * Creation-Date: 16.11.2006, 15:47:02

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportProcessingException.java,v 1.4 2005/02/23 21:04:29 taqua Exp $
+ * $Id: ReportProcessingException.java,v 1.5 2006/04/18 11:28:39 taqua Exp $
  *
  * Changes
  * -------
@@ -41,14 +41,12 @@
 
 package org.jfree.report;
 
-import org.jfree.util.StackableException;
-
 /**
  * An exception that can be thrown during report processing, if an error occurs.
  *
  * @author Thomas Morgner
  */
-public class ReportProcessingException extends StackableException
+public class ReportProcessingException extends ReportException
 {
   /**
    * Creates an exception.

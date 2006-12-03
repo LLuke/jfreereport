@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PreviewPane.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
+ * $Id: PreviewPane.java,v 1.3 2006/11/24 17:12:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,24 +32,18 @@ package org.jfree.report.modules.gui.swing.preview;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.Insets;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
+import java.util.Map;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
@@ -63,18 +57,15 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.IconTheme;
-import org.jfree.report.modules.gui.swing.common.ActionFactory;
 import org.jfree.report.modules.gui.swing.common.ActionPlugin;
-import org.jfree.report.modules.gui.swing.common.ExportActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingGuiContext;
 import org.jfree.report.modules.gui.swing.common.SwingUtil;
+import org.jfree.report.modules.gui.swing.common.JStatusBar;
 import org.jfree.report.modules.gui.swing.printing.PrintReportProcessor;
 import org.jfree.report.util.Worker;
 import org.jfree.ui.Drawable;
 import org.jfree.ui.DrawablePanel;
-import org.jfree.ui.FloatingButtonEnabler;
-import org.jfree.ui.action.ActionButton;
-import org.jfree.ui.action.ActionMenuItem;
+import org.jfree.ui.KeyedComboBoxModel;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
@@ -120,32 +111,6 @@ public class PreviewPane extends JPanel
         return report.getConfiguration();
       }
       return JFreeReportBoot.getInstance().getGlobalConfig();
-    }
-  }
-
-  /**
-   * A zoom select action.
-   */
-  private class ZoomSelectAction extends AbstractAction
-  {
-    private JComboBox source;
-
-    /**
-     * Creates a new action.
-     */
-    public ZoomSelectAction(JComboBox source)
-    {
-      this.source = source;
-    }
-
-    /**
-     * Invoked when an action occurs.
-     *
-     * @param e the event.
-     */
-    public void actionPerformed(final ActionEvent e)
-    {
-      setZoom(source.getSelectedIndex());
     }
   }
 
@@ -288,10 +253,48 @@ public class PreviewPane extends JPanel
     }
   }
 
+  private class UpdateZoomHandler implements PropertyChangeListener
+  {
+    public UpdateZoomHandler()
+    {
+    }
+
+    /**
+     * This method gets called when a bound property is changed.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source and
+     *            the property that has changed.
+     */
+
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+      if ("zoom".equals(evt.getPropertyName()) == false)
+      {
+        return;
+      }
+      Log.debug ("Zooming: " + zoom);
+      if (zoom == 1.0)
+      {
+        Log.debug ("JERE");
+      }
+      final double zoom = getZoom();
+      pageDrawable.setZoom(zoom);
+      zoomModel.setSelectedKey(new Double(zoom));
+      if (zoomModel.getSelectedKey() == null)
+      {
+        Log.debug ("Zooming: (2) " + zoom);
+        zoomModel.setSelectedItem(formatZoomText(zoom));
+      }
+      drawablePanel.revalidate();
+    }
+  }
+
   private static final double ZOOM_FACTORS[] = {
-      50, 75, 100, 120, 150, 200
+      0.5, 0.75, 1, 1.20, 1.50, 2.00
   };
   private static final int DEFAULT_ZOOM_INDEX = 2;
+  public static final String PAGE_NUMBER_PROPERTY = "pageNumber";
+  public static final String NUMBER_OF_PAGES_PROPERTY = "numberOfPages";
   public static final String STATUS_TEXT_PROPERTY = "statusText";
   public static final String STATUS_TYPE_PROPERTY = "statusType";
   public static final String REPORT_CONTROLLER_PROPERTY = "reportController";
@@ -302,13 +305,6 @@ public class PreviewPane extends JPanel
   public static final String ICON_THEME_PROPERTY = "iconTheme";
   public static final String TITLE_PROPERTY = "title";
   public static final String MENU_PROPERTY = "menu";
-
-  private static final String REPORT_CATEGORY = "report";
-  private static final String EXPORT_CATEGORY = "export";
-  private static final String HELP_CATEGORY = "help";
-  private static final String GOTO_CATEGORY = "goto";
-
-
 
   private Drawable paginatingDrawable;
   private Drawable noReportDrawable;
@@ -335,14 +331,13 @@ public class PreviewPane extends JPanel
 
 
   private Worker paginationWorker;
-  private static final String PAGE_NUMBER_PROPERTY = "pageNumber";
-  private static final String NUMBER_OF_PAGES_PROPERTY = "numberOfPages";
   private JPanel innerReportControllerHolder;
   private JPanel toolbarHolder;
   private JPanel outerReportControllerHolder;
   private boolean reportControllerInner;
   private String reportControllerLocation;
   private JComponent reportControllerComponent;
+  private KeyedComboBoxModel zoomModel;
 
 
   /**
@@ -352,6 +347,10 @@ public class PreviewPane extends JPanel
   {
     this.menus = new JMenu[0];
     setLayout(new BorderLayout());
+
+    zoomModel = new KeyedComboBoxModel();
+    zoomModel.setAllowOtherValue(true);
+    zoom = ZOOM_FACTORS[DEFAULT_ZOOM_INDEX];
 
     pageDrawable = new PageBackgroundDrawable();
 
@@ -383,6 +382,7 @@ public class PreviewPane extends JPanel
     add(outerReportControllerHolder, BorderLayout.CENTER);
 
     addPropertyChangeListener(new PreviewUpdateHandler());
+    addPropertyChangeListener("zoom", new UpdateZoomHandler());
   }
 
   public synchronized PrintReportProcessor getPrintReportProcessor()
@@ -454,13 +454,20 @@ public class PreviewPane extends JPanel
     firePropertyChange(REPORT_CONTROLLER_PROPERTY, oldController, reportController);
 
     // Now add the controller to the GUI ..
-    if (reportController != null)
+    refreshReportController(reportController);
+  }
+
+  public void refreshReportController(final ReportController newReportController)
+  {
+    if (newReportController != null)
     {
-      final JComponent rcp = reportController.getControlPanel();
+      final JComponent rcp = newReportController.getControlPanel();
+      // if either the controller component or its position (inner vs outer)
+      // and border-position has changed, then refresh ..
       if (reportControllerComponent != rcp ||
-          reportControllerInner != reportController.isInnerComponent() ||
+          reportControllerInner != newReportController.isInnerComponent() ||
           ObjectUtilities.equal(reportControllerLocation,
-              reportController.getControlerLocation()))
+              newReportController.getControllerLocation()))
       {
         if (reportControllerComponent != null)
         {
@@ -468,8 +475,8 @@ public class PreviewPane extends JPanel
           innerReportControllerHolder.remove(reportControllerComponent);
         }
         final String sanLocation = sanitizeLocation(
-            reportController.getControlerLocation());
-        final boolean innerComponent = reportController.isInnerComponent();
+            newReportController.getControllerLocation());
+        final boolean innerComponent = newReportController.isInnerComponent();
         if (rcp != null)
         {
           if (innerComponent)
@@ -495,7 +502,6 @@ public class PreviewPane extends JPanel
       }
       reportControllerComponent = null;
     }
-
   }
 
 
@@ -590,7 +596,11 @@ public class PreviewPane extends JPanel
     {
       if (paginationWorker != null)
       {
-        paginationWorker.finish();
+        synchronized (paginationWorker)
+        {
+          paginationWorker.finish();
+        }
+        paginationWorker = null;
       }
       if (printReportProcessor != null)
       {
@@ -601,18 +611,13 @@ public class PreviewPane extends JPanel
     }
   }
 
-  private HashMap loadActions()
+  private int getUserDefinedCategoryPosition()
   {
-    HashMap actions = new HashMap();
-
-    final Configuration configuration = swingGuiContext.getConfiguration();
-    final ActionFactory factory = PreviewPaneUtilities.createActionFactory(configuration);
-    actions.put(REPORT_CATEGORY, factory.getActions(swingGuiContext, REPORT_CATEGORY));
-    actions.put(EXPORT_CATEGORY, factory.getActions(swingGuiContext, EXPORT_CATEGORY));
-    actions.put(GOTO_CATEGORY, factory.getActions(swingGuiContext, GOTO_CATEGORY));
-    actions.put(HELP_CATEGORY, factory.getActions(swingGuiContext, HELP_CATEGORY));
-    return actions;
+    return PreviewPaneUtilities.parseInt
+        (swingGuiContext.getConfiguration().getConfigProperty
+            ("org.jfree.report.modules.gui.swing.user-defined-category.position"), 15000);
   }
+
 
   public Locale getLocale()
   {
@@ -645,7 +650,7 @@ public class PreviewPane extends JPanel
   {
     final int oldPageNumber = this.pageNumber;
     this.pageNumber = pageNumber;
-    Log.debug ("Setting PageNumber: " + pageNumber);
+    Log.debug("Setting PageNumber: " + pageNumber);
     firePropertyChange(PAGE_NUMBER_PROPERTY, oldPageNumber, pageNumber);
   }
 
@@ -665,8 +670,17 @@ public class PreviewPane extends JPanel
   {
     setIconTheme(PreviewPaneUtilities.createIconTheme(reportJob.getConfiguration()));
 
-    HashMap actions = loadActions();
+    zoomModel.clear();
+    for (int i = 0; i < ZOOM_FACTORS.length; i++)
+    {
+      zoomModel.add(new Double(ZOOM_FACTORS[i]), formatZoomText(ZOOM_FACTORS[i]));
+    }
+    zoom = ZOOM_FACTORS[DEFAULT_ZOOM_INDEX];
+    zoomModel.setSelectedKey(new Double(ZOOM_FACTORS[DEFAULT_ZOOM_INDEX]));
+
+    HashMap actions = PreviewPaneUtilities.loadActions(swingGuiContext);
     buildMenu(actions);
+
 
     if (toolBar != null)
     {
@@ -681,99 +695,22 @@ public class PreviewPane extends JPanel
     startPagination();
   }
 
-  /**
-   * Creates a button using the given action properties for the button's
-   * initialisation.
-   *
-   * @param action the action used to set up the button.
-   * @return a button based on the supplied action.
-   */
-  protected JButton createButton(final Action action)
-  {
-    final JButton button = new ActionButton(action);
-    boolean needText = true;
-    if (isLargeButtonsEnabled())
-    {
-      final Icon icon = (Icon) action.getValue("ICON24");
-      if (icon != null && (icon.getIconHeight() > 1 && icon.getIconHeight() > 1))
-      {
-        button.setIcon(icon);
-        needText = false;
-      }
-    }
-    else
-    {
-      final Icon icon = (Icon) action.getValue(Action.SMALL_ICON);
-      if (icon != null && (icon.getIconHeight() > 1 && icon.getIconHeight() > 1))
-      {
-        button.setIcon(icon);
-        needText = false;
-      }
-    }
-
-    if (needText)
-    {
-      final Object value = action.getValue(Action.NAME);
-      if (value != null)
-      {
-        button.setText(String.valueOf(value));
-      }
-    }
-    else
-    {
-      button.setText(null);
-      button.setMargin(new Insets(0, 0, 0, 0));
-    }
-
-    FloatingButtonEnabler.getInstance().addButton(button);
-    return button;
-  }
-
-  private boolean isLargeButtonsEnabled()
-  {
-    final Configuration configuration = swingGuiContext.getConfiguration();
-    if ("true".equals(configuration.getConfigProperty
-        ("org.jfree.report.modules.gui.swing.preview.LargeIcons")))
-    {
-      return true;
-    }
-    return false;
-  }
-
-  private boolean isToolbarZoomEnabled()
-  {
-    final Configuration configuration = swingGuiContext.getConfiguration();
-    if ("true".equals(configuration.getConfigProperty
-        ("org.jfree.report.modules.gui.swing.preview.EnableToolBarZoom")))
-    {
-      return true;
-    }
-    return false;
-  }
-
   private JToolBar buildToolbar(final HashMap actions)
   {
     JToolBar toolBar = new JToolBar();
+    toolBar.setFloatable(false);
 
-    addActionsToToolBar(toolBar, (ActionPlugin[]) actions.get(REPORT_CATEGORY));
-    addActionsToToolBar(toolBar, (ActionPlugin[]) actions.get(EXPORT_CATEGORY));
-    addActionsToToolBar(toolBar, (ActionPlugin[]) actions.get(GOTO_CATEGORY));
+    final ActionCategory[] cats = (ActionCategory[])
+        actions.keySet().toArray(new ActionCategory[actions.size()]);
+    Arrays.sort(cats);
 
-    if (isToolbarZoomEnabled())
+    for (int i = 0; i < cats.length; i++)
     {
-      toolBar.add(createButton(new ZoomOutAction(this)));
-      toolBar.add(createButton(new ZoomInAction(this)));
-      toolBar.addSeparator();
-
-      final JPanel zoomPane = new JPanel();
-      zoomPane.setLayout(new FlowLayout(FlowLayout.LEFT));
-      zoomPane.add(createZoomSelector());
-      toolBar.add(zoomPane);
-
-      toolBar.addSeparator();
+      final ActionCategory cat = cats[i];
+      final ActionPlugin[] plugins = (ActionPlugin[]) actions.get(cat);
+      PreviewPaneUtilities.addActionsToToolBar(toolBar, plugins, this);
     }
 
-    addActionsToToolBar(toolBar, (ActionPlugin[]) actions.get(HELP_CATEGORY));
     return toolBar;
   }
 
@@ -793,157 +730,130 @@ public class PreviewPane extends JPanel
     toolBar.setVisible(false);
   }
 
-  protected JComboBox createZoomSelector()
+  public SwingGuiContext getSwingGuiContext()
   {
-    final DefaultComboBoxModel model = new DefaultComboBoxModel();
+    return swingGuiContext;
+  }
+
+  public KeyedComboBoxModel getZoomModel()
+  {
+    return zoomModel;
+  }
+
+  private String formatZoomText(final double zoom)
+  {
     final NumberFormat numberFormat =
-        NumberFormat.getPercentInstance(getLocale());
-    for (int i = 0; i < ZOOM_FACTORS.length; i++)
-    {
-      model.addElement(numberFormat.format(ZOOM_FACTORS[i] / 100.0));
-    }
-
-    final JComboBox zoomSelect = new JComboBox(model);
-    zoomSelect.setSelectedIndex(DEFAULT_ZOOM_INDEX);
-    zoomSelect.addActionListener(new ZoomSelectAction(zoomSelect));
-    zoomSelect.setAlignmentX(Component.RIGHT_ALIGNMENT);
-    return zoomSelect;
+        NumberFormat.getPercentInstance(swingGuiContext.getLocale());
+    return (numberFormat.format(zoom));
   }
 
-  private void addActionsToToolBar(final JToolBar toolBar,
-                                   final ActionPlugin[] reportActions)
-  {
-    if (reportActions == null)
-    {
-      return;
-    }
-
-    boolean separatorPending = false;
-    int count = 0;
-
-    for (int i = 0; i < reportActions.length; i++)
-    {
-      ActionPlugin actionPlugin = reportActions[i];
-      if (actionPlugin.isAddToToolbar() == false)
-      {
-        continue;
-      }
-
-      if (count > 0 && separatorPending)
-      {
-        toolBar.addSeparator();
-        separatorPending = false;
-      }
-
-      if (actionPlugin instanceof ExportActionPlugin)
-      {
-        final ExportActionPlugin exportPlugin = (ExportActionPlugin) actionPlugin;
-        final ExportAction action = new ExportAction(exportPlugin, this);
-        toolBar.add(createButton(action));
-        count += 1;
-      }
-      else if (actionPlugin instanceof ControlActionPlugin)
-      {
-        final ControlActionPlugin controlPlugin = (ControlActionPlugin) actionPlugin;
-        final ControlAction action = new ControlAction(controlPlugin, this);
-        toolBar.add(createButton(action));
-        count += 1;
-      }
-
-      if (actionPlugin.isSeparated())
-      {
-        separatorPending = true;
-      }
-    }
-  }
 
   private void buildMenu(final HashMap actions)
   {
-    final ArrayList menus = new ArrayList();
+    final HashMap menus = new HashMap();
+    final int userPos = getUserDefinedCategoryPosition();
 
-    final ActionPlugin[] reportActions = (ActionPlugin[]) actions.get(REPORT_CATEGORY);
-    if (reportActions != null && reportActions.length != 0)
+    final ActionCategory[] categories = new ActionCategory[actions.size()];
+    boolean insertedUserDefinedActions = false;
+    int catCount = 0;
+    final Iterator iterator = actions.entrySet().iterator();
+    while (iterator.hasNext())
     {
-      JMenu reportMenu = new JMenu("Report");
-      int count = PreviewPaneUtilities.buildMenu(reportMenu, reportActions, this);
-      if (count > 0)
+      final Map.Entry entry = (Map.Entry) iterator.next();
+      final ActionCategory cat = (ActionCategory) entry.getKey();
+      categories[catCount] = cat;
+      catCount += 1;
+      final ActionPlugin[] plugins = (ActionPlugin[]) entry.getValue();
+
+      if (insertedUserDefinedActions == false && cat.getPosition() > userPos)
       {
-        menus.add(reportMenu);
+        ReportController controller = getReportController();
+        if (controller != null)
+        {
+          controller.initialize(this);
+          final JMenu[] controlerMenus = controller.getMenus();
+          for (int i = 0; i < controlerMenus.length; i++)
+          {
+            final ActionCategory userCategory = new ActionCategory();
+            userCategory.setName("X-User-Category-" + i);
+            userCategory.setPosition(userPos + i);
+            menus.put(userCategory, controlerMenus[i]);
+          }
+        }
+
+        insertedUserDefinedActions = true;
+      }
+
+      final JMenu menu = PreviewPaneUtilities.createMenu(cat);
+      int count = PreviewPaneUtilities.buildMenu(menu, plugins, this);
+      menus.put(cat, menu);
+    }
+
+    final CategoryTreeItem[] categoryTreeItems =
+        PreviewPaneUtilities.buildMenuTree(categories);
+
+    ArrayList menuList = new ArrayList();
+    for (int i = 0; i < categoryTreeItems.length; i++)
+    {
+      final CategoryTreeItem item = categoryTreeItems[i];
+      final JMenu menu = (JMenu) menus.get(item.getCategory());
+      // now connect all menus ..
+      final CategoryTreeItem[] childs = item.getChilds();
+      Arrays.sort(childs);
+      for (int j = 0; j < childs.length; j++)
+      {
+        CategoryTreeItem child = childs[j];
+        final JMenu childMenu = (JMenu) menus.get(child.getCategory());
+        if (childMenu != null)
+        {
+          menu.add(childMenu);
+        }
+      }
+
+      if (item.getParent() == null)
+      {
+        menuList.add(item);
       }
     }
 
-    final ActionPlugin[] exportActions = (ActionPlugin[]) actions.get(EXPORT_CATEGORY);
-    if (exportActions != null && exportActions.length != 0)
+    Collections.sort(menuList);
+    ArrayList retval = new ArrayList();
+    for (int i = 0; i < menuList.size(); i++)
     {
-      JMenu exportMenu = new JMenu("Export");
-      int count = PreviewPaneUtilities.buildMenu(exportMenu, exportActions, this);
-      if (count > 0)
+      final CategoryTreeItem item = (CategoryTreeItem) menuList.get(i);
+      JMenu menu = (JMenu) menus.get(item.getCategory());
+      if (menu.getItemCount() > 0)
       {
-        menus.add(exportMenu);
+        retval.add(menu);
       }
     }
 
-    final ActionPlugin[] gotoActions = (ActionPlugin[]) actions.get(GOTO_CATEGORY);
-    if (gotoActions != null && gotoActions.length != 0)
-    {
-      JMenu gotoMenu = new JMenu("Go To");
-      int count = PreviewPaneUtilities.buildMenu(gotoMenu, gotoActions, this);
-      if (count > 0)
-      {
-        menus.add(gotoMenu);
-      }
-    }
-
-    menus.add(createViewMenu());
-
-    ReportController controller = getReportController();
-    if (controller != null)
-    {
-      controller.initialize(this);
-      final JMenu[] controlerMenus = controller.getMenus();
-      for (int i = 0; i < controlerMenus.length; i++)
-      {
-        menus.add(controlerMenus[i]);
-      }
-    }
-
-    final ActionPlugin[] helpActions = (ActionPlugin[]) actions.get(HELP_CATEGORY);
-    if (helpActions != null && helpActions.length != 0)
-    {
-      JMenu helpMenu = new JMenu("Help");
-      int count = PreviewPaneUtilities.buildMenu(helpMenu, helpActions, this);
-      if (count > 0)
-      {
-        menus.add(helpMenu);
-      }
-    }
-
-    setMenu((JMenu[]) menus.toArray(new JMenu[menus.size()]));
+    setMenu((JMenu[]) retval.toArray(new JMenu[retval.size()]));
   }
 
-  private JMenu createViewMenu()
-  {
-    JMenu zoom = new JMenu("Zoom");
-    zoom.add(new ActionMenuItem(new ZoomOutAction(this)));
-    zoom.add(new ActionMenuItem(new ZoomInAction(this)));
-    zoom.addSeparator();
-
-    for (int i = 0; i < ZOOM_FACTORS.length; i++)
-    {
-      double factor = ZOOM_FACTORS[i];
-      zoom.add(new ActionMenuItem(new ZoomAction(factor, this)));
-    }
-
-    zoom.addSeparator();
-    zoom.add(new ActionMenuItem(new ZoomCustomAction(this)));
-
-    JMenu menu = new JMenu("View");
-    menu.add(zoom);
-    menu.addSeparator();
-    menu.add(new ActionMenuItem("Paginated"));
-    menu.add(new ActionMenuItem("Flow"));
-    return menu;
-  }
+//  private JMenu createViewMenu(ActionCategory cat)
+//  {
+//    JMenu zoom = new JMenu("Zoom");
+//    zoom.add(new ActionMenuItem(new ZoomOutAction(this)));
+//    zoom.add(new ActionMenuItem(new ZoomInAction(this)));
+//    zoom.addSeparator();
+//
+//    for (int i = 0; i < ZOOM_FACTORS.length; i++)
+//    {
+//      double factor = ZOOM_FACTORS[i];
+//      zoom.add(new ActionMenuItem(new ZoomAction(factor, this)));
+//    }
+//
+//    zoom.addSeparator();
+//    zoom.add(new ActionMenuItem(new ZoomCustomAction(this)));
+//
+//    JMenu menu = new JMenu("View");
+//    menu.add(zoom);
+//    menu.addSeparator();
+//    menu.add(new ActionMenuItem("Paginated"));
+//    menu.add(new ActionMenuItem("Flow"));
+//    return menu;
+//  }
 
   protected void initializeWithoutJob()
   {
@@ -951,7 +861,15 @@ public class PreviewPane extends JPanel
         JFreeReportBoot.getInstance().getGlobalConfig();
     setIconTheme(PreviewPaneUtilities.createIconTheme(globalConfig));
 
-    HashMap actions = loadActions();
+    zoomModel.clear();
+    for (int i = 0; i < ZOOM_FACTORS.length; i++)
+    {
+      zoomModel.add(new Double(ZOOM_FACTORS[i]), formatZoomText(ZOOM_FACTORS[i]));
+    }
+    zoom = ZOOM_FACTORS[DEFAULT_ZOOM_INDEX];
+    zoomModel.setSelectedKey(new Double(ZOOM_FACTORS[DEFAULT_ZOOM_INDEX]));
+
+    HashMap actions = PreviewPaneUtilities.loadActions(swingGuiContext);
     buildMenu(actions);
     if (toolBar != null)
     {
@@ -1000,8 +918,13 @@ public class PreviewPane extends JPanel
     {
       // make sure that old pagination handler does not run longer than
       // necessary..
-      paginationWorker.finish();
+      synchronized(paginationWorker)
+      {
+        paginationWorker.finish();
+      }
+      paginationWorker = null;
     }
+
     if (printReportProcessor != null)
     {
       printReportProcessor.close();

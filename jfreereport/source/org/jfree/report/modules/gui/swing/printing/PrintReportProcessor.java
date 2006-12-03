@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrintReportProcessor.java,v 1.2 2006/11/24 17:12:13 taqua Exp $
+ * $Id: PrintReportProcessor.java,v 1.3 2006/11/28 13:21:11 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -93,15 +93,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
 
   public void close()
   {
-    final ReportJob job = getJob();
-    synchronized(job)
-    {
-      final ReportDataFactory dataFactory = job.getDataFactory();
-      if (dataFactory != null)
-      {
-        dataFactory.close();
-      }
-    }
+    getJob().close();
   }
 
   protected PageDrawable processPage(int page)
@@ -173,7 +165,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
       }
     }
     Log.debug ("After pagination, we have " +
-        getGraphicsProcessor().getPhysicalPageCount() + " physical pages."); 
+        getGraphicsProcessor().getPhysicalPageCount() + " physical pages.");
     return getGraphicsProcessor().getPhysicalPageCount();
   }
 

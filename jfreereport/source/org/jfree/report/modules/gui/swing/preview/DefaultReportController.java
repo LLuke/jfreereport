@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DefaultReportControler.java,v 1.3 2005/09/07 14:25:10 taqua Exp $
+ * $Id: DefaultReportController.java,v 1.1 2006/11/20 21:17:02 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,6 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
-
-import org.jfree.report.modules.gui.swing.preview.ReportController;
 
 public class DefaultReportController extends JPanel implements ReportController
 {
@@ -86,7 +84,7 @@ public class DefaultReportController extends JPanel implements ReportController
    *
    * @return the location;
    */
-  public String getControlerLocation ()
+  public String getControllerLocation ()
   {
     return BorderLayout.NORTH;
   }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultLayoutControllerFactory.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
+ * $Id: DefaultLayoutControllerFactory.java,v 1.2 2006/11/28 13:21:11 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -72,14 +72,10 @@ public class DefaultLayoutControllerFactory implements LayoutControllerFactory
 
       final Class nodeClass = load(nodeClassName);
       final Object processor = ObjectUtilities.loadAndInstantiate
-          (procClassName, DefaultLayoutControllerFactory.class);
+          (procClassName, DefaultLayoutControllerFactory.class, LayoutController.class);
       if (nodeClass == null || processor == null)
       {
         // sanity check ..
-        continue;
-      }
-      if (processor instanceof LayoutController == false)
-      {
         continue;
       }
 
@@ -117,8 +113,8 @@ public class DefaultLayoutControllerFactory implements LayoutControllerFactory
     {
       final String targetClass = (String) registry.get(nodeClass.getName());
       final LayoutController lc = (LayoutController)
-          ObjectUtilities.loadAndInstantiate
-          (targetClass, DefaultLayoutControllerFactory.class);
+          ObjectUtilities.loadAndInstantiate (targetClass,
+              DefaultLayoutControllerFactory.class, LayoutController.class);
       if (lc != null)
       {
         lc.initialize(node, controller, parent);

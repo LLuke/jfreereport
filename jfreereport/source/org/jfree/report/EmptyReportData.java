@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: EmptyReportData.java,v 1.1 2006/04/30 09:49:10 taqua Exp $
+ * $Id: EmptyReportData.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,10 @@ public class EmptyReportData implements ReportData
 
   public void setCursorPosition(int cursor) throws DataSourceException
   {
+    if (cursor == 0)
+    {
+      return;
+    }
     throw new DataSourceException("This beast is empty!");
   }
 

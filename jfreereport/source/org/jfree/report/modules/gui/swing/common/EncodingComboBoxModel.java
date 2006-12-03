@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.19 2005/09/07 14:25:10 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.1 2006/11/13 19:27:45 taqua Exp $
  *
  * Changes
  * --------
@@ -104,7 +104,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * &quot;/org/jfree/report/jfreereport-encodings.properties&quot;.
    */
   public static final String ENCODINGS_DEFINITION_FILE_DEFAULT
-          = "org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties";
+          = "org/jfree/report/modules/gui/swing/common/jfreereport-encodings.properties";
 
 
   /**
@@ -405,7 +405,19 @@ public class EncodingComboBoxModel implements ComboBoxModel
     {
       return;
     }
-    final ListDataEvent evt = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, getSize());
+    fireContentsChanged(0, getSize());
+  }
+
+  /**
+   * Notifies all registered listeners that the content of the model has changed.
+   */
+  protected void fireContentsChanged (int start, int length)
+  {
+    if (listDataListeners == null)
+    {
+      return;
+    }
+    final ListDataEvent evt = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, start, length);
     for (int i = 0; i < listDataListeners.size(); i++)
     {
       final ListDataListener l = (ListDataListener) listDataListeners.get(i);
@@ -430,11 +442,13 @@ public class EncodingComboBoxModel implements ComboBoxModel
         if (anItem.equals(getElementAt(i)))
         {
           selectedIndex = i;
+          fireContentsChanged(-1, -1);
           return;
         }
       }
     }
     selectedIndex = -1;
+    fireContentsChanged(-1, -1);
   }
 
   /**
@@ -460,6 +474,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     {
       selectedIndex = -1;
       selectedObject = null;
+      fireContentsChanged(-1, -1);
       return;
     }
     if (index < -1 || index >= getSize())
@@ -468,6 +483,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     }
     selectedIndex = index;
     selectedObject = getElementAt(index);
+    fireContentsChanged(-1, -1);
   }
 
   /**
@@ -666,6 +682,11 @@ public class EncodingComboBoxModel implements ComboBoxModel
 
   public void setSelectedEncoding (final String encoding)
   {
+    if (encoding == null)
+    {
+      throw new NullPointerException();
+    }
+
     final int size = encodings.size();
     for (int i = 0; i < size; i++)
     {
@@ -674,6 +695,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
       {
         selectedIndex = i;
         selectedObject = carrier.getDisplayName();
+        fireContentsChanged(-1, -1);
         return;
       }
     }
@@ -682,6 +704,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     {
       selectedIndex = 0;
       selectedObject = getElementAt(0);
+      fireContentsChanged(-1, -1);
     }
   }
 }

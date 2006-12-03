@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultIconTheme.java,v 1.1 2006/11/20 21:12:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,6 +36,7 @@ import javax.swing.Icon;
 
 import org.jfree.util.Configuration;
 import org.jfree.util.ResourceBundleSupport;
+import org.jfree.report.JFreeReportBoot;
 
 /**
  * Creation-Date: 13.11.2006, 19:27:51
@@ -48,6 +49,7 @@ public class DefaultIconTheme implements IconTheme
 
   public DefaultIconTheme()
   {
+    initialize(JFreeReportBoot.getInstance().getGlobalConfig());
   }
 
   public void initialize(Configuration configuration)
@@ -68,6 +70,11 @@ public class DefaultIconTheme implements IconTheme
 
   private ResourceBundleSupport getResourceBundleSupport(Locale locale)
   {
+    if (bundleName == null)
+    {
+      throw new IllegalStateException
+          ("No resource-bundle. Did you boot the engine?");
+    }
     return new ResourceBundleSupport
         (locale, ResourceBundle.getBundle(bundleName, locale));
   }

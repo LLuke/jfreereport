@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractExpressionReadHandler.java,v 1.4 2006/11/24 17:12:13 taqua Exp $
+ * $Id: AbstractExpressionReadHandler.java,v 1.5 2006/11/25 17:11:34 taqua Exp $
  *
  * Changes
  * -------
@@ -119,22 +119,13 @@ public abstract class AbstractExpressionReadHandler
 
     if (expression == null)
     {
-      try
-      {
-        expression = (Expression) ObjectUtilities.loadAndInstantiate
-            (className, AbstractExpressionReadHandler.class);
-        if (expression == null)
-        {
-          throw new ParseException("Expression '" + className +
-              "' is not valid. The specified class is not an expression or function.",
-               getRootHandler().getDocumentLocator());
-        }
-      }
-      catch (ClassCastException e)
+      expression = (Expression) ObjectUtilities.loadAndInstantiate
+        (className, AbstractExpressionReadHandler.class, Expression.class);
+      if (expression == null)
       {
         throw new ParseException("Expression '" + className +
             "' is not valid. The specified class is not an expression or function.",
-            e, getRootHandler().getDocumentLocator());
+             getRootHandler().getDocumentLocator());
       }
     }
 

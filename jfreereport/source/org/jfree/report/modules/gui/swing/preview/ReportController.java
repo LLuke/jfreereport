@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportControler.java,v 1.2 2005/03/29 18:32:00 taqua Exp $
+ * $Id: ReportController.java,v 1.1 2006/11/20 21:17:03 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public interface ReportController
    * the toolbar.
    * <p>
    * Changes to this property are not detected automaticly,
-   * you have to call "refreshControler" whenever you want to
+   * you have to call "refreshController" whenever you want to
    * display a completly new control panel.
    *
    * @return the controler component.
@@ -85,7 +85,7 @@ public interface ReportController
    * Defines, whether the controler component is placed between
    * the preview pane and the toolbar.
    *
-   * @return true, if this is a inne component.
+   * @return true, if this is a inner component.
    */
   public boolean isInnerComponent ();
 
@@ -96,20 +96,7 @@ public interface ReportController
    *
    * @return the location;
    */
-  public String getControlerLocation ();
-
-  /**
-   * Enables or disables the controler.
-   *
-   * @param enabled
-   */
-  public void setEnabled (boolean enabled);
-
-  /**
-   * Checks, whether this controler is enabled.
-   * @return
-   */
-  public boolean isEnabled();
+  public String getControllerLocation ();
 
   public void initialize (PreviewPane pane);
 }

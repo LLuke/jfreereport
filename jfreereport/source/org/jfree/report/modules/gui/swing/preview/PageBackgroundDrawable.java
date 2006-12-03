@@ -23,20 +23,20 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PageBackgroundDrawable.java,v 1.1 2006/11/20 21:17:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.modules.gui.swing.preview;
 
-import java.awt.print.PageFormat;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-
+import java.awt.geom.Rectangle2D;
+import java.awt.print.PageFormat;
 import javax.swing.UIManager;
 
 import org.jfree.layouting.modules.output.graphics.PageDrawable;
@@ -57,7 +57,7 @@ public class PageBackgroundDrawable implements ExtendedDrawable
   public PageBackgroundDrawable()
   {
     this.shadowSize = 6;
-    this.borderPainted = true;
+    this.borderPainted = false;
     this.zoom = 1;
   }
 
@@ -95,9 +95,13 @@ public class PageBackgroundDrawable implements ExtendedDrawable
   {
     if (backend == null)
     {
-      return new Dimension(0,0);
+      return new Dimension(0, 0);
     }
-    return backend.getPreferredSize();
+    final Dimension preferredSize = backend.getPreferredSize();
+
+    return new Dimension
+        ((int) ((preferredSize.width + shadowSize) * zoom),
+            (int) ((preferredSize.height + shadowSize) * zoom));
   }
 
   public boolean isPreserveAspectRatio()
@@ -141,10 +145,11 @@ public class PageBackgroundDrawable implements ExtendedDrawable
 
     /** Prepare background **/
     g2.transform(AffineTransform.getScaleInstance(getZoom(), getZoom()));
+    g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
     /** Prepare background **/
     Rectangle2D pageArea =
-        new Rectangle2D.Float(0, 0, outerW - 2, outerH - 2);
+        new Rectangle2D.Float(0, 0, outerW, outerH);
 
     g2.setPaint(Color.white);
     g2.fill(pageArea);
@@ -162,29 +167,19 @@ public class PageBackgroundDrawable implements ExtendedDrawable
     final Rectangle2D printingArea = new Rectangle2D.Float(innerX, innerY, innerW, innerH);
 
     /** Paint Page Shadow */
-    final Rectangle2D southborder =
-            new Rectangle2D.Float (getShadowSize() - 2,
-                    0 + outerH - 2, outerW, getShadowSize());
+    final Rectangle2D southborder = new Rectangle2D.Float
+        (getShadowSize(), outerH,
+            outerW, getShadowSize());
 
     g2.setPaint(UIManager.getColor("controlShadow"));
 
     g2.fill(southborder);
-    final Rectangle2D eastborder =
-            new Rectangle2D.Float(outerW - 2,
-                    0 - 2 + getShadowSize(),
-                    getShadowSize(),
-                    outerH);
+
+    final Rectangle2D eastborder = new Rectangle2D.Float
+        (outerW, getShadowSize(),getShadowSize(), outerH);
 
     g2.fill(eastborder);
-    final Rectangle2D transPageArea;
-    if (getZoom() > 1.49)
-    {
-      transPageArea = new Rectangle2D.Float(0, 0, outerW - 1, outerH - 1);
-    }
-    else
-    {
-      transPageArea = new Rectangle2D.Float(0, 0, outerW - 2, outerH - 2);
-    }
+    final Rectangle2D transPageArea = new Rectangle2D.Float(0, 0, outerW, outerH);
 
     g2.setPaint(Color.black);
     g2.draw(transPageArea);

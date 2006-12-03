@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.16.2.2 2006/04/30 15:01:05 taqua Exp $
+ * $Id: AbstractActionPlugin.java,v 1.1 2006/11/20 21:15:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,11 +43,14 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.lang.reflect.Constructor;
 
 import org.jfree.report.modules.gui.common.IconTheme;
-import org.jfree.util.ResourceBundleSupport;
 import org.jfree.util.ExtendedConfiguration;
 import org.jfree.util.ExtendedConfigurationWrapper;
+import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * The AbstractExportPlugin provides a basic implementation of the ExportPlugin
@@ -72,7 +75,7 @@ public abstract class AbstractActionPlugin implements ActionPlugin
    * The base resource class.
    */
   public static final String BASE_RESOURCE_CLASS =
-          "org.jfree.report.modules.gui.common.resources";
+      "org.jfree.report.modules.gui.common.resources";
   private SwingGuiContext context;
   private ExtendedConfiguration configuration;
 
@@ -81,7 +84,7 @@ public abstract class AbstractActionPlugin implements ActionPlugin
     propertyChangeSupport = new PropertyChangeSupport(this);
   }
 
-  public void initialize (SwingGuiContext context)
+  public void initialize(SwingGuiContext context)
   {
     this.context = context;
     this.baseResources = new ResourceBundleSupport
@@ -91,7 +94,7 @@ public abstract class AbstractActionPlugin implements ActionPlugin
         (context.getConfiguration());
   }
 
-  protected PropertyChangeSupport getPropertyChangeSupport ()
+  protected PropertyChangeSupport getPropertyChangeSupport()
   {
     return propertyChangeSupport;
   }
@@ -107,30 +110,30 @@ public abstract class AbstractActionPlugin implements ActionPlugin
   }
 
   /**
-   * Returns true if the action is separated, and false otherwise. A separated action
-   * starts a new action group and will be spearated from previous actions on the menu and
-   * toolbar.
+   * Returns true if the action is separated, and false otherwise. A separated
+   * action starts a new action group and will be spearated from previous
+   * actions on the menu and toolbar.
    *
-   * @return true, if the action should be separated from previous actions, false
-   *         otherwise.
+   * @return true, if the action should be separated from previous actions,
+   *         false otherwise.
    */
-  public boolean isSeparated ()
+  public boolean isSeparated()
   {
     return getConfig().getBoolProperty
         (getConfigurationPrefix() + "separated");
   }
 
   /**
-   * Returns an error description for the last operation. This implementation provides a
-   * basic default failure description text and should be overriden to give a more
-   * detailed explaination.
+   * Returns an error description for the last operation. This implementation
+   * provides a basic default failure description text and should be overriden
+   * to give a more detailed explaination.
    *
    * @return returns a error description.
    */
-  public String getFailureDescription ()
+  public String getFailureDescription()
   {
     return baseResources.formatMessage
-            ("statusline.export.generic-failure-description", getDisplayName());
+        ("statusline.export.generic-failure-description", getDisplayName());
   }
 
   public String getStatusText()
@@ -146,11 +149,13 @@ public abstract class AbstractActionPlugin implements ActionPlugin
   }
 
   /**
-   * Returns true if the action should be added to the toolbar, and false otherwise.
+   * Returns true if the action should be added to the toolbar, and false
+   * otherwise.
    *
-   * @return true, if the plugin should be added to the toolbar, false otherwise.
+   * @return true, if the plugin should be added to the toolbar, false
+   *         otherwise.
    */
-  public boolean isAddToToolbar ()
+  public boolean isAddToToolbar()
   {
     return getConfig().getBoolProperty
         (getConfigurationPrefix() + "add-to-toolbar");
@@ -169,12 +174,12 @@ public abstract class AbstractActionPlugin implements ActionPlugin
   }
 
   /**
-   * Creates a progress dialog, and tries to assign a parent based on the given preview
-   * proxy.
+   * Creates a progress dialog, and tries to assign a parent based on the given
+   * preview proxy.
    *
    * @return the progress dialog.
    */
-  protected ReportProgressDialog createProgressDialog ()
+  protected ReportProgressDialog createProgressDialog()
   {
     final Window proxy = context.getWindow();
     if (proxy instanceof Frame)
@@ -191,30 +196,30 @@ public abstract class AbstractActionPlugin implements ActionPlugin
     }
   }
 
-  public void addPropertyChangeListener (final PropertyChangeListener l)
+  public void addPropertyChangeListener(final PropertyChangeListener l)
   {
     propertyChangeSupport.addPropertyChangeListener(l);
   }
 
-  public void addPropertyChangeListener (final String property,
-                                         final PropertyChangeListener l)
+  public void addPropertyChangeListener(final String property,
+                                        final PropertyChangeListener l)
   {
     propertyChangeSupport.addPropertyChangeListener(property, l);
   }
 
-  public void removePropertyChangeListener (final PropertyChangeListener l)
+  public void removePropertyChangeListener(final PropertyChangeListener l)
   {
     propertyChangeSupport.removePropertyChangeListener(l);
   }
 
-  public void setEnabled (final boolean enabled)
+  public void setEnabled(final boolean enabled)
   {
     final boolean oldEnabled = this.enabled;
     this.enabled = enabled;
     propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled);
   }
 
-  public boolean isEnabled ()
+  public boolean isEnabled()
   {
     return enabled;
   }
@@ -224,7 +229,7 @@ public abstract class AbstractActionPlugin implements ActionPlugin
     return iconTheme;
   }
 
-  protected abstract String getConfigurationPrefix ();
+  protected abstract String getConfigurationPrefix();
 
 
   /**
@@ -255,5 +260,4 @@ public abstract class AbstractActionPlugin implements ActionPlugin
     return getConfig().getIntProperty
         (getConfigurationPrefix() + "role-preference", 0);
   }
-
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ReportJob.java,v 1.3 2006/07/11 13:24:40 taqua Exp $
+ * $Id: ReportJob.java,v 1.4 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -109,7 +109,7 @@ public class ReportJob implements Serializable, Cloneable
     return job;
   }
 
-  public ReportJob derive ()
+  public ReportJob derive()
   {
     try
     {
@@ -119,6 +119,14 @@ public class ReportJob implements Serializable, Cloneable
     {
       throw new IllegalStateException
           ("A report job should always be cloneable.");
+    }
+  }
+
+  public synchronized void close()
+  {
+    if (dataFactory != null)
+    {
+      dataFactory.close();
     }
   }
 }

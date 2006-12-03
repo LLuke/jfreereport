@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: AbstractExportDialog.java,v 1.1 2006/11/13 19:27:45 taqua Exp $
+ * $Id: AbstractExportDialog.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
  *
  * Changes
  * -------
@@ -46,33 +46,36 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.Enumeration;
 import java.util.ResourceBundle;
+import java.util.Locale;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
 
 import org.jfree.base.config.ModifiableConfiguration;
-import org.jfree.report.JFreeReport;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.preferences.base.ConfigFactory;
 import org.jfree.report.modules.preferences.base.ConfigStorage;
 import org.jfree.report.modules.preferences.base.ConfigStoreException;
+import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.util.Configuration;
-import org.jfree.util.DefaultConfiguration;
 import org.jfree.util.Log;
 
 public abstract class AbstractExportDialog extends JDialog
+  implements ExportDialog
 {
-
   /**
    * Internal action class to confirm the dialog and to validate the input.
    */
-  protected abstract class AbstractConfirmAction extends AbstractAction
+  private class ConfirmAction extends AbstractAction
   {
     /**
      * Default constructor.
      */
-    public AbstractConfirmAction()
+    public ConfirmAction(final ResourceBundle resources)
     {
+      putValue(Action.NAME, resources.getString("OptionPane.okButtonText"));
     }
 
     /**
@@ -93,13 +96,14 @@ public abstract class AbstractExportDialog extends JDialog
   /**
    * Internal action class to cancel the report processing.
    */
-  protected abstract class AbstractCancelAction extends AbstractAction
+  private class CancelAction extends AbstractAction
   {
     /**
      * Default constructor.
      */
-    public AbstractCancelAction()
+    public CancelAction(final ResourceBundle resources)
     {
+      putValue(Action.NAME, resources.getString("OptionPane.cancelButtonText"));
     }
 
     /**
@@ -162,6 +166,8 @@ public abstract class AbstractExportDialog extends JDialog
   private FormValidator formValidator;
   private ResourceBundle resources;
   private boolean confirmed;
+  private ReportJob reportJob;
+  private GuiContext guiContext;
 
   /**
    * Creates a non-modal dialog without a title and without a specified
@@ -172,7 +178,6 @@ public abstract class AbstractExportDialog extends JDialog
   {
     initialize();
   }
-
 
   /**
    * Creates a non-modal dialog without a title with the specified
@@ -202,8 +207,13 @@ public abstract class AbstractExportDialog extends JDialog
     initialize();
   }
 
-  protected void initialize()
+  private void initialize()
   {
+    ResourceBundle resources = ResourceBundle.getBundle(SwingCommonModule.BUNDLE_NAME);
+
+    cancelAction = new CancelAction(resources);
+    confirmAction = new ConfirmAction(resources);
+
     formValidator = new ExportDialogValidator();
     setModal(true);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -240,6 +250,19 @@ public abstract class AbstractExportDialog extends JDialog
     return formValidator;
   }
 
+  protected abstract void initializeFromJob(ReportJob job,
+                                            final GuiContext guiContext);
+
+  protected ReportJob getReportJob()
+  {
+    return reportJob;
+  }
+
+  protected GuiContext getGuiContext()
+  {
+    return guiContext;
+  }
+
   /**
    * Opens the dialog to query all necessary input from the user. This will not
    * start the processing, as this is done elsewhere.
@@ -247,28 +270,34 @@ public abstract class AbstractExportDialog extends JDialog
    * @param report the report that should be processed.
    * @return true, if the processing should continue, false otherwise.
    */
-  public boolean performQueryForExport(final JFreeReport report)
+  public boolean performQueryForExport(final ReportJob reportJob,
+                                       final GuiContext guiContext)
   {
+    this.reportJob = reportJob;
+    this.guiContext = guiContext;
+
+    final Locale locale = reportJob.getReport().getLocale();
+    setLocale(locale);
+    pack();
+    clear();
+    initializeFromJob(reportJob, guiContext);
+
     final FormValidator formValidator = getFormValidator();
     formValidator.setEnabled(false);
-    final ModifiableConfiguration repConf = report.getConfiguration();
-    initFromConfiguration(repConf);
-    final String configPath = ConfigFactory.encodePath(
-            report.getName() + getConfigurationSuffix());
-    if (isInputStorageEnabled(repConf))
+    final ModifiableConfiguration repConf = reportJob.getConfiguration();
+    final boolean inputStorageEnabled = isInputStorageEnabled(repConf);
+
+    Configuration loadedConfiguration;
+    if (inputStorageEnabled)
     {
-      final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
-      try
-      {
-        final Configuration properties =
-                storage.load(configPath, new DefaultConfiguration());
-        setDialogContents(properties, isFullInputStorageEnabled(repConf));
-      }
-      catch (Exception cse)
-      {
-        Log.debug("Unable to load the defaults in Export export dialog. [" + getClass() + "]");
-      }
+      loadedConfiguration = loadFromConfigStore(reportJob, repConf);
     }
+    else
+    {
+      loadedConfiguration = repConf;
+    }
+
+    setDialogContents(loadedConfiguration);
 
     formValidator.setEnabled(true);
     formValidator.handleValidate();
@@ -280,34 +309,74 @@ public abstract class AbstractExportDialog extends JDialog
     }
 
     formValidator.setEnabled(false);
-    storeToConfiguration(repConf);
-    if (isInputStorageEnabled(repConf))
+
+    final Configuration fullDialogContents = grabDialogContents(true);
+    final Enumeration configProperties =
+        fullDialogContents.getConfigProperties();
+    while (configProperties.hasMoreElements())
     {
-      try
-      {
-        final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
-        final Configuration dialogContents = getDialogContents(isFullInputStorageEnabled(repConf));
-        storage.store(configPath, dialogContents);
-      }
-      catch (ConfigStoreException cse)
-      {
-        Log.debug("Unable to store the defaults in Export export dialog. [" + getClass() + "]");
-      }
+      final String key = (String) configProperties.nextElement();
+      repConf.setConfigProperty(key, fullDialogContents.getConfigProperty(key));
     }
+
+    if (inputStorageEnabled)
+    {
+      saveToConfigStore(reportJob, repConf);
+    }
+
     formValidator.setEnabled(true);
+    this.reportJob = null;
     return true;
+  }
+
+  private void saveToConfigStore(final ReportJob reportJob,
+                                 final Configuration reportConfiguration)
+  {
+    final String configPath = ConfigFactory.encodePath(
+        reportJob.getReport().getName() + getConfigurationSuffix());
+
+    try
+    {
+      final boolean fullStorageEnabled = isFullInputStorageEnabled(reportConfiguration);
+      final Configuration dialogContents = grabDialogContents(fullStorageEnabled);
+      final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+      storage.store(configPath, dialogContents);
+    }
+    catch (ConfigStoreException cse)
+    {
+      Log.debug("Unable to store the defaults in Export export dialog. [" + getClass() + "]");
+    }
+  }
+
+  private Configuration loadFromConfigStore(final ReportJob reportJob,
+                                            final Configuration defaultConfig)
+  {
+    final String configPath = ConfigFactory.encodePath(
+        reportJob.getReport().getName() + getConfigurationSuffix());
+    final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+    try
+    {
+      return storage.load(configPath, defaultConfig);
+    }
+    catch (Exception cse)
+    {
+      Log.debug("Unable to load the defaults in Export export dialog. [" + getClass() + "]");
+    }
+    return defaultConfig;
   }
 
   protected abstract String getConfigurationPrefix();
 
-  protected abstract Configuration getDialogContents(boolean full);
+  /**
+   * Returns a new (and not connected to the default config from the job)
+   * configuration containing all properties from the dialog.
+   *
+   * @param full
+   * @return
+   */
+  protected abstract Configuration grabDialogContents(boolean full);
 
-  protected abstract void storeToConfiguration(ModifiableConfiguration reportConfiguration);
-
-  protected abstract void setDialogContents(Configuration properties,
-                                            boolean full);
-
-  protected abstract void initFromConfiguration(Configuration reportConfiguration);
+  protected abstract void setDialogContents(Configuration properties);
 
   protected abstract String getConfigurationSuffix();
 
@@ -329,14 +398,14 @@ public abstract class AbstractExportDialog extends JDialog
   protected boolean isInputStorageEnabled(Configuration config)
   {
     final String confVal = config.getConfigProperty
-            (getConfigurationPrefix() + "StoreDialogContents");
+        (getConfigurationPrefix() + "StoreDialogContents");
     return "none".equalsIgnoreCase(confVal) == false;
   }
 
   protected boolean isFullInputStorageEnabled(Configuration config)
   {
     final String confVal = config.getConfigProperty
-            (getConfigurationPrefix() + "StoreDialogContents");
+        (getConfigurationPrefix() + "StoreDialogContents");
     return "all".equalsIgnoreCase(confVal);
   }
 
@@ -381,34 +450,33 @@ public abstract class AbstractExportDialog extends JDialog
    * @param baseDirectory the base directory as specified in the configuration.
    * @return the file object pointing to that directory.
    * @throws org.jfree.base.modules.ModuleInitializeException
-   *          if an error occured or the directory could not be created.
+   *                                  if an error occured or the directory could
+   *                                  not be created.
    * @throws IllegalArgumentException if the base directory is null.
    */
   protected File resolvePath(String baseDirectory)
   {
-    final File baseDirectoryFile;
-    if(baseDirectory == null)
+    if (baseDirectory == null)
     {
       throw new IllegalArgumentException("The base directory must not be null");
     }
 
     if (baseDirectory.startsWith("~/") == false)
     {
-      baseDirectoryFile = new File(baseDirectory);
+      return new File(baseDirectory);
     }
     else
     {
       final String homeDirectory = System.getProperty("user.home");
       if ("~/".equals(baseDirectory))
       {
-        baseDirectoryFile = new File(homeDirectory);
+        return new File(homeDirectory);
       }
       else
       {
         baseDirectory = baseDirectory.substring(2);
-        baseDirectoryFile = new File(homeDirectory, baseDirectory);
+        return new File(homeDirectory, baseDirectory);
       }
     }
-    return baseDirectoryFile;
   }
 }

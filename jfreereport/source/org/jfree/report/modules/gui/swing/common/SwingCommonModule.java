@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SwingCommonModule.java,v 1.1 2006/11/20 21:15:44 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,6 +41,10 @@ import org.jfree.base.modules.ModuleInitializeException;
  */
 public class SwingCommonModule extends AbstractModule
 {
+  public static final String BUNDLE_NAME =
+      "org.jfree.report.modules.gui.swing.common.resources";
+  public static final String LARGE_ICON_PROPERTY = "Icon24";
+
   public SwingCommonModule() throws ModuleInitializeException
   {
     loadModuleInfo();

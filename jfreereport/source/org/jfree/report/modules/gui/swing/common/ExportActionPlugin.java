@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExportPlugin.java,v 1.9 2005/02/23 21:04:48 taqua Exp $
+ * $Id: ExportActionPlugin.java,v 1.1 2006/11/20 21:15:44 taqua Exp $
  *
  * Changes
  * --------
@@ -54,12 +54,5 @@ public interface ExportActionPlugin extends ActionPlugin
    * @return A boolean.
    */
   public boolean performExport (ReportJob job);
-
-  /**
-   * Returns an error description for the last operation.
-   *
-   * @return returns a error description.
-   */
-  public String getFailureDescription ();
 
 }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JStatusBar.java,v 1.1 2006/11/13 19:27:45 taqua Exp $
+ * $Id: JStatusBar.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ package org.jfree.report.modules.gui.swing.common;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.IllegalComponentStateException;
 import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -51,6 +52,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.jfree.report.modules.gui.common.IconTheme;
+import org.jfree.report.modules.gui.common.DefaultIconTheme;
 
 public class JStatusBar extends JComponent
 {
@@ -62,18 +64,15 @@ public class JStatusBar extends JComponent
   private JComponent otherComponents;
   private JLabel statusHolder;
   private IconTheme iconTheme;
-  private Locale locale;
   private int statusType;
+
+  public JStatusBar()
+  {
+    this(new DefaultIconTheme());
+  }
 
   public JStatusBar (final IconTheme theme)
   {
-    this(theme, Locale.getDefault());
-  }
-
-  public JStatusBar (final IconTheme theme,
-                     final Locale locale)
-  {
-    this.locale = locale;
     setLayout(new BorderLayout());
     setBorder(BorderFactory.createMatteBorder
             (1, 0, 0, 0, UIManager.getDefaults().getColor("controlShadow")));
@@ -150,22 +149,22 @@ public class JStatusBar extends JComponent
     {
       if (type == TYPE_ERROR)
       {
-        final Icon res = getIconTheme().getSmallIcon(locale, "statusbar.errorIcon");
+        final Icon res = getIconTheme().getSmallIcon(getLocale(), "statusbar.errorIcon");
         statusHolder.setIcon(res);
       }
       else if (type == TYPE_WARNING)
       {
-        final Icon res = getIconTheme().getSmallIcon(locale, "statusbar.warningIcon");
+        final Icon res = getIconTheme().getSmallIcon(getLocale(), "statusbar.warningIcon");
         statusHolder.setIcon(res);
       }
       else if (type == TYPE_INFORMATION)
       {
-        final Icon res = getIconTheme().getSmallIcon(locale, "statusbar.informationIcon");
+        final Icon res = getIconTheme().getSmallIcon(getLocale(), "statusbar.informationIcon");
         statusHolder.setIcon(res);
       }
       else
       {
-        final Icon res = getIconTheme().getSmallIcon(locale, "statusbar.otherIcon");
+        final Icon res = getIconTheme().getSmallIcon(getLocale(), "statusbar.otherIcon");
         statusHolder.setIcon(res);
       }
     }
@@ -174,5 +173,29 @@ public class JStatusBar extends JComponent
   public void clear ()
   {
     setStatus(TYPE_NONE, " ");
+  }
+
+  /**
+   * Gets the locale of this component.
+   *
+   * @return this component's locale; if this component does not have a locale,
+   *         the locale of its parent is returned
+   * @throws java.awt.IllegalComponentStateException
+   *          if the <code>Component</code> does not have its own locale and has
+   *          not yet been added to a containment hierarchy such that the locale
+   *          can be determined from the containing parent
+   * @see #setLocale
+   * @since JDK1.1
+   */
+  public Locale getLocale()
+  {
+    try
+    {
+      return super.getLocale();
+    }
+    catch(IllegalComponentStateException ice)
+    {
+      return Locale.getDefault();
+    }
   }
 }

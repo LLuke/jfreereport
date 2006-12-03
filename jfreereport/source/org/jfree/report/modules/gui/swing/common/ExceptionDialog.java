@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExceptionDialog.java,v 1.10 2005/11/17 17:03:47 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.1 2006/11/13 19:27:45 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
  *
  */
 
-package org.jfree.report.modules.gui.base.components;
+package org.jfree.report.modules.gui.swing.common;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -169,7 +169,7 @@ public class ExceptionDialog extends JDialog
   {
     setModal(true);
     detailsAction = new DetailsAction();
-    
+
     messageLabel = new JLabel();
     backtraceArea = new JTextArea();
 

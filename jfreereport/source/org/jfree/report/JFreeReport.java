@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.34 2006/11/11 20:37:23 taqua Exp $
+ * $Id: JFreeReport.java,v 1.35 2006/11/20 21:07:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -64,11 +64,14 @@ package org.jfree.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.awt.print.PageFormat;
 import javax.swing.table.TableModel;
 
 import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.layouting.input.style.StyleSheet;
+import org.jfree.layouting.input.style.CSSPageRule;
+import org.jfree.layouting.input.style.StyleSheetUtility;
 import org.jfree.report.i18n.DefaultResourceBundleFactory;
 import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.structure.ReportDefinition;
@@ -99,6 +102,8 @@ public class JFreeReport extends ReportDefinition implements Serializable
   private ModifiableConfiguration reportConfiguration;
 
   private ArrayList styleSheets;
+  private StyleSheet pageFormatStyleSheet;
+  private CSSPageRule pageRule;
 
   private ReportParameters parameters;
 
@@ -121,6 +126,11 @@ public class JFreeReport extends ReportDefinition implements Serializable
     this.parameters = new ReportParameters();
     this.resourceBundleFactory = new DefaultResourceBundleFactory();
     this.dataFactory = new EmptyReportDataFactory();
+
+    this.pageFormatStyleSheet = new StyleSheet();
+    this.pageRule = new CSSPageRule(pageFormatStyleSheet, null, null, null);
+
+    setQuery("default");
   }
 
   /**
@@ -173,12 +183,16 @@ public class JFreeReport extends ReportDefinition implements Serializable
 
   public StyleSheet getStyleSheet(int i)
   {
-    return (StyleSheet) styleSheets.get(i);
+    if (i == 0)
+    {
+      return pageFormatStyleSheet;
+    }
+    return (StyleSheet) styleSheets.get(i - 1);
   }
 
   public int getStyleSheetCount()
   {
-    return styleSheets.size();
+    return styleSheets.size() + 1;
   }
 
   public JFreeReport getRootReport()
@@ -232,5 +246,16 @@ public class JFreeReport extends ReportDefinition implements Serializable
   public void setBaseResource(final ResourceKey baseResource)
   {
     this.baseResource = baseResource;
+  }
+
+  public void setPageFormat (final PageFormat format)
+  {
+    pageRule.clear();
+    StyleSheetUtility.updateRuleForPage(pageRule, format);
+  }
+
+  public PageFormat getPageFormat ()
+  {
+    return StyleSheetUtility.getPageFormat(pageRule);
   }
 }

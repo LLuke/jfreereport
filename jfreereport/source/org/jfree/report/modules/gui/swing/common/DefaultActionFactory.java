@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultActionFactory.java,v 1.1 2006/11/20 21:15:44 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,8 +34,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.jfree.util.Configuration;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Creation-Date: 16.11.2006, 16:28:03
@@ -58,7 +58,7 @@ public class DefaultActionFactory implements ActionFactory
     final Iterator keys = configuration.findPropertyKeys(prefix);
     if (keys.hasNext() == false)
     {
-      Log.debug ("Returning : NO actions for " + category);
+      Log.debug("Returning : NO actions for " + category);
       return new ActionPlugin[0];
     }
 
@@ -66,39 +66,65 @@ public class DefaultActionFactory implements ActionFactory
     while (keys.hasNext())
     {
       final String key = (String) keys.next();
+      final String base = key.substring(prefix.length());
+      if (isPluginKey(base) == false)
+      {
+        continue;
+      }
+
       final String clazz = configuration.getConfigProperty(key);
       final Object maybeActionPlugin = ObjectUtilities.loadAndInstantiate
-          (clazz, DefaultActionFactory.class);
-      if (maybeActionPlugin instanceof ActionPlugin)
+          (clazz, DefaultActionFactory.class, ActionPlugin.class);
+      if (maybeActionPlugin == null)
       {
-        ActionPlugin plugin = (ActionPlugin) maybeActionPlugin;
-        plugin.initialize(context);
-        final String role = plugin.getRole();
-        if (role == null)
+        Log.debug("Error : " + category + ": " + clazz + " is no action plugin");
+        continue;
+      }
+
+      ActionPlugin plugin = (ActionPlugin) maybeActionPlugin;
+      plugin.initialize(context);
+      final String role = plugin.getRole();
+      if (role == null)
+      {
+        plugins.put(plugin, plugin);
+      }
+      else
+      {
+        final ActionPlugin otherPlugin = (ActionPlugin) plugins.get(role);
+        if (otherPlugin != null)
         {
-          plugins.put(plugin, plugin);
-        }
-        else
-        {
-          final ActionPlugin otherPlugin = (ActionPlugin) plugins.get(role);
-          if (otherPlugin != null)
-          {
-            if (plugin.getRolePreference() > otherPlugin.getRolePreference())
-            {
-              plugins.put(role, plugin);
-            }
-          }
-          else
+          if (plugin.getRolePreference() > otherPlugin.getRolePreference())
           {
             plugins.put(role, plugin);
           }
+          else
+          {
+            Log.debug("Loaded : " + category + ": " + clazz + ": Overridden by " + otherPlugin.getClass().getName());
+          }
+        }
+        else
+        {
+          plugins.put(role, plugin);
         }
       }
     }
 
-    Log.debug ("Returning : " + plugins.size() + " actions for " + category);
+    Log.debug("Returning : " + plugins.size() + " actions for " + category);
 
     return (ActionPlugin[]) plugins.values().toArray
         (new ActionPlugin[plugins.size()]);
+  }
+
+  private boolean isPluginKey(final String base)
+  {
+    if (base.length() < 1)
+    {
+      return false;
+    }
+    if (base.indexOf('.', 1) > 0)
+    {
+      return false;
+    }
+    return true;
   }
 }

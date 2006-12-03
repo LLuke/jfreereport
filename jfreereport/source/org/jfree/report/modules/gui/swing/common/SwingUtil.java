@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SwingUtil.java,v 1.1 2006/11/24 17:13:26 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,6 +40,7 @@ import java.awt.Component;
  */
 public class SwingUtil
 {
+
   private SwingUtil()
   {
   }

@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportDataFactoryException.java,v 1.1 2006/04/18 11:45:14 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,12 @@
  */
 package org.jfree.report;
 
-import org.jfree.util.StackableException;
-
 /**
  * Creation-Date: 19.02.2006, 17:45:38
  *
  * @author Thomas Morgner
  */
-public class ReportDataFactoryException extends StackableException
+public class ReportDataFactoryException extends ReportException
 {
   /** Creates a StackableRuntimeException with no message and no parent. */
   public ReportDataFactoryException()
