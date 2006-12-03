@@ -1,0 +1,16 @@
+The libraries within this directory are optional libraries.
+
+Whether you need to have these libraries on your classpath depends on the
+feature set you want to use:
+
+libloader-module-cache-ehcache:
+ - ehcache-1.2.4.jar
+ - commons-logging-1.0.4.jar
+ 
+libloader-module-cache-oscache:
+ - oscache-2.3-compat.jar
+ - commons-logging-1.0.4.jar
+ 
+libloader-factory-wmf:
+ - pixie-0.8.6.jar
+ 
