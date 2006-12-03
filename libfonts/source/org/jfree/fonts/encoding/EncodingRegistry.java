@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: EncodingRegistry.java,v 1.3 2006/06/08 18:06:11 taqua Exp $
+ * $Id: EncodingRegistry.java,v 1.4 2006/07/11 13:22:53 taqua Exp $
  *
  * Changes
  * -------
@@ -135,8 +135,8 @@ public final class EncodingRegistry
       final String key = (String) encodings.next();
       final String encodingClass = config.getConfigProperty(key);
       final Object maybeEncoding = ObjectUtilities.loadAndInstantiate
-              (encodingClass, EncodingRegistry.class);
-      if (maybeEncoding instanceof Encoding)
+              (encodingClass, EncodingRegistry.class, Encoding.class);
+      if (maybeEncoding != null)
       {
         // ok, loaded perfectly ..
         final Encoding encoding = (Encoding) maybeEncoding;
@@ -253,7 +253,7 @@ public final class EncodingRegistry
    *
    * @return the contents of the system property "file.encoding".
    */
-  public static String getPlatformDefaultEncoding()
+  public static String getPlattformDefaultEncoding()
   {
     return LibFontBoot.getInstance().getGlobalConfig().getConfigProperty
             ("file.encoding", "Cp1252");
@@ -268,7 +268,7 @@ public final class EncodingRegistry
       // we tested the instantiation during the initialization,
       // so we can be sure that no errors appear here
       return (Encoding) ObjectUtilities.loadAndInstantiate
-              (manual, EncodingRegistry.class);
+              (manual, EncodingRegistry.class, Encoding.class);
     }
 
     ResourceKey generated = (ResourceKey) generatedMapping.get(key);

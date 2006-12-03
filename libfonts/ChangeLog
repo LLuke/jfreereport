@@ -3,6 +3,11 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.2: (03-Dec-2006)
+        * AWT-FontMetrics caching
+        
+        * Encoding API fixes
+
 0.2.1: (26-Sep-2006)
         * Libraries updated to latest releases
 

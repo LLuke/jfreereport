@@ -2,7 +2,7 @@
 * LibFonts - A JFreeReport Utility Library  *
 *********************************************
 
-29 Jun 2006
+03 Dec 2006
 
 1. INTRODUCTION
 ---------------
@@ -13,7 +13,7 @@ and others.
 
 For the latest news and information about JFreeReport, please refer to:
 
-    http://www.jfree.org/jfreereport/
+    http://jfreereport.pentaho.org/libfonts
 
 LibFonts is a library developed to support advanced layouting in JFreeReport.
 This library allows to read TrueType-Font files to extract layouting specific
@@ -49,9 +49,9 @@ information that you think is relevant.
 4. ANT
 ------
 We use an open source build tool called Ant to build JFreeReport.  An
-Ant script (tested using Ant 1.5.4) is included in the distribution:
+Ant script (tested using Ant 1.6) is included in the distribution:
 
-    <jfreereport-directory>/ant/build.xml
+    <libfonts-directory>/ant/build.xml
 
 You can find out more about Ant at:
 
