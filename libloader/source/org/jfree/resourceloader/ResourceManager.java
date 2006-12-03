@@ -3,8 +3,7 @@
  * LibLoader : a free Java resource loading library
  * ================================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libloader/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libloader/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -23,20 +22,11 @@
  * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
  * in the United States and other countries.]
  *
+ *
  * ------------
- * ResourceManager.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ResourceManager.java,v 1.8 2006/11/07 20:09:46 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.resourceloader;
 
@@ -52,8 +42,8 @@ import org.jfree.resourceloader.cache.ResourceDataCacheProvider;
 import org.jfree.resourceloader.cache.ResourceFactoryCache;
 import org.jfree.resourceloader.cache.ResourceFactoryCacheProvider;
 import org.jfree.util.Configuration;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The manager takes care about the loaded resources, performs any caching, if
@@ -69,9 +59,9 @@ public class ResourceManager
   private ResourceFactoryCache factoryCache;
 
   private static final String LOADER_PREFIX =
-          "org.jfree.resourceloader.loader.";
+      "org.jfree.resourceloader.loader.";
   private static final String FACTORY_TYPE_PREFIX =
-          "org.jfree.resourceloader.factory.type.";
+      "org.jfree.resourceloader.factory.type.";
   public static final String DATA_CACHE_PROVIDER_KEY = "org.jfree.resourceloader.cache.DataCacheProvider";
   public static final String FACTORY_CACHE_PROVIDER_KEY = "org.jfree.resourceloader.cache.FactoryCacheProvider";
 
@@ -84,19 +74,19 @@ public class ResourceManager
   }
 
   public synchronized ResourceKey createKey(Object data)
-          throws ResourceKeyCreationException
+      throws ResourceKeyCreationException
   {
     if (data instanceof Map)
     {
       return createKey((Map) data);
     }
     final HashMap map = new HashMap();
-    map.put (AbstractResourceKey.CONTENT_KEY, data);
+    map.put(AbstractResourceKey.CONTENT_KEY, data);
     return createKey(map);
   }
 
   public synchronized ResourceKey createKey(Map data)
-          throws ResourceKeyCreationException
+      throws ResourceKeyCreationException
   {
     if (data == null)
     {
@@ -114,24 +104,24 @@ public class ResourceManager
       return loader.createKey(data);
     }
     throw new ResourceKeyCreationException
-            ("Unable to create key: No loader was able " +
-                    "to handle the given key data: " + data);
+        ("Unable to create key: No loader was able " +
+            "to handle the given key data: " + data);
   }
 
   public ResourceKey deriveKey(ResourceKey parent, Object data)
-          throws ResourceKeyCreationException
+      throws ResourceKeyCreationException
   {
     if (data instanceof Map)
     {
       return deriveKey(parent, (Map) data);
     }
     final HashMap map = new HashMap();
-    map.put (AbstractResourceKey.CONTENT_KEY, data);
+    map.put(AbstractResourceKey.CONTENT_KEY, data);
     return deriveKey(parent, map);
   }
 
   public ResourceKey deriveKey(ResourceKey parent, Map data)
-          throws ResourceKeyCreationException
+      throws ResourceKeyCreationException
   {
     if (data == null)
     {
@@ -156,18 +146,18 @@ public class ResourceManager
       {
         return loader.createKey(data);
       }
-      catch(Exception e)
+      catch (Exception e)
       {
         // OK, did not work out ..
       }
     }
 
     ResourceLoader loader =
-            (ResourceLoader) resourceLoaders.get(parent.getSchema());
+        (ResourceLoader) resourceLoaders.get(parent.getSchema());
     if (loader == null)
     {
       throw new ResourceKeyCreationException
-              ("Unable to create key: No such schema.");
+          ("Unable to create key: No such schema.");
     }
     try
     {
@@ -182,11 +172,11 @@ public class ResourceManager
   public ResourceData load(ResourceKey key) throws ResourceLoadingException
   {
     final ResourceLoader loader = (ResourceLoader)
-            resourceLoaders.get(key.getSchema());
+        resourceLoaders.get(key.getSchema());
     if (loader == null)
     {
       throw new ResourceLoadingException
-              ("Unable to create key: No such schema: " + key.getSchema());
+          ("Unable to create key: No such schema: " + key.getSchema());
     }
     final ResourceDataCacheEntry cached = dataCache.get(key);
     if (cached != null)
@@ -220,24 +210,30 @@ public class ResourceManager
   }
 
   public Resource createDirectly(Object keyValue, Class target)
-          throws ResourceLoadingException,
-          ResourceCreationException,
-          ResourceKeyCreationException
+      throws ResourceLoadingException,
+      ResourceCreationException,
+      ResourceKeyCreationException
   {
     final ResourceKey key = createKey(keyValue);
     return create(key, null, target);
   }
 
   public Resource create(ResourceKey key, ResourceKey context, Class target)
-          throws ResourceLoadingException, ResourceCreationException
+      throws ResourceLoadingException, ResourceCreationException
   {
-    if (target == null) throw new NullPointerException("Target must not be null");
-    if (key == null) throw new NullPointerException("Key must not be null.");
+    if (target == null)
+    {
+      throw new NullPointerException("Target must not be null");
+    }
+    if (key == null)
+    {
+      throw new NullPointerException("Key must not be null.");
+    }
     return create(key, context, new Class[]{target});
   }
 
   public Resource create(ResourceKey key, ResourceKey context)
-          throws ResourceLoadingException, ResourceCreationException
+      throws ResourceLoadingException, ResourceCreationException
   {
     return create(key, context, (Class[]) null);
   }
@@ -245,9 +241,12 @@ public class ResourceManager
   public Resource create(ResourceKey key,
                          ResourceKey context,
                          Class[] target)
-          throws ResourceLoadingException, ResourceCreationException
+      throws ResourceLoadingException, ResourceCreationException
   {
-    if (key == null) throw new NullPointerException("Key must not be null.");
+    if (key == null)
+    {
+      throw new NullPointerException("Key must not be null.");
+    }
     // ok, we have a handle to the data, and the data is current.
     // Lets check whether we also have a cached result.
     final Resource resource = factoryCache.get(key);
@@ -275,7 +274,7 @@ public class ResourceManager
       {
         final Object factorykey = it.next();
         final ResourceFactory fact = (ResourceFactory)
-                resourceFactories.get(factorykey);
+            resourceFactories.get(factorykey);
         try
         {
           Resource res = performCreate(data, fact, context);
@@ -284,54 +283,61 @@ public class ResourceManager
             return res;
           }
         }
-        catch(ResourceCreationException rex)
+        catch (ResourceCreationException rex)
         {
           // ignore it, try the next factory ...
         }
       }
       throw new ResourceCreationException
-              ("No known factory was able to handle the given data.");
+          ("No known factory was able to handle the given data.");
     }
     else
     {
+      ResourceCreationException exception = null;
       final ResourceData data = load(key);
       for (int i = 0; i < target.length; i++)
       {
         Class targetClass = target[i];
         ResourceFactory fact = (ResourceFactory) resourceFactories.get
-                (targetClass.getName());
+            (targetClass.getName());
         if (fact == null)
         {
           throw new ResourceCreationException
-                  ("No factory known for the given target type: " + targetClass);
+              ("No factory known for the given target type: " + targetClass);
         }
 
         try
         {
           return performCreate(data, fact, context);
         }
-        catch(ContentNotRecognizedException ce)
+        catch (ContentNotRecognizedException ce)
         {
           // Ignore it, unless it is the last one.
         }
-        catch(ResourceCreationException rex)
+        catch (ResourceCreationException rex)
         {
           // ignore it, try the next factory ...
+          exception = rex;
           if (Log.isDebugEnabled())
           {
-            Log.debug ("Failed at " + fact.getClass() + ": ",rex);
+            Log.debug("Failed at " + fact.getClass() + ": ", rex);
           }
         }
       }
+
+      if (exception != null)
+      {
+        throw exception;
+      }
       throw new ContentNotRecognizedException
-              ("None of the selected factories was able to handle the given data: " + key);
+          ("None of the selected factories was able to handle the given data: " + key);
     }
   }
 
   private Resource performCreate(final ResourceData data,
                                  final ResourceFactory fact,
                                  final ResourceKey context)
-          throws ResourceLoadingException, ResourceCreationException
+      throws ResourceLoadingException, ResourceCreationException
   {
     final Resource created = fact.create(this, data, context);
     factoryCache.put(created);
@@ -339,7 +345,7 @@ public class ResourceManager
   }
 
   public boolean isResourceUnchanged(final Resource resource)
-          throws ResourceLoadingException
+      throws ResourceLoadingException
   {
     final ResourceKey[] deps = resource.getDependencies();
     for (int i = 0; i < deps.length; i++)
@@ -416,7 +422,7 @@ public class ResourceManager
       final String factoryClass = config.getConfigProperty(key);
 
       final Object maybeFactory = ObjectUtilities.loadAndInstantiate
-              (factoryClass, ResourceManager.class);
+          (factoryClass, ResourceManager.class, ResourceFactory.class);
       if (maybeFactory instanceof ResourceFactory == false)
       {
         continue;
@@ -432,11 +438,14 @@ public class ResourceManager
   {
     final Configuration config = LibLoaderBoot.getInstance().getGlobalConfig();
     final String dataCacheProviderClass =
-            config.getConfigProperty(DATA_CACHE_PROVIDER_KEY);
-    if (dataCacheProviderClass == null) return;
+        config.getConfigProperty(DATA_CACHE_PROVIDER_KEY);
+    if (dataCacheProviderClass == null)
+    {
+      return;
+    }
     final Object maybeDataCacheProvider =
-            ObjectUtilities.loadAndInstantiate
-                    (dataCacheProviderClass, ResourceManager.class);
+        ObjectUtilities.loadAndInstantiate
+            (dataCacheProviderClass, ResourceManager.class, ResourceDataCacheProvider.class);
     if (maybeDataCacheProvider instanceof ResourceDataCacheProvider)
     {
       ResourceDataCacheProvider provider = (ResourceDataCacheProvider) maybeDataCacheProvider;
@@ -448,10 +457,10 @@ public class ResourceManager
           setDataCache(cache);
         }
       }
-      catch(Throwable e)
+      catch (Throwable e)
       {
         // ok, did not work ...
-        Log.warn ("Failed to set data cache: " + e.getLocalizedMessage());
+        Log.warn("Failed to set data cache: " + e.getLocalizedMessage());
       }
     }
   }
@@ -460,11 +469,13 @@ public class ResourceManager
   {
     final Configuration config = LibLoaderBoot.getInstance().getGlobalConfig();
     final String cacheProviderClass = config.getConfigProperty
-            (FACTORY_CACHE_PROVIDER_KEY);
-    if (cacheProviderClass == null) return;
-    final Object maybeCacheProvider =
-            ObjectUtilities.loadAndInstantiate
-                    (cacheProviderClass, ResourceManager.class);
+        (FACTORY_CACHE_PROVIDER_KEY);
+    if (cacheProviderClass == null)
+    {
+      return;
+    }
+    final Object maybeCacheProvider = ObjectUtilities.loadAndInstantiate
+        (cacheProviderClass, ResourceManager.class, ResourceFactoryCacheProvider.class);
 
     if (maybeCacheProvider instanceof ResourceFactoryCacheProvider)
     {
@@ -477,9 +488,9 @@ public class ResourceManager
           setFactoryCache(cache);
         }
       }
-      catch(Throwable e)
+      catch (Throwable e)
       {
-        Log.warn ("Failed to set factory cache: " + e.getLocalizedMessage());
+        Log.warn("Failed to set factory cache: " + e.getLocalizedMessage());
       }
     }
   }
@@ -493,11 +504,11 @@ public class ResourceManager
       final String key = (String) it.next();
       final String value = config.getConfigProperty(key);
       final Object o =
-              ObjectUtilities.loadAndInstantiate(value, ResourceManager.class);
+          ObjectUtilities.loadAndInstantiate(value, ResourceManager.class, ResourceLoader.class);
       if (o instanceof ResourceLoader)
       {
         final ResourceLoader loader = (ResourceLoader) o;
-        Log.debug ("Registering loader for " + loader.getSchema());
+        Log.debug("Registering loader for " + loader.getSchema());
         registerLoader(loader);
       }
     }

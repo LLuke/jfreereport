@@ -26,27 +26,28 @@
  * ------------
  * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corperation.
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.resourceloader;
 
 /**
- * Creation-Date: 27.11.2006, 13:41:34
+ * The ContentNotRecognizedException signals that none of the selected resource
+ * factories was able to handle the request.
  *
  * @author Thomas Morgner
  */
 public class ContentNotRecognizedException extends ResourceCreationException
 {
   /**
-   * Creates a StackableRuntimeException with no message and no parent.
+   * Creates a ContentNotRecognizedException  with no message and no parent.
    */
   public ContentNotRecognizedException()
   {
   }
 
   /**
-   * Creates an exception.
+   * Creates an ContentNotRecognizedException.
    *
    * @param message the exception message.
    * @param ex      the parent exception.
@@ -57,7 +58,7 @@ public class ContentNotRecognizedException extends ResourceCreationException
   }
 
   /**
-   * Creates an exception.
+   * Creates an ContentNotRecognizedException.
    *
    * @param message the exception message.
    */

@@ -3,8 +3,7 @@
  * LibLoader : a free Java resource loading library
  * ================================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libloader/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libloader/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -23,20 +22,11 @@
  * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
  * in the United States and other countries.]
  *
+ *
  * ------------
- * ClassloaderResourceLoader.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ClassloaderResourceLoader.java,v 1.2 2006/04/29 15:07:39 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.resourceloader.loader.resource;
 

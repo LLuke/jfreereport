@@ -3,8 +3,7 @@
  * LibLoader : a free Java resource loading library
  * ================================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libloader/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libloader/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -23,20 +22,11 @@
  * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
  * in the United States and other countries.]
  *
+ *
  * ------------
- * AbstractResourceFactory.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: AbstractResourceFactory.java,v 1.2 2006/05/16 17:13:30 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.resourceloader.factory;
 
@@ -140,7 +130,7 @@ public abstract class AbstractResourceFactory implements ResourceFactory
       final String key = (String) itType.next();
       final String modClass = config.getConfigProperty(key);
       final Object maybeFactory = ObjectUtilities.loadAndInstantiate
-              (modClass, AbstractResourceFactory.class);
+              (modClass, AbstractResourceFactory.class, FactoryModule.class);
       if (maybeFactory instanceof FactoryModule == false)
       {
         continue;

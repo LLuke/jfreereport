@@ -3,8 +3,7 @@
  * LibLoader : a free Java resource loading library
  * ================================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libloader/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libloader/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -23,20 +22,11 @@
  * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
  * in the United States and other countries.]
  *
+ *
  * ------------
- * ClassloaderResourceData.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ClassloaderResourceData.java,v 1.1.1.1 2006/04/17 16:48:31 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.resourceloader.loader.resource;
 
@@ -70,8 +60,13 @@ public class ClassloaderResourceData extends AbstractResourceData
 
   public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
-    return ObjectUtilities.getResourceAsStream
-            (key.getResourcePath(), ClassloaderResourceData.class);
+    final InputStream stream = ObjectUtilities.getResourceAsStream
+        (key.getResourcePath(), ClassloaderResourceData.class);
+    if (stream == null)
+    {
+      throw new ResourceLoadingException("Resource is not available.");
+    }
+    return stream;
   }
 
   public Object getAttribute(String key)
@@ -88,7 +83,7 @@ public class ClassloaderResourceData extends AbstractResourceData
           throws ResourceLoadingException
   {
     // We assume, that the data does never change
-    // This way, we get the benefit of the cache. 
+    // This way, we get the benefit of the cache.
     return 0;
   }
 
