@@ -1,8 +1,8 @@
 ************************
-* LIBLAYOUT 0.1.1      *
+* LIBLAYOUT 0.2.0      *
 ************************
 
-30 Apr 2006
+03 Dec 2006
 
 1. INTRODUCTION
 ---------------
@@ -48,7 +48,7 @@ information that you think is relevant.
 4. ANT
 ------
 We use an open source build tool called Ant to build JFreeReport.  An
-Ant script (tested using Ant 1.5.4) is included in the distribution:
+Ant script (tested using Ant 1.6) is included in the distribution:
 
     <libfonts-directory>/ant/build.xml
 
