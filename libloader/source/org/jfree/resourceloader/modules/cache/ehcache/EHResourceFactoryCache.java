@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: EHResourceFactoryCache.java,v 1.2 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -67,7 +67,8 @@ public class EHResourceFactoryCache implements ResourceFactoryCache
 
     try
     {
-      return (Resource) factoryCache.get(ext);
+      final Element element = factoryCache.get(ext);
+      return (Resource) element.getObjectValue();
     }
     catch (CacheException e)
     {
@@ -111,7 +112,7 @@ public class EHResourceFactoryCache implements ResourceFactoryCache
     {
       factoryCache.removeAll();
     }
-    catch (IOException e)
+    catch (Exception e)
     {
       // ignore ..
     }

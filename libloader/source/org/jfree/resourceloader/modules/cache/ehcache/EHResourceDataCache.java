@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: EHResourceDataCache.java,v 1.4 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -77,7 +77,8 @@ public class EHResourceDataCache implements ResourceDataCache
 
     try
     {
-      return (ResourceDataCacheEntry) dataCache.get(ext);
+      final Element element = dataCache.get(ext);
+      return (ResourceDataCacheEntry) element.getObjectValue();
     }
     catch (CacheException e)
     {
@@ -125,9 +126,9 @@ public class EHResourceDataCache implements ResourceDataCache
     {
       dataCache.removeAll();
     }
-    catch (IOException e)
+    catch(Exception e)
     {
-      // ignore
+      // ignore it ..
     }
   }
 
