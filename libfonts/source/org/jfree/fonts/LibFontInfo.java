@@ -3,8 +3,7 @@
  * LibFonts : a free Java font reading library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libfonts/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libfonts/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * LibFontInfo.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: LibFontInfo.java,v 1.11 2006/07/30 13:20:10 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.fonts;
 
@@ -69,12 +58,12 @@ public class LibFontInfo extends ProjectInfo
   public LibFontInfo()
   {
     setName("LibFonts");
-    setVersion("0.2.1");
+    setVersion("0.2.2");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());
 
-    setInfo("http://www.jfree.org/jfreereport/libfonts/");
+    setInfo("http://jfreereport.pentaho.org/libfonts/");
     setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
     setLicenceText(Licences.getInstance().getLGPL());
 

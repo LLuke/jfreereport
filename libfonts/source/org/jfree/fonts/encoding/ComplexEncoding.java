@@ -3,8 +3,7 @@
  * LibFonts : a free Java font reading library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libfonts/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libfonts/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * ComplexEncoding.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id$
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.fonts.encoding;
 
@@ -51,7 +40,7 @@ public interface ComplexEncoding extends Encoding
 {
   /**
    * Checks, whether this implementation supports encoding of character data.
-   * 
+   *
    * @return
    */
   public boolean isEncodingSupported();

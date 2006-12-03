@@ -3,8 +3,7 @@
  * LibFonts : a free Java font reading library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libfonts/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libfonts/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * ByteBuffer.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ByteBuffer.java,v 1.1 2006/04/29 15:12:55 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.fonts.encoding;
 

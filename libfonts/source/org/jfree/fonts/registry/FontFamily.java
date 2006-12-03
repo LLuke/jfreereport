@@ -3,8 +3,7 @@
  * LibFonts : a free Java font reading library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libfonts/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libfonts/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * FontFamily.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id$
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.fonts.registry;
 
@@ -61,7 +50,7 @@ public interface FontFamily extends Serializable
   /**
    * This selects the most suitable font in that family. Italics fonts are
    * preferred over oblique fonts.
-   * 
+   *
    * @param bold
    * @param italics
    * @return

@@ -3,8 +3,7 @@
  * LibFonts : a free Java font reading library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libfonts/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libfonts/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * FontMetrics.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: FontMetrics.java,v 1.6 2006/06/08 18:06:12 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.fonts.registry;
 
@@ -46,7 +35,7 @@ package org.jfree.fonts.registry;
  *
  * The use of these font metrics is application dependent. As building these
  * metrics usually is memory and CPU intensive, this must be done in an
- * application specific context. You certainly want to cache the font data. 
+ * application specific context. You certainly want to cache the font data.
  *
  * @author Thomas Morgner
  */
@@ -63,7 +52,7 @@ public interface FontMetrics
   /**
    * The height of the lowercase 'x'. This is used as hint, which size the
    * lowercase characters will have.
-   * 
+   *
    * @return
    */
   public double getXHeight();

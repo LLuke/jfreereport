@@ -3,8 +3,7 @@
  * LibFonts : a free Java font reading library
  * ===========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/libfonts/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libfonts/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * AWTFontMetrics.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: AWTFontMetrics.java,v 1.8 2006/11/13 19:19:07 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.fonts.awt;
 
@@ -224,7 +213,7 @@ public class AWTFontMetrics implements FontMetrics
   }
 
   /**
-   * This method is <b>EXPENSIVE</b>. 
+   * This method is <b>EXPENSIVE</b>.
    * @param previous
    * @param character
    * @return
