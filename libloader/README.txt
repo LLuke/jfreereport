@@ -16,7 +16,15 @@ For the latest news and information about LibLoader, please refer to:
     http://jfreereport.pentaho.org/libloader/
 
 
-2. CHANGES
+2. Requirements
+---------------
+LibLoader needs at least JDK 1.2.2 for its core functionality.
+
+The EHCache support requires at least JDK 1.4. This module is therefore not
+included by default. It can be built manually using the supplied ANT-script.
+
+
+3. CHANGES
 ----------
 
 0.2.0:  (03-Dec-2006)
@@ -32,8 +40,8 @@ For the latest news and information about LibLoader, please refer to:
 
 0.1.1:  (30-Apr-2006)
         BugFixes for derived keys, resource factories are fully
-        initialized from the global config. 
-        
+        initialized from the global config.
+
 0.1.0:  (17-Apr-2006)
         Initial version.
-        
+
