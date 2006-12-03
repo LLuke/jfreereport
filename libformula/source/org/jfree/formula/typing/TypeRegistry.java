@@ -1,12 +1,11 @@
 /**
- * ========================================
- * <libname> : a free Java <foobar> library
- * ========================================
+ * =========================================
+ * LibFormula : a free Java formula library
+ * =========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libformula
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +19,14 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * TypeRegistry.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  Thomas Morgner;
- * Contributors: -;
  *
- * $Id: TypeRegistry.java,v 1.1 2006/11/04 15:43:46 taqua Exp $
- *
- * Changes
- * -------------------------
- * 02.11.2006 : Initial version
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.typing;
 

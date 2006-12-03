@@ -1,12 +1,11 @@
 /**
  * =========================================
- * LibLayout : a free Java layouting library
+ * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libformula
  *
- * (C) Copyright 2006, by Pentaho Corperation and Contributors.
+ * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,20 +22,11 @@
  * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
  * in the United States and other countries.]
  *
+ *
  * ------------
- * FunctionRegistry.java
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corperation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: FunctionRegistry.java,v 1.1 2006/11/04 15:44:32 taqua Exp $
- *
- * Changes
- * -------
- *
- *
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function;
 
@@ -54,7 +44,7 @@ public interface FunctionRegistry
   public FunctionCategory[] getCategories();
   public Function[] getFunctions();
   public Function[] getFunctionsByCategory(FunctionCategory category);
-  
+
   public Function createFunction(String name);
   public FunctionDescription getMetaData (String name);
 }

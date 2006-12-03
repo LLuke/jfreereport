@@ -5,7 +5,7 @@
  *
  * Project Info:  http://jfreereport.pentaho.org/libformula
  *
- * (C) Copyright 2006, by Pentaho Corperation and Contributors.
+ * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: ParameterCallback.java,v 1.1 2006/11/13 19:15:49 taqua Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corperation.
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.formula.function;

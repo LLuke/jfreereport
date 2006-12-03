@@ -1,12 +1,11 @@
 /**
  * =========================================
- * LibLayout : a free Java layouting library
+ * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libformula
  *
- * (C) Copyright 2006, by Pentaho Corperation and Contributors.
+ * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,20 +22,11 @@
  * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
  * in the United States and other countries.]
  *
+ *
  * ------------
- * FunctionMetaData.java
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corperation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: FunctionDescription.java,v 1.3 2006/11/04 18:06:09 taqua Exp $
- *
- * Changes
- * -------
- *
- *
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function;
 
@@ -54,7 +44,7 @@ import org.jfree.formula.typing.Type;
  * Functions have a defined set of known parameters and can have a unlimited
  * number of optional parameters. If a function declares at least one parameter
  * and declares that its parameter list is infinite, then the last parameter
- * type is used on all remaining parameters. 
+ * type is used on all remaining parameters.
  *
  * @author Thomas Morgner
  */
@@ -86,7 +76,7 @@ public interface FunctionDescription
    * Returns the default value for an optional parameter. If the value returned
    * here is null, then this either means, that the parameter is mandatory or
    * that the default value is computed by the expression itself.
-   * 
+   *
    * @param position
    * @return
    */
