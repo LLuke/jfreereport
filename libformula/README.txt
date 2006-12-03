@@ -1,20 +1,11 @@
-***********************************************
-* LibFormula - A JFreeReport Utility Library  *
-***********************************************
+***********************
+* LibFormula - 0.1.0  *
+***********************
 
-29 Jun 2006
+03 Dec 2006
 
 1. INTRODUCTION
 ---------------
-JFreeReport is a free Java report library, distributed under the terms
-of the GNU Lesser General Public License (see license-LGPL.txt for
-details).  JFreeReport is developed by Thomas Morgner, David Gilbert
-and others.
-
-For the latest news and information about JFreeReport, please refer to:
-
-    http://jfreereport.pentaho.org/
-
 LibFormula provides Excel-Style-Expressions. The implementation provided
 here is very generic and can be used in any application that needs to
 compute formulas.
@@ -22,6 +13,10 @@ compute formulas.
 The syntax is based on the OpenFormula-specifications, but with carefully
 pruning away all the spreadsheet specific parts (like references to
 cell-ranges).
+
+For the latest news and information about LibFormula, please refer to:
+
+    http://jfreereport.pentaho.org/libformula/
 
 
 2. SUPPORT
