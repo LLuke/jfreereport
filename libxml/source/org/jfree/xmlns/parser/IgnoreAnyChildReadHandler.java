@@ -1,12 +1,11 @@
 /**
  * =========================================
- * LibLayout : a free Java layouting library
+ * LibXML : a free Java layouting library
  * =========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libxml/
  *
- * (C) Copyright 2006, by Pentaho Corperation and Contributors.
+ * (C) Copyright 2006, by Object Refinery Ltd, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,20 +22,11 @@
  * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
  * in the United States and other countries.]
  *
+ *
  * ------------
- * IgnoreAnyChildReadHandler.java
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corperation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: IgnoreAnyChildReadHandler.java,v 1.1 2006/07/11 13:21:18 taqua Exp $
- *
- * Changes
- * -------
- *
- *
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.xmlns.parser;
 

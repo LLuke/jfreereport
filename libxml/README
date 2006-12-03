@@ -1,8 +1,8 @@
 ************************
-* LibXML 0.1.1         *
+* LibXML 0.2.0         *
 ************************
 
-29 Juni 2006
+03 December 2006
 
 1. INTRODUCTION
 ---------------
@@ -10,7 +10,7 @@
 LibXML is a namespace aware SAX-Parser utility library. It eases the
 pain of implementing non-trivial SAX input handlers. The original
 code of these classes had been written by Peter Becker for the
-JCommon library. 
+JCommon library.
 
 LibXML replaces the JCommon classes, which were not namespace aware.
 Due to JCommons frozen API, namespace awareness could not be added to
@@ -18,6 +18,6 @@ the original code without creating a mess.
 
 For the latest news and information about libXML, please refer to:
 
-    http://www.jfree.org/jfreereport/libxml/
+    http://jfreereport.pentaho.org/libxml/
 
 

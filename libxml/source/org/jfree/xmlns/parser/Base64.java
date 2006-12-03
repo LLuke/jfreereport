@@ -1,12 +1,11 @@
 /**
- * ========================================
- * JFreeReport : a free Java report library
- * ========================================
+ * =========================================
+ * LibXML : a free Java layouting library
+ * =========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libxml/
  *
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * (C) Copyright 2006, by Object Refinery Ltd, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,189 +22,194 @@
  * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
  * in the United States and other countries.]
  *
+ *
  * ------------
- * Base64.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: Base64.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.xmlns.parser;
 
 /**
- * Provides encoding of raw bytes to base64-encoded characters, and
- * decoding of base64 characters to raw bytes.
- * date: 06 August 1998
- * modified: 14 February 2000
- * modified: 22 September 2000
+ * Provides encoding of raw bytes to base64-encoded characters, and decoding of
+ * base64 characters to raw bytes. date: 06 August 1998 modified: 14 February
+ * 2000 modified: 22 September 2000
  *
  * @author Kevin Kelley (kelley@ruralnet.net)
  * @version 1.3
  */
-public class Base64 {
+public class Base64
+{
 
-  private Base64 ()
+  private Base64()
   {
   }
 
-    /**
-     * returns an array of base64-encoded characters to represent the
-     * passed data array.
-     *
-     * @param data the array of bytes to encode
-     * @return base64-coded character array.
-     */
-    public static char[] encode(final byte[] data) {
-        final char[] out = new char[((data.length + 2) / 3) * 4];
+  /**
+   * returns an array of base64-encoded characters to represent the passed
+   * data array.
+   *
+   * @param data the array of bytes to encode
+   * @return base64-coded character array.
+   */
+  public static char[] encode(final byte[] data)
+  {
+    final char[] out = new char[((data.length + 2) / 3) * 4];
 
-        //
-        // 3 bytes encode to 4 chars.  Output is always an even
-        // multiple of 4 characters.
-        //
-        for (int i = 0, index = 0; i < data.length; i += 3, index += 4) {
-            boolean quad = false;
-            boolean trip = false;
+    //
+    // 3 bytes encode to 4 chars.  Output is always an even
+    // multiple of 4 characters.
+    //
+    for (int i = 0, index = 0; i < data.length; i += 3, index += 4)
+    {
+      boolean quad = false;
+      boolean trip = false;
 
-            int val = (0xFF & data[i]);
-            val <<= 8;
-            if ((i + 1) < data.length) {
-                val |= (0xFF & data[i + 1]);
-                trip = true;
-            }
-            val <<= 8;
-            if ((i + 2) < data.length) {
-                val |= (0xFF & data[i + 2]);
-                quad = true;
-            }
-            out[index + 3] = org.jfree.xmlns.parser.Base64.alphabet[(quad ? (val & 0x3F) : 64)];
-            val >>= 6;
-            out[index + 2] = org.jfree.xmlns.parser.Base64.alphabet[(trip ? (val & 0x3F) : 64)];
-            val >>= 6;
-            out[index + 1] = org.jfree.xmlns.parser.Base64.alphabet[val & 0x3F];
-            val >>= 6;
-            out[index + 0] = org.jfree.xmlns.parser.Base64.alphabet[val & 0x3F];
-        }
-        return out;
+      int val = (0xFF & data[i]);
+      val <<= 8;
+      if ((i + 1) < data.length)
+      {
+        val |= (0xFF & data[i + 1]);
+        trip = true;
+      }
+      val <<= 8;
+      if ((i + 2) < data.length)
+      {
+        val |= (0xFF & data[i + 2]);
+        quad = true;
+      }
+      out[index + 3] = Base64.ALPHABET[(quad ? (val & 0x3F) : 64)];
+      val >>= 6;
+      out[index + 2] = Base64.ALPHABET[(trip ? (val & 0x3F) : 64)];
+      val >>= 6;
+      out[index + 1] = Base64.ALPHABET[val & 0x3F];
+      val >>= 6;
+      out[index + 0] = Base64.ALPHABET[val & 0x3F];
+    }
+    return out;
+  }
+
+  /**
+   * Decodes a BASE-64 encoded stream to recover the original data. White
+   * space before and after will be trimmed away, but no other manipulation of
+   * the input will be performed.
+   * <p/>
+   * As of version 1.2 this method will properly handle input containing junk
+   * characters (newlines and the like) rather than throwing an error. It does
+   * this by pre-parsing the input and generating from that a count of VALID
+   * input characters.
+   *
+   * @param data the character data.
+   * @return The decoded data.
+   */
+  public static byte[] decode(final char[] data)
+  {
+    // as our input could contain non-BASE64 data (newlines,
+    // whitespace of any sort, whatever) we must first adjust
+    // our count of USABLE data so that...
+    // (a) we don't misallocate the output array, and
+    // (b) think that we miscalculated our data length
+    //     just because of extraneous throw-away junk
+
+    int tempLen = data.length;
+    for (int ix = 0; ix < data.length; ix++)
+    {
+      if ((data[ix] > 255) || Base64.CODES[data[ix]] < 0)
+      {
+        --tempLen; // ignore non-valid chars and padding
+      }
+    }
+    // calculate required length:
+    //  -- 3 bytes for every 4 valid base64 chars
+    //  -- plus 2 bytes if there are 3 extra base64 chars,
+    //     or plus 1 byte if there are 2 extra.
+
+    int len = (tempLen / 4) * 3;
+    if ((tempLen % 4) == 3)
+    {
+      len += 2;
+    }
+    if ((tempLen % 4) == 2)
+    {
+      len += 1;
     }
 
-    /**
-     * Decodes a BASE-64 encoded stream to recover the original
-     * data. White space before and after will be trimmed away,
-     * but no other manipulation of the input will be performed.
-     *
-     * As of version 1.2 this method will properly handle input
-     * containing junk characters (newlines and the like) rather
-     * than throwing an error. It does this by pre-parsing the
-     * input and generating from that a count of VALID input
-     * characters.
-     *
-     * @param data  the character data.
-     *
-     * @return The decoded data.
-     */
-    public static byte[] decode(final char[] data) {
-        // as our input could contain non-BASE64 data (newlines,
-        // whitespace of any sort, whatever) we must first adjust
-        // our count of USABLE data so that...
-        // (a) we don't misallocate the output array, and
-        // (b) think that we miscalculated our data length
-        //     just because of extraneous throw-away junk
+    final byte[] out = new byte[len];
 
-        int tempLen = data.length;
-        for (int ix = 0; ix < data.length; ix++) {
-            if ((data[ix] > 255) || org.jfree.xmlns.parser.Base64.codes[data[ix]] < 0) {
-                --tempLen; // ignore non-valid chars and padding
-            }
+
+    int shift = 0; // # of excess bits stored in accum
+    int accum = 0; // excess bits
+    int index = 0;
+
+    // we now go through the entire array (NOT using the 'tempLen' value)
+    for (int ix = 0; ix < data.length; ix++)
+    {
+      final int value = (data[ix] > 255) ? -1 : Base64.CODES[data[ix]];
+
+      if (value >= 0)
+      { // skip over non-code
+        accum <<= 6; // bits shift up by 6 each time thru
+        shift += 6; // loop, with new bits being put in
+        accum |= value; // at the bottom.
+        if (shift >= 8)
+        { // whenever there are 8 or more shifted in,
+          shift -= 8; // write them out (from the top, leaving any
+          out[index] = // excess at the bottom for next iteration.
+              (byte) ((accum >> shift) & 0xff);
+          index += 1;
         }
-        // calculate required length:
-        //  -- 3 bytes for every 4 valid base64 chars
-        //  -- plus 2 bytes if there are 3 extra base64 chars,
-        //     or plus 1 byte if there are 2 extra.
-
-        int len = (tempLen / 4) * 3;
-        if ((tempLen % 4) == 3) {
-            len += 2;
-        }
-        if ((tempLen % 4) == 2) {
-            len += 1;
-        }
-
-        final byte[] out = new byte[len];
-
-
-        int shift = 0; // # of excess bits stored in accum
-        int accum = 0; // excess bits
-        int index = 0;
-
-        // we now go through the entire array (NOT using the 'tempLen' value)
-        for (int ix = 0; ix < data.length; ix++) {
-            final int value = (data[ix] > 255) ? -1 : org.jfree.xmlns.parser.Base64.codes[data[ix]];
-
-            if (value >= 0) { // skip over non-code
-                accum <<= 6; // bits shift up by 6 each time thru
-                shift += 6; // loop, with new bits being put in
-                accum |= value; // at the bottom.
-                if (shift >= 8) { // whenever there are 8 or more shifted in,
-                    shift -= 8; // write them out (from the top, leaving any
-                    out[index] = // excess at the bottom for next iteration.
-                        (byte) ((accum >> shift) & 0xff);
-                  index+=1;
-                }
-            }
-            // we will also have skipped processing a padding null byte ('=') here;
-            // these are used ONLY for padding to an even length and do not legally
-            // occur as encoded data. for this reason we can ignore the fact that
-            // no index++ operation occurs in that special case: the out[] array is
-            // initialized to all-zero bytes to start with and that works to our
-            // advantage in this combination.
-        }
-
-        // if there is STILL something wrong we just have to throw up now!
-        if (index != out.length) {
-            throw new Error("Miscalculated data length (wrote "
-                + index + " instead of " + out.length + ")");
-        }
-
-        return out;
+      }
+      // we will also have skipped processing a padding null byte ('=') here;
+      // these are used ONLY for padding to an even length and do not legally
+      // occur as encoded data. for this reason we can ignore the fact that
+      // no index++ operation occurs in that special case: the out[] array is
+      // initialized to all-zero bytes to start with and that works to our
+      // advantage in this combination.
     }
 
-
-    //
-    // code characters for values 0..63
-    //
-    private static char[] alphabet =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".toCharArray();
-
-    //
-    // lookup table for converting base64 characters to value in range 0..63
-    //
-    private static byte[] codes = new byte[256];
-
-    static {
-        for (int i = 0; i < 256; i++) {
-            org.jfree.xmlns.parser.Base64.codes[i] = -1;
-        }
-        for (int i = 'A'; i <= 'Z'; i++) {
-            org.jfree.xmlns.parser.Base64.codes[i] = (byte) (i - 'A');
-        }
-        for (int i = 'a'; i <= 'z'; i++) {
-            org.jfree.xmlns.parser.Base64.codes[i] = (byte) (26 + i - 'a');
-        }
-        for (int i = '0'; i <= '9'; i++) {
-            org.jfree.xmlns.parser.Base64.codes[i] = (byte) (52 + i - '0');
-        }
-        org.jfree.xmlns.parser.Base64.codes['+'] = 62;
-        org.jfree.xmlns.parser.Base64.codes['/'] = 63;
+    // if there is STILL something wrong we just have to throw up now!
+    if (index != out.length)
+    {
+      throw new Error("Miscalculated data length (wrote "
+          + index + " instead of " + out.length + ")");
     }
 
+    return out;
+  }
+
+
+  //
+  // code characters for values 0..63
+  //
+  private static char[] ALPHABET =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".toCharArray();
+
+  //
+  // lookup table for converting base64 characters to value in range 0..63
+  //
+  private static byte[] CODES = new byte[256];
+
+  static
+  {
+    for (int i = 0; i < 256; i++)
+    {
+      Base64.CODES[i] = -1;
+    }
+    for (int i = 'A'; i <= 'Z'; i++)
+    {
+      Base64.CODES[i] = (byte) (i - 'A');
+    }
+    for (int i = 'a'; i <= 'z'; i++)
+    {
+      Base64.CODES[i] = (byte) (26 + i - 'a');
+    }
+    for (int i = '0'; i <= '9'; i++)
+    {
+      Base64.CODES[i] = (byte) (52 + i - '0');
+    }
+    Base64.CODES['+'] = 62;
+    Base64.CODES['/'] = 63;
+  }
 
 //
 //

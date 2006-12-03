@@ -1,3 +1,34 @@
+/**
+ * =========================================
+ * LibXML : a free Java layouting library
+ * =========================================
+ *
+ * Project Info:  http://jfreereport.pentaho.org/libxml/
+ *
+ * (C) Copyright 2006, by Object Refinery Ltd, Pentaho Corporation and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ *
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ */
+
 package org.jfree.xmlns.writer;
 
 import java.io.IOException;
@@ -490,11 +521,25 @@ public class XmlWriterSupport
         }
         case '\n':
         {
-          str.append("&#000a");
+          if (transformNewLine)
+          {
+            str.append("&#000a");
+          }
+          else
+          {
+            str.append('\n');
+          }
         }
         case '\r':
         {
-          str.append("&#000d");
+          if (transformNewLine)
+          {
+            str.append("&#000d");
+          }
+          else
+          {
+            str.append('\r');
+          }
         }
         default :
         {
@@ -535,7 +580,7 @@ public class XmlWriterSupport
     }
   }
 
-    /**
+  /**
    * Indent the line. Called for proper indenting in various places.
    *
    * @param writer the writer which should receive the indentention.

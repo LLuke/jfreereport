@@ -1,3 +1,34 @@
+/**
+ * =========================================
+ * LibXML : a free Java layouting library
+ * =========================================
+ *
+ * Project Info:  http://jfreereport.pentaho.org/libxml/
+ *
+ * (C) Copyright 2006, by Object Refinery Ltd, Pentaho Corporation and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
+ *
+ *
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
+ */
+
 package org.jfree.xmlns.writer;
 
 import java.util.HashMap;
@@ -12,13 +43,13 @@ public class DefaultTagDescription implements TagDescription
     private String namespace;
     private String tagName;
 
-    public TagDefinitionKey (String namespace, String tagName)
+    public TagDefinitionKey(String namespace, String tagName)
     {
       this.namespace = namespace;
       this.tagName = tagName;
     }
 
-    public boolean equals (Object o)
+    public boolean equals(Object o)
     {
       if (this == o)
       {
@@ -43,12 +74,21 @@ public class DefaultTagDescription implements TagDescription
       return true;
     }
 
-    public int hashCode ()
+    public int hashCode()
     {
       int result;
       result = (namespace != null ? namespace.hashCode() : 0);
       result = 29 * result + (tagName != null ? tagName.hashCode() : 0);
       return result;
+    }
+
+
+    public String toString()
+    {
+      return "TagDefinitionKey{" +
+          "namespace='" + namespace + '\'' +
+          ", tagName='" + tagName + '\'' +
+          '}';
     }
   }
 
@@ -56,13 +96,13 @@ public class DefaultTagDescription implements TagDescription
   private HashMap tagData;
   private String defaultNamespace;
 
-  public DefaultTagDescription ()
+  public DefaultTagDescription()
   {
     defaultDefinitions = new HashMap();
     tagData = new HashMap();
   }
 
-  public void configure (Configuration conf, String prefix)
+  public void configure(Configuration conf, String prefix)
   {
     final HashMap knownNamespaces = new HashMap();
 
@@ -77,7 +117,7 @@ public class DefaultTagDescription implements TagDescription
     }
 
     defaultNamespace = (String) knownNamespaces.get
-            (conf.getConfigProperty(prefix + "namespace"));
+        (conf.getConfigProperty(prefix + "namespace"));
 
     final String globalDefaultKey = prefix + "default";
     final boolean globalValue = "deny".equals(conf.getConfigProperty(globalDefaultKey));
@@ -128,7 +168,7 @@ public class DefaultTagDescription implements TagDescription
   }
 
 
-  public boolean hasCData (String namespace, String tagname)
+  public boolean hasCData(String namespace, String tagname)
   {
     if (namespace == null)
     {
@@ -142,6 +182,12 @@ public class DefaultTagDescription implements TagDescription
       return Boolean.TRUE.equals(tagVal);
     }
 
-    return Boolean.TRUE.equals(defaultDefinitions.get(namespace));
+    final Object obj = defaultDefinitions.get(namespace);
+    if (obj != null)
+    {
+      return Boolean.TRUE.equals(obj);
+    }
+
+    return Boolean.TRUE.equals(defaultDefinitions.get(null));
   }
 }

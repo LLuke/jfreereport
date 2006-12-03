@@ -3,5 +3,14 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.0: (03-Dec-2006)
+    * Added the XMLWriterSupport and better tag managment.
 
+    * Each LibXml parser has now access the LibLoader-ResourceKey that was
+      used to load the Xml-Document.
+
+0.1.1: (30-Jul-2006)
+    * More changes to the parser.
+
+0.1.0: (29-Jun-2006)
     * Initial release of LibXML

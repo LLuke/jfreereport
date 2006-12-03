@@ -1,12 +1,11 @@
 /**
- * ========================================
- * JFreeReport : a free Java report library
- * ========================================
+ * =========================================
+ * LibXML : a free Java layouting library
+ * =========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/libxml/
  *
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * (C) Copyright 2006, by Object Refinery Ltd, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,20 +22,11 @@
  * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
  * in the United States and other countries.]
  *
+ *
  * ------------
- * AbstractXmlReadHandler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: AbstractXmlReadHandler.java,v 1.1.1.1 2006/05/15 12:28:31 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.xmlns.parser;
 
@@ -45,22 +35,35 @@ import org.jfree.util.ObjectUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-/** A base class for implementing an {@link org.jfree.xml.parser.XmlReadHandler}. */
+/**
+ * A base class for implementing an {@link org.jfree.xml.parser.XmlReadHandler}.
+ * This class takes care of all the delegation management.
+ */
 public abstract class AbstractXmlReadHandler implements XmlReadHandler
 {
-  /** The root handler. */
+  /**
+   * The root handler.
+   */
   private RootXmlReadHandler rootHandler;
 
-  /** The tag name. */
+  /**
+   * The tag name.
+   */
   private String tagName;
 
-  /** THe namespace URI */
+  /**
+   * THe namespace URI
+   */
   private String uri;
 
-  /** A flag indicating the first call. */
+  /**
+   * A flag indicating the first call.
+   */
   private boolean firstCall = true;
 
-  /** Creates a new handler. */
+  /**
+   * Creates a new handler.
+   */
   public AbstractXmlReadHandler()
   {
   }
@@ -93,19 +96,19 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
    *
    * @param tagName the tag name.
    * @param attrs   the attributes.
-   * @throws SAXException       if there is a parsing error.
+   * @throws SAXException if there is a parsing error.
    */
   public final void startElement(final String uri,
                                  final String tagName,
                                  final Attributes attrs)
-          throws SAXException
+      throws SAXException
   {
     if (this.firstCall)
     {
       if (!this.tagName.equals(tagName) || !this.uri.equals(uri))
       {
         throw new SAXException(
-                "Expected <" + this.tagName + ">, found <" + tagName + ">");
+            "Expected <" + this.tagName + ">, found <" + tagName + ">");
       }
       this.firstCall = false;
       startParsing(attrs);
@@ -117,7 +120,7 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
       {
         Log.warn("Unknown tag <" + uri + ":" + tagName + ">: Start to ignore this element and all of its childs.");
         IgnoreAnyChildReadHandler ignoreAnyChildReadHandler =
-                new IgnoreAnyChildReadHandler();
+            new IgnoreAnyChildReadHandler();
         ignoreAnyChildReadHandler.init(getRootHandler(), uri, tagName);
         this.rootHandler.recurse(ignoreAnyChildReadHandler, uri, tagName, attrs);
       }
@@ -130,8 +133,7 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
   }
 
   /**
-   * This method is called to process the character data between element
-   * tags.
+   * This method is called to process the character data between element tags.
    *
    * @param ch     the character buffer.
    * @param start  the start index.
@@ -139,7 +141,7 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
    * @throws SAXException if there is a parsing error.
    */
   public void characters(final char[] ch, final int start, final int length)
-          throws SAXException
+      throws SAXException
   {
     // nothing required
   }
@@ -174,30 +176,30 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
   /**
    * Done parsing.
    *
-   * @throws SAXException       if there is a parsing error.
+   * @throws SAXException if there is a parsing error.
    */
   protected void doneParsing() throws SAXException
   {
     // nothing required
   }
 
-  protected boolean isSameNamespace (String url)
+  protected boolean isSameNamespace(String url)
   {
     return ObjectUtilities.equal(url, getUri());
   }
-  
+
   /**
    * Returns the handler for a child element.
    *
    * @param tagName the tag name.
    * @param atts    the attributes.
    * @return the handler or null, if the tagname is invalid.
-   * @throws SAXException       if there is a parsing error.
+   * @throws SAXException if there is a parsing error.
    */
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
                                               final Attributes atts)
-          throws SAXException
+      throws SAXException
   {
     return null;
   }
