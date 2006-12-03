@@ -57,16 +57,7 @@ Ant is licensed under the terms of the Apache Software License (a
 popular open source software license).
 
 
-5. Generated Encodings
-----------------------
-
-LibFonts uses generated encoding sets to provide replacements for missing
-encodings in the non-internationalized JDKs. These encodings have been generated
-from files available at 'http://www.unicode.org/'; copies of these files can
-be found in the public CVS at sourceforge as well.
-
-
-6. OTHER FEEDBACK
+5. OTHER FEEDBACK
 -----------------
 For other feedback and comments, please post a message on the
 JFreeReport forum. The Forum is available at
