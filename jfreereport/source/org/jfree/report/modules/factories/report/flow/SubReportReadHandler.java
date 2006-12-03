@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,27 +23,17 @@
  * in the United States and other countries.]
  *
  * ------------
- * SubReportReadHandler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: SubReportReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.modules.factories.report.flow;
 
 import java.util.ArrayList;
 
-import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.SubReport;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -86,7 +75,7 @@ public class SubReportReadHandler extends SectionReadHandler
     final String source = attrs.getValue(getUri(), "href");
     if (source != null)
     {
-      
+
     }
 
   }

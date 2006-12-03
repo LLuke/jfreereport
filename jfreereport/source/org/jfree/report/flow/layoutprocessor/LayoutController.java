@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * LayoutControler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: LayoutController.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.flow.layoutprocessor;
 
@@ -58,7 +47,7 @@ public interface LayoutController
   /**
    * Retrieves the parent of this layout controller. This allows childs
    * to query their context.
-   * 
+   *
    * @return
    */
   public LayoutController getParent();

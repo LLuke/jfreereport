@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,30 +23,19 @@
  * in the United States and other countries.]
  *
  * ------------
- * GroupByExpression.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: GroupByExpression.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.expressions.sys;
 
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import org.jfree.report.expressions.AbstractExpression;
-import org.jfree.report.DataSourceException;
-import org.jfree.report.DataRow;
 import org.jfree.report.DataFlags;
-import org.jfree.util.Log;
+import org.jfree.report.DataRow;
+import org.jfree.report.DataSourceException;
+import org.jfree.report.expressions.AbstractExpression;
 
 /**
  * Creation-Date: 08.10.2006, 16:28:37
@@ -85,7 +73,7 @@ public class GroupByExpression extends AbstractExpression
       }
       if (df.isChanged())
       {
-        //Log.debug ("Field: " + df.getName() + " has changed to " + df.getValue()); 
+        //Log.debug ("Field: " + df.getName() + " has changed to " + df.getValue());
         return Boolean.FALSE;
       }
     }

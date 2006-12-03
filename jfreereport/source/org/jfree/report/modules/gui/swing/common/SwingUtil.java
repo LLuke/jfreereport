@@ -23,15 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SwingUtil.java,v 1.1 2006/11/24 17:13:26 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.modules.gui.swing.common;
 
-import java.awt.Window;
 import java.awt.Component;
+import java.awt.Window;
 
 /**
  * Creation-Date: 20.11.2006, 22:42:21

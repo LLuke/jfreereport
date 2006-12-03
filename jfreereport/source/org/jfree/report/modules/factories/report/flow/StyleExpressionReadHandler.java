@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,24 +23,12 @@
  * in the United States and other countries.]
  *
  * ------------
- * StyleExpressionReadHandler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: StyleExpressionReadHandler.java,v 1.3 2006/11/20 21:07:48 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.modules.factories.report.flow;
 
-import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -80,5 +67,5 @@ public class StyleExpressionReadHandler extends AbstractExpressionReadHandler
   {
     return styleKey;
   }
-  
+
 }

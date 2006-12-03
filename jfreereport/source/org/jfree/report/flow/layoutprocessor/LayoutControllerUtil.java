@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.2 2006/11/25 17:11:34 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -80,7 +80,7 @@ public class LayoutControllerUtil
 
     final GlobalMasterRow masterRow = fc.getMasterRow();
     ler.setDataRow(masterRow.getGlobalView());
-    
+
     final ReportDataRow reportDataRow = masterRow.getReportDataRow();
     if (reportDataRow == null)
     {

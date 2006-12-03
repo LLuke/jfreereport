@@ -3,10 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * FormValidator.java
+ * $Id$
  * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: FormValidator.java,v 1.2 2005/03/03 23:00:00 taqua Exp $
- *
- * Changes
- * -------
- *
- *
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.modules.gui.swing.common;
 

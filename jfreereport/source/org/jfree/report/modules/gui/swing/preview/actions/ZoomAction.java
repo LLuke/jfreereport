@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ZoomAction.java,v 1.1 2006/11/20 21:17:03 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,10 +35,10 @@ import java.text.NumberFormat;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-import org.jfree.ui.action.ActionDowngrade;
-import org.jfree.report.util.ImageUtils;
-import org.jfree.report.modules.gui.swing.preview.PreviewPane;
 import org.jfree.report.modules.gui.swing.common.SwingCommonModule;
+import org.jfree.report.modules.gui.swing.preview.PreviewPane;
+import org.jfree.report.util.ImageUtils;
+import org.jfree.ui.action.ActionDowngrade;
 
 /**
  * Creation-Date: 16.11.2006, 18:51:18

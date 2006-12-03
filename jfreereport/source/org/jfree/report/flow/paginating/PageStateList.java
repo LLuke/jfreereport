@@ -32,11 +32,11 @@ package org.jfree.report.flow.paginating;
 
 import java.util.ArrayList;
 
-import org.jfree.report.util.WeakReferenceList;
-import org.jfree.report.ReportProcessingException;
-import org.jfree.report.ReportDataFactoryException;
-import org.jfree.report.DataSourceException;
 import org.jfree.layouting.StateException;
+import org.jfree.report.DataSourceException;
+import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
+import org.jfree.report.util.WeakReferenceList;
 
 
 /**

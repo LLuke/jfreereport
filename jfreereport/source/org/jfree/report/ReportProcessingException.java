@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -20,23 +19,13 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------------
- * ReportProcessingException.java
- * ------------------------------
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
- *
- * $Id: ReportProcessingException.java,v 1.5 2006/04/18 11:28:39 taqua Exp $
- *
- * Changes
- * -------
- * 18-Apr-2002 : Created the Exception to better support errorhandling. The exception
- *               is thrown if the report does not proceed while paginating. This is
- *               used to detect infinite loops on buggy report definitions.
- * 06-Dec-2002 : Updated Javadocs (DG);
- *
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report;

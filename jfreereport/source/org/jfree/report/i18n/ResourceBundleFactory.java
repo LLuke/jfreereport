@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,20 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * ResourceBundleFactory.java
+ * $Id$
  * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ResourceBundleFactory.java,v 1.5 2006/01/24 18:58:29 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.i18n;
 

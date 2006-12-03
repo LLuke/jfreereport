@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -20,31 +19,13 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------
- * CSVTableModelProducer.java
- * ------------------------
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  Mimil;
- *
- * $Id: CSVTableModelProducer.java,v 1.2 2005/02/23 21:05:25 taqua Exp $
- *
- * $Log: CSVTableModelProducer.java,v $
- * Revision 1.2  2005/02/23 21:05:25  taqua
- * More build process fixes - ready for JDK 1.2.2 now
- *
- * Revision 1.1  2005/02/19 18:37:57  taqua
- * CSVTableModel classes moved into modules/misc/tablemodel
- *
- * Revision 1.3  2005/01/31 17:16:19  taqua
- * Module and JUnit updates for 0.8.5
- *
- * Revision 1.2  2004/08/07 17:45:47  mimil
- * Some JavaDocs
- *
- * Revision 1.1  2004/08/07 14:35:14  mimil
- * Initial version
- *
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.modules.misc.tablemodel;

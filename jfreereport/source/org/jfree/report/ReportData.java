@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * ReportData.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ReportData.java,v 1.1 2006/04/18 11:45:14 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report;
 
@@ -74,7 +63,7 @@ public interface ReportData extends DataSet
    * processing run. Whether this closes the underlying data-source backend
    * depends on the ReportDataFactory. Calling 'close()' on the ReportDataFactory
    * *must* close all report data objects.
-   *  
+   *
    * @throws DataSourceException
    */
   public void close() throws DataSourceException;

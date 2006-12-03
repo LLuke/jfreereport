@@ -1,12 +1,11 @@
 /**
  * ========================================
- * <libname> : a free Java <foobar> library
+ * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/liblayout/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
- * (C) Copyright 2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,27 +19,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------
- * ExpressionRuntime.java
- * ---------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  Thomas Morgner;
- * Contributors: -;
- *
- * $Id: ExpressionRuntime.java,v 1.2 2006/11/20 21:07:48 taqua Exp $
- *
- * Changes
- * -------------------------
- * 24.01.2006 : Initial version
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.expressions;
 
-import org.jfree.layouting.output.OutputProcessorMetaData;
-import org.jfree.report.ReportData;
 import org.jfree.report.DataRow;
+import org.jfree.report.ReportData;
 import org.jfree.report.flow.ReportContext;
-import org.jfree.report.structure.Element;
 import org.jfree.report.i18n.ResourceBundleFactory;
+import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
 
 /**
@@ -52,7 +45,7 @@ public interface ExpressionRuntime
 {
   /**
    * Returns the datarow.
-   * 
+   *
    * @return
    */
   public DataRow getDataRow();
@@ -72,7 +65,7 @@ public interface ExpressionRuntime
    */
   public ReportData getData();
   public int getCurrentRow();
-  
+
   public Element getDeclaringParent();
   public ReportContext getReportContext();
   public String getExportDescriptor();

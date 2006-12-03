@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * TypedPropertyReadHandler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: TypedPropertyReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.modules.factories.report.flow;
 
@@ -45,15 +34,15 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import org.jfree.xmlns.parser.Base64;
-import org.jfree.xmlns.parser.ParseException;
-import org.jfree.xmlns.parser.PropertyReadHandler;
-import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.beans.BeanException;
 import org.jfree.report.util.beans.BeanUtility;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xmlns.parser.Base64;
+import org.jfree.xmlns.parser.ParseException;
+import org.jfree.xmlns.parser.PropertyReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

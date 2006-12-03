@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PreviewPane.java,v 1.3 2006/11/24 17:12:13 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,7 +60,6 @@ import org.jfree.report.modules.gui.common.IconTheme;
 import org.jfree.report.modules.gui.swing.common.ActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingGuiContext;
 import org.jfree.report.modules.gui.swing.common.SwingUtil;
-import org.jfree.report.modules.gui.swing.common.JStatusBar;
 import org.jfree.report.modules.gui.swing.printing.PrintReportProcessor;
 import org.jfree.report.util.Worker;
 import org.jfree.ui.Drawable;

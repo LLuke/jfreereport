@@ -30,8 +30,8 @@
 
 package org.jfree.report.modules.gui.swing.common.localization;
 
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Locale;
 import javax.swing.JComponent;
 

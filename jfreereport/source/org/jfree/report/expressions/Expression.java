@@ -3,10 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,18 +19,13 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------
- * Expression.java
- * ---------------
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * $Id: Expression.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
- *
- * ChangeLog
  * ------------
- * 26-Jul-2002 : Initial version
- * 28-Aug-2002 : Documentation
- * 12-Dec-2002 : Fixed issues reported by Checkstyle (DG);
- *
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.expressions;
@@ -40,7 +34,7 @@ import org.jfree.report.DataSourceException;
 
 /**
  * An expression is a lightweight computation that does not maintain a state.
- * 
+ *
  * Expressions are used to calculate values within a single row of a report.
  * Expressions can use a dataRow to access other fields, expressions or
  * functions within the current row in the report.

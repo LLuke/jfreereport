@@ -23,14 +23,13 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrintActionPlugin.java,v 1.1 2006/11/20 21:17:55 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.modules.gui.swing.printing;
 
-import java.awt.print.PrinterException;
 import java.util.Locale;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
@@ -39,8 +38,6 @@ import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.swing.common.AbstractActionPlugin;
 import org.jfree.report.modules.gui.swing.common.ExportActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingGuiContext;
-import org.jfree.report.modules.gui.swing.pdf.PdfExportTask;
-import org.jfree.report.ReportConfigurationException;
 import org.jfree.util.ResourceBundleSupport;
 
 /**

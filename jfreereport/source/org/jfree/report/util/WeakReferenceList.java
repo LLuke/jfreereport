@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -20,22 +19,13 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------
- * WeakReferenceList.java
- * ----------------------
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
- *
- * $Id: WeakReferenceList.java,v 1.8 2005/11/17 17:03:49 taqua Exp $
- *
- * Changes
- * -------
- * 31-May-2002 : Initial version
- * 09-Jun-2002 : Documentation
- * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
- * 07-Jan-2003 : BugFix: Added additional checks due to a bug in the pagestate list
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.util;

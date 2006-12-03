@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * CSVTableModel.java
+ * $Id$
  * ------------
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: CSVTableModel.java,v 1.4 2005/09/07 14:25:10 taqua Exp $
- *
- * Changes
- * -------
- *
- *
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.modules.misc.tablemodel;
 

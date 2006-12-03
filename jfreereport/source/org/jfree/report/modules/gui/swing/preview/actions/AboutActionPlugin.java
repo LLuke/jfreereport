@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AboutActionPlugin.java,v 1.2 2006/11/24 17:12:13 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,8 +41,8 @@ import org.jfree.report.JFreeReportInfo;
 import org.jfree.report.modules.gui.swing.common.AbstractActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingGuiContext;
 import org.jfree.report.modules.gui.swing.common.SwingUtil;
-import org.jfree.report.modules.gui.swing.preview.SwingPreviewModule;
 import org.jfree.report.modules.gui.swing.preview.PreviewPane;
+import org.jfree.report.modules.gui.swing.preview.SwingPreviewModule;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.about.AboutDialog;
 import org.jfree.util.ResourceBundleSupport;

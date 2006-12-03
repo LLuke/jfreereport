@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -20,24 +19,13 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
- * JFreeReportInfo.java
- * --------------------
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
- * Contributor(s):   Thomas Morgner;
- *
- * $Id: JFreeReportInfo.java,v 1.45 2006/11/28 13:21:10 taqua Exp $
- *
- * Changes:
- * --------
- * 10-May-2002 : Extracted from JFreeReport to declare this class public.
- * 16-May-2002 : added my name to the developer list ;-) (JS)
- * 12-Nov-2002 : Minor changes required to use JCommon 0.7.1 (DG)
- * 06-Dec-2002 : Updated Javadocs (DG);
- * 26-Feb-2003 : Added Heiko Evermann to developer list (DG);
- * 16-Feb-2005 : Updated the contributors list.
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report;
@@ -45,16 +33,16 @@ package org.jfree.report;
 import java.util.Arrays;
 
 import org.jfree.JCommon;
-import org.jfree.xmlns.LibXmlInfo;
+import org.jfree.base.BootableProjectInfo;
 import org.jfree.formula.LibFormulaInfo;
 import org.jfree.layouting.LibLayoutInfo;
-import org.jfree.base.BootableProjectInfo;
 import org.jfree.resourceloader.LibLoaderInfo;
 import org.jfree.serializer.JCommonSerializerInfo;
 import org.jfree.ui.about.Contributor;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.ProjectInfo;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.xmlns.LibXmlInfo;
 
 /**
  * Details about the JFreeReport project.
@@ -103,8 +91,8 @@ public class JFreeReportInfo extends ProjectInfo
   private JFreeReportInfo ()
   {
     setName("JFreeReport");
-    setVersion("0.9.0-pre2");
-    setInfo("http://www.jfree.org/jfreereport/");
+    setVersion("0.9.0");
+    setInfo("http://jfreereport.pentaho.org/");
     setCopyright
             ("(C)opyright 2000-2006, by Thomas Morgner, Object Refinery Limited and Contributors");
 

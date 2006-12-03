@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * ReportDataRow.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ReportDataRow.java,v 1.3 2006/11/11 20:37:23 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.data;
 
@@ -46,10 +35,10 @@ import java.util.Map;
 
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataRow;
+import org.jfree.report.DataSet;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportData;
 import org.jfree.report.ReportDataFactory;
-import org.jfree.report.DataSet;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.util.IntegerCache;
 import org.jfree.util.ObjectUtilities;

@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,25 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * ReportDataFactory.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ReportDataFactory.java,v 1.2 2006/07/30 13:09:50 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report;
 
 /**
  * The report data-factory is responsible for querying the data from arbitary
- * datasources. 
+ * datasources.
  *
  * @author Thomas Morgner
  */
@@ -72,7 +61,7 @@ public interface ReportDataFactory
   /**
    * Derives a freshly initialized report data factory, which is independend
    * of the original data factory. Opening or Closing one data factory must not
-   * affect the other factories. 
+   * affect the other factories.
    *
    * @return
    */

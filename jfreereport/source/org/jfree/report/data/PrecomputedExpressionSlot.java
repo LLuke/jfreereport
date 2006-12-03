@@ -30,8 +30,8 @@
 
 package org.jfree.report.data;
 
-import org.jfree.report.DataSourceException;
 import org.jfree.report.DataRow;
+import org.jfree.report.DataSourceException;
 
 /**
  * Creation-Date: 25.11.2006, 15:18:58

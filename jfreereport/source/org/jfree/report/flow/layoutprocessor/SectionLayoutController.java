@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionLayoutController.java,v 1.1 2006/11/24 17:15:10 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,11 +33,11 @@ package org.jfree.report.flow.layoutprocessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.data.ExpressionSlot;
-import org.jfree.report.data.StaticExpressionRuntimeData;
 import org.jfree.report.data.PrecomputedExpressionSlot;
+import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.data.RunningExpressionSlot;
+import org.jfree.report.data.StaticExpressionRuntimeData;
 import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.FlowController;

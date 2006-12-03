@@ -32,13 +32,12 @@ package org.jfree.report.modules.gui.swing.pdf;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
 
-import org.jfree.report.flow.ReportJob;
-import org.jfree.report.flow.streaming.StreamingReportProcessor;
-import org.jfree.report.ReportConfigurationException;
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.layouting.modules.output.pdf.PdfOutputProcessor;
+import org.jfree.report.ReportConfigurationException;
+import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.streaming.StreamingReportProcessor;
 import org.jfree.util.Log;
 
 /**

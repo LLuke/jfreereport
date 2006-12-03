@@ -31,16 +31,15 @@
 package org.jfree.report.expressions;
 
 import org.jfree.formula.FormulaContext;
-import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.LibFormulaErrorValue;
-import org.jfree.formula.operators.OperatorFactory;
-import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.AnyType;
+import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.function.FunctionRegistry;
+import org.jfree.formula.operators.OperatorFactory;
+import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.structure.Node;
 import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;

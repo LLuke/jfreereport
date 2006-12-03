@@ -40,5 +40,5 @@ import javax.swing.Action;
  */
 public interface LocalizedAction extends Action
 {
-  public void update (Locale locale); 
+  public void update (Locale locale);
 }

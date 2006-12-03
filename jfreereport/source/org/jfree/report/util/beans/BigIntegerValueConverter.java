@@ -3,10 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * BigIntegerValueConverter.java
+ * $Id$
  * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: BigIntegerValueConverter.java,v 1.4 2005/09/20 15:38:23 taqua Exp $
- *
- * Changes
- * -------
- *
- *
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.util.beans;
 

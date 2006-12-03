@@ -33,10 +33,10 @@ package org.jfree.report.modules.gui.swing.html;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
+import org.jfree.report.ReportConfigurationException;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.swing.common.AbstractExportActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingGuiContext;
-import org.jfree.report.ReportConfigurationException;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
@@ -141,7 +141,7 @@ public class HtmlFileExportActionPlugin extends AbstractExportActionPlugin
     {
       return false;
     }
-    
+
     try
     {
       final HtmlFileExportTask task = new HtmlFileExportTask(job);

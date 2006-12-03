@@ -30,7 +30,6 @@
 
 package org.jfree.report.modules.gui.swing.preview.actions;
 
-import java.util.Locale;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 

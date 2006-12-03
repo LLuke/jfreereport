@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * LibLayoutReportTarget.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: LibLayoutReportTarget.java,v 1.8 2006/11/11 20:37:23 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.flow;
 
@@ -44,15 +33,15 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.StateException;
 import org.jfree.layouting.LayoutProcessState;
-import org.jfree.layouting.output.OutputProcessor;
+import org.jfree.layouting.StateException;
 import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.feed.InputFeed;
 import org.jfree.layouting.layouter.feed.InputFeedException;
 import org.jfree.layouting.namespace.NamespaceCollection;
 import org.jfree.layouting.namespace.NamespaceDefinition;
+import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;

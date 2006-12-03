@@ -30,12 +30,12 @@
 
 package org.jfree.report.modules.gui.swing.printing;
 
+import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.awt.print.PageFormat;
 
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 
@@ -101,7 +101,7 @@ public class PrinterUtility
     {
       jfreereport.setPageFormat(printerJob.defaultPage());
     }
-    
+
     printerJob.setJobName(jobName);
     printerJob.setPageable(document);
     printerJob.setCopies(getNumberOfCopies(reportConfiguration));

@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,31 +23,21 @@
  * in the United States and other countries.]
  *
  * ------------
- * ElementReadHandler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: ElementReadHandler.java,v 1.7 2006/11/26 19:49:23 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.modules.factories.report.flow;
 
 import java.util.ArrayList;
 
+import org.jfree.report.modules.factories.report.base.NodeReadHandler;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
-import org.jfree.report.modules.factories.report.base.NodeReadHandler;
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
 import org.jfree.xmlns.parser.PropertyReadHandler;
-import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.xmlns.parser.RootXmlReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

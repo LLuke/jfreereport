@@ -3,10 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ * Project Info:  http://jfreereport.pentaho.org/
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,32 +19,25 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------------------
- * ReportProgressBar.java
- * ------------------------------
- * (C)opyright 2003, by Thomas Morgner and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
- *
- * $Id: ReportProgressBar.java,v 1.7 2005/03/03 21:50:40 taqua Exp $
- *
- * Changes
- * -------------------------
- * 31.01.2004 : Initial version
- *
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.modules.gui.swing.common;
 
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
-import org.jfree.report.event.ReportProgressListener;
 import org.jfree.report.event.ReportProgressEvent;
+import org.jfree.report.event.ReportProgressListener;
 import org.jfree.report.modules.gui.common.GuiCommonModule;
 
 public class ReportProgressBar extends JProgressBar

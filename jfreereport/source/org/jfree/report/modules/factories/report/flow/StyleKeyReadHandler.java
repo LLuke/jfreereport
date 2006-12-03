@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,24 +23,12 @@
  * in the United States and other countries.]
  *
  * ------------
- * StyleKeyReadHandler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: StyleKeyReadHandler.java,v 1.2 2006/05/15 12:56:56 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.modules.factories.report.flow;
 
-import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.StyleKeyRegistry;
 import org.jfree.xmlns.parser.StringReadHandler;
 
 /**

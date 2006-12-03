@@ -3,10 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * JStatusBar.java
+ * $Id$
  * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: JStatusBar.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
- *
- * Changes
- * -------
- *
- *
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.modules.gui.swing.common;
 
@@ -51,8 +40,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import org.jfree.report.modules.gui.common.IconTheme;
 import org.jfree.report.modules.gui.common.DefaultIconTheme;
+import org.jfree.report.modules.gui.common.IconTheme;
 
 public class JStatusBar extends JComponent
 {

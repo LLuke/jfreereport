@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ControlAction.java,v 1.1 2006/11/20 21:17:02 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,10 +34,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
-import org.jfree.ui.action.ActionDowngrade;
-import org.jfree.report.modules.gui.swing.preview.actions.ControlActionPlugin;
-import org.jfree.report.modules.gui.swing.preview.PreviewPane;
 import org.jfree.report.modules.gui.swing.common.SwingCommonModule;
+import org.jfree.report.modules.gui.swing.preview.PreviewPane;
+import org.jfree.ui.action.ActionDowngrade;
 
 /**
  * Creation-Date: 16.11.2006, 17:52:48

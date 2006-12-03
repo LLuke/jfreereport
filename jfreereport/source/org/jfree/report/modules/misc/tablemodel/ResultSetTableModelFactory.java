@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -20,23 +19,13 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------------------
- * ResultSetTableModelFactory.java
- * -------------------------------
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
- *
- * $Id: ResultSetTableModelFactory.java,v 1.14 2005/09/07 14:25:10 taqua Exp $
- *
- * Changes
- * -------
- * 25-Apr-2002 : Initial version
- * 09-Jun-2002 : Documentation and changed the return value to be a CloseableTableModel
- * 02-Oct-2002 : <Robert Fuller> Bugs fixed for DefaultTableModel creation.
- * 12-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG)
- * 10-Dec-2002 : Fixed more issues reported by Checkstyle (DG);
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.modules.misc.tablemodel;
 

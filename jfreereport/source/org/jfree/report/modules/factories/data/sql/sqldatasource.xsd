@@ -1,7 +1,4 @@
 <?xml version="1.0"?>
-<!--
-  ~ Copyright (c) 2006, Your Corporation. All Rights Reserved.
-  -->
 
 <xsd:schema version="0.9"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SwingCommonModule.java,v 1.1 2006/11/20 21:15:44 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,8 +31,8 @@
 package org.jfree.report.modules.gui.swing.common;
 
 import org.jfree.base.modules.AbstractModule;
-import org.jfree.base.modules.SubSystem;
 import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
 /**
  * Creation-Date: 17.11.2006, 14:40:24

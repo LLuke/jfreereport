@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * AbstractExpression.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: AbstractExpression.java,v 1.1 2006/11/11 20:40:11 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.expressions;
 
@@ -47,7 +36,7 @@ import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.util.Configuration;
 
 /**
- * A baseclass for simple, non-positionally parametrized expressions. 
+ * A baseclass for simple, non-positionally parametrized expressions.
  *
  * @author Thomas Morgner
  */

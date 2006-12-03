@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -20,57 +19,26 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
- * JFreeReport.java
- * ----------------
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
+ * in the United States and other countries.]
  *
- * Original Author:  David Gilbert (for Object Refinery Limited);
- * Contributor(s):   Thomas Morgner;
- *
- * $Id: JFreeReport.java,v 1.35 2006/11/20 21:07:48 taqua Exp $
- *
- * Changes (from 8-Feb-2002)
- * -------------------------
- * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
- * 04-Mar-2002 : Major changes to report engine to incorporate functions and different output
- *               targets (DG);
- * 24-Apr-2002 : ItemBand and Groups are Optional Elements, default Elements are created as needed
- * 01-May-2002 : Renamed addProperty to setProperty to create consistent naming among other
- *               property uses.
- * 07-May-2002 : Fixed bug where last row of data is left off the report if it is alone in a
- *               group, reported by Steven Feinstein (DG);
- * 10-May-2002 : Rewrote report-processing. All reportstate-changes are handled by ReportState
- *               Objects. Created AccessorMethods for Properties. (TM)
- * 11-May-2002 : All bands have to be initialized. Null is no longer allowed for pageHeader,
- *               pageFooter, reportHeader, reportFooter, itemBand, functionCollection.
- * 17-May-2002 : Fixed reportPropertyInitialisation and checked if the report is proceeding on
- *               print.
- * 26-May-2002 : Changed repagination behaviour. Reports are repaginated before printed, so that
- *               global initialisations can be done.
- * 05-Jun-2002 : Updated Javadoc comments (DG);
- * 08-Jun-2002 : The defaultPageFormat is now always filled (and used in PreviewFrame)
- * 19-Jun-2002 : more documentation
- * 03-Jul-2002 : Serializable and cloneable, Removed JFreeReportInfo field, it disrupts the
- *               serializable process
- * 26-Jul-2002 : Removed method "isLastItemInHigherGroups()". The same functionality is implemented
- *               in Group.isLastItemInGroup()
- * 05-Dec-2002 : Updated Javadocs (DG);
- * 03-Jan-2003 : More Javadocs (DG);
- * 05-Feb-2003 : Fixed serialisation problem
+ * ------------
+ * $Id$
+ * ------------
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report;
 
+import java.awt.print.PageFormat;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.awt.print.PageFormat;
 import javax.swing.table.TableModel;
 
 import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.config.ModifiableConfiguration;
-import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.input.style.CSSPageRule;
+import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.input.style.StyleSheetUtility;
 import org.jfree.report.i18n.DefaultResourceBundleFactory;
 import org.jfree.report.i18n.ResourceBundleFactory;

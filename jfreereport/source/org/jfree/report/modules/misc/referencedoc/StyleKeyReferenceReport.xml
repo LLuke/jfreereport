@@ -17,7 +17,7 @@
       <page orientation="portrait" pageformat="A4" topmargin="24" bottommargin="24" leftmargin="24" rightmargin="24"/>
     </page-definition>
     <configuration>
-      <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Author">JFreeReport - http://www.jfree.org/jfreereport</property>
+      <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Author">JFreeReport - http://jfreereport.pentaho.org</property>
       <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Encoding">iso-8859-15</property>
     </configuration>
   </report-config>

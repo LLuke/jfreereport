@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultIconTheme.java,v 1.1 2006/11/20 21:12:23 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,9 +34,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.Icon;
 
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.util.Configuration;
 import org.jfree.util.ResourceBundleSupport;
-import org.jfree.report.JFreeReportBoot;
 
 /**
  * Creation-Date: 13.11.2006, 19:27:51

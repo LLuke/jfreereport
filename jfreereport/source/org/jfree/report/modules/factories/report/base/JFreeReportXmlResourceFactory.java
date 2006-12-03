@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,31 +23,21 @@
  * in the United States and other countries.]
  *
  * ------------
- * JFreeReportXmlResourceFactory.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: JFreeReportXmlResourceFactory.java,v 1.1 2006/04/18 11:45:16 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.modules.factories.report.base;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.xmlns.parser.AbstractXmlResourceFactory;
+import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
-import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.Configuration;
+import org.jfree.xmlns.parser.AbstractXmlResourceFactory;
 
 /**
  * Creation-Date: 08.04.2006, 14:27:36

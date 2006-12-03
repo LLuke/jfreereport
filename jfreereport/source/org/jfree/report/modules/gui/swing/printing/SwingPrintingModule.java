@@ -31,8 +31,8 @@
 package org.jfree.report.modules.gui.swing.printing;
 
 import org.jfree.base.modules.AbstractModule;
-import org.jfree.base.modules.SubSystem;
 import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
 /**
  * Creation-Date: 17.11.2006, 14:46:24

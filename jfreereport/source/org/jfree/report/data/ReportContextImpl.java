@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportContextImpl.java,v 1.2 2006/11/24 17:12:12 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,7 +34,6 @@ import java.util.HashMap;
 
 import org.jfree.formula.FormulaContext;
 import org.jfree.report.flow.ReportContext;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
 import org.jfree.report.i18n.ResourceBundleFactory;
 

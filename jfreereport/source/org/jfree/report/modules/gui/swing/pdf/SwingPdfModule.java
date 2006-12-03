@@ -44,7 +44,7 @@ public class SwingPdfModule extends AbstractModule
   public static final String BUNDLE_NAME =
       "org.jfree.report.modules.gui.swing.pdf.resources";
 
-  
+
   public SwingPdfModule() throws ModuleInitializeException
   {
     loadModuleInfo();

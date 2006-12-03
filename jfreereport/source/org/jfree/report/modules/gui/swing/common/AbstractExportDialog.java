@@ -3,10 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/index.html
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
- * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * AbstractExportDialog.java
+ * $Id$
  * ------------
- * (C) Copyright 2002-2005, by Object Refinery Limited.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: AbstractExportDialog.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
- *
- * Changes
- * -------
- *
- *
+ * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.modules.gui.swing.common;
 
@@ -47,18 +36,18 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Enumeration;
-import java.util.ResourceBundle;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
 
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.report.modules.preferences.base.ConfigFactory;
 import org.jfree.report.modules.preferences.base.ConfigStorage;
 import org.jfree.report.modules.preferences.base.ConfigStoreException;
-import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 

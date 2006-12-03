@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: NodeReadHandlerFactory.java,v 1.2 2006/11/29 23:21:37 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -240,7 +240,7 @@ public class NodeReadHandlerFactory
           (className, NodeReadHandlerFactory.class, NodeReadHandler.class);
       return (NodeReadHandler) o;
     }
-    
+
     final String fallbackName = (String) defaultDefinitions.get(null);
     final Object fallbackValue = ObjectUtilities.loadAndInstantiate
         (fallbackName, NodeReadHandlerFactory.class, NodeReadHandler.class);

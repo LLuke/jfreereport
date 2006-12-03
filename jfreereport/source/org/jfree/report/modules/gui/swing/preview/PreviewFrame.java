@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PreviewFrame.java,v 1.2 2006/11/20 21:12:23 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,16 +31,15 @@
 package org.jfree.report.modules.gui.swing.preview;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.flow.ReportJob;

@@ -32,8 +32,8 @@ package org.jfree.report.flow;
 
 import java.io.Serializable;
 
-import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.StateException;
+import org.jfree.layouting.output.OutputProcessor;
 
 /**
  * Creation-Date: 11.11.2006, 19:03:09

@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * AbstractExpressionReadHandler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: AbstractExpressionReadHandler.java,v 1.5 2006/11/25 17:11:34 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.modules.factories.report.flow;
 
@@ -133,7 +122,7 @@ public abstract class AbstractExpressionReadHandler
     expression.setDeepTraversing("true".equals(attrs.getValue(getUri(), "deep-traversing")));
     expression.setPrecompute("true".equals(attrs.getValue(getUri(), "precompute")));
     expression.setPreserve("true".equals(attrs.getValue(getUri(), "preserve")));
-    
+
     try
     {
       expressionBeanUtility = new BeanUtility(expression);

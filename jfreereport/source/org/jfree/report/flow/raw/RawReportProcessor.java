@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,25 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * RawReportProcessor.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: RawReportProcessor.java,v 1.1 2006/04/18 11:49:12 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.flow.raw;
 
-import org.jfree.report.flow.SinglePassReportProcessor;
-import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.ReportTarget;
+import org.jfree.report.flow.SinglePassReportProcessor;
 
 /**
  * The Raw report processor defines the base for all non-layouting output

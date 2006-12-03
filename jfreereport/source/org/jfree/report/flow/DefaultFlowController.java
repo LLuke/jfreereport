@@ -3,8 +3,7 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://www.jfree.org/jfreereport/
- * Project Lead:  Thomas Morgner;
+ * Project Info:  http://jfreereport.pentaho.org/
  *
  * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
@@ -24,19 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * DefaultFlowControler.java
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
- *
- * $Id: DefaultFlowController.java,v 1.2 2006/11/24 17:12:12 taqua Exp $
- *
- * Changes
- * -------
- *
- *
  */
 package org.jfree.report.flow;
 
@@ -49,9 +38,9 @@ import org.jfree.report.data.ExpressionSlot;
 import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.data.ImportedVariablesDataRow;
 import org.jfree.report.data.ParameterDataRow;
-import org.jfree.report.data.ReportDataRow;
 import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.data.PrecomputedValueRegistryBuilder;
+import org.jfree.report.data.ReportDataRow;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.SubReport;
 import org.jfree.report.util.IntegerCache;

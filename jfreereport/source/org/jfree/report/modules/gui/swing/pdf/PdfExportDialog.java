@@ -40,9 +40,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.text.MessageFormat;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -54,16 +54,16 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.JOptionPane;
-import javax.swing.JDialog;
 
 import org.jfree.fonts.encoding.EncodingRegistry;
+import org.jfree.layouting.modules.output.pdf.PdfOutputModule;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.report.modules.gui.swing.common.AbstractExportDialog;
@@ -74,7 +74,6 @@ import org.jfree.ui.action.ActionButton;
 import org.jfree.util.Configuration;
 import org.jfree.util.DefaultConfiguration;
 import org.jfree.util.Log;
-import org.jfree.layouting.modules.output.pdf.PdfOutputModule;
 
 /**
  * Creation-Date: 02.12.2006, 15:27:30
