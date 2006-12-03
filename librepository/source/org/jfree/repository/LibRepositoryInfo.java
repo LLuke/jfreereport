@@ -58,12 +58,12 @@ public class LibRepositoryInfo extends ProjectInfo
   public LibRepositoryInfo()
   {
     setName("LibRepository");
-    setVersion("0.0.1");
+    setVersion("0.1.0");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());
 
-    setInfo("http://www.jfree.org/jfreereport/librepository/");
+    setInfo("http://jfreereport.pentaho.org/librepository/");
     setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
     setLicenceText(Licences.getInstance().getLGPL());
 
