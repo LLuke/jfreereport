@@ -61,6 +61,8 @@
         <include name="**/*.xsd"/>
         <include name="*.css"/>
         <include name="**/*.css"/>
+        <include name="*.xml"/>
+        <include name="**/*.xml"/>
         <include name="*.gif"/>
         <include name="**/*.gif"/>
         <include name="*.png"/>
@@ -92,7 +94,7 @@
         <pathelement location="${libdir}/${flute-jar-file}"/>
       </classpath>
       <packageset dir="source" defaultexcludes="yes">
-        <include name="org/jfree/report"/>
+        <include name="org/jfree/report/**"/>
         <exclude name="**/junit/**"/>
       </packageset>
     </javadoc>
@@ -126,11 +128,6 @@
     <!-- copy across source files -->
     <copy todir="distribution/source">
       <fileset dir="source"/>
-    </copy>
-
-    <!-- copy across source files -->
-    <copy todir="distribution/resource">
-      <fileset dir="resource"/>
     </copy>
 
     <!-- copy across source files -->
