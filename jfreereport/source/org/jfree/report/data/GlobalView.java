@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: GlobalView.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -114,7 +114,7 @@ public final class GlobalView implements DataRow
 
     // oh fine, a new one ...
     // step 1: Search for a free slot
-    for (int i = 0; i < data.length; i++)
+    for (int i = 0; i < length; i++)
     {
       DataFlags dataFlags = data[i];
       if (dataFlags == null)
@@ -266,7 +266,7 @@ public final class GlobalView implements DataRow
     gv.oldCache = (LazyNameMap) oldCache.clone();
     gv.data = (DataFlags[]) data.clone();
     gv.oldData = (DataFlags[]) oldData.clone();
-    gv.length = data.length;
+    gv.length = length;
     gv.nameCache = (LazyNameMap) nameCache.clone();
     return gv;
   }
@@ -277,7 +277,7 @@ public final class GlobalView implements DataRow
     gv.oldCache = (LazyNameMap) nameCache.clone();
     gv.oldData = (DataFlags[]) data.clone();
     gv.data = new DataFlags[gv.oldData.length];
-    gv.length = data.length;
+    gv.length = length;
     gv.nameCache = new LazyNameMap();
     return gv;
   }

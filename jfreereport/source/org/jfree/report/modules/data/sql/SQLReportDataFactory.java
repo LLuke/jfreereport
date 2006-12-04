@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SQLReportDataFactory.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -83,6 +83,10 @@ public class SQLReportDataFactory extends SimpleSQLReportDataFactory
   public ReportData queryData(final String query, final DataSet parameters)
           throws ReportDataFactoryException
   {
+    if (query == null)
+    {
+      throw new NullPointerException("Query is null.");
+    }
     final String realQuery = getQuery(query);
     if (realQuery == null)
     {

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultFlowController.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,10 +58,17 @@ public class DefaultFlowController implements FlowController
   private static class ReportDataContext
   {
     private FastStack markStack;
+    private boolean advanceRequested;
 
-    public ReportDataContext(final FastStack markStack)
+    public ReportDataContext(final FastStack markStack, boolean advanceRequested)
     {
+      this.advanceRequested = advanceRequested;
       this.markStack = markStack;
+    }
+
+    public boolean isAdvanceRequested()
+    {
+      return advanceRequested;
     }
 
     public FastStack getMarkStack()
@@ -211,7 +218,7 @@ public class DefaultFlowController implements FlowController
         (reportDataFactory, query, dataRow.getGlobalView()));
 
     DefaultFlowController fc = new DefaultFlowController(this, masterRow);
-    fc.reportStack.push(new ReportDataContext(fc.markStack));
+    fc.reportStack.push(new ReportDataContext(fc.markStack, advanceRequested));
     fc.markStack = new FastStack();
     fc.dataRow = masterRow;
     return fc;
@@ -240,7 +247,7 @@ public class DefaultFlowController implements FlowController
       final String[] importedNames = report.getPeerInputParameters();
       masterRow.setParameterDataRow
               (new ParameterDataRow(report, new ImportedVariablesDataRow
-              (masterRow, importedNames, importedParams)));
+              (outerRow, importedNames, importedParams)));
     }
 
     // perform the query ...
@@ -265,7 +272,7 @@ public class DefaultFlowController implements FlowController
     }
 
     DefaultFlowController fc = new DefaultFlowController(this, masterRow);
-    fc.reportStack.push(new ReportDataContext(fc.markStack));
+    fc.reportStack.push(new ReportDataContext(fc.markStack, advanceRequested));
     fc.markStack = new FastStack();
     fc.dataRow = masterRow;
     return fc;
@@ -338,6 +345,7 @@ public class DefaultFlowController implements FlowController
     fc.dataRow = fc.dataRow.derive();
     fc.dataRow.setExportedDataRow(null);
     fc.markStack = context.getMarkStack();
+    fc.advanceRequested = context.isAdvanceRequested();
     return fc;
   }
 

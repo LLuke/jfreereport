@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SubReportReadHandler.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.SubReport;
 import org.jfree.xmlns.parser.XmlReadHandler;
+import org.jfree.xmlns.parser.StringReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -47,6 +48,7 @@ public class SubReportReadHandler extends SectionReadHandler
   private SubReport subReport;
   private ArrayList importParameters;
   private ArrayList exportParameters;
+  private StringReadHandler queryReadHandler;
 
   /**
    * Creates a new generic read handler. The given namespace and tagname can be
@@ -75,9 +77,8 @@ public class SubReportReadHandler extends SectionReadHandler
     final String source = attrs.getValue(getUri(), "href");
     if (source != null)
     {
-
+      // start parsing ..
     }
-
   }
 
   /**
@@ -113,6 +114,11 @@ public class SubReportReadHandler extends SectionReadHandler
         exportParameters.add(handler);
         return handler;
       }
+      if ("query".equals(tagName))
+      {
+        queryReadHandler = new StringReadHandler();
+        return queryReadHandler;
+      }
     }
     return null;
   }
@@ -139,6 +145,12 @@ public class SubReportReadHandler extends SectionReadHandler
               (ParameterMappingReadHandler) exportParameters.get(i);
       report.addExportParameter(handler.getAlias(), handler.getName());
     }
+    if (queryReadHandler == null)
+    {
+      throw new SAXException("Query is specified.");
+    }
+    final String result = queryReadHandler.getResult();
+    report.setQuery(result);
   }
 
   protected Element getElement()

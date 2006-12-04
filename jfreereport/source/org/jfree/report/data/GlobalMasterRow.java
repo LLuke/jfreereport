@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: GlobalMasterRow.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -165,9 +165,13 @@ public final class GlobalMasterRow
     dataRow.globalView = globalView.advance();
     dataRow.parameterDataRow = parameterDataRow;
 
-    if (reportDataRow != null)
+    if (deepTraversingOnly == false && reportDataRow != null)
     {
       dataRow.reportDataRow = reportDataRow.advance();
+    }
+    else
+    {
+      dataRow.reportDataRow = reportDataRow;
     }
     dataRow.updateGlobalView();
     if (expressionDataRow != null)
