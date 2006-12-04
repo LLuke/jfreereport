@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Normalizer.java,v 1.3 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -121,5 +121,5 @@ public interface Normalizer extends StatefullComponent
    */
   public Renderer getRenderer();
 
-  public StyleResolver getStyleResolver();
+//  public StyleResolver getStyleResolver();
 }

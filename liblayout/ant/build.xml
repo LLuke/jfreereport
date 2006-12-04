@@ -42,6 +42,15 @@
     </isClassAndFileAvailable>
     <fail unless="lib.libfonts.present"/>
 
+    <isClassAndFileAvailable class-name="org.jfree.xmlns.LibXmlInfo"
+                             property-name="lib.libxml.present"
+                             file-name="${libdir}/${libxml-jar-file}">
+      <test-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+      </test-classpath>
+    </isClassAndFileAvailable>
+    <fail unless="lib.libxml.present"/>
+
     <isClassAndFileAvailable class-name="org.jfree.resourceloader.LibLoaderInfo"
                              property-name="lib.libloader.present"
                              file-name="${libdir}/${libloader-jar-file}">
@@ -74,6 +83,11 @@
     </isClassAndFileAvailable>
     <fail unless="lib.flute.present"/>
 
+    <isClassAndFileAvailable class-name="com.lowagie.text.Font"
+                             property-name="lib.itext.present"
+                             file-name="${libdir}/${itext-jar-file}">
+    </isClassAndFileAvailable>
+    <fail unless="lib.itext.present"/>
   </target>
 
   <!-- Compile the libfonts classes -->
@@ -89,7 +103,8 @@
         <pathelement location="${libdir}/${flute-jar-file}"/>
         <pathelement location="${libdir}/${junit-jar-file}"/>
         <pathelement location="${libdir}/${librepository-jar-file}"/>
-        
+        <pathelement location="${libdir}/${libxml-jar-file}"/>
+        <pathelement location="${libdir}/${itext-jar-file}"/>
       </all-classpath>
       <all-resources>
         <include name="*.properties"/>
@@ -115,6 +130,8 @@
         <pathelement location="${libdir}/${sac-jar-file}"/>
         <pathelement location="${libdir}/${flute-jar-file}"/>
         <pathelement location="${libdir}/${librepository-jar-file}"/>
+        <pathelement location="${libdir}/${libxml-jar-file}"/>
+        <pathelement location="${libdir}/${itext-jar-file}"/>
       </classpath>
       <packageset dir="source" defaultexcludes="yes">
         <include name="org/jfree/layouting"/>
@@ -126,6 +143,10 @@
     <!-- copy across README -->
     <copy file="README.txt"
       tofile="distribution/README.txt"/>
+
+    <!-- copy across README -->
+    <copy file="ChangeLog"
+      tofile="distribution/ChangeLog"/>
 
     <!-- copy across LICENCE -->
     <copy file="licence-LGPL.txt"

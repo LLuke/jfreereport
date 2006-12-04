@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractLayoutProcess.java,v 1.7 2006/12/03 18:57:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.DefaultDocumentContext;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.feed.InputFeed;
+import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.normalizer.content.Normalizer;
@@ -49,72 +50,49 @@ import org.jfree.resourceloader.ResourceManager;
 public abstract class AbstractLayoutProcess implements LayoutProcess
 {
   protected abstract static class AbstractLayoutProcessState
-          implements LayoutProcessState
+      implements LayoutProcessState
   {
     private State inputFeedState;
-    private long nextId;
     private DocumentContext documentContext;
+    private State styleResolver;
 
-    public AbstractLayoutProcessState()
+    public AbstractLayoutProcessState(AbstractLayoutProcess lp)
+        throws StateException
     {
-    }
-
-    public State getInputFeedState()
-    {
-      return inputFeedState;
-    }
-
-    public void setInputFeedState(final State inputFeedState)
-    {
-      this.inputFeedState = inputFeedState;
-    }
-
-    public long getNextId()
-    {
-      return nextId;
-    }
-
-    public void setNextId(final long nextId)
-    {
-      this.nextId = nextId;
-    }
-
-    public DocumentContext getDocumentContext()
-    {
-      return documentContext;
-    }
-
-    public void setDocumentContext(final DocumentContext documentContext)
-    {
-      this.documentContext = documentContext;
-    }
-
-    protected abstract AbstractLayoutProcess create(OutputProcessor outputProcessor)
-        throws StateException;
-
-    protected void fill(AbstractLayoutProcess layoutProcess)
-            throws StateException
-    {
-      layoutProcess.documentContext = documentContext;
-      if (inputFeedState != null)
+      if (lp.styleResolver != null)
       {
-        layoutProcess.inputFeed = (InputFeed) inputFeedState.restore(
-                layoutProcess);
+        this.styleResolver = lp.styleResolver.saveState();
+      }
+      this.documentContext = lp.documentContext;
+      if (lp.inputFeed != null)
+      {
+        this.inputFeedState = lp.inputFeed.saveState();
       }
     }
 
-    public LayoutProcess restore(OutputProcessor outputProcessor)
-            throws StateException
+    protected AbstractLayoutProcess restore(OutputProcessor outputProcessor,
+                                            AbstractLayoutProcess layoutProcess)
+        throws StateException
     {
-      AbstractLayoutProcess process = create(outputProcessor);
-      fill(process);
-      return process;
+      layoutProcess.documentContext = documentContext;
+      if (styleResolver != null)
+      {
+        layoutProcess.styleResolver =
+            (StyleResolver) styleResolver.restore(layoutProcess);
+      }
+      if (inputFeedState != null)
+      {
+        layoutProcess.inputFeed = (InputFeed) inputFeedState.restore(
+            layoutProcess);
+      }
+      return layoutProcess;
     }
   }
 
   private InputFeed inputFeed;
   private DocumentContext documentContext;
   private OutputProcessor outputProcessor;
+  private StyleResolver styleResolver;
 
   protected AbstractLayoutProcess(OutputProcessor outputProcessor)
   {
@@ -125,6 +103,8 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
 
     this.outputProcessor = outputProcessor;
     this.documentContext = new DefaultDocumentContext();
+    this.styleResolver = new DefaultStyleResolver();
+
   }
 
   public OutputProcessorMetaData getOutputMetaData()
@@ -166,7 +146,7 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
 
   public void pageBreakEncountered(final CSSValue pageName,
                                    final PseudoPage[] pseudoPages)
-          throws NormalizationException
+      throws NormalizationException
   {
     getInputFeed().handlePageBreakEncountered(pageName, pseudoPages);
   }
@@ -176,25 +156,26 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
     return getInputFeed().isPagebreakEncountered();
   }
 
-  protected abstract AbstractLayoutProcessState createState()
-      throws StateException;
+//  protected abstract AbstractLayoutProcessState createState()
+//      throws StateException;
 
-  protected void fillState(AbstractLayoutProcessState state) throws
-          StateException
-  {
-    state.setDocumentContext(documentContext);
-    if (inputFeed != null)
-    {
-      state.setInputFeedState(inputFeed.saveState());
-    }
-  }
+//  protected void fillState(AbstractLayoutProcessState state) throws
+//      StateException
+//  {
+//    state.setDocumentContext(documentContext);
+//    if (inputFeed != null)
+//    {
+//      state.setInputFeedState(inputFeed.saveState());
+//    }
+//  }
 
-  public LayoutProcessState saveState() throws StateException
-  {
-    AbstractLayoutProcessState state = createState();
-    fillState(state);
-    return state;
-  }
+//
+//  public LayoutProcessState saveState() throws StateException
+//  {
+//    AbstractLayoutProcessState state = createState();
+//    fillState(state);
+//    return state;
+//  }
 
   public Normalizer getNormalizer()
   {
@@ -203,6 +184,6 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
 
   public StyleResolver getStyleResolver()
   {
-    return getNormalizer().getStyleResolver();
+    return styleResolver;
   }
 }

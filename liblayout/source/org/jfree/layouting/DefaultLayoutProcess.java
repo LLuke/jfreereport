@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultLayoutProcess.java,v 1.3 2006/12/03 18:57:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,16 +41,19 @@ import org.jfree.layouting.output.OutputProcessor;
  */
 public class DefaultLayoutProcess extends AbstractLayoutProcess
 {
-  protected static class DefaultLayoutProcessState extends AbstractLayoutProcess.AbstractLayoutProcessState
+  protected static class DefaultLayoutProcessState
+      extends AbstractLayoutProcess.AbstractLayoutProcessState
   {
-    public DefaultLayoutProcessState()
-    {
-    }
-
-    protected AbstractLayoutProcess create(OutputProcessor outputProcessor)
+    public DefaultLayoutProcessState(AbstractLayoutProcess lp)
         throws StateException
     {
-      return new DefaultLayoutProcess(outputProcessor);
+      super(lp);
+    }
+
+    public LayoutProcess restore(OutputProcessor outputProcessor)
+        throws StateException
+    {
+      return restore(outputProcessor, new DefaultLayoutProcess(outputProcessor));
     }
   }
 
@@ -64,10 +67,8 @@ public class DefaultLayoutProcess extends AbstractLayoutProcess
     return new DefaultInputFeed(this);
   }
 
-  protected AbstractLayoutProcess.AbstractLayoutProcessState createState() throws StateException
+  public LayoutProcessState saveState() throws StateException
   {
-    final DefaultLayoutProcessState state = new DefaultLayoutProcessState();
-    fillState(state);
-    return state;
+    return new DefaultLayoutProcessState(this);
   }
 }

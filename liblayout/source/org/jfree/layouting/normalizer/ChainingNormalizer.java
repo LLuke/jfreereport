@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ChainingNormalizer.java,v 1.4 2006/12/03 18:58:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -52,7 +52,7 @@ import org.jfree.layouting.util.ChainingCallException;
  */
 public class ChainingNormalizer implements Normalizer
 {
-  private class ChainingNormalizerState implements State
+  private static class ChainingNormalizerState implements State
   {
     private State chainedNormalizerState;
 
@@ -224,9 +224,9 @@ public class ChainingNormalizer implements Normalizer
   {
     return chainedNormalizer.getRenderer();
   }
-
-  public StyleResolver getStyleResolver()
-  {
-    return chainedNormalizer.getStyleResolver();
-  }
+//
+//  public StyleResolver getStyleResolver()
+//  {
+//    return chainedNormalizer.getStyleResolver();
+//  }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ChainingLayoutProcess.java,v 1.3 2006/12/03 18:57:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -78,12 +78,19 @@ public class ChainingLayoutProcess implements LayoutProcess
     }
 
     public LayoutProcess restore(OutputProcessor outputProcessor)
-            throws StateException
+        throws StateException
     {
       LayoutProcess root = chainedLayoutProcess.restore(outputProcessor);
       ChainingLayoutProcess proc = new ChainingLayoutProcess(root);
       proc.outputProcessor = new ChainingOutputProcessor(outputProcessor);
-      proc.inputFeed = (InputFeed) inputFeed.restore(proc);
+      if (inputFeed != null)
+      {
+        proc.inputFeed = (InputFeed) inputFeed.restore(proc);
+        if (proc.inputFeed == null)
+        {
+          throw new StateException();
+        }
+      }
       return proc;
     }
   }
@@ -96,7 +103,7 @@ public class ChainingLayoutProcess implements LayoutProcess
   {
     this.chainedLayoutProcess = layoutProcess;
     this.outputProcessor = new ChainingOutputProcessor
-            (layoutProcess.getOutputProcessor());
+        (layoutProcess.getOutputProcessor());
   }
 
   public InputFeed getInputFeed()
@@ -110,7 +117,7 @@ public class ChainingLayoutProcess implements LayoutProcess
 
   public StyleResolver getStyleResolver()
   {
-    return getNormalizer().getStyleResolver();
+    return chainedLayoutProcess.getStyleResolver();
   }
 
   /**
@@ -141,7 +148,7 @@ public class ChainingLayoutProcess implements LayoutProcess
 
   public void pageBreakEncountered(final CSSValue pageName,
                                    final PseudoPage[] pseudoPages)
-          throws NormalizationException
+      throws NormalizationException
   {
     getInputFeed().handlePageBreakEncountered(pageName, pseudoPages);
   }
@@ -181,6 +188,11 @@ public class ChainingLayoutProcess implements LayoutProcess
 
   public Normalizer getNormalizer()
   {
+    if (inputFeed == null)
+    {
+      throw new IllegalStateException
+          ("We cant have come that far without an input feed.");
+    }
     return inputFeed.getCurrentNormalizer();
   }
 

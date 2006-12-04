@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ContentNormalizer.java,v 1.13 2006/12/03 18:58:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -64,10 +64,7 @@ import org.jfree.layouting.layouter.context.DefaultPageContext;
 import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.context.QuotesPair;
-import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
-import org.jfree.layouting.layouter.style.LayoutStyleImpl;
-import org.jfree.layouting.layouter.style.resolver.DefaultStyleResolver;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.renderer.Renderer;
@@ -119,9 +116,7 @@ public class ContentNormalizer implements Normalizer
 {
   protected static class ContentNormalizerState implements State
   {
-    private State styleResolverState;
     private State modelBuilderState;
-    private LayoutProcess layoutProcess;
 
     // The LayoutElements are immutable; only their LayoutContext may change
     private LayoutElement currentElement;
@@ -144,16 +139,6 @@ public class ContentNormalizer implements Normalizer
       this.recordingContentNormalizerState = recordingContentNormalizerState;
     }
 
-    public State getStyleResolverState()
-    {
-      return styleResolverState;
-    }
-
-    public void setStyleResolverState(final State styleResolverState)
-    {
-      this.styleResolverState = styleResolverState;
-    }
-
     public State getModelBuilderState()
     {
       return modelBuilderState;
@@ -162,16 +147,6 @@ public class ContentNormalizer implements Normalizer
     public void setModelBuilderState(final State modelBuilderState)
     {
       this.modelBuilderState = modelBuilderState;
-    }
-
-    public LayoutProcess getLayoutProcess()
-    {
-      return layoutProcess;
-    }
-
-    public void setLayoutProcess(final LayoutProcess layoutProcess)
-    {
-      this.layoutProcess = layoutProcess;
     }
 
     public LayoutElement getCurrentElement()
@@ -226,7 +201,7 @@ public class ContentNormalizer implements Normalizer
 
   private static final long NO_PARENT = -1;
 
-  private StyleResolver styleResolver;
+
   private ModelBuilder modelBuilder;
 
   private LayoutElement currentElement;
@@ -242,6 +217,7 @@ public class ContentNormalizer implements Normalizer
    * content generation phase.
    */
   private int quoteLevel;
+  private StyleResolver styleResolver;
 
 
   public ContentNormalizer(final LayoutProcess layoutProcess)
@@ -257,6 +233,8 @@ public class ContentNormalizer implements Normalizer
       throw new NullPointerException("LayoutProcess must not be null.");
     }
     this.layoutProcess = layoutProcess;
+    this.styleResolver = layoutProcess.getStyleResolver();
+
     if (init)
     {
       this.modelBuilder = layoutProcess.getOutputProcessor().createModelBuilder
@@ -267,7 +245,6 @@ public class ContentNormalizer implements Normalizer
   public void startDocument()
       throws IOException, NormalizationException
   {
-    styleResolver = new DefaultStyleResolver();
     styleResolver.initialize(layoutProcess);
 
     final DefaultPageContext dpc = new DefaultPageContext();
@@ -1024,7 +1001,15 @@ public class ContentNormalizer implements Normalizer
           (pageName, pseudoPages, pageAreaType);
       dpc.setAreaDefinition(pageAreaType, style);
     }
-    modelBuilder.handlePageBreak(dpc);
+    try
+    {
+      modelBuilder.handlePageBreak(dpc);
+    }
+    catch (NormalizationException e)
+    {
+      // this is a bit unclean ..
+      throw new IllegalStateException();
+    }
   }
 
   protected ContentNormalizerState createSaveState()
@@ -1037,12 +1022,7 @@ public class ContentNormalizer implements Normalizer
     state.setNextId(nextId);
     state.setCurrentElement(currentElement);
     state.setCurrentSilbling(currentSilbling);
-    state.setLayoutProcess(layoutProcess);
     state.setModelBuilderState(modelBuilder.saveState());
-    if (styleResolver != null)
-    {
-      state.setStyleResolverState(styleResolver.saveState());
-    }
     if (recordingContentNormalizer != null)
     {
       state.setRecordingContentNormalizerState(
@@ -1065,11 +1045,6 @@ public class ContentNormalizer implements Normalizer
     this.nextId = state.getNextId();
     this.modelBuilder = (ModelBuilder)
         state.getModelBuilderState().restore(layoutProcess);
-    if (state.getStyleResolverState() != null)
-    {
-      this.styleResolver = (StyleResolver)
-          state.getStyleResolverState().restore(layoutProcess);
-    }
     if (state.getRecordingContentNormalizerState() != null)
     {
       this.recordingContentNormalizer = (RecordingContentNormalizer)

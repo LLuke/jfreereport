@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractRenderer.java,v 1.12 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -69,6 +69,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableTextBox;
+import org.jfree.layouting.renderer.model.ParagraphPoolBox;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -310,20 +311,20 @@ public abstract class AbstractRenderer implements Renderer
 
   protected RenderBox getInsertationPoint()
   {
-    FlowContext context = (FlowContext) flowContexts.peek();
-    final RenderBox insertationPoint =
-        context.getCurrentFlow().getInsertationPoint();
+    final FlowContext context = (FlowContext) flowContexts.peek();
+    final NormalFlowRenderBox currentFlow = context.getCurrentFlow();
+    final RenderBox insertationPoint = currentFlow.getInsertationPoint();
 
     // A small assertation game ..
-    RenderBox root = insertationPoint;
-    while (root != null)
-    {
-      if (root.getParent() == null)
-      {
-        break;
-      }
-      root = root.getParent();
-    }
+//    RenderBox root = insertationPoint;
+//    while (root != null)
+//    {
+//      if (root.getParent() == null)
+//      {
+//        break;
+//      }
+//      root = root.getParent();
+//    }
 
     return insertationPoint;
   }
@@ -853,6 +854,13 @@ public abstract class AbstractRenderer implements Renderer
   public void finishedRootInline() throws NormalizationException
   {
     final RenderBox insertationPoint = getInsertationPoint();
+    if (insertationPoint instanceof ParagraphPoolBox == false)
+    {
+      getInsertationPoint();
+      throw new IllegalStateException
+          ("Assertation: A rootInline must call close on a pool box");
+    }
+
     RenderableTextFactory textFactory = getCurrentTextFactory();
     final RenderNode[] nodes = textFactory.finishText();
     insertationPoint.addChilds(nodes);

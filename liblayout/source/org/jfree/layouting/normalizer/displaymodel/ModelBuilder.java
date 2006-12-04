@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ModelBuilder.java,v 1.3 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -70,7 +70,8 @@ public interface ModelBuilder extends StatefullComponent
 
   public void endDocument() throws NormalizationException;
 
-  public void handlePageBreak(final PageContext pageContext);
+  public void handlePageBreak(final PageContext pageContext)
+      throws NormalizationException;
 
   public Renderer getRenderer();
 }

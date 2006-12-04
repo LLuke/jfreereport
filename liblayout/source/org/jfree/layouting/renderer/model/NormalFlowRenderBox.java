@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: NormalFlowRenderBox.java,v 1.13 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -65,6 +65,16 @@ public class NormalFlowRenderBox extends BlockRenderBox
   public PlaceholderRenderNode getPlaceHolder()
   {
     return placeHolder;
+  }
+
+  public void addChild(final RenderNode child)
+  {
+    if (child instanceof BlockRenderBox == false)
+    {
+      throw new IllegalStateException("This cannot be.");
+    }
+
+    super.addChild(child);
   }
 
   public void addFlow (NormalFlowRenderBox flow)
@@ -201,5 +211,10 @@ public class NormalFlowRenderBox extends BlockRenderBox
       }
     }
     return super.findNodeById(instanceId);
+  }
+
+  public void close()
+  {
+    super.close();
   }
 }

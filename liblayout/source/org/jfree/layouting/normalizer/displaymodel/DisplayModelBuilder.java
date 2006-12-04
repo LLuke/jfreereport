@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DisplayModelBuilder.java,v 1.8 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -61,36 +61,22 @@ import org.jfree.util.FastStack;
  * boxes are inserted where ever needed.
  * <p/>
  * The DisplayModelBuilder is the place to handle RunIns (later).
+ *
+ * This implementation is a root of many errors (due to its use of a complicated
+ * model). This should be simplified better sooner than later.
  */
 public class DisplayModelBuilder implements ModelBuilder
 {
-  protected class DisplayModelBuilderState implements State
+  protected static class DisplayModelBuilderState implements State
   {
     private DisplayNode[] stackContents;
     private State contentGeneratorState;
 
-    public DisplayModelBuilderState()
+    public DisplayModelBuilderState(DisplayModelBuilder dmb)
+        throws StateException
     {
-    }
-
-    public DisplayNode[] getStackContents()
-    {
-      return stackContents;
-    }
-
-    public void setStackContents(final DisplayNode[] stackContents)
-    {
-      this.stackContents = stackContents;
-    }
-
-    public State getContentGeneratorState()
-    {
-      return contentGeneratorState;
-    }
-
-    public void setContentGeneratorState(final State contentGeneratorState)
-    {
-      this.contentGeneratorState = contentGeneratorState;
+      this.stackContents = dmb.saveStack();
+      this.contentGeneratorState = dmb.contentGenerator.saveState();
     }
 
     /**
@@ -104,10 +90,10 @@ public class DisplayModelBuilder implements ModelBuilder
      * @throws StateException
      */
     public StatefullComponent restore(LayoutProcess layoutProcess)
-            throws StateException
+        throws StateException
     {
       final ContentGenerator cg = (ContentGenerator)
-              contentGeneratorState.restore(layoutProcess);
+          contentGeneratorState.restore(layoutProcess);
       final DisplayModelBuilder dbm = new DisplayModelBuilder(cg, layoutProcess);
       try
       {
@@ -115,8 +101,11 @@ public class DisplayModelBuilder implements ModelBuilder
       }
       catch (NormalizationException e)
       {
-        throw new StateException("Failed to restore the state.");
+        throw new StateException();
       }
+
+      // we will have to call 'restore' ...
+//      dbm.stackContents = stackContents;
       return dbm;
     }
   }
@@ -124,6 +113,7 @@ public class DisplayModelBuilder implements ModelBuilder
   private FastStack stack;
   private ContentGenerator contentGenerator;
   private LayoutProcess layoutProcess;
+  private DisplayNode[] stackContents;
 
   public DisplayModelBuilder(final ContentGenerator contentGenerator,
                              final LayoutProcess layoutProcess)
@@ -151,7 +141,7 @@ public class DisplayModelBuilder implements ModelBuilder
     if (stack.isEmpty())
     {
       throw new IllegalStateException
-              ("Stack is empty; In a sane environment, this never happens.");
+          ("Stack is empty; In a sane environment, this never happens.");
     }
 
     DisplayElement currentBox = (DisplayElement) stack.peek();
@@ -202,15 +192,17 @@ public class DisplayModelBuilder implements ModelBuilder
   }
 
   public void startDocument(final PageContext pageContext)
-          throws NormalizationException
+      throws NormalizationException
   {
+    centralRestoreStack();
     contentGenerator.startedDocument(pageContext);
   }
 
-
   public void startElement(final LayoutContext layoutContext)
-          throws NormalizationException, IOException
+      throws NormalizationException, IOException
   {
+    centralRestoreStack();
+
     if (stack.isEmpty())
     {
       // Look, mama, we started a new document. Create a flow context.
@@ -228,7 +220,7 @@ public class DisplayModelBuilder implements ModelBuilder
 
 //    Log.debug ("Start element " + layoutContext.getTagName());
     final CSSValue displayRole = layoutContext.getValue
-            (BoxStyleKeys.DISPLAY_ROLE);
+        (BoxStyleKeys.DISPLAY_ROLE);
 
     DisplayElement currentBox = getCurrentContext();
     if (currentBox instanceof DisplayPassThroughElement ||
@@ -254,7 +246,7 @@ public class DisplayModelBuilder implements ModelBuilder
     {
       // display model is always block here. This is fixed and defined.
       DisplayFlowElement newBox =
-              new DisplayFlowElement (layoutContext);
+          new DisplayFlowElement(layoutContext);
 
       // the flow is connected to the parent, but is not a normal-flow
       // child of the parent. So we set the flow's parent manually, without
@@ -268,13 +260,13 @@ public class DisplayModelBuilder implements ModelBuilder
     }
 
     final CSSValue displayModel = layoutContext.getValue(
-            BoxStyleKeys.DISPLAY_MODEL);
+        BoxStyleKeys.DISPLAY_MODEL);
 
 //    Log.debug ("Display: " + displayModel + " " + displayRole);
     if ("marker".equals(layoutContext.getPseudoElement()))
     {
       final DisplayMarkerElement node =
-              new DisplayMarkerElement(layoutContext);
+          new DisplayMarkerElement(layoutContext);
       currentBox = closeAutoGeneratedContext(currentBox, node);
       currentBox.add(node);
       stack.push(node);
@@ -296,8 +288,8 @@ public class DisplayModelBuilder implements ModelBuilder
       stack.push(node);
     }
     else if (DisplayRole.TABLE_HEADER_GROUP.equals(displayRole) ||
-             DisplayRole.TABLE_FOOTER_GROUP.equals(displayRole) ||
-             DisplayRole.TABLE_ROW_GROUP.equals(displayRole))
+        DisplayRole.TABLE_FOOTER_GROUP.equals(displayRole) ||
+        DisplayRole.TABLE_ROW_GROUP.equals(displayRole))
     {
       final DisplayTableSectionElement node = new DisplayTableSectionElement(layoutContext);
       currentBox = closeAutoGeneratedContext(currentBox, node);
@@ -329,7 +321,7 @@ public class DisplayModelBuilder implements ModelBuilder
     else if (DisplayModel.INLINE_INSIDE.equals(displayModel))
     {
       final DisplayInlineElement node =
-              new DisplayInlineElement(layoutContext);
+          new DisplayInlineElement(layoutContext);
       currentBox = closeAutoGeneratedContext(currentBox, node);
       currentBox.add(node);
       stack.push(node);
@@ -337,7 +329,7 @@ public class DisplayModelBuilder implements ModelBuilder
     else // we dont handle Ruby yet nor do we have support for absolute-mode right now
     {
       final DisplayBlockElement node =
-              new DisplayBlockElement (layoutContext);
+          new DisplayBlockElement(layoutContext);
       currentBox = closeAutoGeneratedContext(currentBox, node);
       currentBox.add(node);
       stack.push(node);
@@ -345,9 +337,9 @@ public class DisplayModelBuilder implements ModelBuilder
 
   }
 
-  private DisplayElement closeAutoGeneratedContext (final DisplayElement context,
-                                                    final DisplayElement newElement)
-          throws NormalizationException
+  private DisplayElement closeAutoGeneratedContext(final DisplayElement context,
+                                                   final DisplayElement newElement)
+      throws NormalizationException
   {
     if (context.isAutoGenerated() == false)
     {
@@ -400,14 +392,14 @@ public class DisplayModelBuilder implements ModelBuilder
   }
 
   /**
-   * We want to add a table-cell. Make sure that the current context is a
-   * table row. If it is none, generate the missing table structures.
+   * We want to add a table-cell. Make sure that the current context is a table
+   * row. If it is none, generate the missing table structures.
    *
    * @param maybeRow
    * @return
    */
-  private DisplayElement generateMissingForTableCell (final DisplayElement maybeRow)
-          throws IOException, NormalizationException
+  private DisplayElement generateMissingForTableCell(final DisplayElement maybeRow)
+      throws IOException, NormalizationException
   {
     if (maybeRow instanceof DisplayTableRowElement)
     {
@@ -417,7 +409,7 @@ public class DisplayModelBuilder implements ModelBuilder
     generateMissingForTableRow(maybeRow);
 
     layoutProcess.getNormalizer().startElement
-            (Namespaces.LIBLAYOUT_NAMESPACE, "auto-table-row", new AttributeMap());
+        (Namespaces.LIBLAYOUT_NAMESPACE, "auto-table-row", new AttributeMap());
 
     DisplayElement generatedElement = getCurrentContext();
     generatedElement.setAutoGenerated(true);
@@ -425,15 +417,15 @@ public class DisplayModelBuilder implements ModelBuilder
   }
 
   /**
-   * We want to add a table-row. Make sure that the current context is a
-   * table section. If it is none, generate the missing table structures. The
+   * We want to add a table-row. Make sure that the current context is a table
+   * section. If it is none, generate the missing table structures. The
    * generated section type will be a table-body.
    *
    * @param maybeSection
    * @return
    */
-  private DisplayElement generateMissingForTableRow (final DisplayElement maybeSection)
-          throws IOException, NormalizationException
+  private DisplayElement generateMissingForTableRow(final DisplayElement maybeSection)
+      throws IOException, NormalizationException
   {
     if (maybeSection instanceof DisplayTableSectionElement)
     {
@@ -443,7 +435,7 @@ public class DisplayModelBuilder implements ModelBuilder
     generateMissingForTableSection(maybeSection);
 
     layoutProcess.getNormalizer().startElement
-            (Namespaces.LIBLAYOUT_NAMESPACE, "auto-table-body", new AttributeMap());
+        (Namespaces.LIBLAYOUT_NAMESPACE, "auto-table-body", new AttributeMap());
     DisplayElement generatedElement = getCurrentContext();
     generatedElement.setAutoGenerated(true);
     return generatedElement;
@@ -455,8 +447,8 @@ public class DisplayModelBuilder implements ModelBuilder
    *
    * @return
    */
-  private DisplayElement generateMissingForTableSection (final DisplayElement maybeTable)
-          throws IOException, NormalizationException
+  private DisplayElement generateMissingForTableSection(final DisplayElement maybeTable)
+      throws IOException, NormalizationException
   {
     if (maybeTable instanceof DisplayTableElement)
     {
@@ -464,15 +456,16 @@ public class DisplayModelBuilder implements ModelBuilder
     }
 
     layoutProcess.getNormalizer().startElement
-            (Namespaces.LIBLAYOUT_NAMESPACE, "auto-table", new AttributeMap());
+        (Namespaces.LIBLAYOUT_NAMESPACE, "auto-table", new AttributeMap());
     DisplayElement generatedElement = getCurrentContext();
     generatedElement.setAutoGenerated(true);
     return generatedElement;
   }
 
   public void addContent(final ContentToken content)
-          throws NormalizationException
+      throws NormalizationException
   {
+    centralRestoreStack();
     final DisplayElement currentBox = getCurrentContext();
     if (currentBox instanceof DisplayPassThroughElement)
     {
@@ -489,8 +482,9 @@ public class DisplayModelBuilder implements ModelBuilder
   }
 
   public void endElement()
-          throws NormalizationException
+      throws NormalizationException
   {
+    centralRestoreStack();
     DisplayElement cb = (DisplayElement) stack.pop();
     if (cb instanceof DisplayPassThroughElement)
     {
@@ -508,6 +502,7 @@ public class DisplayModelBuilder implements ModelBuilder
 
   public void endDocument() throws NormalizationException
   {
+    centralRestoreStack();
     if (stack.isEmpty() == false)
     {
       throw new IllegalStateException(String.valueOf(stack));
@@ -516,8 +511,10 @@ public class DisplayModelBuilder implements ModelBuilder
   }
 
   public void handlePageBreak(final PageContext pageContext)
+      throws NormalizationException
   {
-    contentGenerator.handlePageBreak (pageContext);
+    centralRestoreStack();
+    contentGenerator.handlePageBreak(pageContext);
   }
 
   protected DisplayElement getRoot()
@@ -531,13 +528,10 @@ public class DisplayModelBuilder implements ModelBuilder
 
   public State saveState() throws StateException
   {
-    DisplayModelBuilderState dbms = new DisplayModelBuilderState();
-    dbms.setStackContents (saveStack());
-    dbms.setContentGeneratorState(contentGenerator.saveState());
-    return dbms;
+    return new DisplayModelBuilderState(this);
   }
 
-  protected DisplayNode[] saveStack () throws StateException
+  protected DisplayNode[] saveStack() throws StateException
   {
     final int size = stack.size();
     DisplayNode[] nodes = new DisplayNode[size];
@@ -556,9 +550,22 @@ public class DisplayModelBuilder implements ModelBuilder
     return nodes;
   }
 
-  protected void restoreStack (DisplayNode[] nodes)
-          throws StateException, NormalizationException
+  private void centralRestoreStack() throws NormalizationException
   {
+//    restoreStack(this.stackContents);
+//    this.stackContents = null;
+  }
+
+  protected void restoreStack(final DisplayNode[] stackContents)
+      throws NormalizationException
+  {
+    if (stackContents == null)
+    {
+      return;
+    }
+
+    DisplayNode[] nodes = stackContents;
+
     ContentGenerator emptyContentGenerator = new EmptyContentGenerator();
     stack.clear();
     DisplayElement parent = null;
@@ -596,7 +603,7 @@ public class DisplayModelBuilder implements ModelBuilder
       }
       catch (CloneNotSupportedException e)
       {
-        throw new StateException("Unable to restore state");
+        throw new NormalizationException("Unable to restore state");
       }
     }
 

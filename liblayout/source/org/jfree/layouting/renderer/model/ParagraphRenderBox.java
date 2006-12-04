@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ParagraphRenderBox.java,v 1.15 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -133,8 +133,9 @@ public class ParagraphRenderBox extends BlockRenderBox
     box.pool = (ParagraphPoolBox) pool.hibernate();
     box.pool.setParent(box);
 
-    box.lineboxContainer = (LineBoxRenderBox) lineboxContainer.derive(false);
-    box.lineboxContainer.setParent(box);
+// this is done during the cloning ..    
+//    box.lineboxContainer = (LineBoxRenderBox) lineboxContainer.derive(false);
+//    box.lineboxContainer.setParent(box);
     box.lineBoxAge = 0;
     return box;
   }

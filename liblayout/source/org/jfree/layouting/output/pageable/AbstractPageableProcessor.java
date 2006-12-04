@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractPageableProcessor.java,v 1.7 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -70,8 +70,8 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
     }
     else
     {
-      //return new PrintingRenderer (new PaginatingRenderer(layoutProcess));
-      return new PaginatingRenderer(layoutProcess);
+      return new PrintingRenderer (new PaginatingRenderer(layoutProcess));
+      //return new PaginatingRenderer(layoutProcess);
     }
   }
 
