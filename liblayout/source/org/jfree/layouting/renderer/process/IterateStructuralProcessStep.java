@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: IterateStructuralProcessStep.java,v 1.4 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,7 +50,7 @@ public abstract class IterateStructuralProcessStep
   {
   }
 
-  protected final void startProcessing (RenderNode node)
+  protected void startProcessing (RenderNode node)
   {
     if (node instanceof InlineRenderBox)
     {

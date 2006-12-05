@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DisplayBlockElement.java,v 1.7 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,6 +50,7 @@ public class DisplayBlockElement extends DisplayElement
 {
   private DisplayInlineElement lineBox;
   private boolean empty;
+  private boolean lineboxActive;
 
   public DisplayBlockElement(final LayoutContext context)
   {
@@ -70,6 +71,7 @@ public class DisplayBlockElement extends DisplayElement
 
   public void add(DisplayNode node) throws NormalizationException
   {
+
     final LayoutContext layoutContext = node.getLayoutContext();
     final CSSValue dr = layoutContext.getValue(BoxStyleKeys.DISPLAY_ROLE);
     if ((node instanceof DisplayElement == false) ||
@@ -84,6 +86,7 @@ public class DisplayBlockElement extends DisplayElement
                         (id, getLayoutContext());
         lineBox = new DisplayRootInlineElement(context);
         addInternal(lineBox);
+        lineboxActive = true;
       }
       lineBox.add(node);
     }
@@ -93,9 +96,25 @@ public class DisplayBlockElement extends DisplayElement
       {
         lineBox.markFinished();
       }
+      lineboxActive = false;
       lineBox = null;
       addInternal(node);
     }
+  }
+
+  public boolean isLineboxActive()
+  {
+    return lineboxActive;
+  }
+
+  public void setLineboxActive(final boolean lineboxActive)
+  {
+    this.lineboxActive = lineboxActive;
+  }
+
+  public void setLineBox(final DisplayInlineElement lineBox)
+  {
+    this.lineBox = lineBox;
   }
 
   protected void addInternal(DisplayNode node) throws NormalizationException

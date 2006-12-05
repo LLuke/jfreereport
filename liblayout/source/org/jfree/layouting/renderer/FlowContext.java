@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FlowContext.java,v 1.2 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -48,6 +48,7 @@ public final class FlowContext
   {
     private State textFactoryState;
     private Object currentFlowId;
+    public Object DEBUG_original;
 
     public FlowContextState(final State textFactoryState,
                             final Object currentFlowId)
@@ -82,6 +83,14 @@ public final class FlowContext
   public FlowContext(final RenderableTextFactory textFactory,
                      final NormalFlowRenderBox currentFlow)
   {
+    if (textFactory == null)
+    {
+      throw new NullPointerException();
+    }
+    if (currentFlow == null)
+    {
+      throw new NullPointerException();
+    }
     this.textFactory = textFactory;
     this.currentFlow = currentFlow;
   }
@@ -98,7 +107,9 @@ public final class FlowContext
 
   public FlowContextState saveState() throws StateException
   {
-    return new FlowContextState
+    final FlowContextState flowContextState = new FlowContextState
         (textFactory.saveState(), currentFlow.getInstanceId());
+    flowContextState.DEBUG_original = currentFlow;
+    return flowContextState;
   }
 }

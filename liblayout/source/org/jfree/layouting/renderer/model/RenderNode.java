@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RenderNode.java,v 1.25 2006/12/03 18:58:09 taqua Exp $
+ * $Id: RenderNode.java,v 1.26 2006/12/04 19:12:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -81,6 +81,7 @@ public abstract class RenderNode implements Cloneable
   private int minorAxis;
 
   private boolean frozen;
+  private boolean hibernated;
   private Object instanceId;
 
   private NodeLayoutProperties layoutProperties;
@@ -443,6 +444,7 @@ public abstract class RenderNode implements Cloneable
     node.parent = null;
     node.next = null;
     node.prev = null;
+    node.hibernated = false;
     return node;
   }
 
@@ -459,6 +461,7 @@ public abstract class RenderNode implements Cloneable
     node.parent = null;
     node.next = null;
     node.prev = null;
+    node.hibernated = true;
     return node;
   }
 
@@ -469,12 +472,23 @@ public abstract class RenderNode implements Cloneable
     node.next = null;
     node.prev = null;
     node.frozen = true;
+    node.hibernated = false;
     return node;
   }
 
   public boolean isFrozen()
   {
     return frozen;
+  }
+
+  public boolean isHibernated()
+  {
+    return hibernated;
+  }
+
+  protected void setHibernated(final boolean hibernated)
+  {
+    this.hibernated = hibernated;
   }
 
   public RenderNode findNodeById(Object instanceId)

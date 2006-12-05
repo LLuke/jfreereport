@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrintContentGenerator.java,v 1.7 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -86,7 +86,7 @@ public class PrintContentGenerator implements ContentGenerator
 
   private Renderer renderer;
 
-  public PrintContentGenerator(LayoutProcess layoutProcess)
+  public PrintContentGenerator(final LayoutProcess layoutProcess)
   {
     this.renderer = layoutProcess.getOutputProcessor().createRenderer(layoutProcess);
   }

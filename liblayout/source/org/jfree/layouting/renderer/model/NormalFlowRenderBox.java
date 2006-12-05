@@ -23,13 +23,16 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: NormalFlowRenderBox.java,v 1.13 2006/12/03 18:58:09 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.14 2006/12/04 19:12:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.model;
 
 import java.util.ArrayList;
+
+import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.util.Log;
 
 /**
  * A box that defines its own normal flow. All absolutly positioned or
@@ -211,10 +214,5 @@ public class NormalFlowRenderBox extends BlockRenderBox
       }
     }
     return super.findNodeById(instanceId);
-  }
-
-  public void close()
-  {
-    super.close();
   }
 }

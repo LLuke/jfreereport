@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RenderBox.java,v 1.26 2006/12/03 18:58:09 taqua Exp $
+ * $Id: RenderBox.java,v 1.27 2006/12/04 19:12:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -228,6 +228,12 @@ public abstract class RenderBox extends RenderNode
           ("Child to be added must not be null.");
     }
 
+    if (isHibernated())
+    {
+      throw new IllegalStateException
+          ("Check your state management, you've messed with an hibernated element.");
+    }
+
     if (lastChild != null)
     {
       lastChild.setNext(child);
@@ -263,6 +269,12 @@ public abstract class RenderBox extends RenderNode
     {
       throw new IllegalStateException
           ("Adding content to an already closed element.");
+    }
+
+    if (isHibernated())
+    {
+      throw new IllegalStateException
+          ("Check your state management. You tried to modify a hibernated element.");
     }
 
     if (lastChild != null)
@@ -759,7 +771,7 @@ public abstract class RenderBox extends RenderNode
       return this;
     }
 
-    RenderNode child = getFirstChild();
+    RenderNode child = getLastChild();
     while (child != null)
     {
       final RenderNode nodeById = child.findNodeById(instanceId);
@@ -767,7 +779,7 @@ public abstract class RenderBox extends RenderNode
       {
         return nodeById;
       }
-      child = child.getNext();
+      child = child.getPrev();
     }
     return null;
   }
@@ -906,6 +918,12 @@ public abstract class RenderBox extends RenderNode
     if (isOpen() == false)
     {
       throw new IllegalStateException("Double close..");
+    }
+
+    if (isHibernated())
+    {
+      throw new IllegalStateException
+          ("Check your state management. You tried to mess with an hibernated element.");
     }
 
     this.open = false;

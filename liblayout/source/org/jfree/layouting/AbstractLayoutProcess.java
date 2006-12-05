@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractLayoutProcess.java,v 1.7 2006/12/03 18:57:49 taqua Exp $
+ * $Id: AbstractLayoutProcess.java,v 1.8 2006/12/04 19:12:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,6 +41,7 @@ import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 05.12.2005, 19:17:21
@@ -74,6 +75,7 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
                                             AbstractLayoutProcess layoutProcess)
         throws StateException
     {
+      Log.error ("START ************************************************* ");
       layoutProcess.documentContext = documentContext;
       if (styleResolver != null)
       {
@@ -85,6 +87,7 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
         layoutProcess.inputFeed = (InputFeed) inputFeedState.restore(
             layoutProcess);
       }
+      Log.error ("DONE  ************************************************* ");
       return layoutProcess;
     }
   }

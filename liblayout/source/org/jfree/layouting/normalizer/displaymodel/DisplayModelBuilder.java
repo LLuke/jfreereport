@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DisplayModelBuilder.java,v 1.8 2006/12/03 18:58:06 taqua Exp $
+ * $Id: DisplayModelBuilder.java,v 1.9 2006/12/04 19:12:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,10 +50,11 @@ import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.normalizer.content.NormalizationException;
 import org.jfree.layouting.normalizer.generator.ContentGenerator;
-import org.jfree.layouting.normalizer.generator.EmptyContentGenerator;
+import org.jfree.layouting.normalizer.generator.PrintContentGenerator;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.layouting.util.AttributeMap;
 import org.jfree.util.FastStack;
+import org.jfree.util.Log;
 
 /**
  * Builds the display model. The display model guarantees, that block and inline
@@ -113,7 +114,6 @@ public class DisplayModelBuilder implements ModelBuilder
   private FastStack stack;
   private ContentGenerator contentGenerator;
   private LayoutProcess layoutProcess;
-  private DisplayNode[] stackContents;
 
   public DisplayModelBuilder(final ContentGenerator contentGenerator,
                              final LayoutProcess layoutProcess)
@@ -564,9 +564,11 @@ public class DisplayModelBuilder implements ModelBuilder
       return;
     }
 
+    Log.debug ("START DISPLAYMODEL --------------------------------------");
     DisplayNode[] nodes = stackContents;
 
-    ContentGenerator emptyContentGenerator = new EmptyContentGenerator();
+    ContentGenerator emptyContentGenerator =
+        new PrintContentGenerator((Renderer) null);
     stack.clear();
     DisplayElement parent = null;
     for (int i = 0; i < nodes.length; i++)
@@ -615,7 +617,21 @@ public class DisplayModelBuilder implements ModelBuilder
         DisplayRoot dfe = (DisplayRoot) element;
         dfe.setContentGenerator(contentGenerator);
       }
+      final DisplayNode node = nodes[i];
+      if (node instanceof DisplayBlockElement)
+      {
+        DisplayBlockElement dbeOrg = (DisplayBlockElement) node;
+        DisplayBlockElement dbeCopy = (DisplayBlockElement) element;
+        if (dbeOrg.isLineboxActive() == false)
+        {
+          dbeCopy.setLineBox(null);
+          dbeCopy.setLineboxActive(false);
+        }
+      }
     }
+
+    Log.debug ("DONE  DISPLAYMODEL --------------------------------------");
+
   }
 
   public Renderer getRenderer()

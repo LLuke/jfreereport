@@ -23,17 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LogicalPageBox.java,v 1.17 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.model.page;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.EmptyBoxDefinition;
 import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
@@ -82,7 +79,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
  */
 public class LogicalPageBox extends BlockRenderBox
 {
-  private ArrayList subFlows;
+  //private ArrayList subFlows;
   private PageGrid pageGrid;
 
   private long[] pageWidths;
@@ -109,7 +106,7 @@ public class LogicalPageBox extends BlockRenderBox
       throw new NullPointerException("PageGrid must not be null");
     }
 
-    this.subFlows = new ArrayList();
+    //this.subFlows = new ArrayList();
     NormalFlowRenderBox contentArea =
         new NormalFlowRenderBox(EmptyBoxDefinition.getInstance());
     this.contentAreaId = contentArea.getInstanceId();
@@ -190,27 +187,27 @@ public class LogicalPageBox extends BlockRenderBox
   {
     return headerArea;
   }
-
-  public void addAbsoluteFlow(NormalFlowRenderBox flow)
-  {
-    subFlows.add(flow);
-  }
-
-  public NormalFlowRenderBox[] getAbsoluteFlows()
-  {
-    return (NormalFlowRenderBox[])
-        subFlows.toArray(new NormalFlowRenderBox[subFlows.size()]);
-  }
-
-  public NormalFlowRenderBox getAbsoluteFlow(int i)
-  {
-    return (NormalFlowRenderBox) subFlows.get(i);
-  }
-
-  public int getAbsoluteFlowCount()
-  {
-    return subFlows.size();
-  }
+//
+//  public void addAbsoluteFlow(NormalFlowRenderBox flow)
+//  {
+//    subFlows.add(flow);
+//  }
+//
+//  public NormalFlowRenderBox[] getAbsoluteFlows()
+//  {
+//    return (NormalFlowRenderBox[])
+//        subFlows.toArray(new NormalFlowRenderBox[subFlows.size()]);
+//  }
+//
+//  public NormalFlowRenderBox getAbsoluteFlow(int i)
+//  {
+//    return (NormalFlowRenderBox) subFlows.get(i);
+//  }
+//
+//  public int getAbsoluteFlowCount()
+//  {
+//    return subFlows.size();
+//  }
 
   public LogicalPageBox getLogicalPage()
   {
@@ -258,14 +255,14 @@ public class LogicalPageBox extends BlockRenderBox
     final LogicalPageBox box = (LogicalPageBox) super.deriveFrozen(deepDerive);
     box.headerArea = (PageAreaRenderBox) headerArea.deriveFrozen(deepDerive);
     box.footerArea = (PageAreaRenderBox) footerArea.deriveFrozen(deepDerive);
-
-    box.subFlows.clear();
-
-    for (int i = 0; i < subFlows.size(); i++)
-    {
-      NormalFlowRenderBox flowRenderBox = (NormalFlowRenderBox) subFlows.get(i);
-      box.subFlows.add(flowRenderBox.deriveFrozen(deepDerive));
-    }
+//
+//    box.subFlows.clear();
+//
+//    for (int i = 0; i < subFlows.size(); i++)
+//    {
+//      NormalFlowRenderBox flowRenderBox = (NormalFlowRenderBox) subFlows.get(i);
+//      box.subFlows.add(flowRenderBox.deriveFrozen(deepDerive));
+//    }
 
     return box;
   }
@@ -282,13 +279,13 @@ public class LogicalPageBox extends BlockRenderBox
     final LogicalPageBox box = (LogicalPageBox) super.derive(deepDerive);
     box.headerArea = (PageAreaRenderBox) headerArea.derive(deepDerive);
     box.footerArea = (PageAreaRenderBox) footerArea.derive(deepDerive);
-    box.subFlows.clear();
-
-    for (int i = 0; i < subFlows.size(); i++)
-    {
-      NormalFlowRenderBox flowRenderBox = (NormalFlowRenderBox) subFlows.get(i);
-      box.subFlows.add(flowRenderBox.derive(deepDerive));
-    }
+//    box.subFlows.clear();
+//
+//    for (int i = 0; i < subFlows.size(); i++)
+//    {
+//      NormalFlowRenderBox flowRenderBox = (NormalFlowRenderBox) subFlows.get(i);
+//      box.subFlows.add(flowRenderBox.derive(deepDerive));
+//    }
 
     return box;
   }
@@ -306,13 +303,13 @@ public class LogicalPageBox extends BlockRenderBox
     box.headerArea = (PageAreaRenderBox) headerArea.hibernate();
     box.footerArea = (PageAreaRenderBox) footerArea.hibernate();
 
-    box.subFlows.clear();
-
-    for (int i = 0; i < subFlows.size(); i++)
-    {
-      NormalFlowRenderBox flowRenderBox = (NormalFlowRenderBox) subFlows.get(i);
-      box.subFlows.add(flowRenderBox.hibernate());
-    }
+//    box.subFlows.clear();
+//
+//    for (int i = 0; i < subFlows.size(); i++)
+//    {
+//      NormalFlowRenderBox flowRenderBox = (NormalFlowRenderBox) subFlows.get(i);
+//      box.subFlows.add(flowRenderBox.hibernate());
+//    }
 
     return box;
   }
@@ -331,7 +328,7 @@ public class LogicalPageBox extends BlockRenderBox
       o.pageHeights = (long[]) pageHeights.clone();
       o.pageWidths = (long[]) pageWidths.clone();
       o.pageGrid = (PageGrid) pageGrid.clone();
-      o.subFlows = (ArrayList) subFlows.clone();
+//      o.subFlows = (ArrayList) subFlows.clone();
       return o;
     }
     catch (CloneNotSupportedException e)

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CleanPaginatedBoxesStep.java,v 1.7 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -95,6 +95,10 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
       // The cell is empty ..
       return false;
     }
+    if (node.isOpen())
+    {
+      return true;
+    }
 
     final long nodeY = node.getY();
     if ((nodeY + node.getHeight()) > pageOffset)
@@ -119,6 +123,12 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
       final RenderNode next = last.getVisibleNext();
       if (next == null)
       {
+        break;
+      }
+      if (next.isOpen())
+      {
+        // as long as a box is open, it can grow and therefore it cannot be
+        // removed ..
         break;
       }
 
@@ -146,8 +156,17 @@ public class CleanPaginatedBoxesStep extends IterateVisualProcessStep
     while (removeNode != last)
     {
       final RenderNode next = removeNode.getNext();
+      if (removeNode.isOpen())
+      {
+        throw new IllegalStateException();
+      }
       box.remove(removeNode);
       removeNode = next;
+    }
+
+    if (last.isOpen())
+    {
+      throw new IllegalStateException();
     }
     box.replaceChild(last, replacement);
     if (replacement.getParent() != box)

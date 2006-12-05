@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractRenderer.java,v 1.12 2006/12/03 18:58:06 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.13 2006/12/04 19:12:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -80,6 +80,7 @@ import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
 import org.jfree.layouting.renderer.page.RenderPageContext;
 import org.jfree.layouting.renderer.process.ValidateModelStep;
+import org.jfree.layouting.renderer.process.CheckHibernationLayoutStep;
 import org.jfree.layouting.renderer.text.DefaultRenderableTextFactory;
 import org.jfree.layouting.renderer.text.RenderableTextFactory;
 import org.jfree.layouting.util.geom.StrictDimension;
@@ -127,6 +128,8 @@ public abstract class AbstractRenderer implements Renderer
       {
         this.logicalPageBox = (LogicalPageBox)
             renderer.logicalPageBox.hibernate();
+        CheckHibernationLayoutStep step = new CheckHibernationLayoutStep();
+        step.startProcessing(this.logicalPageBox);
       }
 
       try
@@ -189,6 +192,12 @@ public abstract class AbstractRenderer implements Renderer
             (RenderableTextFactory) textFactoryState.restore(layoutProcess);
         final NormalFlowRenderBox box = (NormalFlowRenderBox)
             renderer.logicalPageBox.findNodeById(currentFlowId);
+        if (box == null)
+        {
+          final NormalFlowRenderBox box2 = (NormalFlowRenderBox)
+              renderer.logicalPageBox.findNodeById(currentFlowId);
+          throw new StateException("No Such normal flow.");
+        }
         renderer.flowContexts.push(new FlowContext(textFactory, box));
       }
     }
@@ -313,6 +322,10 @@ public abstract class AbstractRenderer implements Renderer
   {
     final FlowContext context = (FlowContext) flowContexts.peek();
     final NormalFlowRenderBox currentFlow = context.getCurrentFlow();
+    if (currentFlow == null)
+    {
+      throw new IllegalStateException("There is no flow active at the moment.");
+    }
     final RenderBox insertationPoint = currentFlow.getInsertationPoint();
 
     // A small assertation game ..

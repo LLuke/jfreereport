@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ChainingLayoutProcess.java,v 1.3 2006/12/03 18:57:49 taqua Exp $
+ * $Id: ChainingLayoutProcess.java,v 1.4 2006/12/04 19:12:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,6 +40,7 @@ import org.jfree.layouting.output.ChainingOutputProcessor;
 import org.jfree.layouting.output.OutputProcessor;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 16.06.2006, 14:42:57
@@ -80,6 +81,8 @@ public class ChainingLayoutProcess implements LayoutProcess
     public LayoutProcess restore(OutputProcessor outputProcessor)
         throws StateException
     {
+      Log.error ("START ++++++++++++++++++++++++++++++++++++++++++++++++ ");
+
       LayoutProcess root = chainedLayoutProcess.restore(outputProcessor);
       ChainingLayoutProcess proc = new ChainingLayoutProcess(root);
       proc.outputProcessor = new ChainingOutputProcessor(outputProcessor);
@@ -91,6 +94,8 @@ public class ChainingLayoutProcess implements LayoutProcess
           throw new StateException();
         }
       }
+      Log.error ("DONE  ++++++++++++++++++++++++++++++++++++++++++++++++ ");
+
       return proc;
     }
   }
@@ -180,9 +185,11 @@ public class ChainingLayoutProcess implements LayoutProcess
 
   public LayoutProcessState saveState() throws StateException
   {
+    Log.error ("SAVING  ++++++++++++++++++++++++++++++++++++++++++++++++ ");
     ChainingLayoutProcessState state = new ChainingLayoutProcessState();
     state.setInputFeed(inputFeed.saveState());
     state.setChainedLayoutProcess(chainedLayoutProcess.saveState());
+    Log.error ("DONE SAVING  +++++++++++++++++++++++++++++++++++++++++++ ");
     return state;
   }
 

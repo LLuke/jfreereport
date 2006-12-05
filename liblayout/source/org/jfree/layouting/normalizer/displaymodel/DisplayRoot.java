@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DisplayRoot.java,v 1.3 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -75,6 +75,12 @@ public class DisplayRoot extends DisplayFlowElement
     return this;
   }
 
+//  public void add(DisplayNode node) throws NormalizationException
+//  {
+//    final Object linebox = getLineBox();
+//    super.add(node);
+//  }
+//
   public Object clone() throws CloneNotSupportedException
   {
     DisplayRoot dfe = (DisplayRoot) super.clone();

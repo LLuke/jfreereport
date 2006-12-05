@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrintingRenderer.java,v 1.3 2006/12/03 18:58:07 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -116,21 +116,24 @@ public class PrintingRenderer implements Renderer
   public void startedTableSection(final LayoutContext layoutContext)
           throws NormalizationException
   {
-    Log.debug ("<table-section>");
+    Log.debug ("<table-section " +
+        "tag='" + layoutContext.getTagName() + "' namespace='" + layoutContext.getNamespace() + "'>");
     parent.startedTableSection(layoutContext);
   }
 
   public void startedTableRow(final LayoutContext layoutContext)
           throws NormalizationException
   {
-    Log.debug ("<table-row>");
+    Log.debug ("<table-row " +
+        "tag='" + layoutContext.getTagName() + "' namespace='" + layoutContext.getNamespace() + "'>");
     parent.startedTableRow(layoutContext);
   }
 
   public void startedTableCell(final LayoutContext layoutContext)
           throws NormalizationException
   {
-    Log.debug ("<table-cell>");
+    Log.debug ("<table-cell " +
+        "tag='" + layoutContext.getTagName() + "' namespace='" + layoutContext.getNamespace() + "'>");
     parent.startedTableCell(layoutContext);
   }
 
@@ -145,21 +148,24 @@ public class PrintingRenderer implements Renderer
   public void startedMarker(final LayoutContext context)
           throws NormalizationException
   {
-    Log.debug ("<marker>");
+    Log.debug ("<marker " +
+        "tag='" + context.getTagName() + "' namespace='" + context.getNamespace() + "'>");
     parent.startedMarker(context);
   }
 
   public void startedRootInline(final LayoutContext context)
           throws NormalizationException
   {
-    Log.debug ("<paragraph>");
+    Log.debug ("<paragraph " +
+        "tag='" + context.getTagName() + "' namespace='" + context.getNamespace() + "'>");
     parent.startedRootInline(context);
   }
 
   public void startedInline(final LayoutContext context)
           throws NormalizationException
   {
-    Log.debug ("<inline>");
+    Log.debug ("<inline " +
+        "tag='" + context.getTagName() + "' namespace='" + context.getNamespace() + "'>");
     parent.startedInline(context);
   }
 
