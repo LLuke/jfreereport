@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ContextLookup.java,v 1.5 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.formula.lvalues;
 
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.EvaluationException;
 
 /**
  * A reference that queries the datarow.
@@ -47,7 +48,7 @@ public class ContextLookup extends AbstractLValue
     this.name = name;
   }
 
-  public TypeValuePair evaluate()
+  public TypeValuePair evaluate() throws EvaluationException
   {
     final FormulaContext context = getContext();
     final Object value = context.resolveReference(name);

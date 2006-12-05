@@ -24,33 +24,22 @@
  *
  *
  * ------------
- * $Id: FormulaContext.java,v 1.3 2006/12/03 19:22:27 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
+
 package org.jfree.formula;
 
-import org.jfree.formula.function.FunctionRegistry;
-import org.jfree.formula.operators.OperatorFactory;
-import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.util.Configuration;
-
 /**
- * Creation-Date: 31.10.2006, 14:11:52
+ * Creation-Date: Dec 5, 2006, 4:19:26 PM
  *
  * @author Thomas Morgner
  */
-public interface FormulaContext
+public class ContextEvaluationException extends EvaluationException
 {
-  public boolean isReferenceDirty(Object name) throws ContextEvaluationException;
-  public Object resolveReference (Object name) throws ContextEvaluationException;
-  public Type resolveReferenceType (Object name) throws ContextEvaluationException;
-
-  public LocalizationContext getLocalizationContext();
-  public Configuration getConfiguration();
-
-  public FunctionRegistry getFunctionRegistry ();
-  public TypeRegistry getTypeRegistry();
-  public OperatorFactory getOperatorFactory();
+  public ContextEvaluationException(final ErrorValue errorValue)
+  {
+    super(errorValue);
+  }
 }
