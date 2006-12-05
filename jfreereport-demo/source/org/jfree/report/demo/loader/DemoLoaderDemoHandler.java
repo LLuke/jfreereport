@@ -62,7 +62,7 @@ public class DemoLoaderDemoHandler extends AbstractDemoHandler
    */
   public String getDemoName()
   {
-    return "Loader Demo";
+    return "Load-Your-Own-Report Demo";
   }
 
   /**

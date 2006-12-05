@@ -35,6 +35,8 @@ import java.awt.Toolkit;
 import java.net.URL;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.demo.JFreeReportDemoBoot;
+import org.jfree.report.demo.util.SimpleDemoFrame;
 import org.jfree.report.expressions.sys.GroupByExpression;
 import org.jfree.report.expressions.sys.GetValueExpression;
 import org.jfree.report.expressions.FormulaFunction;
@@ -46,6 +48,7 @@ import org.jfree.report.structure.StaticText;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * Creation-Date: 02.12.2006, 20:41:17
@@ -251,4 +254,5 @@ public class WorldAPIDemoBuilder
 
     return section;
   }
+
 }

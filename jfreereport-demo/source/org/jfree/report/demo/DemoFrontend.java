@@ -37,8 +37,10 @@ import org.jfree.report.demo.util.DemoSelector;
 import org.jfree.report.demo.util.CompoundDemoFrame;
 import org.jfree.report.demo.util.DefaultDemoSelector;
 import org.jfree.report.demo.quadrant.QuadrantDemoHandler;
+import org.jfree.report.demo.quadrant.QuadrantSubReportDemoHandler;
 import org.jfree.report.demo.world.WorldDemoHandler;
 import org.jfree.report.demo.world.WorldAPIDemoHandler;
+import org.jfree.report.demo.loader.DemoLoaderDemoHandler;
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
@@ -62,9 +64,10 @@ public class DemoFrontend extends CompoundDemoFrame
     final DefaultDemoSelector rootSelector =
         new DefaultDemoSelector("All JFreeReport Demos");
     rootSelector.addDemo(new QuadrantDemoHandler());
+    rootSelector.addDemo(new QuadrantSubReportDemoHandler());
     rootSelector.addDemo(new WorldDemoHandler());
     rootSelector.addDemo(new WorldAPIDemoHandler());
-
+    rootSelector.addDemo(new DemoLoaderDemoHandler());
     return rootSelector;
   }
 

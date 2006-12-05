@@ -36,8 +36,11 @@ import javax.swing.JComponent;
 import org.jfree.report.TableReportDataFactory;
 import org.jfree.report.demo.util.AbstractDemoHandler;
 import org.jfree.report.demo.util.ReportDefinitionException;
+import org.jfree.report.demo.util.SimpleDemoFrame;
+import org.jfree.report.demo.JFreeReportDemoBoot;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  * Creation-Date: 02.12.2006, 20:39:50
@@ -104,4 +107,17 @@ public class WorldAPIDemoHandler extends AbstractDemoHandler
   {
     return createDefaultTable(data);
   }
+
+  public static void main(String[] args)
+  {
+    JFreeReportDemoBoot.getInstance().start();
+
+    SimpleDemoFrame demoFrame = new SimpleDemoFrame(new WorldAPIDemoHandler());
+    demoFrame.init();
+    demoFrame.pack();
+    RefineryUtilities.centerFrameOnScreen(demoFrame);
+    demoFrame.setVisible(true);
+
+  }
+
 }
