@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PaginatingReportProcessor.java,v 1.9 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,6 +44,7 @@ import org.jfree.report.flow.LibLayoutReportTarget;
 import org.jfree.report.flow.ReportContext;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.ReportTargetState;
+import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.layoutprocessor.LayoutController;
 import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
 import org.jfree.resourceloader.ResourceKey;
@@ -58,7 +59,7 @@ import org.jfree.util.Log;
  *
  * @author Thomas Morgner
  */
-public class PaginatingReportProcessor extends AbstractReportProcessor
+public abstract class PaginatingReportProcessor extends AbstractReportProcessor
 {
   private PageableOutputProcessor outputProcessor;
   private PageStateList stateList;
@@ -91,46 +92,13 @@ public class PaginatingReportProcessor extends AbstractReportProcessor
         (job, resourceKey, resourceManager, layoutProcess);
   }
 
-  public void processReport(ReportJob job)
-      throws ReportDataFactoryException,
-      DataSourceException, ReportProcessingException
-  {
-    prepareReportProcessing(job);
-
-    // third, generate the content.
-
-    // Have a look at the content ..
-//    DisplayAllInterceptor dia = new DisplayAllInterceptor();
-//    GraphicsOutputProcessor gop = (GraphicsOutputProcessor) outputProcessor;
-//    gop.setInterceptor(dia);
-
-//    processReportRun(job, createTarget(job));
+//  public void processReport(ReportJob job)
+//      throws ReportDataFactoryException,
+//      DataSourceException, ReportProcessingException
+//  {
+//    prepareReportProcessing(job);
 //
-//    // Using the interceptor to get a specific page without state management.
-//    DisplayInterceptor di =
-//        new DisplayInterceptor(outputProcessor.getLogicalPage(1));
-//    gop.setInterceptor(di);
-//
-//    processReportRun(job, createTarget(job));
-//
-//    try
-//    {
-//      // Using the state management.
-//      final PageState state = (PageState) stateList.get(1);
-//      final ReportTargetState o = state.getTargetState();
-//      final LayoutPosition position = state.getLayoutPosition();
-//
-//      final LibLayoutReportTarget target =
-//          (LibLayoutReportTarget) o.restore(outputProcessor);
-//      gop.setInterceptor(dia);
-//      continueFromPos(position, target);
-//    }
-//    catch (StateException e)
-//    {
-//      e.printStackTrace();
-//    }
-//
-  }
+//  }
 
   protected void prepareReportProcessing(final ReportJob job)
       throws ReportDataFactoryException, DataSourceException, ReportProcessingException
@@ -221,8 +189,20 @@ public class PaginatingReportProcessor extends AbstractReportProcessor
               logicalMapping.add(result);
             }
 
-            stateList.add(new PageState(target.saveState(), layoutController,
-                outputProcessor.getPageCursor()));
+            final ReportTargetState targetState = target.saveState();
+            final PageState state =
+                new PageState (targetState, layoutController,
+                outputProcessor.getPageCursor());
+            stateList.add(state);
+
+            // This is an assertation that we do not run into invalid states
+            // later.
+            if (ASSERTATION)
+            {
+              final ReportTarget reportTarget =
+                targetState.restore(outputProcessor);
+            }
+
             target.resetPagebreakFlag();
           }
         }
@@ -300,4 +280,6 @@ public class PaginatingReportProcessor extends AbstractReportProcessor
     // reached the finish state .. this is bad!
     return null;
   }
+
+  private static final boolean ASSERTATION = true;
 }

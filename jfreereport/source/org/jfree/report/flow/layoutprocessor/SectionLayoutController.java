@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionLayoutController.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: SectionLayoutController.java,v 1.4 2006/12/04 19:11:24 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -200,10 +200,6 @@ public class SectionLayoutController extends ElementLayoutController
 
     if (isPrecomputing() == false && s.isRepeat())
     {
-      if (s.getParent() instanceof SubReport == false)
-      {
-        Log.debug ("ER");
-      }
       // ok, the user wanted us to repeat. So we repeat if the group in which
       // we are in, is not closed (and at least one advance has been fired
       // since the last repeat request [to prevent infinite loops]) ...

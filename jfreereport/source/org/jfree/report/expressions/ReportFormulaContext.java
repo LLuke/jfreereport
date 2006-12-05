@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportFormulaContext.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ package org.jfree.report.expressions;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.LocalizationContext;
+import org.jfree.formula.ContextEvaluationException;
 import org.jfree.formula.function.FunctionRegistry;
 import org.jfree.formula.operators.OperatorFactory;
 import org.jfree.formula.typing.Type;
@@ -40,6 +41,7 @@ import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
+import org.jfree.report.DataFlags;
 import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
@@ -87,9 +89,18 @@ public class ReportFormulaContext implements FormulaContext
     return backend.getOperatorFactory();
   }
 
-  public boolean isReferenceDirty(Object name)
+  public boolean isReferenceDirty(Object name) throws ContextEvaluationException
   {
-    return true;
+    try
+    {
+      final DataFlags flags = dataRow.getFlags(String.valueOf(name));
+      return flags.isChanged();
+    }
+    catch(Exception e)
+    {
+      throw new ContextEvaluationException
+          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_REFERENCE_NOT_RESOLVABLE));
+    }
   }
 
   public Type resolveReferenceType(Object name)
@@ -97,7 +108,7 @@ public class ReportFormulaContext implements FormulaContext
     return AnyType.TYPE;
   }
 
-  public Object resolveReference(Object name)
+  public Object resolveReference(Object name) throws ContextEvaluationException
   {
     if (name == null)
     {
@@ -110,8 +121,8 @@ public class ReportFormulaContext implements FormulaContext
     catch (DataSourceException e)
     {
       Log.debug ("Error while resolving formula reference: ", e);
-      return new LibFormulaErrorValue
-          (LibFormulaErrorValue.ERROR_REFERENCE_NOT_RESOLVABLE);
+      throw new ContextEvaluationException(new LibFormulaErrorValue
+          (LibFormulaErrorValue.ERROR_REFERENCE_NOT_RESOLVABLE));
     }
   }
 
