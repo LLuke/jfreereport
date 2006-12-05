@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LibLayoutBoot.java,v 1.5 2006/12/03 18:57:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -106,5 +106,11 @@ public class LibLayoutBoot extends AbstractBoot
   public static void main(String[] args)
   {
     LibLayoutBoot.getInstance().start();
+  }
+
+  public static boolean isAsserationEnabled()
+  {
+    return getInstance().getExtendedConfig().getBoolProperty
+        ("org.jfree.layouting.EnableAssertations");
   }
 }

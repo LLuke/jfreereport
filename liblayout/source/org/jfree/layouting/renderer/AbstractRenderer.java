@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractRenderer.java,v 1.13 2006/12/04 19:12:58 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.14 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,7 @@ import org.jfree.fonts.encoding.manual.Utf16LE;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
+import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.keys.positioning.PositioningStyleKeys;
@@ -128,8 +129,11 @@ public abstract class AbstractRenderer implements Renderer
       {
         this.logicalPageBox = (LogicalPageBox)
             renderer.logicalPageBox.hibernate();
-        CheckHibernationLayoutStep step = new CheckHibernationLayoutStep();
-        step.startProcessing(this.logicalPageBox);
+        if (LibLayoutBoot.isAsserationEnabled())
+        {
+          CheckHibernationLayoutStep step = new CheckHibernationLayoutStep();
+          step.startProcessing(this.logicalPageBox);
+        }
       }
 
       try
@@ -194,8 +198,6 @@ public abstract class AbstractRenderer implements Renderer
             renderer.logicalPageBox.findNodeById(currentFlowId);
         if (box == null)
         {
-          final NormalFlowRenderBox box2 = (NormalFlowRenderBox)
-              renderer.logicalPageBox.findNodeById(currentFlowId);
           throw new StateException("No Such normal flow.");
         }
         renderer.flowContexts.push(new FlowContext(textFactory, box));
@@ -326,20 +328,7 @@ public abstract class AbstractRenderer implements Renderer
     {
       throw new IllegalStateException("There is no flow active at the moment.");
     }
-    final RenderBox insertationPoint = currentFlow.getInsertationPoint();
-
-    // A small assertation game ..
-//    RenderBox root = insertationPoint;
-//    while (root != null)
-//    {
-//      if (root.getParent() == null)
-//      {
-//        break;
-//      }
-//      root = root.getParent();
-//    }
-
-    return insertationPoint;
+    return currentFlow.getInsertationPoint();
   }
 
   protected boolean isProcessingNormalFlow()
