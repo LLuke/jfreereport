@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Group.java,v 1.4 2006/12/03 20:24:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,14 +35,18 @@ import java.io.Serializable;
 import org.jfree.report.expressions.Expression;
 
 /**
- * A report group.  Reports can contain any number of (nested) groups. The order
- * of the fields is not important.
+ * A report group. A group is a repeated section which is bound to an
+ * expression.
  * <p/>
+ * <h2>Default Behaviour</h2>
  * Whether a new group should be started is evaluated by the group's expression.
- * If that expression returns Boolean.TRUE, a new group is started. (That
- * expression answers the Questions: 'Does this group continue?'.
- * <p>
- * A group uses the same data set as the containing group/report.
+ * If that expression returns Boolean.TRUE, a new group instance is started.
+ * (That expression answers the Questions: 'Does this group instance end
+ * here?').
+ * <p/>
+ * If the group expression is invalid or there is no group
+ * expression at all, a group will consume all rows until the datasource is no
+ * longer advanceable.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -51,7 +55,9 @@ public class Group extends Section implements Serializable
 {
   private Expression groupingExpression;
 
-  /** Constructs a group with no fields, and an empty header and footer. */
+  /**
+   * Constructs a group with no fields, and an empty header and footer.
+   */
   public Group()
   {
     setType("group");

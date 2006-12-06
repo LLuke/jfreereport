@@ -23,14 +23,16 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SubReport.java,v 1.4 2006/12/03 20:24:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.structure;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import org.jfree.report.flow.ParameterMapping;
 import org.jfree.report.i18n.ResourceBundleFactory;
 
 /**
@@ -99,6 +101,22 @@ public class SubReport extends ReportDefinition
             exportParameters.values().toArray(new String[exportParameters.size()]);
   }
 
+  public ParameterMapping[] getExportMappings ()
+  {
+    final Map.Entry[] inputEntries = (Map.Entry[])
+        exportParameters.entrySet().toArray(new Map.Entry[exportParameters.size()]);
+    final ParameterMapping[] mapping =
+        new ParameterMapping[exportParameters.size()];
+
+    for (int i = 0; i < inputEntries.length; i++)
+    {
+      final Map.Entry entry = inputEntries[i];
+      mapping[i] = new ParameterMapping
+          ((String) entry.getKey(), (String) entry.getValue());
+    }
+    return mapping;
+  }
+
   public void addInputParameter (String outerName, String innerName)
   {
     inputParameters.put(outerName, innerName);
@@ -124,6 +142,22 @@ public class SubReport extends ReportDefinition
   {
     return (String[])
             inputParameters.values().toArray(new String[inputParameters.size()]);
+  }
+
+  public ParameterMapping[] getInputMappings ()
+  {
+    final Map.Entry[] inputEntries = (Map.Entry[])
+        inputParameters.entrySet().toArray(new Map.Entry[inputParameters.size()]);
+    final ParameterMapping[] mapping =
+        new ParameterMapping[inputParameters.size()];
+
+    for (int i = 0; i < inputEntries.length; i++)
+    {
+      final Map.Entry entry = inputEntries[i];
+      mapping[i] = new ParameterMapping
+          ((String) entry.getKey(), (String) entry.getValue());
+    }
+    return mapping;
   }
 
   public boolean isGlobalImport()

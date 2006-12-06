@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ContentElementLayoutController.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -70,12 +70,12 @@ public class ContentElementLayoutController extends ElementLayoutController
     // Step 3: Add the expressions. Any expressions defined for the subreport
     // will work on the queried dataset.
 
-    final ReportContext reportContext = fc.getReportContext();
+    //final ReportContext reportContext = fc.getReportContext();
     final PrecomputedValueRegistry pcvr =
         fc.getPrecomputedValueRegistry();
     if (isPrecomputing() == false)
     {
-      pcvr.startElement(e);
+      pcvr.startElement(new ElementPrecomputeKey(e));
     }
 
     final Expression[] expressions = e.getExpressions();
@@ -102,7 +102,7 @@ public class ContentElementLayoutController extends ElementLayoutController
         }
       }
 
-      fc = fc.activateExpressions(e, slots);
+      fc = fc.activateExpressions(slots);
     }
 
     if (e.isVirtual() == false)
@@ -246,7 +246,7 @@ public class ContentElementLayoutController extends ElementLayoutController
 
     if (isPrecomputing() == false)
     {
-      pcvr.finishElement(e);
+      pcvr.finishElement(new ElementPrecomputeKey(e));
     }
 
     final LayoutController parent = getParent();

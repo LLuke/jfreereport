@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionLayoutController.java,v 1.4 2006/12/04 19:11:24 taqua Exp $
+ * $Id: SectionLayoutController.java,v 1.5 2006/12/05 15:24:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -47,8 +47,6 @@ import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
 import org.jfree.report.structure.Section;
-import org.jfree.report.structure.SubReport;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 24.11.2006, 13:56:10
@@ -81,7 +79,7 @@ public class SectionLayoutController extends ElementLayoutController
         fc.getPrecomputedValueRegistry();
     if (isPrecomputing() == false)
     {
-      pcvr.startElement(s);
+      pcvr.startElement(new ElementPrecomputeKey(s));
     }
 
     final Expression[] expressions = s.getExpressions();
@@ -108,7 +106,7 @@ public class SectionLayoutController extends ElementLayoutController
         }
       }
 
-      fc = fc.activateExpressions(s, slots);
+      fc = fc.activateExpressions(slots);
     }
 
     if (s.isVirtual() == false)
@@ -194,6 +192,11 @@ public class SectionLayoutController extends ElementLayoutController
       fc = fc.deactivateExpressions();
     }
 
+    if (isPrecomputing() == false)
+    {
+      pcvr.finishElement(new ElementPrecomputeKey(e));
+    }
+
     // unwind the stack ..
     final Section s = (Section) e;
     fc = finishData(target, fc);
@@ -211,9 +214,9 @@ public class SectionLayoutController extends ElementLayoutController
         // commited target if the group is no longer active...
         final FlowController cfc =
             fc.performOperation(FlowControlOperation.COMMIT);
-        final boolean groupActive =
-            LayoutControllerUtil.isGroupActive(cfc, s);
-        if (groupActive)
+        final boolean groupFinished =
+            LayoutControllerUtil.isGroupFinished(cfc, s);
+        if (groupFinished == false)
         {
           // Go back to the beginning ...
           SectionLayoutController derived = (SectionLayoutController) clone();

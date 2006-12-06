@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ParameterDataRow.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,7 +31,7 @@ package org.jfree.report.data;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.structure.SubReport;
+import org.jfree.report.flow.ParameterMapping;
 import org.jfree.report.util.ReportParameters;
 
 /**
@@ -57,16 +57,16 @@ public class ParameterDataRow extends StaticDataRow
     setData(names, values);
   }
 
-  public ParameterDataRow(final SubReport report, final DataRow dataRow)
+  public ParameterDataRow(final ParameterMapping[] parameters, final DataRow dataRow)
           throws DataSourceException
   {
-    final String[] outerNames = report.getInputParameters();
-    final String[] innerNames = new String[outerNames.length];
-    final Object[] values = new Object[outerNames.length];
-    for (int i = 0; i < outerNames.length; i++)
+    final String[] innerNames = new String[parameters.length];
+    final Object[] values = new Object[parameters.length];
+    for (int i = 0; i < parameters.length; i++)
     {
-      String name = outerNames[i];
-      innerNames[i] = report.getInnerParameter(name);
+      final ParameterMapping parameter = parameters[i];
+      final String name = parameter.getName();
+      innerNames[i] = parameter.getAlias();
       values[i] = dataRow.get(name);
     }
     setData(innerNames, values);

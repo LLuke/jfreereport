@@ -23,14 +23,12 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrecomputeNode.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.data;
-
-import org.jfree.report.structure.Element;
 
 /**
  * Creation-Date: 24.11.2006, 13:51:02
@@ -39,27 +37,11 @@ import org.jfree.report.structure.Element;
  */
 public interface PrecomputeNode
 {
-  public Element getElement();
-
-  public String getId();
-
-  public String getName();
-
-  public String getTag();
-
-  public String getNamespace();
-
-  public PrecomputeNode getParent();
-
-  public PrecomputeNode getNext();
-
-  public PrecomputeNode getFirstChild();
-
-  public PrecomputeNode getLastChild();
-
   public int getFunctionCount();
 
   public String getFunctionName(int idx);
 
   public Object getFunctionResult(int idx);
+
+  public PrecomputeNodeKey getKey();
 }

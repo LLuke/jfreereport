@@ -23,14 +23,13 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultFlowController.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
+ * $Id: DefaultFlowController.java,v 1.5 2006/12/04 19:11:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.flow;
 
 import org.jfree.report.DataSourceException;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.data.CachingReportDataFactory;
 import org.jfree.report.data.ExpressionDataRow;
@@ -41,8 +40,6 @@ import org.jfree.report.data.ParameterDataRow;
 import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.data.PrecomputedValueRegistryBuilder;
 import org.jfree.report.data.ReportDataRow;
-import org.jfree.report.structure.Element;
-import org.jfree.report.structure.SubReport;
 import org.jfree.report.util.IntegerCache;
 import org.jfree.util.FastStack;
 
@@ -60,7 +57,8 @@ public class DefaultFlowController implements FlowController
     private FastStack markStack;
     private boolean advanceRequested;
 
-    public ReportDataContext(final FastStack markStack, boolean advanceRequested)
+    public ReportDataContext(final FastStack markStack,
+                             boolean advanceRequested)
     {
       this.advanceRequested = advanceRequested;
       this.markStack = markStack;
@@ -131,7 +129,7 @@ public class DefaultFlowController implements FlowController
 
 
   public FlowController performOperation(FlowControlOperation operation)
-          throws DataSourceException
+      throws DataSourceException
   {
     if (operation == FlowControlOperation.ADVANCE)
     {
@@ -194,26 +192,27 @@ public class DefaultFlowController implements FlowController
 
   /**
    * This should be called only once per report processing. A JFreeReport object
-   * defines the global master report - all other reports are subreport instances.
+   * defines the global master report - all other reports are subreport
+   * instances.
    * <p/>
-   * The global master report receives its parameter set from the Job-Definition,
-   * while subreports will read their parameters from the current datarow state.
+   * The global master report receives its parameter set from the
+   * Job-Definition, while subreports will read their parameters from the
+   * current datarow state.
    *
    * @param report
    * @return
    * @throws ReportDataFactoryException
    * @throws DataSourceException
    */
-  public FlowController performQuery(final JFreeReport report)
-          throws ReportDataFactoryException, DataSourceException
+  public FlowController performQuery(final String query)
+      throws ReportDataFactoryException, DataSourceException
   {
 
     final GlobalMasterRow masterRow =
-            GlobalMasterRow.createReportRow(dataRow, reportContext);
+        GlobalMasterRow.createReportRow(dataRow, reportContext);
     masterRow.setParameterDataRow(new ParameterDataRow
         (getReportJob().getParameters()));
 
-    final String query = report.getQuery();
     masterRow.setReportDataRow(ReportDataRow.createDataRow
         (reportDataFactory, query, dataRow.getGlobalView()));
 
@@ -224,39 +223,27 @@ public class DefaultFlowController implements FlowController
     return fc;
   }
 
-  public FlowController performQuery(final SubReport report)
-          throws ReportDataFactoryException, DataSourceException
+  public FlowController performSubReportQuery(final String query,
+                                              final ParameterMapping[] inputParameters,
+                                              final ParameterMapping[] outputParameters
+                                              )
+      throws ReportDataFactoryException, DataSourceException
   {
     final GlobalMasterRow outerRow = dataRow.derive();
 
     // create a view for the parameters of the report ...
     final GlobalMasterRow masterRow =
-            GlobalMasterRow.createReportRow(outerRow, reportContext);
+        GlobalMasterRow.createReportRow(outerRow, reportContext);
 
-    if (report.isGlobalImport())
-    {
-      masterRow.setParameterDataRow
-              (new ParameterDataRow(report, outerRow.getGlobalView()));
-    }
-    else
-    {
-      // check and rebuild the parameter mapping from the outer to the int
-      // context. We allow only the defined input set here. This helps a lot
-      // in reducing (or at least documenting) the dependencies between subreports
-      final String[] importedParams = report.getInputParameters();
-      final String[] importedNames = report.getPeerInputParameters();
-      masterRow.setParameterDataRow
-              (new ParameterDataRow(report, new ImportedVariablesDataRow
-              (outerRow, importedNames, importedParams)));
-    }
+    masterRow.setParameterDataRow
+        (new ParameterDataRow(inputParameters, outerRow.getGlobalView()));
 
     // perform the query ...
-    final String query = report.getQuery();
     // add the resultset ...
     masterRow.setReportDataRow(ReportDataRow.createDataRow
         (reportDataFactory, query, masterRow.getGlobalView()));
 
-    if (report.isGlobalExport())
+    if (outputParameters == null)
     {
       outerRow.setExportedDataRow(new ImportedVariablesDataRow(masterRow));
     }
@@ -265,10 +252,8 @@ public class DefaultFlowController implements FlowController
       // check and rebuild the parameter mapping from the inner to the outer
       // context. Only deep-traversal expressions will be able to see these
       // values (unless they have been defined as local variables).
-      final String[] exportedParams = report.getExportParameters();
-      final String[] exportedNames = report.getPeerExportParameters();
       outerRow.setExportedDataRow(new ImportedVariablesDataRow
-              (masterRow, exportedNames, exportedParams));
+          (masterRow, outputParameters));
     }
 
     DefaultFlowController fc = new DefaultFlowController(this, masterRow);
@@ -278,19 +263,9 @@ public class DefaultFlowController implements FlowController
     return fc;
   }
 
-  public FlowController activateExpressions(final Element element,
-                                            final ExpressionSlot[] expressions)
-          throws DataSourceException
+  public FlowController activateExpressions(final ExpressionSlot[] expressions)
+      throws DataSourceException
   {
-    if (STRICT_ASSERTATIONS)
-    {
-      final JFreeReport rootReport = element.getRootReport();
-      if (rootReport == null)
-      {
-        throw new IllegalStateException("An element without an assigned report.");
-      }
-    }
-
     if (expressions.length == 0)
     {
       DefaultFlowController fc = new DefaultFlowController(this, dataRow);

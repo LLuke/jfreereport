@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrecomputedValueRegistry.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,13 +45,13 @@ import org.jfree.report.structure.Element;
  */
 public interface PrecomputedValueRegistry
 {
-  public void startElement (Element element);
-  public void finishElement (Element element);
+  public void startElement (PrecomputeNodeKey element);
+  public void finishElement (PrecomputeNodeKey element);
   public PrecomputeNode currentNode ();
 
   public void addFunction(final String name, final Object value);
 
-  public void startElementPrecomputation(final Element element);
+  public void startElementPrecomputation(final PrecomputeNodeKey element);
 
-  public void finishElementPrecomputation(final Element element);
+  public void finishElementPrecomputation(final PrecomputeNodeKey element);
 }

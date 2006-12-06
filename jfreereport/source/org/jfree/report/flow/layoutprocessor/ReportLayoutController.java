@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportLayoutController.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -55,7 +55,7 @@ public class ReportLayoutController extends SectionLayoutController
   {
     final JFreeReport report = (JFreeReport) getNode();
     target.startReport(report);
-    return fc.performQuery(report);
+    return fc.performQuery(report.getQuery());
   }
 
   protected FlowController finishData(final ReportTarget target,

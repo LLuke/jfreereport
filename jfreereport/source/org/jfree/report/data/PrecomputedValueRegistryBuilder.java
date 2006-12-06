@@ -23,14 +23,12 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrecomputedValueRegistryBuilder.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.data;
-
-import org.jfree.report.structure.Element;
 
 /**
  * This class is currently very primitive and enforces a recomputation of
@@ -46,17 +44,17 @@ public class PrecomputedValueRegistryBuilder implements PrecomputedValueRegistry
   {
   }
 
-  public void startElementPrecomputation(final Element element)
+  public void startElementPrecomputation(final PrecomputeNodeKey element)
   {
     startElement(element);
   }
 
-  public void finishElementPrecomputation(final Element element)
+  public void finishElementPrecomputation(final PrecomputeNodeKey element)
   {
     finishElement(element);
   }
 
-  public void startElement(Element element)
+  public void startElement(PrecomputeNodeKey element)
   {
     PrecomputeNodeImpl newNode = new PrecomputeNodeImpl (element);
     if (node != null)
@@ -66,7 +64,7 @@ public class PrecomputedValueRegistryBuilder implements PrecomputedValueRegistry
     node = newNode;
   }
 
-  public void finishElement(Element element)
+  public void finishElement(PrecomputeNodeKey element)
   {
     node = (PrecomputeNodeImpl) node.getParent();
   }

@@ -23,20 +23,17 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FlowController.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.flow;
 
 import org.jfree.report.DataSourceException;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.data.ExpressionSlot;
 import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.data.PrecomputedValueRegistry;
-import org.jfree.report.structure.Element;
-import org.jfree.report.structure.SubReport;
 
 /**
  * A flow-controller is an immutable object. Whenever an method, that may change
@@ -58,10 +55,12 @@ public interface FlowController
 
   public boolean isAdvanceRequested();
 
-  public FlowController performQuery(final JFreeReport report)
+  public FlowController performQuery(final String query)
       throws ReportDataFactoryException, DataSourceException;
 
-  public FlowController performQuery(final SubReport report)
+  public FlowController performSubReportQuery(final String query,
+                                              final ParameterMapping[] inputParameters,
+                                              final ParameterMapping[] outputParameters)
       throws ReportDataFactoryException, DataSourceException;
 
   /**
@@ -73,9 +72,8 @@ public interface FlowController
    * @return
    * @throws DataSourceException
    */
-  public FlowController activateExpressions(final Element element,
-                                            final ExpressionSlot[] expressions)
-    throws DataSourceException;
+  public FlowController activateExpressions(final ExpressionSlot[] expressions)
+      throws DataSourceException;
 
   /**
    * Returns the current expression slots of all currently active expressions.

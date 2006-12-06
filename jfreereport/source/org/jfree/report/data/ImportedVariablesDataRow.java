@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ImportedVariablesDataRow.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,6 +31,7 @@ package org.jfree.report.data;
 
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
+import org.jfree.report.flow.ParameterMapping;
 
 /**
  * Creation-Date: 06.03.2006, 18:15:06
@@ -58,9 +59,16 @@ public class ImportedVariablesDataRow extends StaticDataRow
     setData(outerNames, values);
   }
 
+  /**
+   * Maps the inner-row into the outer data row. The parameter mapping's name
+   * represents the *outer* name and the innernames.
+   * 
+   * @param innerRow
+   * @param parameterMappings
+   * @throws DataSourceException
+   */
   public ImportedVariablesDataRow(final GlobalMasterRow innerRow,
-                                  final String[] outerNames,
-                                  final String[] innerNames)
+                                  final ParameterMapping[] parameterMappings)
           throws DataSourceException
   {
     if (outerNames.length != innerNames.length)
@@ -68,14 +76,17 @@ public class ImportedVariablesDataRow extends StaticDataRow
       throw new IllegalArgumentException();
     }
 
-    this.outerNames = (String[]) outerNames.clone();
-    this.innerNames = (String[]) innerNames.clone();
-    final Object[] values = new Object[outerNames.length];
+    this.outerNames = new String[parameterMappings.length];
+    this.innerNames = new String[parameterMappings.length];
+    final Object[] values = new Object[parameterMappings.length];
     final DataRow globalView = innerRow.getGlobalView();
-    for (int i = 0; i < innerNames.length; i++)
+    for (int i = 0; i < parameterMappings.length; i++)
     {
-      String name = innerNames[i];
+      final ParameterMapping mapping = parameterMappings[i];
+      String name = mapping.getAlias();
       values[i] = globalView.get(name);
+      innerNames[i] = name;
+      outerNames[i] = mapping.getName();
     }
     setData(outerNames, values);
   }

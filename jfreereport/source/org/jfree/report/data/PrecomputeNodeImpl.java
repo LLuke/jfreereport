@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrecomputeNodeImpl.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,8 +31,6 @@
 package org.jfree.report.data;
 
 import java.util.ArrayList;
-
-import org.jfree.report.structure.Element;
 
 /**
  * A precompute-node represents a resolved element or section of the report
@@ -50,50 +48,19 @@ public class PrecomputeNodeImpl implements PrecomputeNode
   private PrecomputeNodeImpl firstChild;
   private PrecomputeNodeImpl lastChild;
 
-  private Element element;
-  private String id;
-  private String name;
-  private String tag;
-  private String namespace;
+  private PrecomputeNodeKey key;
   private ArrayList functionResults;
   private ArrayList functionNames;
 
-  public PrecomputeNodeImpl(final Element element)
+  public PrecomputeNodeImpl(PrecomputeNodeKey key)
   {
-    if (element == null)
-    {
-      throw new NullPointerException();
-    }
-    this.element = element;
-    this.id = this.element.getId();
-    this.namespace = this.element.getNamespace();
-    this.tag = this.element.getType();
-    this.name = this.element.getName();
+    if (key == null) throw new NullPointerException();
+    this.key = key;
   }
 
-  public Element getElement()
+  public PrecomputeNodeKey getKey()
   {
-    return element;
-  }
-
-  public String getId()
-  {
-    return id;
-  }
-
-  public String getName()
-  {
-    return name;
-  }
-
-  public String getTag()
-  {
-    return tag;
-  }
-
-  public String getNamespace()
-  {
-    return namespace;
+    return key;
   }
 
   public PrecomputeNode getParent()

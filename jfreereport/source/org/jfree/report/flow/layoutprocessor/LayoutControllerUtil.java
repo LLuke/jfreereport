@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LayoutControllerUtil.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -120,24 +120,28 @@ public class LayoutControllerUtil
 
   /**
    * Checks, whether the current group should continue. If there is no group, we
-   * assume that we should continue.
+   * assume that we should continue. (This emulates the control-break-algorithm's
+   * default behaviour if testing an empty set of arguments.)
    *
-   * @param position
-   * @return
+   * @param fc   the current flow controller holding the data
+   * @param node the current node.
+   * @return true, if the group is finished and we should stop reiterating it,
+   *         false if the group is not finished and we can start iterating it
+   *         again.
    */
-  public static boolean isGroupActive(final FlowController fc,
-                                      final Node node)
+  public static boolean isGroupFinished(final FlowController fc,
+                                        final Node node)
       throws DataSourceException
   {
     final Section nodeParent = node.getParent();
     if (nodeParent == null)
     {
-      return true;
+      return false;
     }
     Group group = nodeParent.getGroup();
     if (group == null)
     {
-      return true;
+      return false;
     }
 
     // maybe we can move this state into the layoutstate itself so that
@@ -155,26 +159,27 @@ public class LayoutControllerUtil
       ler.setDeclaringParent(group);
 
       final Expression groupingExpression = group.getGroupingExpression();
-      if (groupingExpression == null)
+      if (groupingExpression != null)
       {
-        // stay in the group. This is the same behaviour as if we check
-        // for field equality on an empty field list.
-        return true;
-      }
-      groupingExpression.setRuntime(ler);
-      final Object result;
-      try
-      {
-        result = groupingExpression.computeValue();
-      }
-      finally
-      {
-        groupingExpression.setRuntime(null);
-      }
+        groupingExpression.setRuntime(ler);
+        final Object groupFinished;
+        try
+        {
+          groupFinished = groupingExpression.computeValue();
+        }
+        finally
+        {
+          groupingExpression.setRuntime(null);
+        }
 
-      if (Boolean.FALSE.equals(result))
-      {
-        return false;
+        if (Boolean.TRUE.equals(groupFinished))
+        {
+          // If the group expression returns true, we should pack our belongings
+          // and stop with that process. The group is finished.
+
+          // In Cobol, this would mean that one of the group-fields has changed.
+          return true;
+        }
       }
 
       Section parent = group.getParent();
@@ -187,7 +192,7 @@ public class LayoutControllerUtil
         group = parent.getGroup();
       }
     }
-    return true;
+    return false;
   }
 
 }

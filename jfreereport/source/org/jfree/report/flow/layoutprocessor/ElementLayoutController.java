@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ElementLayoutController.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,7 @@ import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.data.PrecomputeNode;
 import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.data.StaticExpressionRuntimeData;
+import org.jfree.report.data.PrecomputeNodeKey;
 import org.jfree.report.flow.EmptyReportTarget;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.ReportJob;
@@ -53,6 +54,70 @@ import org.jfree.util.Log;
 public abstract class ElementLayoutController
     implements LayoutController, Cloneable
 {
+  protected static class ElementPrecomputeKey implements PrecomputeNodeKey
+  {
+    private String name;
+    private String id;
+    private String namespace;
+    private String tagName;
+
+    public ElementPrecomputeKey(Element element)
+    {
+      this.name = element.getName();
+      this.tagName = element.getType();
+      this.namespace = element.getNamespace();
+      this.id = element.getId();
+    }
+
+    public boolean equals(final Object o)
+    {
+      if (this == o)
+      {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass())
+      {
+        return false;
+      }
+
+      final ElementPrecomputeKey that = (ElementPrecomputeKey) o;
+
+      if (id != null ? !id.equals(that.id) : that.id != null)
+      {
+        return false;
+      }
+      if (name != null ? !name.equals(that.name) : that.name != null)
+      {
+        return false;
+      }
+      if (namespace != null ? !namespace.equals(that.namespace) : that.namespace != null)
+      {
+        return false;
+      }
+      if (tagName != null ? !tagName.equals(that.tagName) : that.tagName != null)
+      {
+        return false;
+      }
+
+      return true;
+    }
+
+    public int hashCode()
+    {
+      int result;
+      result = (name != null ? name.hashCode() : 0);
+      result = 29 * result + (id != null ? id.hashCode() : 0);
+      result = 29 * result + (namespace != null ? namespace.hashCode() : 0);
+      result = 29 * result + (tagName != null ? tagName.hashCode() : 0);
+      return result;
+    }
+
+    public boolean equals(PrecomputeNodeKey otherKey)
+    {
+      return false;
+    }
+  }
+
   public static final int NOT_STARTED = 0;
   public static final int OPENED = 1;
   public static final int WAITING_FOR_JOIN = 2;
@@ -228,7 +293,7 @@ public abstract class ElementLayoutController
         fc.getPrecomputedValueRegistry();
 
     final Element element = (Element) getNode();
-    pcvr.startElementPrecomputation(element);
+    pcvr.startElementPrecomputation(new ElementPrecomputeKey(element));
 
     final ElementLayoutController layoutController =
         (ElementLayoutController) this.clone();
@@ -247,7 +312,7 @@ public abstract class ElementLayoutController
 
     final PrecomputeNode precomputeNode = pcvr.currentNode();
     final Object functionResult = precomputeNode.getFunctionResult(expressionPosition);
-    pcvr.finishElementPrecomputation(element);
+    pcvr.finishElementPrecomputation(new ElementPrecomputeKey(element));
     return functionResult;
   }
 

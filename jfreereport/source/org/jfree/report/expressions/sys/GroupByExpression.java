@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: GroupByExpression.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -74,10 +74,10 @@ public class GroupByExpression extends AbstractExpression
       if (df.isChanged())
       {
         //Log.debug ("Field: " + df.getName() + " has changed to " + df.getValue());
-        return Boolean.FALSE;
+        return Boolean.TRUE;
       }
     }
-    return Boolean.TRUE;
+    return Boolean.FALSE;
   }
 
   public void setField (final int index, final String field)
