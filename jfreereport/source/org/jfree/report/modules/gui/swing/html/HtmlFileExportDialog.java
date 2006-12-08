@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlFileExportDialog.java,v 1.2 2006/12/03 20:24:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -520,8 +520,7 @@ public class HtmlFileExportDialog extends AbstractExportDialog
       String selFileName = selFile.getAbsolutePath();
 
       // Test if ends on html
-      if ((StringUtils.endsWithIgnoreCase(selFileName, HTML_FILE_EXTENSION) == false)
-          && (StringUtils.endsWithIgnoreCase(selFileName, HTM_FILE_EXTENSION) == false))
+      if (StringUtils.endsWithIgnoreCase(selFileName, HTML_FILE_EXTENSION) == false)
       {
         selFileName = selFileName + HTML_FILE_EXTENSION;
       }

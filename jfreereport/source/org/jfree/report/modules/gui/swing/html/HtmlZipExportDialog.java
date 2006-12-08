@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlZipExportDialog.java,v 1.2 2006/12/03 20:24:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -86,7 +86,7 @@ public class HtmlZipExportDialog extends AbstractExportDialog
      */
     public ActionSelectTargetFile (final ResourceBundle resources)
     {
-      putValue(Action.NAME, resources.getString("htmlexportdialog.selectDirFile"));
+      putValue(Action.NAME, resources.getString("htmlexportdialog.select"));
     }
 
     /**
@@ -486,7 +486,7 @@ public class HtmlZipExportDialog extends AbstractExportDialog
       String selFileName = selFile.getAbsolutePath();
 
       // Test if ends on html
-      if ((StringUtils.endsWithIgnoreCase(selFileName, HtmlZipExportDialog.ZIP_FILE_EXTENSION) == false))
+      if (StringUtils.endsWithIgnoreCase(selFileName, HtmlZipExportDialog.ZIP_FILE_EXTENSION) == false)
       {
         selFileName = selFileName + HtmlZipExportDialog.ZIP_FILE_EXTENSION;
       }

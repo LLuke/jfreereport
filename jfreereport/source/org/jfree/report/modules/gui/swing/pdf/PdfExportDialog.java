@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfExportDialog.java,v 1.2 2006/12/03 20:24:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -296,6 +297,10 @@ public class PdfExportDialog extends AbstractExportDialog
             KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
             JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
+    final JPanel buttonCarrier = new JPanel();
+    buttonCarrier.setLayout(new FlowLayout(FlowLayout.RIGHT));
+    buttonCarrier.add(buttonPanel);
+
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
     gbc.anchor = GridBagConstraints.EAST;
@@ -322,7 +327,7 @@ public class PdfExportDialog extends AbstractExportDialog
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout());
     contentPane.add(tabbedPane, BorderLayout.CENTER);
-    contentPane.add(buttonPanel, BorderLayout.SOUTH);
+    contentPane.add(buttonCarrier, BorderLayout.SOUTH);
 
     final JPanel contentWithStatus = new JPanel();
     contentWithStatus.setLayout(new BorderLayout());
@@ -857,10 +862,6 @@ public class PdfExportDialog extends AbstractExportDialog
    * disabled printing but enabled degraded printing, then the user is able to
    * print a low-quality version of the document.
    *
-   * @param allowPrinting set to <code>true</code>, if this file can be printed,
-   *                      <code>false</code> otherwise.
-   * @param degraded      set to <code>true</code>, to allow degraded printing,
-   *                      and <code>false</code> otherwise.
    */
   public void setPrintLevel(final String printLevel)
   {
