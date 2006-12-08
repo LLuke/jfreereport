@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.report.demo.util.AbstractXmlDemoHandler;
 import org.jfree.report.demo.util.ReportDefinitionException;
+import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.util.ObjectUtilities;
 
@@ -72,7 +73,7 @@ public class QuadrantDemoHandler extends AbstractXmlDemoHandler
    */
   public ReportJob createReport() throws ReportDefinitionException
   {
-    return new ReportJob(parseReport());
+    return new DefaultReportJob(parseReport());
   }
 
   /**

@@ -32,6 +32,7 @@ package org.jfree.report.demo.loader;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.demo.util.PreviewHandler;
+import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.swing.preview.PreviewDialog;
 import org.jfree.ui.RefineryUtilities;
@@ -49,7 +50,7 @@ public class DemoLoaderPreviewHandler implements PreviewHandler
 
   public void attemptPreview()
   {
-    final ReportJob report = new ReportJob(new JFreeReport());
+    final ReportJob report = new DefaultReportJob(new JFreeReport());
     final PreviewDialog frame = new PreviewDialog();
     frame.setReportController(new DemoLoader());
     frame.setReportJob(report);

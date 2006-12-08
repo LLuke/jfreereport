@@ -40,6 +40,7 @@ import org.jfree.report.demo.util.ReportDefinitionException;
 import org.jfree.report.demo.util.PreviewHandler;
 import org.jfree.report.demo.util.SimpleDemoFrame;
 import org.jfree.report.demo.JFreeReportDemoBoot;
+import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.JFreeReport;
 import org.jfree.ui.RefineryUtilities;
@@ -78,7 +79,7 @@ public class DemoLoaderDemoHandler extends AbstractDemoHandler
   {
     // no real report here, as the report is loaded later ..
     // this method will never be called anyway
-    return new ReportJob(new JFreeReport());
+    return new DefaultReportJob(new JFreeReport());
   }
 
   /**

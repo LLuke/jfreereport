@@ -36,6 +36,7 @@ import javax.swing.JComponent;
 
 import org.jfree.report.demo.util.AbstractXmlDemoHandler;
 import org.jfree.report.demo.util.ReportDefinitionException;
+import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.TableReportDataFactory;
@@ -77,7 +78,7 @@ public class WorldDemoHandler extends AbstractXmlDemoHandler
   public ReportJob createReport() throws ReportDefinitionException
   {
     final JFreeReport report = parseReport();
-    ReportJob job = new ReportJob(report);
+    DefaultReportJob job = new DefaultReportJob(report);
     final TableReportDataFactory dataFactory =
         new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);

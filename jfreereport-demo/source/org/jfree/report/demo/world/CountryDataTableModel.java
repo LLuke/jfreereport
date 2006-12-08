@@ -33,8 +33,6 @@ package org.jfree.report.demo.world;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
-import org.jfree.util.Log;
-
 /**
  * A sample data source for the JFreeReport Demo Application.
  *

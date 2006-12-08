@@ -39,7 +39,7 @@ import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.TableReportDataFactory;
 import org.jfree.report.demo.world.CountryDataTableModel;
-import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.raw.RawReportProcessor;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
@@ -85,7 +85,7 @@ public class RawWorldDemoTest
     Resource res = manager.createDirectly(url, JFreeReport.class);
     final JFreeReport resource = (JFreeReport) res.getResource();
 
-    ReportJob job = new ReportJob(resource);
+    DefaultReportJob job = new DefaultReportJob(resource);
     final TableReportDataFactory dataFactory =
             new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);

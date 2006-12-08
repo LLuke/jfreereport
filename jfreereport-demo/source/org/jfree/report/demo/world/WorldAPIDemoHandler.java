@@ -38,6 +38,7 @@ import org.jfree.report.demo.util.AbstractDemoHandler;
 import org.jfree.report.demo.util.ReportDefinitionException;
 import org.jfree.report.demo.util.SimpleDemoFrame;
 import org.jfree.report.demo.JFreeReportDemoBoot;
+import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
@@ -78,7 +79,7 @@ public class WorldAPIDemoHandler extends AbstractDemoHandler
   public ReportJob createReport() throws ReportDefinitionException
   {
     final WorldAPIDemoBuilder builder = new WorldAPIDemoBuilder();
-    final ReportJob job = new ReportJob(builder.createReport());
+    final DefaultReportJob job = new DefaultReportJob(builder.createReport());
     final TableReportDataFactory dataFactory =
         new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);

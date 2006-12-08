@@ -44,7 +44,7 @@ import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportException;
 import org.jfree.report.TableReportDataFactory;
 import org.jfree.report.demo.world.CountryDataTableModel;
-import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.streaming.StreamingReportProcessor;
 import org.jfree.repository.ContentIOException;
 import org.jfree.repository.ContentLocation;
@@ -103,7 +103,7 @@ public class ZippedHtmlWorldDemo
     // Step 2: Make a job out of it.
     // (There is no need to redeclare the datasource, if the parsed report
     // contains a valid one.)
-    ReportJob job = new ReportJob(resource);
+    DefaultReportJob job = new DefaultReportJob(resource);
     final TableReportDataFactory dataFactory =
         new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);

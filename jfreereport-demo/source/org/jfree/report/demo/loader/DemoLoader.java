@@ -46,6 +46,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.modules.gui.swing.preview.PreviewPane;
 import org.jfree.report.modules.gui.swing.preview.ReportController;
 import org.jfree.report.modules.gui.swing.common.JStatusBar;
@@ -245,7 +246,7 @@ public class DemoLoader implements ReportController
       manager.registerDefaults();
       Resource res = manager.createDirectly(new File(txFilename.getText()), JFreeReport.class);
       final JFreeReport resource = (JFreeReport) res.getResource();
-      pane.setReport(resource);
+      pane.setReportJob(new DefaultReportJob (resource));
     }
     catch(Exception e)
     {

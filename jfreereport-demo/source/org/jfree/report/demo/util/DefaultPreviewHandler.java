@@ -29,8 +29,8 @@
  */
 package org.jfree.report.demo.util;
 
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.swing.preview.PreviewDialog;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.Log;
 
