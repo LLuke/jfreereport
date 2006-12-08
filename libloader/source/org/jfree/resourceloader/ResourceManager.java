@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ResourceManager.java,v 1.10 2006/12/03 16:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -508,7 +508,7 @@ public class ResourceManager
       if (o instanceof ResourceLoader)
       {
         final ResourceLoader loader = (ResourceLoader) o;
-        Log.debug("Registering loader for " + loader.getSchema());
+        //Log.debug("Registering loader for " + loader.getSchema());
         registerLoader(loader);
       }
     }
