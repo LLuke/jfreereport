@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ResolverFactory.java,v 1.8 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -103,13 +103,13 @@ public class ResolverFactory
     handlers = (ResolveHandlerModule[]) handlerList.toArray
             (new ResolveHandlerModule[handlerList.size()]);
     handlers = ResolveHandlerSorter.sort(handlers);
-    for (int i = 0; i < handlers.length; i++)
-    {
-      ResolveHandlerModule handler = handlers[i];
-      Log.debug("Registered sorted handler (" + handler.getWeight() + ") " + handler.getKey());
-
-    }
-    Log.debug("Registered " + handlers.length + " modules.");
+//    for (int i = 0; i < handlers.length; i++)
+//    {
+//      ResolveHandlerModule handler = handlers[i];
+//      Log.debug("Registered sorted handler (" + handler.getWeight() + ") " + handler.getKey());
+//
+//    }
+//    Log.debug("Registered " + handlers.length + " modules.");
   }
 
   private HashMap loadModules(final String configPrefix)
@@ -134,7 +134,7 @@ public class ResolverFactory
               ObjectUtilities.loadAndInstantiate(c, ResolverFactory.class, ResolveHandler.class);
       if (module != null)
       {
-        Log.info("Loaded resolver: " + name + " (" + module + ")");
+        //Log.info("Loaded resolver: " + name + " (" + module + ")");
         handlers.put(key, module);
       }
       else
