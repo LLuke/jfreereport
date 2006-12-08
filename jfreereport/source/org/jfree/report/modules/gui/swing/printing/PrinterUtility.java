@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrinterUtility.java,v 1.2 2006/12/03 20:24:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,10 +34,9 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 
-import org.jfree.report.JFreeReport;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
+import org.jfree.report.flow.ReportJob;
 
 /**
  * Creation-Date: 03.12.2006, 15:01:24
@@ -68,15 +67,14 @@ public class PrinterUtility
     printerJob.setCopies(getNumberOfCopies(reportConfiguration));
 
     // this tries to resolve at least some of the pain ..
-    final JFreeReport jfreereport = report.getReport();
-    final PageFormat pageFormat = jfreereport.getPageFormat();
+    final PageFormat pageFormat = report.getPageFormat();
     if (pageFormat != null)
     {
-      jfreereport.setPageFormat(printerJob.validatePage(pageFormat));
+      report.setPageFormat(printerJob.validatePage(pageFormat));
     }
     else
     {
-      jfreereport.setPageFormat(printerJob.defaultPage());
+      report.setPageFormat(printerJob.defaultPage());
     }
     printerJob.print();
   }
@@ -91,15 +89,14 @@ public class PrinterUtility
     final PrintReportProcessor document = new PrintReportProcessor(report);
 
     final PrinterJob printerJob = PrinterJob.getPrinterJob();
-    final JFreeReport jfreereport = report.getReport();
-    final PageFormat pageFormat = jfreereport.getPageFormat();
+    final PageFormat pageFormat = report.getPageFormat();
     if (pageFormat != null)
     {
-      jfreereport.setPageFormat(printerJob.validatePage(pageFormat));
+      report.setPageFormat(printerJob.validatePage(pageFormat));
     }
     else
     {
-      jfreereport.setPageFormat(printerJob.defaultPage());
+      report.setPageFormat(printerJob.defaultPage());
     }
 
     printerJob.setJobName(jobName);

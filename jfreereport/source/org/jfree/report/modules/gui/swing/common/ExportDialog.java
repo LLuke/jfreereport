@@ -23,15 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ExportDialog.java,v 1.2 2006/12/03 20:24:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.modules.gui.swing.common;
 
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.GuiContext;
+import org.jfree.report.flow.ReportJob;
 
 /**
  * Although this is no real dialog, this interface is meant to be implemented
@@ -42,5 +42,5 @@ import org.jfree.report.modules.gui.common.GuiContext;
 public interface ExportDialog
 {
   public boolean performQueryForExport(final ReportJob reportJob,
-                                         final GuiContext guiContext);
+                                       final GuiContext guiContext);
 }

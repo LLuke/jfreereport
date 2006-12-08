@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StaticTextLayoutController.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -71,13 +71,13 @@ public class StaticTextLayoutController implements LayoutController, Cloneable
    * @throws org.jfree.report.ReportProcessingException
    *
    */
-  public void initialize(final Node node,
+  public void initialize(final Object node,
                          final FlowController flowController,
                          final LayoutController parent)
       throws DataSourceException, ReportDataFactoryException, ReportProcessingException
   {
 
-    this.node = node;
+    this.node = (Node) node;
     this.flowController = flowController;
     this.parent = parent;
   }

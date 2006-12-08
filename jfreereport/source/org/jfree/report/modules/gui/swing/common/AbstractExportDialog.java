@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractExportDialog.java,v 1.4 2006/12/03 20:24:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,11 +43,11 @@ import javax.swing.Action;
 import javax.swing.JDialog;
 
 import org.jfree.base.config.ModifiableConfiguration;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.report.modules.preferences.base.ConfigFactory;
 import org.jfree.report.modules.preferences.base.ConfigStorage;
 import org.jfree.report.modules.preferences.base.ConfigStoreException;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 
@@ -265,7 +265,7 @@ public abstract class AbstractExportDialog extends JDialog
     this.reportJob = reportJob;
     this.guiContext = guiContext;
 
-    final Locale locale = reportJob.getReport().getLocale();
+    final Locale locale = reportJob.getReportStructureRoot().getLocale();
     setLocale(locale);
     pack();
     clear();
@@ -322,7 +322,7 @@ public abstract class AbstractExportDialog extends JDialog
                                  final Configuration reportConfiguration)
   {
     final String configPath = ConfigFactory.encodePath(
-        reportJob.getReport().getName() + getConfigurationSuffix());
+        reportJob.getName() + getConfigurationSuffix());
 
     try
     {
@@ -341,7 +341,7 @@ public abstract class AbstractExportDialog extends JDialog
                                             final Configuration defaultConfig)
   {
     final String configPath = ConfigFactory.encodePath(
-        reportJob.getReport().getName() + getConfigurationSuffix());
+        reportJob.getName() + getConfigurationSuffix());
     final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
     try
     {

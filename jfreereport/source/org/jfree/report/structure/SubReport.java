@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SubReport.java,v 1.4 2006/12/03 20:24:17 taqua Exp $
+ * $Id: SubReport.java,v 1.5 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jfree.report.flow.ParameterMapping;
-import org.jfree.report.i18n.ResourceBundleFactory;
 
 /**
  * Creation-Date: 04.03.2006, 21:38:21
@@ -45,33 +44,11 @@ public class SubReport extends ReportDefinition
   private HashMap exportParameters;
   private HashMap inputParameters;
 
-  private ResourceBundleFactory resourceBundleFactory;
-
   public SubReport()
   {
     setType("sub-report");
     exportParameters = new HashMap();
     inputParameters = new HashMap();
-  }
-
-  public ResourceBundleFactory getResourceBundleFactory()
-  {
-    if (resourceBundleFactory == null)
-    {
-      Section parent = getParent();
-      if (parent != null)
-      {
-        resourceBundleFactory = parent.getReport().getResourceBundleFactory();
-        return resourceBundleFactory;
-      }
-      return null;
-    }
-    return resourceBundleFactory;
-  }
-
-  public void setResourceBundleFactory(final ResourceBundleFactory resourceBundleFactory)
-  {
-    this.resourceBundleFactory = resourceBundleFactory;
   }
 
   public void addExportParameter (String outerName, String innerName)

@@ -1,121 +1,39 @@
-/**
- * ========================================
- * JFreeReport : a free Java report library
- * ========================================
- *
- * Project Info:  http://jfreereport.pentaho.org/
- *
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
- *
- * This library is free software; you can redistribute it and/or modify it under the terms
- * of the GNU Lesser General Public License as published by the Free Software Foundation;
- * either version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this
- * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
- *
- * [Java is a trademark or registered trademark of Sun Microsystems, Inc.
- * in the United States and other countries.]
- *
- * ------------
- * $Id$
- * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
- */
 package org.jfree.report.flow;
 
 import java.io.Serializable;
+import java.awt.print.PageFormat;
 
-import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.config.ModifiableConfiguration;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportDataFactory;
 import org.jfree.report.util.ReportParameters;
+import org.jfree.report.ReportDataFactory;
+import org.jfree.report.i18n.ResourceBundleFactory;
 
 /**
- * Creation-Date: 22.02.2006, 12:47:53
- *
- * @author Thomas Morgner
+ * Created by IntelliJ IDEA.
+ * User: user
+ * Date: 08.12.2006
+ * Time: 15:09:50
+ * To change this template use File | Settings | File Templates.
  */
-public class ReportJob implements Serializable, Cloneable
+public interface ReportJob extends Serializable, Cloneable
 {
-  private JFreeReport report;
-  private ReportDataFactory dataFactory;
-  private ReportParameters parameters;
-  private ModifiableConfiguration configuration;
+  ModifiableConfiguration getConfiguration();
 
-  public ReportJob(final JFreeReport report)
-  {
-    this.report = report;
-    final ReportDataFactory dataFactory = report.getDataFactory();
-    if (dataFactory != null)
-    {
-      this.dataFactory = dataFactory.derive();
-    }
-    this.parameters = new ReportParameters(report.getInputParameters());
-    this.configuration = new HierarchicalConfiguration(report.getConfiguration());
-  }
+  ReportParameters getParameters();
 
-  public ModifiableConfiguration getConfiguration()
-  {
-    return configuration;
-  }
+  ReportStructureRoot getReportStructureRoot();
 
-  public ReportParameters getParameters()
-  {
-    return parameters;
-  }
+  ReportDataFactory getDataFactory();
 
-  public JFreeReport getReport()
-  {
-    return report;
-  }
+  ReportJob derive();
 
-  public ReportDataFactory getDataFactory()
-  {
-    return dataFactory;
-  }
+  void close();
 
-  public void setDataFactory(final ReportDataFactory dataFactory)
-  {
-    this.dataFactory = dataFactory;
-  }
+  ResourceBundleFactory getResourceBundleFactory();
 
-  public Object clone() throws CloneNotSupportedException
-  {
-    ReportJob job = (ReportJob) super.clone();
-    if (dataFactory != null)
-    {
-      job.dataFactory = dataFactory.derive();
-    }
-    job.parameters = (ReportParameters) parameters.clone();
-    job.configuration = (ModifiableConfiguration) configuration.clone();
-    return job;
-  }
+  String getName();
 
-  public ReportJob derive()
-  {
-    try
-    {
-      return (ReportJob) clone();
-    }
-    catch (CloneNotSupportedException e)
-    {
-      throw new IllegalStateException
-          ("A report job should always be cloneable.");
-    }
-  }
+  PageFormat getPageFormat();
 
-  public synchronized void close()
-  {
-    if (dataFactory != null)
-    {
-      dataFactory.close();
-    }
-  }
+  void setPageFormat(PageFormat pageFormat);
 }

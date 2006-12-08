@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: HtmlZipExportDialog.java,v 1.2 2006/12/03 20:24:15 taqua Exp $
+ * $Id: HtmlZipExportDialog.java,v 1.3 2006/12/08 10:05:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -57,12 +57,12 @@ import javax.swing.KeyStroke;
 
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.io.IOUtils;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.DefaultIconTheme;
 import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.report.modules.gui.swing.common.AbstractExportDialog;
 import org.jfree.report.modules.gui.swing.common.JStatusBar;
 import org.jfree.report.modules.gui.swing.common.localization.JLabelLocaleUpdateHandler;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.ui.FilesystemFilter;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.util.Configuration;

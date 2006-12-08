@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfExportTask.java,v 1.2 2006/12/03 20:24:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,9 +36,10 @@ import java.io.FileOutputStream;
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.layouting.modules.output.pdf.PdfOutputProcessor;
 import org.jfree.report.ReportConfigurationException;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.streaming.StreamingReportProcessor;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.util.Log;
+import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 02.12.2006, 15:34:17
@@ -58,7 +59,7 @@ public class PdfExportTask implements Runnable
       throw new NullPointerException();
     }
     this.job = job;
-    final ModifiableConfiguration config = job.getConfiguration();
+    final Configuration config = job.getConfiguration();
     String targetFileName = config.getConfigProperty
         ("org.jfree.report.modules.gui.common.html.file.TargetFileName");
 

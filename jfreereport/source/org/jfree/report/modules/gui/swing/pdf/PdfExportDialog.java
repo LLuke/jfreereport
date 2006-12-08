@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PdfExportDialog.java,v 1.2 2006/12/03 20:24:15 taqua Exp $
+ * $Id: PdfExportDialog.java,v 1.3 2006/12/08 10:05:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -65,11 +65,11 @@ import javax.swing.KeyStroke;
 
 import org.jfree.fonts.encoding.EncodingRegistry;
 import org.jfree.layouting.modules.output.pdf.PdfOutputModule;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.report.modules.gui.swing.common.AbstractExportDialog;
 import org.jfree.report.modules.gui.swing.common.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.swing.common.JStatusBar;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.ui.FilesystemFilter;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.util.Configuration;
@@ -465,7 +465,6 @@ public class PdfExportDialog extends AbstractExportDialog
    * configuration containing all properties from the dialog.
    *
    * @param full
-   * @return
    */
   protected Configuration grabDialogContents(boolean full)
   {

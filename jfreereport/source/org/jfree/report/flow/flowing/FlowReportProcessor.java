@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FlowReportProcessor.java,v 1.6 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -75,8 +75,8 @@ public class FlowReportProcessor extends AbstractReportProcessor
     }
     final LayoutProcess layoutProcess =
             new ChainingLayoutProcess(new DefaultLayoutProcess(outputProcessor));
-    final ResourceManager resourceManager = job.getReport().getResourceManager();
-    final ResourceKey resourceKey = job.getReport().getBaseResource();
+    final ResourceManager resourceManager = job.getReportStructureRoot().getResourceManager();
+    final ResourceKey resourceKey = job.getReportStructureRoot().getBaseResource();
 
     return new LibLayoutReportTarget
             (job, resourceKey, resourceManager, layoutProcess);

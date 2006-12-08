@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PreviewFrame.java,v 1.4 2006/12/03 20:24:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,11 +41,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
-import org.jfree.report.JFreeReport;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.IconTheme;
 import org.jfree.report.modules.gui.swing.common.JStatusBar;
 import org.jfree.report.modules.gui.swing.common.ReportProgressBar;
+import org.jfree.report.flow.ReportJob;
 
 /**
  * Creation-Date: 11.11.2006, 19:35:09
@@ -216,16 +215,6 @@ public class PreviewFrame extends JFrame
   public void setIconTheme(final IconTheme theme)
   {
     previewPane.setIconTheme(theme);
-  }
-
-  public JFreeReport getReport()
-  {
-    return previewPane.getReport();
-  }
-
-  public void setReport(final JFreeReport reportJob)
-  {
-    previewPane.setReport(reportJob);
   }
 
   public ReportJob getReportJob()

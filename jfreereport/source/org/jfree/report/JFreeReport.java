@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: JFreeReport.java,v 1.37 2006/12/03 20:24:08 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,12 +40,12 @@ import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.layouting.input.style.CSSPageRule;
 import org.jfree.layouting.input.style.StyleSheet;
 import org.jfree.layouting.input.style.StyleSheetUtility;
-import org.jfree.report.i18n.DefaultResourceBundleFactory;
-import org.jfree.report.i18n.ResourceBundleFactory;
+import org.jfree.report.flow.ReportStructureRoot;
 import org.jfree.report.structure.ReportDefinition;
 import org.jfree.report.util.ReportParameters;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.Configuration;
 
 /**
  * A JFreeReport instance is used as report template to define the visual layout
@@ -64,7 +64,7 @@ import org.jfree.resourceloader.ResourceManager;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class JFreeReport extends ReportDefinition implements Serializable
+public class JFreeReport extends ReportDefinition implements Serializable, ReportStructureRoot
 {
   /** The report configuration. */
   private ModifiableConfiguration reportConfiguration;
@@ -74,9 +74,6 @@ public class JFreeReport extends ReportDefinition implements Serializable
   private CSSPageRule pageRule;
 
   private ReportParameters parameters;
-
-  /** The resource bundle factory is used when generating localized reports. */
-  private ResourceBundleFactory resourceBundleFactory;
 
   private ReportDataFactory dataFactory;
 
@@ -92,34 +89,12 @@ public class JFreeReport extends ReportDefinition implements Serializable
 
     this.styleSheets = new ArrayList();
     this.parameters = new ReportParameters();
-    this.resourceBundleFactory = new DefaultResourceBundleFactory();
     this.dataFactory = new EmptyReportDataFactory();
 
     this.pageFormatStyleSheet = new StyleSheet();
     this.pageRule = new CSSPageRule(pageFormatStyleSheet, null, null, null);
 
     setQuery("default");
-  }
-
-  /**
-   * Redefines the resource bundle factory for the report.
-   *
-   * @param resourceBundleFactory the new resource bundle factory, never null.
-   * @throws NullPointerException if the given ResourceBundleFactory is null.
-   */
-  public void setResourceBundleFactory
-          (final ResourceBundleFactory resourceBundleFactory)
-  {
-    if (resourceBundleFactory == null)
-    {
-      throw new NullPointerException("ResourceBundleFactory must not be null");
-    }
-    this.resourceBundleFactory = resourceBundleFactory;
-  }
-
-  public ResourceBundleFactory getResourceBundleFactory()
-  {
-    return resourceBundleFactory;
   }
 
   /**
@@ -130,7 +105,7 @@ public class JFreeReport extends ReportDefinition implements Serializable
    *
    * @return the report configuration.
    */
-  public ModifiableConfiguration getConfiguration()
+  public Configuration getConfiguration()
   {
     return reportConfiguration;
   }
@@ -225,5 +200,10 @@ public class JFreeReport extends ReportDefinition implements Serializable
   public PageFormat getPageFormat ()
   {
     return StyleSheetUtility.getPageFormat(pageRule);
+  }
+
+  public ModifiableConfiguration getEditableConfiguration()
+  {
+    return reportConfiguration;  
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LayoutController.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -62,7 +62,7 @@ public interface LayoutController
    * @throws ReportDataFactoryException
    * @throws ReportProcessingException
    */
-  public void initialize(final Node node,
+  public void initialize(final Object node,
                          final FlowController flowController,
                          final LayoutController parent)
       throws DataSourceException, ReportDataFactoryException,

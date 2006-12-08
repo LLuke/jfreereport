@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportReadHandler.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -139,7 +139,7 @@ public class ReportReadHandler extends SectionReadHandler
       while (entries.hasNext())
       {
         Map.Entry entry = (Map.Entry) entries.next();
-        report.getConfiguration().setConfigProperty
+        report.getEditableConfiguration().setConfigProperty
                 ((String) entry.getKey(), (String) entry.getValue());
       }
     }

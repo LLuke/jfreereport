@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PreviewPane.java,v 1.5 2006/12/03 20:24:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,8 +53,8 @@ import javax.swing.SwingUtilities;
 
 import org.jfree.layout.CenterLayout;
 import org.jfree.layouting.modules.output.graphics.PageDrawable;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
+import org.jfree.report.flow.ReportStructureRoot;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.IconTheme;
 import org.jfree.report.modules.gui.swing.common.ActionPlugin;
@@ -89,10 +89,10 @@ public class PreviewPane extends JPanel
 
     public Locale getLocale()
     {
-      JFreeReport report = getReport();
+      ReportJob report = getReportJob();
       if (report != null)
       {
-        return report.getLocale();
+        return report.getReportStructureRoot().getLocale();
       }
       return Locale.getDefault();
     }
@@ -104,7 +104,7 @@ public class PreviewPane extends JPanel
 
     public Configuration getConfiguration()
     {
-      JFreeReport report = getReport();
+      ReportJob report = getReportJob();
       if (report != null)
       {
         return report.getConfiguration();
@@ -234,7 +234,7 @@ public class PreviewPane extends JPanel
       }
       else if (REPORT_JOB_PROPERTY.equals(propertyName))
       {
-        if (getReport() == null)
+        if (getReportJob() == null)
         {
           drawablePanel.setDrawable(getNoReportDrawable());
         }
@@ -544,21 +544,6 @@ public class PreviewPane extends JPanel
     {
       initializeFromReport();
     }
-
-  }
-
-  public JFreeReport getReport()
-  {
-    if (reportJob == null)
-    {
-      return null;
-    }
-    return reportJob.getReport();
-  }
-
-  public void setReport(final JFreeReport report)
-  {
-    setReportJob(new ReportJob(report));
   }
 
   public double getZoom()
@@ -620,7 +605,7 @@ public class PreviewPane extends JPanel
 
   public Locale getLocale()
   {
-    JFreeReport report = getReport();
+    ReportStructureRoot report = getReportJob().getReportStructureRoot();
     if (report != null)
     {
       return report.getLocale();

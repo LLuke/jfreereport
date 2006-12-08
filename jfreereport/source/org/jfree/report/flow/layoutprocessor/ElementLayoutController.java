@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ElementLayoutController.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: ElementLayoutController.java,v 1.4 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,8 +40,8 @@ import org.jfree.report.data.StaticExpressionRuntimeData;
 import org.jfree.report.data.PrecomputeNodeKey;
 import org.jfree.report.flow.EmptyReportTarget;
 import org.jfree.report.flow.FlowController;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.ReportTarget;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
 import org.jfree.util.Log;
@@ -154,7 +154,7 @@ public abstract class ElementLayoutController
    * @throws org.jfree.report.ReportProcessingException
    *
    */
-  public void initialize(final Node node,
+  public void initialize(final Object node,
                          final FlowController flowController,
                          final LayoutController parent)
       throws DataSourceException, ReportDataFactoryException, ReportProcessingException

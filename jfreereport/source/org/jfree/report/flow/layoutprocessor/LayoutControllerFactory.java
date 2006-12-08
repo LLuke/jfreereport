@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LayoutControllerFactory.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,7 +44,7 @@ import org.jfree.report.structure.Node;
 public interface LayoutControllerFactory
 {
   public LayoutController create (final FlowController controller,
-                                  final Node node,
+                                  final Object node,
                                   final LayoutController parent)
       throws ReportProcessingException, ReportDataFactoryException, DataSourceException;
 }

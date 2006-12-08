@@ -23,13 +23,11 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportDefinition.java,v 1.3 2006/12/03 20:24:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.structure;
-
-import org.jfree.report.i18n.ResourceBundleFactory;
 
 /**
  * Creation-Date: 04.03.2006, 21:39:13
@@ -44,16 +42,6 @@ public abstract class ReportDefinition extends Section
   public ReportDefinition()
   {
   }
-
-
-  /**
-   * Returns the resource bundle factory for this report definition. The {@link
-   * ResourceBundleFactory} is used in internationalized reports to create the
-   * resourcebundles holding the localized resources.
-   *
-   * @return the assigned resource bundle factory.
-   */
-  public abstract ResourceBundleFactory getResourceBundleFactory();
 
   public String getQuery()
   {

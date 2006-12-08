@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultLayoutControllerFactory.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -103,7 +103,7 @@ public class DefaultLayoutControllerFactory implements LayoutControllerFactory
   }
 
   public LayoutController create(final FlowController controller,
-                                 final Node node,
+                                 final Object node,
                                  final LayoutController parent)
       throws ReportProcessingException, ReportDataFactoryException, DataSourceException
   {
