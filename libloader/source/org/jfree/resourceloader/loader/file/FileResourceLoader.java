@@ -24,14 +24,13 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FileResourceLoader.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.loader.file;
 
 import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,14 +77,6 @@ public class FileResourceLoader implements ResourceLoader
     {
       return true;
     }
-    if (value instanceof URL)
-    {
-      URL url = (URL) value;
-      if ("file".equalsIgnoreCase(url.getProtocol()))
-      {
-        return true;
-      }
-    }
     if (value instanceof String)
     {
       String valueString = (String) value;
@@ -115,18 +106,7 @@ public class FileResourceLoader implements ResourceLoader
       return new FileResourceKey(values);
     }
 
-    if (value instanceof URL)
-    {
-      URL url = (URL) value;
-      if ("file".equalsIgnoreCase(url.getProtocol()))
-      {
-        final String file = getPath(url);
-        final Map derivedValues = new HashMap (values);
-        derivedValues.put(AbstractResourceKey.CONTENT_KEY, new File (file));
-        return new FileResourceKey(derivedValues);
-      }
-    }
-    else if (value instanceof String)
+    if (value instanceof String)
     {
       String valueString = (String) value;
       if (valueString.startsWith("file://"))
@@ -135,38 +115,22 @@ public class FileResourceLoader implements ResourceLoader
       }
 
       // we accept all strings, which actually point to a file.
-      File f = new File (valueString);
-      final Map derivedValues = new HashMap (values);
+      File f = new File(valueString);
+      final Map derivedValues = new HashMap(values);
       derivedValues.put(AbstractResourceKey.CONTENT_KEY, f);
       return new FileResourceKey(derivedValues);
     }
     throw new ResourceKeyCreationException
-            ("FileResourceLoader: This does not look like a valid file");
-  }
-
-  /**
-   * Implements the JDK 1.3 method URL.getPath(). The path is defined
-   * as URL.getFile() minus the (optional) query.
-   *
-   * @param url the URL
-   * @return the path
-   */
-  private String getPath (final URL url) {
-      final String file = url.getFile();
-      final int queryIndex = file.indexOf('?');
-      if (queryIndex == -1) {
-          return file;
-      }
-      return file.substring(0, queryIndex);
+        ("FileResourceLoader: This does not look like a valid file");
   }
 
   public ResourceKey deriveKey(ResourceKey parent, Map data)
-          throws ResourceKeyCreationException
+      throws ResourceKeyCreationException
   {
     if (parent instanceof FileResourceKey == false)
     {
       throw new ResourceKeyCreationException
-              ("Parent key format is not recognized.");
+          ("Parent key format is not recognized.");
     }
     FileResourceKey key = (FileResourceKey) parent;
 
@@ -174,12 +138,12 @@ public class FileResourceLoader implements ResourceLoader
     if (deriveUrl instanceof String == false)
     {
       throw new ResourceKeyCreationException
-              ("Additional parameter format is not recognized.");
+          ("Additional parameter format is not recognized.");
     }
-    final Map derivedValues = new HashMap (parent.getParameters());
+    final Map derivedValues = new HashMap(parent.getParameters());
     derivedValues.putAll(data);
     derivedValues.put(AbstractResourceKey.CONTENT_KEY,
-            new File (key.getFile().getParentFile(), (String) deriveUrl));
+        new File(key.getFile().getParentFile(), (String) deriveUrl));
     return new FileResourceKey(derivedValues);
   }
 
@@ -188,7 +152,7 @@ public class FileResourceLoader implements ResourceLoader
     if (key instanceof FileResourceKey == false)
     {
       throw new ResourceLoadingException
-              ("Key format is not recognized.");
+          ("Key format is not recognized.");
     }
     return new FileResourceData((FileResourceKey) key);
   }
