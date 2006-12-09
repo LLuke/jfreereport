@@ -41,6 +41,7 @@ import org.jfree.report.demo.quadrant.QuadrantSubReportDemoHandler;
 import org.jfree.report.demo.world.WorldDemoHandler;
 import org.jfree.report.demo.world.WorldAPIDemoHandler;
 import org.jfree.report.demo.loader.DemoLoaderDemoHandler;
+import org.jfree.report.demo.autotable.AutoTableDemoHandler;
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
@@ -68,6 +69,7 @@ public class DemoFrontend extends CompoundDemoFrame
     rootSelector.addDemo(new WorldDemoHandler());
     rootSelector.addDemo(new WorldAPIDemoHandler());
     rootSelector.addDemo(new DemoLoaderDemoHandler());
+    rootSelector.addDemo(new AutoTableDemoHandler());
     return rootSelector;
   }
 

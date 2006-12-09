@@ -23,32 +23,37 @@
  * in the United States and other countries.]
  *
  * ------------
- * QuadrantSubReportDemoHandler.java
+ * AutoTableDemoHandler.java
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
-package org.jfree.report.demo.quadrant;
+package org.jfree.report.demo.autotable;
 
 import java.net.URL;
 import javax.swing.JComponent;
-import javax.swing.table.DefaultTableModel;
 
+import org.jfree.report.JFreeReport;
+import org.jfree.report.TableReportDataFactory;
 import org.jfree.report.demo.util.AbstractXmlDemoHandler;
 import org.jfree.report.demo.util.ReportDefinitionException;
+import org.jfree.report.demo.world.CountryDataTableModel;
 import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.util.ObjectUtilities;
 
 /**
- * Creation-Date: 02.12.2006, 20:11:18
+ * Creation-Date: 02.12.2006, 19:55:00
  *
  * @author Thomas Morgner
  */
-public class QuadrantSubReportDemoHandler extends AbstractXmlDemoHandler
+public class AutoTableDemoHandler extends AbstractXmlDemoHandler
 {
-  public QuadrantSubReportDemoHandler()
+  private CountryDataTableModel data;
+
+  public AutoTableDemoHandler()
   {
+    data = new CountryDataTableModel();
   }
 
   /**
@@ -58,7 +63,7 @@ public class QuadrantSubReportDemoHandler extends AbstractXmlDemoHandler
    */
   public String getDemoName()
   {
-    return "Quadrant Demo with SubReport";
+    return "Auto-Generated Table";
   }
 
   /**
@@ -72,7 +77,12 @@ public class QuadrantSubReportDemoHandler extends AbstractXmlDemoHandler
    */
   public ReportJob createReport() throws ReportDefinitionException
   {
-    return new DefaultReportJob(parseReport());
+    final JFreeReport report = parseReport();
+    DefaultReportJob job = new DefaultReportJob(report);
+    final TableReportDataFactory dataFactory =
+        new TableReportDataFactory("default", new CountryDataTableModel());
+    job.setDataFactory(dataFactory);
+    return job;
   }
 
   /**
@@ -82,7 +92,7 @@ public class QuadrantSubReportDemoHandler extends AbstractXmlDemoHandler
    */
   public URL getDemoDescriptionSource()
   {
-    return ObjectUtilities.getResourceRelative("quadrant-subreport.html", QuadrantSubReportDemoHandler.class);
+    return ObjectUtilities.getResourceRelative("auto-table.html", AutoTableDemoHandler.class);
   }
 
   /**
@@ -95,7 +105,7 @@ public class QuadrantSubReportDemoHandler extends AbstractXmlDemoHandler
    */
   public JComponent getPresentationComponent()
   {
-    return createDefaultTable(new DefaultTableModel());
+    return createDefaultTable(data);
   }
 
   /**
@@ -105,6 +115,6 @@ public class QuadrantSubReportDemoHandler extends AbstractXmlDemoHandler
    */
   public URL getReportDefinitionSource()
   {
-    return ObjectUtilities.getResourceRelative("quad-subreport.xml", QuadrantSubReportDemoHandler.class);
+    return ObjectUtilities.getResourceRelative("auto-table.xml", AutoTableDemoHandler.class);
   }
 }

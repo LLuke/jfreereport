@@ -23,16 +23,6 @@
       border-spacing: 0;
     }
 
-    .page-header-section {
-      position: running(header);
-      font-size: 17pt;
-    }
-
-    .page-footer-section {
-      position: running(footer);
-      font-size: 17pt;
-    }
-
     * {
       font-family: "Arial", Sans-Serif;
     }
@@ -52,18 +42,18 @@
   the separation of the layouter and the feeder.
   -->
 
-  <div class="page-header-section">
+  <report:page-header>
     This is a page header. Header and footer sections get removed from the
     normal content flow and behave like absolutly positioned elements.
-  </div>
+  </report:page-header>
 
-  <div class="page-footer-section">
+  <report:page-footer>
     <!--
     This section is removed from the content flow and added to the
     page header
     -->
     <div class="page-footer"/>
-  </div>
+  </report:page-footer>
 
   <!--
   There is no special report header. Everything before an group
@@ -188,13 +178,13 @@
 
   </report:group>
 
-  <div class="page-header-section">
+  <report:page-header>
     <!--
     This section is removed from the content flow and added to the
     page header. As you see, newer content replaces the older one.
     -->
     This page footer will be printed on the last page.
-  </div>
+  </report:page-header>
 
 
   <h2>End of Report</h2>

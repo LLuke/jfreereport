@@ -1,0 +1,33 @@
+<!--
+  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  -->
+
+<report:report xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:report="http://jfreereport.sourceforge.net/namespaces/reports/flow"
+        xmlns:autotable="http://jfreereport.sourceforge.net/namespaces/reports/flow/extension/autotable">
+  <report:query>default</report:query>
+
+  <report:inline-stylesheet>
+    * {
+      font-family: "Arial", Sans-Serif;
+    }
+
+    @page {
+       margin: 2cm;
+       size: A4;
+    }
+  </report:inline-stylesheet>
+
+  <p>
+    This table is auto-generated.
+  </p>
+
+  <autotable:auto-table style="width:100%">
+    <autotable:auto-table-header>
+      <autotable:auto-table-content item="name"/>
+    </autotable:auto-table-header>
+    <autotable:auto-table-cell>
+      <autotable:auto-table-content item="value"/>
+    </autotable:auto-table-cell>
+  </autotable:auto-table>
+</report:report>
