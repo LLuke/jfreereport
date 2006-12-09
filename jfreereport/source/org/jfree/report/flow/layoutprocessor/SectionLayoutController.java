@@ -23,21 +23,19 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionLayoutController.java,v 1.5 2006/12/05 15:24:29 taqua Exp $
+ * $Id: SectionLayoutController.java,v 1.6 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.flow.layoutprocessor;
 
+import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.data.ExpressionSlot;
-import org.jfree.report.data.PrecomputedExpressionSlot;
 import org.jfree.report.data.PrecomputedValueRegistry;
-import org.jfree.report.data.RunningExpressionSlot;
-import org.jfree.report.data.StaticExpressionRuntimeData;
 import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.FlowController;
@@ -60,6 +58,7 @@ public class SectionLayoutController extends ElementLayoutController
   private Node[] nodes;
   private int index;
   private int expressionsCount;
+  private AttributeMap attributeMap;
 
   public SectionLayoutController()
   {
@@ -68,58 +67,29 @@ public class SectionLayoutController extends ElementLayoutController
   protected LayoutController startElement(final ReportTarget target)
       throws DataSourceException, ReportProcessingException, ReportDataFactoryException
   {
-    final Section s = (Section) getNode();
+    final Section s = (Section) getElement();
 
     FlowController fc = getFlowController();
     // Step 3: Add the expressions. Any expressions defined for the subreport
     // will work on the queried dataset.
     fc = startData(target, fc);
 
-    final PrecomputedValueRegistry pcvr =
-        fc.getPrecomputedValueRegistry();
-    if (isPrecomputing() == false)
-    {
-      pcvr.startElement(new ElementPrecomputeKey(s));
-    }
-
     final Expression[] expressions = s.getExpressions();
-    if (expressions.length > 0)
-    {
-      final ExpressionSlot[] slots = new ExpressionSlot[expressions.length];
-      final StaticExpressionRuntimeData runtimeData = createRuntimeData(fc);
-
-      for (int i = 0; i < expressions.length; i++)
-      {
-        final Expression expression = expressions[i];
-        if (isPrecomputing() == false && expression.isPrecompute())
-        {
-          // ok, we have to precompute the expression's value. For that
-          // we fork a new layout process, compute the value and then come
-          // back with the result.
-          Object value = precompute (i);
-          slots[i] = new PrecomputedExpressionSlot(expression.getName(), value);
-        }
-        else
-        {
-          // thats a bit easier; we dont have to do anything special ..
-          slots[i] = new RunningExpressionSlot(expression, runtimeData, pcvr.currentNode());
-        }
-      }
-
-      fc = fc.activateExpressions(slots);
-    }
+    fc = performElementPrecomputation(expressions, fc);
 
     if (s.isVirtual() == false)
     {
-      LayoutExpressionRuntime ler =
+      final LayoutExpressionRuntime ler =
           LayoutControllerUtil.getExpressionRuntime(fc, s);
-      target.startElement(s, ler);
+      attributeMap = LayoutControllerUtil.processAttributes(s, target, ler);
+      target.startElement(attributeMap);
     }
 
     SectionLayoutController derived = (SectionLayoutController) clone();
     derived.setProcessingState(OPENED);
     derived.setFlowController(fc);
     derived.expressionsCount = expressions.length;
+    derived.attributeMap = attributeMap;
     return derived;
   }
 
@@ -127,7 +97,7 @@ public class SectionLayoutController extends ElementLayoutController
                                      final FlowController fc)
       throws DataSourceException, ReportProcessingException, ReportDataFactoryException
   {
-    final Section s = (Section) getNode();
+    final Section s = (Section) getElement();
     return LayoutControllerUtil.processFlowOperations
         (fc, s.getOperationBefore());
   }
@@ -141,7 +111,7 @@ public class SectionLayoutController extends ElementLayoutController
     final LayoutControllerFactory layoutControllerFactory =
         reportContext.getLayoutControllerFactory();
 
-    final Section section = (Section) getNode();
+    final Section section = (Section) getElement();
     if (nodes == null)
     {
       // this is the first child ..
@@ -168,14 +138,12 @@ public class SectionLayoutController extends ElementLayoutController
   protected LayoutController finishElement(final ReportTarget target)
       throws ReportProcessingException, DataSourceException
   {
-    final Element e = (Element) getNode();
+    final Element e = getElement();
     // Step 1: call End Element
     FlowController fc = getFlowController();
     if (e.isVirtual() == false)
     {
-      LayoutExpressionRuntime ler =
-          LayoutControllerUtil.getExpressionRuntime(fc, e);
-      target.endElement(e, ler);
+      target.endElement(attributeMap);
     }
 
     final PrecomputedValueRegistry pcvr =
@@ -201,30 +169,17 @@ public class SectionLayoutController extends ElementLayoutController
     final Section s = (Section) e;
     fc = finishData(target, fc);
 
-    if (isPrecomputing() == false && s.isRepeat())
+    if (s.isRepeat())
     {
-      // ok, the user wanted us to repeat. So we repeat if the group in which
-      // we are in, is not closed (and at least one advance has been fired
-      // since the last repeat request [to prevent infinite loops]) ...
-      final boolean advanceRequested = fc.isAdvanceRequested();
-      final boolean advanceable = fc.getMasterRow().isAdvanceable();
-      if (advanceable && advanceRequested)
+      final FlowController cfc = tryRepeatingCommit(fc);
+      if (cfc != null)
       {
-        // we check against the commited target; But we will not use the
-        // commited target if the group is no longer active...
-        final FlowController cfc =
-            fc.performOperation(FlowControlOperation.COMMIT);
-        final boolean groupFinished =
-            LayoutControllerUtil.isGroupFinished(cfc, s);
-        if (groupFinished == false)
-        {
-          // Go back to the beginning ...
-          SectionLayoutController derived = (SectionLayoutController) clone();
-          derived.setProcessingState(NOT_STARTED);
-          derived.setFlowController(cfc);
-          derived.setIndex(0);
-          return derived;
-        }
+        // Go back to the beginning ...
+        SectionLayoutController derived = (SectionLayoutController) clone();
+        derived.setProcessingState(NOT_STARTED);
+        derived.setFlowController(cfc);
+        derived.setIndex(0);
+        return derived;
       }
     }
 
@@ -245,7 +200,7 @@ public class SectionLayoutController extends ElementLayoutController
                                       final FlowController fc)
       throws DataSourceException, ReportProcessingException
   {
-    final Section s = (Section) getNode();
+    final Section s = (Section) getElement();
     return LayoutControllerUtil.processFlowOperations
         (fc, s.getOperationAfter());
   }

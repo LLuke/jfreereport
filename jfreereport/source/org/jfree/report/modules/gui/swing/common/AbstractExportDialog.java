@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractExportDialog.java,v 1.4 2006/12/03 20:24:15 taqua Exp $
+ * $Id: AbstractExportDialog.java,v 1.5 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,11 +43,11 @@ import javax.swing.Action;
 import javax.swing.JDialog;
 
 import org.jfree.base.config.ModifiableConfiguration;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.report.modules.preferences.base.ConfigFactory;
 import org.jfree.report.modules.preferences.base.ConfigStorage;
 import org.jfree.report.modules.preferences.base.ConfigStoreException;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 

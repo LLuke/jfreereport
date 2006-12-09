@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ExportAction.java,v 1.2 2006/12/03 20:24:16 taqua Exp $
+ * $Id: ExportAction.java,v 1.3 2006/12/08 14:20:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,10 +34,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
+import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.swing.common.ExportActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingCommonModule;
 import org.jfree.report.modules.gui.swing.preview.PreviewPane;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.ui.action.ActionDowngrade;
 
 /**

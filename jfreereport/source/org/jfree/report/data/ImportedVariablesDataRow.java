@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ImportedVariablesDataRow.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: ImportedVariablesDataRow.java,v 1.4 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -62,7 +62,7 @@ public class ImportedVariablesDataRow extends StaticDataRow
   /**
    * Maps the inner-row into the outer data row. The parameter mapping's name
    * represents the *outer* name and the innernames.
-   * 
+   *
    * @param innerRow
    * @param parameterMappings
    * @throws DataSourceException
@@ -71,11 +71,6 @@ public class ImportedVariablesDataRow extends StaticDataRow
                                   final ParameterMapping[] parameterMappings)
           throws DataSourceException
   {
-    if (outerNames.length != innerNames.length)
-    {
-      throw new IllegalArgumentException();
-    }
-
     this.outerNames = new String[parameterMappings.length];
     this.innerNames = new String[parameterMappings.length];
     final Object[] values = new Object[parameterMappings.length];

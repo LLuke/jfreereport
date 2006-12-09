@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerFactory.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
+ * $Id: LayoutControllerFactory.java,v 1.3 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,7 +34,6 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.flow.FlowController;
-import org.jfree.report.structure.Node;
 
 /**
  * Creation-Date: 24.11.2006, 14:25:02

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: IsExportTypeExpression.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,6 +31,7 @@ package org.jfree.report.expressions.sys;
 
 import org.jfree.report.expressions.AbstractExpression;
 import org.jfree.report.expressions.ExpressionException;
+import org.jfree.report.flow.ReportContext;
 
 
 /**
@@ -68,7 +69,8 @@ public class IsExportTypeExpression extends AbstractExpression
     {
       return Boolean.FALSE;
     }
-    if (getRuntime().getExportDescriptor().startsWith(exportType))
+    final ReportContext reportContext = getRuntime().getReportContext();
+    if (reportContext.getExportDescriptor().startsWith(exportType))
     {
       return Boolean.TRUE;
     }

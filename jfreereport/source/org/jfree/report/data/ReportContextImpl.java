@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportContextImpl.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import java.util.HashMap;
 
 import org.jfree.formula.FormulaContext;
 import org.jfree.report.flow.ReportContext;
+import org.jfree.report.flow.ReportStructureRoot;
 import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
 import org.jfree.report.i18n.ResourceBundleFactory;
 
@@ -80,10 +81,21 @@ public class ReportContextImpl implements ReportContext
   private FormulaContext formulaContext;
   private LayoutControllerFactory layoutControllerFactory;
   private ResourceBundleFactory resourceBundleFactory;
+  private ReportStructureRoot reportStructureRoot;
 
   public ReportContextImpl()
   {
     backend = new HashMap();
+  }
+
+  public void setReportStructureRoot(final ReportStructureRoot reportStructureRoot)
+  {
+    this.reportStructureRoot = reportStructureRoot;
+  }
+
+  public ReportStructureRoot getReportStructureRoot()
+  {
+    return reportStructureRoot;
   }
 
   public String getExportDescriptor()

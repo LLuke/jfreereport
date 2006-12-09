@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: RunningExpressionSlot.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,7 +38,6 @@ import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.expressions.Function;
 import org.jfree.report.flow.ReportContext;
 import org.jfree.report.i18n.ResourceBundleFactory;
-import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
 
 /**
@@ -123,12 +122,7 @@ public class RunningExpressionSlot
     return staticRuntimeData.getData();
   }
 
-  public String getExportDescriptor()
-  {
-    return staticRuntimeData.getExportDescriptor();
-  }
-
-  public Element getDeclaringParent()
+  public Object getDeclaringParent()
   {
     return staticRuntimeData.getDeclaringParent();
   }

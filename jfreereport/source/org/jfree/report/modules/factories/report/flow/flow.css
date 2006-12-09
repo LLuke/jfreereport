@@ -28,32 +28,32 @@ external-node {
   display: inline;
 }
 
-content {
+content[report|content] {
   content: attr("report|content");
   display: inline;
 }
 
-content[report|isDate=true] {
+content[report|content][report|isDate=true] {
   content: format(attr("report|content", date), date);
 }
 
-content[report|isDate=true][report|format] {
+content[report|content][report|isDate=true][report|format] {
   content: format(attr("report|content", date), date, attr("report|format",string));
 }
 
-content[report|isNumber=true] {
+content[report|content][report|isNumber=true] {
   content: format(attr("report|content", number), number, "#,##0.00");
 }
 
-content[report|isNumber=true][report|format] {
+content[report|content][report|isNumber=true][report|format] {
   content: format(attr("report|content", number), number, attr("report|format",string));
 }
 
-content[report|isNumber=true][report|isInteger=true] {
+content[report|content][report|isNumber=true][report|isInteger=true] {
   content: format(attr("report|content", number), number, "#,##0");
 }
 
-content[report|isNumber=true][report|isInteger=true][format] {
+content[report|content][report|isNumber=true][report|isInteger=true][format] {
   content: format(attr("report|content", number), number, attr("report|format",string));
 }
 
@@ -77,6 +77,14 @@ datasource {
   display: none;
 }
 
-out-of-order-section {
-  
+group, report, sub-report, section, detail-section, page-header, page-footer {
+  display: block;
+}
+
+page-header {
+  position: running(header);
+}
+
+page-footer {
+  position: running(footer);
 }

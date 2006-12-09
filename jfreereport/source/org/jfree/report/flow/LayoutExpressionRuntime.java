@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LayoutExpressionRuntime.java,v 1.7 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,7 +33,6 @@ import org.jfree.report.DataRow;
 import org.jfree.report.ReportData;
 import org.jfree.report.expressions.ExpressionRuntime;
 import org.jfree.report.i18n.ResourceBundleFactory;
-import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
 
 /**
@@ -46,7 +45,7 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
   private DataRow dataRow;
   private Configuration configuration;
   private ReportData reportData;
-  private Element declaringParent;
+  private Object declaringParent;
   private int currentRow;
   private ReportContext reportContext;
 
@@ -74,7 +73,7 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
     this.reportData = reportData;
   }
 
-  public void setDeclaringParent(final Element declaringParent)
+  public void setDeclaringParent(final Object declaringParent)
   {
     this.declaringParent = declaringParent;
   }
@@ -115,7 +114,7 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
     return reportData;
   }
 
-  public Element getDeclaringParent()
+  public Object getDeclaringParent()
   {
     return declaringParent;
   }
@@ -123,11 +122,6 @@ public class LayoutExpressionRuntime implements ExpressionRuntime
   public int getCurrentRow()
   {
     return currentRow;
-  }
-
-  public String getExportDescriptor()
-  {
-    return reportContext.getExportDescriptor();
   }
 
   public ReportContext getReportContext()

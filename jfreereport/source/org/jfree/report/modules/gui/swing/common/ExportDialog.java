@@ -23,15 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ExportDialog.java,v 1.2 2006/12/03 20:24:15 taqua Exp $
+ * $Id: ExportDialog.java,v 1.3 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.modules.gui.swing.common;
 
-import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.report.modules.gui.common.GuiContext;
 
 /**
  * Although this is no real dialog, this interface is meant to be implemented

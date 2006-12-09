@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: NodeReadHandlerFactory.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -89,8 +89,9 @@ public class NodeReadHandlerFactory
     }
   }
 
-  private static final String DEFAULT_PREFIX =
-      "org.jfree.report.modules.factories.report.node-factories.";
+  private static final String PREFIX_SELECTOR =
+      "org.jfree.report.modules.factories.report.base.node-factory-prefix.";
+
   private static NodeReadHandlerFactory readHandlerFactory;
   private HashMap defaultDefinitions;
   private HashMap tagData;
@@ -257,8 +258,17 @@ public class NodeReadHandlerFactory
     if (readHandlerFactory == null)
     {
       readHandlerFactory = new NodeReadHandlerFactory();
-      readHandlerFactory.configure
-          (JFreeReportBoot.getInstance().getGlobalConfig(), DEFAULT_PREFIX);
+      final Configuration config = JFreeReportBoot.getInstance().getGlobalConfig();
+      final Iterator propertyKeys = config.findPropertyKeys(PREFIX_SELECTOR);
+      while (propertyKeys.hasNext())
+      {
+        final String key = (String) propertyKeys.next();
+        final String value = config.getConfigProperty(key);
+        if (value != null)
+        {
+          readHandlerFactory.configure(config, value);
+        }
+      }
     }
     return readHandlerFactory;
   }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ProxyExpressionRuntime.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,7 +33,6 @@ import org.jfree.report.DataRow;
 import org.jfree.report.ReportData;
 import org.jfree.report.flow.ReportContext;
 import org.jfree.report.i18n.ResourceBundleFactory;
-import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
 
 /**
@@ -94,7 +93,7 @@ public class ProxyExpressionRuntime implements ExpressionRuntime
     return parent.getCurrentRow();
   }
 
-  public Element getDeclaringParent()
+  public Object getDeclaringParent()
   {
     return parent.getDeclaringParent();
   }
@@ -104,8 +103,4 @@ public class ProxyExpressionRuntime implements ExpressionRuntime
     return parent.getReportContext();
   }
 
-  public String getExportDescriptor()
-  {
-    return parent.getExportDescriptor();
-  }
 }

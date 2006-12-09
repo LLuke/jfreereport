@@ -23,15 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RawReportProcessor.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: RawReportProcessor.java,v 1.4 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.flow.raw;
 
+import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.SinglePassReportProcessor;
-import org.jfree.report.flow.ReportJob;
 
 /**
  * The Raw report processor defines the base for all non-layouting output

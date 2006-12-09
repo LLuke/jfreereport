@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PreviewDialog.java,v 1.5 2006/12/03 20:24:16 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.6 2006/12/08 14:20:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,10 +43,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.IconTheme;
 import org.jfree.report.modules.gui.swing.common.JStatusBar;
 import org.jfree.report.modules.gui.swing.common.ReportProgressBar;
-import org.jfree.report.flow.ReportJob;
 
 /**
  * Creation-Date: 11.11.2006, 19:35:16

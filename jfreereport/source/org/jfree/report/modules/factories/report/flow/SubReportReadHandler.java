@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SubReportReadHandler.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
+ * $Id: SubReportReadHandler.java,v 1.5 2006/12/04 19:11:24 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,8 +33,8 @@ import java.util.ArrayList;
 
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.SubReport;
-import org.jfree.xmlns.parser.XmlReadHandler;
 import org.jfree.xmlns.parser.StringReadHandler;
+import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

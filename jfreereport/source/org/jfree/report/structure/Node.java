@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Node.java,v 1.3 2006/12/03 20:24:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,18 +42,18 @@ import org.jfree.report.JFreeReport;
  */
 public abstract class Node implements Serializable
 {
-  private Section parent;
+  private Node parent;
 
   protected Node()
   {
   }
 
-  public Section getParent()
+  public Node getParent()
   {
     return parent;
   }
 
-  protected void setParent(final Section parent)
+  protected void setParent(final Node parent)
   {
     this.parent = parent;
   }
@@ -64,14 +64,14 @@ public abstract class Node implements Serializable
    *
    * @param parent
    */
-  public void updateParent(final Section parent)
+  public void updateParent(final Node parent)
   {
     this.parent = parent;
   }
 
   public Group getGroup()
   {
-    Section parent = getParent();
+    Node parent = getParent();
     while (parent != null)
     {
       if (parent instanceof Group)
@@ -86,7 +86,7 @@ public abstract class Node implements Serializable
 
   public ReportDefinition getReport()
   {
-    Section parent = getParent();
+    Node parent = getParent();
     while (parent != null)
     {
       if (parent instanceof ReportDefinition)
@@ -101,7 +101,7 @@ public abstract class Node implements Serializable
 
   public JFreeReport getRootReport()
   {
-    Section parent = getParent();
+    Node parent = getParent();
     while (parent != null)
     {
       if (parent instanceof JFreeReport)

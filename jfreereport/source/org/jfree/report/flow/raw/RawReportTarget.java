@@ -23,22 +23,20 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RawReportTarget.java,v 1.7 2006/12/03 20:24:09 taqua Exp $
+ * $Id: RawReportTarget.java,v 1.8 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.flow.raw;
 
+import org.jfree.layouting.namespace.NamespaceDefinition;
+import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.expressions.ExpressionRuntime;
-import org.jfree.report.flow.ReportTarget;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.flow.ReportJob;
-import org.jfree.report.structure.ContentElement;
-import org.jfree.report.structure.Element;
-import org.jfree.report.structure.Node;
-import org.jfree.util.Log;
+import org.jfree.report.flow.ReportStructureRoot;
+import org.jfree.report.flow.ReportTarget;
 
 /**
  * The Raw report processor defines the base for all non-layouting output
@@ -61,37 +59,47 @@ public class RawReportTarget implements ReportTarget
     return reportJob;
   }
 
-  public void startReport(JFreeReport report) throws DataSourceException
+  public void startReport(ReportStructureRoot report)
+      throws DataSourceException, ReportProcessingException
   {
+
   }
 
-  public void endReport(JFreeReport report) throws DataSourceException
+  public void startElement(final AttributeMap attrs)
+      throws DataSourceException, ReportProcessingException
   {
+
   }
 
-  public void processNode(final Node node, final ExpressionRuntime runtime)
-          throws DataSourceException
+  public void processContent(final DataFlags value)
+      throws DataSourceException, ReportProcessingException
   {
+
   }
 
-  public void startElement(final Element node,
-                           final ExpressionRuntime runtime)
-          throws DataSourceException
+  public void endElement(final AttributeMap attrs)
+      throws DataSourceException, ReportProcessingException
   {
+
   }
 
-  public void processContentElement(ContentElement node,
-                                    DataFlags value,
-                                    ExpressionRuntime runtime)
-          throws DataSourceException
+  public void endReport(ReportStructureRoot report)
+      throws DataSourceException, ReportProcessingException
   {
-    Log.debug ("ContentElement: " + value);
+
   }
 
-  public void endElement(final Element node, final ExpressionRuntime runtime)
-          throws DataSourceException
+  public NamespaceDefinition getNamespaceByUri(String uri)
   {
+    return null;
   }
+
+  public void processText(String text)
+      throws DataSourceException, ReportProcessingException
+  {
+
+  }
+
 
   public void commit()
   {

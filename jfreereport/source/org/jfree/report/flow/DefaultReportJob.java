@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportJob.java,v 1.6 2006/12/03 20:24:09 taqua Exp $
+ * $Id: DefaultReportJob.java,v 1.1 2006/12/08 14:21:24 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,10 +34,9 @@ import java.awt.print.PageFormat;
 import org.jfree.base.config.HierarchicalConfiguration;
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.report.ReportDataFactory;
-import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.i18n.DefaultResourceBundleFactory;
+import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.util.ReportParameters;
-import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 22.02.2006, 12:47:53

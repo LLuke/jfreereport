@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ElementLayoutController.java,v 1.4 2006/12/06 17:26:06 taqua Exp $
+ * $Id: ElementLayoutController.java,v 1.5 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,17 +33,21 @@ package org.jfree.report.flow.layoutprocessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.expressions.Expression;
 import org.jfree.report.data.GlobalMasterRow;
 import org.jfree.report.data.PrecomputeNode;
+import org.jfree.report.data.PrecomputeNodeKey;
 import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.data.StaticExpressionRuntimeData;
-import org.jfree.report.data.PrecomputeNodeKey;
+import org.jfree.report.data.ExpressionSlot;
+import org.jfree.report.data.PrecomputedExpressionSlot;
+import org.jfree.report.data.RunningExpressionSlot;
 import org.jfree.report.flow.EmptyReportTarget;
 import org.jfree.report.flow.FlowController;
-import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.ReportTarget;
+import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.structure.Element;
-import org.jfree.report.structure.Node;
 import org.jfree.util.Log;
 
 /**
@@ -127,7 +131,7 @@ public abstract class ElementLayoutController
 
   private int processingState;
   private FlowController flowController;
-  private Element node;
+  private Element element;
   private LayoutController parent;
   private boolean precomputing;
 
@@ -165,7 +169,7 @@ public abstract class ElementLayoutController
       throw new IllegalStateException();
     }
 
-    this.node = (Element) node;
+    this.element = (Element) node;
     this.flowController = flowController;
     this.parent = parent;
   }
@@ -214,9 +218,9 @@ public abstract class ElementLayoutController
     return processingState != FINISHED;
   }
 
-  public Node getNode()
+  public Element getElement()
   {
-    return node;
+    return element;
   }
 
   public FlowController getFlowController()
@@ -237,11 +241,6 @@ public abstract class ElementLayoutController
   public void setFlowController(final FlowController flowController)
   {
     this.flowController = flowController;
-  }
-
-  public void setNode(final Element node)
-  {
-    this.node = node;
   }
 
   public void setParent(final LayoutController parent)
@@ -268,7 +267,7 @@ public abstract class ElementLayoutController
     final ReportJob reportJob = fc.getReportJob();
     final StaticExpressionRuntimeData sdd = new StaticExpressionRuntimeData();
     sdd.setData(dataRow.getReportDataRow().getReportData());
-    sdd.setDeclaringParent((Element) getNode());
+    sdd.setDeclaringParent(getElement());
     sdd.setConfiguration(reportJob.getConfiguration());
     sdd.setReportContext(fc.getReportContext());
     return sdd;
@@ -292,7 +291,7 @@ public abstract class ElementLayoutController
     final PrecomputedValueRegistry pcvr =
         fc.getPrecomputedValueRegistry();
 
-    final Element element = (Element) getNode();
+    final Element element = (Element) getElement();
     pcvr.startElementPrecomputation(new ElementPrecomputeKey(element));
 
     final ElementLayoutController layoutController =
@@ -316,4 +315,71 @@ public abstract class ElementLayoutController
     return functionResult;
   }
 
+
+  protected FlowController performElementPrecomputation(final Expression[] expressions,
+                                                        FlowController fc)
+      throws ReportProcessingException, ReportDataFactoryException, DataSourceException
+  {
+    final PrecomputedValueRegistry pcvr = fc.getPrecomputedValueRegistry();
+    if (isPrecomputing() == false)
+    {
+      final Element e = (Element) getElement();
+      pcvr.startElement(new ElementPrecomputeKey(e));
+    }
+
+    if (expressions.length > 0)
+    {
+      final ExpressionSlot[] slots = new ExpressionSlot[expressions.length];
+      final StaticExpressionRuntimeData runtimeData = createRuntimeData(fc);
+
+      for (int i = 0; i < expressions.length; i++)
+      {
+        final Expression expression = expressions[i];
+        if (isPrecomputing() == false && expression.isPrecompute())
+        {
+          // ok, we have to precompute the expression's value. For that
+          // we fork a new layout process, compute the value and then come
+          // back with the result.
+          Object value = precompute (i);
+          slots[i] = new PrecomputedExpressionSlot(expression.getName(), value);
+        }
+        else
+        {
+          // thats a bit easier; we dont have to do anything special ..
+          slots[i] = new RunningExpressionSlot(expression, runtimeData, pcvr.currentNode());
+        }
+      }
+
+      fc = fc.activateExpressions(slots);
+    }
+    return fc;
+  }
+
+
+  protected FlowController tryRepeatingCommit (final FlowController fc)
+      throws DataSourceException
+  {
+    if (isPrecomputing() == false)
+    {
+      // ok, the user wanted us to repeat. So we repeat if the group in which
+      // we are in, is not closed (and at least one advance has been fired
+      // since the last repeat request [to prevent infinite loops]) ...
+      final boolean advanceRequested = fc.isAdvanceRequested();
+      final boolean advanceable = fc.getMasterRow().isAdvanceable();
+      if (advanceable && advanceRequested)
+      {
+        // we check against the commited target; But we will not use the
+        // commited target if the group is no longer active...
+        final FlowController cfc =
+            fc.performOperation(FlowControlOperation.COMMIT);
+        final boolean groupFinished =
+            LayoutControllerUtil.isGroupFinished(cfc, getElement());
+        if (groupFinished == false)
+        {
+          return cfc;
+        }
+      }
+    }
+    return null;
+  }
 }

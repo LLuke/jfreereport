@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrintActionPlugin.java,v 1.3 2006/12/03 20:24:17 taqua Exp $
+ * $Id: PrintActionPlugin.java,v 1.4 2006/12/08 14:20:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,10 +34,10 @@ import java.util.Locale;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
+import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.swing.common.AbstractActionPlugin;
 import org.jfree.report.modules.gui.swing.common.ExportActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingGuiContext;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.util.ResourceBundleSupport;
 
 /**

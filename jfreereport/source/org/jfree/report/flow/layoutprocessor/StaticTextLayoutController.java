@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: StaticTextLayoutController.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
+ * $Id: StaticTextLayoutController.java,v 1.3 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,9 +34,9 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.flow.FlowController;
-import org.jfree.report.flow.LayoutExpressionRuntime;
 import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.structure.Node;
+import org.jfree.report.structure.StaticText;
 import org.jfree.util.Log;
 
 /**
@@ -99,9 +99,8 @@ public class StaticTextLayoutController implements LayoutController, Cloneable
   {
     if (state == NOT_STARTED)
     {
-      final LayoutExpressionRuntime expressionRuntime =
-          LayoutControllerUtil.getExpressionRuntime(getFlowController(), getNode());
-      target.processNode(getNode(), expressionRuntime);
+      final StaticText text = (StaticText) getNode();
+      target.processText(text.getText());
 
       if (getParent() != null)
       {

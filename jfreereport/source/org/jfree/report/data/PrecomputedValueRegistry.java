@@ -23,14 +23,12 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrecomputedValueRegistry.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
+ * $Id: PrecomputedValueRegistry.java,v 1.5 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.data;
-
-import org.jfree.report.structure.Element;
 
 /**
  * Expression precomputation processes the report in a parallel process to

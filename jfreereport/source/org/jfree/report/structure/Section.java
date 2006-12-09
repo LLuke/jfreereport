@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Section.java,v 1.4 2006/12/03 20:24:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -127,7 +127,7 @@ public class Section extends Element implements Serializable
     // check for component loops ...
     if (element instanceof Section)
     {
-      Section band = this;
+      Node band = this;
       while (band != null)
       {
         if (band == element)
@@ -141,15 +141,24 @@ public class Section extends Element implements Serializable
 
     // remove the element from its old parent ..
     // this is the default AWT behaviour when adding Components to Container
-    if (element.getParent() != null)
+    final Node parent = element.getParent();
+    if (parent != null)
     {
-      if (element.getParent() == this)
+      if (parent == this)
       {
         // already a child, wont add twice ...
         return;
       }
 
-      element.getParent().removeNode(element);
+      if (parent instanceof Section)
+      {
+        Section section = (Section) parent;
+        section.removeNode(element);
+      }
+      else
+      {
+        element.setParent(null);
+      }
     }
 
     // add the element, update the childs Parent and the childs stylesheet.

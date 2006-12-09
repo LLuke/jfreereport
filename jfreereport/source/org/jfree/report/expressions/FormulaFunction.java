@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FormulaFunction.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -175,7 +175,7 @@ public class FormulaFunction extends AbstractExpression implements Function
         Formula initFormula = new Formula(initialExpression);
         final ReportFormulaContext context =
             new ReportFormulaContext(getFormulaContext(), getDataRow());
-        context.setElement(getRuntime().getDeclaringParent());
+        context.setDeclaringElement(getRuntime().getDeclaringParent());
         try
         {
           initFormula.initialize(context);
@@ -183,7 +183,7 @@ public class FormulaFunction extends AbstractExpression implements Function
         }
         finally
         {
-          context.setElement(null);
+          context.setDeclaringElement(null);
           context.setDataRow(null);
         }
       }
@@ -209,7 +209,7 @@ public class FormulaFunction extends AbstractExpression implements Function
 
       final ReportFormulaContext context =
           new ReportFormulaContext(getFormulaContext(), getDataRow());
-      context.setElement(getRuntime().getDeclaringParent());
+      context.setDeclaringElement(getRuntime().getDeclaringParent());
       try
       {
         compiledFormula.initialize(context);
@@ -217,7 +217,7 @@ public class FormulaFunction extends AbstractExpression implements Function
       }
       finally
       {
-        context.setElement(null);
+        context.setDeclaringElement(null);
         context.setDataRow(null);
       }
     }

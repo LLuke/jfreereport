@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AttrFunction.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,6 +39,7 @@ import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.report.expressions.ReportFormulaContext;
+import org.jfree.report.structure.Element;
 
 /**
  * Creation-Date: 24.11.2006, 13:02:41
@@ -67,22 +68,29 @@ public class AttrFunction implements Function
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
           (LibFormulaErrorValue.ERROR_REFERENCE_NOT_RESOLVABLE));
     }
+
+    final ReportFormulaContext reportFormulaContext =
+        (ReportFormulaContext) context;
+    Object declaringElement = reportFormulaContext.getDeclaringElement();
+    if (declaringElement instanceof Element == false)
+    {
+      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
+          (LibFormulaErrorValue.ERROR_REFERENCE_NOT_RESOLVABLE));
+    }
+
+    final Element element = (Element) declaringElement;
+
     if (parameters.getParameterCount() == 1)
     {
       final String value = (String) parameters.getValue(0);
-      final ReportFormulaContext reportFormulaContext =
-          (ReportFormulaContext) context;
-      return new TypeValuePair(AnyType.TYPE,
-          reportFormulaContext.getElement().getAttribute(value));
+      return new TypeValuePair(AnyType.TYPE, element.getAttribute(value));
     }
     else if (parameters.getParameterCount() == 2)
     {
       final String namespace = (String) parameters.getValue(0);
       final String attrName = (String) parameters.getValue(1);
-      final ReportFormulaContext reportFormulaContext =
-          (ReportFormulaContext) context;
       return new TypeValuePair(AnyType.TYPE,
-          reportFormulaContext.getElement().getAttribute(namespace, attrName));
+          element.getAttribute(namespace, attrName));
     }
     return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
         (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: JFreeReport.java,v 1.37 2006/12/03 20:24:08 taqua Exp $
+ * $Id: JFreeReport.java,v 1.38 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ package org.jfree.report;
 import java.awt.print.PageFormat;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.table.TableModel;
 
 import org.jfree.base.config.HierarchicalConfiguration;
@@ -50,23 +51,26 @@ import org.jfree.util.Configuration;
 /**
  * A JFreeReport instance is used as report template to define the visual layout
  * of a report and to collect all data sources for the reporting. Possible data
- * sources are the {@link TableModel}, {@link org.jfree.report.expressions.Expression}s or {@link
- * ReportProperties}.
+ * sources are the {@link TableModel}, {@link org.jfree.report.expressions.Expression}s
+ * or {@link ReportProperties}.
  * <p/>
  * New since 0.9: Report properties contain data. They do not contain processing
  * objects (like the outputtarget) or attribute values. Report properties should
  * only contains things, which are intended for printing.
- * <p>
+ * <p/>
  * The report data source is no longer part of the report definition. It is an
- * extra object passed over to the report processor or generated using a
- * report data factory.
+ * extra object passed over to the report processor or generated using a report
+ * data factory.
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class JFreeReport extends ReportDefinition implements Serializable, ReportStructureRoot
+public class JFreeReport extends ReportDefinition
+    implements Serializable, ReportStructureRoot
 {
-  /** The report configuration. */
+  /**
+   * The report configuration.
+   */
   private ModifiableConfiguration reportConfiguration;
 
   private ArrayList styleSheets;
@@ -80,12 +84,14 @@ public class JFreeReport extends ReportDefinition implements Serializable, Repor
   private ResourceManager resourceManager;
   private ResourceKey baseResource;
 
-  /** The default constructor. Creates an empty but fully initialized report. */
+  /**
+   * The default constructor. Creates an empty but fully initialized report.
+   */
   public JFreeReport()
   {
     setType("report");
     this.reportConfiguration = new HierarchicalConfiguration
-            (JFreeReportBoot.getInstance().getGlobalConfig());
+        (JFreeReportBoot.getInstance().getGlobalConfig());
 
     this.styleSheets = new ArrayList();
     this.parameters = new ReportParameters();
@@ -191,19 +197,29 @@ public class JFreeReport extends ReportDefinition implements Serializable, Repor
     this.baseResource = baseResource;
   }
 
-  public void setPageFormat (final PageFormat format)
+  public void setPageFormat(final PageFormat format)
   {
     pageRule.clear();
     StyleSheetUtility.updateRuleForPage(pageRule, format);
   }
 
-  public PageFormat getPageFormat ()
+  public PageFormat getPageFormat()
   {
     return StyleSheetUtility.getPageFormat(pageRule);
   }
 
   public ModifiableConfiguration getEditableConfiguration()
   {
-    return reportConfiguration;  
+    return reportConfiguration;
+  }
+
+  public Locale getLocale()
+  {
+    final Locale locale = super.getLocale();
+    if (locale == null)
+    {
+      return Locale.getDefault();
+    }
+    return locale;
   }
 }

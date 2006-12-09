@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractReportProcessor.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
+ * $Id: AbstractReportProcessor.java,v 1.6 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -87,6 +87,7 @@ public abstract class AbstractReportProcessor implements ReportProcessor
     final DefaultFormulaContext formulaContext = new DefaultFormulaContext();
     context.setFormulaContext(formulaContext);
     context.setResourceBundleFactory(job.getResourceBundleFactory());
+    context.setReportStructureRoot(job.getReportStructureRoot());
     return context;
   }
 

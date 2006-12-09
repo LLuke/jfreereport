@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PdfExportTask.java,v 1.2 2006/12/03 20:24:15 taqua Exp $
+ * $Id: PdfExportTask.java,v 1.3 2006/12/08 14:20:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,13 +33,12 @@ package org.jfree.report.modules.gui.swing.pdf;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.layouting.modules.output.pdf.PdfOutputProcessor;
 import org.jfree.report.ReportConfigurationException;
-import org.jfree.report.flow.streaming.StreamingReportProcessor;
 import org.jfree.report.flow.ReportJob;
-import org.jfree.util.Log;
+import org.jfree.report.flow.streaming.StreamingReportProcessor;
 import org.jfree.util.Configuration;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 02.12.2006, 15:34:17

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrintTask.java,v 1.2 2006/12/03 20:24:17 taqua Exp $
+ * $Id: PrintTask.java,v 1.3 2006/12/08 14:20:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,8 +32,8 @@ package org.jfree.report.modules.gui.swing.printing;
 
 import java.awt.print.PrinterException;
 
-import org.jfree.util.Log;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: Dec 3, 2006, 3:23:22 PM

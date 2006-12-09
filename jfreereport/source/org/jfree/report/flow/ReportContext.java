@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportContext.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,7 +45,8 @@ public interface ReportContext
   public LayoutControllerFactory getLayoutControllerFactory();
   public String getExportDescriptor();
   public ResourceBundleFactory getResourceBundleFactory();
-
+  public ReportStructureRoot getReportStructureRoot();
+  
   public void setAttribute (Object key, Object value);
   public Object getAttribute (Object key);
 }

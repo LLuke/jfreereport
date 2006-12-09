@@ -23,21 +23,18 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: EmptyReportTarget.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.flow;
 
+import org.jfree.layouting.namespace.NamespaceDefinition;
+import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.expressions.ExpressionRuntime;
-import org.jfree.report.structure.ContentElement;
-import org.jfree.report.structure.Element;
-import org.jfree.report.structure.Node;
 
 /**
  * This target does nothing.
@@ -49,48 +46,52 @@ public class EmptyReportTarget implements ReportTarget
   private ReportJob job;
   private String reportDescriptor;
 
-  public EmptyReportTarget(final ReportJob job, final String reportDescriptor)
+  public EmptyReportTarget(final ReportJob job,
+                           final String reportDescriptor)
   {
     this.job = job;
     this.reportDescriptor = reportDescriptor;
   }
 
-  public void processNode(Node node, ExpressionRuntime runtime)
+  public void startReport(ReportStructureRoot report)
       throws DataSourceException, ReportProcessingException
   {
 
   }
 
-  public void processContentElement(ContentElement node,
-                                    DataFlags value,
-                                    ExpressionRuntime runtime)
+  public void startElement(final AttributeMap attrs)
       throws DataSourceException, ReportProcessingException
   {
 
   }
 
-  public void startElement(Element node, ExpressionRuntime runtime)
+  public void processText(String text)
       throws DataSourceException, ReportProcessingException
   {
 
   }
 
-  public void endElement(Element node, ExpressionRuntime runtime)
+  public void processContent(final DataFlags value)
       throws DataSourceException, ReportProcessingException
   {
 
   }
 
-  public void startReport(JFreeReport report)
+  public void endElement(final AttributeMap attrs)
       throws DataSourceException, ReportProcessingException
   {
 
   }
 
-  public void endReport(JFreeReport report)
+  public void endReport(ReportStructureRoot report)
       throws DataSourceException, ReportProcessingException
   {
 
+  }
+
+  public NamespaceDefinition getNamespaceByUri(String uri)
+  {
+    return null;
   }
 
   public ReportJob getReportJob()

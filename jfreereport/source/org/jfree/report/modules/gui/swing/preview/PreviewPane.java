@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PreviewPane.java,v 1.5 2006/12/03 20:24:16 taqua Exp $
+ * $Id: PreviewPane.java,v 1.6 2006/12/08 14:20:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -54,8 +54,8 @@ import javax.swing.SwingUtilities;
 import org.jfree.layout.CenterLayout;
 import org.jfree.layouting.modules.output.graphics.PageDrawable;
 import org.jfree.report.JFreeReportBoot;
-import org.jfree.report.flow.ReportStructureRoot;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.ReportStructureRoot;
 import org.jfree.report.modules.gui.common.IconTheme;
 import org.jfree.report.modules.gui.swing.common.ActionPlugin;
 import org.jfree.report.modules.gui.swing.common.SwingGuiContext;

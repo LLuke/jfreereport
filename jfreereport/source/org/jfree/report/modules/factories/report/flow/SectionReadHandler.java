@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SectionReadHandler.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -88,6 +88,7 @@ public class SectionReadHandler extends AbstractElementReadHandler
 
     if (FlowReportFactoryModule.NAMESPACE.equals(getUri()) == false)
     {
+      final Element element = getElement();
       final int attrLength = attrs.getLength();
       for (int i = 0; i < attrLength; i++)
       {
@@ -95,7 +96,7 @@ public class SectionReadHandler extends AbstractElementReadHandler
         final String local = attrs.getLocalName(i);
         if (FlowReportFactoryModule.NAMESPACE.equals(uri) == false)
         {
-          getElement().setAttribute(uri, local, attrs.getValue(i));
+          element.setAttribute(uri, local, attrs.getValue(i));
         }
       }
     }

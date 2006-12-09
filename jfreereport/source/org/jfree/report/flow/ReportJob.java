@@ -1,12 +1,12 @@
 package org.jfree.report.flow;
 
-import java.io.Serializable;
 import java.awt.print.PageFormat;
+import java.io.Serializable;
 
 import org.jfree.base.config.ModifiableConfiguration;
-import org.jfree.report.util.ReportParameters;
 import org.jfree.report.ReportDataFactory;
 import org.jfree.report.i18n.ResourceBundleFactory;
+import org.jfree.report.util.ReportParameters;
 
 /**
  * Created by IntelliJ IDEA.

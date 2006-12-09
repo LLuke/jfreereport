@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StaticExpressionRuntimeData.java,v 1.6 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,7 +32,6 @@ package org.jfree.report.data;
 import org.jfree.report.ReportData;
 import org.jfree.report.flow.ReportContext;
 import org.jfree.report.i18n.ResourceBundleFactory;
-import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
 
 /**
@@ -44,7 +43,7 @@ import org.jfree.util.Configuration;
  */
 public class StaticExpressionRuntimeData
 {
-  private Element declaringParent;
+  private Object declaringParent;
   private Configuration configuration;
   private ReportData data;
   private int currentRow;
@@ -74,26 +73,12 @@ public class StaticExpressionRuntimeData
     this.data = data;
   }
 
-  /**
-   * The output descriptor is a simple string collections consisting of the
-   * following components: exportclass/type/subtype
-   * <p/>
-   * For example, the PDF export would be: pageable/pdf The StreamHTML export
-   * would return table/html/stream
-   *
-   * @return the export descriptor.
-   */
-  public String getExportDescriptor()
-  {
-    return reportContext.getExportDescriptor();
-  }
-
   public ResourceBundleFactory getResourceBundleFactory()
   {
     return reportContext.getResourceBundleFactory();
   }
 
-  public void setDeclaringParent(final Element declaringParent)
+  public void setDeclaringParent(final Object declaringParent)
   {
     this.declaringParent = declaringParent;
   }
@@ -103,7 +88,7 @@ public class StaticExpressionRuntimeData
     this.configuration = configuration;
   }
 
-  public Element getDeclaringParent()
+  public Object getDeclaringParent()
   {
     return declaringParent;
   }

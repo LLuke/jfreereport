@@ -23,26 +23,25 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportFormulaContext.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
+ * $Id: ReportFormulaContext.java,v 1.3 2006/12/05 15:24:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.expressions;
 
+import org.jfree.formula.ContextEvaluationException;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.LocalizationContext;
-import org.jfree.formula.ContextEvaluationException;
 import org.jfree.formula.function.FunctionRegistry;
 import org.jfree.formula.operators.OperatorFactory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.AnyType;
+import org.jfree.report.DataFlags;
 import org.jfree.report.DataRow;
 import org.jfree.report.DataSourceException;
-import org.jfree.report.DataFlags;
-import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 
@@ -55,7 +54,7 @@ public class ReportFormulaContext implements FormulaContext
 {
   private FormulaContext backend;
   private DataRow dataRow;
-  private Element element;
+  private Object declaringElement;
 
   public ReportFormulaContext(FormulaContext backend,
                               DataRow dataRow)
@@ -136,13 +135,13 @@ public class ReportFormulaContext implements FormulaContext
     this.dataRow = dataRow;
   }
 
-  public Element getElement()
+  public Object getDeclaringElement()
   {
-    return element;
+    return declaringElement;
   }
 
-  public void setElement(final Element element)
+  public void setDeclaringElement(final Object declaringElement)
   {
-    this.element = element;
+    this.declaringElement = declaringElement;
   }
 }

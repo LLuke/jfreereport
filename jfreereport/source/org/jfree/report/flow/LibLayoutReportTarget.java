@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LibLayoutReportTarget.java,v 1.10 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -48,14 +48,8 @@ import org.jfree.report.DataSourceException;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportInfo;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.expressions.ExpressionRuntime;
-import org.jfree.report.structure.ContentElement;
-import org.jfree.report.structure.Element;
-import org.jfree.report.structure.Node;
-import org.jfree.report.structure.StaticText;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 07.03.2006, 18:56:37
@@ -121,7 +115,7 @@ public class LibLayoutReportTarget extends AbstractReportTarget
     this.feed = layoutProcess.getInputFeed();
   }
 
-  public LibLayoutReportTarget(final ReportJob reportJob,
+  protected LibLayoutReportTarget(final ReportJob reportJob,
                                final ResourceKey baseResource,
                                final ResourceManager resourceManager,
                                final LayoutProcess layoutProcess,
@@ -163,7 +157,7 @@ public class LibLayoutReportTarget extends AbstractReportTarget
     return feed;
   }
 
-  public void startReport (JFreeReport report)
+  public void startReport (ReportStructureRoot report)
           throws DataSourceException, ReportProcessingException
   {
     try
@@ -181,7 +175,7 @@ public class LibLayoutReportTarget extends AbstractReportTarget
         feed.addDocumentAttribute(DocumentContext.STRICT_STYLE_MODE, Boolean.TRUE);
       }
 
-      NamespaceDefinition[] namespaces = createDefaultNameSpaces();
+      final NamespaceDefinition[] namespaces = createDefaultNameSpaces();
       for (int i = 0; i < namespaces.length; i++)
       {
         final NamespaceDefinition definition = namespaces[i];
@@ -191,14 +185,18 @@ public class LibLayoutReportTarget extends AbstractReportTarget
         feed.endMetaNode();
       }
 
-      final int size = report.getStyleSheetCount();
-      for (int i = 0; i < size; i++)
+      if (report instanceof JFreeReport)
       {
-        final StyleSheet styleSheet = report.getStyleSheet(i);
-        feed.startMetaNode();
-        feed.setMetaNodeAttribute("type", "style");
-        feed.setMetaNodeAttribute("#content", styleSheet);
-        feed.endMetaNode();
+        final JFreeReport realReport = (JFreeReport) report;
+        final int size = realReport.getStyleSheetCount();
+        for (int i = 0; i < size; i++)
+        {
+          final StyleSheet styleSheet = realReport.getStyleSheet(i);
+          feed.startMetaNode();
+          feed.setMetaNodeAttribute("type", "style");
+          feed.setMetaNodeAttribute("#content", styleSheet);
+          feed.endMetaNode();
+        }
       }
 
       feed.endMetaInfo();
@@ -212,20 +210,16 @@ public class LibLayoutReportTarget extends AbstractReportTarget
 
   }
 
-  public void processNode (Node node, ExpressionRuntime runtime)
+  public void startElement (final AttributeMap attrs)
           throws DataSourceException, ReportProcessingException
   {
-    if (node instanceof StaticText == false)
-    {
-      Log.warn ("Unknown Node type encountered: " + node);
-      return;
-    }
-
-    final StaticText text = (StaticText) node;
-    final InputFeed feed = getInputFeed();
     try
     {
-      feed.addContent(text.getText());
+      final String namespace = getNamespaceFromAttribute(attrs);
+      final String type = getElemenTypeFromAttribute(attrs);
+      final InputFeed feed = getInputFeed();
+      feed.startElement(namespace, type);
+      handleAttributes(attrs);
     }
     catch (InputFeedException e)
     {
@@ -233,19 +227,26 @@ public class LibLayoutReportTarget extends AbstractReportTarget
     }
   }
 
-  public void processContentElement (final ContentElement node,
-                                     final DataFlags value,
-                                     final ExpressionRuntime runtime)
+  public void processText(String text)
+      throws DataSourceException, ReportProcessingException
+  {
+    try
+    {
+      final InputFeed feed = getInputFeed();
+      feed.addContent(text);
+    }
+    catch (InputFeedException e)
+    {
+      throw new ReportProcessingException("Failed to process inputfeed", e);
+    }
+  }
+
+  public void processContent (final DataFlags value)
           throws DataSourceException, ReportProcessingException
   {
     final InputFeed feed = getInputFeed();
-    AttributeMap attrs = processAttributes(node, runtime);
-    handleAttributes(attrs);
-    //Object styleAttributeValue = handleAttributes(node, runtime);
-    //CSSDeclarationRule rule = createStyle(styleAttributeValue, node, runtime);
     try
     {
-      //feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "style", rule);
       feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "content", value.getValue());
       feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isChanged", String.valueOf(value.isChanged()));
       feed.setAttribute(JFreeReportInfo.REPORT_NAMESPACE, "isDate", String.valueOf(value.isDate()));
@@ -261,40 +262,13 @@ public class LibLayoutReportTarget extends AbstractReportTarget
     }
   }
 
-  public void startElement (Element node, ExpressionRuntime runtime)
-          throws DataSourceException, ReportProcessingException
+  public NamespaceDefinition getNamespaceByUri(String uri)
   {
-    final String namespace = node.getNamespace();
-    if (JFreeReportInfo.COMPATIBILITY_NAMESPACE.equals(namespace))
-    {
-      // hoho, a compatibility layer is what we need here. Whenever we hit
-      // that namespace, this means that something strange is going on, which
-      // needs a smart conversion.
-      //
-      // Luckily, for now, there are no compatibility elements required.
-      return;
-    }
-
-    final InputFeed feed = getInputFeed();
-    try
-    {
-      feed.startElement(namespace, node.getType());
-      AttributeMap attributes = processAttributes(node, runtime);
-      handleAttributes(attributes);
-    }
-    catch (InputFeedException e)
-    {
-      throw new ReportProcessingException("Failed to process inputfeed", e);
-    }
-  }
-
-  protected NamespaceDefinition findNamespace (String namespace)
-  {
-    if (namespace == null)
+    if (uri == null)
     {
       return null;
     }
-    return namespaces.getDefinition(namespace);
+    return namespaces.getDefinition(uri);
   }
 
 
@@ -303,13 +277,13 @@ public class LibLayoutReportTarget extends AbstractReportTarget
   {
     try
     {
-      InputFeed feed = getInputFeed();
-      String[] namespaces = map.getNameSpaces();
+      final InputFeed feed = getInputFeed();
+      final String[] namespaces = map.getNameSpaces();
       for (int i = 0; i < namespaces.length; i++)
       {
         final String namespace = namespaces[i];
-        Map localAttrs = map.getAttributes(namespace);
-        Iterator it = localAttrs.entrySet().iterator();
+        final Map localAttrs = map.getAttributes(namespace);
+        final Iterator it = localAttrs.entrySet().iterator();
         while (it.hasNext())
         {
           Map.Entry entry = (Map.Entry) it.next();
@@ -323,16 +297,9 @@ public class LibLayoutReportTarget extends AbstractReportTarget
     }
   }
 
-  public void endElement (Element node, ExpressionRuntime runtime)
+  public void endElement (final AttributeMap attrs)
           throws DataSourceException, ReportProcessingException
   {
-    final String namespace = node.getNamespace();
-    if (JFreeReportInfo.COMPATIBILITY_NAMESPACE.equals(namespace))
-    {
-      // hoho, a compatibility layer is what we need here.
-      return;
-    }
-
     final InputFeed feed = getInputFeed();
     try
     {
@@ -344,7 +311,7 @@ public class LibLayoutReportTarget extends AbstractReportTarget
     }
   }
 
-  public void endReport (JFreeReport report)
+  public void endReport (ReportStructureRoot report)
           throws DataSourceException,
           ReportProcessingException
   {

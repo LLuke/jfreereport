@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PaginatingReportProcessor.java,v 1.10 2006/12/05 15:24:29 taqua Exp $
+ * $Id: PaginatingReportProcessor.java,v 1.11 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,9 +42,9 @@ import org.jfree.report.flow.AbstractReportProcessor;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.LibLayoutReportTarget;
 import org.jfree.report.flow.ReportContext;
-import org.jfree.report.flow.ReportTargetState;
-import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.ReportJob;
+import org.jfree.report.flow.ReportTarget;
+import org.jfree.report.flow.ReportTargetState;
 import org.jfree.report.flow.layoutprocessor.LayoutController;
 import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
 import org.jfree.resourceloader.ResourceKey;

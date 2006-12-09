@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PdfExportDialog.java,v 1.3 2006/12/08 10:05:15 taqua Exp $
+ * $Id: PdfExportDialog.java,v 1.4 2006/12/08 14:20:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,12 +32,12 @@ package org.jfree.report.modules.gui.swing.pdf;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -65,11 +65,11 @@ import javax.swing.KeyStroke;
 
 import org.jfree.fonts.encoding.EncodingRegistry;
 import org.jfree.layouting.modules.output.pdf.PdfOutputModule;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.report.modules.gui.common.GuiContext;
 import org.jfree.report.modules.gui.swing.common.AbstractExportDialog;
 import org.jfree.report.modules.gui.swing.common.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.swing.common.JStatusBar;
-import org.jfree.report.flow.ReportJob;
 import org.jfree.ui.FilesystemFilter;
 import org.jfree.ui.action.ActionButton;
 import org.jfree.util.Configuration;

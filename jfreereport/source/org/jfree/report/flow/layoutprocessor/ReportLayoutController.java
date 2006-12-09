@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportLayoutController.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
+ * $Id: ReportLayoutController.java,v 1.3 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,7 +53,7 @@ public class ReportLayoutController extends SectionLayoutController
       throws DataSourceException,
       ReportProcessingException, ReportDataFactoryException
   {
-    final JFreeReport report = (JFreeReport) getNode();
+    final JFreeReport report = (JFreeReport) getElement();
     target.startReport(report);
     return fc.performQuery(report.getQuery());
   }
@@ -62,7 +62,7 @@ public class ReportLayoutController extends SectionLayoutController
                                       final FlowController fc)
       throws DataSourceException, ReportProcessingException
   {
-    final JFreeReport report = (JFreeReport) getNode();
+    final JFreeReport report = (JFreeReport) getElement();
     target.endReport(report);
     // do something fancy ... query the data, for instance.
     // this implies that we create a new global datarow.

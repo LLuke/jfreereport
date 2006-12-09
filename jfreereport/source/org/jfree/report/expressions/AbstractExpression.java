@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractExpression.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,7 +32,10 @@ package org.jfree.report.expressions;
 import java.util.Locale;
 
 import org.jfree.report.DataRow;
+import org.jfree.report.flow.ReportContext;
+import org.jfree.report.flow.ReportStructureRoot;
 import org.jfree.report.i18n.ResourceBundleFactory;
+import org.jfree.report.structure.Element;
 import org.jfree.util.Configuration;
 
 /**
@@ -84,8 +87,7 @@ public abstract class AbstractExpression implements Expression
    */
   public Object clone() throws CloneNotSupportedException
   {
-    AbstractExpression expression = (AbstractExpression) super.clone();
-    return expression;
+    return (AbstractExpression) super.clone();
   }
 
   /**
@@ -98,8 +100,9 @@ public abstract class AbstractExpression implements Expression
   {
     try
     {
-      final AbstractExpression expression = (AbstractExpression) clone();
-      return expression;
+      final AbstractExpression abstractExpression = (AbstractExpression) clone();
+      abstractExpression.runtime = null;
+      return abstractExpression;
     }
     catch (CloneNotSupportedException cne)
     {
@@ -162,7 +165,17 @@ public abstract class AbstractExpression implements Expression
     {
       return null;
     }
-    return runtime.getDeclaringParent().getLocale();
+
+    final Object declaringParent = runtime.getDeclaringParent();
+    if (declaringParent instanceof Element)
+    {
+      final Element declaringElement = (Element) declaringParent;
+      return declaringElement.getLocale();
+    }
+
+    final ReportContext reportContext = runtime.getReportContext();
+    final ReportStructureRoot reportStructureRoot = reportContext.getReportStructureRoot();
+    return reportStructureRoot.getLocale();
   }
 
   public boolean isPrecompute()

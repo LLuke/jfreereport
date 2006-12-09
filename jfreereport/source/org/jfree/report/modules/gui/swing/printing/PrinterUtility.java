@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrinterUtility.java,v 1.2 2006/12/03 20:24:17 taqua Exp $
+ * $Id: PrinterUtility.java,v 1.3 2006/12/08 14:20:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,9 +34,9 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 
+import org.jfree.report.flow.ReportJob;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
-import org.jfree.report.flow.ReportJob;
 
 /**
  * Creation-Date: 03.12.2006, 15:01:24

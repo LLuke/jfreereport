@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SubReportLayoutController.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
+ * $Id: SubReportLayoutController.java,v 1.3 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,7 +53,7 @@ public class SubReportLayoutController extends SectionLayoutController
       throws DataSourceException,
       ReportProcessingException, ReportDataFactoryException
   {
-    final SubReport report = (SubReport) getNode();
+    final SubReport report = (SubReport) getElement();
     return fc.performSubReportQuery(report.getQuery(),
         report.getInputMappings(), report.getExportMappings());
   }
