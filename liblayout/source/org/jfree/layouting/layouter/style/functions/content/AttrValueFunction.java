@@ -23,13 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AttrValueFunction.java,v 1.2 2006/12/03 18:58:00 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.layouter.style.functions.content;
 
 import java.net.URL;
+import java.util.Date;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
@@ -181,6 +182,14 @@ public class AttrValueFunction implements ContentFunction
               FunctionUtilities.loadResource(layoutProcess, value);
       final Resource resource = cssResourceValue.getValue();
       return new ResourceContentToken(resource);
+    }
+    else if (value instanceof Date)
+    {
+      return new StaticTextToken (String.valueOf(value));
+    }
+    else if (value instanceof Number)
+    {
+      return new StaticTextToken (String.valueOf(value));
     }
     else
     {

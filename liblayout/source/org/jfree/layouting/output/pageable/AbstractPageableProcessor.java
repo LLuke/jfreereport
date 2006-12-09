@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractPageableProcessor.java,v 1.8 2006/12/04 19:12:58 taqua Exp $
+ * $Id: AbstractPageableProcessor.java,v 1.9 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,6 +39,7 @@ import org.jfree.layouting.output.AbstractOutputProcessor;
 import org.jfree.layouting.renderer.PaginatingRenderer;
 import org.jfree.layouting.renderer.PrototypeBuildingRenderer;
 import org.jfree.layouting.renderer.Renderer;
+import org.jfree.layouting.renderer.PrintingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.util.Configuration;
@@ -69,8 +70,8 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
     }
     else
     {
-      //return new PrintingRenderer (new PaginatingRenderer(layoutProcess));
-      return new PaginatingRenderer(layoutProcess);
+      return new PrintingRenderer (new PaginatingRenderer(layoutProcess));
+      //return new PaginatingRenderer(layoutProcess);
     }
   }
 

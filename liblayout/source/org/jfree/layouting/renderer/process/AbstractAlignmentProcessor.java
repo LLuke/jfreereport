@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractAlignmentProcessor.java,v 1.6 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -203,7 +203,7 @@ public abstract class AbstractAlignmentProcessor
                          long end,
                          PageGrid breaks)
   {
-    if (end <= start)
+    if (end < start)
     {
       // This is most certainly an error, treat it as such ..
       throw new IllegalArgumentException("Start is <= end; which is stupid!: " + end + " " + start);

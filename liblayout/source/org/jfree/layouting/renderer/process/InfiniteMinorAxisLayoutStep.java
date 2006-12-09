@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.10 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -523,6 +523,11 @@ public class InfiniteMinorAxisLayoutStep
     final TextAlignmentProcessor processor = create(textAlignment, lastLineAlignment);
     final InlineSequenceElement[] sequence = breakState.getSequence();
 
+    if (sequence.length == 0)
+    {
+      return;
+    }
+
     final long lineStart = paragraph.getContentAreaX1();
     final long lineEnd = paragraph.getContentAreaX2();
     if (lineEnd - lineStart <= 0)
@@ -531,7 +536,7 @@ public class InfiniteMinorAxisLayoutStep
       final long minimumChunkWidth = nlp.getMinimumChunkWidth();
       processor.initialize(sequence,
           lineStart, lineStart + minimumChunkWidth, pageGrid);
-      Log.warn ("Auto-Corrected zero-width linebox.");
+      Log.warn("Auto-Corrected zero-width linebox.");
     }
     else
     {
@@ -553,14 +558,14 @@ public class InfiniteMinorAxisLayoutStep
   protected TextAlignmentProcessor create(CSSValue alignment,
                                           CSSValue lastLine)
   {
-   if (TextAlign.CENTER.equals(alignment))
+    if (TextAlign.CENTER.equals(alignment))
     {
       return new CenterAlignmentProcessor();
     }
     else if (TextAlign.RIGHT.equals(alignment))
-   {
-     return new RightAlignmentProcessor();
-   }
+    {
+      return new RightAlignmentProcessor();
+    }
     return new LeftAlignmentProcessor();
   }
 

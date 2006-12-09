@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SimpleStyleRuleMatcher.java,v 1.10 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -540,7 +540,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
         }
 
         final AttributeMap attributes = layoutContext.getAttributes();
-        final String attr = (String) attributes.getAttribute
+        final Object attr = attributes.getAttribute
             (namespaceURI, ac.getLocalName());
         if (ac.getValue() == null)
         {
