@@ -41,24 +41,24 @@ The forums can be found at
 
 4. REPORTING BUGS
 -----------------
-If you find bugs in JFreeReport, we'd like to hear about it so that we
-can improve future releases of JFreeReport.  Please post a bug report
-at the JFreeReport project page on SourceForge:
+If you find bugs in LibLoader, we'd like to hear about it so that we
+can improve future releases of LibLoader.  Please post a bug report
+at the LibLoader project page on SourceForge:
 
     http://sourceforge.net/projects/jfreereport
 
 Please be sure to provide as much information as you can.  We need to
-know the version of JFreeReport that you are using, the JDK version,
+know the version of LibLoader that you are using, the JDK version,
 and the steps required to replicate the bug.  Include any other
 information that you think is relevant.
 
 
 5. ANT
 ------
-We use an open source build tool called Ant to build JFreeReport.  An
+We use an open source build tool called Ant to build LibLoader.  An
 Ant script (tested using Ant 1.5.4) is included in the distribution:
 
-    <libfonts-directory>/ant/build.xml
+    <libloader-directory>/ant/build.xml
 
 You can find out more about Ant at:
 
