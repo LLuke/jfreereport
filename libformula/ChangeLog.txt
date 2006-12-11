@@ -3,6 +3,13 @@
 ---------------
 A list of changes in recent versions:
 
+0.1.1: (11-Dec-2006)
+        * The FormulaContext now is able to signal errors using Exceptions.
+        
+          The ToDo list has grown a bit after studying the holy books of
+          Formula-computation. Version 0.2 will see some major internal API
+          changes.
+
 0.1.0: (03-Dec-2006)
         * Initial version. This version happily deals with plain types and
           somehow it even handles arrays without crashing. Code for database
