@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: WmfFile.java,v 1.9 2006/05/06 13:03:43 taqua Exp $
+ * $Id: WmfFile.java,v 1.10 2006/05/15 09:25:05 taqua Exp $
  *
  * Changes
  * -------
@@ -55,8 +55,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.Stack;
 import java.util.Arrays;
 
 import org.jfree.pixie.wmf.records.CommandFactory;
@@ -65,6 +63,7 @@ import org.jfree.pixie.wmf.records.MfCmdSetWindowExt;
 import org.jfree.pixie.wmf.records.MfCmdSetWindowOrg;
 import org.jfree.ui.Drawable;
 import org.jfree.util.Log;
+import org.jfree.util.FastStack;
 
 /**
  * Parses and replays the WmfFile.
@@ -86,7 +85,7 @@ public class WmfFile implements Drawable
   }
 
   private WmfObject[] objects;
-  private Stack dcStack;
+  private FastStack dcStack;
   private MfPalette palette;
 
   //private String inName;
@@ -146,7 +145,7 @@ public class WmfFile implements Drawable
     this.imageWidth = imageX;
     this.imageHeight = imageY;
     records = new ArrayList();
-    dcStack = new Stack();
+    dcStack = new FastStack();
     palette = new MfPalette();
     readHeader();
     parseRecords();
@@ -535,7 +534,10 @@ public class WmfFile implements Drawable
     for (int i = 0; i < records.size(); i++)
     {
       MfCmd cmd = (MfCmd) records.get(i);
-      bo.append(i + "," + cmd.toString() + "\n");
+      bo.append(i);
+      bo.append(",");
+      bo.append(cmd.toString());
+      bo.append("\n");
     }
     bo.append("}\n");
     return bo.toString();
