@@ -22,7 +22,7 @@ of compatibility to JDK 1.2.2.
 2. SUPPORT
 ----------
 Free support is available via the JFreeReport forum, follow the link
-from the JFreeReport home page.  Please note that questions are
+from the LibLayout home page.  Please note that questions are
 answered by volunteers, so there is no guaranteed response time or
 level of service.
 
@@ -33,24 +33,24 @@ question, and everyone can see the answer.
 
 3. REPORTING BUGS
 -----------------
-If you find bugs in JFreeReport, we'd like to hear about it so that we
-can improve future releases of JFreeReport.  Please post a bug report
+If you find bugs in LibLayout, we'd like to hear about it so that we
+can improve future releases of LibLayout.  Please post a bug report
 at the JFreeReport project page on SourceForge:
 
     http://sourceforge.net/projects/jfreereport
 
 Please be sure to provide as much information as you can.  We need to
-know the version of JFreeReport that you are using, the JDK version,
+know the version of LibLayout that you are using, the JDK version,
 and the steps required to replicate the bug.  Include any other
 information that you think is relevant.
 
 
 4. ANT
 ------
-We use an open source build tool called Ant to build JFreeReport.  An
+We use an open source build tool called Ant to build LibLayout.  An
 Ant script (tested using Ant 1.6) is included in the distribution:
 
-    <libfonts-directory>/ant/build.xml
+    <liblayout-directory>/ant/build.xml
 
 You can find out more about Ant at:
 
@@ -58,4 +58,12 @@ You can find out more about Ant at:
 
 Ant is licensed under the terms of the Apache Software License (a
 popular open source software license).
+
+
+5. OTHER FEEDBACK
+-----------------
+For other feedback and comments, please post a message on the
+Pentaho forums. The Forum is available at
+
+  http://forums.pentaho.org/
 

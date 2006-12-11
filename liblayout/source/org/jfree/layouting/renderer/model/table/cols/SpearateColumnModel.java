@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SpearateColumnModel.java,v 1.4 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -78,8 +78,8 @@ public class SpearateColumnModel extends AbstractColumnModel
 
     if (colCount == 0)
     {
-      throw new IllegalStateException
-              ("Not layoutable; A table cannot be completely empty.");
+      validationTrack = table.getChangeTracker();
+      return;
     }
 
     final NodeLayoutProperties nlp = table.getNodeLayoutProperties();

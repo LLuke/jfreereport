@@ -3,6 +3,13 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.1: (11-Dec-2006)
+        * Fixed a couple of state bugs which caused memory-leaks and weird layout
+          errors.
+        
+        * Fixed errors in the renderer classes, which made trouble when rendering 
+          block boxes contained in inline-boxes.
+
 0.2.0: (03-Dec-2006)
         * HTML, Graphics2D and PDF output.
 
