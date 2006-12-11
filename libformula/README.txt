@@ -1,8 +1,8 @@
 ***********************
-* LibFormula - 0.1.0  *
+* LibFormula - 0.1.1  *
 ***********************
 
-03 Dec 2006
+11 Dec 2006
 
 1. INTRODUCTION
 ---------------
@@ -48,7 +48,7 @@ information that you think is relevant.
 4. ANT
 ------
 We use an open source build tool called Ant to build JFreeReport.  An
-Ant script (tested using Ant 1.5.4) is included in the distribution:
+Ant script (tested using Ant 1.6) is included in the distribution:
 
     <jfreereport-directory>/ant/build.xml
 
@@ -63,6 +63,6 @@ popular open source software license).
 5. OTHER FEEDBACK
 -----------------
 For other feedback and comments, please post a message on the
-JFreeReport forum. The Forum is available at
+Pentaho forums. The Forum is available at
 
-  http://www.jfree.org/phpBB2/viewforum.php?f=8
+  http://forums.pentaho.org/
