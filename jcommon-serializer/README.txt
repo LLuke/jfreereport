@@ -63,7 +63,7 @@ information that you think is relevant.
 We use an open source build tool called Ant to build JCommon-Serializer.  An
 Ant script (tested using Ant 1.5.4) is included in the distribution:
 
-    <libfonts-directory>/ant/build.xml
+    <jcommon-serializer-directory>/ant/build.xml
 
 You can find out more about Ant at:
 
