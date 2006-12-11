@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: EmptyReportData.java,v 1.4 2006/12/03 20:24:08 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,6 +43,11 @@ public class EmptyReportData implements ReportData
   public int getCursorPosition() throws DataSourceException
   {
     return 0;
+  }
+
+  public boolean isEmpty() throws DataSourceException
+  {
+    return true;
   }
 
   public void setCursorPosition(int cursor) throws DataSourceException

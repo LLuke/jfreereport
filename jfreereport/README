@@ -1,8 +1,8 @@
 ************************
-* JFREEREPORT 0.9.0    *
+* JFREEREPORT 0.9.0-01 *
 ************************
 
-03 Dec 2006
+11 Dec 2006
 
 1. INTRODUCTION
 ---------------
@@ -10,6 +10,8 @@ JFreeReport is a free Java report library, distributed under the terms
 of the GNU Lesser General Public License (see license-LGPL.txt for
 details).  JFreeReport is developed by Thomas Morgner, David Gilbert
 and others.
+
+JFreeReport requires JDK 1.2.2.
 
 For the latest news and information about JFreeReport, please refer to:
 
@@ -47,7 +49,7 @@ information that you think is relevant.
 We use an open source build tool called Ant to build JFreeReport.  An
 Ant script (tested using Ant 1.6) is included in the distribution:
 
-    <libfonts-directory>/ant/build.xml
+    <jfreereport-directory>/ant/build.xml
 
 You can find out more about Ant at:
 
@@ -62,4 +64,4 @@ popular open source software license).
 For other feedback and comments, please post a message on the
 JFreeReport forum. The Forum is available at
 
-  http://www.jfree.org/phpBB2/viewforum.php?f=8
+  http://forums.pentaho.org/

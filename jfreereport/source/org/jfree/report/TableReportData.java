@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableReportData.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,8 +60,19 @@ public class TableReportData implements ReportData
     return tableModel.getColumnCount();
   }
 
+  public boolean isEmpty() throws DataSourceException
+  {
+    return tableModel.getRowCount() == 0;
+  }
+
   public void setCursorPosition(int row) throws DataSourceException
   {
+    if (row == 0)
+    {
+      cursor = 0;
+      return;
+    }
+
     if (row >= rowMax)
     {
       throw new DataSourceException("> Max");
@@ -93,6 +104,10 @@ public class TableReportData implements ReportData
 
   public Object get(int column) throws DataSourceException
   {
+    if (isEmpty())
+    {
+      return null;
+    }
     return tableModel.getValueAt(cursor, column);
   }
 

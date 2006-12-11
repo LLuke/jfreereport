@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SQLReportData.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -130,10 +130,15 @@ public class SQLReportData implements ReportData
     {
       throw new DataSourceException("Negative row number is not valid");
     }
-    if (row >= rowCount)
+    if (row > 0 && row >= rowCount)
     {
       throw new DataSourceException("OutOfBounds:");
     }
+    if (isEmpty() && row == 0)
+    {
+      return;
+    }
+
     try
     {
       if (resultSet.absolute(row + 1))
@@ -190,6 +195,11 @@ public class SQLReportData implements ReportData
 
   public Object get(int column) throws DataSourceException
   {
+    if (isEmpty())
+    {
+      return null;
+    }
+
     try
     {
       final Object retval = resultSet.getObject(column + 1);
@@ -208,5 +218,10 @@ public class SQLReportData implements ReportData
   public int getCursorPosition() throws DataSourceException
   {
     return cursor;
+  }
+
+  public boolean isEmpty() throws DataSourceException
+  {
+    return rowCount == 0;
   }
 }

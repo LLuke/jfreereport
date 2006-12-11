@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportData.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,6 +45,17 @@ public interface ReportData extends DataSet
 {
   public int getCursorPosition() throws DataSourceException;
 
+  /**
+   * Moves the cursor back to an already visited position. Calling this method
+   * for an row number that has not yet been read using 'next' is undefined,
+   * whether that call succeeds is implementation dependent.
+   *
+   * Calls to position zero will always succeeed (unless there is a physical
+   * error, which invalidated the whole report-data object).
+   *
+   * @param cursor
+   * @throws DataSourceException
+   */
   public void setCursorPosition(int cursor) throws DataSourceException;
 
   /**
@@ -67,4 +78,6 @@ public interface ReportData extends DataSet
    * @throws DataSourceException
    */
   public void close() throws DataSourceException;
+
+  public boolean isEmpty() throws DataSourceException;
 }
