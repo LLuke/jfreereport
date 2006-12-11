@@ -22,7 +22,7 @@ For the latest news and information about LibFormula, please refer to:
 2. SUPPORT
 ----------
 Free support is available via the JFreeReport forum, follow the link
-from the JFreeReport home page.  Please note that questions are
+from the LibFormula home page.  Please note that questions are
 answered by volunteers, so there is no guaranteed response time or
 level of service.
 
@@ -47,10 +47,10 @@ information that you think is relevant.
 
 4. ANT
 ------
-We use an open source build tool called Ant to build JFreeReport.  An
+We use an open source build tool called Ant to build LibFormula.  An
 Ant script (tested using Ant 1.6) is included in the distribution:
 
-    <jfreereport-directory>/ant/build.xml
+    <libformula-directory>/ant/build.xml
 
 You can find out more about Ant at:
 
