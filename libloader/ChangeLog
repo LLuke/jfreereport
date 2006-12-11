@@ -3,6 +3,11 @@
 ---------------
 
 A list of changes in recent versions:
+
+0.2.1:  (11-Dec-2006)
+        * [BUG] File-URLs failed with LibLoader if the URL's file part was 
+          URL-Encoded. We now use a special handler for these cases.
+
 0.2.0:  (03-Dec-2006)
         * This is the first real release version of LibLoader. At this
           point this library has some primitive caching and does a good
