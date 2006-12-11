@@ -1,8 +1,8 @@
-*************************************
-* JFREEREPORT 0.9.0 (Demo-Package)  *
-*************************************
+****************************************
+* JFREEREPORT 0.9.0-01 (Demo-Package)  *
+****************************************
 
-03 Dec 2006
+11 Dec 2006
 
 1. INTRODUCTION
 ---------------
@@ -47,7 +47,7 @@ information that you think is relevant.
 We use an open source build tool called Ant to build JFreeReport.  An
 Ant script (tested using Ant 1.6) is included in the distribution:
 
-    <libfonts-directory>/ant/build.xml
+    <jfreereport-demo-directory>/ant/build.xml
 
 You can find out more about Ant at:
 
@@ -62,4 +62,4 @@ popular open source software license).
 For other feedback and comments, please post a message on the
 JFreeReport forum. The Forum is available at
 
-  http://www.jfree.org/phpBB2/viewforum.php?f=8
+  http://forums.pentaho.org/
