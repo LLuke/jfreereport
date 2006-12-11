@@ -18,7 +18,7 @@ where to store the generated content.
 The repositories described here should not be used to store other things than
 BLOBs.
 
-For the latest news and information about libRepository, please refer to:
+For the latest news and information about LibRepository, please refer to:
 
     http://jfreereport.pentaho.org/librepository/
 
@@ -26,7 +26,7 @@ For the latest news and information about libRepository, please refer to:
 2. SUPPORT
 ----------
 Free support is available via the JFreeReport forum, follow the link
-from the JFreeReport home page.  Please note that questions are
+from the LibRepository home page.  Please note that questions are
 answered by volunteers, so there is no guaranteed response time or
 level of service.
 
@@ -37,24 +37,24 @@ question, and everyone can see the answer.
 
 3. REPORTING BUGS
 -----------------
-If you find bugs in JFreeReport, we'd like to hear about it so that we
-can improve future releases of JFreeReport.  Please post a bug report
+If you find bugs in LibRepository, we'd like to hear about it so that we
+can improve future releases of LibRepository.  Please post a bug report
 at the JFreeReport project page on SourceForge:
 
     http://sourceforge.net/projects/jfreereport
 
 Please be sure to provide as much information as you can.  We need to
-know the version of JFreeReport that you are using, the JDK version,
+know the version of LibRepository that you are using, the JDK version,
 and the steps required to replicate the bug.  Include any other
 information that you think is relevant.
 
 
 4. ANT
 ------
-We use an open source build tool called Ant to build JFreeReport.  An
+We use an open source build tool called Ant to build LibRepository.  An
 Ant script (tested using Ant 1.5.4) is included in the distribution:
 
-    <libfonts-directory>/ant/build.xml
+    <librepository-directory>/ant/build.xml
 
 You can find out more about Ant at:
 
