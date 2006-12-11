@@ -2,6 +2,25 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.9.0-01  (11-Dec-2006)
+        * [BUG] The ZIP-HTML-Dialog crashed due to an invalid resource reference.
+
+        * [BUG] A couple of strange layout issues has been fixed.
+
+        * [BUG] Sub-Reporting was barely working due to some bugs in the
+          data processing.
+
+        * ReportData-objects no longer misbehave if the underlying table is
+          empty. Any query to an empty data-source returns null. Positioning
+          the cursor to the row 'zero' is always valid.
+
+        * The default structural modell contained in 'org.jfree.report.structure'
+          is no longer mandatory. There are no dependencies to that package
+          on the expression handling or layout- and data-controllers anymore.
+
+        * A new auto-table module allows to create generic reports without
+          listing all columns of the table.
+
 0.9.0:    (3-Dec-2006)
         * What's new: Everything!
 
