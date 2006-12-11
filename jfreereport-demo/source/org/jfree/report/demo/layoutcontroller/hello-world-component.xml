@@ -1,0 +1,26 @@
+<!--
+  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  -->
+
+<report:report xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:report="http://jfreereport.sourceforge.net/namespaces/reports/flow"
+        xmlns:helloworld="http://jfreereport.sourceforge.net/namespaces/reports/flow/extension/demo/helloworld">
+  <report:query>default</report:query>
+
+  <report:inline-stylesheet>
+    * {
+      font-family: "Arial", Sans-Serif;
+    }
+
+    @page {
+       margin: 2cm;
+       size: A4;
+    }
+  </report:inline-stylesheet>
+
+  <p>
+    This demo shows how to include a very simple custom Layout-Controller. 
+  </p>
+
+  <helloworld:hello text="Hey, you, I've been specified in the demo."/>
+</report:report>
