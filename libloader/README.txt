@@ -1,8 +1,8 @@
 ************************
-* LIBLOADER 0.2.0      *
+* LIBLOADER 0.2.1      *
 ************************
 
-03 Dec 2006
+11 Dec 2006
 
 1. INTRODUCTION
 ---------------
@@ -26,14 +26,17 @@ included by default. It can be built manually using the supplied ANT-script.
 
 3. SUPPORT
 ----------
-Free support is available via the JFreeReport forum, follow the link
-from the JFreeReport home page.  Please note that questions are
-answered by volunteers, so there is no guaranteed response time or
-level of service.
+Free support is available via the Pentaho forum, follow the link
+from the home page.  Please note that questions are answered by volunteers, 
+so there is no guaranteed response time or level of service.
 
 Please avoid e-mailing the developers directly for support questions.
 If you post a message in the forum, then everyone can see the
 question, and everyone can see the answer.
+
+The forums can be found at
+
+  http://forums.pentaho.org/
 
 
 4. REPORTING BUGS
@@ -64,3 +67,10 @@ You can find out more about Ant at:
 Ant is licensed under the terms of the Apache Software License (a
 popular open source software license).
 
+
+6. OTHER FEEDBACK
+-----------------
+For other feedback and comments, please post a message on the
+Pentaho forums. The Forum is available at
+
+  http://forums.pentaho.org/
