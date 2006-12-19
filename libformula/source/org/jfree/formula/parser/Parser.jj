@@ -211,9 +211,9 @@ LValue getLValue (int level):
     | value = <UNSIGNED_INTEGER> { retval = new StaticValue (new BigDecimal (value.image)); }
     | value = <NULL> { retval = new StaticValue (null); }
     | value = <IDENTIFIER> <L_PAREN> retval = parseFunction(value.image) <R_PAREN>
-    | <L_PAREN> retval = getExpression (level) <R_PAREN>
+    | <L_PAREN> retval = maybeFunction(level)
       {
-        if (level != -1)
+        if (level != -1 && retval != null)
         {
           retval = new Term (retval);
         }
@@ -233,6 +233,20 @@ LValue getLValue (int level):
     }
     return retval;
   }
+}
+
+LValue maybeFunction (int level):
+{
+  LValue retval = null;
+}
+{
+   (
+        retval = getExpression (level) <R_PAREN>
+      | <R_PAREN>
+   )
+   {
+     return retval;
+   }
 }
 
 LValue parseFunction (String name) :
