@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ParserEntityResolver.java,v 1.2 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -92,6 +92,32 @@ public final class ParserEntityResolver implements EntityResolver
   }
 
   /**
+   * Defines a DTD used to validate the report definition. Your XMLParser must be a
+   * validating parser for this feature to work.
+   *
+   * @param publicID the public ID.
+   * @param location the URL.
+   * @return A boolean.
+   */
+  public boolean setDTDLocation (final String publicID,
+                                 final String systemId,
+                                 final URL location)
+  {
+    if (isValid(location))
+    {
+      this.dtds.put(publicID, location);
+      this.dtds.put(systemId, location);
+      return true;
+    }
+    else
+    {
+      Log.warn(new Log.SimpleMessage("Validate location failed for ",
+              publicID, " location: ", location));
+      return false;
+    }
+  }
+
+  /**
    * Sets the location of the DTD. This is used for validating XML parsers to validate the
    * structure of the report definition.
    *
@@ -140,7 +166,8 @@ public final class ParserEntityResolver implements EntityResolver
    * @throws org.xml.sax.SAXException if there is a parsing problem.
    * @throws java.io.IOException      if there is an I/O problem.
    */
-  public InputSource resolveEntity (final String publicId, final String systemId)
+  public InputSource resolveEntity (final String publicId,
+                                    final String systemId)
   {
     try
     {
@@ -148,6 +175,14 @@ public final class ParserEntityResolver implements EntityResolver
       if (publicId == null)
       {
         //Log.debug ("No PUBLIC ID, cannot continue");
+        if (systemId != null)
+        {
+          final URL location = getDTDLocation(systemId);
+          if (location != null)
+          {
+            return new InputSource(location.openStream());
+          }
+        }
         return null;
       }
 

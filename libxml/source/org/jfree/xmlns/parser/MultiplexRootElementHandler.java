@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: MultiplexRootElementHandler.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -75,6 +75,11 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
     {
       return systemId;
     }
+
+    public ParserEntityResolver getEntityResolver()
+    {
+      return entityResolver;
+    }
   }
 
   private boolean firstCall;
@@ -82,14 +87,16 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
   private XmlFactoryModule[] rootHandlers;
   private RootEntityResolver entityResolver;
   private boolean xmlnsUrisNotAvailable;
+  private String defaultNamespace;
 
   public MultiplexRootElementHandler
           (final ResourceManager manager,
-          final ResourceKey source,
-          final long version,
-          final XmlFactoryModule[] rootHandlers)
+           final ResourceKey source,
+           final ResourceKey context,
+           final long version,
+           final XmlFactoryModule[] rootHandlers)
   {
-    super(manager, source, version);
+    super(manager, source, context, version);
     this.documentInfo = new DefaultXmlDocumentInfo();
     this.entityResolver = new RootEntityResolver();
     this.rootHandlers = (XmlFactoryModule[]) rootHandlers.clone();
@@ -109,6 +116,11 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
   public EntityResolver getEntityResolver()
   {
     return entityResolver;
+  }
+
+  public ParserEntityResolver getParserEntityResolver()
+  {
+    return entityResolver.getEntityResolver();
   }
 
   protected XmlFactoryModule[] getRootHandlers()
@@ -135,7 +147,7 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
    * @param attributes the attributes.
    * @throws SAXException if there is a parsing problem.
    */
-  public void startElement(final String uri,
+  public void startElement(final String originalUri,
                            final String localName,
                            final String qName,
                            Attributes attributes) throws SAXException
@@ -147,7 +159,7 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
       documentInfo.setPublicDTDId(entityResolver.getPublicId());
       documentInfo.setSystemDTDId(entityResolver.getSystemId());
       documentInfo.setRootElement(localName);
-      documentInfo.setRootElementNameSpace(uri);
+      documentInfo.setRootElementNameSpace(originalUri);
 
       final int length = attributes.getLength();
       final HashMap prefixes = new HashMap();
@@ -173,10 +185,10 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
       {
         documentInfo.setDefaultNameSpace("");
       }
-
-      if (xmlnsUrisNotAvailable)
+      if (prefixes.isEmpty())
       {
-        attributes = new FixNamespaceUriAttributes(uri, attributes);
+        // we run against a DTD, not a schema..
+        xmlnsUrisNotAvailable = true;
       }
 
       // ok, now find the best root handler and start parsing ...
@@ -194,7 +206,7 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
       }
       if (bestRootHandlerWeight < 0 || bestRootHandler == null)
       {
-        throw new SAXException("No suitable root handler known for this document.");
+        throw new SAXException("No suitable root handler known for this document: " + documentInfo);
       }
       final XmlReadHandler readHandler =
               bestRootHandler.createReadHandler(documentInfo);
@@ -202,20 +214,83 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
       {
         throw new SAXException("Unable to create the root handler." + bestRootHandler);
       }
+
+      if (prefixes.isEmpty())
+      {
+        // Now correct the namespace ..
+        defaultNamespace = bestRootHandler.getDefaultNamespace(documentInfo);
+        if (defaultNamespace != null)
+        {
+          prefixes.put("", defaultNamespace);
+          documentInfo.setRootElementNameSpace(defaultNamespace);
+          documentInfo.setNamespaces(prefixes);
+        }
+      }
+
+      String uri;
+      if ((originalUri == null || "".equals(originalUri)) &&
+          defaultNamespace != null)
+      {
+        uri = defaultNamespace;
+      }
+      else
+      {
+        uri = originalUri;
+      }
+
+      if (xmlnsUrisNotAvailable )
+      {
+        attributes = new FixNamespaceUriAttributes(uri, attributes);
+      }
+
       installRootHandler(readHandler, uri, localName, attributes);
       firstCall = false;
       return;
     }
+
+    String uri;
+    if ((originalUri == null || "".equals(originalUri)) &&
+        defaultNamespace != null)
+    {
+      uri = defaultNamespace;
+    }
     else
     {
-      if (xmlnsUrisNotAvailable)
-      {
-        attributes = new FixNamespaceUriAttributes(uri, attributes);
-      }
+      uri = originalUri;
+    }
+
+    if (xmlnsUrisNotAvailable)
+    {
+      attributes = new FixNamespaceUriAttributes(uri, attributes);
     }
     super.startElement(uri, localName, qName, attributes);
   }
 
+  /**
+   * Finish processing an element.
+   *
+   * @param uri       the URI.
+   * @param localName the local name.
+   * @param qName     the qName.
+   * @throws org.xml.sax.SAXException if there is a parsing error.
+   */
+  public void endElement(final String originalUri,
+                         final String localName,
+                         final String qName) throws SAXException
+  {
+    String uri;
+    if ((originalUri == null || "".equals(originalUri)) &&
+        defaultNamespace != null)
+    {
+      uri = defaultNamespace;
+    }
+    else
+    {
+      uri = originalUri;
+    }
+
+    super.endElement(uri, localName, qName);
+  }
 
   /**
    * Returns the object for this element or null, if this element does not

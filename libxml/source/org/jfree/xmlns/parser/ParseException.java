@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ParseException.java,v 1.2 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,7 +37,8 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 /**
- * A parse exception.
+ * A parse exception. This does the same as the SAXParseException, but it
+ * also prints the parent exception.
  *
  * @author Thomas Morgner
  */

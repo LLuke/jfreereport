@@ -24,20 +24,23 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AbstractXmlResourceFactory.java,v 1.4 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.xmlns.parser;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jfree.resourceloader.CompoundResource;
+import org.jfree.resourceloader.FactoryParameterKey;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceData;
@@ -46,8 +49,10 @@ import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.Configuration;
+import org.jfree.util.DefaultConfiguration;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -58,6 +63,11 @@ import org.xml.sax.XMLReader;
  */
 public abstract class AbstractXmlResourceFactory implements ResourceFactory
 {
+  /**
+   * A key for the content base.
+   */
+  public static final String CONTENTBASE_KEY = "content-base";
+
   private HashSet modules;
   private SAXParserFactory factory;
 
@@ -77,7 +87,7 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
    *                                      initialisation
    */
   protected SAXParser getParser()
-          throws ParserConfigurationException, SAXException
+      throws ParserConfigurationException, SAXException
   {
     if (this.factory == null)
     {
@@ -101,8 +111,8 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
     try
     {
       reader.setProperty
-              ("http://xml.org/sax/properties/lexical-handler",
-                      handler.getCommentHandler());
+          ("http://xml.org/sax/properties/lexical-handler",
+              handler.getCommentHandler());
     }
     catch (SAXException se)
     {
@@ -124,60 +134,80 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
     }
     catch (SAXException e)
     {
-      Log.warn ("No Namespace features will be available. (Yes, this is serious)");
+      Log.warn("No Namespace features will be available. (Yes, this is serious)");
     }
   }
 
   public Resource create(final ResourceManager manager,
                          final ResourceData data,
                          final ResourceKey context)
-          throws ResourceCreationException, ResourceLoadingException
+      throws ResourceCreationException, ResourceLoadingException
   {
     try
     {
       final SAXParser parser = getParser();
+
       final XMLReader reader = parser.getXMLReader();
       final XmlFactoryModule[] rootHandlers =
-              (XmlFactoryModule[]) modules.toArray
-                      (new XmlFactoryModule[modules.size()]);
+          (XmlFactoryModule[]) modules.toArray
+              (new XmlFactoryModule[modules.size()]);
       final ResourceDataInputSource input = new ResourceDataInputSource(data, manager);
 
 
-      final ResourceKey key;
+      final ResourceKey contextKey;
       final long version;
+      final ResourceKey targetKey = data.getKey();
       if (context == null)
       {
-        key = data.getKey();
+        contextKey = targetKey;
         version = data.getVersion(manager);
       }
       else
       {
-        key = context;
+        contextKey = context;
         version = -1;
       }
 
       final MultiplexRootElementHandler handler =
-              new MultiplexRootElementHandler (manager, key, version, rootHandlers);
+          new MultiplexRootElementHandler(manager, targetKey,
+              contextKey, version, rootHandlers);
+
+      final DefaultConfiguration parserConfiguration = handler.getParserConfiguration();
+      final URL value = targetKey.toURL();
+      if (value != null)
+      {
+        parserConfiguration.setConfigProperty(CONTENTBASE_KEY, value.toExternalForm());
+      }
+
       configureReader(reader, handler);
       reader.setContentHandler(handler);
       reader.setDTDHandler(handler);
       reader.setEntityResolver(handler.getEntityResolver());
-      reader.setErrorHandler(handler);
+      reader.setErrorHandler(getErrorHandler());
+
+      final Map parameters = targetKey.getParameters();
+      Iterator it = parameters.keySet().iterator();
+      while (it.hasNext())
+      {
+        Object o = it.next();
+        if (o instanceof FactoryParameterKey)
+        {
+          FactoryParameterKey fpk = (FactoryParameterKey) o;
+          handler.setHelperObject(fpk.getName(), parameters.get(fpk));
+        }
+      }
+
       reader.parse(input);
 
       final Object createdProduct = finishResult
-              (handler.getResult(), manager, data, context);
-      if (context != null)
-      {
-        handler.getDependencyCollector().add(data.getKey(), data.getVersion(manager));
-      }
-      return new CompoundResource
-              (data.getKey(), handler.getDependencyCollector(), createdProduct);
+          (handler.getResult(), manager, data, contextKey);
+      handler.getDependencyCollector().add(targetKey, data.getVersion(manager));
+      return createResource(targetKey, handler, createdProduct);
     }
     catch (ParserConfigurationException e)
     {
       throw new ResourceCreationException
-              ("Unable to initialize the XML-Parser", e);
+          ("Unable to initialize the XML-Parser", e);
     }
     catch (SAXException e)
     {
@@ -189,11 +219,19 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
     }
   }
 
-  protected Object finishResult (final Object res,
-                                 final ResourceManager manager,
-                                 final ResourceData data,
-                                 final ResourceKey context)
-          throws ResourceCreationException, ResourceLoadingException
+  protected Resource createResource(final ResourceKey targetKey,
+                                  final MultiplexRootElementHandler handler,
+                                  final Object createdProduct)
+  {
+    return new CompoundResource
+        (targetKey, handler.getDependencyCollector(), createdProduct);
+  }
+
+  protected Object finishResult(final Object res,
+                                final ResourceManager manager,
+                                final ResourceData data,
+                                final ResourceKey context)
+      throws ResourceCreationException, ResourceLoadingException
   {
     return res;
   }
@@ -210,9 +248,8 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
     {
       final String key = (String) itType.next();
       final String modClass = config.getConfigProperty(key);
-      //System.out.println ("Registering " + key + " _> " + modClass);
       final Object maybeFactory = ObjectUtilities.loadAndInstantiate
-              (modClass, AbstractXmlResourceFactory.class, XmlFactoryModule.class);
+          (modClass, AbstractXmlResourceFactory.class, XmlFactoryModule.class);
       if (maybeFactory instanceof XmlFactoryModule == false)
       {
         continue;
@@ -228,5 +265,10 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
       throw new NullPointerException();
     }
     modules.add(factoryModule);
+  }
+
+  protected ErrorHandler getErrorHandler()
+  {
+    return new LoggingErrorHandler();
   }
 }

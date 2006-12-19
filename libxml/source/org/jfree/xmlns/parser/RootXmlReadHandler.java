@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: RootXmlReadHandler.java,v 1.4 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,6 +40,7 @@ import org.jfree.util.FastStack;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /** A base root SAX handler. */
@@ -70,11 +71,19 @@ public class RootXmlReadHandler extends DefaultHandler
 
   private DependencyCollector dependencyCollector;
   private ResourceKey source;
+  private ResourceKey context;
   private ResourceManager manager;
 
-  /** Creates a new root SAX handler. */
   public RootXmlReadHandler(final ResourceManager manager,
                             final ResourceKey source,
+                            final long version)
+  {
+    this(manager, source, source, version);
+  }
+
+  public RootXmlReadHandler(final ResourceManager manager,
+                            final ResourceKey source,
+                            final ResourceKey context,
                             final long version)
   {
     if (manager == null)
@@ -87,10 +96,24 @@ public class RootXmlReadHandler extends DefaultHandler
     }
     this.manager = manager;
     this.source = source;
+    this.context = context;
     this.dependencyCollector = new DependencyCollector(source, version);
     this.objectRegistry = new HashMap();
     this.parserConfiguration = new DefaultConfiguration();
     this.commentHandler = new CommentHandler();
+  }
+
+  /**
+   * Returns the context key. This key may specity a base context for loading
+   * resources. (It behaves like the 'base-url' setting of HTML and allows
+   * to reference external resources as relative paths without being bound
+   * to the original location of the xml file.)
+   *
+   * @return the context.
+   */
+  public ResourceKey getContext()
+  {
+    return context;
   }
 
   public ResourceManager getResourceManager()
@@ -98,6 +121,12 @@ public class RootXmlReadHandler extends DefaultHandler
     return manager;
   }
 
+  /**
+   * Returns the source key. This key points to the file or stream that is
+   * currently parsed.
+   *
+   * @return the source key.
+   */
   public ResourceKey getSource()
   {
     return source;
@@ -177,6 +206,12 @@ public class RootXmlReadHandler extends DefaultHandler
   public Object getHelperObject(final String key)
   {
     return this.objectRegistry.get(key);
+  }
+
+  public String[] getHelperObjectNames ()
+  {
+    return (String[]) this.objectRegistry.keySet().toArray
+        (new String[objectRegistry.size()]);
   }
 
   /**
@@ -324,7 +359,8 @@ public class RootXmlReadHandler extends DefaultHandler
       rootHandlerInitialized = true;
     }
 
-    getCurrentHandler().startElement(uri, localName, attributes);
+    final XmlReadHandler currentHandler = getCurrentHandler();
+    currentHandler.startElement(uri, localName, attributes);
   }
 
   protected void installRootHandler(final XmlReadHandler handler,
@@ -365,7 +401,8 @@ public class RootXmlReadHandler extends DefaultHandler
     }
     catch (Exception e)
     {
-      throw new ParseException(e, getDocumentLocator());
+      throw new SAXParseException
+          ("Failed at handling character data", getDocumentLocator(), e);
     }
   }
 
@@ -382,7 +419,8 @@ public class RootXmlReadHandler extends DefaultHandler
                          final String qName)
           throws SAXException
   {
-    getCurrentHandler().endElement(uri, localName);
+    final XmlReadHandler currentHandler = getCurrentHandler();
+    currentHandler.endElement(uri, localName);
   }
 
   public Object getResult() throws SAXException

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AbstractXmlReadHandler.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ package org.jfree.xmlns.parser;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 /**
@@ -160,6 +161,10 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
       doneParsing();
       this.rootHandler.unwind(uri, tagName);
     }
+    else
+    {
+      throw new SAXException("Illegal Parser State.");
+    }
   }
 
   /**
@@ -229,4 +234,8 @@ public abstract class AbstractXmlReadHandler implements XmlReadHandler
     return this.rootHandler;
   }
 
+  public Locator getLocator()
+  {
+    return rootHandler.getDocumentLocator();
+  }
 }

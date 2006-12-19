@@ -24,11 +24,13 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ResourceDataInputSource.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.xmlns.parser;
+
+import java.net.URL;
 
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceLoadingException;
@@ -56,12 +58,20 @@ public class ResourceDataInputSource extends InputSource
    */
   public ResourceDataInputSource(final ResourceData data,
                                  final ResourceManager caller)
-          throws ResourceLoadingException
+      throws ResourceLoadingException
   {
-    if (data == null) throw new NullPointerException("Data must not be null");
+    if (data == null)
+    {
+      throw new NullPointerException("Data must not be null");
+    }
     this.data = data;
     this.version = data.getVersion(caller);
     setByteStream(data.getResourceAsStream(caller));
+    final URL url = data.getKey().toURL();
+    if (url != null)
+    {
+      setSystemId(url.toExternalForm());
+    }
   }
 
   public ResourceData getData()

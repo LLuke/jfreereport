@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: XmlFactoryModule.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,4 +44,5 @@ public interface XmlFactoryModule
 
   public int getDocumentSupport (XmlDocumentInfo documentInfo);
   public XmlReadHandler createReadHandler (XmlDocumentInfo documentInfo);
+  public String getDefaultNamespace (XmlDocumentInfo documentInfo);
 }
