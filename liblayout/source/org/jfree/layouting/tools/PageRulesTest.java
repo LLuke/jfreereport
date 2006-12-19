@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PageRulesTest.java,v 1.5 2006/12/03 18:58:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,6 +40,7 @@ import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.ResourceException;
 import org.jfree.util.Log;
 
 /**
@@ -49,8 +50,8 @@ import org.jfree.util.Log;
  */
 public class PageRulesTest
 {
-  public static void main(String[] args) throws ResourceKeyCreationException,
-          ResourceCreationException, ResourceLoadingException
+  public static void main(String[] args) throws ResourceException,
+      ResourceCreationException, ResourceLoadingException
   {
     LibLayoutBoot.getInstance().start();
     Log.error ("Start..." + StyleKeyRegistry.getRegistry().getKeyCount());

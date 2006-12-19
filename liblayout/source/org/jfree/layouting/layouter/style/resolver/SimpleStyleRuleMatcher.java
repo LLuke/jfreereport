@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SimpleStyleRuleMatcher.java,v 1.10 2006/12/03 18:58:01 taqua Exp $
+ * $Id: SimpleStyleRuleMatcher.java,v 1.11 2006/12/09 21:19:52 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,10 +53,9 @@ import org.jfree.layouting.namespace.NamespaceDefinition;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.util.AttributeMap;
 import org.jfree.resourceloader.Resource;
-import org.jfree.resourceloader.ResourceCreationException;
+import org.jfree.resourceloader.ResourceException;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceKeyCreationException;
-import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
@@ -335,11 +334,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
           (key, context, StyleSheet.class);
       return (StyleSheet) resource.getResource();
     }
-    catch (ResourceCreationException e)
-    {
-      Log.info("Unable to parse StyleSheet: " + e.getLocalizedMessage());
-    }
-    catch (ResourceLoadingException e)
+    catch (ResourceException e)
     {
       Log.info("Unable to parse StyleSheet: " + e.getLocalizedMessage());
     }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ResourceContentToken.java,v 1.3 2006/12/03 18:57:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ package org.jfree.layouting.layouter.content.statics;
 import org.jfree.layouting.layouter.content.type.GenericType;
 import org.jfree.layouting.layouter.content.type.ResourceType;
 import org.jfree.resourceloader.Resource;
+import org.jfree.resourceloader.ResourceException;
 
 public class ResourceContentToken extends StaticToken
         implements ResourceType, GenericType
@@ -50,7 +51,14 @@ public class ResourceContentToken extends StaticToken
 
   public Object getRaw()
   {
-    return content.getResource();
+    try
+    {
+      return content.getResource();
+    }
+    catch (ResourceException e)
+    {
+      return null;
+    }
   }
 
   public Resource getContent ()

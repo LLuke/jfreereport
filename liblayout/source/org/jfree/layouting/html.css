@@ -511,7 +511,7 @@ br {
 /** Pseudo-Elemente */
 li:marker {
   display:inline;
-  content: counter(list-item,decimal) ".";
+  content: counter(list-item) ".";
   background-color: blue;
 }
 
