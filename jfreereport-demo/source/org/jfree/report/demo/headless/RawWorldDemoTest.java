@@ -42,9 +42,7 @@ import org.jfree.report.demo.world.CountryDataTableModel;
 import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.raw.RawReportProcessor;
 import org.jfree.resourceloader.Resource;
-import org.jfree.resourceloader.ResourceCreationException;
-import org.jfree.resourceloader.ResourceKeyCreationException;
-import org.jfree.resourceloader.ResourceLoadingException;
+import org.jfree.resourceloader.ResourceException;
 import org.jfree.resourceloader.ResourceManager;
 
 /**
@@ -75,9 +73,8 @@ public class RawWorldDemoTest
   }
 
   private static void processReport(String file)
-          throws ResourceLoadingException,
-          ResourceCreationException, ResourceKeyCreationException,
-          ReportDataFactoryException, DataSourceException, ReportProcessingException
+      throws ResourceException,
+      ReportDataFactoryException, DataSourceException, ReportProcessingException
   {
     URL url = org.jfree.report.demo.headless.RawWorldDemoTest.class.getResource(file);
     ResourceManager manager = new ResourceManager();

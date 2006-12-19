@@ -76,12 +76,12 @@
     value can be set in relation to the total population.
   </p>
 
-  <ol>
+  <ul>
     <li>Test1</li>
     <li>Test2</li>
     <li>Test3</li>
     <li>Test4</li>
-  </ol>
+  </ul>
 
   <img src="gorilla.jpg" alt="A gorilla"/>
 
@@ -97,7 +97,7 @@
     This will be a little bit easier as soon as we have Excel-Style functions.
     -->
     <report:expression formula="jfreereport:[Population] + [PopulationSum]"
-                       initial="jfreereport:[Population]"
+                       initial="jfreereport:0"
                        name="PopulationSum"
                        deep-traversing="false"
                        precompute="true"
@@ -111,7 +111,7 @@
 
     <p>
       The precomputed result of the sum-function is
-      <report:content>
+      <report:content format="0.00000">
         <report:value-expression formula="jfreereport:[PopulationSum]"/>
       </report:content>
     </p>
@@ -166,7 +166,7 @@
         <tr>
           <td colspan="2">Total Population:</td>
           <td style="text-align: right; border-top: 1px solid black">
-            <report:content>
+            <report:content format="0.00000">
               <report:value-expression formula="jfreereport:[PopulationSum]"/>
             </report:content>
           </td>
