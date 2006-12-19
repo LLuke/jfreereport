@@ -24,13 +24,14 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ZipResourceKey.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.loader.zip;
 
 import java.util.Map;
+import java.net.URL;
 
 import org.jfree.resourceloader.AbstractResourceKey;
 import org.jfree.resourceloader.ResourceKey;
@@ -72,5 +73,17 @@ public class ZipResourceKey extends AbstractResourceKey
   public String getSchema()
   {
     return "zip";
+  }
+
+  /**
+   * Tries to build an URL. This is a compatiblity method for supporting other
+   * resource loader frameworks. The method may return null, if there is no URL
+   * representation for the given resource-key.
+   *
+   * @return the URL or null.
+   */
+  public URL toURL()
+  {
+    return null;
   }
 }

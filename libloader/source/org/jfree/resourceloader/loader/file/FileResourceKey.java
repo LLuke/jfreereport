@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FileResourceKey.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.net.URL;
+import java.net.MalformedURLException;
 
 import org.jfree.resourceloader.AbstractResourceKey;
 
@@ -99,4 +100,22 @@ public class FileResourceKey extends AbstractResourceKey
     return "FileResourceKey={file=" + toExternalForm() + "}";
   }
 
+  /**
+   * Tries to build an URL. This is a compatiblity method for supporting other
+   * resource loader frameworks. The method may return null, if there is no URL
+   * representation for the given resource-key.
+   *
+   * @return the URL or null.
+   */
+  public URL toURL()
+  {
+    try
+    {
+      return getFile().toURL();
+    }
+    catch (MalformedURLException e)
+    {
+      return null;
+    }
+  }
 }

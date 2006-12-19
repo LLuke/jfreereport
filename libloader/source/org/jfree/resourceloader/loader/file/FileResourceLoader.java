@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: FileResourceLoader.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
+ * $Id: FileResourceLoader.java,v 1.4 2006/12/08 08:03:52 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -84,16 +84,6 @@ public class FileResourceLoader implements ResourceLoader
       {
         return true;
       }
-      // we accept all strings, which actually point to a file.
-      // this needs reconsidering: Shall we allow sloopy programming?
-      // After all, it should not be that hard for users to stick to a clean
-      // file name specification using URLs or file objects instead of plain
-      // string filenames, shouldn't it?
-//      File f = new File (valueString);
-//      if (f.canRead() && f.isDirectory() == false)
-//      {
-//        return true;
-//      }
     }
     return false;
   }

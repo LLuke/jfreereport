@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AbstractResourceKey.java,v 1.3 2006/12/03 16:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Collections;
+import java.net.URL;
 
 /**
  * Creation-Date: 16.05.2006, 15:26:32
@@ -128,5 +129,17 @@ public abstract class AbstractResourceKey implements ResourceKey
       hashCode = new Integer(parameters.hashCode ());
     }
     return hashCode.intValue();
+  }
+
+  /**
+   * Tries to build an URL. This is a compatiblity method for supporting other
+   * resource loader frameworks. The method may return null, if there is no URL
+   * representation for the given resource-key.
+   *
+   * @return the URL or null.
+   */
+  public URL toURL()
+  {
+    return null;
   }
 }

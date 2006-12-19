@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: URLResourceKey.java,v 1.4 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -87,5 +87,17 @@ public class URLResourceKey extends AbstractResourceKey
   public String toExternalForm()
   {
     return url.toExternalForm();
+  }
+
+  /**
+   * Tries to build an URL. This is a compatiblity method for supporting other
+   * resource loader frameworks. The method may return null, if there is no URL
+   * representation for the given resource-key.
+   *
+   * @return the URL or null.
+   */
+  public URL toURL()
+  {
+    return url;
   }
 }

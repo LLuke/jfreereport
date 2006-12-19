@@ -24,13 +24,14 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ResourceKey.java,v 1.3 2006/12/03 16:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -79,5 +80,14 @@ public interface ResourceKey extends Serializable
    * @return
    */
   public String toExternalForm();
+
+  /**
+   * Tries to build an URL. This is a compatiblity method for supporting other
+   * resource loader frameworks. The method may return null, if there is no
+   * URL representation for the given resource-key.
+   *
+   * @return the URL or null.
+   */
+  public URL toURL();
 }
 

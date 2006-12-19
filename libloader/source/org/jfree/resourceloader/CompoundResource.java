@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: CompoundResource.java,v 1.2 2006/12/03 16:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -71,7 +71,7 @@ public class CompoundResource implements Resource
     this.product = product;
   }
 
-  public Object getResource()
+  public Object getResource() throws ResourceException
   {
     return product;
   }

@@ -24,15 +24,17 @@
  *
  *
  * ------------
- * $Id: ResourceManager.java,v 1.10 2006/12/03 16:41:15 taqua Exp $
+ * $Id: ResourceManager.java,v 1.11 2006/12/08 10:06:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.jfree.resourceloader.cache.NullResourceDataCache;
 import org.jfree.resourceloader.cache.NullResourceFactoryCache;
@@ -53,6 +55,7 @@ import org.jfree.util.ObjectUtilities;
  */
 public class ResourceManager
 {
+  private static final Set failedModules = new HashSet();
   private HashMap resourceLoaders;
   private HashMap resourceFactories;
   private ResourceDataCache dataCache;
@@ -116,7 +119,7 @@ public class ResourceManager
       return deriveKey(parent, (Map) data);
     }
     final HashMap map = new HashMap();
-    map.put(AbstractResourceKey.CONTENT_KEY, data);
+    map.put(ResourceKey.CONTENT_KEY, data);
     return deriveKey(parent, map);
   }
 
@@ -460,7 +463,14 @@ public class ResourceManager
       catch (Throwable e)
       {
         // ok, did not work ...
-        Log.warn("Failed to set data cache: " + e.getLocalizedMessage());
+        synchronized(failedModules)
+        {
+          if (failedModules.contains(dataCacheProviderClass) == false)
+          {
+            Log.warn("Failed to create data cache: " + e.getLocalizedMessage());
+            failedModules.add(dataCacheProviderClass);
+          }
+        }
       }
     }
   }
@@ -490,7 +500,14 @@ public class ResourceManager
       }
       catch (Throwable e)
       {
-        Log.warn("Failed to set factory cache: " + e.getLocalizedMessage());
+        synchronized(failedModules)
+        {
+          if (failedModules.contains(cacheProviderClass) == false)
+          {
+            Log.warn("Failed to create factory cache: " + e.getLocalizedMessage());
+            failedModules.add(cacheProviderClass);
+          }
+        }
       }
     }
   }

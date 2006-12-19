@@ -24,12 +24,15 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: RawResourceKey.java,v 1.4 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.loader.raw;
 
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -102,18 +105,49 @@ public class RawResourceKey extends AbstractResourceKey
    */
   public String toExternalForm()
   {
-    final StringBuffer b = new StringBuffer();
-    b.append(data.length);
-    b.append(":");
-    for (int i = 0; i < data.length; i += 2)
+    // Make a fingerprint ..
+    try
     {
-      int element = (data[i] & 0xff);
-      if (i + 1 < data.length)
+      MessageDigest digestMD5 = MessageDigest.getInstance("MD5");
+      MessageDigest digestSHA = MessageDigest.getInstance("SHA");
+
+      final byte[] dataMD5 = digestMD5.digest(data);
+      final byte[] dataSHA = digestSHA.digest(data);
+      if (dataSHA == null || dataMD5 == null)
       {
-        element = element | ((data[i + 1] & 0xff) << 8);
+        return null;
       }
-      b.append(element);
+
+      final StringBuffer b = new StringBuffer();
+      b.append(data.length);
+      b.append(":");
+      for (int i = 0; i < data.length; i += 2)
+      {
+        int element = (data[i] & 0xff);
+        if (i + 1 < data.length)
+        {
+          element = element | ((data[i + 1] & 0xff) << 8);
+        }
+        b.append((char) element);
+      }
+      return b.toString();
     }
-    return b.toString();
+    catch (NoSuchAlgorithmException nse)
+    {
+      return null;
+    }
+
+  }
+
+  /**
+   * Tries to build an URL. This is a compatiblity method for supporting other
+   * resource loader frameworks. The method may return null, if there is no URL
+   * representation for the given resource-key.
+   *
+   * @return the URL or null.
+   */
+  public URL toURL()
+  {
+    return null;
   }
 }

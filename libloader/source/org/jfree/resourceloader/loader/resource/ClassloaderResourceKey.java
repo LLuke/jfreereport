@@ -24,15 +24,17 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ClassloaderResourceKey.java,v 1.4 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.loader.resource;
 
 import java.util.Map;
+import java.net.URL;
 
 import org.jfree.resourceloader.AbstractResourceKey;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * This resource key describes a loadable system resource, independent of the
@@ -101,5 +103,18 @@ public class ClassloaderResourceKey extends AbstractResourceKey
   public String toString()
   {
     return "ClassLoaderResourceKey={resource=" + resource + "}";
+  }
+
+  /**
+   * Tries to build an URL. This is a compatiblity method for supporting other
+   * resource loader frameworks. The method may return null, if there is no URL
+   * representation for the given resource-key.
+   *
+   * @return the URL or null.
+   */
+  public URL toURL()
+  {
+    return ObjectUtilities.getResource
+        (getResourcePath(), ClassloaderResourceKey.class);
   }
 }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: Resource.java,v 1.2 2006/12/03 16:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -46,7 +46,7 @@ import java.io.Serializable;
  */
 public interface Resource extends Serializable
 {
-  public Object getResource ();
+  public Object getResource () throws ResourceException;
 
   public long getVersion(ResourceKey key);
 
