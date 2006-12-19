@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: Formula.java,v 1.5 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -90,5 +90,12 @@ public class Formula implements Serializable, Cloneable
     final Formula o = (Formula) super.clone();
     o.rootReference = (LValue) rootReference.clone();
     return o;
+  }
+
+  public static void main(String[] args)
+      throws ParseException
+  {
+    LibFormulaBoot.getInstance().start();
+    Formula f = new Formula("0");
   }
 }
