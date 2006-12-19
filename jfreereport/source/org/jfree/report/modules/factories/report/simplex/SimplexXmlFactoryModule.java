@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SimplexXmlFactoryModule.java,v 1.3 2006/12/03 20:24:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -51,6 +51,11 @@ public class SimplexXmlFactoryModule implements XmlFactoryModule
   }
 
   public XmlReadHandler createReadHandler(XmlDocumentInfo documentInfo)
+  {
+    return null;
+  }
+
+  public String getDefaultNamespace(XmlDocumentInfo documentInfo)
   {
     return null;
   }

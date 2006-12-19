@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FlowController.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
+ * $Id: FlowController.java,v 1.5 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -77,6 +77,8 @@ public interface FlowController
 
   /**
    * Returns the current expression slots of all currently active expressions.
+   * (Maybe we should limit the access to the name and value of the expression
+   * instead?)
    *
    * @return
    * @throws DataSourceException

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StyleSheetReadHandler.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,6 +36,7 @@ import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.ResourceException;
 import org.jfree.util.Log;
 import org.jfree.xmlns.parser.StringReadHandler;
 import org.xml.sax.Attributes;
@@ -88,6 +89,10 @@ public class StyleSheetReadHandler extends StringReadHandler
       catch (ResourceLoadingException e)
       {
         Log.warn ("Unable to load resource data for " + key + " and " + href);
+      }
+      catch (ResourceException e)
+      {
+        Log.warn ("Unable to load resource for " + key + " and " + href);
       }
     }
   }

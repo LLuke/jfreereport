@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionReadHandler.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
+ * $Id: SectionReadHandler.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -157,7 +157,7 @@ public class SectionReadHandler extends AbstractElementReadHandler
     }
 
     final NodeReadHandlerFactory factory = NodeReadHandlerFactory.getInstance();
-    final NodeReadHandler handler = factory.getHandler(uri, tagName);
+    final NodeReadHandler handler = (NodeReadHandler) factory.getHandler(uri, tagName);
     if (handler != null)
     {
       nodes.add(handler);

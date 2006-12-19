@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SQLDataSourceReadHandler.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,7 +36,6 @@ import org.jfree.report.modules.data.sql.ConnectionProvider;
 import org.jfree.report.modules.data.sql.SQLReportDataFactory;
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
 import org.jfree.xmlns.parser.PropertyReadHandler;
-import org.jfree.xmlns.parser.RootXmlReadHandler;
 import org.jfree.xmlns.parser.XmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -48,7 +47,7 @@ import org.xml.sax.SAXException;
  */
 public class SQLDataSourceReadHandler extends AbstractXmlReadHandler
 {
-  private XmlReadHandler connectionProviderReadHandler;
+  private ConnectionReadHandler connectionProviderReadHandler;
   private ArrayList queries;
   private ConfigReadHandler configReadHandler;
   private ReportDataFactory dataFactory;
@@ -56,19 +55,6 @@ public class SQLDataSourceReadHandler extends AbstractXmlReadHandler
   public SQLDataSourceReadHandler()
   {
     queries = new ArrayList();
-  }
-
-  /**
-   * Initialises the handler.
-   *
-   * @param rootHandler the root handler.
-   * @param tagName     the tag name.
-   */
-  public void init(final RootXmlReadHandler rootHandler,
-                   final String uri,
-                   final String tagName)
-  {
-    super.init(rootHandler, uri, tagName);
   }
 
   /**
@@ -85,14 +71,18 @@ public class SQLDataSourceReadHandler extends AbstractXmlReadHandler
                                               final Attributes atts)
           throws SAXException
   {
+
+    final ConnectionReadHandlerFactory factory = ConnectionReadHandlerFactory.getInstance();
+    final ConnectionReadHandler handler = (ConnectionReadHandler) factory.getHandler(uri, tagName);
+    if (handler != null)
+    {
+      connectionProviderReadHandler = handler;
+      return connectionProviderReadHandler;
+    }
+
     if (isSameNamespace(uri) == false)
     {
       return null;
-    }
-    if (tagName.equals("connection"))
-    {
-      connectionProviderReadHandler = new ConnectionReadHandler();
-      return connectionProviderReadHandler;
     }
     if (tagName.equals("config"))
     {
@@ -119,7 +109,7 @@ public class SQLDataSourceReadHandler extends AbstractXmlReadHandler
     ConnectionProvider provider = null;
     if (connectionProviderReadHandler != null)
     {
-      provider = (ConnectionProvider) connectionProviderReadHandler.getObject();
+      provider = connectionProviderReadHandler.getProvider();
     }
     if (provider == null)
     {

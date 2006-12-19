@@ -27,111 +27,18 @@
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
+
 package org.jfree.report.modules.factories.data.sql;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-
-import org.jfree.report.modules.data.sql.DriverConnectionProvider;
-import org.jfree.xmlns.parser.AbstractXmlReadHandler;
-import org.jfree.xmlns.parser.PropertiesReadHandler;
-import org.jfree.xmlns.parser.StringReadHandler;
 import org.jfree.xmlns.parser.XmlReadHandler;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
+import org.jfree.report.modules.data.sql.ConnectionProvider;
 
 /**
- * Creation-Date: 07.04.2006, 18:09:25
+ * Creation-Date: Dec 17, 2006, 8:58:33 PM
  *
  * @author Thomas Morgner
  */
-public class ConnectionReadHandler extends AbstractXmlReadHandler
+public interface ConnectionReadHandler extends XmlReadHandler
 {
-  private StringReadHandler driverReadHandler;
-  private StringReadHandler urlReadHandler;
-  private PropertiesReadHandler propertiesReadHandler;
-  private DriverConnectionProvider driverConnectionProvider;
-
-  public ConnectionReadHandler()
-  {
-  }
-
-  /**
-   * Returns the handler for a child element.
-   *
-   * @param tagName the tag name.
-   * @param atts    the attributes.
-   * @return the handler or null, if the tagname is invalid.
-   * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
-   */
-  protected XmlReadHandler getHandlerForChild(final String uri,
-                                              final String tagName,
-                                              final Attributes atts)
-          throws SAXException
-  {
-    if (isSameNamespace(uri) == false)
-    {
-      return null;
-    }
-    if ("driver".equals(tagName))
-    {
-      driverReadHandler = new StringReadHandler();
-      return driverReadHandler;
-    }
-    if ("url".equals(tagName))
-    {
-      urlReadHandler = new StringReadHandler();
-      return urlReadHandler;
-    }
-    if ("properties".equals(tagName))
-    {
-      propertiesReadHandler = new PropertiesReadHandler();
-      return propertiesReadHandler;
-    }
-    return null;
-  }
-
-  /**
-   * Done parsing.
-   *
-   * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
-   */
-  protected void doneParsing() throws SAXException
-  {
-    final DriverConnectionProvider provider = new DriverConnectionProvider();
-    if (driverReadHandler != null)
-    {
-      provider.setDriver(driverReadHandler.getResult());
-    }
-    if (urlReadHandler != null)
-    {
-      provider.setUrl(urlReadHandler.getResult());
-    }
-    if (propertiesReadHandler != null)
-    {
-      final Properties p = (Properties) propertiesReadHandler.getObject();
-      final Iterator it = p.entrySet().iterator();
-      while (it.hasNext())
-      {
-        Map.Entry entry = (Map.Entry) it.next();
-        provider.setProperty((String) entry.getKey(), (String) entry.getValue());
-      }
-    }
-    driverConnectionProvider = provider;
-  }
-
-  /**
-   * Returns the object for this element or null, if this element does not
-   * create an object.
-   *
-   * @return the object.
-   * @throws XmlReaderException if there is a parsing error.
-   */
-  public Object getObject() throws SAXException
-  {
-    return driverConnectionProvider;
-  }
+  public ConnectionProvider getProvider();
 }

@@ -15,16 +15,16 @@ content[report|isDate=true] {
   content: format(attr("report|content", date), date);
 }
 
-content[report|isDate=true][report|format] {
-  content: format(attr("report|content", date), date, attr("report|format",string));
+content[report|isDate=true][format] {
+  content: format(attr("report|content", date), date, attr("format",string));
 }
 
 content[report|isNumber=true] {
   content: format(attr("report|content", number), number, "#,##0.00");
 }
 
-content[report|isNumber=true][report|format] {
-  content: format(attr("report|content", number), number, attr("report|format",string));
+content[report|isNumber=true][format] {
+  content: format(attr("report|content", number), number, attr("format",string));
 }
 
 content[report|isNumber=true][report|isInteger=true] {
@@ -32,5 +32,5 @@ content[report|isNumber=true][report|isInteger=true] {
 }
 
 content[report|isNumber=true][report|isInteger=true][format] {
-  content: format(attr("report|content", number), number, attr("report|format",string));
+  content: format(attr("report|content", number), number, attr("format",string));
 }

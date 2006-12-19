@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrecomputedExpressionSlot.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,9 +42,13 @@ public class PrecomputedExpressionSlot implements ExpressionSlot
 {
   private String name;
   private Object value;
+  private boolean preserve;
 
-  public PrecomputedExpressionSlot(final String name, final Object value)
+  public PrecomputedExpressionSlot(final String name,
+                                   final Object value,
+                                   final boolean preserve)
   {
+    this.preserve = preserve;
     this.name = name;
     this.value = value;
   }
@@ -84,6 +88,11 @@ public class PrecomputedExpressionSlot implements ExpressionSlot
   public Object clone() throws CloneNotSupportedException
   {
     return super.clone();
+  }
+
+  public boolean isPreserve()
+  {
+    return preserve;
   }
 
 }

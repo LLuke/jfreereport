@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultFlowController.java,v 1.5 2006/12/04 19:11:23 taqua Exp $
+ * $Id: DefaultFlowController.java,v 1.6 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,8 +50,6 @@ import org.jfree.util.FastStack;
  */
 public class DefaultFlowController implements FlowController
 {
-  private static final boolean STRICT_ASSERTATIONS = false;
-
   private static class ReportDataContext
   {
     private FastStack markStack;
@@ -133,7 +131,7 @@ public class DefaultFlowController implements FlowController
   {
     if (operation == FlowControlOperation.ADVANCE)
     {
-      if (dataRow.isAdvanceable())
+      if (dataRow.isAdvanceable() && advanceRequested == false)
       {
         DefaultFlowController fc = new DefaultFlowController(this, dataRow);
         fc.advanceRequested = true;

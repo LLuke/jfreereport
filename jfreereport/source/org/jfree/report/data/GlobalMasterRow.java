@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: GlobalMasterRow.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
+ * $Id: GlobalMasterRow.java,v 1.5 2006/12/04 19:11:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -211,7 +211,7 @@ public final class GlobalMasterRow
       if (columnName != null)
       {
         final Object columnValue = importedDataRow.get(i);
-        globalView.putField(columnName, columnValue);
+        globalView.putField(columnName, columnValue, true);
       }
     }
   }
@@ -219,14 +219,17 @@ public final class GlobalMasterRow
   /** This updates the global view. */
   private void updateGlobalView() throws DataSourceException
   {
-    final int parameterCount = parameterDataRow.getColumnCount();
-    for (int i = 0; i < parameterCount; i++)
+    if (parameterDataRow != null)
     {
-      final String columnName = parameterDataRow.getColumnName(i);
-      if (columnName != null)
+      final int parameterCount = parameterDataRow.getColumnCount();
+      for (int i = 0; i < parameterCount; i++)
       {
-        final Object columnValue = parameterDataRow.get(i);
-        globalView.putField(columnName, columnValue);
+        final String columnName = parameterDataRow.getColumnName(i);
+        if (columnName != null)
+        {
+          final Object columnValue = parameterDataRow.get(i);
+          globalView.putField(columnName, columnValue, true);
+        }
       }
     }
     if (reportDataRow != null)
@@ -238,7 +241,7 @@ public final class GlobalMasterRow
         if (columnName != null)
         {
           final Object columnValue = reportDataRow.get(i);
-          globalView.putField(columnName, columnValue);
+          globalView.putField(columnName, columnValue, true);
         }
       }
     }
@@ -260,7 +263,8 @@ public final class GlobalMasterRow
 
   /**
    * A call back method to communicate structural changes back to the master
-   * rows.
+   * rows. (This is only called from the expression row, as all other datarows
+   * are static).
    *
    * @param dataRow
    */
@@ -269,10 +273,13 @@ public final class GlobalMasterRow
   {
     // rebuild the global view and tracks changes ..
     final int type = chEvent.getType();
-    if (type == MasterDataRowChangeEvent.COLUMN_ADDED ||
-        type == MasterDataRowChangeEvent.COLUMN_UPDATED)
+    if (type == MasterDataRowChangeEvent.COLUMN_ADDED)
     {
-      globalView.putField(chEvent.getColumnName(), chEvent.getColumnValue());
+      globalView.putField(chEvent.getColumnName(), chEvent.getColumnValue(), false);
+    }
+    else if (type == MasterDataRowChangeEvent.COLUMN_UPDATED)
+    {
+      globalView.putField(chEvent.getColumnName(), chEvent.getColumnValue(), true);
     }
     else if (type == MasterDataRowChangeEvent.COLUMN_REMOVED)
     {

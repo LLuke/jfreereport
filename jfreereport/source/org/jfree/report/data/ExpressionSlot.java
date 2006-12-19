@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ExpressionSlot.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,4 +50,6 @@ public interface ExpressionSlot extends PublicCloneable
   public String getName();
 
   public boolean isDeepTraversing();
+
+  public boolean isPreserve();
 }

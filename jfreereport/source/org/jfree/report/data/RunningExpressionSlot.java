@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RunningExpressionSlot.java,v 1.2 2006/12/03 20:24:09 taqua Exp $
+ * $Id: RunningExpressionSlot.java,v 1.3 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -166,4 +166,8 @@ public class RunningExpressionSlot
     return staticRuntimeData.getReportContext();
   }
 
+  public boolean isPreserve()
+  {
+    return expression.isPreserve();
+  }
 }

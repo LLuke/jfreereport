@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FlowXmlFactoryModule.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -47,7 +47,7 @@ public class FlowXmlFactoryModule implements XmlFactoryModule
   public int getDocumentSupport(XmlDocumentInfo documentInfo)
   {
     final String rootNamespace = documentInfo.getRootElementNameSpace();
-    if (rootNamespace != null)
+    if (rootNamespace != null && rootNamespace.length() > 0)
     {
       if (FlowReportFactoryModule.NAMESPACE.equals(rootNamespace) == false)
       {
@@ -65,6 +65,11 @@ public class FlowXmlFactoryModule implements XmlFactoryModule
 
     return NOT_RECOGNIZED;
 
+  }
+
+  public String getDefaultNamespace(XmlDocumentInfo documentInfo)
+  {
+    return FlowReportFactoryModule.NAMESPACE;
   }
 
   public XmlReadHandler createReadHandler(XmlDocumentInfo documentInfo)

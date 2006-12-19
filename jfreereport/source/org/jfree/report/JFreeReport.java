@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: JFreeReport.java,v 1.38 2006/12/08 14:20:41 taqua Exp $
+ * $Id: JFreeReport.java,v 1.39 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -173,11 +173,8 @@ public class JFreeReport extends ReportDefinition
   {
     if (resourceManager == null)
     {
-      if (baseResource == null)
-      {
-        resourceManager = new ResourceManager();
-        resourceManager.registerDefaults();
-      }
+      resourceManager = new ResourceManager();
+      resourceManager.registerDefaults();
     }
     return resourceManager;
   }

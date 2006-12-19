@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ElementLayoutController.java,v 1.5 2006/12/08 14:20:41 taqua Exp $
+ * $Id: ElementLayoutController.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -341,7 +341,7 @@ public abstract class ElementLayoutController
           // we fork a new layout process, compute the value and then come
           // back with the result.
           Object value = precompute (i);
-          slots[i] = new PrecomputedExpressionSlot(expression.getName(), value);
+          slots[i] = new PrecomputedExpressionSlot(expression.getName(), value, expression.isPreserve());
         }
         else
         {

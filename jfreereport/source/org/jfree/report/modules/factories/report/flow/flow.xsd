@@ -308,6 +308,7 @@
           <xsd:all minOccurs="1" maxOccurs="1">
             <xsd:element ref="value-expression" minOccurs="1"/>
           </xsd:all>
+          <xsd:attribute name="format" type="xsd:string" use="optional"/>
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -370,7 +371,7 @@
         'operation-after' elements. Sections can be repeatable.
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:complexType>
+    <xsd:complexType mixed="true">
       <xsd:complexContent>
         <xsd:restriction base="section-type"/>
       </xsd:complexContent>
@@ -472,10 +473,10 @@
   <xsd:complexType name="report-definition-type">
     <xsd:complexContent mixed="true">
       <xsd:restriction base="report-definition-query">
-        <xsd:all>
-          <xsd:element ref="operation-before" minOccurs="0" maxOccurs="0"/>
-          <xsd:element ref="operation-after" minOccurs="0" maxOccurs="0"/>
-        </xsd:all>
+        <xsd:sequence>
+          <xsd:element ref="operation-before" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element ref="operation-after" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
       </xsd:restriction>
     </xsd:complexContent>
   </xsd:complexType>

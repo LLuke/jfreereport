@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AutoTableElementReadHandler.java,v 1.1 2006/12/09 21:17:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -88,7 +88,7 @@ public class AutoTableElementReadHandler extends AbstractElementReadHandler
     }
 
     final NodeReadHandlerFactory factory = NodeReadHandlerFactory.getInstance();
-    final NodeReadHandler handler = factory.getHandler(uri, tagName);
+    final NodeReadHandler handler = (NodeReadHandler) factory.getHandler(uri, tagName);
     if (handler == null)
     {
       return null;

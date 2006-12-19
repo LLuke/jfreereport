@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ContentElementReadHandler.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -48,6 +48,19 @@ public class ContentElementReadHandler extends AbstractElementReadHandler
   public ContentElementReadHandler()
   {
     ce = new ContentElement();
+  }
+
+  /**
+   * Starts parsing.
+   *
+   * @param attrs the attributes.
+   * @throws org.xml.sax.SAXException if there is a parsing error.
+   */
+  protected void startParsing(final Attributes attrs) throws SAXException
+  {
+    super.startParsing(attrs);
+    final String format = attrs.getValue(FlowReportFactoryModule.NAMESPACE, "format");
+    ce.setAttribute(FlowReportFactoryModule.NAMESPACE, "format", format);
   }
 
   /**

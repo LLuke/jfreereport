@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: GlobalView.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: GlobalView.java,v 1.4 2006/12/04 19:11:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,7 +60,7 @@ public final class GlobalView implements DataRow
   {
   }
 
-  public static GlobalView createView ()
+  public static GlobalView createView()
   {
     GlobalView gv = new GlobalView();
     gv.nameCache = new LazyNameMap();
@@ -90,12 +90,14 @@ public final class GlobalView implements DataRow
    * This adds the expression to the data-row and queries the expression for the
    * first time.
    *
-   * @param name the name of the field (cannot be null)
+   * @param name  the name of the field (cannot be null)
    * @param value the value of that field (may be null)
    * @throws DataSourceException
    */
-  public synchronized void putField(final String name, final Object value)
-          throws DataSourceException
+  public synchronized void putField(final String name,
+                                    final Object value,
+                                    final boolean update)
+      throws DataSourceException
   {
     if (name == null)
     {
@@ -104,11 +106,14 @@ public final class GlobalView implements DataRow
 
     final LazyNameMap.NameCarrier nc = nameCache.get(name);
     final DefaultDataFlags flagedValue = new DefaultDataFlags
-            (name, value, computeChange(name, value));
+        (name, value, computeChange(name, value));
     if (nc != null)
     {
       this.data[nc.getValue()] = flagedValue;
-      nc.increase();
+      if (update == false)
+      {
+        nc.increase();
+      }
       return;
     }
 
@@ -133,7 +138,7 @@ public final class GlobalView implements DataRow
   }
 
   private boolean computeChange(String name, Object newValue)
-          throws DataSourceException
+      throws DataSourceException
   {
     final LazyNameMap.NameCarrier onc = oldCache.get(name);
     if (onc == null)
@@ -271,7 +276,7 @@ public final class GlobalView implements DataRow
     return gv;
   }
 
-  public GlobalView advance ()
+  public GlobalView advance()
   {
     GlobalView gv = new GlobalView();
     gv.oldCache = (LazyNameMap) nameCache.clone();

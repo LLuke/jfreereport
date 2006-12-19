@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DatasourceFactoryReadHandler.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,6 +36,7 @@ import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.ResourceException;
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -87,6 +88,10 @@ public class DatasourceFactoryReadHandler extends AbstractXmlReadHandler
     catch (ResourceLoadingException e)
     {
       throw new SAXException("Unable to load resource data for " + key + " and " + href);
+    }
+    catch (ResourceException e)
+    {
+      throw new SAXException("Unable to parse resource for " + key + " and " + href);
     }
   }
 

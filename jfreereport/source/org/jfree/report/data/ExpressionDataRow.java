@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ExpressionDataRow.java,v 1.8 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -95,6 +95,7 @@ public final class ExpressionDataRow implements DataRow
     final int newSize = Math.max(capacity * 2, requestedSize + 10);
 
     final ExpressionSlot[] newExpressions = new ExpressionSlot[newSize];
+
     System.arraycopy(expressions, 0, newExpressions, 0, length);
 
     this.expressions = newExpressions;
@@ -174,6 +175,7 @@ public final class ExpressionDataRow implements DataRow
       return;
     }
     String originalName = expressions[length - 1].getName();
+    boolean preserve = expressions[length - 1].isPreserve();
     this.expressions[length - 1] = null;
     this.length -= 1;
     if (originalName != null)
@@ -197,9 +199,13 @@ public final class ExpressionDataRow implements DataRow
         nameCache.put(originalName, expressions[otherIndex]);
       }
 
-      final MasterDataRowChangeEvent chEvent = new MasterDataRowChangeEvent
-          (MasterDataRowChangeEvent.COLUMN_REMOVED, originalName, null);
-      masterRow.dataRowChanged(chEvent);
+      if (preserve == false)
+      {
+        final MasterDataRowChangeEvent chEvent = new MasterDataRowChangeEvent
+            (MasterDataRowChangeEvent.COLUMN_REMOVED, originalName, null);
+        masterRow.dataRowChanged(chEvent);
+      }
+      // for preserved elements we do not send an remove-event.
     }
 
   }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: JFreeReportXmlResourceFactory.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,7 +44,7 @@ import org.jfree.xmlns.parser.AbstractXmlResourceFactory;
  *
  * @author Thomas Morgner
  */
-public class JFreeReportXmlResourceFactory extends AbstractXmlResourceFactory
+public class  JFreeReportXmlResourceFactory extends AbstractXmlResourceFactory
 {
   public JFreeReportXmlResourceFactory()
   {
@@ -54,11 +54,11 @@ public class JFreeReportXmlResourceFactory extends AbstractXmlResourceFactory
   {
     return JFreeReport.class;
   }
+
   protected Configuration getConfiguration ()
   {
     return JFreeReportBoot.getInstance().getGlobalConfig();
   }
-
 
   protected Object finishResult(final Object res,
                                 final ResourceManager manager,
