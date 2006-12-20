@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DrawablePrintable.java,v 1.2 2006/12/03 20:24:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -84,8 +84,6 @@ public class DrawablePrintable implements Printable
     }
 
     final Graphics2D g2 = (Graphics2D) graphics;
-    g2.translate(-pageFormat.getImageableX(), -pageFormat.getImageableY());
-
     final Rectangle2D bounds = new Rectangle2D.Double
         (0,0, pageFormat.getImageableWidth(), pageFormat.getImageableHeight());
     drawable.draw(g2, bounds);

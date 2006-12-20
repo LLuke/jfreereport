@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractExportActionPlugin.java,v 1.3 2006/12/08 14:20:41 taqua Exp $
+ * $Id: AbstractExportActionPlugin.java,v 1.4 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -123,17 +123,14 @@ public abstract class AbstractExportActionPlugin extends AbstractActionPlugin
       final String dialogClassName = configuration.getConfigProperty(configKey);
       final ExportDialog dialog = createExportDialog(dialogClassName);
       final boolean dialogResult = dialog.performQueryForExport(job, getContext());
-      if (dialogResult == false)
-      {
-        return false;
-      }
+      return dialogResult;
     }
     catch (InstantiationException e)
     {
       Log.error ("Unable to configure the report job.");
       setStatusText("Unable to configure the report job.");
+      return false;
     }
-    return false;
   }
 
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PdfExportTask.java,v 1.3 2006/12/08 14:20:42 taqua Exp $
+ * $Id: PdfExportTask.java,v 1.4 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,7 +60,7 @@ public class PdfExportTask implements Runnable
     this.job = job;
     final Configuration config = job.getConfiguration();
     String targetFileName = config.getConfigProperty
-        ("org.jfree.report.modules.gui.common.html.file.TargetFileName");
+        ("org.jfree.report.modules.gui.common.pdf.TargetFileName");
 
     targetFile = new File(targetFileName);
     if (targetFile.exists())
