@@ -32,7 +32,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ParserUtil.java,v 1.3 2005/10/18 13:25:44 mungady Exp $
+ * $Id: ParserUtil.java,v 1.1 2006/12/19 17:47:15 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ package org.jfree.xmlns.common;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.jfree.xmlns.parser.ParseException;
 
 /**
  * Basic helper functions to ease up the process of parsing.
@@ -86,7 +87,7 @@ public class ParserUtil
     }
     catch (NumberFormatException nfe)
     {
-      throw new SAXParseException("NumberFormatError: " + message, locator);
+      throw new ParseException("NumberFormatError: " + message, locator);
     }
   }
 
@@ -155,11 +156,11 @@ public class ParserUtil
   public static float parseFloat(final String text,
                                  final String message,
                                  final Locator locator)
-      throws SAXParseException
+      throws ParseException
   {
     if (text == null)
     {
-      throw new SAXParseException(message, locator);
+      throw new ParseException(message, locator);
     }
     try
     {
@@ -167,7 +168,7 @@ public class ParserUtil
     }
     catch (NumberFormatException nfe)
     {
-      throw new SAXParseException("NumberFormatError: " + message, locator);
+      throw new ParseException("NumberFormatError: " + message, locator);
     }
   }
 
@@ -266,7 +267,7 @@ public class ParserUtil
     {
       return Boolean.FALSE;
     }
-    throw new SAXParseException("Failed to parse value: Expected 'true' or 'false'", locator);
+    throw new ParseException("Failed to parse value: Expected 'true' or 'false'", locator);
   }
 
   /**

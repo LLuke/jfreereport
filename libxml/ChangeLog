@@ -3,6 +3,11 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.1: (22-Dec-2006)
+    * Improved the parsing of xml files that have a DTD. A handler can
+      now map the DTD into a default namespace. All elements for that
+      document type will have the namespace asigned.
+
 0.2.0: (03-Dec-2006)
     * Added the XMLWriterSupport and better tag managment.
 
