@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AbstractFunctionDescription.java,v 1.2 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -52,6 +52,14 @@ public abstract class AbstractFunctionDescription implements FunctionDescription
     return false;
   }
 
+  /**
+   * Returns the default value for an optional parameter. If the value returned
+   * here is null, then this either means, that the parameter is mandatory or
+   * that the default value is computed by the expression itself.
+   *
+   * @param position
+   * @return null.
+   */
   public Object getDefaultValue(int position)
   {
     return null;

@@ -24,17 +24,15 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: HasChangedFunctionDescription.java,v 1.2 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.formula.function.information;
 
-import java.util.Locale;
-
+import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
-import org.jfree.formula.function.FunctionDescription;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.LogicalType;
 import org.jfree.formula.typing.coretypes.TextType;
@@ -44,25 +42,16 @@ import org.jfree.formula.typing.coretypes.TextType;
  *
  * @author Thomas Morgner
  */
-public class HasChangedFunctionDescription implements FunctionDescription
+public class HasChangedFunctionDescription extends AbstractFunctionDescription
 {
   public HasChangedFunctionDescription()
   {
+    super("org.jfree.formula.function.information.HasChanged-Function");
   }
 
   public Type getValueType()
   {
     return LogicalType.TYPE;
-  }
-
-  public String getDisplayName(Locale locale)
-  {
-    return "HASCHANGED";
-  }
-
-  public String getDescription(Locale locale)
-  {
-    return "Checks whether at least one of the given references has changed.";
   }
 
   public int getParameterCount()
@@ -80,22 +69,12 @@ public class HasChangedFunctionDescription implements FunctionDescription
     return TextType.TYPE;
   }
 
-  public String getParameterDisplayName(int position, Locale locale)
-  {
-    return "ReferencesList";
-  }
-
-  public String getParameterDescription(int position, Locale locale)
-  {
-    return "A list of reference names";
-  }
-
   /**
    * Defines, whether the parameter at the given position is mandatory. A
    * mandatory parameter must be filled in, while optional parameters need not
    * to be filled in.
    *
-   * @return
+   * @return false
    */
   public boolean isParameterMandatory(int position)
   {
@@ -108,7 +87,7 @@ public class HasChangedFunctionDescription implements FunctionDescription
    * that the default value is computed by the expression itself.
    *
    * @param position
-   * @return
+   * @return null.
    */
   public Object getDefaultValue(int position)
   {

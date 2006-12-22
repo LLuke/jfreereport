@@ -4,11 +4,13 @@
 A list of changes in recent versions:
 
 
-0.1.2: (20-Dec-2006)
+0.1.2: (22-Dec-2006)
         * [BUG] The parser failed when being faced with functions that have
           no parameters.
           
         * New function NULL allows to return a NULL-reference.
+	
+	* Added the 'ISBLANK' function from OpenFormula.
 
 0.1.1: (11-Dec-2006)
         * The FormulaContext now is able to signal errors using Exceptions.
