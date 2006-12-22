@@ -4,6 +4,12 @@
 
 A list of changes in recent versions:
 
+0.2.2:  (22-Dec-2006)
+        * [BUG] Caching raw-keys was invalid and consumed enormous amounts
+          of memory.
+
+        * The EHCache-Module has been upgraded to work with EHCache 1.2.4.  
+
 0.2.1:  (11-Dec-2006)
         * [BUG] File-URLs failed with LibLoader if the URL's file part was 
           URL-Encoded. We now use a special handler for these cases.
