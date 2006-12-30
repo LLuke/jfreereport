@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: GroupReadHandler.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.report.modules.factories.report.flow;
 import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Group;
 import org.jfree.xmlns.parser.XmlReadHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -57,7 +58,6 @@ public class GroupReadHandler extends SectionReadHandler
    * @param atts    the attributes.
    * @return the handler or null, if the tagname is invalid.
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
@@ -84,13 +84,13 @@ public class GroupReadHandler extends SectionReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing() throws SAXException
   {
     if (groupingExpressionReadHandler == null)
     {
-      throw new SAXException("Required element 'grouping-expression' is missing.");
+      throw new ParseException
+          ("Required element 'grouping-expression' is missing.", getLocator());
     }
 
     super.doneParsing();

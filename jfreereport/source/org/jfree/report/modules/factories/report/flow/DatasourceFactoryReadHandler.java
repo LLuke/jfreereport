@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DatasourceFactoryReadHandler.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: DatasourceFactoryReadHandler.java,v 1.4 2006/12/19 17:42:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,6 +38,7 @@ import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.resourceloader.ResourceException;
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -66,7 +67,7 @@ public class DatasourceFactoryReadHandler extends AbstractXmlReadHandler
     final String href = attrs.getValue(getUri(), "href");
     if (href == null)
     {
-      throw new SAXException("Required attribute 'href' is missing.");
+      throw new ParseException("Required attribute 'href' is missing.", getLocator());
     }
     final ResourceKey key = getRootHandler().getSource();
     final ResourceManager manager = getRootHandler().getResourceManager();
@@ -79,19 +80,22 @@ public class DatasourceFactoryReadHandler extends AbstractXmlReadHandler
     }
     catch (ResourceKeyCreationException e)
     {
-      throw new SAXException("Unable to derive key for " + key + " and " + href);
+      throw new ParseException
+          ("Unable to derive key for " + key + " and " + href, getLocator());
     }
     catch (ResourceCreationException e)
     {
-      throw new SAXException("Unable to parse resource for " + key + " and " + href);
+      throw new ParseException
+          ("Unable to parse resource for " + key + " and " + href, getLocator());
     }
     catch (ResourceLoadingException e)
     {
-      throw new SAXException("Unable to load resource data for " + key + " and " + href);
+      throw new ParseException
+          ("Unable to load resource data for " + key + " and " + href, getLocator());
     }
     catch (ResourceException e)
     {
-      throw new SAXException("Unable to parse resource for " + key + " and " + href);
+      throw new ParseException("Unable to parse resource for " + key + " and " + href, getLocator());
     }
   }
 
@@ -105,7 +109,7 @@ public class DatasourceFactoryReadHandler extends AbstractXmlReadHandler
    * create an object.
    *
    * @return the object.
-   * @throws XmlReaderException if there is a parsing error.
+   * @throws SAXException if there is a parsing error.
    */
   public Object getObject() throws SAXException
   {

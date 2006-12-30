@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FlowOperationReadHandler.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,6 +31,7 @@ package org.jfree.report.modules.factories.report.flow;
 
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -58,7 +59,7 @@ public class FlowOperationReadHandler extends AbstractXmlReadHandler
     final String value = attrs.getValue(getUri(), "operation");
     if (value == null)
     {
-      throw new SAXException("Required attribute 'operation' is missing.");
+      throw new ParseException("Required attribute 'operation' is missing.", getLocator());
     }
     final String valueTrimmed = value.trim();
     if (FlowControlOperation.ADVANCE.toString().equals(valueTrimmed))
@@ -87,7 +88,7 @@ public class FlowOperationReadHandler extends AbstractXmlReadHandler
     }
     else
     {
-      throw new SAXException("attribute 'operation' has an invalid value.");
+      throw new ParseException("attribute 'operation' has an invalid value.", getLocator());
     }
   }
 
@@ -101,7 +102,7 @@ public class FlowOperationReadHandler extends AbstractXmlReadHandler
    * create an object.
    *
    * @return the object.
-   * @throws XmlReaderException if there is a parsing error.
+   * @throws SAXException if there is a parsing error.
    */
   public Object getObject() throws SAXException
   {

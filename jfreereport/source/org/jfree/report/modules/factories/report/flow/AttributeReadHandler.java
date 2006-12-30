@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AttributeReadHandler.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,6 +42,7 @@ import org.jfree.util.ObjectUtilities;
 import org.jfree.xmlns.parser.Base64;
 import org.jfree.xmlns.parser.MultiplexRootElementHandler;
 import org.jfree.xmlns.parser.PropertyReadHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -67,7 +68,6 @@ public class AttributeReadHandler extends PropertyReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing() throws SAXException
   {
@@ -101,15 +101,15 @@ public class AttributeReadHandler extends PropertyReadHandler
     }
     catch (BeanException e)
     {
-      throw new SAXException("Unable to set attribute '" + getName() + "'", e);
+      throw new ParseException("Unable to set attribute '" + getName() + "'", e, getLocator());
     }
     catch (ClassNotFoundException e)
     {
-      throw new SAXException("Unable to set attribute '" + getName() + "'", e);
+      throw new ParseException("Unable to set attribute '" + getName() + "'", e, getLocator() );
     }
     catch (IOException e)
     {
-      throw new SAXException("Unable to set attribute '" + getName() + "'", e);
+      throw new ParseException("Unable to set attribute '" + getName() + "'", e, getLocator());
     }
   }
 

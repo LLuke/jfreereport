@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ContentElementReadHandler.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
+ * $Id: ContentElementReadHandler.java,v 1.6 2006/12/19 17:42:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.report.modules.factories.report.flow;
 import org.jfree.report.structure.ContentElement;
 import org.jfree.report.structure.Element;
 import org.jfree.xmlns.parser.XmlReadHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -70,7 +71,6 @@ public class ContentElementReadHandler extends AbstractElementReadHandler
    * @param atts    the attributes.
    * @return the handler or null, if the tagname is invalid.
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
@@ -93,13 +93,12 @@ public class ContentElementReadHandler extends AbstractElementReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing() throws SAXException
   {
     if (valueExpressionReadHandler == null)
     {
-      throw new SAXException("No valid value expression.");
+      throw new ParseException("No valid value expression.", getLocator());
     }
 
     super.doneParsing();
@@ -112,7 +111,7 @@ public class ContentElementReadHandler extends AbstractElementReadHandler
    * create an object.
    *
    * @return the object.
-   * @throws XmlReaderException if there is a parsing error.
+   * @throws SAXException if there's a parsing error
    */
   public Object getObject() throws SAXException
   {

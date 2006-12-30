@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TypedPropertyReadHandler.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -84,7 +84,6 @@ public class TypedPropertyReadHandler extends PropertyReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing() throws SAXException
   {
@@ -123,18 +122,18 @@ public class TypedPropertyReadHandler extends PropertyReadHandler
     catch (BeanException e)
     {
       e.printStackTrace();
-      throw new SAXException("Unable to assign property '" + getName()
-              + "' to expression '" + expressionName + "'", e);
+      throw new ParseException("Unable to assign property '" + getName()
+              + "' to expression '" + expressionName + "'", e, getLocator());
     }
     catch (ClassNotFoundException e)
     {
-      throw new SAXException("Unable to assign property '" + getName()
-              + "' to expression '" + expressionName + "'", e);
+      throw new ParseException("Unable to assign property '" + getName()
+              + "' to expression '" + expressionName + "'", e, getLocator());
     }
     catch (IOException e)
     {
-      throw new SAXException("Unable to assign property '" + getName()
-              + "' to expression '" + expressionName + "'", e);
+      throw new ParseException("Unable to assign property '" + getName()
+              + "' to expression '" + expressionName + "'", e, getLocator());
     }
   }
 
@@ -168,7 +167,6 @@ public class TypedPropertyReadHandler extends PropertyReadHandler
    * @param atts    the attributes.
    * @return the handler or null, if the tagname is invalid.
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
@@ -186,7 +184,7 @@ public class TypedPropertyReadHandler extends PropertyReadHandler
       final String name = atts.getValue(uri, "name");
       if (name == null)
       {
-        throw new SAXException("Required attribute 'name' is missing");
+        throw new ParseException("Required attribute 'name' is missing", getLocator());
       }
       try
       {

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SubReportReadHandler.java,v 1.5 2006/12/04 19:11:24 taqua Exp $
+ * $Id: SubReportReadHandler.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,6 +35,7 @@ import org.jfree.report.structure.Element;
 import org.jfree.report.structure.SubReport;
 import org.jfree.xmlns.parser.StringReadHandler;
 import org.jfree.xmlns.parser.XmlReadHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -50,14 +51,6 @@ public class SubReportReadHandler extends SectionReadHandler
   private ArrayList exportParameters;
   private StringReadHandler queryReadHandler;
 
-  /**
-   * Creates a new generic read handler. The given namespace and tagname can be
-   * arbitary values and should not be confused with the ones provided by the
-   * XMLparser itself.
-   *
-   * @param namespace
-   * @param tagName
-   */
   public SubReportReadHandler()
   {
     subReport = new SubReport();
@@ -88,7 +81,6 @@ public class SubReportReadHandler extends SectionReadHandler
    * @param atts    the attributes.
    * @return the handler or null, if the tagname is invalid.
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
@@ -127,7 +119,6 @@ public class SubReportReadHandler extends SectionReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing() throws SAXException
   {
@@ -147,7 +138,7 @@ public class SubReportReadHandler extends SectionReadHandler
     }
     if (queryReadHandler == null)
     {
-      throw new SAXException("Query is specified.");
+      throw new ParseException("Query is specified.", getLocator());
     }
     final String result = queryReadHandler.getResult();
     report.setQuery(result);

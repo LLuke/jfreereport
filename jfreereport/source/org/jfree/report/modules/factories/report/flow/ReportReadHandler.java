@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportReadHandler.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
+ * $Id: ReportReadHandler.java,v 1.6 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,6 +39,7 @@ import org.jfree.report.structure.Element;
 import org.jfree.xmlns.parser.PropertiesReadHandler;
 import org.jfree.xmlns.parser.StringReadHandler;
 import org.jfree.xmlns.parser.XmlReadHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -126,8 +127,8 @@ public class ReportReadHandler extends SectionReadHandler
   {
     if (queryReadHandler == null)
     {
-      throw new SAXException
-              ("Required element 'query' is missing.");
+      throw new ParseException
+              ("Required element 'query' is missing.", getLocator());
     }
     super.doneParsing();
     JFreeReport report = (JFreeReport) getElement();

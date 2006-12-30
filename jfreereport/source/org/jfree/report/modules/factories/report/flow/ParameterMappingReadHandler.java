@@ -23,13 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ParameterMappingReadHandler.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.modules.factories.report.flow;
 
 import org.jfree.xmlns.parser.AbstractXmlReadHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -58,8 +59,8 @@ public class ParameterMappingReadHandler extends AbstractXmlReadHandler
     name = attrs.getValue(getUri(), "name");
     if (name == null)
     {
-      throw new SAXException(
-              "Required attribute 'name' is missing.");
+      throw new ParseException
+          ("Required attribute 'name' is missing.", getLocator());
     }
     alias = attrs.getValue(getUri(), "alias");
     if (alias == null)
@@ -83,7 +84,7 @@ public class ParameterMappingReadHandler extends AbstractXmlReadHandler
    * create an object.
    *
    * @return the object.
-   * @throws XmlReaderException if there is a parsing error.
+   * @throws SAXException if there is a parsing error.
    */
   public Object getObject() throws SAXException
   {

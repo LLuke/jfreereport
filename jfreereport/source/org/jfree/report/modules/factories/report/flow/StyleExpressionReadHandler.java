@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StyleExpressionReadHandler.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,6 +31,7 @@ package org.jfree.report.modules.factories.report.flow;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.jfree.xmlns.parser.ParseException;
 
 /**
  * Creation-Date: 09.04.2006, 13:40:08
@@ -57,7 +58,8 @@ public class StyleExpressionReadHandler extends AbstractExpressionReadHandler
         (FlowReportFactoryModule.NAMESPACE, "style-key");
     if (styleKey == null)
     {
-      throw new SAXException("Required attribute stylekey is missing.");
+      throw new ParseException
+          ("Required attribute stylekey is missing.", getLocator());
     }
     this.styleKey = styleKey;
     super.startParsing(attrs);

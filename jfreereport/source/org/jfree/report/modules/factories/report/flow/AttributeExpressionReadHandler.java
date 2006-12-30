@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AttributeExpressionReadHandler.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import java.util.Map;
 import org.jfree.xmlns.parser.MultiplexRootElementHandler;
 import org.jfree.xmlns.parser.StringReadHandler;
 import org.jfree.xmlns.parser.XmlReadHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -62,7 +63,6 @@ public class AttributeExpressionReadHandler
    * @param atts    the attributes.
    * @return the handler or null, if the tagname is invalid.
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
@@ -95,14 +95,14 @@ public class AttributeExpressionReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing() throws SAXException
   {
     super.doneParsing();
     if (nameReadHandler == null)
     {
-      throw new SAXException("Required element 'attribute-name' is missing.");
+      throw new ParseException
+          ("Required element 'attribute-name' is missing.", getLocator());
     }
 
     attributeName = nameReadHandler.getResult();
