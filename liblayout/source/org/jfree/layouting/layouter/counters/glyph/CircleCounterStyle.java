@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CircleCounterStyle.java,v 1.3 2006/12/03 18:57:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,4 +42,10 @@ public class CircleCounterStyle implements CounterStyle
   {
     return "\u25e6";
   }
+
+  public String getSuffix()
+  {
+    return "";
+  }
+
 }

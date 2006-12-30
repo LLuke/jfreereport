@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AsterisksCounterStyle.java,v 1.3 2006/12/03 18:58:00 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -46,5 +46,10 @@ public class AsterisksCounterStyle implements CounterStyle
       b.append("*");
     }
     return b.toString();
+  }
+
+  public String getSuffix()
+  {
+    return "";
   }
 }

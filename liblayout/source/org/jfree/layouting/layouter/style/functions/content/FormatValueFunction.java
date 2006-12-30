@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FormatValueFunction.java,v 1.2 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -73,8 +73,7 @@ public class FormatValueFunction implements ContentFunction
     final CSSValue[] params = function.getParameters();
     if (params.length < 2)
     {
-      throw new FunctionEvaluationException(
-              "Illegal parameter count");
+      throw new FunctionEvaluationException("Illegal parameter count");
     }
     final CSSValue rawValue = FunctionUtilities.resolveParameter(layoutProcess, element, params[0]);
     final String typeValue = FunctionUtilities.resolveString(layoutProcess, element, params[1]);

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ContentNormalizer.java,v 1.13 2006/12/03 18:58:05 taqua Exp $
+ * $Id: ContentNormalizer.java,v 1.14 2006/12/04 19:12:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,6 +42,8 @@ import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.input.style.keys.content.MoveToValues;
 import org.jfree.layouting.input.style.values.CSSAutoValue;
+import org.jfree.layouting.input.style.values.CSSFunctionValue;
+import org.jfree.layouting.input.style.values.CSSStringType;
 import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.input.style.values.CSSValueList;
@@ -65,6 +67,8 @@ import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.context.QuotesPair;
 import org.jfree.layouting.layouter.model.LayoutElement;
+import org.jfree.layouting.layouter.style.functions.FunctionEvaluationException;
+import org.jfree.layouting.layouter.style.functions.content.CounterValueFunction;
 import org.jfree.layouting.layouter.style.resolver.StyleResolver;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.renderer.Renderer;
@@ -290,11 +294,6 @@ public class ContentNormalizer implements Normalizer
       recordingContentNormalizer.startElement(namespace, tag, attributes);
       return;
     }
-
-    if (tag.equals("out-of-order-section"))
-    {
-      Log.debug ("Gotcha");
-    }
     startElementInternal(namespace, tag, null, attributes);
   }
 
@@ -334,7 +333,6 @@ public class ContentNormalizer implements Normalizer
    * Processes the current element. The element has been resolved fully and it
    * is made sure that it can be processed right now (No pinning is enabled).
    *
-   * @throws PageBreakException
    * @throws NormalizationException
    * @throws IOException
    */
@@ -365,86 +363,69 @@ public class ContentNormalizer implements Normalizer
       currentElement.incrementCounter("list-item", 1);
     }
 
-    // the whole design here should be queued. If we encounter the contents
-    // token, then we have to wait for that content before we can continue.
-    // thats DOM oriented and not streaming, so we do our own fast version
-    // instead ..
-
-    if (ignoreContext == 0)
+    if (ignoreContext > 0)
     {
+      return;
+    }
 
-      // check, whether the element allows content at all..
-      // isAllowContentProcessing is false, if the 'content' property
-      // had been set to 'none' or 'inhibit'.
-      final ContentSpecification contentSpec =
-          currentElement.getLayoutContext().getContentSpecification();
-      if (contentSpec.isAllowContentProcessing() == false)
+    // check, whether the element allows content at all..
+    // isAllowContentProcessing is false, if the 'content' property
+    // had been set to 'none' or 'inhibit'.
+    final ContentSpecification contentSpec =
+        currentElement.getLayoutContext().getContentSpecification();
+    if (contentSpec.isAllowContentProcessing() == false)
+    {
+      // Quote-the-standard:
+      // -------------------
+      // On elements, this inhibits the children of the element from
+      // being rendered as children of this element, as if the element
+      // was empty.
+      //
+      // On pseudo-elements, this inhibits the creation of the pseudo-element,
+      // as if 'display' computed to 'none'.
+      //
+      // In both cases, this further inhibits the creation of any
+      // pseudo-elements which have this pseudo-element as a superior.
+      if (contentSpec.isInhibitContent() &&
+          layoutContext.isPseudoElement())
       {
-        // Quote-the-standard:
-        // -------------------
-        // On elements, this inhibits the children of the element from
-        // being rendered as children of this element, as if the element
-        // was empty.
-        //
-        // On pseudo-elements, this inhibits the creation of the pseudo-element,
-        // as if 'display' computed to 'none'.
-        //
-        // In both cases, this further inhibits the creation of any
-        // pseudo-elements which have this pseudo-element as a superior.
-        if (contentSpec.isInhibitContent() &&
-            layoutContext.isPseudoElement())
-        {
 //          Log.debug("Starting to ignore childs of psuedo element " +
 //                  layoutContext.getTagName() + ":" +
 //                  layoutContext.getPseudoElement() +
 //                  " as it inhibits content creation.");
-          modelBuilder.startElement(currentElement.detachLayoutContext());
-          ignoreContext += 1;
-        }
-        else
-        {
+        modelBuilder.startElement(currentElement.detachLayoutContext());
+        ignoreContext += 1;
+        return;
+      }
 //          Log.debug("Starting to ignore childs of element " +
 //                  layoutContext.getTagName() +
 //                  " as it inhibits content creation.");
-          generateOutsidePseudoElements(currentElement);
-          modelBuilder.startElement(currentElement.detachLayoutContext());
-          generateBeforePseudoElements(currentElement);
-          generateContentBefore(currentElement);
-          ignoreContext += 1;
-        }
-      }
-      else
-      {
-        // normal content processing here ...
-        generateOutsidePseudoElements(currentElement);
-        modelBuilder.startElement(currentElement.detachLayoutContext());
-        generateBeforePseudoElements(currentElement);
+      generateOutsidePseudoElements(currentElement);
+      modelBuilder.startElement(currentElement.detachLayoutContext());
+      generateBeforePseudoElements(currentElement);
+      generateContentBefore(currentElement);
+      ignoreContext += 1;
+      return;
+    }
 
-        // check, whether we have a 'contents' token inside the 'content'
-        // style property.
-        generateContentBefore(currentElement);
-        if (currentElement.isContentsConsumed() == false)
-        {
-          // we have none, so we will ignore all other content of that element
-          // lets generate an 'alternate-element'
-          if (generateAlternateContent(currentElement) == false)
-          {
+    // normal content processing here ...
+    generateOutsidePseudoElements(currentElement);
+    modelBuilder.startElement(currentElement.detachLayoutContext());
+    generateBeforePseudoElements(currentElement);
+
+    // check, whether we have a 'contents' token inside the 'content'
+    // style property.
+    generateContentBefore(currentElement);
+    if (currentElement.isContentsConsumed() == false)
+    {
+      // we have none, so we will ignore all other content of that element
+      // lets generate an 'alternate-element'
+      if (generateAlternateContent(currentElement) == false)
+      {
 //            Log.debug("Starting to ignore childs of element " + currentElement +
 //                    " as it does not contain the 'contents' token.");
-            ignoreContext += 1;
-          }
-          else
-          {
-            // OK, this means, that this element is still open. Take care of
-            // that or suffer ..
-          }
-        }
+        ignoreContext += 1;
       }
-    }
-    else
-    {
-      // this is an ignored context. We check for counters and string
-      // definitions but do not forward anything to the display-model-builder.
     }
   }
 
@@ -484,7 +465,7 @@ public class ContentNormalizer implements Normalizer
    * beast gets closed down later ..
    *
    * @param element
-   * @return
+   * @return true, if the contents token has been encountered, false otherwise.
    */
   private boolean generateAlternateContent(final LayoutElement element)
       throws IOException, NormalizationException
@@ -772,7 +753,7 @@ public class ContentNormalizer implements Normalizer
   }
 
   private ContentToken computeToken(final ContentToken token,
-                                    final ContentSpecification cspec)
+                                    final ContentSpecification contentSpecs)
   {
     if (token instanceof CloseQuoteToken)
     {
@@ -785,7 +766,7 @@ public class ContentNormalizer implements Normalizer
       // Important: The quote level must be decreased before the quote gets
       // queried. (To be in sync with the open-quote thing..
       quoteLevel -= 1;
-      final QuotesPair currentQuote = getQuotesPair(cspec);
+      final QuotesPair currentQuote = getQuotesPair();
       if (currentQuote != null)
       {
         return new ResolvedStringToken
@@ -803,7 +784,7 @@ public class ContentNormalizer implements Normalizer
 
       // Important: The quote level must be increased after the quote has
       // been queried. Our quoting implementation uses zero-based arrays.
-      final QuotesPair currentQuote = getQuotesPair(cspec);
+      final QuotesPair currentQuote = getQuotesPair();
       quoteLevel += 1;
       if (currentQuote != null)
       {
@@ -834,7 +815,7 @@ public class ContentNormalizer implements Normalizer
       {
         if (currentElement.isCounterDefined(name))
         {
-          counterValues.add (currentElement.getCounterValue(name));
+          counterValues.add(currentElement.getCounterValue(name));
         }
         currentElement = currentElement.getParent();
       }
@@ -851,8 +832,10 @@ public class ContentNormalizer implements Normalizer
     return null;
   }
 
-  private QuotesPair getQuotesPair(final ContentSpecification cspec)
+  private QuotesPair getQuotesPair()
   {
+    final ContentSpecification cspec =
+        currentElement.getLayoutContext().getContentSpecification();
     QuotesPair[] qps = cspec.getQuotes();
     final int maxQuote = Math.min(qps.length - 1, quoteLevel);
     if (maxQuote == -1)
@@ -869,8 +852,6 @@ public class ContentNormalizer implements Normalizer
    * Ends the current element. The namespace and tagname are given for
    * convienience.
    *
-   * @param namespace
-   * @param tag
    * @throws NormalizationException
    * @throws IOException
    */
@@ -1057,7 +1038,7 @@ public class ContentNormalizer implements Normalizer
    * chain. The ModelBuilder and ContentGenerator steps are considered internal,
    * as they may refeed the normalizer.
    *
-   * @return
+   * @return the current renderer
    */
   public Renderer getRenderer()
   {

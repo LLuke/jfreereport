@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ContentResolveHandler.java,v 1.9 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,8 +36,11 @@ import java.util.HashMap;
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.StyleKey;
+import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
+import org.jfree.layouting.input.style.keys.box.DisplayRole;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.input.style.keys.content.ContentValues;
+import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
 import org.jfree.layouting.input.style.values.CSSAttrFunction;
 import org.jfree.layouting.input.style.values.CSSConstant;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
@@ -67,8 +70,8 @@ import org.jfree.util.Log;
 public class ContentResolveHandler implements ResolveHandler
 {
   private static final ContentToken[] DEFAULT_CONTENT = new ContentToken[]{ContentsToken.CONTENTS};
-  private static final ContentToken[] PSEUDO_CONTENT = new ContentToken[]{ };
-
+  private static final ContentToken[] PSEUDO_CONTENT = new ContentToken[]{};
+  private CSSValue listCounter;
   private HashMap tokenMapping;
 
   public ContentResolveHandler()
@@ -79,6 +82,11 @@ public class ContentResolveHandler implements ResolveHandler
     tokenMapping.put(ContentValues.NO_OPEN_QUOTE, new OpenQuoteToken(true));
     tokenMapping.put(ContentValues.CLOSE_QUOTE, new CloseQuoteToken(false));
     tokenMapping.put(ContentValues.NO_CLOSE_QUOTE, new CloseQuoteToken(true));
+
+    final CSSStringValue param =
+        new CSSStringValue(CSSStringType.STRING, "list-item");
+    listCounter = new CSSFunctionValue("counter", new CSSValue[]{param});
+
   }
 
   /**
@@ -90,18 +98,19 @@ public class ContentResolveHandler implements ResolveHandler
   public StyleKey[] getRequiredStyles()
   {
     return new StyleKey[]{
-            ContentStyleKeys.COUNTER_RESET,
-            ContentStyleKeys.COUNTER_INCREMENT,
-            ContentStyleKeys.QUOTES,
-            ContentStyleKeys.STRING_SET
+        ContentStyleKeys.COUNTER_RESET,
+        ContentStyleKeys.COUNTER_INCREMENT,
+        ContentStyleKeys.QUOTES,
+        ContentStyleKeys.STRING_SET
     };
   }
 
   /**
    * Resolves a single property.
    *
-   * @param currentNode
-   * @param style
+   * @param process the current layout process controlling everyting
+   * @param element the current layout element that is processed
+   * @param key     the style key that is computed.
    */
   public void resolve(final LayoutProcess process,
                       final LayoutElement element,
@@ -109,7 +118,7 @@ public class ContentResolveHandler implements ResolveHandler
   {
     final LayoutContext layoutContext = element.getLayoutContext();
     final ContentSpecification contentSpecification =
-            layoutContext.getContentSpecification();
+        layoutContext.getContentSpecification();
 
     final CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSConstant)
@@ -130,13 +139,21 @@ public class ContentResolveHandler implements ResolveHandler
       }
       else if (ContentValues.NORMAL.equals(value))
       {
-        if (element.getLayoutContext().isPseudoElement())
+        if (layoutContext.isPseudoElement())
         {
-          // a pseudo-element does not have content by default.
-          contentSpecification.setAllowContentProcessing(false);
-          contentSpecification.setInhibitContent(true);
-          contentSpecification.setContents(PSEUDO_CONTENT);
-          return;
+          if (isListMarker(element))
+          {
+            processListItem(process, element, contentSpecification);
+            return;
+          }
+          else
+          {
+            // a pseudo-element does not have content by default.
+            contentSpecification.setAllowContentProcessing(false);
+            contentSpecification.setInhibitContent(true);
+            contentSpecification.setContents(PSEUDO_CONTENT);
+            return;
+          }
         }
       }
     }
@@ -148,7 +165,7 @@ public class ContentResolveHandler implements ResolveHandler
     if (value instanceof CSSAttrFunction)
     {
       final ContentToken token =
-              evaluateFunction((CSSFunctionValue) value, process, element);
+          evaluateFunction((CSSFunctionValue) value, process, element);
       if (token == null)
       {
         return;
@@ -182,7 +199,7 @@ public class ContentResolveHandler implements ResolveHandler
       if (tokens.isEmpty() == false)
       {
         final ContentToken[] contents = (ContentToken[]) tokens.toArray
-                (new ContentToken[tokens.size()]);
+            (new ContentToken[tokens.size()]);
         contentSpecification.setContents(contents);
         return;
       }
@@ -190,6 +207,70 @@ public class ContentResolveHandler implements ResolveHandler
 
   }
 
+  private void processListItem(LayoutProcess process,
+                               LayoutElement element,
+                               ContentSpecification contentSpecification)
+  {
+    contentSpecification.setAllowContentProcessing(false);
+    contentSpecification.setInhibitContent(false);
+
+    final LayoutContext layoutContext = element.getLayoutContext();
+    final CSSValue value =
+        layoutContext.getValue(ListStyleKeys.LIST_STYLE_IMAGE);
+    if (value != null)
+    {
+      final ContentToken token = createToken(process, element, value);
+      if (token != null)
+      {
+        contentSpecification.setContents(new ContentToken[]{ token });
+        return;
+      }
+    }
+
+    final ContentToken token = createToken
+        (process, element, listCounter);
+    if (token instanceof CounterToken)
+    {
+      final CounterToken counterToken = (CounterToken) token;
+      final CounterStyle style = counterToken.getStyle();
+      final String suffix = style.getSuffix();
+      if (suffix == null || suffix.length() == 0)
+      {
+        contentSpecification.setContents(new ContentToken[]{ token });
+      }
+      else
+      {
+        contentSpecification.setContents
+            (new ContentToken[]{ counterToken, new StaticTextToken(suffix)});
+      }
+    }
+    else
+    {
+      contentSpecification.setContents(new ContentToken[]{ token });
+    }
+  }
+
+  private boolean isListMarker (LayoutElement element)
+  {
+    final LayoutContext layoutContext = element.getLayoutContext();
+    if ("marker".equals(layoutContext.getPseudoElement()) == false)
+    {
+       return false;
+    }
+    final LayoutElement parent = element.getParent();
+    if (parent == null)
+    {
+      return false;
+    }
+    final CSSValue parentDisplayRole =
+        parent.getLayoutContext().getValue(BoxStyleKeys.DISPLAY_ROLE);
+    if (DisplayRole.LIST_ITEM.equals(parentDisplayRole))
+    {
+      return true;
+    }
+
+    return false;
+  }
 
   private ContentToken createToken(LayoutProcess process,
                                    LayoutElement element,
@@ -208,7 +289,7 @@ public class ContentResolveHandler implements ResolveHandler
         {
           // this is an external URL, so try to load it.
           CSSFunctionValue function = new CSSFunctionValue
-                  ("url", new CSSValue[]{sval});
+              ("url", new CSSValue[]{sval});
           return evaluateFunction(function, process, element);
         }
       }
@@ -218,14 +299,14 @@ public class ContentResolveHandler implements ResolveHandler
         if (ContentValues.DOCUMENT_URL.equals(content))
         {
           Object docUrl = process.getDocumentContext().getMetaAttribute
-                  ("document-url");
+              ("document-url");
           if (docUrl != null)
           {
             return new StaticTextToken(String.valueOf(docUrl));
           }
 
           ResourceKey baseKey = DocumentContextUtility.getBaseResource
-                  (process.getDocumentContext());
+              (process.getDocumentContext());
           if (baseKey instanceof URLResourceKey)
           {
             URLResourceKey urlResourceKey = (URLResourceKey) baseKey;
@@ -248,39 +329,39 @@ public class ContentResolveHandler implements ResolveHandler
         return evaluateFunction((CSSFunctionValue) content, process, element);
       }
     }
-    catch(Exception e)
+    catch (Exception e)
     {
-      Log.debug ("Content-Resolver: Failed to evaluate " + content);
+      Log.debug("Content-Resolver: Failed to evaluate " + content);
     }
 
     return null;
   }
 
-  private ContentToken resolveContentAlias (CSSValue content)
+  private ContentToken resolveContentAlias(CSSValue content)
   {
 
     if (ContentValues.FOOTNOTE.equals(content))
     {
       final CounterStyle style =
-              CounterStyleFactory.getInstance().getCounterStyle("normal");
+          CounterStyleFactory.getInstance().getCounterStyle("normal");
       return new CounterToken("footnote", style);
     }
     if (ContentValues.ENDNOTE.equals(content))
     {
       final CounterStyle style =
-              CounterStyleFactory.getInstance().getCounterStyle("normal");
+          CounterStyleFactory.getInstance().getCounterStyle("normal");
       return new CounterToken("endnote", style);
     }
     if (ContentValues.SECTIONNOTE.equals(content))
     {
       final CounterStyle style =
-              CounterStyleFactory.getInstance().getCounterStyle("normal");
+          CounterStyleFactory.getInstance().getCounterStyle("normal");
       return new CounterToken("section-note", style);
     }
     if (ContentValues.LISTITEM.equals(content))
     {
       final CounterStyle style =
-              CounterStyleFactory.getInstance().getCounterStyle("normal");
+          CounterStyleFactory.getInstance().getCounterStyle("normal");
       return new CounterToken("list-item", style);
     }
     return null;
@@ -291,7 +372,7 @@ public class ContentResolveHandler implements ResolveHandler
                                         final LayoutElement element)
   {
     ContentFunction styleFunction =
-            FunctionFactory.getInstance().getContentFunction(function.getFunctionName());
+        FunctionFactory.getInstance().getContentFunction(function.getFunctionName());
     if (styleFunction == null)
     {
       return null;

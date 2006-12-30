@@ -507,11 +507,9 @@ br {
   white-space: pre;
 }
 
-
-/** Pseudo-Elemente */
 li:marker {
-  display:inline;
-  content: counter(list-item) ".";
-  background-color: blue;
+  content: normal;
+  display: inline;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
-

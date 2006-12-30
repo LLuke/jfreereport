@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ResolveHandler.java,v 1.5 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -51,8 +51,9 @@ public interface ResolveHandler
   /**
    * Resolves a single property.
    *
-   * @param currentNode
-   * @param style
+   * @param process the current layout process controlling everyting
+   * @param currentNode the current layout element that is processed
+   * @param key the style key that is computed.
    */
   public void resolve(LayoutProcess process,
                       LayoutElement currentNode,

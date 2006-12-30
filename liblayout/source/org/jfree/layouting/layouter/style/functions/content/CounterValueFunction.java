@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: CounterValueFunction.java,v 1.2 2006/12/03 18:58:00 taqua Exp $
+ * $Id: CounterValueFunction.java,v 1.3 2006/12/26 16:59:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -73,16 +73,6 @@ public class CounterValueFunction implements ContentFunction
     {
       final String styleName =
               FunctionUtilities.resolveString(layoutProcess, element, params[1]);
-      cstyle = CounterStyleFactory.getInstance().getCounterStyle(styleName);
-    }
-
-    // todo: List-Style-Image ..
-    if (cstyle == null)
-    {
-      LayoutContext lc = element.getLayoutContext();
-      CSSValue type = lc.getValue(ListStyleKeys.LIST_STYLE_TYPE);
-      final String styleName = FunctionUtilities.resolveString
-          (layoutProcess, element, type);
       cstyle = CounterStyleFactory.getInstance().getCounterStyle(styleName);
     }
 

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: NumericCounterStyle.java,v 1.4 2006/12/03 18:57:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -96,13 +96,13 @@ public abstract class NumericCounterStyle implements CounterStyle
     this.replacements = new HashSet();
   }
 
-  public void setReplacementChar (char org, char other)
+  public final void setReplacementChar (char org, char other)
   {
     this.replacements.add (new ReplacementDefinition(org, other));
     this.cachedDefinitions = null;
   }
 
-  public String getCounterValue (int index)
+  public final String getCounterValue (int index)
   {
     if (cachedDefinitions == null)
     {
@@ -117,6 +117,11 @@ public abstract class NumericCounterStyle implements CounterStyle
       ReplacementDefinition def = cachedDefinitions[i];
       numeric = numeric.replace(def.getOriginal(), def.getReplacement());
     }
-    return numeric + suffix;
+    return numeric;
+  }
+
+  public String getSuffix()
+  {
+    return suffix;
   }
 }

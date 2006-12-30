@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CountersValueFunction.java,v 1.2 2006/12/03 18:58:00 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,9 +32,11 @@ package org.jfree.layouting.layouter.style.functions.content;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.input.style.values.CSSFunctionValue;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.input.style.keys.list.ListStyleKeys;
 import org.jfree.layouting.layouter.content.ContentToken;
 import org.jfree.layouting.layouter.content.computed.CountersToken;
 import org.jfree.layouting.layouter.context.DocumentContext;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.counters.CounterStyle;
 import org.jfree.layouting.layouter.counters.CounterStyleFactory;
 import org.jfree.layouting.layouter.model.LayoutElement;
@@ -68,19 +70,18 @@ public class CountersValueFunction implements ContentFunction
     final String separator =
             FunctionUtilities.resolveString(layoutProcess, element, params[1]);
 
-    final DocumentContext documentContext = layoutProcess.getDocumentContext();
-    CounterStyle cstyle = documentContext.getCounterStyle(counterName);
-
+    CounterStyle cstyle = null;
     if (params.length > 2)
     {
       final String styleName =
               FunctionUtilities.resolveString(layoutProcess, element, params[2]);
-      final CounterStyle style =
-              CounterStyleFactory.getInstance().getCounterStyle(styleName);
-      if (style != null)
-      {
-        cstyle = style;
-      }
+      cstyle = CounterStyleFactory.getInstance().getCounterStyle(styleName);
+    }
+
+    if (cstyle == null)
+    {
+      final DocumentContext documentContext = layoutProcess.getDocumentContext();
+      cstyle = documentContext.getCounterStyle(counterName);
     }
 
     return new CountersToken(counterName, separator, cstyle);

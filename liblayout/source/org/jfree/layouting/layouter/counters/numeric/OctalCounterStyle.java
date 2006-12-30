@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: OctalCounterStyle.java,v 1.3 2006/12/03 18:57:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,5 +41,10 @@ public class OctalCounterStyle implements CounterStyle
   public String getCounterValue (int index)
   {
     return Integer.toOctalString(index);
+  }
+
+  public String getSuffix()
+  {
+    return "";
   }
 }
