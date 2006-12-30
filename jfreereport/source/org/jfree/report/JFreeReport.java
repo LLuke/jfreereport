@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: JFreeReport.java,v 1.39 2006/12/09 21:19:04 taqua Exp $
+ * $Id: JFreeReport.java,v 1.40 2006/12/19 17:42:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -52,7 +52,7 @@ import org.jfree.util.Configuration;
  * A JFreeReport instance is used as report template to define the visual layout
  * of a report and to collect all data sources for the reporting. Possible data
  * sources are the {@link TableModel}, {@link org.jfree.report.expressions.Expression}s
- * or {@link ReportProperties}.
+ * or {@link ReportParameters}.
  * <p/>
  * New since 0.9: Report properties contain data. They do not contain processing
  * objects (like the outputtarget) or attribute values. Report properties should
@@ -99,6 +99,7 @@ public class JFreeReport extends ReportDefinition
 
     this.pageFormatStyleSheet = new StyleSheet();
     this.pageRule = new CSSPageRule(pageFormatStyleSheet, null, null, null);
+    this.pageFormatStyleSheet.addRule(pageRule);
 
     setQuery("default");
   }
