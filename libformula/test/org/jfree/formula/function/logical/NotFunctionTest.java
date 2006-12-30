@@ -1,12 +1,9 @@
 package org.jfree.formula.function.logical;
 
-import java.math.BigDecimal;
-
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.Formula;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaBoot;
-import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.common.TestFormulaContext;
 import org.jfree.formula.parser.ParseException;
 import org.testng.Assert;

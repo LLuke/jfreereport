@@ -10,7 +10,7 @@ A list of changes in recent versions:
           
         * New function NULL allows to return a NULL-reference.
 	
-	* Added the 'ISBLANK' function from OpenFormula.
+        * Added the 'ISBLANK' function from OpenFormula.
 
 0.1.1: (11-Dec-2006)
         * The FormulaContext now is able to signal errors using Exceptions.

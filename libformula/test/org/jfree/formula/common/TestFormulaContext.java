@@ -19,8 +19,6 @@ import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.util.Configuration;
 
-import sun.util.calendar.Gregorian;
-
 public class TestFormulaContext implements FormulaContext
 {
   private FormulaContext formulaContext;
@@ -63,25 +61,25 @@ id B C
       return null;
     }
     private Object[][] data = new Object[][] {
-        {,},
-        {,},
-        {,},
+        {null, null},
+        {null, null},
+        {null, null},
         {"\"7\"", null},
         {new BigDecimal(2), new BigDecimal(4)},
         {new BigDecimal(3), new BigDecimal(5)},
         {"1=1", new BigDecimal(7)},
         {"\"Hello\"", createDate1()},
         {null, createDate2()},
-        {,},
-        {,},
-        {,},
-        {,},
-        {,},
-        {,},
-        {,},
-        {,},
-        {,},
-        {,},
+        {null, null},
+        {null, null},
+        {null, null},
+        {null, null},
+        {null, null},
+        {null, null},
+        {null, null},
+        {null, null},
+        {null, null},
+        {null, null},
     };
 
     public int getColumnCount()
@@ -167,7 +165,7 @@ id B C
           col = i;
         }
       }
-      final Integer row = Integer.parseInt(ref.substring(2));
+      final int row = Integer.parseInt(ref.substring(2));
       //System.out.println("Fetching row:"+row+", col:"+col+"["+columnName+"]");
       return model.getValueAt(row, col);
     }

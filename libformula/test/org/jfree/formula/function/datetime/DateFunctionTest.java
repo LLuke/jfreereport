@@ -1,8 +1,6 @@
 package org.jfree.formula.function.datetime;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.Formula;
@@ -10,8 +8,6 @@ import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaBoot;
 import org.jfree.formula.common.TestFormulaContext;
 import org.jfree.formula.parser.ParseException;
-import org.jfree.formula.typing.coretypes.DateType;
-import org.jfree.formula.typing.coretypes.NumberType;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
