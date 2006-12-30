@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: XorFunction.java,v 1.4 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,6 +35,9 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.EvaluationException;
+import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -58,22 +61,33 @@ public class XorFunction implements Function
                                 ParameterCallback parameters)
       throws EvaluationException
   {
+    if(parameters.getParameterCount() < 1)
+    {
+      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+    }
     int count = 0;
     final int parameterCount = parameters.getParameterCount();
     for (int i = 0; i < parameterCount; i++)
     {
-      if (Boolean.TRUE.equals(parameters.getValue(i)))
+      final Type conditionType = parameters.getType(i);
+      final Object conditionValue = parameters.getValue(i);
+      final Boolean condition = context.getTypeRegistry().convertToLogical(conditionType, conditionValue);
+      if(condition == null)
+      {
+        return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      }
+      if (Boolean.TRUE.equals(condition))
       {
         count += 1;
       }
     }
-    if ((count & 1) == 1)
+    if (count == 1)
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+      return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
     }
     else
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+      return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
     }
 
   }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AndFunction.java,v 1.4 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,6 +35,9 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.EvaluationException;
+import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -61,7 +64,13 @@ public class AndFunction implements Function
     for (int i = 0; i < length; i++)
     {
       final Object value = parameters.getValue(i);
-      if (Boolean.TRUE.equals(value))
+      final Type type1 = parameters.getType(i);
+      final Boolean condition = context.getTypeRegistry().convertToLogical(type1, value);
+      if(condition == null)
+      {
+        return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      }
+      if (Boolean.FALSE.equals(condition))
       {
         return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
       }

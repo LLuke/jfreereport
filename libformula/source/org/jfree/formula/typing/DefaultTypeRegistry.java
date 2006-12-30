@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultTypeRegistry.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,10 +43,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.operators.InfixOperator;
 import org.jfree.util.Configuration;
+
 
 /**
  * Creation-Date: 02.11.2006, 12:46:08
@@ -55,8 +57,9 @@ import org.jfree.util.Configuration;
  */
 public class DefaultTypeRegistry implements TypeRegistry
 {
-  private LocalizationContext localizationContext;
+  private FormulaContext context;
   private static final long MILLISECS_PER_DAY = 24 * 60 * 60 * 1000;
+  private static final BigDecimal ZERO = new BigDecimal(0);
   private static final BigDecimal MILLISECS = new BigDecimal((double) MILLISECS_PER_DAY);
   private NumberFormat[] numberFormats;
   private DateFormat[] dateFormats;
@@ -74,7 +77,9 @@ public class DefaultTypeRegistry implements TypeRegistry
    */
   public ExtendedComparator getComparator(Type type1, Type type2)
   {
-    return null;
+    final DefaultComparator comparator = new DefaultComparator();
+    comparator.inititalize(context);
+    return comparator;
   }
 
   /**
@@ -169,7 +174,7 @@ public class DefaultTypeRegistry implements TypeRegistry
   private Number convertDateToNumber(final Date date)
   {
     final GregorianCalendar gc = new GregorianCalendar
-        (localizationContext.getTimeZone(), localizationContext.getLocale());
+        (context.getLocalizationContext().getTimeZone(), context.getLocalizationContext().getLocale());
     gc.setTime(date);
     final long timeInMillis = gc.getTime().getTime();
     final long days = timeInMillis / MILLISECS_PER_DAY;
@@ -181,6 +186,7 @@ public class DefaultTypeRegistry implements TypeRegistry
         (MILLISECS, BigDecimal.ROUND_HALF_UP);
     return daysBd.add(daySecs);
   }
+
 
   /**
    * Computes the combined type that would result in the combination of the
@@ -211,9 +217,9 @@ public class DefaultTypeRegistry implements TypeRegistry
   }
 
   public void initialize(final Configuration configuration,
-                         final LocalizationContext localizationContext)
+                         final FormulaContext formulaContext)
   {
-    this.localizationContext = localizationContext;
+    this.context = formulaContext;
     this.numberFormats = loadNumberFormats();
     this.dateFormats = loadDateFormats();
   }
@@ -274,10 +280,62 @@ public class DefaultTypeRegistry implements TypeRegistry
 
     return value.toString();
   }
+  
+  public Boolean convertToLogical (Type type1, Object value)
+  {
+    if(value instanceof Boolean) 
+    {
+      return (Boolean)value;
+    }
+    
+    if(value instanceof Number)
+    {
+      final Number num = (Number)value;
+      return !ZERO.equals(num);
+    }
+    
+    if(value instanceof String)
+    {
+      final String str = (String)value;
+      if("TRUE".equalsIgnoreCase(str))
+      {
+        return true;
+      }
+      else if("FALSE".equalsIgnoreCase(str))
+      {
+        return false;
+      }
+    }
+    
+	  return null;
+  }
+  
+  public Date convertToDate(Type type1, Object value)
+  {
+    if(value instanceof Date)
+    {
+      return (Date)value;
+    }
+    if(value instanceof Number)
+    {
+      return convertNumberToDate((Number)value);
+    }
+    if(value instanceof String)
+    {
+      final Number conv = convertToNumber(type1, value);
+      if(conv == null)
+      {
+        return null;
+      }
+      return convertNumberToDate(conv);
+    }
+    
+	  return null;
+  }
 
   protected NumberFormat getDefaultNumberFormat()
   {
-    Locale locale = localizationContext.getLocale();
+    Locale locale = context.getLocalizationContext().getLocale();
     return new DecimalFormat("#0.###", new DecimalFormatSymbols(locale));
   }
 
@@ -370,6 +428,21 @@ public class DefaultTypeRegistry implements TypeRegistry
         return null;
       }
       return number;
+    }
+    
+    if (targetType.isFlagSet(Type.LOGICAL_TYPE))
+    {
+      if (type.isFlagSet(Type.LOGICAL_TYPE))
+      {
+        return value;
+      }
+      
+      final Boolean b = convertToLogical(type, value);
+      if(b == null)
+      {
+        return null;
+      }
+      return b;
     }
 
     // Unknown type - ignore it, crash later :)

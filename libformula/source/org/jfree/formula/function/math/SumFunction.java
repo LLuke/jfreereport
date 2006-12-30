@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: SumFunction.java,v 1.5 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,12 +32,14 @@ package org.jfree.formula.function.math;
 
 import java.math.BigDecimal;
 
-import org.jfree.formula.FormulaContext;
 import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
@@ -67,12 +69,22 @@ public class SumFunction implements Function
     for (int paramIdx = 0; paramIdx < parameterCount; paramIdx++)
     {
       final Object value = parameters.getValue(paramIdx);
+      final Type type = parameters.getType(paramIdx);
       if (value == null)
       {
         continue;
       }
 
-      final Type type = parameters.getType(paramIdx);
+      final Number n = context.getTypeRegistry().convertToNumber(type, value);
+      if(n == null)
+      {
+        return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      }
+      
+      computedResult = compute(n, computedResult);
+    }
+      //    TODO: Array not yet supported
+      /*final Type type = parameters.getType(paramIdx);
       if (type.isFlagSet(Type.ARRAY_TYPE) == false)
       {
         continue;
@@ -87,7 +99,7 @@ public class SumFunction implements Function
       {
         computedResult = compute(values[arrayIdx], computedResult);
       }
-    }
+    }*/
 
     return new TypeValuePair(NumberType.GENERIC_NUMBER, computedResult);
   }

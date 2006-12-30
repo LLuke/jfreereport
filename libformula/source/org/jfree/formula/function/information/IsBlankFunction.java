@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: IsBlankFunction.java,v 1.1 2006/12/22 10:22:30 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -57,7 +57,7 @@ public class IsBlankFunction implements Function
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount < 1)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(1));
+      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
     }
 
     if (parameters.getValue(0) == null)

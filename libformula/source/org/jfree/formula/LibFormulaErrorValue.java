@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: LibFormulaErrorValue.java,v 1.3 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -47,6 +47,8 @@ public class LibFormulaErrorValue implements ErrorValue
   public static final int ERROR_INVALID_ARGUMENT = 502;
 
   public static final int ERROR_ARITHMETIC = 503;
+  
+  public static final int ERROR_ARGUMENTS = 1;
 
   private int errorCode;
 
@@ -70,6 +72,16 @@ public class LibFormulaErrorValue implements ErrorValue
     return "TODO";
   }
 
+  public boolean equals(Object obj)
+  {
+    if(obj instanceof LibFormulaErrorValue)
+    {
+      final LibFormulaErrorValue error = (LibFormulaErrorValue)obj;
+      return this.errorCode == error.getErrorCode();
+    }
+    
+    return false;
+  }
 
   public String toString()
   {

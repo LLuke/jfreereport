@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: IfFunction.java,v 1.4 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,7 @@ import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.coretypes.ErrorType;
+import org.jfree.formula.typing.coretypes.LogicalType;
 import org.jfree.formula.typing.Type;
 
 /**
@@ -60,18 +61,30 @@ public class IfFunction implements Function
       throws EvaluationException
   {
     final int parameterCount = parameters.getParameterCount();
-    if (parameterCount < 3)
+    if (parameterCount < 2)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(1));
+      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
     }
 
-    if (Boolean.TRUE.equals(parameters.getValue(0)))
+    final Type conditionType = parameters.getType(0);
+    final Object conditionValue = parameters.getValue(0);
+    final Boolean condition = context.getTypeRegistry().convertToLogical(conditionType, conditionValue);
+    if(condition == null)
+    {
+      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+    }
+    if (Boolean.TRUE.equals(condition))
     {
       final Object value = parameters.getValue(1);
       final Type type = parameters.getType(1);
       return new TypeValuePair(type, value);
     }
-
+    // if condition is false and no third parameter, return false
+    if(parameterCount == 2 || parameters.getValue(2) == null)
+    {
+      return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+    }
+    // else return third parameter
     final Object value = parameters.getValue(2);
     final Type type = parameters.getType(2);
     return new TypeValuePair(type, value);

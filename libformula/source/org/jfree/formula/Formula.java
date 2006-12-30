@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: Formula.java,v 1.5 2006/12/03 19:22:27 taqua Exp $
+ * $Id: Formula.java,v 1.6 2006/12/19 18:04:30 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -76,6 +76,7 @@ public class Formula implements Serializable, Cloneable
     }
     catch(EvaluationException ee)
     {
+      Log.warn ("Evaluation failed: ", ee);
       return ee.getErrorValue();
     }
     catch (Exception e)

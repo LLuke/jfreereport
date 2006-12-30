@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: LibFormulaBoot.java,v 1.3 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.formula;
 
 import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
+import org.jfree.base.log.DefaultLog;
 import org.jfree.util.Configuration;
 
 /**
@@ -47,6 +48,7 @@ public class LibFormulaBoot extends AbstractBoot
   {
     if (instance == null)
     {
+      DefaultLog.installDefaultLog();
       instance = new LibFormulaBoot();
     }
     return instance;

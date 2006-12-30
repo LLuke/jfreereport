@@ -24,11 +24,13 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: TypeRegistry.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.typing;
+
+import java.util.Date;
 
 import org.jfree.formula.lvalues.TypeValuePair;
 
@@ -70,6 +72,24 @@ public interface TypeRegistry
    */
   public String convertToText (Type type1, Object value);
 
+  /**
+   * Converts the object of the given type into a boolean.
+   * 
+   * @param type1
+   * @param value
+   * @return The value as Boolean or null.
+   */
+  public Boolean convertToLogical (Type type1, Object value);
+  
+  /**
+   * Converts the object of the given type into a date.
+   * 
+   * @param type1
+   * @param value
+   * @return The value as Date or null.
+   */
+  public Date convertToDate(Type type1, Object value);
+  
   /**
    * Checks, whether the target type would accept the specified value object
    * and value type. (This conversion is used by the functions.)
