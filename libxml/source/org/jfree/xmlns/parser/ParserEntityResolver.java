@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ParserEntityResolver.java,v 1.2 2006/12/03 17:39:29 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.3 2006/12/19 17:46:36 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -162,9 +162,6 @@ public final class ParserEntityResolver implements EntityResolver
    * @param publicId the public ID.
    * @param systemId the system ID.
    * @return The input source.
-   *
-   * @throws org.xml.sax.SAXException if there is a parsing problem.
-   * @throws java.io.IOException      if there is an I/O problem.
    */
   public InputSource resolveEntity (final String publicId,
                                     final String systemId)
@@ -216,7 +213,7 @@ public final class ParserEntityResolver implements EntityResolver
    *
    * @return the default entity resolver.
    */
-  public static ParserEntityResolver getDefaultResolver ()
+  public static synchronized ParserEntityResolver getDefaultResolver ()
   {
     if (singleton == null)
     {

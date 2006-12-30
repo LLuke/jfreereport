@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: PropertyReadHandler.java,v 1.2 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,7 +58,7 @@ public class PropertyReadHandler extends StringReadHandler
     name = attrs.getValue(getUri(), "name");
     if (name == null)
     {
-      throw new NullPointerException("Required attribute 'name' missing");
+      throw new ParseException("Required attribute 'name' missing", getLocator());
     }
   }
 

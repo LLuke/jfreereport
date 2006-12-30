@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: MultiplexRootElementHandler.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
+ * $Id: MultiplexRootElementHandler.java,v 1.4 2006/12/19 17:46:36 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -141,7 +141,7 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
   /**
    * Starts processing an element.
    *
-   * @param uri        the URI.
+   * @param originalUri        the URI.
    * @param localName  the local name.
    * @param qName      the qName.
    * @param attributes the attributes.
@@ -238,10 +238,7 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
         uri = originalUri;
       }
 
-      if (xmlnsUrisNotAvailable )
-      {
-        attributes = new FixNamespaceUriAttributes(uri, attributes);
-      }
+      attributes = new FixNamespaceUriAttributes(uri, attributes);
 
       installRootHandler(readHandler, uri, localName, attributes);
       firstCall = false;
@@ -259,17 +256,14 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
       uri = originalUri;
     }
 
-    if (xmlnsUrisNotAvailable)
-    {
-      attributes = new FixNamespaceUriAttributes(uri, attributes);
-    }
+    attributes = new FixNamespaceUriAttributes(uri, attributes);
     super.startElement(uri, localName, qName, attributes);
   }
 
   /**
    * Finish processing an element.
    *
-   * @param uri       the URI.
+   * @param originalUri       the URI.
    * @param localName the local name.
    * @param qName     the qName.
    * @throws org.xml.sax.SAXException if there is a parsing error.
