@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SwingDocumentImport.java,v 1.14 2006/12/03 18:57:57 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -95,6 +95,9 @@ public class SwingDocumentImport
     styleConstantsMap.put(StyleConstants.BidiLevel, characterConverter);
     styleConstantsMap.put(StyleConstants.Superscript, characterConverter);
     styleConstantsMap.put(StyleConstants.Subscript, characterConverter);
+    styleConstantsMap.put(CharacterConverter.RTF_CAPS, characterConverter);
+    styleConstantsMap.put(CharacterConverter.RTF_SMALLCAPS, characterConverter);
+    styleConstantsMap.put(CharacterConverter.RTF_OUTLINE, characterConverter);
 
     // color
     final ColorConverter colorConverter = new ColorConverter();
@@ -109,6 +112,8 @@ public class SwingDocumentImport
     styleConstantsMap.put(DocumentConverter.RTF_MARGINLEFT, documentConverter);
     styleConstantsMap.put(DocumentConverter.RTF_MARGINRIGHT, documentConverter);
     styleConstantsMap.put(DocumentConverter.RTF_MARGINTOP, documentConverter);
+    styleConstantsMap.put(DocumentConverter.RTF_LANDSCAPE, documentConverter);
+    //styleConstantsMap.put(DocumentConverter.RTF_GUTTERWIDTH, documentConverter);
 
   }
 
@@ -171,7 +176,7 @@ public class SwingDocumentImport
       final Converter converter = (Converter) styleConstantsMap.get(key);
       if (converter != null)
       {
-        final AttributeSet attributeSet = converter.convertToCSS(key, value, cssAttr, context);
+        final ConverterAttributeSet attributeSet = converter.convertToCSS(key, value, cssAttr, context);
         if (attributeSet != null)
         {
           cssAttr.addAttributes(attributeSet);

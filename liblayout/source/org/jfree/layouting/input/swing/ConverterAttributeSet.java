@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ConverterAttributeSet.java,v 1.2 2006/12/03 18:57:57 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -55,7 +55,7 @@ public class ConverterAttributeSet extends SimpleAttributeSet
 
   public void addAttribute(Object name, Object value)
   {
-    addAttribute(NOT_TYPED, name, value);
+    addAttribute(null, name, value);
   }
 
   public synchronized void addAttribute(Object type, Object name, Object value) {
@@ -97,8 +97,8 @@ public class ConverterAttributeSet extends SimpleAttributeSet
     final Iterator it = typeMap.keySet().iterator();
     while(it.hasNext())
     {
-      final Object name = typeMap.get(it.next());
-      if (name != null || name.equals(type))
+      final Object name = it.next();
+      if (name != null && typeMap.get(name).equals(type))
       {
         attr.addAttribute(name, getAttribute(name));
       }

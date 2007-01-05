@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CharacterConverter.java,v 1.3 2006/12/03 18:57:57 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,6 +39,10 @@ import org.jfree.layouting.input.style.keys.line.LineStyleKeys;
 import org.jfree.layouting.input.style.keys.line.VerticalAlign;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.text.UnicodeBidi;
+import org.jfree.layouting.input.style.keys.text.TextTransform;
+import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
+import org.jfree.layouting.input.style.keys.font.FontVariant;
+import org.jfree.layouting.input.style.keys.font.FontEffects;
 import org.jfree.layouting.input.swing.Converter;
 import org.jfree.layouting.input.swing.ConverterAttributeSet;
 import org.jfree.util.Log;
@@ -47,12 +51,35 @@ import org.jfree.util.Log;
  * This class handles convertions of character style attributes to css style attributes.
  */
 public class CharacterConverter implements Converter {
+  /**
+   * CSS text decoration key.
+   */
   public static final String TEXT_DECORATION_KEY = "text-decoration";
   //none | [ underline || overline || line-through || blink]
+  /**
+   * CSS text decoration value.
+   */
   public static final String NONE_TEXT_DECORATION = "none";
+  /**
+   * CSS text decoration value.
+   */
   public static final String UNDERLINE_TEXT_DECORATION = "underline";
+  /**
+   * CSS text decoration value.
+   */
   public static final String LINETHROUGH_TEXT_DECORATION = "line-through";
 
+  // todo : move these keys to FontConverter?
+  public static final String RTF_CAPS = "caps";
+  public static final String RTF_SMALLCAPS = "scaps";
+  public static final String RTF_OUTLINE = "outl";
+
+  public static final String RTF_SHADOW = "shad";
+  public static final String RTF_Hidden = "v";
+  public static final String RTF_STRIKETRHOUGH = "strike";
+  public static final String RTF_DELETED = "deleted";
+
+  // todo : remove the NONE_TEXT_DECORATION
   private Object mergeTextDecorationValues(Object current, Object newone) {
     boolean none = false;
     boolean underline = false;
@@ -116,6 +143,46 @@ public class CharacterConverter implements Converter {
       final StyleConstants.CharacterConstants characterConstant = (StyleConstants.CharacterConstants) key;
 
       return handleCharacterConstants(characterConstant, value, cssAttr);
+    }
+    else if(key instanceof String)
+    {
+      final String constant = (String)key;
+      final ConverterAttributeSet attr = new ConverterAttributeSet();
+      if(constant.equals(RTF_SMALLCAPS))
+      {
+        Boolean b = (Boolean)value;
+        if(Boolean.TRUE.equals(b))
+        {
+          attr.addAttribute(FontStyleKeys.FONT_VARIANT.getName(), FontVariant.SMALL_CAPS);
+        }
+      }
+      else if(constant.equals(RTF_CAPS))
+      {
+        Boolean b = (Boolean)value;
+        if(Boolean.TRUE.equals(b))
+        {
+          attr.addAttribute(TextStyleKeys.TEXT_TRANSFORM.getName(), TextTransform.CAPITALIZE);
+        }
+      }
+      else if(constant.equals(RTF_OUTLINE))
+      {
+        Boolean b = (Boolean)value;
+        if(Boolean.TRUE.equals(b))
+        {
+          attr.addAttribute(FontStyleKeys.FONT_EFFECT, FontEffects.OUTLINE);
+        }
+      }
+      else if(constant.equals(RTF_STRIKETRHOUGH))
+      {
+        final Object current = cssAttr.getAttribute(TEXT_DECORATION_KEY);
+        attr.addAttribute(TEXT_DECORATION_KEY, mergeTextDecorationValues(current, LINETHROUGH_TEXT_DECORATION));
+      }
+      else
+      {
+        Log.debug(new Log.SimpleMessage("Unkown type of character attribute", constant));
+        return null;
+      }
+      return attr;
     }
 
     return null;

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DocumentConverter.java,v 1.3 2006/12/03 18:57:57 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -55,7 +55,19 @@ public class DocumentConverter implements Converter
   public static final String RTF_MARGINRIGHT = "margr";
   public static final String RTF_MARGINTOP = "margt";
   public static final String RTF_MARGINBOTTOM = "margb";
+  // Binding Edge treatment @ CSS 3
+  // The binding edge is the edge of the page box that is towards the binding if the material is bound. The binding edge
+  // often has a larger margin than the opposite edge to provide for the space used by the binding. The binding edge
+  // can be any of the four edges. However, page sheets are customarily bound so that the binding edge of page boxes
+  // with portrait orientation is vertical. This module provides no method to specify the binding edge. In duplex
+  // printing, the binding edge is on opposite sides of the page box for the left and right pages.
+  /**
+   * The inner margin of a page (near the spine) of a book.
+   */
   public static final String RTF_GUTTERWIDTH = "gutter";
+  /**
+   * Page orientation in which the page width exceeds the page length. The opposit is portrait.
+   */
   public static final String RTF_LANDSCAPE = "landscape";
 
    /**
@@ -89,56 +101,80 @@ public class DocumentConverter implements Converter
   private ConverterAttributeSet handleStringAttributes(Object key, Object value, ConverterAttributeSet cssAttr)
   {
     final ConverterAttributeSet attr = new ConverterAttributeSet();
-
+    
     final String styleKey = (String) key;
 
     if (styleKey.equals(RTF_PAGEWIDTH) || styleKey.equals(RTF_PAGEHEIGHT))
     {
       final float floatValue = ((Float) value).floatValue();
-      final PageSize pageSize = (PageSize) cssAttr.getAttribute(PageStyleKeys.SIZE.getName());
-      int width = 0;
-      int height = 0;
+      final Object size = cssAttr.getAttribute(PageStyleKeys.SIZE.getName());
+      double width = 0;
+      double height = 0;
 
-      if (pageSize != null)
+      if(size instanceof PageSize)
       {
-        width = (int) pageSize.getWidth();
-        height = (int) pageSize.getHeight();
+        final PageSize pageSize = (PageSize)size;
+        width = pageSize.getWidth();
+        height = pageSize.getHeight();
       }
-
-      if (styleKey.equals(RTF_PAGEWIDTH))
+      else if(RTF_LANDSCAPE.equals(size))
       {
-        attr.addAttribute(PAGE_RULE_TYPE, PageStyleKeys.SIZE.getName(), new PageSize(twipToInt(floatValue), height));
+        if (styleKey.equals(RTF_PAGEWIDTH))
+        {
+          height = twipToInt(floatValue);
+        }
+        else
+        {
+          width = twipToInt(floatValue);
+        }
       }
       else
       {
-        attr.addAttribute(PAGE_RULE_TYPE, PageStyleKeys.SIZE.getName(), new PageSize(width, twipToInt(floatValue)));
+        if (styleKey.equals(RTF_PAGEWIDTH))
+        {
+          width = twipToInt(floatValue);
+        }
+        else
+        {
+          height = twipToInt(floatValue);
+        }
       }
+
+      attr.addAttribute(PAGE_RULE_TYPE, PageStyleKeys.SIZE.getName(), new PageSize(width, height));
     }
     else if(styleKey.equals(RTF_MARGINLEFT))
     {
       final float floatValue = ((Float) value).floatValue();
-      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_LEFT, new CSSNumericValue(CSSNumericType.PT, floatValue));
+      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_LEFT.getName(), new CSSNumericValue(CSSNumericType.PT, floatValue));
     }
     else if(styleKey.equals(RTF_MARGINRIGHT))
     {
       final float floatValue = ((Float) value).floatValue();
-      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_RIGHT, new CSSNumericValue(CSSNumericType.PT, floatValue));
+      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_RIGHT.getName(), new CSSNumericValue(CSSNumericType.PT, floatValue));
     }
     else if(styleKey.equals(RTF_MARGINTOP))
     {
       final float floatValue = ((Float) value).floatValue();
-      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_TOP, new CSSNumericValue(CSSNumericType.PT, floatValue));
+      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_TOP.getName(), new CSSNumericValue(CSSNumericType.PT, floatValue));
     }
     else if(styleKey.equals(RTF_MARGINBOTTOM))
     {
       final float floatValue = ((Float) value).floatValue();
-      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_BOTTOM, new CSSNumericValue(CSSNumericType.PT, floatValue));
+      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_BOTTOM.getName(), new CSSNumericValue(CSSNumericType.PT, floatValue));
     }
-    //else if(styleKey.equals(RTF_LANDSCAPE))
-    //{
-    //todo merge pagesize()
-      //attr.addAttribute(PAGE_RULE_TYPE, null, new CSSNumericValue(CSSNumericType.PT, floatValue));
-    //}
+    else if(styleKey.equals(RTF_LANDSCAPE))
+    {
+      final Object size = cssAttr.getAttribute(PageStyleKeys.SIZE.getName());
+      if(size instanceof PageSize)
+      {
+        final PageSize pageSize = (PageSize)size;
+        attr.addAttribute(PAGE_RULE_TYPE, PageStyleKeys.SIZE.getName(), new PageSize(pageSize.getHeight(), pageSize.getWidth()));
+      }
+      else
+      {
+        attr.addAttribute(PAGE_RULE_TYPE, PageStyleKeys.SIZE.getName(), RTF_LANDSCAPE);
+      }
+    }
     else
     {
       Log.debug(new Log.SimpleMessage("Unkown type of document attribute", styleKey));
@@ -155,8 +191,8 @@ public class DocumentConverter implements Converter
    * @param twips The measurement in twips.
    * @return The measurement in points.
    */
-  private int twipToInt(float twips)
+  private float twipToInt(float twips)
   {
-    return (int) (twips * 20);
+    return  twips * 20;
   }
 }
