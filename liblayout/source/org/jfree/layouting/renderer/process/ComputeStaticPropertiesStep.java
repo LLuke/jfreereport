@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ComputeStaticPropertiesStep.java,v 1.3 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,7 +34,7 @@ import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.BorderEdge;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BoxDefinition;
-import org.jfree.layouting.renderer.model.NodeLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
@@ -85,17 +85,14 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
 
   protected boolean startBlockLevelBox(final RenderBox box)
   {
-    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
-
-    if (nlp.isFinished())
+    if (box.getComputedLayoutProperties() != null)
     {
       return true;
     }
 
-    computeBlockContextWidth(box);
-
+    //ComputedLayoutProperties nlp = new ComputedLayoutProperties()
+    final RenderLength bcw = computeBlockContextWidth(box);
     final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
-    final RenderLength bcw = nlp.getBlockContextWidth();
     final long rbcw = bcw.resolve(0);
     final BoxDefinition boxDefinition = box.getBoxDefinition();
 
@@ -117,6 +114,11 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
         final TableCellRenderBox cellBox = (TableCellRenderBox) box;
         final TableColumnModel columnModel = cellBox.getTable().getColumnModel();
         final int colIdx = cellBox.getColumnIndex();
+        if (colIdx < 0)
+        {
+          throw new IllegalStateException("Table has not been validated yet.");
+        }
+
         final int maxIdx = colIdx + cellBox.getColSpan();
         if (maxIdx >= columnModel.getColumnCount())
         {
@@ -124,7 +126,8 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
           // (The effective width will be auto-computed in later steps.)
           // Yeah, we *could* start guessing, but I dont support our user's
           // lazyness. Shall they suffer from their own mis-definitions.
-          nlp.setComputedWidth(RenderLength.AUTO);
+          box.setComputedLayoutProperties
+              (new ComputedLayoutProperties(bcw, RenderLength.AUTO));
         }
         else
         {
@@ -145,19 +148,21 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
           }
           if (width > 0)
           {
-            nlp.setComputedWidth(new RenderLength(width, false));
+            box.setComputedLayoutProperties
+                (new ComputedLayoutProperties(bcw, new RenderLength(width, false)));
           }
           else
           {
-            nlp.setComputedWidth(RenderLength.AUTO);
+            box.setComputedLayoutProperties
+                (new ComputedLayoutProperties(bcw, RenderLength.AUTO));
           }
         }
       }
       else
       {
-        nlp.setComputedWidth(preferredWidth.resolveToRenderLength(rbcw));
+        box.setComputedLayoutProperties
+            (new ComputedLayoutProperties(bcw, preferredWidth.resolveToRenderLength(rbcw)));
       }
-      nlp.setFinished(true);
       return true;
     }
 
@@ -166,8 +171,8 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     {
       // rows and sections have neither paddings, margins or borders ..
       // See 17.6.1 of [CSS21]
-      nlp.setComputedWidth(bcw);
-      nlp.setFinished(true);
+      box.setComputedLayoutProperties
+          (new ComputedLayoutProperties(bcw, bcw));
       return true;
     }
 
@@ -206,22 +211,20 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
           // fine. Accept these values
           blp.setMarginLeft(mlValue);
           blp.setMarginRight(mrValue);
-          nlp.setComputedWidth(new RenderLength(pwValue, false));
         }
         // Sub-Case 2: They dont ..
         else if (box.isDirectionLTR())
         {
           blp.setMarginLeft(mlValue);
-          nlp.setComputedWidth(new RenderLength(pwValue, false));
           blp.setMarginRight(rbcw - mlValue - pwValue);
         }
         else
         {
           blp.setMarginLeft(rbcw - mrValue - pwValue);
-          nlp.setComputedWidth(new RenderLength(pwValue, false));
           blp.setMarginRight(mrValue);
         }
-        nlp.setFinished(true);
+        box.setComputedLayoutProperties
+            (new ComputedLayoutProperties(bcw, new RenderLength(pwValue, false)));
         return true;
       }
 
@@ -234,9 +237,9 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
         long pwValue = preferredWidth.resolve(rbcw);
 
         blp.setMarginLeft(rbcw - mrValue - pwValue);
-        nlp.setComputedWidth(new RenderLength(pwValue, false));
+        box.setComputedLayoutProperties
+            (new ComputedLayoutProperties(bcw, new RenderLength(pwValue, false)));
         blp.setMarginRight(mrValue);
-        nlp.setFinished(true);
         return true;
       }
 
@@ -247,9 +250,9 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
         long pwValue = preferredWidth.resolve(rbcw);
 
         blp.setMarginLeft(mlValue);
-        nlp.setComputedWidth(new RenderLength(pwValue, false));
+        box.setComputedLayoutProperties
+            (new ComputedLayoutProperties(bcw, new RenderLength(pwValue, false)));
         blp.setMarginRight(rbcw - mlValue - pwValue);
-        nlp.setFinished(true);
         return true;
       }
     }
@@ -264,18 +267,20 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
       blp.setMarginRight(mrValue);
       if (box instanceof TableRenderBox)
       {
-        nlp.setComputedWidth(RenderLength.AUTO);
+        box.setComputedLayoutProperties
+            (new ComputedLayoutProperties(bcw, RenderLength.AUTO));
       }
       else if (bcw == RenderLength.AUTO)
       {
-        nlp.setComputedWidth(RenderLength.AUTO);
+        box.setComputedLayoutProperties
+            (new ComputedLayoutProperties(bcw, RenderLength.AUTO));
       }
       else
       {
-        nlp.setComputedWidth(new RenderLength((rbcw - mlValue - mrValue), false));
+        box.setComputedLayoutProperties
+            (new ComputedLayoutProperties(bcw,
+                new RenderLength((rbcw - mlValue - mrValue), false)));
       }
-
-      nlp.setFinished(true);
       return true;
     }
 
@@ -287,33 +292,27 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     final long mlValue = margins / 2;
     blp.setMarginLeft(mlValue);
     blp.setMarginRight(margins - mlValue);
-    nlp.setComputedWidth(new RenderLength(pwValue, false));
-    nlp.setFinished(true);
+    box.setComputedLayoutProperties
+        (new ComputedLayoutProperties(bcw, new RenderLength(pwValue, false)));
     return true;
   }
 
   protected void processBlockLevelNode(final RenderNode node)
   {
-    computeBlockContextWidth(node);
-
-    final NodeLayoutProperties nlp = node.getNodeLayoutProperties();
-    final RenderLength bcw = nlp.getBlockContextWidth();
-    nlp.setComputedWidth(bcw);
-    nlp.setFinished(true);
+    final RenderLength bcw = computeBlockContextWidth(node);
+    node.setComputedLayoutProperties
+        (new ComputedLayoutProperties(bcw, bcw));
   }
 
   protected boolean startInlineLevelBox(final RenderBox box)
   {
-    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
-    if (nlp.isFinished() != false)
+    if (box.getComputedLayoutProperties() != null)
     {
       return true;
     }
 
-    computeBlockContextWidth(box);
-
+    final RenderLength bcw = computeBlockContextWidth(box);
     final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
-    final RenderLength bcw = nlp.getBlockContextWidth();
     final long rbcw = bcw.resolve(0);
     final BoxDefinition boxDefinition = box.getBoxDefinition();
 
@@ -325,23 +324,21 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     // margin-auto gets resolved to zero
     blp.setMarginLeft(boxDefinition.getMarginLeft().resolve(rbcw));
     blp.setMarginRight(boxDefinition.getMarginRight().resolve(rbcw));
-    nlp.setComputedWidth(RenderLength.AUTO);
-    nlp.setFinished(true);
+    box.setComputedLayoutProperties
+        (new ComputedLayoutProperties(bcw, RenderLength.AUTO));
     return true;
   }
 
   protected void processInlineLevelNode(final RenderNode node)
   {
-    NodeLayoutProperties nlp = node.getNodeLayoutProperties();
-    if (nlp.isFinished())
+    if (node.getComputedLayoutProperties() != null)
     {
       return;
     }
 
-    computeBlockContextWidth(node);
-
-
-    nlp.setFinished(true);
+    final RenderLength bcw = computeBlockContextWidth(node);
+    node.setComputedLayoutProperties
+        (new ComputedLayoutProperties(bcw, RenderLength.AUTO));
   }
 
   private void computeBorder(final BoxDefinition boxDefinition,
@@ -359,22 +356,20 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     slp.setPaddingRight(boxDefinition.getPaddingRight().resolve(bcw));
   }
 
-  protected void computeBlockContextWidth (RenderNode node)
+  protected RenderLength computeBlockContextWidth (RenderNode node)
   {
-    NodeLayoutProperties slp = node.getNodeLayoutProperties();
     // grab the block-context width ..
     final RenderBox blockContext = node.getParentBlockContext();
     if (blockContext == null)
     {
-      slp.setBlockContextWidth(new RenderLength(root.getPageWidth(), false));
+      return new RenderLength(root.getPageWidth(), false);
     }
     else
     {
-      final NodeLayoutProperties layoutProperties =
-              blockContext.getNodeLayoutProperties();
+      final ComputedLayoutProperties layoutProperties =
+              blockContext.getComputedLayoutProperties();
       // the computed width will never be a percentage ..
-      final RenderLength computedWidth = layoutProperties.getComputedWidth();
-      slp.setBlockContextWidth(computedWidth);
+      return layoutProperties.getComputedWidth();
     }
   }
 
@@ -386,11 +381,4 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     }
     return borderEdge.getWidth().resolve(bcw);
   }
-
-  protected void finishInlineLevelBox(final RenderBox box)
-  {
-    super.finishInlineLevelBox(box);
-  }
-
-
 }

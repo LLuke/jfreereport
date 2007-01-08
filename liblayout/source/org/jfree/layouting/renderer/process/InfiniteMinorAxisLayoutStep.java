@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: InfiniteMinorAxisLayoutStep.java,v 1.10 2006/12/03 18:58:10 taqua Exp $
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.11 2006/12/09 21:19:52 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,7 +35,6 @@ import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
-import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphPoolBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.PlaceholderRenderNode;
@@ -84,9 +83,11 @@ public class InfiniteMinorAxisLayoutStep
 
   public void compute(LogicalPageBox root)
   {
+    breakState = null;
     pageGrid = root.getPageGrid();
     startProcessing(root);
     pageGrid = null;
+    breakState = null;
   }
 
   /**
@@ -105,10 +106,12 @@ public class InfiniteMinorAxisLayoutStep
     }
 
     this.pageGrid = pageGrid;
+    this.breakState = null;
     this.continuedElement = box;
     startProcessing(box);
     this.continuedElement = null;
     this.pageGrid = null;
+    this.breakState = null;
   }
 
   /**
@@ -150,6 +153,7 @@ public class InfiniteMinorAxisLayoutStep
       }
       else if (box instanceof TableCellRenderBox)
       {
+        // todo: Cannot be done unless the inner paragraphs have been layouted once ..
         computeCellArea((TableCellRenderBox) box);
       }
       else
@@ -233,7 +237,8 @@ public class InfiniteMinorAxisLayoutStep
   {
     // This is slightly different for table cells ...
     final int columnIndex = cellRenderBox.getColumnIndex();
-    final TableColumnModel columnModel = cellRenderBox.getTable().getColumnModel();
+    final TableRenderBox table = cellRenderBox.getTable();
+    final TableColumnModel columnModel = table.getColumnModel();
     final TableColumn column = columnModel.getColumn(columnIndex);
     long effectiveSize = column.getEffectiveSize();
 
@@ -290,10 +295,8 @@ public class InfiniteMinorAxisLayoutStep
     leftPadding += blp.getPaddingLeft();
     box.setContentAreaX1(x + leftPadding);
 
-    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
-
-
-    final RenderLength computedWidth = nlp.getComputedWidth();
+    final RenderLength computedWidth =
+        box.getComputedLayoutProperties().getComputedWidth();
     if (computedWidth == RenderLength.AUTO)
     {
       final RenderBox parent = box.getParent();
@@ -309,7 +312,7 @@ public class InfiniteMinorAxisLayoutStep
       else
       {
         // A block level element that sits inside an inline element
-        box.setContentAreaX2(x + leftPadding + nlp.getMinimumChunkWidth());
+        box.setContentAreaX2(x + leftPadding + box.getMinimumChunkWidth());
       }
     }
     else
@@ -460,7 +463,8 @@ public class InfiniteMinorAxisLayoutStep
     }
     else
     {
-      node.setWidth(node.getNodeLayoutProperties().getComputedWidth().resolve(0));
+      node.setWidth
+          (node.getComputedLayoutProperties().getComputedWidth().resolve(0));
     }
   }
 
@@ -532,8 +536,7 @@ public class InfiniteMinorAxisLayoutStep
     final long lineEnd = paragraph.getContentAreaX2();
     if (lineEnd - lineStart <= 0)
     {
-      final NodeLayoutProperties nlp = paragraph.getNodeLayoutProperties();
-      final long minimumChunkWidth = nlp.getMinimumChunkWidth();
+      final long minimumChunkWidth = paragraph.getMinimumChunkWidth();
       processor.initialize(sequence,
           lineStart, lineStart + minimumChunkWidth, pageGrid);
       Log.warn("Auto-Corrected zero-width linebox.");

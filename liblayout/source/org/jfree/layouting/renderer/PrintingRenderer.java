@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrintingRenderer.java,v 1.3 2006/12/03 18:58:07 taqua Exp $
+ * $Id: PrintingRenderer.java,v 1.4 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -85,10 +85,10 @@ public class PrintingRenderer implements Renderer
    *
    * @param pageContext
    */
-  public void startDocument(final PageContext pageContext)
+  public void startedDocument(final PageContext pageContext)
   {
     Log.debug ("<document>");
-    parent.startDocument(pageContext);
+    parent.startedDocument(pageContext);
   }
 
   /**
@@ -277,6 +277,7 @@ public class PrintingRenderer implements Renderer
   }
 
   public void startedPassThrough(final LayoutContext context)
+      throws NormalizationException
   {
     Log.debug ("<pass-through>");
     parent.startedPassThrough(context);
@@ -284,12 +285,13 @@ public class PrintingRenderer implements Renderer
 
   public void addPassThroughContent(final LayoutContext context,
                                     final ContentToken content)
+      throws NormalizationException
   {
     Log.debug ("<pass-through-content>" + content + "</pass-through-content>");
     parent.addPassThroughContent(context, content);
   }
 
-  public void finishedPassThrough()
+  public void finishedPassThrough() throws NormalizationException
   {
     Log.debug ("</pass-through>");
     parent.finishedPassThrough();
@@ -298,5 +300,18 @@ public class PrintingRenderer implements Renderer
   public State saveState() throws StateException
   {
     return new PrintingRendererState(parent);
+  }
+
+  public void startedTableCaption(LayoutContext context)
+      throws NormalizationException
+  {
+    Log.debug ("<table-caption>");
+    parent.startedTableCaption(context);
+  }
+
+  public void finishedTableCaption() throws NormalizationException
+  {
+    Log.debug ("</table-caption>");
+    parent.finishedTableCaption();
   }
 }

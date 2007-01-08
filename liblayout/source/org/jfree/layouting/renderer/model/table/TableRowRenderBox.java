@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableRowRenderBox.java,v 1.15 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -91,7 +91,7 @@ public class TableRowRenderBox extends BlockRenderBox
     if (parent instanceof TableSectionRenderBox)
     {
       final TableSectionRenderBox tableSectionRenderBox =
-              (TableSectionRenderBox) parent;
+          (TableSectionRenderBox) parent;
       return tableSectionRenderBox.getTable();
     }
     return null;
@@ -105,5 +105,22 @@ public class TableRowRenderBox extends BlockRenderBox
       return null;
     }
     return table.getColumnModel();
+  }
+
+  public Object clone()
+  {
+    try
+    {
+      TableRowRenderBox rb = (TableRowRenderBox) super.clone();
+      if (infoStructure.isValidationDone() == false)
+      {
+        rb.infoStructure = (TableRowInfoStructure) infoStructure.clone();
+      }
+      return rb;
+    }
+    catch (CloneNotSupportedException cne)
+    {
+      throw new IllegalStateException("Clone not supported is not supported.");
+    }
   }
 }

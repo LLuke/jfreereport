@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: NodeLayoutProperties.java,v 1.5 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,16 +43,9 @@ import org.jfree.layouting.renderer.border.RenderLength;
  */
 public class NodeLayoutProperties implements Serializable, Cloneable
 {
-  // This represents the computed with.
-  private RenderLength blockContextWidth;
+  // ComputedMetrics:
 
-  // Either AUTO or a valid width.
-  private RenderLength computedWidth;
-
-  private long maximumBoxWidth;
-  private long minimumChunkWidth;
-  private boolean icmFinished;
-
+  // Fully static properties ...
   private CSSValue alignmentBaseline;
   private CSSValue alignmentAdjust;
   private CSSValue baselineShift;
@@ -63,131 +56,42 @@ public class NodeLayoutProperties implements Serializable, Cloneable
   private String namespace;
   private String tagName;
 
-  /**
-   * Whether that element will need intrinsic sizing.
-   */
-  private boolean intrinsic;
-  private boolean finished;
+  private int majorAxis;
+  private int minorAxis;
 
   public NodeLayoutProperties()
   {
-    computedWidth = RenderLength.AUTO;
   }
 
-  public RenderLength getBlockContextWidth()
+//
+//  public boolean isIntrinsic()
+//  {
+//    return intrinsic;
+//  }
+//
+//  public void setIntrinsic(final boolean intrinsic)
+//  {
+//    this.intrinsic = intrinsic;
+//  }
+
+  public int getMajorAxis()
   {
-    return blockContextWidth;
+    return majorAxis;
   }
 
-  public void setBlockContextWidth(final RenderLength blockContextWidth)
+  public void setMajorAxis(final int majorAxis)
   {
-    if (blockContextWidth.isPercentage())
-    {
-      throw new IllegalArgumentException
-              ("Percentages are not allowed at this stage.");
-    }
-    if (blockContextWidth == RenderLength.AUTO)
-    {
-      this.blockContextWidth = RenderLength.AUTO;
-    }
-    else if (blockContextWidth.getValue() <= 0)
-    {
-      this.blockContextWidth = RenderLength.EMPTY;
-    }
-    else
-    {
-      this.blockContextWidth = blockContextWidth;
-    }
+    this.majorAxis = majorAxis;
   }
 
-  public boolean isIntrinsic()
+  public int getMinorAxis()
   {
-    return intrinsic;
+    return minorAxis;
   }
 
-  public void setIntrinsic(final boolean intrinsic)
+  public void setMinorAxis(final int minorAxis)
   {
-    this.intrinsic = intrinsic;
-  }
-
-  public RenderLength getComputedWidth()
-  {
-    return computedWidth;
-  }
-
-  public void setComputedWidth(final RenderLength computedWidth)
-  {
-    if (computedWidth.isPercentage())
-    {
-      throw new IllegalArgumentException
-              ("Percentages are not allowed at this stage.");
-    }
-    if (computedWidth == RenderLength.AUTO)
-    {
-      this.computedWidth = RenderLength.AUTO;
-    }
-    else if (computedWidth.getValue() <= 0)
-    {
-      this.computedWidth = RenderLength.EMPTY;
-    }
-    else
-    {
-      this.computedWidth = computedWidth;
-    }
-  }
-
-  public boolean isFinished()
-  {
-    return finished;
-  }
-
-  public void setFinished(final boolean finished)
-  {
-    this.finished = finished;
-  }
-
-
-  public String toString()
-  {
-    return "NodeLayoutProperties{" +
-            "finished=" + finished +
-            ", blockContextWidth=" + blockContextWidth +
-            ", computedWidth=" + computedWidth +
-            ", maximumBoxWidth=" + maximumBoxWidth +
-            ", minimumChunkWidth=" + minimumChunkWidth +
-            ", icmFinished=" + icmFinished +
-            ", intrinsic=" + intrinsic +
-            '}';
-  }
-
-  public long getMaximumBoxWidth()
-  {
-    return maximumBoxWidth;
-  }
-
-  public void setMaximumBoxWidth(final long maximumBoxWidth)
-  {
-    this.maximumBoxWidth = maximumBoxWidth;
-  }
-
-  public long getMinimumChunkWidth()
-  {
-    return minimumChunkWidth;
-  }
-
-  public void setMinimumChunkWidth(final long minimumChunkWidth)
-  {
-    this.minimumChunkWidth = minimumChunkWidth;
-  }
-
-  public boolean isIcmFinished()
-  {
-    return icmFinished;
-  }
-
-  public void setIcmFinished(final boolean icmFinished)
-  {
-    this.icmFinished = icmFinished;
+    this.minorAxis = minorAxis;
   }
 
   public Object clone () throws CloneNotSupportedException

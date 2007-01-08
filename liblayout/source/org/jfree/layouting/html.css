@@ -509,7 +509,7 @@ br {
 
 li:marker {
   content: normal;
-  display: inline;
+  display: inline-block;
   margin-left: 0.5em;
   margin-right: 0.5em;
 }

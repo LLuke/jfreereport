@@ -23,59 +23,67 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: IntList.java,v 1.3 2006/12/03 18:58:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.util;
 
 import java.io.Serializable;
+import java.util.EmptyStackException;
 
 /**
  * A Array-List for integer objects. Ints can be added to the list and will be
  * stored in an int-array.
- * <p>
- * Using this list for storing ints is much faster than creating java.lang.Integer
- * objects and storing them in an ArrayList.
- * <p>
+ * <p/>
+ * Using this list for storing ints is much faster than creating
+ * java.lang.Integer objects and storing them in an ArrayList.
+ * <p/>
  * This list is not synchronized and does not implement the full List interface.
- * In fact, this list can only be used to add new values or to clear the complete
- * list.
+ * In fact, this list can only be used to add new values or to clear the
+ * complete list.
  *
  * @author Thomas Morgner
  */
 public class IntList implements Serializable, Cloneable
 {
-  /** An empty array used to avoid object creation. */
+  /**
+   * An empty array used to avoid object creation.
+   */
   private static final int[] EMPTY_ARRAY = new int[0];
-  /** The array holding the list data. */
+  /**
+   * The array holding the list data.
+   */
   private int[] data;
-  /** The size of the list. */
+  /**
+   * The size of the list.
+   */
   private int size;
-  /** The number of free slots added on every resize. */
+  /**
+   * The number of free slots added on every resize.
+   */
   private int increment;
 
   /**
-   * Creates a new IntList with the given initial capacity.
-   * The capacity will also be used as increment value when
-   * extending the capacity of the list.
+   * Creates a new IntList with the given initial capacity. The capacity will
+   * also be used as increment value when extending the capacity of the list.
    *
    * @param capacity the initial capacity.
    */
-  public IntList (final int capacity)
+  public IntList(final int capacity)
   {
     data = new int[capacity];
     increment = capacity;
   }
 
   /**
-   * Ensures, that the list backend can store at least <code>c</code>
-   * elements. This method does nothing, if the new capacity is less
-   * than the current capacity.
+   * Ensures, that the list backend can store at least <code>c</code> elements.
+   * This method does nothing, if the new capacity is less than the current
+   * capacity.
    *
    * @param c the new capacity of the list.
    */
-  private void ensureCapacity (final int c)
+  private void ensureCapacity(final int c)
   {
     if (data.length <= c)
     {
@@ -90,7 +98,7 @@ public class IntList implements Serializable, Cloneable
    *
    * @param value the new value to be added.
    */
-  public void add (final int value)
+  public void add(final int value)
   {
     ensureCapacity(size);
     data[size] = value;
@@ -102,7 +110,7 @@ public class IntList implements Serializable, Cloneable
    *
    * @param value the new value to be added.
    */
-  public void set (final int index, final int value)
+  public void set(final int index, final int value)
   {
     ensureCapacity(index);
     data[index] = value;
@@ -117,10 +125,10 @@ public class IntList implements Serializable, Cloneable
    *
    * @param index the index
    * @return the value at the given index
-   * @throws IndexOutOfBoundsException if the index is greater or
-   * equal to the list size or if the index is negative.
+   * @throws IndexOutOfBoundsException if the index is greater or equal to the
+   *                                   list size or if the index is negative.
    */
-  public int get (final int index)
+  public int get(final int index)
   {
     if (index >= size || index < 0)
     {
@@ -132,7 +140,7 @@ public class IntList implements Serializable, Cloneable
   /**
    * Clears the list.
    */
-  public void clear ()
+  public void clear()
   {
     size = 0;
   }
@@ -142,9 +150,33 @@ public class IntList implements Serializable, Cloneable
    *
    * @return the number of elements in the list
    */
-  public int size ()
+  public int size()
   {
     return size;
+  }
+
+  public int pop()
+  {
+    if (size == 0)
+    {
+      throw new EmptyStackException();
+    }
+    size -= 1;
+    return data[size];
+  }
+
+  public int peek()
+  {
+    if (size == 0)
+    {
+      throw new EmptyStackException();
+    }
+    return data[size - 1];
+  }
+
+  public final void push(int value)
+  {
+    add(value);
   }
 
   /**
@@ -152,7 +184,7 @@ public class IntList implements Serializable, Cloneable
    *
    * @return the list contents as array.
    */
-  public int[] toArray ()
+  public int[] toArray()
   {
     if (size == 0)
     {
@@ -166,6 +198,6 @@ public class IntList implements Serializable, Cloneable
   {
     IntList intList = (IntList) super.clone();
     intList.data = (int[]) data.clone();
-    return data;
+    return intList;
   }
 }

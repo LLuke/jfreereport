@@ -23,13 +23,11 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DataCell.java,v 1.2 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.model.table.cells;
-
-import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 
 /**
  * A data-cell holds a reference to a TableCellRenderBox. It contains data
@@ -40,10 +38,12 @@ import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
  */
 public class DataCell extends TableCell
 {
-  private TableCellRenderBox cellRenderBox;
+  // The instance-id of the cell ..
+  private Object cellRenderBox;
 
-  public DataCell(final TableCellRenderBox cellRenderBox, final int rowSpan,
-                  final int colSpan)
+  public DataCell(final int rowSpan,
+                  final int colSpan,
+                  final Object cellRenderBox)
   {
     super(rowSpan, colSpan);
 
@@ -55,7 +55,7 @@ public class DataCell extends TableCell
     this.cellRenderBox = cellRenderBox;
   }
 
-  public TableCellRenderBox getCellRenderBox()
+  public Object getCellRenderBox()
   {
     return cellRenderBox;
   }

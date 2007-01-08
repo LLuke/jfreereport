@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RenderBox.java,v 1.27 2006/12/04 19:12:58 taqua Exp $
+ * $Id: RenderBox.java,v 1.28 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -1064,7 +1064,7 @@ public abstract class RenderBox extends RenderNode
   {
     if (contentAreaX2 < 0)
     {
-      throw new IllegalStateException("Failure here");
+      throw new IllegalStateException("Failure here: " + contentAreaX2);
     }
     this.contentAreaX2 = contentAreaX2;
   }

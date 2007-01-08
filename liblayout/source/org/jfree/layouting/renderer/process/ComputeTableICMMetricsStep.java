@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ComputeTableICMMetricsStep.java,v 1.3 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,7 +32,8 @@ package org.jfree.layouting.renderer.process;
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
 import org.jfree.layouting.renderer.model.BoxDefinition;
-import org.jfree.layouting.renderer.model.NodeLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
+import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowInfoStructure;
@@ -163,9 +164,18 @@ public class ComputeTableICMMetricsStep extends IterateStructuralProcessStep
     // grab the column model - recompute the columns.
     // this does nothing, if the table has not been changed.
     // This causes terror and pain, if the columns have been fixed already.
-    box.getColumnModel().validateSizes();
+    box.getColumnModel().validateSizes(box);
 
-    currentTable = (TableInfoStructure) tableStack.pop();
+    tableStack.pop();
+    if (tableStack.isEmpty() == false)
+    {
+      currentTable = (TableInfoStructure) tableStack.peek();
+    }
+    else
+    {
+      currentTable = null;
+    }
+
   }
 
   private void finishTableRow(final TableRowRenderBox box)
@@ -183,7 +193,7 @@ public class ComputeTableICMMetricsStep extends IterateStructuralProcessStep
 
     final BoxDefinition boxDefinition = box.getBoxDefinition();
     final RenderLength preferredHeight = boxDefinition.getPreferredHeight();
-    final NodeLayoutProperties rowNlp = box.getNodeLayoutProperties();
+    final ComputedLayoutProperties rowNlp = box.getComputedLayoutProperties();
     final RenderLength rowComputedWidth = rowNlp.getComputedWidth();
     row.clearSizes();
     row.setPreferredSize(preferredHeight.resolve(rowComputedWidth.resolve(0)));
@@ -200,16 +210,21 @@ public class ComputeTableICMMetricsStep extends IterateStructuralProcessStep
       // We dont handle spanned cells here; thats done indirectly by the
       // column model itself.
       final DataCell dataCell = (DataCell) cellAt;
-      final NodeLayoutProperties nlp =
-              dataCell.getCellRenderBox().getNodeLayoutProperties();
 
+      final RenderNode cell = findCellInRow(box, dataCell.getCellRenderBox());
+      if (cell == null)
+      {
+        throw new IllegalStateException
+            ("No such cell: " + dataCell.getCellRenderBox());
+      }
       final TableColumn column = columnModel.getColumn(i);
       final int colSpan = dataCell.getColSpan();
 
-      column.updateMinimumChunkSize(colSpan, nlp.getMinimumChunkWidth());
-      column.updateMaxBoxSize(colSpan, nlp.getMaximumBoxWidth());
+      column.updateMinimumChunkSize(colSpan, cell.getMinimumChunkWidth());
+      column.updateMaxBoxSize(colSpan, cell.getMaximumBoxWidth());
 
-      final RenderLength computedWidth = nlp.getComputedWidth();
+      final RenderLength computedWidth =
+          cell.getComputedLayoutProperties().getComputedWidth();
       if (computedWidth == RenderLength.AUTO == false)
       {
         // if we have a computed width, set it. If the user explicitly specified
@@ -224,5 +239,19 @@ public class ComputeTableICMMetricsStep extends IterateStructuralProcessStep
     }
 
     currentTable.increaseRowNumber();
+  }
+
+  private RenderNode findCellInRow(TableRowRenderBox box, Object instanceId)
+  {
+    RenderNode node = box.getFirstChild();
+    while (node != null)
+    {
+      if (node.getInstanceId() == instanceId)
+      {
+        return node;
+      }
+      node = node.getNext();
+    }
+    return null;
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: InfiniteMajorAxisLayoutStep.java,v 1.9 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,6 +42,7 @@ import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.process.valign.BoxAlignContext;
@@ -265,8 +266,8 @@ public class InfiniteMajorAxisLayoutStep
   protected void finishBlockLevelBox(final RenderBox box)
   {
     // Check the height. Set the height.
-    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
-    final RenderLength computedWidth = nlp.getComputedWidth();
+    final ComputedLayoutProperties clp = box.getComputedLayoutProperties();
+    final RenderLength computedWidth = clp.getComputedWidth();
     final RenderLength preferredHeight = box.getBoxDefinition().getPreferredHeight();
     final long computedHeight =
         preferredHeight.resolve(computedWidth.resolve(0));
@@ -508,8 +509,8 @@ public class InfiniteMajorAxisLayoutStep
 
     final long contentAreaY1 = inlineRenderBox.getY() + insetTop;
     final RenderLength lineHeight = inlineRenderBox.getLineHeight();
-    final RenderLength bcw =
-        inlineRenderBox.getNodeLayoutProperties().getBlockContextWidth();
+    final ComputedLayoutProperties clp = inlineRenderBox.getComputedLayoutProperties();
+    final RenderLength bcw = clp.getBlockContextWidth();
     processor.align (boxAlignContext, contentAreaY1,
         lineHeight.resolve(bcw.resolve(0)));
   }

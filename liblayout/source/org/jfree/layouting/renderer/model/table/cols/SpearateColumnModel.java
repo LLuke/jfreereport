@@ -23,15 +23,16 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SpearateColumnModel.java,v 1.4 2006/12/03 18:58:10 taqua Exp $
+ * $Id: SpearateColumnModel.java,v 1.5 2006/12/11 12:56:14 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.model.table.cols;
 
 import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.renderer.model.NodeLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 18.07.2006, 16:46:11
@@ -48,15 +49,13 @@ public class SpearateColumnModel extends AbstractColumnModel
 
   private long borderSpacing;
 
-  public SpearateColumnModel(final TableRenderBox table)
+  public SpearateColumnModel()
   {
-    super(table);
   }
 
 
-  public void validateSizes()
+  public void validateSizes(final TableRenderBox table)
   {
-    final TableRenderBox table = getTable();
     if (isValidated() && (validationTrack == table.getChangeTracker()))
     {
       return;
@@ -82,7 +81,7 @@ public class SpearateColumnModel extends AbstractColumnModel
       return;
     }
 
-    final NodeLayoutProperties nlp = table.getNodeLayoutProperties();
+    final ComputedLayoutProperties nlp = table.getComputedLayoutProperties();
     final RenderLength blockContextWidth = nlp.getBlockContextWidth();
     final long bcw = blockContextWidth.resolve(0);
 
@@ -100,47 +99,33 @@ public class SpearateColumnModel extends AbstractColumnModel
     final long[] preferredSizes = new long[colCount];
 
     // For each colspan distribute the content.
-    if (maxColSpan == 0)
+    // The 1-column size also gets the preferred size ...
+    for (int colIdx = 0; colIdx < minChunkSizes.length; colIdx++)
     {
-      for (int colIdx = 0; colIdx < minChunkSizes.length; colIdx++)
-      {
-        final TableColumn column = columns[colIdx];
-        final long resolvedColWidth = column.getDefinedWidth().resolve(bcw);
-        minChunkSizes[colIdx] = resolvedColWidth;
-        maxBoxSizes[colIdx] = resolvedColWidth;
-        preferredSizes[colIdx] = resolvedColWidth;
-      }
+      final TableColumn column = columns[colIdx];
+      final long minimumChunkSize = column.getMinimumChunkSize(1);
+      final long maxBoxSize = column.getMaximumBoxWidth(1);
+      final long resolvedColWidth = column.getDefinedWidth().resolve(bcw);
+      final long preferredSize = Math.max
+          (resolvedColWidth, column.getPreferredWidth(1));
+
+      minChunkSizes[colIdx] = minimumChunkSize;
+      maxBoxSizes[colIdx] = maxBoxSize;
+      preferredSizes[colIdx] = preferredSize;
     }
-    else
+
+    for (int colspan = 2; colspan <= maxColSpan; colspan += 1)
     {
-      // The 1-column size also gets the preferred size ...
       for (int colIdx = 0; colIdx < minChunkSizes.length; colIdx++)
       {
         final TableColumn column = columns[colIdx];
-        final long minimumChunkSize = column.getMinimumChunkSize(1);
-        final long maxBoxSize = column.getMaximumBoxWidth(1);
-        final long resolvedColWidth = column.getDefinedWidth().resolve(bcw);
-        final long preferredSize = Math.max
-            (resolvedColWidth, column.getPreferredWidth(1));
+        final long minimumChunkSize = column.getMinimumChunkSize(colspan);
+        final long maxBoxSize = column.getMaximumBoxWidth(colspan);
+        final long preferredSize = column.getPreferredWidth(colspan);
 
-        minChunkSizes[colIdx] = minimumChunkSize;
-        maxBoxSizes[colIdx] = maxBoxSize;
-        preferredSizes[colIdx] = preferredSize;
-      }
-
-      for (int colspan = 2; colspan <= maxColSpan; colspan += 1)
-      {
-        for (int colIdx = 0; colIdx < minChunkSizes.length; colIdx++)
-        {
-          final TableColumn column = columns[colIdx];
-          final long minimumChunkSize = column.getMinimumChunkSize(colspan);
-          final long maxBoxSize = column.getMaximumBoxWidth(colspan);
-          final long preferredSize = column.getPreferredWidth(colspan);
-
-          distribute(minimumChunkSize, minChunkSizes, colIdx, colspan);
-          distribute(preferredSize, preferredSizes, colIdx, colspan);
-          distribute(maxBoxSize, maxBoxSizes, colIdx, colspan);
-        }
+        distribute(minimumChunkSize, minChunkSizes, colIdx, colspan);
+        distribute(preferredSize, preferredSizes, colIdx, colspan);
+        distribute(maxBoxSize, maxBoxSizes, colIdx, colspan);
       }
     }
 
@@ -175,7 +160,7 @@ public class SpearateColumnModel extends AbstractColumnModel
     //
     // If the table's width is fixed, then we have to shrink or expand the
     // columns to fit that additional requirement.
-    final RenderLength tableCWidth = table.getNodeLayoutProperties().getComputedWidth();
+    final RenderLength tableCWidth = table.getComputedLayoutProperties().getComputedWidth();
     if (tableCWidth != RenderLength.AUTO)
     {
       final long tableSize = Math.max(tableCWidth.resolve(0), minimumChunkSize);
@@ -196,6 +181,10 @@ public class SpearateColumnModel extends AbstractColumnModel
     }
 
     validationTrack = table.getChangeTracker();
+    if (validationTrack == 66)
+    {
+      Log.debug ("HERE");
+    }
   }
 
   public long getPreferredSize()

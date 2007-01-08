@@ -23,13 +23,12 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: RenderableText.java,v 1.13 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.model;
 
-import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.renderer.text.Spacing;
@@ -173,10 +172,9 @@ public class RenderableText extends RenderNode
 
     // Log.debug ("Text: " + minimumWidth + ", " + preferredWidth + ", " + maximumWidth);
 
-    NodeLayoutProperties nlp = getNodeLayoutProperties();
-    nlp.setMaximumBoxWidth(maximumWidth);
-    nlp.setMinimumChunkWidth(minimumChunkWidth);
-    nlp.setIcmFinished(true);
+    setMaximumBoxWidth(maximumWidth);
+    setMinimumChunkWidth(minimumChunkWidth);
+    setIcmMetricsFinished(true);
   }
 
 

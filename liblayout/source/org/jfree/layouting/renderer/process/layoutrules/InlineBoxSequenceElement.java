@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: InlineBoxSequenceElement.java,v 1.4 2006/12/03 18:58:12 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,16 +58,14 @@ public class InlineBoxSequenceElement extends InlineNodeSequenceElement
   public long getMinimumWidth()
   {
     final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
-    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
-    return nlp.getMinimumChunkWidth() +
+    return box.getMinimumChunkWidth() +
         blp.getMarginLeft() + blp.getMarginRight();
   }
 
   public long getMaximumWidth()
   {
     final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
-    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
-    return nlp.getMaximumBoxWidth() +
+    return box.getMaximumBoxWidth() +
         blp.getMarginLeft() + blp.getMarginRight();
   }
 

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultContentGenerator.java,v 1.7 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,20 +33,10 @@ import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
 import org.jfree.layouting.StatefullComponent;
+import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.normalizer.content.NormalizationException;
-import org.jfree.layouting.normalizer.displaymodel.DisplayBlockElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayContent;
-import org.jfree.layouting.normalizer.displaymodel.DisplayElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayFlowElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayPassThroughElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayRootInlineElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableCellElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnGroupElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableSectionElement;
 import org.jfree.layouting.renderer.Renderer;
 import org.jfree.util.Log;
 
@@ -132,79 +122,79 @@ public class DefaultContentGenerator implements ContentGenerator
    */
   public void startedDocument(final PageContext pageContext)
   {
-    renderer.startDocument(pageContext);
+    renderer.startedDocument(pageContext);
   }
 
-  public void startedFlow(final DisplayFlowElement element)
+  public void startedFlow(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedFlow(element.getLayoutContext());
+    renderer.startedFlow(element);
   }
 
-  public void startedTable(final DisplayTableElement element)
+  public void startedTable(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedTable(element.getLayoutContext());
+    renderer.startedTable(element);
   }
 
-  public void startTableColumnGroup(final DisplayTableColumnGroupElement element)
+  public void startedTableColumnGroup(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedTableColumnGroup(element.getLayoutContext());
+    renderer.startedTableColumnGroup(element);
   }
 
-  public void startTableColumn(final DisplayTableColumnElement element)
+  public void startedTableColumn(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedTableColumn(element.getLayoutContext());
+    renderer.startedTableColumn(element);
   }
 
-  public void startedTableSection(final DisplayTableSectionElement element)
+  public void startedTableSection(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedTableSection(element.getLayoutContext());
+    renderer.startedTableSection(element);
   }
 
-  public void startedTableRow(final DisplayTableRowElement element)
+  public void startedTableRow(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedTableRow(element.getLayoutContext());
+    renderer.startedTableRow(element);
   }
 
-  public void startedTableCell(final DisplayTableCellElement element)
+  public void startedTableCell(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedTableCell(element.getLayoutContext());
+    renderer.startedTableCell(element);
   }
 
-  public void startedBlock(final DisplayBlockElement element)
+  public void startedBlock(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedBlock(element.getLayoutContext());
+    renderer.startedBlock(element);
   }
 
-  public void startedMarker(final DisplayElement element)
+  public void startedMarker(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedMarker(element.getLayoutContext());
+    renderer.startedMarker(element);
   }
 
-  public void startedRootInline(final DisplayRootInlineElement element)
+  public void startedRootInline(final LayoutContext element)
           throws NormalizationException
   {
-    renderer.startedRootInline(element.getLayoutContext());
+    renderer.startedRootInline(element);
   }
 
-  public void startedInline(final DisplayElement element) throws
+  public void startedInline(final LayoutContext element) throws
           NormalizationException
   {
-    renderer.startedInline(element.getLayoutContext());
+    renderer.startedInline(element);
   }
 
-  public void addContent(final DisplayContent node) throws
+  public void addContent(final LayoutContext node, ContentToken contentToken) throws
           NormalizationException
   {
-    renderer.addContent(node.getLayoutContext(), node.getContent());
+    renderer.addContent(node, contentToken);
   }
 
   public void finishedInline() throws NormalizationException
@@ -268,7 +258,7 @@ public class DefaultContentGenerator implements ContentGenerator
    *
    * @param box
    */
-  public void finishDocument() throws NormalizationException
+  public void finishedDocument() throws NormalizationException
   {
     renderer.finishedDocument();
   }
@@ -278,19 +268,20 @@ public class DefaultContentGenerator implements ContentGenerator
     renderer.handlePageBreak(pageContext);
   }
 
-  public void startedPassThrough(final DisplayPassThroughElement element)
+  public void startedPassThrough(final LayoutContext element)
       throws NormalizationException
   {
-    renderer.startedPassThrough (element.getLayoutContext());
+    renderer.startedPassThrough (element);
   }
 
-  public void addPassThroughContent(final DisplayContent node)
+  public void addPassThroughContent(final LayoutContext node,
+                                    final ContentToken token)
       throws NormalizationException
   {
-    renderer.addPassThroughContent(node.getLayoutContext(), node.getContent());
+    renderer.addPassThroughContent(node, token);
   }
 
-  public void finishPassThrough()
+  public void finishedPassThrough() throws NormalizationException
   {
     renderer.finishedPassThrough();
   }
@@ -300,6 +291,17 @@ public class DefaultContentGenerator implements ContentGenerator
     DefaultContentGeneratorState state = new DefaultContentGeneratorState();
     state.setRendererState(renderer.saveState());
     return state;
+  }
+
+  public void startedTableCaption(final LayoutContext context)
+      throws NormalizationException
+  {
+    renderer.startedTableCaption(context);
+  }
+
+  public void finishedTableCaption() throws NormalizationException
+  {
+    renderer.finishedTableCaption();
   }
 
   public Renderer getRenderer()

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractLayoutProcess.java,v 1.8 2006/12/04 19:12:58 taqua Exp $
+ * $Id: AbstractLayoutProcess.java,v 1.9 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -75,7 +75,7 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
                                             AbstractLayoutProcess layoutProcess)
         throws StateException
     {
-      Log.error ("START ************************************************* ");
+//      Log.error ("START ************************************************* ");
       layoutProcess.documentContext = documentContext;
       if (styleResolver != null)
       {
@@ -87,7 +87,7 @@ public abstract class AbstractLayoutProcess implements LayoutProcess
         layoutProcess.inputFeed = (InputFeed) inputFeedState.restore(
             layoutProcess);
       }
-      Log.error ("DONE  ************************************************* ");
+//      Log.error ("DONE  ************************************************* ");
       return layoutProcess;
     }
   }

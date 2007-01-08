@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractRenderer.java,v 1.14 2006/12/05 15:13:45 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.15 2006/12/05 15:18:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -263,7 +263,7 @@ public abstract class AbstractRenderer implements Renderer
     this.layoutFailureReason = layoutFailureReason;
   }
 
-  public void startDocument(final PageContext pageContext)
+  public void startedDocument(final PageContext pageContext)
   {
     if (pageContext == null)
     {
@@ -296,7 +296,15 @@ public abstract class AbstractRenderer implements Renderer
   {
     if (isValidatable(instanceId))
     {
-      validateOutput();
+      try
+      {
+        validateOutput();
+      }
+      catch(IllegalStateException e)
+      {
+        e.printStackTrace();
+        validateOutput();
+      }
     }
   }
 
@@ -1010,6 +1018,18 @@ public abstract class AbstractRenderer implements Renderer
   }
 
   public void finishedPassThrough()
+  {
+
+  }
+
+
+  public void startedTableCaption(LayoutContext context)
+      throws NormalizationException
+  {
+
+  }
+
+  public void finishedTableCaption() throws NormalizationException
   {
 
   }

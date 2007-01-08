@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrototypeBuildingRenderer.java,v 1.2 2006/12/03 18:58:07 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -88,7 +88,7 @@ public class PrototypeBuildingRenderer implements Renderer
    *
    * @param pageContext
    */
-  public void startDocument(final PageContext pageContext)
+  public void startedDocument(final PageContext pageContext)
   {
 
   }
@@ -265,5 +265,16 @@ public class PrototypeBuildingRenderer implements Renderer
   public State saveState() throws StateException
   {
     return new PrototypeBuildingRendererState();
+  }
+
+  public void startedTableCaption(LayoutContext context)
+      throws NormalizationException
+  {
+
+  }
+
+  public void finishedTableCaption() throws NormalizationException
+  {
+
   }
 }

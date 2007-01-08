@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PaginatingRenderer.java,v 1.7 2006/12/03 18:58:07 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -274,4 +274,5 @@ public class PaginatingRenderer extends AbstractRenderer
   {
     return new DefaultFlowRendererState(this);
   }
+
 }

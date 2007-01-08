@@ -23,18 +23,20 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableColumnModel.java,v 1.5 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.model.table.cols;
+
+import org.jfree.layouting.renderer.model.table.TableRenderBox;
 
 /**
  * Creation-Date: 21.07.2006, 19:20:44
  *
  * @author Thomas Morgner
  */
-public interface TableColumnModel
+public interface TableColumnModel extends Cloneable
 {
   public void addColumnGroup(TableColumnGroup column);
 
@@ -48,7 +50,7 @@ public interface TableColumnModel
 
 //  public void validate();
 
-  public void validateSizes();
+  public void validateSizes(TableRenderBox tableRenderBox);
 
   public long getPreferredSize();
 
@@ -61,4 +63,6 @@ public interface TableColumnModel
   public long getBorderSpacing();
 
   public TableColumnGroup getGroupForIndex(final int i);
+
+  public Object clone() throws CloneNotSupportedException;
 }

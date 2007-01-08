@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ChainingLayoutProcess.java,v 1.4 2006/12/04 19:12:58 taqua Exp $
+ * $Id: ChainingLayoutProcess.java,v 1.5 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -81,7 +81,7 @@ public class ChainingLayoutProcess implements LayoutProcess
     public LayoutProcess restore(OutputProcessor outputProcessor)
         throws StateException
     {
-      Log.error ("START ++++++++++++++++++++++++++++++++++++++++++++++++ ");
+//      Log.error ("START ++++++++++++++++++++++++++++++++++++++++++++++++ ");
 
       LayoutProcess root = chainedLayoutProcess.restore(outputProcessor);
       ChainingLayoutProcess proc = new ChainingLayoutProcess(root);
@@ -94,7 +94,7 @@ public class ChainingLayoutProcess implements LayoutProcess
           throw new StateException();
         }
       }
-      Log.error ("DONE  ++++++++++++++++++++++++++++++++++++++++++++++++ ");
+//      Log.error ("DONE  ++++++++++++++++++++++++++++++++++++++++++++++++ ");
 
       return proc;
     }
@@ -185,11 +185,11 @@ public class ChainingLayoutProcess implements LayoutProcess
 
   public LayoutProcessState saveState() throws StateException
   {
-    Log.error ("SAVING  ++++++++++++++++++++++++++++++++++++++++++++++++ ");
+//    Log.error ("SAVING  ++++++++++++++++++++++++++++++++++++++++++++++++ ");
     ChainingLayoutProcessState state = new ChainingLayoutProcessState();
     state.setInputFeed(inputFeed.saveState());
     state.setChainedLayoutProcess(chainedLayoutProcess.saveState());
-    Log.error ("DONE SAVING  +++++++++++++++++++++++++++++++++++++++++++ ");
+//    Log.error ("DONE SAVING  +++++++++++++++++++++++++++++++++++++++++++ ");
     return state;
   }
 

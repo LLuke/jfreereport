@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SpacerRenderNode.java,v 1.12 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,10 +53,9 @@ public class SpacerRenderNode extends RenderNode
                           final boolean preserve)
   {
     this.preserve = preserve;
-    NodeLayoutProperties nlp = getNodeLayoutProperties();
-    nlp.setMaximumBoxWidth(width);
-    nlp.setMinimumChunkWidth(0);
-    nlp.setIcmFinished(true);
+    setMaximumBoxWidth(width);
+    setMinimumChunkWidth(0);
+    setIcmMetricsFinished(true);
     empty = width == 0 && height == 0;
   }
 

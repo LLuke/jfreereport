@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SpacerSequenceElement.java,v 1.3 2006/12/03 18:58:12 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,7 +53,7 @@ public class SpacerSequenceElement implements InlineSequenceElement
    */
   public long getMinimumWidth()
   {
-    return spacerNode.getNodeLayoutProperties().getMinimumChunkWidth();
+    return spacerNode.getMinimumChunkWidth();
   }
 
   /**
@@ -65,7 +65,7 @@ public class SpacerSequenceElement implements InlineSequenceElement
    */
   public long getMaximumWidth()
   {
-    return spacerNode.getNodeLayoutProperties().getMaximumBoxWidth();
+    return spacerNode.getMaximumBoxWidth();
   }
 
   public RenderNode getNode()

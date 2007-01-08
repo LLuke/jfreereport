@@ -23,11 +23,13 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableLayoutInfo.java,v 1.2 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.model.table;
+
+import org.jfree.layouting.renderer.border.RenderLength;
 
 /**
  * Creation-Date: 09.09.2006, 14:50:21
@@ -36,33 +38,64 @@ package org.jfree.layouting.renderer.model.table;
  */
 public class TableLayoutInfo
 {
-  /**
-   * This is not set to true unless the *closed* table has been validated.
-   */
-  private boolean structureValidated;
-  private boolean predefinedColumnsValidated;
+  private RenderLength borderSpacing;
+  private RenderLength rowSpacing;
+
+  private boolean displayEmptyCells;
+  private boolean collapsingBorderModel;
+  private boolean autoLayout;
 
   public TableLayoutInfo()
   {
   }
 
-  public boolean isPredefinedColumnsValidated()
+  public RenderLength getBorderSpacing()
   {
-    return predefinedColumnsValidated;
+    return borderSpacing;
   }
 
-  public void setPredefinedColumnsValidated(final boolean predefinedColumnsValidated)
+  public void setBorderSpacing(final RenderLength borderSpacing)
   {
-    this.predefinedColumnsValidated = predefinedColumnsValidated;
+    this.borderSpacing = borderSpacing;
   }
 
-  public boolean isStructureValidated()
+  public RenderLength getRowSpacing()
   {
-    return structureValidated;
+    return rowSpacing;
   }
 
-  public void setStructureValidated(final boolean structureValidated)
+  public void setRowSpacing(final RenderLength rowSpacing)
   {
-    this.structureValidated = structureValidated;
+    this.rowSpacing = rowSpacing;
+  }
+
+  public boolean isDisplayEmptyCells()
+  {
+    return displayEmptyCells;
+  }
+
+  public void setDisplayEmptyCells(final boolean displayEmptyCells)
+  {
+    this.displayEmptyCells = displayEmptyCells;
+  }
+
+  public boolean isCollapsingBorderModel()
+  {
+    return collapsingBorderModel;
+  }
+
+  public void setCollapsingBorderModel(final boolean collapsingBorderModel)
+  {
+    this.collapsingBorderModel = collapsingBorderModel;
+  }
+
+  public boolean isAutoLayout()
+  {
+    return autoLayout;
+  }
+
+  public void setAutoLayout(final boolean autoLayout)
+  {
+    this.autoLayout = autoLayout;
   }
 }

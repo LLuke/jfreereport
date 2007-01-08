@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Renderer.java,v 1.7 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -56,7 +56,7 @@ public interface Renderer extends StatefullComponent
    *
    * @param pageContext
    */
-  public void startDocument(final PageContext pageContext);
+  public void startedDocument(final PageContext pageContext);
 
   /**
    * Starts a floating, absolute or static element. This establishes a new
@@ -65,74 +65,102 @@ public interface Renderer extends StatefullComponent
    * @param context
    */
   public void startedFlow(final LayoutContext context)
-          throws NormalizationException;
+      throws NormalizationException;
 
   public void startedTable(final LayoutContext layoutContext)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void startedTableColumnGroup(final LayoutContext context)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void startedTableColumn(final LayoutContext context)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void startedTableSection(final LayoutContext layoutContext)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void startedTableRow(final LayoutContext layoutContext)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void startedTableCell(final LayoutContext layoutContext)
-          throws NormalizationException;
+      throws NormalizationException;
 
   public void startedBlock(final LayoutContext context)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void startedMarker(final LayoutContext context)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void startedRootInline(final LayoutContext context)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void startedInline(final LayoutContext context)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void addContent(final LayoutContext context,
                          final ContentToken content)
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedInline()
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedRootInline()
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedMarker()
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedBlock()
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedTableCell()
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedTableRow()
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedTableSection()
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedTableColumnGroup()
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedTableColumn()
-          throws NormalizationException;
+      throws NormalizationException;
+
   public void finishedTable()
-          throws NormalizationException;
+      throws NormalizationException;
 
   public void finishedFlow()
-          throws NormalizationException;
+      throws NormalizationException;
 
   public void finishedDocument()
-          throws NormalizationException;
+      throws NormalizationException;
 
   /**
    * A call-back that informs the renderer, that a new page must be started.
    * This closes the old page context and copies all pending content to the new
    * context.
-   *
+   * <p/>
    * This method is triggered by a call to 'LayoutProcess.pageBreakEncountered'
    *
    * @param pageContext
    */
   public void handlePageBreak(final PageContext pageContext);
 
-  public void startedPassThrough(final LayoutContext context);
+  public void startedPassThrough(final LayoutContext context)
+      throws NormalizationException;
 
   public void addPassThroughContent(final LayoutContext context,
-                             final ContentToken content);
+                                    final ContentToken content)
+      throws NormalizationException;
 
-  public void finishedPassThrough();
+  public void finishedPassThrough()
+      throws NormalizationException;
+
+  public void startedTableCaption(LayoutContext context)
+      throws NormalizationException;
+
+  public void finishedTableCaption()
+      throws NormalizationException;
 }

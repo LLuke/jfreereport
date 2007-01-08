@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: EmptyContentGenerator.java,v 1.4 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,20 +32,10 @@ package org.jfree.layouting.normalizer.generator;
 
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
+import org.jfree.layouting.layouter.content.ContentToken;
+import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.PageContext;
 import org.jfree.layouting.normalizer.content.NormalizationException;
-import org.jfree.layouting.normalizer.displaymodel.DisplayBlockElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayContent;
-import org.jfree.layouting.normalizer.displaymodel.DisplayElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayFlowElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayPassThroughElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayRootInlineElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableCellElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableColumnGroupElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableRowElement;
-import org.jfree.layouting.normalizer.displaymodel.DisplayTableSectionElement;
 import org.jfree.layouting.renderer.Renderer;
 
 /**
@@ -72,73 +62,86 @@ public class EmptyContentGenerator implements ContentGenerator
 
   }
 
-  public void startedFlow(final DisplayFlowElement element)
+  public void startedInline(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startedBlock(final DisplayBlockElement element)
+  public void startedFlow(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startedRootInline(final DisplayRootInlineElement element)
+  public void startedBlock(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startedTable(final DisplayTableElement element)
+  public void startedRootInline(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startTableColumnGroup(final DisplayTableColumnGroupElement element)
+  public void startedTable(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startTableColumn(final DisplayTableColumnElement element)
+  public void startedTableColumnGroup(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startedTableSection(final DisplayTableSectionElement element)
+  public void startedTableColumn(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startedTableRow(final DisplayTableRowElement element)
+  public void startedTableSection(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startedTableCell(final DisplayTableCellElement element)
+  public void startedTableRow(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startedMarker(final DisplayElement element)
+  public void startedTableCell(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void startedInline(final DisplayElement element)
+  public void startedMarker(final LayoutContext element)
       throws NormalizationException
   {
 
   }
 
-  public void addContent(final DisplayContent node)
+  public void startedPassThrough(final LayoutContext element)
+      throws NormalizationException
+  {
+
+  }
+
+  public void addPassThroughContent(final LayoutContext node,
+                                    final ContentToken token)
+      throws NormalizationException
+  {
+
+  }
+
+  public void addContent(final LayoutContext node, ContentToken contentToken)
       throws NormalizationException
   {
 
@@ -205,7 +208,7 @@ public class EmptyContentGenerator implements ContentGenerator
    *
    * @param box
    */
-  public void finishDocument() throws NormalizationException
+  public void finishedDocument() throws NormalizationException
   {
 
   }
@@ -225,23 +228,23 @@ public class EmptyContentGenerator implements ContentGenerator
     return null;
   }
 
-  public State saveState() throws StateException
-  {
-    return null;
-  }
-
-  public void startedPassThrough(final DisplayPassThroughElement element)
+  public void startedTableCaption(final LayoutContext context)
       throws NormalizationException
   {
 
   }
 
-  public void addPassThroughContent(final DisplayContent node)
+  public void finishedTableCaption() throws NormalizationException
   {
 
   }
 
-  public void finishPassThrough()
+  public State saveState() throws StateException
+  {
+    return null;
+  }
+
+  public void finishedPassThrough()
   {
 
   }

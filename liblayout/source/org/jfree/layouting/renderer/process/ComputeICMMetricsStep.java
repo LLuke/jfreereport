@@ -23,21 +23,22 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ComputeICMMetricsStep.java,v 1.5 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.process;
 
 import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.util.geom.StrictDimension;
+import org.jfree.util.Log;
 
 /**
  * This step performs the first layouting step. The ICM-step computes the
@@ -87,10 +88,9 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
     RenderNode node = box.getVisibleFirst();
     while (node != null)
     {
-      final NodeLayoutProperties cnlp = node.getNodeLayoutProperties();
-      maxBoxWidth += cnlp.getMaximumBoxWidth();
+      maxBoxWidth += node.getMaximumBoxWidth();
 
-      final long childChunkWidth = cnlp.getMinimumChunkWidth();
+      final long childChunkWidth = node.getMinimumChunkWidth();
       if (childChunkWidth > minChunkWidth)
       {
         minChunkWidth = childChunkWidth;
@@ -98,36 +98,40 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
       node = node.getVisibleNext();
     }
 
-    NodeLayoutProperties nlp = box.getNodeLayoutProperties();
-    nlp.setMinimumChunkWidth(hbp + minChunkWidth);
-    nlp.setMaximumBoxWidth(hbp + maxBoxWidth);
-    nlp.setIcmFinished(true);
+    box.setMinimumChunkWidth(hbp + minChunkWidth);
+    box.setMaximumBoxWidth(hbp + maxBoxWidth);
+    box.setIcmMetricsFinished(box.isOpen() == false);
   }
 
   protected boolean startBlockLevelBox(final RenderBox box)
   {
-    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
-    if (box.isOpen() == false && nlp.isIcmFinished())
+    if (box.isOpen())
     {
-      return false;
+      return true;
     }
-    return true;
+    if (box.isIcmMetricsFinished() == false)
+    {
+      return true;
+    }
+    return false;
   }
 
   protected boolean startInlineLevelBox(final RenderBox box)
   {
-    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
-    if (box.isOpen() == false && nlp.isIcmFinished())
+    if (box.isOpen())
     {
-      return false;
+      return true;
     }
-    return true;
+    if (box.isIcmMetricsFinished() == false)
+    {
+      return true;
+    }
+    return false;
   }
 
   protected void finishBlockLevelBox(final RenderBox box)
   {
     // Sum up the height; Maximize the width.; add borders and padding
-    final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
     final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
 
     // horizontal border and padding ..
@@ -140,11 +144,11 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
       // No margins, no additional checks. And we can be sure that this one
       // is the only child. (This is a cheap shortcut).
       final ParagraphRenderBox paragraph = (ParagraphRenderBox) box;
-      final NodeLayoutProperties linebox =
-          paragraph.getLineboxContainer().getNodeLayoutProperties();
-      nlp.setMinimumChunkWidth(hbp + linebox.getMinimumChunkWidth());
-      nlp.setMaximumBoxWidth(hbp + linebox.getMaximumBoxWidth());
-      nlp.setIcmFinished(true);
+      final RenderNode linebox =
+          paragraph.getLineboxContainer();
+      box.setMinimumChunkWidth(hbp + linebox.getMinimumChunkWidth());
+      box.setMaximumBoxWidth(hbp + linebox.getMaximumBoxWidth());
+      box.setIcmMetricsFinished(box.isOpen() == false);
       return;
     }
 
@@ -154,15 +158,13 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
     RenderNode node = box.getVisibleFirst();
     while (node != null)
     {
-      final NodeLayoutProperties cnlp = node.getNodeLayoutProperties();
-
-      final long childChunkWidth = cnlp.getMinimumChunkWidth();
+      final long childChunkWidth = node.getMinimumChunkWidth();
       if (childChunkWidth > minChunkWidth)
       {
         minChunkWidth = childChunkWidth;
       }
 
-      final long childBoxWidth = cnlp.getMaximumBoxWidth();
+      final long childBoxWidth = node.getMaximumBoxWidth();
       if (childBoxWidth > maxBoxWidth)
       {
         maxBoxWidth = childBoxWidth;
@@ -171,16 +173,19 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
       node = node.getVisibleNext();
     }
 
-    nlp.setMinimumChunkWidth(hbp + minChunkWidth);
-    nlp.setMaximumBoxWidth(hbp + maxBoxWidth);
-    nlp.setIcmFinished(true);
+    box.setMinimumChunkWidth(hbp + minChunkWidth);
+    box.setMaximumBoxWidth(hbp + maxBoxWidth);
+    if (box instanceof TableRowRenderBox)
+    {
+      Log.debug ("HERE");
+    }
+    box.setIcmMetricsFinished(box.isOpen() == false);
   }
 
   protected void processInlineLevelNode(final RenderNode node)
   {
     // These nodes have no real change tracker; they are almost immutable anyway
-    final NodeLayoutProperties nlp = node.getNodeLayoutProperties();
-    if (nlp.isIcmFinished())
+    if (node.isIcmMetricsFinished())
     {
       return;
     }
@@ -193,15 +198,17 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
 
       if (requestedWidth == RenderLength.AUTO)
       {
-        nlp.setMaximumBoxWidth(contentSize.getWidth());
+        node.setMaximumBoxWidth(contentSize.getWidth());
       }
       else
       {
-        nlp.setMaximumBoxWidth(requestedWidth.resolve(contentSize.getWidth()));
+        node.setMaximumBoxWidth(requestedWidth.resolve(contentSize.getWidth()));
       }
 
-      nlp.setMinimumChunkWidth(0);
-      nlp.setIcmFinished(true);
+      node.setMinimumChunkWidth(0);
+      // replaced content cannot have any childs anymore, so it is safe to
+      // set this flag to an unconditional true.
+      node.setIcmMetricsFinished(true);
     }
     // Text and spacer nodes have been computed at construction time ..
   }
@@ -209,8 +216,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
   protected void processBlockLevelNode(final RenderNode node)
   {
     // These nodes have no real change tracker; they are almost immutable anyway
-    final NodeLayoutProperties nlp = node.getNodeLayoutProperties();
-    if (nlp.isIcmFinished())
+    if (node.isIcmMetricsFinished())
     {
       return;
     }
@@ -223,15 +229,17 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
 
       if (requestedWidth == RenderLength.AUTO)
       {
-        nlp.setMaximumBoxWidth(contentSize.getWidth());
+        node.setMaximumBoxWidth(contentSize.getWidth());
       }
       else
       {
-        nlp.setMaximumBoxWidth(requestedWidth.resolve(contentSize.getWidth()));
+        node.setMaximumBoxWidth(requestedWidth.resolve(contentSize.getWidth()));
       }
 
-      nlp.setMinimumChunkWidth(0);
-      nlp.setIcmFinished(true);
+      node.setMinimumChunkWidth(0);
+      // replaced content cannot have any childs anymore, so it is safe to
+      // set this flag to an unconditional true.
+      node.setIcmMetricsFinished(true);
     }
     // Text and spacer nodes have been computed at construction time ..
   }

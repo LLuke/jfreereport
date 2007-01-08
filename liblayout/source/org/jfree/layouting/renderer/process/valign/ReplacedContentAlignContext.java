@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReplacedContentAlignContext.java,v 1.2 2006/12/03 18:58:12 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -67,7 +67,7 @@ public class ReplacedContentAlignContext extends AlignContext
         // A percentage is now relative to the intrinsinc size.
         // And yes, I'm aware that this is not what the standard says ..
         final RenderLength blockContextWidth =
-            node.getNodeLayoutProperties().getBlockContextWidth();
+            node.getComputedLayoutProperties().getBlockContextWidth();
         height = node.getRequestedHeight().resolve(blockContextWidth.resolve(0));
       }
     }
@@ -80,7 +80,7 @@ public class ReplacedContentAlignContext extends AlignContext
         if (contentSize.getWidth() > 0)
         {
           final RenderLength blockContextWidth =
-              node.getNodeLayoutProperties().getBlockContextWidth();
+              node.getComputedLayoutProperties().getBlockContextWidth();
           final long computedWidth =
               node.getRequestedWidth().resolve(blockContextWidth.resolve(0));
           // Requested height must be computed to preserve the aspect ratio.
@@ -95,7 +95,7 @@ public class ReplacedContentAlignContext extends AlignContext
       {
         // height is something fixed ..
         final RenderLength blockContextWidth =
-            node.getNodeLayoutProperties().getBlockContextWidth();
+            node.getComputedLayoutProperties().getBlockContextWidth();
         height = node.getRequestedHeight().resolve(blockContextWidth.resolve(0));
       }
     }

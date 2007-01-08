@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: InlineNodeSequenceElement.java,v 1.2 2006/12/03 18:58:12 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -55,7 +55,7 @@ public class InlineNodeSequenceElement  implements InlineSequenceElement
    */
   public long getMinimumWidth()
   {
-    return node.getNodeLayoutProperties().getMinimumChunkWidth();
+    return node.getMinimumChunkWidth();
   }
 
   /**
@@ -67,8 +67,7 @@ public class InlineNodeSequenceElement  implements InlineSequenceElement
    */
   public long getMaximumWidth()
   {
-    final NodeLayoutProperties nlp = node.getNodeLayoutProperties();
-    return nlp.getMaximumBoxWidth();
+    return node.getMaximumBoxWidth();
   }
 
   public RenderNode getNode()

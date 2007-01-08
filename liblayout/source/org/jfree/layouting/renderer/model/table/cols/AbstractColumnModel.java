@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractColumnModel.java,v 1.4 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,7 +33,6 @@ import java.util.ArrayList;
 
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.renderer.model.table.TableRenderBox;
 
 /**
  * Creation-Date: 21.07.2006, 19:21:43
@@ -44,14 +43,12 @@ public abstract class AbstractColumnModel implements TableColumnModel
 {
   private boolean validated;
   private boolean incrementalModeSupported;
-  private TableRenderBox table;
 
   private ArrayList columnGroups;
   private TableColumn[] columns;
 
-  public AbstractColumnModel(final TableRenderBox table)
+  public AbstractColumnModel()
   {
-    this.table = table;
     this.incrementalModeSupported = true;
     this.columns = null;
     this.columnGroups = new ArrayList();
@@ -96,11 +93,6 @@ public abstract class AbstractColumnModel implements TableColumnModel
     return columns.length;
   }
 
-  public TableRenderBox getTable()
-  {
-    return table;
-  }
-
   private void buildColumns()
   {
     if (validated)
@@ -108,7 +100,7 @@ public abstract class AbstractColumnModel implements TableColumnModel
       return;
     }
 
-    ArrayList cols = new ArrayList();
+    final ArrayList cols = new ArrayList();
     for (int i = 0; i < columnGroups.size(); i++)
     {
       final TableColumnGroup node = (TableColumnGroup) columnGroups.get(i);
@@ -168,5 +160,14 @@ public abstract class AbstractColumnModel implements TableColumnModel
       }
     }
     throw new IndexOutOfBoundsException("No such group");
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    AbstractColumnModel cm = (AbstractColumnModel) super.clone();
+    cm.columns = null;
+    cm.validated = false;
+    cm.columnGroups = (ArrayList) columnGroups.clone();
+    return cm;
   }
 }

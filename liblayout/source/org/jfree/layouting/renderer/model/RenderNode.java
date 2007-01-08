@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RenderNode.java,v 1.26 2006/12/04 19:12:58 taqua Exp $
+ * $Id: RenderNode.java,v 1.27 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -77,8 +77,6 @@ public abstract class RenderNode implements Cloneable
   private long x;
   private long y;
 
-  private int majorAxis;
-  private int minorAxis;
 
   private boolean frozen;
   private boolean hibernated;
@@ -89,7 +87,12 @@ public abstract class RenderNode implements Cloneable
 
   private boolean dirty;
 
+  private long maximumBoxWidth;
+  private long minimumChunkWidth;
+  private boolean icmMetricsFinished;
+
   private long stickyMarker;
+  private ComputedLayoutProperties computedLayoutProperties;
 
   public RenderNode()
   {
@@ -99,7 +102,6 @@ public abstract class RenderNode implements Cloneable
 
   public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
   {
-
     this.layoutProperties.setAlignmentBaseline
         (context.getValue(LineStyleKeys.ALIGNMENT_BASELINE));
     final CSSValue alignmentAdjust = context.getValue(LineStyleKeys.ALIGNMENT_ADJUST);
@@ -124,6 +126,16 @@ public abstract class RenderNode implements Cloneable
     this.layoutProperties.setTagName (context.getTagName());
 
     this.layoutContext = context;
+  }
+
+  public ComputedLayoutProperties getComputedLayoutProperties()
+  {
+    return computedLayoutProperties;
+  }
+
+  public void setComputedLayoutProperties(final ComputedLayoutProperties clp)
+  {
+    this.computedLayoutProperties = clp;
   }
 
   public LayoutContext getLayoutContext()
@@ -203,22 +215,22 @@ public abstract class RenderNode implements Cloneable
 
   public int getMajorAxis()
   {
-    return majorAxis;
+    return layoutProperties.getMajorAxis();
   }
 
   protected void setMajorAxis(final int majorAxis)
   {
-    this.majorAxis = majorAxis;
+    layoutProperties.setMajorAxis(majorAxis);
   }
 
   public int getMinorAxis()
   {
-    return minorAxis;
+    return layoutProperties.getMinorAxis();
   }
 
   protected void setMinorAxis(final int minorAxis)
   {
-    this.minorAxis = minorAxis;
+    layoutProperties.setMinorAxis(minorAxis);
     this.updateChangeTracker();
   }
 
@@ -422,7 +434,6 @@ public abstract class RenderNode implements Cloneable
     try
     {
       final RenderNode renderNode = (RenderNode) super.clone();
-      //renderNode.layoutProperties = (NodeLayoutProperties) layoutProperties.clone();
       return renderNode;
     }
     catch (CloneNotSupportedException e)
@@ -600,5 +611,35 @@ public abstract class RenderNode implements Cloneable
   public long getEffectiveMarginBottom()
   {
     return 0;
+  }
+
+  public long getMaximumBoxWidth()
+  {
+    return maximumBoxWidth;
+  }
+
+  public void setMaximumBoxWidth(final long maximumBoxWidth)
+  {
+    this.maximumBoxWidth = maximumBoxWidth;
+  }
+
+  public long getMinimumChunkWidth()
+  {
+    return minimumChunkWidth;
+  }
+
+  public void setMinimumChunkWidth(final long minimumChunkWidth)
+  {
+    this.minimumChunkWidth = minimumChunkWidth;
+  }
+
+  public boolean isIcmMetricsFinished()
+  {
+    return icmMetricsFinished;
+  }
+
+  public void setIcmMetricsFinished(final boolean icmMetricsFinished)
+  {
+    this.icmMetricsFinished = icmMetricsFinished;
   }
 }

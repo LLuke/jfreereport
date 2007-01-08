@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableRowHeightStep.java,v 1.7 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,6 +41,7 @@ import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.model.table.rows.TableRow;
 import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
 import org.jfree.util.FastStack;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 10.10.2006, 14:10:08
@@ -65,6 +66,10 @@ public class TableRowHeightStep extends IterateVisualProcessStep
 
     public TableRow getRow()
     {
+      if (rowModel == null)
+      {
+        Log.debug ("HERE");
+      }
       return rowModel.getRow(rowNumber);
     }
 
@@ -197,8 +202,11 @@ public class TableRowHeightStep extends IterateVisualProcessStep
       final long newHeight = currentTable.getPosition() - box.getY();
       box.setHeight(newHeight);
 
-      currentTable = (TableInfoStructure) tableStack.pop();
-
+      tableStack.pop();
+      if (tableStack.isEmpty() == false)
+      {
+        currentTable = (TableInfoStructure) tableStack.peek();
+      }
       // And finally: Shift everything down ..
       final long shift = newHeight - oldHeight;
 //      Log.debug ("Shifting everything after the table by: " + shift +

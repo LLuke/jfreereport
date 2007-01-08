@@ -23,17 +23,16 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReplacedContentSequenceElement.java,v 1.2 2006/12/03 18:58:12 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.layouting.renderer.process.layoutrules;
 
-import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.NodeLayoutProperties;
-import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.border.RenderLength;
+import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.util.geom.StrictDimension;
 
 /**
@@ -66,7 +65,7 @@ public class ReplacedContentSequenceElement  implements InlineSequenceElement
       else if (contentSize.getHeight() > 0)
       {
         final RenderLength blockContextWidth =
-            node.getNodeLayoutProperties().getBlockContextWidth();
+            node.getComputedLayoutProperties().getBlockContextWidth();
         final long height =
             node.getRequestedHeight().resolve(blockContextWidth.resolve(0));
         width = height * contentSize.getWidth() / contentSize.getHeight();
@@ -79,7 +78,7 @@ public class ReplacedContentSequenceElement  implements InlineSequenceElement
     else
     {
       final RenderLength blockContextWidth =
-          node.getNodeLayoutProperties().getBlockContextWidth();
+          node.getComputedLayoutProperties().getBlockContextWidth();
       // width is not auto.
       width = node.getRequestedWidth().resolve(blockContextWidth.resolve(0));
     }
@@ -104,8 +103,7 @@ public class ReplacedContentSequenceElement  implements InlineSequenceElement
    */
   public long getMaximumWidth()
   {
-    final NodeLayoutProperties nlp = node.getNodeLayoutProperties();
-    return Math.max (width, nlp.getMaximumBoxWidth());
+    return Math.max (width, node.getMaximumBoxWidth());
   }
 
   public RenderNode getNode()

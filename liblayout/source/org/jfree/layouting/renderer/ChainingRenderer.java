@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ChainingRenderer.java,v 1.7 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -86,7 +86,9 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   private static final int MTH_START_MARKER = 11;
   private static final int MTH_START_ROOT_INLINE = 12;
   private static final int MTH_START_INLINE = 13;
+  private static final int MTH_START_TABLE_CAPTION = 14;
 
+  private static final int MTH_END_TABLE_CAPTION = 18;
   private static final int MTH_END_INLINE = 19;
   private static final int MTH_END_ROOT_INLINE = 20;
   private static final int MTH_END_MARKER = 21;
@@ -120,7 +122,7 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
     return renderer;
   }
 
-  public void startDocument(final PageContext pageContext)
+  public void startedDocument(final PageContext pageContext)
   {
     addCall(new RecordedCall (MTH_START_DOCUMENT, pageContext));
   }
@@ -268,7 +270,7 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
     {
       case MTH_START_DOCUMENT:
       {
-        renderer.startDocument((PageContext) parameters);
+        renderer.startedDocument((PageContext) parameters);
         break;
       }
       case MTH_START_FLOW:
@@ -410,6 +412,14 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
       {
         renderer.finishedPassThrough();
       }
+      case MTH_START_TABLE_CAPTION:
+      {
+        renderer.startedTableCaption((LayoutContext) parameters);
+      }
+      case MTH_END_TABLE_CAPTION:
+      {
+        renderer.finishedTableCaption();
+      }
       default:
       {
         throw new IllegalArgumentException("No such method!");
@@ -431,6 +441,17 @@ public class ChainingRenderer extends ChainingComponent implements Renderer
   public void finishedPassThrough()
   {
     addCall(new RecordedCall (MTH_END_PASSTHROUGH, null));
+  }
+
+  public void startedTableCaption(LayoutContext context)
+      throws NormalizationException
+  {
+    addCall(new RecordedCall(MTH_START_TABLE_CAPTION, context));
+  }
+
+  public void finishedTableCaption() throws NormalizationException
+  {
+    addCall(new RecordedCall (MTH_END_TABLE_CAPTION, null));
   }
 
   public State saveState() throws StateException

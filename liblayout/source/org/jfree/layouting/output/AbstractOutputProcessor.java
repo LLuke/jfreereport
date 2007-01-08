@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractOutputProcessor.java,v 1.5 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,14 +36,14 @@ import java.util.List;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.LibLayoutBoot;
+import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.layouter.feed.DefaultInputFeed;
 import org.jfree.layouting.layouter.feed.InputFeed;
-import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.normalizer.content.ContentNormalizer;
 import org.jfree.layouting.normalizer.content.Normalizer;
-import org.jfree.layouting.normalizer.displaymodel.DisplayModelBuilder;
+import org.jfree.layouting.normalizer.displaymodel.FastDisplayModelBuilder;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
-import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
+import org.jfree.layouting.normalizer.generator.PrintContentGenerator;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
@@ -175,7 +175,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor
   public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
     //return new DisplayModelBuilder(new PrintContentGenerator(layoutProcess), layoutProcess);
-    return new DisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
+    return new FastDisplayModelBuilder(new PrintContentGenerator(layoutProcess), layoutProcess);
   }
 
   public int getLogicalPageCount()

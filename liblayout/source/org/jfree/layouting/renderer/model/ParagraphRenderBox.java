@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ParagraphRenderBox.java,v 1.16 2006/12/04 19:12:58 taqua Exp $
+ * $Id: ParagraphRenderBox.java,v 1.17 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -117,6 +117,10 @@ public class ParagraphRenderBox extends BlockRenderBox
 
     box.lineboxContainer = (LineBoxRenderBox) lineboxContainer.derive(deepDerive);
     box.lineboxContainer.setParent(box);
+    if (!deepDerive)
+    {
+      box.lineBoxAge = 0;
+    }
     return box;
   }
 
@@ -138,16 +142,15 @@ public class ParagraphRenderBox extends BlockRenderBox
     return box;
   }
 
-
   private CSSValue createAlignment(CSSValue value)
   {
     if (TextAlign.LEFT.equals(value) ||
-            TextAlign.START.equals(value))
+        TextAlign.START.equals(value))
     {
       return TextAlign.LEFT;
     }
     if (TextAlign.RIGHT.equals(value) ||
-            TextAlign.END.equals(value))
+        TextAlign.END.equals(value))
     {
       return TextAlign.RIGHT;
     }
@@ -186,11 +189,13 @@ public class ParagraphRenderBox extends BlockRenderBox
     pool.clear();
     lineboxContainer.clear();
     super.clear();
+    lineBoxAge = 0;
   }
 
   public final void clearLayout()
   {
     super.clear();
+    lineBoxAge = 0;
   }
 
   public RenderBox getInsertationPoint()
@@ -270,6 +275,7 @@ public class ParagraphRenderBox extends BlockRenderBox
 
   /**
    * The public-id for the paragraph is the pool-box.
+   *
    * @return
    */
   public Object getInstanceId()

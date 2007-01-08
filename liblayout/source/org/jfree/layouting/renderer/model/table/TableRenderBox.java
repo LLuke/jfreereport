@@ -23,13 +23,11 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableRenderBox.java,v 1.13 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.model.table;
-
-import java.util.ArrayList;
 
 import org.jfree.layouting.input.style.keys.table.BorderCollapse;
 import org.jfree.layouting.input.style.keys.table.EmptyCells;
@@ -62,24 +60,21 @@ public class TableRenderBox extends BlockRenderBox
   private TableColumnModel columnModel;
 
   private boolean needsPruning;
-  private RenderLength borderSpacing;
-  private RenderLength rowSpacing;
-
-  private boolean displayEmptyCells;
-  private boolean collapsingBorderModel;
-  private boolean autoLayout;
 
   private TableLayoutInfo tableInfo;
-  private ArrayList tableColumnDefinitions;
+  /**
+   * This is not set to true unless the *closed* table has been validated.
+   */
+  private boolean structureValidated;
+  private boolean predefinedColumnsValidated;
 
   public TableRenderBox(final BoxDefinition boxDefinition)
   {
     super(boxDefinition);
 
-    this.columnModel = new SpearateColumnModel(this);
-    this.borderSpacing = RenderLength.EMPTY;
+    this.columnModel = new SpearateColumnModel();
     this.tableInfo = new TableLayoutInfo();
-    this.tableColumnDefinitions = new ArrayList();
+    this.tableInfo.setBorderSpacing(RenderLength.EMPTY);
   }
 
   public void appyStyle(LayoutContext layoutContext,
@@ -88,15 +83,15 @@ public class TableRenderBox extends BlockRenderBox
     super.appyStyle(layoutContext, metaData);
     CSSValue emptyCellsVal = layoutContext.getValue
             (TableStyleKeys.EMPTY_CELLS);
-    this.displayEmptyCells = EmptyCells.SHOW.equals(emptyCellsVal);
+    tableInfo.setDisplayEmptyCells(EmptyCells.SHOW.equals(emptyCellsVal));
 
     final CSSValue borderModel =
             layoutContext.getValue(TableStyleKeys.BORDER_COLLAPSE);
-    this.collapsingBorderModel = BorderCollapse.COLLAPSE.equals(borderModel);
+    tableInfo.setCollapsingBorderModel(BorderCollapse.COLLAPSE.equals(borderModel));
 
     final CSSValue layoutModel =
             layoutContext.getValue(TableStyleKeys.TABLE_LAYOUT);
-    this.autoLayout = TableLayout.AUTO.equals(layoutModel);
+    tableInfo.setAutoLayout (TableLayout.AUTO.equals(layoutModel));
 
     final CSSValue borderSpacingVal =
             layoutContext.getValue(TableStyleKeys.BORDER_SPACING);
@@ -104,28 +99,39 @@ public class TableRenderBox extends BlockRenderBox
     if (borderSpacingVal instanceof CSSValuePair)
     {
       CSSValuePair borderSpacingPair = (CSSValuePair) borderSpacingVal;
-      rowSpacing = DefaultBoxDefinitionFactory.computeWidth
-              (borderSpacingPair.getFirstValue(), layoutContext, metaData, false, false);
-      borderSpacing = DefaultBoxDefinitionFactory.computeWidth
-              (borderSpacingPair.getSecondValue(), layoutContext, metaData, false, false);
+      tableInfo.setRowSpacing (DefaultBoxDefinitionFactory.computeWidth
+              (borderSpacingPair.getFirstValue(),
+                  layoutContext, metaData, false, false));
+      tableInfo.setBorderSpacing (DefaultBoxDefinitionFactory.computeWidth
+              (borderSpacingPair.getSecondValue(),
+                  layoutContext, metaData, false, false));
     }
     else
     {
-      borderSpacing = RenderLength.EMPTY;
-      rowSpacing = RenderLength.EMPTY;
+      tableInfo.setBorderSpacing(RenderLength.EMPTY);
+      tableInfo.setRowSpacing(RenderLength.EMPTY);
     }
-
-
   }
 
-  public RenderLength getBorderSpacing()
+
+  public boolean isPredefinedColumnsValidated()
   {
-    return borderSpacing;
+    return predefinedColumnsValidated;
   }
 
-  public boolean isAutoLayout()
+  public void setPredefinedColumnsValidated(final boolean predefinedColumnsValidated)
   {
-    return autoLayout;
+    this.predefinedColumnsValidated = predefinedColumnsValidated;
+  }
+
+  public boolean isStructureValidated()
+  {
+    return structureValidated;
+  }
+
+  public void setStructureValidated(final boolean structureValidated)
+  {
+    this.structureValidated = structureValidated;
   }
 
   public TableColumnModel getColumnModel()
@@ -144,23 +150,45 @@ public class TableRenderBox extends BlockRenderBox
     return columnModel.isIncrementalModeSupported();
   }
 
-  public boolean isCollapsingBorderModel()
+  public RenderLength getBorderSpacing()
   {
-    return collapsingBorderModel;
+    return tableInfo.getBorderSpacing();
+  }
+
+  public RenderLength getRowSpacing()
+  {
+    return tableInfo.getRowSpacing();
   }
 
   public boolean isDisplayEmptyCells()
   {
-    return displayEmptyCells;
+    return tableInfo.isDisplayEmptyCells();
   }
 
-  public long getRowSpacing()
+  public boolean isCollapsingBorderModel()
   {
-    return rowSpacing.resolve(0);
+    return tableInfo.isCollapsingBorderModel();
   }
 
-  public TableLayoutInfo getTableInfo()
+  public boolean isAutoLayout()
   {
-    return tableInfo;
+    return tableInfo.isAutoLayout();
+  }
+
+  public Object clone()
+  {
+    try
+    {
+      final TableRenderBox box = (TableRenderBox) super.clone();
+      if (box.isStructureValidated() == false)
+      {
+        box.columnModel = (TableColumnModel) columnModel.clone();
+      }
+      return box;
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new IllegalStateException("Clone failed for some reason.");
+    }
   }
 }

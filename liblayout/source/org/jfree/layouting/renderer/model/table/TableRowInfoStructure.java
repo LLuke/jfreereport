@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableRowInfoStructure.java,v 1.3 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,7 +39,7 @@ import org.jfree.layouting.renderer.model.table.cells.TableCell;
  *
  * @author Thomas Morgner
  */
-public class TableRowInfoStructure
+public class TableRowInfoStructure implements Cloneable
 {
   private ArrayList cells;
   private boolean validationDone;
@@ -96,5 +96,12 @@ public class TableRowInfoStructure
       throw new NullPointerException();
     }
     this.cells.set(pos, cell);
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    final TableRowInfoStructure o = (TableRowInfoStructure) super.clone();
+    o.cells = (ArrayList) cells.clone();
+    return o;
   }
 }

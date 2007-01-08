@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ParagraphLineBreakStep.java,v 1.4 2006/12/03 18:58:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,6 +39,7 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.util.FastStack;
+import org.jfree.util.Log;
 
 /**
  * This static computation step performs manual linebreaks on all paragraphs.
@@ -68,15 +69,15 @@ import org.jfree.util.FastStack;
  */
 public class ParagraphLineBreakStep extends IterateStructuralProcessStep
 {
-  private static class ParagraphBreakState
+  private static class ParagraphLineBreakState
   {
     private Object suspendItem;
     private BlockRenderBox lines;
     private RenderBox insertationPoint;
     private boolean breakRequested;
 
-    public ParagraphBreakState(ParagraphRenderBox paragraph,
-                               boolean noChanges)
+    public ParagraphLineBreakState(ParagraphRenderBox paragraph,
+                                   boolean noChanges)
     {
       if (paragraph == null)
       {
@@ -140,7 +141,7 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
   }
 
   private FastStack paragraphNesting;
-  private ParagraphBreakState breakState;
+  private ParagraphLineBreakState breakState;
 
   public ParagraphLineBreakStep()
   {
@@ -154,6 +155,7 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
 
   protected boolean startBlockBox(BlockRenderBox box)
   {
+    Log.debug ("Enter StartBlock");
     if (box instanceof ParagraphRenderBox)
     {
       ParagraphRenderBox paragraphBox = (ParagraphRenderBox) box;
@@ -162,7 +164,8 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
 
       if (unchanged)
       {
-        final ParagraphBreakState item = new ParagraphBreakState(paragraphBox, true);
+        Log.debug ("Enter StartBlock: Unchanged");
+        final ParagraphLineBreakState item = new ParagraphLineBreakState(paragraphBox, true);
         paragraphNesting.push(item);
         breakState = item;
         return false;
@@ -184,7 +187,7 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
         paragraphBox = (ParagraphRenderBox) child;
       }
 
-      final ParagraphBreakState item = new ParagraphBreakState(paragraphBox, false);
+      final ParagraphLineBreakState item = new ParagraphLineBreakState(paragraphBox, false);
       paragraphNesting.push(item);
       breakState = item;
     }
@@ -229,7 +232,7 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
       }
       else
       {
-        breakState = (ParagraphBreakState) paragraphNesting.peek();
+        breakState = (ParagraphLineBreakState) paragraphNesting.peek();
       }
 
     }
