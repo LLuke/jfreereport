@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractOutputProcessor.java,v 1.5 2006/12/03 18:58:06 taqua Exp $
+ * $Id: AbstractOutputProcessor.java,v 1.6 2007/01/08 17:55:47 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,6 +44,7 @@ import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.normalizer.displaymodel.FastDisplayModelBuilder;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
 import org.jfree.layouting.normalizer.generator.PrintContentGenerator;
+import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
@@ -175,7 +176,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor
   public ModelBuilder createModelBuilder(LayoutProcess layoutProcess)
   {
     //return new DisplayModelBuilder(new PrintContentGenerator(layoutProcess), layoutProcess);
-    return new FastDisplayModelBuilder(new PrintContentGenerator(layoutProcess), layoutProcess);
+    return new FastDisplayModelBuilder(new DefaultContentGenerator(layoutProcess), layoutProcess);
   }
 
   public int getLogicalPageCount()

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractAlignmentProcessor.java,v 1.6 2006/12/03 18:58:10 taqua Exp $
+ * $Id: AbstractAlignmentProcessor.java,v 1.7 2006/12/09 21:19:52 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,6 +41,7 @@ import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
 import org.jfree.layouting.renderer.process.layoutrules.EndSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
+import org.jfree.layouting.renderer.ModelPrinter;
 import org.jfree.layouting.util.LongList;
 import org.jfree.util.FastStack;
 
@@ -450,7 +451,15 @@ public abstract class AbstractAlignmentProcessor
   {
     final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     box.setX(position + blp.getMarginLeft());
-    box.setWidth(itemElementWidth - blp.getMarginLeft() - blp.getMarginRight());
+    final long width = itemElementWidth - blp.getMarginLeft() - blp.getMarginRight();
+    if (width == 0)
+    {
+      ModelPrinter.printParents(box);
+
+      throw new IllegalStateException("A box without any width? " +
+          Integer.toHexString(System.identityHashCode(box)) + " " + box.getClass());
+    }
+    box.setWidth(width);
 
     final long leftInsets = blp.getPaddingLeft() + blp.getBorderLeft();
     final long rightInsets = blp.getPaddingRight() + blp.getBorderRight();

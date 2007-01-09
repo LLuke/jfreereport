@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LogicalPageBox.java,v 1.17 2006/12/03 18:58:09 taqua Exp $
+ * $Id: LogicalPageBox.java,v 1.18 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,10 @@ import org.jfree.layouting.renderer.model.NormalFlowRenderBox;
 import org.jfree.layouting.renderer.model.PageAreaRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.NodeLayoutProperties;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.namespace.Namespaces;
 
 /**
  * The logical page box does not have a layout at all. It has collection of
@@ -121,14 +125,19 @@ public class LogicalPageBox extends BlockRenderBox
 
     setMajorAxis(VERTICAL_AXIS);
     setMinorAxis(HORIZONTAL_AXIS);
+
+    final NodeLayoutProperties nodeLayoutProperties = getNodeLayoutProperties();
+    nodeLayoutProperties.setNamespace(Namespaces.LIBLAYOUT_NAMESPACE);
+    nodeLayoutProperties.setTagName("logical-page");
   }
 
-//  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
-//  {
-//    headerArea.appyStyle(context, metaData);
-//    footerArea.appyStyle(context, metaData);
-//    getContentArea().appyStyle(context, metaData);
-//  }
+  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  {
+    super.appyStyle(context, metaData);
+    final NodeLayoutProperties nodeLayoutProperties = getNodeLayoutProperties();
+    nodeLayoutProperties.setNamespace(Namespaces.LIBLAYOUT_NAMESPACE);
+    nodeLayoutProperties.setTagName("logical-page");
+  }
 
   public void updatePageArea(PageGrid pageGrid)
   {

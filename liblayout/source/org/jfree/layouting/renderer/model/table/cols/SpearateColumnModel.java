@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SpearateColumnModel.java,v 1.5 2006/12/11 12:56:14 taqua Exp $
+ * $Id: SpearateColumnModel.java,v 1.6 2007/01/08 17:55:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -181,10 +181,6 @@ public class SpearateColumnModel extends AbstractColumnModel
     }
 
     validationTrack = table.getChangeTracker();
-    if (validationTrack == 66)
-    {
-      Log.debug ("HERE");
-    }
   }
 
   public long getPreferredSize()

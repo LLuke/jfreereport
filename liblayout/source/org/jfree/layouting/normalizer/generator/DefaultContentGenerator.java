@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultContentGenerator.java,v 1.7 2006/12/03 18:58:06 taqua Exp $
+ * $Id: DefaultContentGenerator.java,v 1.8 2007/01/08 17:55:47 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -112,7 +112,6 @@ public class DefaultContentGenerator implements ContentGenerator
 
   protected DefaultContentGenerator(final Renderer renderer)
   {
-    Log.debug ("Created: " + renderer);
     this.renderer = renderer;
   }
 

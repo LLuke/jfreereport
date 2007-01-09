@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LogicalPageDrawable.java,v 1.6 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,16 +53,11 @@ import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
-import org.jfree.layouting.renderer.model.table.TableRowInfoStructure;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.model.table.TableSectionRenderBox;
-import org.jfree.layouting.renderer.model.table.cells.TableCell;
-import org.jfree.layouting.renderer.model.table.cols.TableColumn;
-import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.text.Glyph;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
-import org.jfree.util.Log;
 
 /**
  * The page drawable is the content provider for the Graphics2DOutputTarget.
@@ -290,182 +285,5 @@ public class LogicalPageDrawable implements PageDrawable
     return b.toString();
   }
 
-
-  public void print()
-  {
-    printBox(rootBox, 0);
-  }
-
-  public void printBox(RenderBox box, int level)
-  {
-    StringBuffer b = new StringBuffer();
-    for (int i = 0; i < level; i++)
-    {
-      b.append("   ");
-    }
-    b.append(box.getClass().getName());
-    b.append("[");
-    b.append(Integer.toHexString(System.identityHashCode(box)));
-    b.append("]");
-    b.append("={x=");
-    b.append(box.getX());
-    b.append(", y=");
-    b.append(box.getY());
-    b.append(", width=");
-    b.append(box.getWidth());
-    b.append(", height=");
-    b.append(box.getHeight());
-    b.append("}");
-    Log.debug(b.toString());
-
-    b = new StringBuffer();
-    for (int i = 0; i < level; i++)
-    {
-      b.append("   ");
-    }
-    b.append("- nodeLayoutProperties=");
-    b.append(box.getNodeLayoutProperties());
-    Log.debug(b.toString());
-
-    b = new StringBuffer();
-    for (int i = 0; i < level; i++)
-    {
-      b.append("   ");
-    }
-    b.append("- boxLayoutProperties=");
-    b.append(box.getBoxLayoutProperties());
-    Log.debug(b.toString());
-
-    if (box instanceof TableRowRenderBox)
-    {
-      TableRowRenderBox row = (TableRowRenderBox) box;
-      final TableRowInfoStructure rowInfoStructure = row.getRowInfoStructure();
-
-      for (int i = 0; i < rowInfoStructure.getCellCount(); i++)
-      {
-        TableCell cell = rowInfoStructure.getCellAt(i);
-        Log.debug ("CELL: " + i + " = " + cell.getRowSpan() + " " + cell.getColSpan() + " " + cell);
-      }
-    }
-    else if (box instanceof TableRenderBox)
-    {
-      TableRenderBox table = (TableRenderBox) box;
-      final TableColumnModel columnModel = table.getColumnModel();
-      for (int i = 0; i < columnModel.getColumnCount(); i++)
-      {
-        final TableColumn col = columnModel.getColumn(i);
-        Log.debug ("COLUMN: EffectiveSize: " + col.getEffectiveSize() +  " Computed Max Width: " + col.getComputedMaximumWidth() + " Computed ChunkSize: " + col.getComputedMinChunkSize());
-//        for (int cs = 1; cs < 3; cs++)
-//        {
-//          Log.debug ("* COLUMN: " + i + "(" + cs + ") " +
-//                  col.getPreferredSize(cs) + " " +
-//                  col.getMinimumChunkSize(cs));
-//        }
-//        Log.debug ("COLUMN: " + i + " " +
-//                col.getPreferredSize() + " " +
-//                col.getMinimumChunkSize());
-      }
-    }
-    else if (box instanceof TableCellRenderBox)
-    {
-      TableCellRenderBox cellBox = (TableCellRenderBox) box;
-      Log.debug ("CELL: Position: " + cellBox.getColumnIndex());
-    }
-//    else if (box instanceof ParagraphRenderBox)
-//    {
-//      ParagraphRenderBox paraBox = (ParagraphRenderBox) box;
-//      printBox(paraBox.getLineboxContainer(), level + 1);
-//    }
-
-    printChilds(box, level);
-  }
-
-  private void printChilds(final RenderBox box, final int level)
-  {
-    RenderNode childs = box.getFirstChild();
-    while (childs != null)
-    {
-      if (childs instanceof RenderBox)
-      {
-        printBox((RenderBox) childs, level + 1);
-      }
-      else if (childs instanceof RenderableText)
-      {
-        printText((RenderableText) childs, level + 1);
-      }
-      else
-      {
-        printNode(childs, level + 1);
-      }
-      childs = childs.getNext();
-    }
-  }
-
-  private void printNode(final RenderNode node, final int level)
-  {
-    StringBuffer b = new StringBuffer();
-    for (int i = 0; i < level; i++)
-    {
-      b.append("   ");
-    }
-    b.append(node.getClass().getName());
-    b.append("[");
-    b.append(Integer.toHexString(System.identityHashCode(node)));
-    b.append("]");
-    b.append("={x=");
-    b.append(node.getX());
-    b.append(", y=");
-    b.append(node.getY());
-    b.append(", width=");
-    b.append(node.getWidth());
-    b.append(", height=");
-    b.append(node.getHeight());
-    b.append("}");
-    Log.debug(b.toString());
-
-
-    b = new StringBuffer();
-    for (int i = 0; i < level; i++)
-    {
-      b.append("   ");
-    }
-    b.append("- nodeLayoutProperties=");
-    b.append(node.getNodeLayoutProperties());
-    Log.debug(b.toString());
-  }
-
-  private void printText(final RenderableText text, final int level)
-  {
-    StringBuffer b = new StringBuffer();
-    for (int i = 0; i < level; i++)
-    {
-      b.append("   ");
-    }
-    b.append("Text");
-    b.append("[");
-    b.append(Integer.toHexString(System.identityHashCode(text)));
-    b.append("]");
-    b.append("={x=");
-    b.append(text.getX());
-    b.append(", y=");
-    b.append(text.getY());
-    b.append(", width=");
-    b.append(text.getWidth());
-    b.append(", height=");
-    b.append(text.getHeight());
-    b.append(", text='");
-    b.append(text.getRawText());
-    b.append("'}");
-    Log.debug(b.toString());
-
-    b = new StringBuffer();
-    for (int i = 0; i < level; i++)
-    {
-      b.append("   ");
-    }
-    b.append("- nodeLayoutProperties=");
-    b.append(text.getNodeLayoutProperties());
-    Log.debug(b.toString());
-  }
 
 }

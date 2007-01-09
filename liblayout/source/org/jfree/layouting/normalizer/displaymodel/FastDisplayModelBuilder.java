@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FastDisplayModelBuilder.java,v 1.1 2007/01/08 17:55:47 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -753,7 +753,6 @@ public class FastDisplayModelBuilder implements ModelBuilder
       else
       {
         final LayoutContext lc = context.getCurrentLayoutContext();
-        Log.debug("Closing suspended: " + lc.getTagName());
       }
       context.close();
       if (role == TYPE_FLOW)

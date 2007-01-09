@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ComputeICMMetricsStep.java,v 1.5 2006/12/03 18:58:10 taqua Exp $
+ * $Id: ComputeICMMetricsStep.java,v 1.6 2007/01/08 17:55:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,7 +36,6 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
-import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.util.geom.StrictDimension;
 import org.jfree.util.Log;
 
@@ -51,8 +50,11 @@ import org.jfree.util.Log;
  * <p/>
  * That step produces the preferred size for the nodes.
  * <p/>
- * Todo: This must be a visual process step. Margins must be taken into account
- * This eats another 10% of the time ..
+ * As long as paragraphs can be nested, we cannot assume anything here. A nested
+ * paragraph can have linebreaks all the time and thus it is dangerous to skip
+ * the ICM-Computation on such nodes. Maybe we can tweak something with a change
+ * counter or so.
+ *
  * @author Thomas Morgner
  */
 public class ComputeICMMetricsStep extends IterateVisualProcessStep
@@ -71,6 +73,36 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
     //processBoxChilds(box.getLineboxContainer());
     startProcessing(box.getLineboxContainer());
   }
+
+
+  protected boolean startBlockLevelBox(final RenderBox box)
+  {
+//    if (box.isOpen())
+//    {
+//      return true;
+//    }
+//    if (box.isIcmMetricsFinished() == false)
+//    {
+//      return true;
+//    }
+//    return false;
+    return true;
+  }
+
+  protected boolean startInlineLevelBox(final RenderBox box)
+  {
+//    if (box.isOpen())
+//    {
+//      return true;
+//    }
+//    if (box.isIcmMetricsFinished() == false)
+//    {
+//      return true;
+//    }
+//    return false;
+    return true;
+  }
+
 
   protected void finishInlineLevelBox(final RenderBox box)
   {
@@ -103,32 +135,6 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
     box.setIcmMetricsFinished(box.isOpen() == false);
   }
 
-  protected boolean startBlockLevelBox(final RenderBox box)
-  {
-    if (box.isOpen())
-    {
-      return true;
-    }
-    if (box.isIcmMetricsFinished() == false)
-    {
-      return true;
-    }
-    return false;
-  }
-
-  protected boolean startInlineLevelBox(final RenderBox box)
-  {
-    if (box.isOpen())
-    {
-      return true;
-    }
-    if (box.isIcmMetricsFinished() == false)
-    {
-      return true;
-    }
-    return false;
-  }
-
   protected void finishBlockLevelBox(final RenderBox box)
   {
     // Sum up the height; Maximize the width.; add borders and padding
@@ -144,8 +150,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
       // No margins, no additional checks. And we can be sure that this one
       // is the only child. (This is a cheap shortcut).
       final ParagraphRenderBox paragraph = (ParagraphRenderBox) box;
-      final RenderNode linebox =
-          paragraph.getLineboxContainer();
+      final RenderNode linebox = paragraph.getLineboxContainer();
       box.setMinimumChunkWidth(hbp + linebox.getMinimumChunkWidth());
       box.setMaximumBoxWidth(hbp + linebox.getMaximumBoxWidth());
       box.setIcmMetricsFinished(box.isOpen() == false);
@@ -175,10 +180,6 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
 
     box.setMinimumChunkWidth(hbp + minChunkWidth);
     box.setMaximumBoxWidth(hbp + maxBoxWidth);
-    if (box instanceof TableRowRenderBox)
-    {
-      Log.debug ("HERE");
-    }
     box.setIcmMetricsFinished(box.isOpen() == false);
   }
 

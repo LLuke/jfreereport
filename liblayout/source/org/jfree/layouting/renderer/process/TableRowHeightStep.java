@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: TableRowHeightStep.java,v 1.7 2006/12/03 18:58:10 taqua Exp $
+ * $Id: TableRowHeightStep.java,v 1.8 2007/01/08 17:55:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -66,10 +66,6 @@ public class TableRowHeightStep extends IterateVisualProcessStep
 
     public TableRow getRow()
     {
-      if (rowModel == null)
-      {
-        Log.debug ("HERE");
-      }
       return rowModel.getRow(rowNumber);
     }
 

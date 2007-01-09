@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PaginatingRenderer.java,v 1.7 2006/12/03 18:58:07 taqua Exp $
+ * $Id: PaginatingRenderer.java,v 1.8 2007/01/08 17:55:48 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -207,11 +207,11 @@ public class PaginatingRenderer extends AbstractRenderer
     staticPropertiesStep.compute(logicalPageBox);
     marginsStep.compute(logicalPageBox);
     paragraphLinebreakStep.compute(logicalPageBox);
+    icmMetricsStep.compute(logicalPageBox);
 
     boolean repeat = true;
     while (repeat)
     {
-      icmMetricsStep.compute(logicalPageBox);
       tableICMMetricsStep.compute(logicalPageBox);
 
       minorAxisLayoutStep.compute(logicalPageBox);

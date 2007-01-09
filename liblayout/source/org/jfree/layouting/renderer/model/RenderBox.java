@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RenderBox.java,v 1.28 2006/12/05 15:13:45 taqua Exp $
+ * $Id: RenderBox.java,v 1.29 2007/01/08 17:55:48 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,6 +44,7 @@ import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.TextUtility;
+import org.jfree.util.Log;
 
 /**
  * A render-box corresponds to elements in a DOM tree.
@@ -64,6 +65,8 @@ import org.jfree.layouting.renderer.text.TextUtility;
  */
 public abstract class RenderBox extends RenderNode
 {
+  public static final boolean LOG_PRUNE = true;
+
   private RenderNode firstChild;
   private RenderNode lastChild;
 
@@ -931,6 +934,10 @@ public abstract class RenderBox extends RenderNode
     {
       if (getParent() != null)
       {
+        if (LOG_PRUNE)
+        {
+          Log.debug("Pruning: " + this);
+        }
         getParent().remove(this);
       }
     }
@@ -941,6 +948,10 @@ public abstract class RenderBox extends RenderNode
       {
         if (lastChild.isDiscardable())
         {
+          if (LOG_PRUNE)
+          {
+            Log.debug("Pruning: " + lastChild);
+          }
           remove(lastChild);
           lastChild = getLastChild();
         }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ParagraphLineBreakStep.java,v 1.4 2006/12/03 18:58:10 taqua Exp $
+ * $Id: ParagraphLineBreakStep.java,v 1.5 2007/01/08 17:55:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -77,14 +77,14 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
     private boolean breakRequested;
 
     public ParagraphLineBreakState(ParagraphRenderBox paragraph,
-                                   boolean noChanges)
+                                   boolean readOnly)
     {
       if (paragraph == null)
       {
         throw new NullPointerException();
       }
       this.lines = paragraph.getLineboxContainer();
-      if (noChanges)
+      if (readOnly)
       {
         this.insertationPoint = null;
       }
@@ -155,7 +155,6 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
 
   protected boolean startBlockBox(BlockRenderBox box)
   {
-    Log.debug ("Enter StartBlock");
     if (box instanceof ParagraphRenderBox)
     {
       ParagraphRenderBox paragraphBox = (ParagraphRenderBox) box;
@@ -164,8 +163,9 @@ public class ParagraphLineBreakStep extends IterateStructuralProcessStep
 
       if (unchanged)
       {
-        Log.debug ("Enter StartBlock: Unchanged");
-        final ParagraphLineBreakState item = new ParagraphLineBreakState(paragraphBox, true);
+        final ParagraphRenderBox derivedParagraph = (ParagraphRenderBox) box.derive(true);
+        breakState.getInsertationPoint().addGeneratedChild(derivedParagraph);
+        final ParagraphLineBreakState item = new ParagraphLineBreakState(derivedParagraph, true);
         paragraphNesting.push(item);
         breakState = item;
         return false;

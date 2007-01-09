@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractRenderer.java,v 1.15 2006/12/05 15:18:34 taqua Exp $
+ * $Id: AbstractRenderer.java,v 1.16 2007/01/08 17:55:47 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -303,7 +303,8 @@ public abstract class AbstractRenderer implements Renderer
       catch(IllegalStateException e)
       {
         e.printStackTrace();
-        validateOutput();
+        //validateOutput();
+        ModelPrinter.print(logicalPageBox);
       }
     }
   }
@@ -644,7 +645,8 @@ public abstract class AbstractRenderer implements Renderer
     paragraphBox.appyStyle(context, layoutProcess.getOutputMetaData());
     paragraphBox.setPageContext(pageContext.getPageContext());
 
-    getInsertationPoint().addChild(paragraphBox);
+    final RenderBox insertationPoint = getInsertationPoint();
+    insertationPoint.addChild(paragraphBox);
 
     // tryValidateOutput();
   }

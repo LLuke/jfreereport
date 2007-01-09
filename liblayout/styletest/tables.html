@@ -34,7 +34,7 @@ What makes a table a table?
 
   </tfoot>
   <tbody>
-    
+
   </tbody>
 </table>
 
@@ -255,5 +255,35 @@ Paddings are not supported on table-rows or table-sections.
     </tr>
   </tbody>
 </table>
+
+<p>Testing, how content in rows or sections is handled.</p>
+
+Paddings are not supported on table-rows or table-sections.
+
+<table style="border-collapse:separate;">
+  In Table
+  <tbody style="padding: 4em">
+    In Table-Body
+    <tr style="padding: 4em">
+      <td style="border: 1pt solid red">
+        TR-Border green
+      </td>
+      <td style="border: 1pt solid yellow">>
+        Test
+      </td>
+      <td rowspan="2">
+        Test<br>
+        test
+      </td>
+    </tr>
+    <tr>
+      In TableRow
+      <td>
+        Content
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 </body>
 </html>

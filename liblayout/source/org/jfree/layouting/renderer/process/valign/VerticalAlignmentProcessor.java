@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: VerticalAlignmentProcessor.java,v 1.5 2006/12/03 18:58:12 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -289,10 +289,10 @@ public class VerticalAlignmentProcessor
 
   protected void print (BoxAlignContext alignContext, int level)
   {
-    Log.debug ("Box: L:" + level + " Y1:" + alignContext.getBeforeEdge() +
-        " Y2:" + alignContext.getAfterEdge() +
-        " H:" + (alignContext.getAfterEdge() - alignContext.getBeforeEdge())
-    );
+//    Log.debug ("Box: L:" + level + " Y1:" + alignContext.getBeforeEdge() +
+//        " Y2:" + alignContext.getAfterEdge() +
+//        " H:" + (alignContext.getAfterEdge() - alignContext.getBeforeEdge())
+//    );
     // We have a valid align structure here.
     AlignContext child = alignContext.getFirstChild();
     while (child != null)
@@ -301,12 +301,12 @@ public class VerticalAlignmentProcessor
       {
         print((BoxAlignContext) child, level + 1);
       }
-      else
-      {
-        Log.debug ("...: L:" + level + " Y1:" + child.getBeforeEdge() +
-            " Y2:" + (child.getAfterEdge()) +
-            " H:" + (child.getAfterEdge() - child.getBeforeEdge()));
-      }
+//      else
+//      {
+//        Log.debug ("...: L:" + level + " Y1:" + child.getBeforeEdge() +
+//            " Y2:" + (child.getAfterEdge()) +
+//            " H:" + (child.getAfterEdge() - child.getBeforeEdge()));
+//      }
       child = child.getNext();
     }
   }

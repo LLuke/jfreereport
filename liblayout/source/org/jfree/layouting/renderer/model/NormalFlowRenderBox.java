@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: NormalFlowRenderBox.java,v 1.14 2006/12/04 19:12:58 taqua Exp $
+ * $Id: NormalFlowRenderBox.java,v 1.15 2006/12/05 15:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,6 +32,9 @@ package org.jfree.layouting.renderer.model;
 import java.util.ArrayList;
 
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.util.Log;
 
 /**
@@ -63,6 +66,17 @@ public class NormalFlowRenderBox extends BlockRenderBox
 
     // hardcoded for now, content forms lines, which flow from top to bottom
     // and each line flows horizontally (later with support for LTR and RTL)
+    final NodeLayoutProperties nodeLayoutProperties = getNodeLayoutProperties();
+    nodeLayoutProperties.setNamespace(Namespaces.LIBLAYOUT_NAMESPACE);
+    nodeLayoutProperties.setTagName("normal-flow");
+  }
+
+  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  {
+    super.appyStyle(context, metaData);
+    final NodeLayoutProperties nodeLayoutProperties = getNodeLayoutProperties();
+    nodeLayoutProperties.setNamespace(Namespaces.LIBLAYOUT_NAMESPACE);
+    nodeLayoutProperties.setTagName("normal-flow");
   }
 
   public PlaceholderRenderNode getPlaceHolder()

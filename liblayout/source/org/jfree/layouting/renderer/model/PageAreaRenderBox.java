@@ -23,11 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PageAreaRenderBox.java,v 1.2 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.model;
+
+import org.jfree.layouting.namespace.Namespaces;
+import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.output.OutputProcessorMetaData;
 
 /**
  * A renderbox, that represents a page-area. As our CSS-parser does not yet
@@ -41,6 +45,17 @@ public class PageAreaRenderBox extends BlockRenderBox
   public PageAreaRenderBox(final BoxDefinition boxDefinition)
   {
     super(boxDefinition);
+    final NodeLayoutProperties nodeLayoutProperties = getNodeLayoutProperties();
+    nodeLayoutProperties.setNamespace(Namespaces.LIBLAYOUT_NAMESPACE);
+    nodeLayoutProperties.setTagName("page-area");
+  }
+
+  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  {
+    super.appyStyle(context, metaData);
+    final NodeLayoutProperties nodeLayoutProperties = getNodeLayoutProperties();
+    nodeLayoutProperties.setNamespace(Namespaces.LIBLAYOUT_NAMESPACE);
+    nodeLayoutProperties.setTagName("page-area");
   }
 
   public void setParent(RenderBox parent)

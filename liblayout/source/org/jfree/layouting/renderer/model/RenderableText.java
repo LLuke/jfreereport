@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RenderableText.java,v 1.13 2006/12/03 18:58:09 taqua Exp $
+ * $Id: RenderableText.java,v 1.14 2007/01/08 17:55:48 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -134,7 +134,6 @@ public class RenderableText extends RenderNode
     //      heightBelow = Math.max(glyph.getHeight() - glyph.getBaseLine(), heightBelow);
       final int kerning = glyph.getKerning();
       final int width = glyph.getWidth();
-      // Log.debug ("Glyph: " + width + " - " + kerning);
       if (glyph.getBreakWeight() <= BreakOpportunityProducer.BREAK_CHAR)
       {
         // for the layouting, we avoid inner-word breaks
@@ -169,8 +168,6 @@ public class RenderableText extends RenderNode
     minimumWidth = Math.max(minimumWidth, wordMinWidth);
     preferredWidth = Math.max(preferredWidth, wordPrefWidth);
     final long maximumWidth = Math.max(minimumWidth, wordMaxWidth);
-
-    // Log.debug ("Text: " + minimumWidth + ", " + preferredWidth + ", " + maximumWidth);
 
     setMaximumBoxWidth(maximumWidth);
     setMinimumChunkWidth(minimumChunkWidth);

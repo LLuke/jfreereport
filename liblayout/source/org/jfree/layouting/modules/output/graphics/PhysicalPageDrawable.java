@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PhysicalPageDrawable.java,v 1.2 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,7 +38,6 @@ import java.awt.print.Paper;
 
 import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 17.11.2006, 18:00:46
@@ -85,9 +84,6 @@ public class PhysicalPageDrawable implements PageDrawable
       this.pageFormat.setPaper(p);
       this.pageFormat.setOrientation(PageFormat.LANDSCAPE);
     }
-
-    Log.debug ("PageFormat: 1:" + pageFormat.getWidth() + " " + pageFormat.getHeight());
-    Log.debug ("PageFormat: 2:" + pageFormat.getImageableWidth() + " " + pageFormat.getImageableHeight());
   }
 
   public PageFormat getPageFormat()

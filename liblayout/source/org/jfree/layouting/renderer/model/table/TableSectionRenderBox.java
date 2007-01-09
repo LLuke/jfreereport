@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableSectionRenderBox.java,v 1.11 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -96,55 +96,6 @@ public class TableSectionRenderBox extends BlockRenderBox
   {
     return rowModel;
   }
-//
-//  public void structValidateRows ()
-//  {
-//    final TableColumnModel columnModel = getTable().getColumnModel();
-//
-//    boolean needsRestart = true;
-//    while (needsRestart)
-//    {
-//      Log.debug ("Starting validation process..");
-//      needsRestart = false;
-//      int rowCount = 0;
-//      RenderNode node = getFirstChild();
-//      while (node != null)
-//      {
-//        if (node instanceof TableRowRenderBox == false)
-//        {
-//          node = node.getNext();
-//          continue;
-//        }
-//
-//        // A row.
-//        TableRowRenderBox row = (TableRowRenderBox) node;
-//        if (row.isStructureDirty())
-//        {
-//          final int size = columnModel.getColumnCount();
-//          row.validateStructure();
-//          if (columnModel.getColumnCount() != size)
-//          {
-//            // a structural change. Great, we have to restart.
-//            Log.debug ("Structural change detected; restarting.");
-//            needsRestart = true;
-//          }
-//        }
-//
-//        rowCount += 1;
-//        if (rowCount > rowModel.getRowCount())
-//        {
-//          // generate a new row in the model.
-//          final BoxDefinition boxDef = row.getBoxDefinition();
-//          rowModel.addRow(new TableRow
-//                  (boxDef.getBorder()));
-//        }
-//        Log.debug ("Row validated.");
-//        node = node.getNext();
-//      }
-//    }
-//    Log.debug ("Finished validation process..");
-//
-//  }
 
   public boolean isStructureValidated()
   {
