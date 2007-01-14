@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.5 2006/12/30 13:50:19 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,10 +43,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import org.jfree.formula.ErrorValue;
 import org.jfree.formula.FormulaContext;
-import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.operators.InfixOperator;
+import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.util.Configuration;
 
 
@@ -270,6 +271,19 @@ public class DefaultTypeRegistry implements TypeRegistry
     {
       return "";
     }
+    
+    if (value instanceof Boolean)
+    {
+      final Boolean b = (Boolean)value;
+      if(Boolean.TRUE.equals(b))
+      {
+        return "TRUE";
+      }
+      else
+      {
+        return "FALSE";
+      }
+    }
 
     Number n = convertToNumber(type1, value);
     if (n != null)
@@ -467,4 +481,25 @@ public class DefaultTypeRegistry implements TypeRegistry
     }
     return new TypeValuePair(targetType, target);
   }
+  
+  /*public TypeValuePair getError(final TypeValuePair value1, final TypeValuePair value2)
+  {
+    if(value1 != null)
+    {
+      final Type type1 = value1.getType();
+      if (type1 instanceof ErrorType)
+      {
+        return value1;
+      }
+    }
+    if(value2 != null)
+    {
+      final Type type2 = value2.getType();
+      if (type2 instanceof ErrorType)
+      {
+        return value2;
+      }
+    }
+    return null;
+  }*/
 }

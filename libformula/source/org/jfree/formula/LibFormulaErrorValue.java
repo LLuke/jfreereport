@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LibFormulaErrorValue.java,v 1.3 2006/12/03 19:22:27 taqua Exp $
+ * $Id: LibFormulaErrorValue.java,v 1.4 2006/12/30 13:50:16 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -49,6 +49,10 @@ public class LibFormulaErrorValue implements ErrorValue
   public static final int ERROR_ARITHMETIC = 503;
   
   public static final int ERROR_ARGUMENTS = 1;
+  
+  public static final int ERROR_NOT_FOUND = 504;
+  /** The NA error*/
+  public static final int ERROR_NA = 7;
 
   private int errorCode;
 

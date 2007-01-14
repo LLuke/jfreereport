@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: LogicalType.java,v 1.2 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,6 +38,7 @@ import org.jfree.formula.typing.Type;
  *
  * @author Thomas Morgner
  */
+//TODO: add scalar type?
 public final class LogicalType extends DefaultType
 {
   public static final LogicalType TYPE = new LogicalType();

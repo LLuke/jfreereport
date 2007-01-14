@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TypeRegistry.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
+ * $Id: TypeRegistry.java,v 1.4 2006/12/30 13:50:19 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.formula.typing;
 
 import java.util.Date;
 
+import org.jfree.formula.ErrorValue;
 import org.jfree.formula.lvalues.TypeValuePair;
 
 /**
@@ -99,4 +100,14 @@ public interface TypeRegistry
    */
   public TypeValuePair convertTo(final Type targetType,
                                  final TypeValuePair valuePair);
+  
+  /**
+   * Returns the first non null error value of the passed arguments or null if there is no error.
+   * It is used ot propagate the errors. 
+   * 
+   * @param value1 First value to check.
+   * @param value2 Second value to check.
+   * @return The error or null if no errors.
+   */
+  //public TypeValuePair getError(final TypeValuePair value1, final TypeValuePair value2);
 }

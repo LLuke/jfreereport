@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AddOperator.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ package org.jfree.formula.operators;
 import java.math.BigDecimal;
 
 import org.jfree.formula.lvalues.TypeValuePair;
+import org.jfree.formula.ErrorValue;
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
@@ -63,6 +64,13 @@ public class AddOperator implements InfixOperator
     {
       return null;
     }
+    
+    //propagate error
+    //final ErrorValue error = typeRegistry.getError(value1, value2);
+    //if(error != null)
+    //{
+    //  throw new EvaluationException(error);
+    //}
 
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), raw1);
