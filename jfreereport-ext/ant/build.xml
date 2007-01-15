@@ -1,813 +1,179 @@
 <!--
+  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  -->
 
-<!DOCTYPE project PUBLIC "-//ANT//DTD project//EN" "ant.dtd">
+<!-- An ANT build file for JFreeReport. -->
 
--->
+<!-- Written by David Gilbert and modified for libFonts by Thomas Morgner. -->
+<!-- 09-Nov-2005 -->
 
-<!-- An ANT build file for JFreeReport -->
+<!-- This script has been tested with Ant version 1.6.2. -->
 
-<!-- Based on a script written by David Gilbert -->
+<!-- Several temporary directories are created while the script is -->
+<!-- running: "../build" and "../distribution".  -->
 
-<!-- To run this script, you need to make sure the libraries used by -->
-<!-- JFreeReport are copied to the ../lib directory (or edit the -->
-<!-- init-general task to point to the appropriate jar files). -->
+<!-- A "../javadoc" directory will be created for the Javadoc -->
+<!-- HTML pages. -->
 
-<!-- This script will create temporary directories ../build and -->
-<!-- ../distribution, as working areas.  A ../javadoc directory will -->
-<!-- be created for the Javadoc HTML pages. -->
+<!-- The script should work for the distribution and also the CVS -->
+<!-- repository. -->
 
-<!-- If you have comments about this script, please post a message -->
-<!-- in the JFreeReport forum. -->
+<project name="jfreereport" default="all" basedir="..">
 
-<project name="jfreereport-ext" default="all" basedir="..">
+  <import file="build-lib.xml"/>
 
-  <!-- Runns some tests, to identify the used JDK implementation -->
-  <target name="init">
-    <description>Runs tests to retrieve the JDK version</description>
+  <!-- Initialisation. -->
+  <target name="initialise" description="Initialise required settings.">
+    <tstamp/>
+
+    <property name="builddir" value="build"/>
 
     <dirname property="antfile.dir" file="${ant.file}"/>
-    <property file="${antfile.dir}/build.properties"/>
+    <property file="ant/build.properties"/>
 
-    <available file="${jfreereport-dir}/ant/build.properties" property="jfreereport-base-present"/>
-    <fail unless="jfreereport-base-present">
-      JFreeReport was not found at the specified location (${jfreereport-dir}).
-    </fail>
-
-    <property file="${jfreereport-dir}/ant/build.properties"/>
-
-    <echo>JFreeReport base package version ${jfreereport.version} found.</echo>
-
-    <property file="${antfile.dir}/targets.properties"/>
-
-    <condition property="junit.present">
-      <and>
-         <available file="${ext.libdir}/${junit-jar-file}"/>
-         <available classname="junit.framework.Test">
-           <classpath>
-              <pathelement location="${ext.libdir}/${junit-jar-file}"/>
-           </classpath>
-         </available>
-      </and>
-    </condition>
-
-    <condition property="servlet.present">
-      <and>
-         <available file="${ext.libdir}/${servlet-jar-file}"/>
-         <available classname="javax.servlet.Servlet">
-           <classpath>
-              <pathelement location="${ext.libdir}/${servlet-jar-file}"/>
-           </classpath>
-         </available>
-      </and>
-    </condition>
-
-    <condition property="jfreechart.present">
-      <and>
-         <available file="${ext.libdir}/${jfreechart-jar-file}"/>
-         <available classname="org.jfree.chart.JFreeChart">
-           <classpath>
-             <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-             <pathelement location="${ext.libdir}/${jfreechart-jar-file}"/>
-           </classpath>
-         </available>
-      </and>
-    </condition>
-
-    <condition property="log4j.present">
-      <and>
-         <available file="${ext.libdir}/${log4j-jar-file}"/>
-         <available classname="org.apache.log4j.Logger">
-           <classpath>
-              <pathelement location="${ext.libdir}/${log4j-jar-file}"/>
-           </classpath>
-         </available>
-      </and>
-    </condition>
-
-    <available classname="java.util.Timer" property="java-1.3.present"/>
-
-    <available classname="java.nio.Buffer" property="java-1.4.present"/>
-
-    <condition property="svg.present">
-      <and>
-        <available classname="java.nio.Buffer" property="java-1.4.present"/>
-        <available file="${ext.libdir}/${svgsalamander-jar-file}"/>
-        <available classname="com.kitfox.svg.SVGUniverse">
-           <classpath>
-              <pathelement location="${ext.libdir}/${svgsalamander-jar-file}"/>
-           </classpath>
-         </available>
-      </and>
-    </condition>
-
-
-    <echo>
-      Available features:
-        Java1.3    : ${java-1.3.present}
-        Java1.4    : ${java-1.4.present}
-        JUnit      : ${junit.present}
-        Log4J      : ${log4j.present}
-        SVG        : ${svg.present}
-        Servlets   : ${servlet.present}
-        JFreeChart : ${jfreechart.present}
-    </echo>
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="lib.jcommon.present"
+                             file-name="${libdir}/${jcommon-jar-file}"/>
+    <fail unless="lib.jcommon.present"/>
   </target>
 
-  <target name="compile" depends="compile-junit,
-      compile-demo,
-			compile-chart-demo,
-      compile-module-ext-java14config,
-      compile-module-ext-java14imageio,
-      compile-module-ext-java14log,
-      compile-module-ext-java14print,
-      compile-module-ext-svgimage,
-      compile-module-ext-log4jlog"></target>
+  <!-- Compile the libfonts classes -->
+  <target name="compile" depends="initialise">
 
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  JUnit-test cases                                              -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-
-  <target name="compile-junit" depends="init" if="junit.present">
-    <echo>Building JUnit tests</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <!-- compile the source -->
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/junit/**/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jakarta-poi-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
-        <pathelement location="${ext.libdir}/${servlet-jar-file}"/>
-        <pathelement location="${ext.libdir}/${junit-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/junit">
-      <fileset dir="source/org/jfree/report/ext/junit">
+    <build-all target-jar="${jfreereport-demo-jar-file}"
+               source-dir="source">
+      <all-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-serializer-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${liblayout-jar-file}"/>
+        <pathelement location="${libdir}/${libformula-jar-file}"/>
+        <pathelement location="${libdir}/${libxml-jar-file}"/>
+        <pathelement location="${libdir}/${jaxp-jar-file}"/>
+        <pathelement location="${libdir}/${librepository-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+        <pathelement location="${libdir}/${jfreereport-jar-file}"/>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
+      </all-classpath>
+      <all-resources>
+        <include name="*.properties"/>
+        <include name="**/*.properties"/>
+        <include name="*.bsh"/>
+        <include name="**/*.bsh"/>
+        <include name="*.xsd"/>
+        <include name="**/*.xsd"/>
+        <include name="*.xml"/>
         <include name="**/*.xml"/>
+        <include name="*.css"/>
+        <include name="**/*.css"/>
+        <include name="*.gif"/>
         <include name="**/*.gif"/>
-        <include name="**/*.dbf"/>
-      </fileset>
-    </copy>
-
-    <!-- make the jar -->
-    <jar jarfile="${jfreereport-junit-jar-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
+        <include name="*.png"/>
+        <include name="**/*.png"/>
+        <include name="*.jpg"/>
+        <include name="**/*.jpg"/>
+        <include name="*.svg"/>
+        <include name="**/*.svg"/>
+        <include name="*.wmf"/>
+        <include name="**/*.wmf"/>
+        <include name="*.sqlds"/>
+        <include name="**/*.sqlds"/>
+      </all-resources>
+      <jar-args>
+        <manifest>
+          <attribute name="Main-Class" value="org.jfree.report.demo.DemoFrontend"/>
+          <attribute name="Class-Path" value="${manifest-lib-prefix}${hsqldb-jar-file} ${manifest-lib-prefix}${itext-jar-file} ${manifest-lib-prefix}${pixie-jar-file} ${manifest-lib-prefix}${commons-logging-jar-file} ${manifest-lib-prefix}${oscache-jar-file} ${manifest-lib-prefix}${sac-jar-file} ${manifest-lib-prefix}${jfreereport-jar-file} ${manifest-lib-prefix}${flute-jar-file} ${manifest-lib-prefix}${librepository-jar-file} ${manifest-lib-prefix}${jaxp-jar-file} ${manifest-lib-prefix}${libxml-jar-file} ${manifest-lib-prefix}${libformula-jar-file} ${manifest-lib-prefix}${liblayout-jar-file} ${manifest-lib-prefix}${libloader-jar-file} ${manifest-lib-prefix}${libfonts-jar-file} ${manifest-lib-prefix}${jcommon-serializer-jar-file} ${manifest-lib-prefix}${jcommon-jar-file}"/>
+        </manifest>
+      </jar-args>
+    </build-all>
   </target>
 
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  Servlet demo classes                                          -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-
-  <target name="compile-demo" depends="init" if="servlet.present">
-    <echo>Building Servlet Demo</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <!-- compile the source -->
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/servletdemo/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
-        <pathelement location="${ext.libdir}/${servlet-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- make the jar -->
-    <jar jarfile="${jfreereport-servlet-demo-jar-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  Chart demo classes                                            -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-
-  <target name="compile-chart-demo" depends="init" if="jfreechart.present">
-    <echo>Building JFreeChart Demo</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <!-- compile the source -->
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/chartdemo/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
-        <pathelement location="${ext.libdir}/${jfreechart-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/chartdemo">
-      <fileset dir="source/org/jfree/report/ext/chartdemo">
-        <include name="**/*.xml"/>
-        <include name="**/*.gif"/>
-        <include name="**/*.dbf"/>
-      </fileset>
-    </copy>
-
-    <!-- make the jar -->
-    <jar jarfile="${jfreereport-chart-demo-jar-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  Java 1.4 configstore module                                   -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-  <target name="build-module-ext-java14config" if="java-1.4.present">
-    <!-- compile the source -->
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/modules/java14config/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/modules/java14config">
-      <fileset dir="source/org/jfree/report/ext/modules/java14config">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-  </target>
-
-  <target name="compile-module-ext-java14config" depends="init" if="java-1.4.present">
-    <echo>Building Java 1.4 config modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <antcall target="build-module-ext-java14config"/>
-
-    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
-          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
-          failonerror="true"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-java14config-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  Java 1.4 log module                                           -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-  <target name="build-module-ext-java14log" if="java-1.4.present">
-    <!-- compile the source -->
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/modules/java14log/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/modules/java14log">
-      <fileset dir="source/org/jfree/report/ext/modules/java14log">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-
-  </target>
-
-  <target name="compile-module-ext-java14log" depends="init" if="java-1.4.present">
-    <echo>Building Java 1.4 log modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <antcall target="build-module-ext-java14log"/>
-
-    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
-          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
-          failonerror="true"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-java14log-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  Java 1.4 ImageIO module                                           -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-  <target name="build-module-ext-java14imageio" if="java-1.4.present">
-    <!-- compile the source -->
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/modules/java14imageio/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/modules/java14imageio">
-      <fileset dir="source/org/jfree/report/ext/modules/java14imageio">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-
-  </target>
-
-  <target name="compile-module-ext-java14imageio" depends="init" if="java-1.4.present">
-    <echo>Building Java 1.4 ImageIO module</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <antcall target="build-module-ext-java14imageio"/>
-
-    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
-          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
-          failonerror="true"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-java14imageio-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  Java 1.4 printing API module                                  -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-  <target name="build-module-ext-java14print" if="java-1.4.present">
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/modules/java14print/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/modules/java14print">
-      <fileset dir="source/org/jfree/report/ext/modules/java14print">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-
-  </target>
-
-  <target name="compile-module-ext-java14print" depends="init" if="java-1.4.present">
-    <echo>Building Java 1.4 print modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <antcall target="build-module-ext-java14print"/>
-
-    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
-          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
-          failonerror="true"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-java14print-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  SVG image support module                                      -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-  <target name="build-module-ext-svgimage" if="svg.present">
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/modules/svgimage/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${ext.libdir}/${svgsalamander-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/modules/svgimage">
-      <fileset dir="source/org/jfree/report/ext/modules/svgimage">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-
-  </target>
-
-  <target name="compile-module-ext-svgimage" depends="init" if="svg.present">
-    <echo>Building SVG-Image modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <antcall target="build-module-ext-svgimage"/>
-
-    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
-          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
-          failonerror="true"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-svgimage-file}"
-      basedir="build">
-      <manifest>
-        <attribute name="Class-Path" value="${svgsalamander-jar-file} ${core-jar-file} ${module-parser-ext-file} ${module-parser-simple-file} ${module-gui-csv-file} ${module-gui-html-file} ${module-gui-pdf-file} ${module-gui-plaintext-file} ${module-gui-print-file} ${module-gui-xls-file} ${module-misc-bsf-file} ${module-misc-beanshell-file} ${module-misc-configstore-filesystem-file} ${module-misc-logging-base-file} ${module-output-xml-file} ${module-gui-rtf-file} ${module-misc-survey-file} ${jfreereport-all-jar-file}"/>
-      </manifest>
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  Apache Log4J logging integration                              -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-  <target name="build-module-ext-log4jlog" if="log4j.present">
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/modules/log4jlog/*.java"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-        <pathelement location="${ext.libdir}/${log4j-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/modules/log4jlog">
-      <fileset dir="source/org/jfree/report/ext/modules/log4jlog">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-
-  </target>
-
-  <target name="compile-module-ext-log4jlog" depends="init" if="log4j.present">
-    <echo>Building Log4J logging modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <antcall target="build-module-ext-log4jlog"/>
-
-    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
-          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
-          failonerror="true"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-log4jlog-file}"
-      basedir="build">
-      <manifest>
-        <attribute name="Class-Path" value="${log4j-jar-file} ${core-jar-file} ${module-parser-ext-file} ${module-parser-simple-file} ${module-gui-csv-file} ${module-gui-html-file} ${module-gui-pdf-file} ${module-gui-plaintext-file} ${module-gui-print-file} ${module-gui-xls-file} ${module-misc-bsf-file} ${module-misc-beanshell-file} ${module-misc-configstore-filesystem-file} ${module-misc-logging-base-file} ${module-output-xml-file} ${module-gui-rtf-file} ${module-misc-survey-file} ${jfreereport-all-jar-file}"/>
-      </manifest>
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-
-  <!-- ************************************************************** -->
-  <!--                                                                -->
-  <!--  BarCode support module                                        -->
-  <!--                                                                -->
-  <!-- ************************************************************** -->
-  <target name="build-module-ext-barcode">
-    <javac srcdir="source"
-      destdir="build" target="${build.target}"
-      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
-      <include name="org/jfree/report/ext/modules/barcode/**"/>
-      <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-      </classpath>
-    </javac>
-
-    <!-- include the report definition files -->
-    <copy todir="build/org/jfree/report/ext/modules/barcode">
-      <fileset dir="source/org/jfree/report/ext/modules/barcode">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-
-  </target>
-
-  <target name="compile-module-ext-barcode" depends="init">
-    <echo>Building BarCode modules</echo>
-
-    <!-- create a temp build directory -->
-    <mkdir dir="build"/>
-
-    <antcall target="build-module-ext-barcode"/>
-
-    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
-          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
-          failonerror="true"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-barcode-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-
-
-  <target name="compile-all-modules" depends="init">
-    <mkdir dir="build"/>
-
-    <antcall target="build-module-ext-java14config"/>
-    <antcall target="build-module-ext-java14imageio"/>
-    <antcall target="build-module-ext-java14log"/>
-    <antcall target="build-module-ext-java14print"/>
-    <antcall target="build-module-ext-log4jlog"/>
-    <antcall target="build-module-ext-svgimage"/>
-
-    <copy file="source/org/jfree/report/ext/jfreereport-ext.properties"
-          tofile="build/org/jfree/report/ext/jfreereport-ext.properties"
-          failonerror="true"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-all-file}"
-      basedir="build">
-    </jar>
-
-    <!-- delete the temp directory -->
-    <delete dir="build"/>
-  </target>
-
-
-  <!-- Generate the JFreeReport JavaDoc HTML pages -->
-  <target name="javadoc" depends="init">
+  <!-- Generate the libfonts JavaDoc HTML pages -->
+  <target name="javadoc" depends="initialise">
     <delete dir="javadoc"/>
     <mkdir dir="javadoc"/>
     <javadoc destdir="javadoc"
-      windowtitle="JFreeReport Extension Class Library"
-      overview="source/overview.html">
+      windowtitle="JFreeReport (version ${jfreereport.version})"
+      overview="source/overview.html"
+      linksource="true">
       <classpath>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${libdir}/${jakarta-poi-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-        <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
-        <pathelement location="${ext.libdir}/${jfreechart-jar-file}"/>
-        <pathelement location="${ext.libdir}/${log4j-jar-file}"/>
-        <pathelement location="${ext.libdir}/${servlet-jar-file}"/>
-        <pathelement location="${ext.libdir}/${junit-jar-file}"/>
-        <pathelement location="${ext.libdir}/${svgsalamander-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-serializer-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${liblayout-jar-file}"/>
+        <pathelement location="${libdir}/${libformula-jar-file}"/>
+        <pathelement location="${libdir}/${libxml-jar-file}"/>
+        <pathelement location="${libdir}/${jaxp-jar-file}"/>
+        <pathelement location="${libdir}/${librepository-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+        <pathelement location="${libdir}/${jfreereport-jar-file}"/>
+        <pathelement location="${libdir}/${sac-jar-file}"/>
       </classpath>
       <packageset dir="source" defaultexcludes="yes">
-        <include name="org/jfree/report/ext/**"/>
+        <include name="org/jfree/report/**"/>
       </packageset>
     </javadoc>
   </target>
 
-
-
-  <!-- Builds the WAR file and copies all required libraries from the JFreeReport base -->
-  <!-- and extension projects into the war.                                            -->
-  <!-- The BaseProject must be readily build                                           -->
-  <target name="build-war" depends="compile" if="servlet.present">
-    <mkdir dir="warbuild"/>
-
-    <copy todir="warbuild">
-      <fileset dir="webapp">
-        <exclude name="**/CVS"/>
-      </fileset>
-    </copy>
-
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${beanshell-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${bsf-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jaxp-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jcommon-xml-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${pixie-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${jakarta-poi-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${libdir}/${libfonts-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
-    <copy todir="warbuild/WEB-INF/lib" file="${jfreereport-servlet-demo-jar-file}"/>
-
-    <!-- make the jar file -->
-    <jar jarfile="${jfreereport.name}-ext-${jfreereport.version}.war"
-      basedir="warbuild">
-    </jar>
-
-    <!-- remove the temp build area -->
-    <delete dir="warbuild"/>
-
-  </target>
-
-  <target name="create-dist-dir">
-
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-
+  <target name="fill-dist-dir">
     <!-- copy across README -->
-    <copy file="README" tofile="distribution/README"/>
-
-    <!-- copy across ChangeLog -->
-    <copy file="ChangeLog" tofile="distribution/ChangeLog"/>
+    <copy file="README"
+      tofile="distribution/README"/>
 
     <!-- copy across LICENCE -->
-    <copy file="licence-LGPL.txt" tofile="distribution/licence-LGPL.txt"/>
+    <copy file="ChangeLog"
+      tofile="distribution/ChangeLog"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+      tofile="distribution/licence-LGPL.txt"/>
 
     <!-- copy across runtime jar file -->
-    <copy file="${jfreereport-chart-demo-jar-file}" tofile="distribution/${jfreereport-chart-demo-jar-file}"/>
-    <copy file="${jfreereport-servlet-demo-jar-file}" tofile="distribution/${jfreereport-servlet-demo-jar-file}"/>
-    <copy file="${jfreereport-junit-jar-file}" tofile="distribution/${jfreereport-junit-jar-file}"/>
-    <copy file="${module-ext-java14config-file}" tofile="distribution/${module-ext-java14config-file}"/>
-    <copy file="${module-ext-java14log-file}" tofile="distribution/${module-ext-java14log-file}"/>
-    <copy file="${module-ext-java14print-file}" tofile="distribution/${module-ext-java14print-file}"/>
-    <copy file="${module-ext-log4jlog-file}" tofile="distribution/${module-ext-log4jlog-file}"/>
+    <copy file="${jfreereport-demo-jar-file}"
+      tofile="distribution/${jfreereport-demo-jar-file}"/>
 
     <!-- copy across source files -->
     <copy todir="distribution/source">
       <fileset dir="source"/>
     </copy>
 
-    <!-- copy across web application files -->
-    <copy todir="distribution/webapp">
-      <fileset dir="webapp"/>
+    <!-- copy across source files -->
+    <copy todir="distribution/sql">
+      <fileset dir="sql"/>
     </copy>
 
-    <!-- copy across lib files -->
+    <!-- copy across source files -->
     <copy todir="distribution/lib">
       <fileset dir="lib"/>
     </copy>
 
     <!-- copy across ant build file (this file) -->
-    <copy todir="distribution/ant">
-      <fileset dir="ant"/>
-    </copy>
+    <copy file="ant/build.xml"
+      tofile="distribution/ant/build.xml" failonerror="false"/>
+    <copy file="ant/build-lib.xml"
+      tofile="distribution/ant/build-lib.xml"/>
 
-
-    <copy file="maven-jfreereport-ext-project.xml" tofile="distribution/maven-jfreereport-ext-project.xml" />
-	
+    <copy file="ant/build.properties"
+      tofile="distribution/ant/build.properties"/>
   </target>
 
-  <target name="remove-dist-dir">
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
-
+  <!-- Make .zip distribution for libfonts -->
+  <target name="zip" depends="compile">
+    <make-zip lib.version="${jfreereport.version}" lib.name="${jfreereport.name}"/>
   </target>
 
-  <!-- Make .zip distribution for JFreeReport -->
-  <!-- the war file is not included, as it can be rebuild easily and is also available -->
-  <!-- as an separate download -->
-  <target name="make-zip" depends="compile, compile-all-modules, build-war">
-
-    <antcall target="create-dist-dir"/>
-
-    <!-- convert end-of-line characters in text files -->
-    <!-- end of file does not need to be marked, and causes trouble if it is -->
-    <fixcrlf srcdir="distribution/source"
-      eol="crlf" eof="remove"
-      excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
-    <fixcrlf srcdir="distribution/ant"
-      eol="crlf" eof="remove"/>
-
-    <!-- make the zip file -->
-    <zip zipfile="${jfreereport.name}-ext-${jfreereport.version}.zip">
-      <zipfileset dir="distribution"
-        prefix="${jfreereport.name}-ext-${jfreereport.version}"/>
-    </zip>
-
-    <antcall target="remove-dist-dir"/>
-
-  </target>
-
-  <!-- Make .tar.gz distribution for JFreeReport -->
-  <!-- the war file is not included, as it can be rebuild easily and is also available -->
-  <!-- as an separate download -->
-  <target name="make-targz" depends="compile, compile-all-modules, build-war">
-
-    <antcall target="create-dist-dir"/>
-
-    <!-- convert end-of-line characters in text files -->
-    <fixcrlf srcdir="distribution/source"
-      eol="lf" eof="remove"
-      excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
-    <fixcrlf srcdir="distribution/ant"
-      eol="lf" eof="remove"/>
-
-    <!-- make the tar.gz file -->
-    <tar tarfile="${jfreereport.name}-ext-${jfreereport.version}.tar">
-      <tarfileset dir="distribution"
-        prefix="${jfreereport.name}-ext-${jfreereport.version}"/>
-    </tar>
-    <gzip zipfile="${jfreereport.name}-ext-${jfreereport.version}.tar.gz"
-      src="${jfreereport.name}-ext-${jfreereport.version}.tar"/>
-    <delete file="${jfreereport.name}-ext-${jfreereport.version}.tar"/>
-
-    <antcall target="remove-dist-dir"/>
-
-  </target>
-
-  <target name="maven-bundle" depends="compile-all-modules" >
-    <!-- make a temporary distribution directory -->
-    <mkdir dir="distribution"/>
-    <!-- copy across Licences -->
-    <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
-
-    <filterchain id="version.filters">
-       <replacetokens>
-         <token key="VERSION" value="${jfreereport.version}"/>
-         <token key="JCOMMON.VERSION" value="${jcommon.version}"/>
-       </replacetokens>
-    </filterchain>
-
-    <copy file="maven-jfreereport-ext-project.xml" tofile="distribution/project.xml">
-      <filterchain refid="version.filters"/>
-    </copy>
-
-    <copy file="${module-ext-all-file}" tofile="distribution/${module-ext-all-file}"/>
-
-    <!-- make the jar -->
-    <jar jarfile="${module-ext-bundle-file}" basedir="distribution"/>
-
-    <!-- delete the temporary distribution directory -->
-    <delete dir="distribution"/>
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="targz" depends="compile">
+    <make-targz lib.version="${jfreereport.version}" lib.name="${jfreereport.name}"/>
   </target>
 
 
-  <target name="all" depends="init, compile, javadoc, build-war, make-zip, make-targz, maven-bundle"/>
+  <!-- ALL -->
+  <target name="all"
+    depends="compile,javadoc,zip,targz"
+    description="Compiles JFreeReport, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+  </target>
+
 </project>
-
