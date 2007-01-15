@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: IsTextFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,12 +42,15 @@ import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
  * This function retruns true if the given value is of type Text.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 public class IsTextFunction implements Function
 {
+  public IsTextFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -61,10 +64,10 @@ public class IsTextFunction implements Function
     final Object value1 = parameters.getValue(0);
     if(type1.isFlagSet(Type.TEXT_TYPE) || value1 instanceof String)
     {
-      return new TypeValuePair(LogicalType.TYPE, true);
+      return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
     }
-    
-    return new TypeValuePair(LogicalType.TYPE, false);
+
+    return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
   }
 
   public String getCanonicalName()

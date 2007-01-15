@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.5 2006/12/30 13:50:19 mimil Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.6 2007/01/14 17:49:41 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,11 +43,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import org.jfree.formula.ErrorValue;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.operators.InfixOperator;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.util.Configuration;
 
 
@@ -271,11 +269,11 @@ public class DefaultTypeRegistry implements TypeRegistry
     {
       return "";
     }
-    
+
     if (value instanceof Boolean)
     {
-      final Boolean b = (Boolean)value;
-      if(Boolean.TRUE.equals(b))
+      final Boolean b = (Boolean) value;
+      if (Boolean.TRUE.equals(b))
       {
         return "TRUE";
       }
@@ -294,57 +292,61 @@ public class DefaultTypeRegistry implements TypeRegistry
 
     return value.toString();
   }
-  
-  public Boolean convertToLogical (Type type1, Object value)
+
+  public Boolean convertToLogical(Type type1, Object value)
   {
-    if(value instanceof Boolean) 
+    if (value instanceof Boolean)
     {
-      return (Boolean)value;
+      return (Boolean) value;
     }
-    
-    if(value instanceof Number)
+
+    if (value instanceof Number)
     {
-      final Number num = (Number)value;
-      return !ZERO.equals(num);
-    }
-    
-    if(value instanceof String)
-    {
-      final String str = (String)value;
-      if("TRUE".equalsIgnoreCase(str))
+      final Number num = (Number) value;
+      if (!ZERO.equals(num))
       {
-        return true;
+        return Boolean.TRUE;
       }
-      else if("FALSE".equalsIgnoreCase(str))
+      return Boolean.FALSE;
+    }
+
+    if (value instanceof String)
+    {
+      final String str = (String) value;
+      if ("TRUE".equalsIgnoreCase(str))
       {
-        return false;
+        return Boolean.TRUE;
+      }
+      else if ("FALSE".equalsIgnoreCase(str))
+      {
+        return Boolean.FALSE;
       }
     }
-    
-	  return null;
+
+    return null;
   }
-  
+
   public Date convertToDate(Type type1, Object value)
   {
-    if(value instanceof Date)
+    if (value instanceof Date)
     {
-      return (Date)value;
+      return (Date) value;
     }
-    if(value instanceof Number)
+    if (value instanceof Number)
     {
-      return convertNumberToDate((Number)value);
+      return convertNumberToDate((Number) value);
     }
-    if(value instanceof String)
+    if (value instanceof String)
     {
       final Number conv = convertToNumber(type1, value);
-      if(conv == null)
+      if (conv == null)
       {
         return null;
       }
       return convertNumberToDate(conv);
     }
-    
-	  return null;
+
+    return null;
   }
 
   protected NumberFormat getDefaultNumberFormat()
@@ -443,16 +445,16 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
       return number;
     }
-    
+
     if (targetType.isFlagSet(Type.LOGICAL_TYPE))
     {
       if (type.isFlagSet(Type.LOGICAL_TYPE))
       {
         return value;
       }
-      
+
       final Boolean b = convertToLogical(type, value);
-      if(b == null)
+      if (b == null)
       {
         return null;
       }
@@ -481,7 +483,7 @@ public class DefaultTypeRegistry implements TypeRegistry
     }
     return new TypeValuePair(targetType, target);
   }
-  
+
   /*public TypeValuePair getError(final TypeValuePair value1, final TypeValuePair value2)
   {
     if(value1 != null)
