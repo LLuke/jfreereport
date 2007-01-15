@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SimpleSQLReportDataFactory.java,v 1.6 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -263,7 +263,7 @@ public class SimpleSQLReportDataFactory implements ReportDataFactory, Cloneable
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public TableModel generateDefaultTableModel
+  private TableModel generateDefaultTableModel
           (final ResultSet rs, final boolean labelMapping)
           throws SQLException
   {

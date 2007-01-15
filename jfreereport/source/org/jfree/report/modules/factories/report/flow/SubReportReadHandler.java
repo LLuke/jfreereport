@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SubReportReadHandler.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
+ * $Id: SubReportReadHandler.java,v 1.7 2006/12/30 14:15:32 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -138,7 +138,7 @@ public class SubReportReadHandler extends SectionReadHandler
     }
     if (queryReadHandler == null)
     {
-      throw new ParseException("Query is specified.", getLocator());
+      throw new ParseException("Query is not specified.", getLocator());
     }
     final String result = queryReadHandler.getResult();
     report.setQuery(result);
