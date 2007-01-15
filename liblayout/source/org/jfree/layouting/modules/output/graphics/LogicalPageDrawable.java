@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LogicalPageDrawable.java,v 1.6 2006/12/03 18:58:03 taqua Exp $
+ * $Id: LogicalPageDrawable.java,v 1.7 2007/01/09 14:45:00 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -68,7 +68,7 @@ import org.jfree.ui.Drawable;
  */
 public class LogicalPageDrawable implements PageDrawable
 {
-  private static final boolean OUTLINE_MODE = false;
+  private static final boolean OUTLINE_MODE = true;
   private LogicalPageBox rootBox;
   private PageFormat pageFormat;
   private double width;
