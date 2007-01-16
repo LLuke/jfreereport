@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: TypeRegisteryTest.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -63,16 +63,16 @@ public class TypeRegisteryTest
   public void testDateConvertion()
   {
     //final Date d = GregorianCalendar.getInstance().getTime();
-    final Calendar cal = new GregorianCalendar(2005, 0, 31);
-    //cal.set(GregorianCalendar.YEAR, 2005);
-    //cal.set(GregorianCalendar.MONTH, GregorianCalendar.JANUARY);
-    //cal.set(GregorianCalendar.DAY_OF_MONTH, 31);
+    final Calendar cal = new GregorianCalendar(context.getLocalizationContext().getTimeZone(), context.getLocalizationContext().getLocale());
+    cal.set(GregorianCalendar.YEAR, 2005);
+    cal.set(GregorianCalendar.MONTH, GregorianCalendar.JANUARY);
+    cal.set(GregorianCalendar.DAY_OF_MONTH, 3);
     
     final Date d = cal.getTime();
     final Number n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
     Assert.assertNotNull(n, "The date has not been converted to a number");
     final Date d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
     Assert.assertNotNull(d1, "The number has not been converted to a date");
-    Assert.assertEquals(d, d1, "dates are differents");
+    Assert.assertEquals(d1, d, "dates are differents");
   }
 }
