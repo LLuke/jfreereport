@@ -24,12 +24,13 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.5 2006/12/30 13:50:19 mimil Exp $
+ * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function.datetime;
 
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.jfree.formula.EvaluationException;
@@ -67,10 +68,12 @@ public class DateFunction implements Function
     Number n1;
     Number n2;
     Number n3;
+    Object value;
     try
     {
       n1 = context.getTypeRegistry().convertToNumber(parameters.getType(0), parameters.getValue(0));
-      n2 = context.getTypeRegistry().convertToNumber(parameters.getType(1), parameters.getValue(1));
+      value = parameters.getValue(1);
+      n2 = context.getTypeRegistry().convertToNumber(parameters.getType(1), value);
       n3 = context.getTypeRegistry().convertToNumber(parameters.getType(2), parameters.getValue(2));
     }
     catch (NumberFormatException e)
@@ -86,13 +89,19 @@ public class DateFunction implements Function
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
-
+    System.out.println("DEGUG Y:"+n1+" M:"+n2+"["+value+"] D:"+n3);
     final GregorianCalendar gc = new GregorianCalendar
         (context.getLocalizationContext().getTimeZone(), context.getLocalizationContext().getLocale());
-    gc.set(GregorianCalendar.YEAR, n1.intValue());
-    gc.set(GregorianCalendar.MONTH, n2.intValue());
     gc.set(GregorianCalendar.DAY_OF_MONTH, n3.intValue());
+    gc.set(GregorianCalendar.MONTH, n2.intValue()-1);
+    gc.set(GregorianCalendar.YEAR, n1.intValue());
+    gc.set(GregorianCalendar.MILLISECOND, 0);
+    gc.set(GregorianCalendar.HOUR_OF_DAY, 0);
+    gc.set(GregorianCalendar.MINUTE, 0);
+    gc.set(GregorianCalendar.SECOND, 0);
 
-    return new TypeValuePair(DateType.TYPE, gc.getTime());
+    final Date date = gc.getTime();
+    System.out.println("Created date("+n2+"): "+date);
+    return new TypeValuePair(DateType.TYPE, date);
   }
 }
