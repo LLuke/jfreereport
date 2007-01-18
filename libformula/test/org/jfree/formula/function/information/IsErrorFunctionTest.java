@@ -24,59 +24,72 @@
  *
  *
  * ------------
- * $Id: TypeRegisteryTest.java,v 1.3 2007/01/16 07:17:30 mimil Exp $
+ * $Id: IsNaFunctionTest.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
-package org.jfree.formula.typing;
+package org.jfree.formula.function.information;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.Formula;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaBoot;
 import org.jfree.formula.common.TestFormulaContext;
-import org.jfree.formula.typing.coretypes.DateType;
-import org.jfree.formula.typing.coretypes.NumberType;
+import org.jfree.formula.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
 
 /**
  * 
  * @author Cedric Pronzato
  *
  */
-public class TypeRegisteryTest
+public class IsErrorFunctionTest
 {
   private FormulaContext context;
-
-  @BeforeClass
-  public void setup()
+  
+  @DataProvider(name="defaultTestCase")
+  public Object[][] createDataTest()
   {
-    context = new TestFormulaContext(TestFormulaContext.testCaseDataset);
+    return new Object[][]
+    {
+        {"ISERROR(1/0)", Boolean.TRUE},
+        {"ISERROR(NA())", Boolean.TRUE},
+        {"ISERROR(\"#N/A\")", Boolean.FALSE},
+        {"ISERROR(1)", Boolean.FALSE},
+        //{"ISERROR(CHOOSE(0; \"Apple\";\"Orange\"; \"Grape\";\"Perry\"))", Boolean.TRUE},
+    };
+        
+  }  
+  
+  @BeforeClass(alwaysRun=true)
+  public void setup() {
+    context = new TestFormulaContext();
     LibFormulaBoot.getInstance().start();
   }
   
-  @Test
-  public void testDateConvertion()
+  @Test(dataProvider="defaultTestCase", groups="functions")
+  public void test(String formul, Object result)
   {
-//    final Date d = GregorianCalendar.getInstance().getTime();
-    final Calendar cal = new GregorianCalendar(context.getLocalizationContext().getTimeZone(), context.getLocalizationContext().getLocale());
-//    cal.set(GregorianCalendar.YEAR, 2005);
-//    cal.set(GregorianCalendar.MONTH, GregorianCalendar.JANUARY);
-//    cal.set(GregorianCalendar.DAY_OF_MONTH, 1);
-    cal.set(GregorianCalendar.MILLISECOND, 0);
-//    cal.set(GregorianCalendar.HOUR, 23);
-//    cal.set(GregorianCalendar.MINUTE, 59);
-//    cal.set(GregorianCalendar.SECOND, 59);
-//    
-    final Date d = cal.getTime();
-    final Number n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
-    Assert.assertNotNull(n, "The date has not been converted to a number");
-    final Date d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
-    Assert.assertNotNull(d1, "The number has not been converted to a date");
-    Assert.assertEquals(d1, d, "dates are differents");
+    Formula formula = null;
+    try
+    {
+      formula = new Formula(formul);
+    } catch (ParseException e1)
+    {
+      Assert.fail("Error while parsing the formula", e1);
+    }
+    try
+    {
+      formula.initialize(context);
+    } catch (EvaluationException e)
+    {
+      Assert.fail("Initialization Error", e);
+    }
+    Object eval = formula.evaluate();
+    Assert.assertEquals(eval, result);
   }
 }

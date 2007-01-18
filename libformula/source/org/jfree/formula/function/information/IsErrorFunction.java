@@ -42,16 +42,16 @@ import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
- * This function returns true if the parameter is of error type NA.
+ * This function returns true if the parameter is of error.
  * 
  * @author Cedric Pronzato
  *
  */
-public class IsNaFunction implements Function
+public class IsErrorFunction implements Function
 {
 
-  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
   private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -62,30 +62,23 @@ public class IsNaFunction implements Function
     try
     {
       final Type type = parameters.getType(0);
-      final Object value = parameters.getValue(0);
+      Object value = parameters.getValue(0);
       
       if(ErrorType.TYPE.equals(type) && value instanceof ErrorValue)
       {
-        final ErrorValue na = (ErrorValue)value;
-        if(na.getErrorCode() == LibFormulaErrorValue.ERROR_NA)
-        {
-          return RETURN_TRUE;
-        }
+        return RETURN_TRUE;
       }
     } catch (EvaluationException e)
     {
-      if(e.getErrorValue().getErrorCode() == LibFormulaErrorValue.ERROR_NA)
-      {
-        return RETURN_TRUE;
-      }  
-    }    
+      return RETURN_TRUE;
+    }
     
     return RETURN_FALSE;
   }
 
   public String getCanonicalName()
   {
-    return "ISNA";
+    return "ISERROR";
   }
 
 }

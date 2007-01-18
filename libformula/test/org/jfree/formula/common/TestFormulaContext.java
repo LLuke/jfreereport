@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: TestFormulaContext.java,v 1.4 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -89,7 +89,10 @@ id B C
       cal.set(GregorianCalendar.YEAR, 2005);
       cal.set(GregorianCalendar.MONTH, GregorianCalendar.JANUARY);
       cal.set(GregorianCalendar.DAY_OF_MONTH, 31);
-      
+      cal.set(GregorianCalendar.MILLISECOND, 0);
+      cal.set(GregorianCalendar.HOUR_OF_DAY, 0);
+      cal.set(GregorianCalendar.MINUTE, 0);
+      cal.set(GregorianCalendar.SECOND, 0);
       return cal.getTime();
     }
     private Date createDate2() {

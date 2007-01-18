@@ -24,68 +24,61 @@
  *
  *
  * ------------
- * $Id: IsNaFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: HasChangedFunction.java,v 1.2 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
+
 package org.jfree.formula.function.information;
 
-import org.jfree.formula.ErrorValue;
-import org.jfree.formula.EvaluationException;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
- * This function returns true if the parameter is of error type NA.
- * 
- * @author Cedric Pronzato
+ * This function uses an index to return a value from a list of values. 
+ * The first value index is 1, 2 for the second and so on.
  *
+ * @author Cedric Pronzato
  */
-public class IsNaFunction implements Function
+public class ChooseFunction implements Function
 {
-
-  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
-  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
-
-  public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
+  public ChooseFunction()
   {
-    if(parameters.getParameterCount() != 1) {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
-    }
-    
-    try
-    {
-      final Type type = parameters.getType(0);
-      final Object value = parameters.getValue(0);
-      
-      if(ErrorType.TYPE.equals(type) && value instanceof ErrorValue)
-      {
-        final ErrorValue na = (ErrorValue)value;
-        if(na.getErrorCode() == LibFormulaErrorValue.ERROR_NA)
-        {
-          return RETURN_TRUE;
-        }
-      }
-    } catch (EvaluationException e)
-    {
-      if(e.getErrorValue().getErrorCode() == LibFormulaErrorValue.ERROR_NA)
-      {
-        return RETURN_TRUE;
-      }  
-    }    
-    
-    return RETURN_FALSE;
   }
 
   public String getCanonicalName()
   {
-    return "ISNA";
+    return "CHOOSE";
   }
 
+  public TypeValuePair evaluate(FormulaContext context,
+                                ParameterCallback parameters)
+      throws EvaluationException
+  {
+
+    if(parameters.getParameterCount() <= 2)
+    {
+      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+    }
+    final Type indexType = parameters.getType(0);
+    final Object indexValue = parameters.getValue(0);
+    
+    if(indexType.isFlagSet(Type.NUMERIC_TYPE) || indexValue instanceof Number)
+    {
+      final int index= context.getTypeRegistry().convertToNumber(indexType, indexValue).intValue();
+      if(index >= 1 && index < parameters.getParameterCount())
+      {
+        return new TypeValuePair(parameters.getType(index), parameters.getValue(index));
+      }      
+    }
+
+    return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+  }
 }
