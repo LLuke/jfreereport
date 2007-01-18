@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TypeRegistry.java,v 1.4 2006/12/30 13:50:19 mimil Exp $
+ * $Id: TypeRegistry.java,v 1.5 2007/01/14 17:49:41 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -109,5 +109,5 @@ public interface TypeRegistry
    * @param value2 Second value to check.
    * @return The error or null if no errors.
    */
-  //public TypeValuePair getError(final TypeValuePair value1, final TypeValuePair value2);
+  public TypeValuePair getError(final TypeValuePair value1, final TypeValuePair value2);
 }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ConcatOperator.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,6 +60,13 @@ public class ConcatOperator implements InfixOperator
     if (raw1 == null && raw2 == null)
     {
       return null;
+    }
+
+    // propagate error
+    final TypeValuePair error = typeRegistry.getError(value1, value2);
+    if(error != null)
+    {
+      return error;
     }
 
     final String text1 =

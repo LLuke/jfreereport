@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DivideOperator.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -61,6 +61,18 @@ public class DivideOperator implements InfixOperator
     final Object raw1 = value1.getValue();
     final Object raw2 = value2.getValue();
 
+    if (raw1 == null && raw2 == null)
+    {
+      return null;
+    }
+    
+    // propagate error
+    final TypeValuePair error = typeRegistry.getError(value1, value2);
+    if(error != null)
+    {
+      return error;
+    }
+    
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), raw1);
     final Number number2 =

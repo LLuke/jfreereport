@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: MinusSignOperator.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,7 @@ import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.ErrorType;
 
 /**
@@ -58,23 +59,42 @@ public class MinusSignOperator implements PrefixOperator
       throws EvaluationException
   {
     final Type type = value1.getType();
+    final Object val = value1.getValue();
+    
+    // propagate error
+    if (context != null)
+    {
+      final TypeRegistry typeRegistry = context.getTypeRegistry();
+      final TypeValuePair error = typeRegistry.getError(value1, null);
+      if (error != null)
+      {
+        return error;
+      }
+    }
+    
     if (type.isFlagSet(Type.NUMERIC_TYPE))
     {
+      final TypeRegistry typeRegistry = context.getTypeRegistry();
       // return the same as zero minus value.
       final Number number =
-          context.getTypeRegistry().convertToNumber(type, value1.getValue());
+          typeRegistry.convertToNumber(type, val);
       if (number == null)
       {
-        return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
-            (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+        throw new EvaluationException
+            (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
       }
 
       final BigDecimal value = getAsBigDecimal(number);
       return new TypeValuePair(type, ZERO.subtract(value));
     }
+    if(val instanceof Number)
+    {
+      final BigDecimal value = getAsBigDecimal((Number)val);
+      return new TypeValuePair(type, ZERO.subtract(value));
+    }
 
-    return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
-        (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+    throw new EvaluationException
+        (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
   }
 
   private BigDecimal getAsBigDecimal(final Number number)

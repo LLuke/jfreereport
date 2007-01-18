@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: SubtractOperator.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -55,7 +55,12 @@ public class SubtractOperator implements InfixOperator
       throws EvaluationException
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-
+    //  propagate error
+    final TypeValuePair error = typeRegistry.getError(value1, value2);
+    if(error != null)
+    {
+      return error;
+    }
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), value1.getValue());
     final Number number2 =

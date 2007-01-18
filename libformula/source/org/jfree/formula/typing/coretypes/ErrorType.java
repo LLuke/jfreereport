@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ErrorType.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,6 +38,7 @@ import org.jfree.formula.typing.Type;
  *
  * @author Thomas Morgner
  */
+//add scalar flag?
 public final class ErrorType extends DefaultType
 {
   public static final Type TYPE = new ErrorType();

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AddOperator.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
+ * $Id: AddOperator.java,v 1.5 2007/01/14 17:49:41 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -65,12 +65,12 @@ public class AddOperator implements InfixOperator
       return null;
     }
     
-    //propagate error
-    //final ErrorValue error = typeRegistry.getError(value1, value2);
-    //if(error != null)
-    //{
-    //  throw new EvaluationException(error);
-    //}
+    // propagate error
+    final TypeValuePair error = typeRegistry.getError(value1, value2);
+    if(error != null)
+    {
+      return error;
+    }
 
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), raw1);

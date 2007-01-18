@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.6 2007/01/14 17:49:41 mimil Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.7 2007/01/15 15:36:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -46,6 +46,7 @@ import java.util.Locale;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.operators.InfixOperator;
+import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.util.Configuration;
 
 
@@ -59,7 +60,7 @@ public class DefaultTypeRegistry implements TypeRegistry
   private FormulaContext context;
   private static final long MILLISECS_PER_DAY = 24 * 60 * 60 * 1000;
   private static final BigDecimal ZERO = new BigDecimal(0);
-  private static final BigDecimal MILLISECS = new BigDecimal((double) MILLISECS_PER_DAY);
+  private static final BigDecimal MILLISECS = new BigDecimal(MILLISECS_PER_DAY);
   private NumberFormat[] numberFormats;
   private DateFormat[] dateFormats;
 
@@ -166,8 +167,14 @@ public class DefaultTypeRegistry implements TypeRegistry
     {
       bd = new BigDecimal(number.toString());
     }
+    System.out.println("a: "+bd);
+    
     final BigDecimal bigDecimal = bd.multiply(MILLISECS);
-    return new Date(bigDecimal.longValue());
+    System.out.println("b: "+bigDecimal);
+    //just a test to remove the millisecond part
+    final long longValue = (bigDecimal.longValue()/1000)*1000;
+    System.out.println("n-d: "+longValue);
+    return new Date(longValue);
   }
 
   private Number convertDateToNumber(final Date date)
@@ -176,14 +183,23 @@ public class DefaultTypeRegistry implements TypeRegistry
         (context.getLocalizationContext().getTimeZone(), context.getLocalizationContext().getLocale());
     gc.setTime(date);
     final long timeInMillis = gc.getTime().getTime();
+    System.out.println("d-n: "+timeInMillis + " ("+date+")");
     final long days = timeInMillis / MILLISECS_PER_DAY;
     final long secs = timeInMillis - (days * MILLISECS_PER_DAY);
 
     final BigDecimal daysBd = new BigDecimal(days);
+    System.out.println("0: "+daysBd);
     final BigDecimal secsBd = new BigDecimal(secs);
+    System.out.println("1: "+secsBd);
+    
+    //fractional part must be between 0.0 to 0.99999
+    //reprenting from 00:00:00 to 23:59:59
     final BigDecimal daySecs = secsBd.divide
-        (MILLISECS, BigDecimal.ROUND_HALF_UP);
-    return daysBd.add(daySecs);
+        (MILLISECS, 5,BigDecimal.ROUND_UP);
+    System.out.println("2: "+daySecs);
+    final BigDecimal ret = daysBd.add(daySecs);
+    System.out.println("3: "+ret);
+    return ret;
   }
 
 
@@ -484,7 +500,7 @@ public class DefaultTypeRegistry implements TypeRegistry
     return new TypeValuePair(targetType, target);
   }
 
-  /*public TypeValuePair getError(final TypeValuePair value1, final TypeValuePair value2)
+  public TypeValuePair getError(final TypeValuePair value1, final TypeValuePair value2)
   {
     if(value1 != null)
     {
@@ -503,5 +519,5 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
     }
     return null;
-  }*/
+  }
 }

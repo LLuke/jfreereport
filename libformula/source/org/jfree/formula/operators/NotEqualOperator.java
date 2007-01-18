@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: NotEqualOperator.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,6 +53,13 @@ public class NotEqualOperator implements InfixOperator
       throws EvaluationException
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
+    
+    //  propagate error
+    final TypeValuePair error = typeRegistry.getError(value1, value2);
+    if(error != null)
+    {
+      return error;
+    }
     final ExtendedComparator comparator =
         typeRegistry.getComparator(value1.getType(), value2.getType());
     final boolean result = comparator.isEqual

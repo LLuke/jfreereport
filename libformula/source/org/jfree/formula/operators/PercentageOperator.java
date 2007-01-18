@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: PercentageOperator.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,6 +36,7 @@ import org.jfree.formula.EvaluationException;
 import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.lvalues.TypeValuePair;
 
@@ -58,6 +59,13 @@ public class PercentageOperator implements PostfixOperator
       throws EvaluationException
   {
     final Type type = value1.getType();
+    final TypeRegistry typeRegistry = context.getTypeRegistry();
+    //  propagate error
+    final TypeValuePair error = typeRegistry.getError(value1, null);
+    if(error != null)
+    {
+      return error;
+    }
     if (type.isFlagSet(Type.NUMERIC_TYPE) == false)
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
@@ -66,7 +74,7 @@ public class PercentageOperator implements PostfixOperator
 
     // return the same as zero minus value.
     final Number number =
-        context.getTypeRegistry().convertToNumber(type, value1.getValue());
+        typeRegistry.convertToNumber(type, value1.getValue());
     if (number == null)
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue
