@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: NaFunctionTest.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -56,7 +56,7 @@ public class NaFunctionTest
   {
     return new Object[][]
     {
-        //{"ISERROR(NA())", Boolean.TRUE},
+        {"ISERROR(NA())", Boolean.TRUE},
         {"ISNA(NA())", Boolean.TRUE},
         {"ISNA(5+NA())", Boolean.TRUE},
     };
@@ -71,7 +71,7 @@ public class NaFunctionTest
     };
   }
   
-  @BeforeClass
+  @BeforeClass(alwaysRun=true)
   public void setup() {
     context = new TestFormulaContext();
     LibFormulaBoot.getInstance().start();

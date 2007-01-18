@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: NotFunctionTest.java,v 1.3 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,7 +60,7 @@ public class NotFunctionTest
     };
   }
 
-  @BeforeClass
+  @BeforeClass(alwaysRun=true)
   public void setup()
   {
     context = new TestFormulaContext();

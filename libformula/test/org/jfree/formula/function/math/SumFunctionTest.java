@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: SumFunctionTest.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -63,7 +63,7 @@ public class SumFunctionTest
     };
   }
 
-  @BeforeClass
+  @BeforeClass(alwaysRun=true)
   public void setup()
   {
     context = new TestFormulaContext(TestFormulaContext.testCaseDataset);
