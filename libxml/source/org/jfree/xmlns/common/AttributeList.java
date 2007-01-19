@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AttributeList.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,6 +43,9 @@ import java.util.List;
  */
 public class AttributeList
 {
+  public static final String XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
+  public static final String XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
+
   /**
    * A name/value pair of the attribute list.
    */
@@ -238,5 +241,18 @@ public class AttributeList
   public boolean isEmpty()
   {
     return this.entryList.isEmpty();
+  }
+
+  public void addNamespaceDeclaration(final String prefix,
+                                      final String namespaceUri)
+  {
+    if (prefix == null || "".equals(prefix))
+    {
+      setAttribute(XMLNS_NAMESPACE, "", namespaceUri);
+    }
+    else
+    {
+      setAttribute(XMLNS_NAMESPACE, prefix, namespaceUri);
+    }
   }
 }

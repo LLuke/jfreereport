@@ -24,13 +24,11 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: XmlDocumentInfo.java,v 1.2 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.xmlns.parser;
-
-import java.util.Map;
 
 /**
  * Creation-Date: 07.04.2006, 16:40:13
@@ -42,8 +40,6 @@ public interface XmlDocumentInfo
   String getRootElement();
 
   String getRootElementNameSpace();
-
-  Map getNamespaces();
 
   String getPublicDTDId();
 

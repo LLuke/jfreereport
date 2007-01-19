@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: XmlWriterSupport.java,v 1.5 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,9 +33,8 @@ package org.jfree.xmlns.writer;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Properties;
 
 import org.jfree.util.FastStack;
 import org.jfree.util.ObjectUtilities;
@@ -51,12 +50,31 @@ public class XmlWriterSupport
   private static class ElementLevel
   {
     private String namespace;
+    private String prefix;
     private String tagName;
+    private Properties namespaces;
 
-    public ElementLevel(String namespace, String tagName)
+    public ElementLevel(final String namespace,
+                        final String prefix,
+                        final String tagName,
+                        final Properties namespaces)
     {
+      this.prefix = prefix;
       this.namespace = namespace;
       this.tagName = tagName;
+      this.namespaces = namespaces;
+    }
+
+    public ElementLevel(final String tagName,
+                        final Properties namespaces)
+    {
+      this.namespaces = namespaces;
+      this.tagName = tagName;
+    }
+
+    public String getPrefix()
+    {
+      return prefix;
     }
 
     public String getNamespace()
@@ -67,6 +85,11 @@ public class XmlWriterSupport
     public String getTagName()
     {
       return tagName;
+    }
+
+    public Properties getNamespaces()
+    {
+      return namespaces;
     }
   }
 
@@ -116,8 +139,6 @@ public class XmlWriterSupport
    */
   private String indentString;
 
-  private HashMap namespaces;
-
   private boolean lineEmpty;
 
   private boolean alwaysAddNamespace;
@@ -154,23 +175,8 @@ public class XmlWriterSupport
     this.safeTags = safeTags;
     this.openTags = new FastStack();
     this.indentString = indentString;
-    this.namespaces = new HashMap();
     this.lineEmpty = true;
   }
-
-  public void addNamespace(String namespaceUri, String prefix)
-  {
-    if (namespaceUri == null)
-    {
-      throw new NullPointerException("Namespace uri");
-    }
-    if (prefix == null)
-    {
-      throw new NullPointerException("Prefix");
-    }
-    namespaces.put(namespaceUri, prefix);
-  }
-
 
   public boolean isAlwaysAddNamespace()
   {
@@ -233,7 +239,17 @@ public class XmlWriterSupport
     setLineEmpty(false);
 
     w.write("</");
-    w.write(buildQualifiedName(level.getNamespace(), level.getTagName()));
+    final String prefix = level.getPrefix();
+    if (prefix == null)
+    {
+      w.write(prefix);
+      w.write(":");
+      w.write(level.getTagName());
+    }
+    else
+    {
+      w.write(level.getTagName());
+    }
     w.write(">");
 
     doEndOfLine(w);
@@ -316,17 +332,45 @@ public class XmlWriterSupport
       throw new NullPointerException();
     }
 
-    final boolean empty = openTags.isEmpty();
-
     indent(w);
-    openTags.push(new ElementLevel(namespaceUri, name));
     setLineEmpty(false);
+
+    final Properties namespaces;
+    if (openTags.isEmpty())
+    {
+      namespaces = new Properties();
+    }
+    else
+    {
+      ElementLevel parent = (ElementLevel) openTags.peek();
+      namespaces = new Properties(parent.getNamespaces());
+    }
+
+    if (attributes != null)
+    {
+      final Iterator attrs = attributes.iterator();
+      final AttributeList.AttributeEntry entry =
+          (AttributeList.AttributeEntry) attrs.next();
+      final String prefix = entry.getName();
+      if ("xmlns".equals(prefix))
+      {
+        if (entry.getNamespace() == null || "".equals(entry.getNamespace()))
+        {
+          namespaces.setProperty("", entry.getValue());
+        }
+      }
+      else if (AttributeList.XMLNS_NAMESPACE.equals(entry.getNamespace()))
+      {
+        namespaces.setProperty(prefix, entry.getValue());
+      }
+    }
 
     w.write("<");
 
     if (namespaceUri == null)
     {
       w.write(name);
+      openTags.push(new ElementLevel(name, namespaces));
     }
     else
     {
@@ -338,18 +382,15 @@ public class XmlWriterSupport
       if ("".equals(nsPrefix))
       {
         w.write(name);
+        openTags.push(new ElementLevel(namespaceUri, null, name, namespaces));
       }
       else
       {
         w.write(nsPrefix);
         w.write(":");
         w.write(name);
+        openTags.push(new ElementLevel(namespaceUri, nsPrefix, name, namespaces));
       }
-    }
-
-    if (empty && (namespaces.isEmpty() == false))
-    {
-      writeNamespaceDeclarations(w);
     }
 
     if (attributes != null)
@@ -360,7 +401,7 @@ public class XmlWriterSupport
         final AttributeList.AttributeEntry entry =
             (AttributeList.AttributeEntry) keys.next();
         w.write(" ");
-        w.write(buildAttributeName(entry));
+        w.write(buildAttributeName(entry, namespaces));
         w.write("=\"");
         w.write(normalize(entry.getValue(), true));
         w.write("\"");
@@ -378,55 +419,6 @@ public class XmlWriterSupport
     {
       w.write(">");
       doEndOfLine(w);
-    }
-  }
-
-  private void writeNamespaceDeclarations(final Writer w)
-      throws IOException
-  {
-    if (isAssumeDefaultNamespace())
-    {
-      if (namespaces.size() == 1)
-      {
-        Iterator entries = namespaces.entrySet().iterator();
-        Map.Entry entry = (Map.Entry) entries.next();
-        final String nsUri = (String) entry.getKey();
-        final String nsPrfx = (String) entry.getValue();
-
-        if (nsPrfx != null && "".equals(nsPrfx) == false)
-        {
-          w.write(" ");
-          w.write("xmlns:" + nsPrfx);
-          w.write("=\"");
-          w.write(normalize(nsUri, true));
-          w.write("\"");
-        }
-
-        return;
-      }
-    }
-
-    Iterator entries = namespaces.entrySet().iterator();
-    while (entries.hasNext())
-    {
-      w.write(" ");
-
-      Map.Entry entry = (Map.Entry) entries.next();
-      final String nsUri = (String) entry.getKey();
-      final String nsPrfx = (String) entry.getValue();
-
-      if (nsPrfx != null && "".equals(nsPrfx) == false)
-      {
-        w.write("xmlns:" + nsPrfx);
-      }
-      else
-      {
-        w.write("xmlns");
-      }
-
-      w.write("=\"");
-      w.write(normalize(nsUri, true));
-      w.write("\"");
     }
   }
 
@@ -448,23 +440,24 @@ public class XmlWriterSupport
     }
   }
 
-  private String buildAttributeName(AttributeList.AttributeEntry entry)
+  private String buildAttributeName(AttributeList.AttributeEntry entry,
+                                    Properties namespaces)
   {
-    ElementLevel rootElement = (ElementLevel) openTags.peek();
+    ElementLevel currentElement = (ElementLevel) openTags.peek();
     if (isAlwaysAddNamespace() == false &&
-        ObjectUtilities.equal(rootElement.getNamespace(), entry.getNamespace()))
+        ObjectUtilities.equal(currentElement.getNamespace(), entry.getNamespace()))
     {
       return entry.getName();
     }
 
-    return buildQualifiedName(entry.getNamespace(), entry.getName());
-  }
+    final String name = entry.getName();
+    final String namespaceUri = entry.getNamespace();
+    if (namespaceUri == null)
+    {
+      return name;
+    }
 
-  private String buildQualifiedName(final String namespaceUri,
-                                    final String name)
-  {
-    final String namespacePrefix =
-        (String) namespaces.get(namespaceUri);
+    final String namespacePrefix = namespaces.getProperty(namespaceUri);
 
     if (namespacePrefix != null && "".equals(namespacePrefix) == false)
     {

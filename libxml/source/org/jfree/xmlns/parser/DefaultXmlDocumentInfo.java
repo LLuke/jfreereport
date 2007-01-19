@@ -24,13 +24,12 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultXmlDocumentInfo.java,v 1.2 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.xmlns.parser;
 
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -71,16 +70,6 @@ public class DefaultXmlDocumentInfo implements XmlDocumentInfo
     this.rootElementNameSpace = rootElementNameSpace;
   }
 
-  public Map getNamespaces()
-  {
-    return namespaces;
-  }
-
-  public void setNamespaces(final Map namespaces)
-  {
-    this.namespaces = Collections.unmodifiableMap(namespaces);
-  }
-
   public String getPublicDTDId()
   {
     return publicDTDId;
@@ -112,8 +101,6 @@ public class DefaultXmlDocumentInfo implements XmlDocumentInfo
     buffer.append(systemDTDId);
     buffer.append(", PublicDTD-ID=");
     buffer.append(publicDTDId);
-    buffer.append(", namespaces=");
-    buffer.append(namespaces);
     buffer.append(", defaultnamespace=");
     buffer.append(defaultNameSpace);
     buffer.append("}");

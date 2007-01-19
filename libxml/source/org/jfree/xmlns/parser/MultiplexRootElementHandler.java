@@ -24,14 +24,13 @@
  *
  *
  * ------------
- * $Id: MultiplexRootElementHandler.java,v 1.4 2006/12/19 17:46:36 taqua Exp $
+ * $Id: MultiplexRootElementHandler.java,v 1.5 2006/12/30 12:42:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.xmlns.parser;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
@@ -59,7 +58,7 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
     }
 
     public InputSource resolveEntity(String publicId, String systemId)
-            throws SAXException, IOException
+        throws SAXException, IOException
     {
       this.publicId = publicId;
       this.systemId = systemId;
@@ -82,25 +81,20 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
     }
   }
 
-  private boolean firstCall;
-  private DefaultXmlDocumentInfo documentInfo;
   private XmlFactoryModule[] rootHandlers;
   private RootEntityResolver entityResolver;
   private boolean xmlnsUrisNotAvailable;
-  private String defaultNamespace;
 
   public MultiplexRootElementHandler
-          (final ResourceManager manager,
-           final ResourceKey source,
-           final ResourceKey context,
-           final long version,
-           final XmlFactoryModule[] rootHandlers)
+      (final ResourceManager manager,
+       final ResourceKey source,
+       final ResourceKey context,
+       final long version,
+       final XmlFactoryModule[] rootHandlers)
   {
     super(manager, source, context, version);
-    this.documentInfo = new DefaultXmlDocumentInfo();
     this.entityResolver = new RootEntityResolver();
     this.rootHandlers = (XmlFactoryModule[]) rootHandlers.clone();
-    this.firstCall = true;
   }
 
   public boolean isXmlnsUrisNotAvailable()
@@ -128,122 +122,75 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
     return rootHandlers;
   }
 
-  public boolean isFirstCall()
-  {
-    return firstCall;
-  }
-
-  public DefaultXmlDocumentInfo getDocumentInfo()
-  {
-    return documentInfo;
-  }
-
   /**
    * Starts processing an element.
    *
-   * @param originalUri        the URI.
-   * @param localName  the local name.
-   * @param qName      the qName.
-   * @param attributes the attributes.
+   * @param originalUri the URI.
+   * @param localName   the local name.
+   * @param qName       the qName.
+   * @param attributes  the attributes.
    * @throws SAXException if there is a parsing problem.
    */
-  public void startElement(final String originalUri,
-                           final String localName,
-                           final String qName,
-                           Attributes attributes) throws SAXException
+  protected void interceptFirstStartElement(final String originalUri,
+                                            final String localName,
+                                            final String qName,
+                                            Attributes attributes)
+      throws SAXException
   {
-    if (firstCall)
+    // build the document info and select the root handler that will
+    // deal with the document content.
+    final DefaultXmlDocumentInfo documentInfo = new DefaultXmlDocumentInfo();
+    documentInfo.setPublicDTDId(entityResolver.getPublicId());
+    documentInfo.setSystemDTDId(entityResolver.getSystemId());
+    documentInfo.setRootElement(localName);
+    documentInfo.setRootElementNameSpace(originalUri);
+
+    final String nsuri = attributes.getValue("xmlns");
+    if (nsuri != null)
     {
-      // build the document info and select the root handler that will
-      // deal with the document content.
-      documentInfo.setPublicDTDId(entityResolver.getPublicId());
-      documentInfo.setSystemDTDId(entityResolver.getSystemId());
-      documentInfo.setRootElement(localName);
-      documentInfo.setRootElementNameSpace(originalUri);
-
-      final int length = attributes.getLength();
-      final HashMap prefixes = new HashMap();
-      for (int i = 0; i < length; i++)
-      {
-        final String attrQName = attributes.getQName(i);
-        final String nsuri = attributes.getValue(i);
-        if ("xmlns".equals(attrQName))
-        {
-          documentInfo.setDefaultNameSpace(nsuri);
-          prefixes.put ("", nsuri);
-        }
-        else if (attrQName.startsWith("xmlns:"))
-        {
-          final String prefix = attrQName.substring(6);
-          prefixes.put (prefix, nsuri);
-        }
-      }
-
-      documentInfo.setNamespaces(prefixes);
-
-      if (documentInfo.getDefaultNameSpace() == null)
-      {
-        documentInfo.setDefaultNameSpace("");
-      }
-      if (prefixes.isEmpty())
-      {
-        // we run against a DTD, not a schema..
-        xmlnsUrisNotAvailable = true;
-      }
-
-      // ok, now find the best root handler and start parsing ...
-      XmlFactoryModule bestRootHandler = null;
-      int bestRootHandlerWeight = -1;
-      for (int i = 0; i < rootHandlers.length; i++)
-      {
-        final XmlFactoryModule rootHandler = rootHandlers[i];
-        final int weight = rootHandler.getDocumentSupport(documentInfo);
-        if (weight > bestRootHandlerWeight)
-        {
-          bestRootHandler = rootHandler;
-          bestRootHandlerWeight = weight;
-        }
-      }
-      if (bestRootHandlerWeight < 0 || bestRootHandler == null)
-      {
-        throw new SAXException("No suitable root handler known for this document: " + documentInfo);
-      }
-      final XmlReadHandler readHandler =
-              bestRootHandler.createReadHandler(documentInfo);
-      if (readHandler == null)
-      {
-        throw new SAXException("Unable to create the root handler." + bestRootHandler);
-      }
-
-      if (prefixes.isEmpty())
-      {
-        // Now correct the namespace ..
-        defaultNamespace = bestRootHandler.getDefaultNamespace(documentInfo);
-        if (defaultNamespace != null)
-        {
-          prefixes.put("", defaultNamespace);
-          documentInfo.setRootElementNameSpace(defaultNamespace);
-          documentInfo.setNamespaces(prefixes);
-        }
-      }
-
-      String uri;
-      if ((originalUri == null || "".equals(originalUri)) &&
-          defaultNamespace != null)
-      {
-        uri = defaultNamespace;
-      }
-      else
-      {
-        uri = originalUri;
-      }
-
-      attributes = new FixNamespaceUriAttributes(uri, attributes);
-
-      installRootHandler(readHandler, uri, localName, attributes);
-      firstCall = false;
-      return;
+      documentInfo.setDefaultNameSpace(nsuri);
     }
+    else
+    {
+      documentInfo.setDefaultNameSpace("");
+    }
+
+    // ok, now find the best root handler and start parsing ...
+    XmlFactoryModule bestRootHandler = null;
+    int bestRootHandlerWeight = -1;
+    for (int i = 0; i < rootHandlers.length; i++)
+    {
+      final XmlFactoryModule rootHandler = rootHandlers[i];
+      final int weight = rootHandler.getDocumentSupport(documentInfo);
+      if (weight > bestRootHandlerWeight)
+      {
+        bestRootHandler = rootHandler;
+        bestRootHandlerWeight = weight;
+      }
+    }
+    if (bestRootHandlerWeight < 0 || bestRootHandler == null)
+    {
+      throw new SAXException("No suitable root handler known for this document: " + documentInfo);
+    }
+    final XmlReadHandler readHandler =
+        bestRootHandler.createReadHandler(documentInfo);
+    if (readHandler == null)
+    {
+      throw new SAXException("Unable to create the root handler." + bestRootHandler);
+    }
+
+    String defaultNamespace = documentInfo.getDefaultNameSpace();
+    if (defaultNamespace == null)
+    {
+      // Now correct the namespace ..
+      defaultNamespace = bestRootHandler.getDefaultNamespace(documentInfo);
+      if (defaultNamespace != null)
+      {
+        documentInfo.setRootElementNameSpace(defaultNamespace);
+      }
+    }
+
+    pushDefaultNamespace(defaultNamespace);
 
     String uri;
     if ((originalUri == null || "".equals(originalUri)) &&
@@ -257,33 +204,7 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
     }
 
     attributes = new FixNamespaceUriAttributes(uri, attributes);
-    super.startElement(uri, localName, qName, attributes);
-  }
-
-  /**
-   * Finish processing an element.
-   *
-   * @param originalUri       the URI.
-   * @param localName the local name.
-   * @param qName     the qName.
-   * @throws org.xml.sax.SAXException if there is a parsing error.
-   */
-  public void endElement(final String originalUri,
-                         final String localName,
-                         final String qName) throws SAXException
-  {
-    String uri;
-    if ((originalUri == null || "".equals(originalUri)) &&
-        defaultNamespace != null)
-    {
-      uri = defaultNamespace;
-    }
-    else
-    {
-      uri = originalUri;
-    }
-
-    super.endElement(uri, localName, qName);
+    installRootHandler(readHandler, uri, localName, attributes);
   }
 
   /**

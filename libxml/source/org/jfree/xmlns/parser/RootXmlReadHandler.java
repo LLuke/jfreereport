@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: RootXmlReadHandler.java,v 1.4 2006/12/03 17:39:29 taqua Exp $
+ * $Id: RootXmlReadHandler.java,v 1.5 2006/12/19 17:46:36 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,36 +43,54 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-/** A base root SAX handler. */
+/**
+ * A base root SAX handler.
+ */
 public class RootXmlReadHandler extends DefaultHandler
 {
-  /** Storage for the parser configuration. */
+  /**
+   * Storage for the parser configuration.
+   */
   private DefaultConfiguration parserConfiguration;
 
-  /** The DocumentLocator can be used to resolve the current parse position. */
+  /**
+   * The DocumentLocator can be used to resolve the current parse position.
+   */
   private Locator documentLocator;
 
-  /** The current handlers. */
+  /**
+   * The current handlers.
+   */
   private FastStack currentHandlers;
 
-  /** ??. */
+  /**
+   * ??.
+   */
   private FastStack outerScopes;
 
-  /** The root handler. */
+  /**
+   * The root handler.
+   */
   private XmlReadHandler rootHandler;
 
-  /** The object registry. */
+  /**
+   * The object registry.
+   */
   private HashMap objectRegistry;
 
   private boolean rootHandlerInitialized;
 
-  /** The current comment handler used to receive xml comments. */
+  /**
+   * The current comment handler used to receive xml comments.
+   */
   private CommentHandler commentHandler;
 
   private DependencyCollector dependencyCollector;
   private ResourceKey source;
   private ResourceKey context;
   private ResourceManager manager;
+  private FastStack namespaces;
+  private boolean firstCall;
 
   public RootXmlReadHandler(final ResourceManager manager,
                             final ResourceKey source,
@@ -94,6 +112,7 @@ public class RootXmlReadHandler extends DefaultHandler
     {
       throw new NullPointerException();
     }
+    this.firstCall = true;
     this.manager = manager;
     this.source = source;
     this.context = context;
@@ -101,13 +120,14 @@ public class RootXmlReadHandler extends DefaultHandler
     this.objectRegistry = new HashMap();
     this.parserConfiguration = new DefaultConfiguration();
     this.commentHandler = new CommentHandler();
+    this.namespaces = new FastStack();
   }
 
   /**
    * Returns the context key. This key may specity a base context for loading
-   * resources. (It behaves like the 'base-url' setting of HTML and allows
-   * to reference external resources as relative paths without being bound
-   * to the original location of the xml file.)
+   * resources. (It behaves like the 'base-url' setting of HTML and allows to
+   * reference external resources as relative paths without being bound to the
+   * original location of the xml file.)
    *
    * @return the context.
    */
@@ -119,6 +139,11 @@ public class RootXmlReadHandler extends DefaultHandler
   public ResourceManager getResourceManager()
   {
     return manager;
+  }
+
+  public boolean isFirstCall()
+  {
+    return firstCall;
   }
 
   /**
@@ -208,7 +233,7 @@ public class RootXmlReadHandler extends DefaultHandler
     return this.objectRegistry.get(key);
   }
 
-  public String[] getHelperObjectNames ()
+  public String[] getHelperObjectNames()
   {
     return (String[]) this.objectRegistry.keySet().toArray
         (new String[objectRegistry.size()]);
@@ -245,13 +270,13 @@ public class RootXmlReadHandler extends DefaultHandler
    * @param handler the handler.
    * @param tagName the tag name.
    * @param attrs   the attributes.
-   * @throws SAXException       if there is a problem with the parser.
+   * @throws SAXException if there is a problem with the parser.
    */
   public void recurse(final XmlReadHandler handler,
                       final String uri,
                       final String tagName,
                       final Attributes attrs)
-          throws SAXException
+      throws SAXException
   {
     if (handler == null)
     {
@@ -271,13 +296,13 @@ public class RootXmlReadHandler extends DefaultHandler
    * @param handler the new handler.
    * @param tagName the tag name.
    * @param attrs   the attributes.
-   * @throws SAXException       if there is a problem with the parser.
+   * @throws SAXException if there is a problem with the parser.
    */
   public void delegate(final XmlReadHandler handler,
                        final String uri,
                        final String tagName,
                        final Attributes attrs)
-          throws SAXException
+      throws SAXException
   {
     if (handler == null)
     {
@@ -292,10 +317,10 @@ public class RootXmlReadHandler extends DefaultHandler
    * Hand control back to the previous handler.
    *
    * @param tagName the tagname.
-   * @throws SAXException       if there is a problem with the parser.
+   * @throws SAXException if there is a problem with the parser.
    */
   public void unwind(final String uri, final String tagName)
-          throws SAXException
+      throws SAXException
   {
     // remove current handler from stack ..
     this.currentHandlers.pop();
@@ -349,10 +374,48 @@ public class RootXmlReadHandler extends DefaultHandler
    * @param attributes the attributes.
    * @throws SAXException if there is a parsing problem.
    */
-  public void startElement(final String uri, final String localName,
-                           final String qName, final Attributes attributes)
-          throws SAXException
+  public final void startElement(final String originalUri,
+                                 final String localName,
+                                 final String qName,
+                                 Attributes attributes)
+      throws SAXException
   {
+    // Check the default-namespace ..
+    if (firstCall)
+    {
+      firstCall = false;
+      interceptFirstStartElement(originalUri, localName, qName, attributes);
+      return;
+    }
+
+    final String defaultNamespace;
+    final String nsuri = attributes.getValue("xmlns");
+    if (nsuri != null)
+    {
+      defaultNamespace = nsuri;
+    }
+    else if (namespaces.isEmpty())
+    {
+      defaultNamespace = "";
+    }
+    else
+    {
+      defaultNamespace = (String) namespaces.peek();
+    }
+
+    pushDefaultNamespace(defaultNamespace);
+
+    String uri;
+    if ((originalUri == null || "".equals(originalUri)) &&
+        defaultNamespace != null)
+    {
+      uri = defaultNamespace;
+    }
+    else
+    {
+      uri = originalUri;
+    }
+
     if (rootHandlerInitialized == false)
     {
       rootHandler.init(this, uri, localName);
@@ -360,14 +423,29 @@ public class RootXmlReadHandler extends DefaultHandler
     }
 
     final XmlReadHandler currentHandler = getCurrentHandler();
-    currentHandler.startElement(uri, localName, attributes);
+    currentHandler.startElement(uri, localName,
+        new FixNamespaceUriAttributes(uri, attributes));
+  }
+
+  protected void interceptFirstStartElement(final String originalUri,
+                                            final String localName,
+                                            final String qName,
+                                            Attributes attributes)
+      throws SAXException
+  {
+    startElement(originalUri, localName, qName, attributes);
+  }
+
+  protected final void pushDefaultNamespace(String nsuri)
+  {
+    namespaces.push(nsuri);
   }
 
   protected void installRootHandler(final XmlReadHandler handler,
                                     final String uri,
                                     final String localName,
                                     final Attributes attributes)
-          throws SAXException
+      throws SAXException
   {
     if (handler == null)
     {
@@ -389,7 +467,7 @@ public class RootXmlReadHandler extends DefaultHandler
    * @throws SAXException if there is a parsing error.
    */
   public void characters(final char[] ch, final int start, final int length)
-          throws SAXException
+      throws SAXException
   {
     try
     {
@@ -414,11 +492,23 @@ public class RootXmlReadHandler extends DefaultHandler
    * @param qName     the qName.
    * @throws SAXException if there is a parsing error.
    */
-  public void endElement(final String uri,
-                         final String localName,
-                         final String qName)
-          throws SAXException
+  public final void endElement(final String originalUri,
+                               final String localName,
+                               final String qName)
+      throws SAXException
   {
+    final String defaultNamespace = (String) namespaces.pop();
+    String uri;
+    if ((originalUri == null || "".equals(originalUri)) &&
+        defaultNamespace != null)
+    {
+      uri = defaultNamespace;
+    }
+    else
+    {
+      uri = originalUri;
+    }
+
     final XmlReadHandler currentHandler = getCurrentHandler();
     currentHandler.endElement(uri, localName);
   }
