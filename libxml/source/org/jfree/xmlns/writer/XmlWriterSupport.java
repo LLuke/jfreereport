@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.6 2007/01/19 14:05:29 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.7 2007/01/19 14:46:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -240,7 +240,7 @@ public class XmlWriterSupport
 
     w.write("</");
     final String prefix = level.getPrefix();
-    if (prefix == null)
+    if (prefix != null)
     {
       w.write(prefix);
       w.write(":");
@@ -455,6 +455,19 @@ public class XmlWriterSupport
     if (namespaceUri == null)
     {
       return name;
+    }
+
+    if (AttributeList.XMLNS_NAMESPACE.equals(namespaceUri))
+    {
+      // its a namespace declaration.
+      if ("".equals(name))
+      {
+        return "xmlns";
+      }
+      else
+      {
+        return "xmlns:" + name;
+      }
     }
 
     final String namespacePrefix = namespaces.getProperty(namespaceUri);
