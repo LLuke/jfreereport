@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.5 2006/12/03 17:39:29 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.6 2007/01/19 14:05:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -356,12 +356,12 @@ public class XmlWriterSupport
       {
         if (entry.getNamespace() == null || "".equals(entry.getNamespace()))
         {
-          namespaces.setProperty("", entry.getValue());
+          namespaces.setProperty(entry.getValue(), "");
         }
       }
       else if (AttributeList.XMLNS_NAMESPACE.equals(entry.getNamespace()))
       {
-        namespaces.setProperty(prefix, entry.getValue());
+        namespaces.setProperty(entry.getValue(), prefix);
       }
     }
 
@@ -374,7 +374,7 @@ public class XmlWriterSupport
     }
     else
     {
-      String nsPrefix = (String) namespaces.get(namespaceUri);
+      String nsPrefix = namespaces.getProperty(namespaceUri);
       if (nsPrefix == null)
       {
         throw new IllegalArgumentException("Namespace " + namespaceUri + " is not defined.");

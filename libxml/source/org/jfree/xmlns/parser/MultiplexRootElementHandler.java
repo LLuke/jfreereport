@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: MultiplexRootElementHandler.java,v 1.5 2006/12/30 12:42:17 taqua Exp $
+ * $Id: MultiplexRootElementHandler.java,v 1.6 2007/01/19 14:05:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -180,11 +180,11 @@ public class MultiplexRootElementHandler extends RootXmlReadHandler
     }
 
     String defaultNamespace = documentInfo.getDefaultNameSpace();
-    if (defaultNamespace == null)
+    if (defaultNamespace == null || "".equals(defaultNamespace))
     {
       // Now correct the namespace ..
       defaultNamespace = bestRootHandler.getDefaultNamespace(documentInfo);
-      if (defaultNamespace != null)
+      if (defaultNamespace != null && "".equals(defaultNamespace) == false)
       {
         documentInfo.setRootElementNameSpace(defaultNamespace);
       }

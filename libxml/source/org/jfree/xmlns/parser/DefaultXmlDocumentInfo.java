@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultXmlDocumentInfo.java,v 1.2 2006/12/03 17:39:29 taqua Exp $
+ * $Id: DefaultXmlDocumentInfo.java,v 1.3 2007/01/19 14:05:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -104,7 +104,6 @@ public class DefaultXmlDocumentInfo implements XmlDocumentInfo
     buffer.append(", defaultnamespace=");
     buffer.append(defaultNameSpace);
     buffer.append("}");
-    new Exception().printStackTrace();
     return buffer.toString();
   }
 
