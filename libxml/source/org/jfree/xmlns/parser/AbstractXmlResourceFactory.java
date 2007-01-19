@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AbstractXmlResourceFactory.java,v 1.5 2006/12/19 17:46:36 taqua Exp $
+ * $Id: AbstractXmlResourceFactory.java,v 1.6 2006/12/22 10:18:51 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -151,8 +151,8 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
       final XmlFactoryModule[] rootHandlers =
           (XmlFactoryModule[]) modules.toArray
               (new XmlFactoryModule[modules.size()]);
-      final ResourceDataInputSource input = new ResourceDataInputSource(data, manager);
-
+      final ResourceDataInputSource input =
+          new ResourceDataInputSource(data, manager);
 
       final ResourceKey contextKey;
       final long version;

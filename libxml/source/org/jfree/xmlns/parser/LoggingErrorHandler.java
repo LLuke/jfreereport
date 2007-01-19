@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: LoggingErrorHandler.java,v 1.1 2006/12/19 17:47:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -75,6 +75,12 @@ public class LoggingErrorHandler implements ErrorHandler
   {
     if (logContext.isDebugEnabled())
     {
+      if (exception.getMessage().startsWith("URI was not reported to parser for entity"))
+      {
+        // ignore that one. It is stupid! We do not use DTDs but old parsers like
+        // the GNU thing complain about it ..
+        return;
+      }
       logContext.debug ("Parser-Warning", exception);
     }
   }

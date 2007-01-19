@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ParserEntityResolver.java,v 1.3 2006/12/19 17:46:36 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.4 2006/12/30 12:42:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -177,7 +177,9 @@ public final class ParserEntityResolver implements EntityResolver
           final URL location = getDTDLocation(systemId);
           if (location != null)
           {
-            return new InputSource(location.openStream());
+            final InputSource inputSource = new InputSource(location.openStream());
+            inputSource.setSystemId(systemId);
+            return inputSource;
           }
         }
         return null;
@@ -186,7 +188,10 @@ public final class ParserEntityResolver implements EntityResolver
       final URL location = getDTDLocation(publicId);
       if (location != null)
       {
-        return new InputSource(location.openStream());
+        final InputSource inputSource = new InputSource(location.openStream());
+        inputSource.setSystemId(systemId);
+        inputSource.setPublicId(publicId);
+        return inputSource;
       }
       final String message = getDeprecatedDTDMessage(publicId);
       if (message != null)
