@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SQLResourceXmlFactoryModule.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: SQLResourceXmlFactoryModule.java,v 1.4 2006/12/19 17:42:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -73,6 +73,6 @@ public class SQLResourceXmlFactoryModule implements XmlFactoryModule
 
   public XmlReadHandler createReadHandler(XmlDocumentInfo documentInfo)
   {
-    return new SQLDataSourceReadHandler();
+    return new SQLDataFactoryReadHandler();
   }
 }

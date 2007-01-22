@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AttributeReadHandler.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: AttributeReadHandler.java,v 1.4 2006/12/30 14:15:32 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,7 +32,6 @@ package org.jfree.report.modules.factories.report.flow;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.Map;
 
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.beans.BeanException;
@@ -40,9 +39,8 @@ import org.jfree.report.util.beans.ConverterRegistry;
 import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xmlns.parser.Base64;
-import org.jfree.xmlns.parser.MultiplexRootElementHandler;
-import org.jfree.xmlns.parser.PropertyReadHandler;
 import org.jfree.xmlns.parser.ParseException;
+import org.jfree.xmlns.parser.PropertyReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -123,18 +121,9 @@ public class AttributeReadHandler extends PropertyReadHandler
   {
     super.startParsing(attrs);
     namespace = attrs.getValue(getUri(), "namespace-uri");
-
-    final MultiplexRootElementHandler mpr =
-            (MultiplexRootElementHandler) getRootHandler();
     if (namespace == null)
     {
-      final String prefix = attrs.getValue(getUri(), "namespace-prefix");
-      final Map namespaces = mpr.getDocumentInfo().getNamespaces();
-      namespace = (String) namespaces.get(prefix);
-    }
-    if (namespace == null)
-    {
-      namespace = mpr.getDocumentInfo().getDefaultNameSpace();
+      namespace = getNamespace();
     }
 
     className = attrs.getValue(getUri(), "class");

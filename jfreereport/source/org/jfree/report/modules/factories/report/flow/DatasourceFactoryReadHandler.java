@@ -23,13 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DatasourceFactoryReadHandler.java,v 1.4 2006/12/19 17:42:02 taqua Exp $
+ * $Id: DatasourceFactoryReadHandler.java,v 1.5 2006/12/30 14:15:32 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.modules.factories.report.flow;
 
 import org.jfree.report.ReportDataFactory;
+import org.jfree.report.modules.factories.data.base.DataFactoryReadHandler;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceCreationException;
 import org.jfree.resourceloader.ResourceKey;
@@ -48,6 +49,7 @@ import org.xml.sax.SAXException;
  * @author Thomas Morgner
  */
 public class DatasourceFactoryReadHandler extends AbstractXmlReadHandler
+  implements DataFactoryReadHandler
 {
   private ReportDataFactory dataFactory;
 

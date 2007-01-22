@@ -73,10 +73,8 @@
         The 'class' attribute is required if the content is not base64 encoded.
         If it is not given, a String value is assumed.
 
-        Either a namespace-uri or a namespace-prefix (as defined in the parsed
-        xml document) is required. The namespace-prefix will be translated into
-        an URI during the parsing process. If no namespace uri is given, the
-        default namespace is assumed.
+        A namespace-uri is required. If no namespace uri is given, the
+        element's namespace is used instead.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -84,7 +82,6 @@
         <xsd:restriction base="xsd:anyType">
           <xsd:attribute name="name" type="xsd:string" use="required"/>
           <xsd:attribute name="namespace-uri" type="xsd:string"/>
-          <xsd:attribute name="namespace-prefix" type="xsd:string"/>
           <xsd:attribute ref="class" default="java.lang.String" use="optional"/>
           <xsd:attribute ref="encoding"/>
         </xsd:restriction>
@@ -165,7 +162,6 @@
 
   <xsd:element name="attribute-name" type="xsd:string"/>
   <xsd:element name="attribute-namespace-uri" type="xsd:string"/>
-  <xsd:element name="attribute-namespace-prefix" type="xsd:string"/>
 
   <xsd:element name="attribute-expression">
     <xsd:annotation>
@@ -184,7 +180,6 @@
       <xsd:sequence>
         <xsd:element ref="attribute-name" minOccurs="1" maxOccurs="1"/>
         <xsd:element ref="attribute-namespace-uri" minOccurs="1" maxOccurs="1"/>
-        <xsd:element ref="attribute-namespace-prefix" minOccurs="1" maxOccurs="1"/>
         <xsd:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
       <xsd:attribute ref="class" use="optional"/>
@@ -199,6 +194,10 @@
         A display condition is an expression that evaluates to 'true', if the
         element should be displayed. All other values count as 'false' effectivly
         hiding the element.
+
+        The display-condition only affects the output. Even if the display
+        condition evaluates to false, the element will be processed and any
+        computation defined for the element will be performed.
 
         Expressions can either be defined by specifying a classname or by
         providing a formula. If a formula is given, this counts as if a
@@ -305,9 +304,9 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="element-type">
-          <xsd:all minOccurs="1" maxOccurs="1">
+          <xsd:choice>
             <xsd:element ref="value-expression" minOccurs="1"/>
-          </xsd:all>
+          </xsd:choice>
           <xsd:attribute name="format" type="xsd:string" use="optional"/>
         </xsd:extension>
       </xsd:complexContent>
@@ -472,12 +471,12 @@
 
   <xsd:complexType name="report-definition-type">
     <xsd:complexContent mixed="true">
-      <xsd:restriction base="report-definition-query">
+      <xsd:extension base="report-definition-query">
         <xsd:sequence>
           <xsd:element ref="operation-before" minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element ref="operation-after" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-      </xsd:restriction>
+      </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
 
@@ -529,16 +528,13 @@
     </xsd:complexType>
   </xsd:element>
 
-  <xsd:element name="inline-stylesheet">
+  <xsd:element name="inline-stylesheet" type="xsd:string">
     <xsd:annotation>
       <xsd:documentation>
         This includes the style sheet definition as character data.
         This is equal to HTML's style-tag.
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:simpleType>
-      <xsd:restriction base="xsd:string"/>
-    </xsd:simpleType>
   </xsd:element>
 
   <xsd:element name="report" substitutionGroup="section">

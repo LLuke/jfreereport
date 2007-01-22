@@ -23,18 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AttributeExpressionReadHandler.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: AttributeExpressionReadHandler.java,v 1.4 2006/12/30 14:15:32 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report.modules.factories.report.flow;
 
-import java.util.Map;
-
-import org.jfree.xmlns.parser.MultiplexRootElementHandler;
+import org.jfree.xmlns.parser.ParseException;
 import org.jfree.xmlns.parser.StringReadHandler;
 import org.jfree.xmlns.parser.XmlReadHandler;
-import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -47,7 +44,6 @@ public class AttributeExpressionReadHandler
         extends AbstractExpressionReadHandler
 {
   private StringReadHandler nameReadHandler;
-  private StringReadHandler namespacePrefixReadHandler;
   private StringReadHandler namespaceUriReadHandler;
   private String attributeName;
   private String namespace;
@@ -83,11 +79,6 @@ public class AttributeExpressionReadHandler
       namespaceUriReadHandler = new StringReadHandler();
       return namespaceUriReadHandler;
     }
-    if (tagName.equals("attribute-namespace-prefix"))
-    {
-      namespacePrefixReadHandler = new StringReadHandler();
-      return namespacePrefixReadHandler;
-    }
     return super.getHandlerForChild(uri, tagName, atts);
   }
 
@@ -111,17 +102,9 @@ public class AttributeExpressionReadHandler
     {
       namespace = namespaceUriReadHandler.getResult();
     }
-    final MultiplexRootElementHandler mpr =
-            (MultiplexRootElementHandler) getRootHandler();
     if (namespace == null)
     {
-      final String prefix = namespacePrefixReadHandler.getResult();
-      final Map namespaces = mpr.getDocumentInfo().getNamespaces();
-      namespace = (String) namespaces.get(prefix);
-    }
-    if (namespace == null)
-    {
-      namespace = mpr.getDocumentInfo().getDefaultNameSpace();
+      namespace = getNamespace();
     }
 
   }

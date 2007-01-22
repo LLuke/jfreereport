@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionReadHandler.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
+ * $Id: SectionReadHandler.java,v 1.7 2006/12/19 17:42:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -164,75 +164,6 @@ public class SectionReadHandler extends AbstractElementReadHandler
       return handler;
     }
     return null;
-//
-//    else if ("content".equals(tagName))
-//      {
-//        final ContentElementReadHandler contentHandler = new ContentElementReadHandler();
-//        nodes.add(new ElementWrapper(contentHandler));
-//        return contentHandler;
-//      }
-//      else if ("section".equals(tagName))
-//      {
-//        final SectionReadHandler genericHandler =
-//                new SectionReadHandler
-//                        (JFreeReportInfo.REPORT_NAMESPACE, tagName);
-//        nodes.add(new ElementWrapper(genericHandler));
-//        return genericHandler;
-//      }
-//      else if ("detail-section".equals(tagName))
-//      {
-//        final SectionReadHandler genericHandler =
-//                new DetailSectionReadHandler();
-//        nodes.add(new ElementWrapper(genericHandler));
-//        return genericHandler;
-//      }
-//      else if ("out-of-order-section".equals(tagName))
-//      {
-//        final OutOfOrderSectionReadHandler genericHandler =
-//                new OutOfOrderSectionReadHandler();
-//        nodes.add(new ElementWrapper(genericHandler));
-//        return genericHandler;
-//      }
-//      else if ("page-header".equals(tagName))
-//      {
-//        final PageHeaderReadHandler genericHandler =
-//                new PageHeaderReadHandler();
-//        nodes.add(new ElementWrapper(genericHandler));
-//        return genericHandler;
-//      }
-//      else if ("page-footer".equals(tagName))
-//      {
-//        final PageFooterReadHandler genericHandler =
-//                new PageFooterReadHandler();
-//        nodes.add(new ElementWrapper(genericHandler));
-//        return genericHandler;
-//      }
-//      else if ("group".equals(tagName))
-//      {
-//        final GroupReadHandler genericHandler =
-//                new GroupReadHandler();
-//        nodes.add(new ElementWrapper(genericHandler));
-//        return genericHandler;
-//      }
-//      else if ("sub-report".equals(tagName))
-//      {
-//        final SubReportReadHandler genericHandler =
-//                new SubReportReadHandler();
-//        nodes.add(new ElementWrapper(genericHandler));
-//        return genericHandler;
-//      }
-//      else
-//      {
-//        return null;
-//      }
-//    }
-//    else // something else ..
-//    {
-//      final SectionReadHandler genericHandler =
-//              new SectionReadHandler(uri, tagName);
-//      nodes.add(new ElementWrapper(genericHandler));
-//      return genericHandler;
-//    }
   }
 
   /**
