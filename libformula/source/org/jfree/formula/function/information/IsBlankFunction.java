@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IsBlankFunction.java,v 1.2 2006/12/30 13:50:19 mimil Exp $
+ * $Id: IsBlankFunction.java,v 1.3 2007/01/22 15:54:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -70,9 +70,5 @@ public class IsBlankFunction implements Function
     }
 
     return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
-  }
-
-  public IsBlankFunction()
-  {
   }
 }
