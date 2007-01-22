@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: ExactFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -46,12 +46,15 @@ import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
  * This function reports if two given text values are exactly equal using a case-sensitive comparison.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 public class ExactFunction implements Function
 {
+  public ExactFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -61,15 +64,15 @@ public class ExactFunction implements Function
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    
+
     final Type textType1 = parameters.getType(0);
     final Object textValue1 = parameters.getValue(0);
     final Type textType2 = parameters.getType(1);
     final Object textValue2 = parameters.getValue(1);
- 
+
     final String text1 = typeRegistry.convertToText(textType1, textValue1);
     final String text2 = typeRegistry.convertToText(textType2, textValue2);
-    
+
     if(text1 == null || text2 == null)
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
@@ -82,7 +85,7 @@ public class ExactFunction implements Function
     {
       final BigDecimal number1 = (BigDecimal)typeRegistry.convertToNumber(textType1, textValue1);
       final BigDecimal number2 = (BigDecimal)typeRegistry.convertToNumber(textType2, textValue2);
-      
+
       final BigInteger n1 = number1.toBigInteger();
       final BigInteger n2 = number2.toBigInteger();
       return new TypeValuePair(LogicalType.TYPE, new Boolean(n1.equals(n2)));

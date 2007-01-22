@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: UpperFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,12 +42,15 @@ import org.jfree.formula.typing.coretypes.TextType;
 
 /**
  * This function returns the given text in upper case.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 public class UpperFunction implements Function
 {
+  public UpperFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -59,12 +62,12 @@ public class UpperFunction implements Function
     final Type type1 = parameters.getType(0);
     final Object value1 = parameters.getValue(0);
     final String result = context.getTypeRegistry().convertToText(type1, value1);
-    
+
     if(result == null)
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
-    
+
     return new TypeValuePair(TextType.TYPE, result.toUpperCase(context.getLocalizationContext().getLocale()));
   }
 

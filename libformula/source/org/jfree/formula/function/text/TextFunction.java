@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: TextFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,13 +42,16 @@ import org.jfree.formula.typing.coretypes.TextType;
 
 /**
  * This function returns the given value as text.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 //TODO: check when this function must be used
 public class TextFunction implements Function
 {
+  public TextFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -60,12 +63,12 @@ public class TextFunction implements Function
     final Type type1 = parameters.getType(0);
     final Object value1 = parameters.getValue(0);
     final String result = context.getTypeRegistry().convertToText(type1, value1);
-    
+
     if(result == null)
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
-    
+
     return new TypeValuePair(TextType.TYPE, result);
   }
 

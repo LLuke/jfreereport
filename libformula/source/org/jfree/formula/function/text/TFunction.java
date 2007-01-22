@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: TFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,12 +42,15 @@ import org.jfree.formula.typing.coretypes.TextType;
 
 /**
  * This function returns the given text value or a zero lenght string for non text type.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 public class TFunction implements Function
 {
+  public TFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -58,14 +61,14 @@ public class TFunction implements Function
     }
     final Type type1 = parameters.getType(0);
     final Object value1 = parameters.getValue(0);
-    
+
     String res = "";
-    
+
     if(type1 instanceof TextType || value1 instanceof String)
     {
       res = (String)value1;
     }
-    
+
     return new TypeValuePair(TextType.TYPE, res);
   }
 

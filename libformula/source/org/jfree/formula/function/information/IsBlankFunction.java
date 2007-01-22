@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IsBlankFunction.java,v 1.1 2006/12/22 10:22:30 taqua Exp $
+ * $Id: IsBlankFunction.java,v 1.2 2006/12/30 13:50:19 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -47,6 +47,10 @@ import org.jfree.formula.typing.coretypes.LogicalType;
  */
 public class IsBlankFunction implements Function
 {
+  public IsBlankFunction()
+  {
+  }
+
   public String getCanonicalName()
   {
     return "ISBLANK";
