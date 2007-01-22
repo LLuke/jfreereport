@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlPrinter.java,v 1.4 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -271,8 +271,6 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     xmlWriter = new XmlWriter(writer, tagDescription);
     xmlWriter.setAlwaysAddNamespace(false);
     xmlWriter.setAssumeDefaultNamespace(true);
-    xmlWriter.addNamespace(Namespaces.XHTML_NAMESPACE, "");
-
 
     if (generateFragment == false)
     {
@@ -282,7 +280,10 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         xmlWriter.writeText(XHTML_HEADER[i]);
         xmlWriter.writeNewLine();
       }
-      xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "html", XmlWriter.OPEN);
+      AttributeList htmlAttList = new AttributeList();
+      htmlAttList.addNamespaceDeclaration("", Namespaces.XHTML_NAMESPACE);
+
+      xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "html",  XmlWriter.OPEN);
       xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "head", XmlWriter.OPEN);
       xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "title", XmlWriter.OPEN);
       xmlWriter.writeText("Yeah, sure, I *should* grab a sensible title from somewhere");
