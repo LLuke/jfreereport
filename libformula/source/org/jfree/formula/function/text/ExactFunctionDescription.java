@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: ExactFunctionDescription.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,7 +32,6 @@ package org.jfree.formula.function.text;
 
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
-import org.jfree.formula.function.information.IsTextFunction;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.LogicalType;
 import org.jfree.formula.typing.coretypes.TextType;

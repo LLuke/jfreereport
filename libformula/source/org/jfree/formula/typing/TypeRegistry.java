@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TypeRegistry.java,v 1.5 2007/01/14 17:49:41 mimil Exp $
+ * $Id: TypeRegistry.java,v 1.6 2007/01/18 21:52:06 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,7 +32,6 @@ package org.jfree.formula.typing;
 
 import java.util.Date;
 
-import org.jfree.formula.ErrorValue;
 import org.jfree.formula.lvalues.TypeValuePair;
 
 /**

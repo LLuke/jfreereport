@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: MinusSignOperator.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
+ * $Id: MinusSignOperator.java,v 1.4 2007/01/18 21:52:06 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,7 +38,6 @@ import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.ErrorType;
 
 /**
  * Creation-Date: 02.11.2006, 10:27:03

@@ -41,12 +41,12 @@ import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.ErrorType;
 
 /**
- * This function returns a selected number of text characters from the left.
+ * This function returns a selected number of text characters from the right.
  * 
  * @author Cedric Pronzato
  *
  */
-public class LeftFunction implements Function
+public class RightFunction implements Function
 {
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
@@ -83,14 +83,18 @@ public class LeftFunction implements Function
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
     
-    // Note that MID(T;1;Length) produces the same results as LEFT(T;Length).
+    int s = text.length()-l+1;
+    if(s < 1)
+    {
+      s = 1;
+    }
     final MidFunction function = new MidFunction();
-    return function.process(text, new Integer(1), new Integer(l));
+    return function.process(text, new Integer(s), new Integer(l));
   }
 
   public String getCanonicalName()
   {
-    return "LEFT";
+    return "RIGHT";
   }
 
 }

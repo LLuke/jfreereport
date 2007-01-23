@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: MidFunctionDescription.java,v 1.1 2007/01/19 23:44:29 mimil Exp $
+ * $Id: LeftFunctionDescription.java,v 1.1 2007/01/19 23:44:30 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,17 +37,17 @@ import org.jfree.formula.typing.coretypes.NumberType;
 import org.jfree.formula.typing.coretypes.TextType;
 
 /**
- * Describes MidFunction function.
- * @see MidFunction
+ * Describes RightFunction function.
+ * @see RightFunction
  * 
  * @author Cedric Pronzato
  *
  */
-public class MidFunctionDescription extends AbstractFunctionDescription
+public class RightFunctionDescription extends AbstractFunctionDescription
 {
-  public MidFunctionDescription()
+  public RightFunctionDescription()
   {
-    super("org.jfree.formula.function.text.Mid-Function");
+    super("org.jfree.formula.function.text.Right-Function");
   }
 
   public FunctionCategory getCategory()
@@ -57,7 +57,7 @@ public class MidFunctionDescription extends AbstractFunctionDescription
 
   public int getParameterCount()
   {
-    return 3;
+    return 2;
   }
 
   public Type getParameterType(int position)
@@ -77,6 +77,10 @@ public class MidFunctionDescription extends AbstractFunctionDescription
 
   public boolean isParameterMandatory(int position)
   {
+    if(position == 2)
+    {
+      return false;
+    }
     return true;
   }
 

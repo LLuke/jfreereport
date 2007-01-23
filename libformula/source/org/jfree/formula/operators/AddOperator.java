@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AddOperator.java,v 1.5 2007/01/14 17:49:41 mimil Exp $
+ * $Id: AddOperator.java,v 1.6 2007/01/18 21:52:06 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,11 +32,10 @@ package org.jfree.formula.operators;
 
 import java.math.BigDecimal;
 
-import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.ErrorValue;
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.NumberType;

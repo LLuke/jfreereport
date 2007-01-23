@@ -30,13 +30,10 @@
  */
 package org.jfree.formula.function.text;
 
-import java.math.BigDecimal;
-
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.Formula;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaBoot;
-import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.common.TestFormulaContext;
 import org.jfree.formula.parser.ParseException;
 import org.testng.Assert;
@@ -49,7 +46,7 @@ import org.testng.annotations.Test;
  * @author Cedric Pronzato
  *
  */
-public class LeftFunctionTest
+public class RightFunctionTest
 {
   private FormulaContext context;
   
@@ -58,15 +55,12 @@ public class LeftFunctionTest
   {
     return new Object[][]
     {
-        {"LEFT(\"Hello\";2)", "He"},
-        {"LEFT(\"Hello\")", "H"},
-        {"LEFT(\"Hello\";20)", "Hello"},
-        {"LEFT(\"Hello\";0)", ""},
-        {"LEFT(\"\";4)", ""},
-        //TODO: Error propagation not respected in all function
-        {"LEN(LEFT(\"xxx\";-0.1))", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT)},
-        {"LEN(LEFT(\"xxx\";2^15-1))", new BigDecimal(3)},
-        {"LEFT(\"Hello\";2.9)", "He"},
+        {"RIGHT(\"Hello\";2)", "lo"},
+        {"RIGHT(\"Hello\")", "o"},
+        {"RIGHT(\"Hello\";20)", "Hello"},
+        {"RIGHT(\"Hello\";0)", ""},
+        {"RIGHT(\"Hello\";2^15-1)", "Hello"},
+        {"RIGHT(\"\";4)", ""},
     };
   }  
   

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: PowerOperator.java,v 1.5 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -56,7 +56,12 @@ public class PowerOperator implements InfixOperator
       throws EvaluationException
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-
+    //  propagate error
+    final TypeValuePair error = typeRegistry.getError(value1, null);
+    if(error != null)
+    {
+      return error;
+    }
 
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), value1.getValue());
