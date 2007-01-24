@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.7 2007/01/19 14:46:28 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.8 2007/01/19 15:23:44 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -349,19 +349,22 @@ public class XmlWriterSupport
     if (attributes != null)
     {
       final Iterator attrs = attributes.iterator();
-      final AttributeList.AttributeEntry entry =
-          (AttributeList.AttributeEntry) attrs.next();
-      final String prefix = entry.getName();
-      if ("xmlns".equals(prefix))
+      while (attrs.hasNext())
       {
-        if (entry.getNamespace() == null || "".equals(entry.getNamespace()))
+        final AttributeList.AttributeEntry entry =
+            (AttributeList.AttributeEntry) attrs.next();
+        final String prefix = entry.getName();
+        if ("xmlns".equals(prefix))
         {
-          namespaces.setProperty(entry.getValue(), "");
+          if (entry.getNamespace() == null || "".equals(entry.getNamespace()))
+          {
+            namespaces.setProperty(entry.getValue(), "");
+          }
         }
-      }
-      else if (AttributeList.XMLNS_NAMESPACE.equals(entry.getNamespace()))
-      {
-        namespaces.setProperty(entry.getValue(), prefix);
+        else if (AttributeList.XMLNS_NAMESPACE.equals(entry.getNamespace()))
+        {
+          namespaces.setProperty(entry.getValue(), prefix);
+        }
       }
     }
 
