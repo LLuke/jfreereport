@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportReadHandler.java,v 1.6 2006/12/08 14:20:41 taqua Exp $
+ * $Id: ReportReadHandler.java,v 1.7 2006/12/30 14:15:32 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,6 +35,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.factories.data.base.DataFactoryReadHandlerFactory;
+import org.jfree.report.modules.factories.data.base.DataFactoryReadHandler;
 import org.jfree.report.structure.Element;
 import org.jfree.xmlns.parser.PropertiesReadHandler;
 import org.jfree.xmlns.parser.StringReadHandler;
@@ -52,7 +54,7 @@ public class ReportReadHandler extends SectionReadHandler
 {
   private StringReadHandler queryReadHandler;
   private PropertiesReadHandler propertiesReadHandler;
-  private DatasourceFactoryReadHandler datasourceFactoryReadHandler;
+  private DataFactoryReadHandler datasourceFactoryReadHandler;
   private ArrayList styleSheetReadHandlers;
   private JFreeReport report;
 
@@ -85,6 +87,16 @@ public class ReportReadHandler extends SectionReadHandler
     {
       return base;
     }
+
+    final DataFactoryReadHandlerFactory factory = DataFactoryReadHandlerFactory.getInstance();
+    final DataFactoryReadHandler handler = (DataFactoryReadHandler) factory.getHandler(uri, tagName);
+    if (handler != null)
+    {
+      datasourceFactoryReadHandler = handler;
+      return handler;
+    }
+
+
     if (FlowReportFactoryModule.NAMESPACE.equals(uri))
     {
       if ("query".equals(tagName))
@@ -96,11 +108,6 @@ public class ReportReadHandler extends SectionReadHandler
       {
         propertiesReadHandler = new PropertiesReadHandler();
         return propertiesReadHandler;
-      }
-      if ("datasource".equals(tagName))
-      {
-        datasourceFactoryReadHandler = new DatasourceFactoryReadHandler();
-        return datasourceFactoryReadHandler;
       }
       if ("stylesheet".equals(tagName))
       {

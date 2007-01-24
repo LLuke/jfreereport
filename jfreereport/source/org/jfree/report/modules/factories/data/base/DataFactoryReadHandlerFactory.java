@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DataFactoryReadHandlerFactory.java,v 1.1 2007/01/22 15:43:46 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,7 +45,7 @@ public class DataFactoryReadHandlerFactory extends AbstractReadHandlerFactory
 {
 
   private static final String PREFIX_SELECTOR =
-      "org.jfree.report.modules.factories.report.data.data-factory-prefix.";
+      "org.jfree.report.modules.factories.data.data-factory-prefix.";
 
   private static DataFactoryReadHandlerFactory readHandlerFactory;
 
