@@ -41,6 +41,8 @@ import org.jfree.base.modules.SubSystem;
  */
 public class HibernateDataFactoryModule extends AbstractModule
 {
+  public static final String NAMESPACE = "http://jfreereport.sourceforge.net/namespaces/datasources/hibernate";
+  
   public HibernateDataFactoryModule() throws ModuleInitializeException
   {
     loadModuleInfo();
