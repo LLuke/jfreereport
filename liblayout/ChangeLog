@@ -3,6 +3,19 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.2: (25-Jan-2007)
+        * A huge mass of bugfixes. The state management was non-deterministic and
+          caused a lot of crashes. Other fixes went in as well.
+          
+        * Counters are now fully applied. List-Item markers are now implemented
+          according to the standard.
+          
+        * The DisplayModel-Builder has been replaced by a faster implementation that
+          causes less trouble and does not generate that many temporary objects.
+          
+
+        * Please note: There are still bugs pending .. (a lot of them!)
+
 0.2.1: (11-Dec-2006)
         * Fixed a couple of state bugs which caused memory-leaks and weird layout
           errors.
