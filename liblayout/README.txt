@@ -1,8 +1,8 @@
 ************************
-* LIBLAYOUT 0.2.0      *
+* LIBLAYOUT 0.2.2      *
 ************************
 
-03 Dec 2006
+25 January 2007
 
 1. INTRODUCTION
 ---------------
@@ -12,7 +12,7 @@ content as a DOM structure (although it does not rely on the W3C-DOM API).
 
 For the latest news and information about LibLayout, please refer to:
 
-    http://jfreereport.pentaho.org/liblayout/
+    http://reporting.pentaho.org/liblayout/
 
 
 Like all JFreeReport related projects, LibLayout upholds the good tradition
