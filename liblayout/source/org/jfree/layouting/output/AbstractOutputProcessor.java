@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractOutputProcessor.java,v 1.6 2007/01/08 17:55:47 taqua Exp $
+ * $Id: AbstractOutputProcessor.java,v 1.7 2007/01/09 14:45:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,7 +43,6 @@ import org.jfree.layouting.normalizer.content.ContentNormalizer;
 import org.jfree.layouting.normalizer.content.Normalizer;
 import org.jfree.layouting.normalizer.displaymodel.FastDisplayModelBuilder;
 import org.jfree.layouting.normalizer.displaymodel.ModelBuilder;
-import org.jfree.layouting.normalizer.generator.PrintContentGenerator;
 import org.jfree.layouting.normalizer.generator.DefaultContentGenerator;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
