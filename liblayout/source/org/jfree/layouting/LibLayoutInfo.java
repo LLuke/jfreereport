@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LibLayoutInfo.java,v 1.5 2006/12/03 18:57:49 taqua Exp $
+ * $Id: LibLayoutInfo.java,v 1.6 2006/12/11 12:56:14 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,9 +50,9 @@ public class LibLayoutInfo extends ProjectInfo
   private LibLayoutInfo ()
   {
     setName("LibLayout");
-    setVersion("0.2.1");
+    setVersion("0.2.2");
     setInfo("http://jfreereport.pentaho.org/liblayout/");
-    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
+    setCopyright ("(C)opyright 2007, by Pentaho Corporation and Contributors");
 
     setContributors(Arrays.asList(
         new Contributor[]
