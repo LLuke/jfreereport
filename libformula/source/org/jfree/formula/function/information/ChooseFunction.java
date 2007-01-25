@@ -24,25 +24,24 @@
  *
  *
  * ------------
- * $Id: HasChangedFunction.java,v 1.2 2006/12/03 19:22:27 taqua Exp $
+ * $Id: ChooseFunction.java,v 1.1 2007/01/18 22:36:32 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.formula.function.information;
 
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.EvaluationException;
-import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.ErrorType;
-import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
- * This function uses an index to return a value from a list of values. 
+ * This function uses an index to return a value from a list of values.
  * The first value index is 1, 2 for the second and so on.
  *
  * @author Cedric Pronzato
@@ -69,14 +68,14 @@ public class ChooseFunction implements Function
     }
     final Type indexType = parameters.getType(0);
     final Object indexValue = parameters.getValue(0);
-    
+
     if(indexType.isFlagSet(Type.NUMERIC_TYPE) || indexValue instanceof Number)
     {
       final int index= context.getTypeRegistry().convertToNumber(indexType, indexValue).intValue();
       if(index >= 1 && index < parameters.getParameterCount())
       {
         return new TypeValuePair(parameters.getType(index), parameters.getValue(index));
-      }      
+      }
     }
 
     return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));

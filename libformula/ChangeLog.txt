@@ -3,6 +3,32 @@
 ---------------
 A list of changes in recent versions:
 
+0.1.3  (25-Jan-2007)
+        * [BUG] The power operator was not registered.
+        
+        * New functions added
+          Text:
+          - LEFT(text[,length=1])
+          - EXACT(text1,text2)
+          - FIND(needle,hay[,startIndex])
+          - LEN(text)
+          - LOWER(text)
+          - MID(text,start,length)
+          - REPT(text,count)
+          - TEXT(value)
+          - T(value)
+          - TRIM(text)
+          - UPPER(text)
+          - URLENCODE(text[,encoding])
+          
+          Information:
+          - NA
+          - ISNA(value)
+          - ISTEXT(value)
+          - ISLOGICAL(value)
+          - ISERROR(value)
+          - CHOOSE(condition,value[,..])
+          - ISBLANK(value)
 
 0.1.2: (22-Dec-2006)
         * [BUG] The parser failed when being faced with functions that have

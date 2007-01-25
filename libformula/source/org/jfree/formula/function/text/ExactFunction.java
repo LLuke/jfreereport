@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ExactFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: ExactFunction.java,v 1.3 2007/01/22 15:54:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -88,10 +88,18 @@ public class ExactFunction implements Function
 
       final BigInteger n1 = number1.toBigInteger();
       final BigInteger n2 = number2.toBigInteger();
-      return new TypeValuePair(LogicalType.TYPE, new Boolean(n1.equals(n2)));
+      if (n1.equals(n2))
+      {
+        return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+      }
+      return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
     }
 
-    return new TypeValuePair(LogicalType.TYPE, new Boolean(text1.equals(text2)));
+    if (text1.equals(text2))
+    {
+      return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+    }
+    return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
   }
 
   public String getCanonicalName()

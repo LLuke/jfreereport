@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IsNaFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: IsErrorFunction.java,v 1.1 2007/01/18 22:36:32 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,27 +43,30 @@ import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
  * This function returns true if the parameter is of error.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 public class IsErrorFunction implements Function
 {
-
   private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
   private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+
+  public IsErrorFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
     if(parameters.getParameterCount() != 1) {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
     }
-    
+
     try
     {
       final Type type = parameters.getType(0);
       Object value = parameters.getValue(0);
-      
+
       if(ErrorType.TYPE.equals(type) && value instanceof ErrorValue)
       {
         return RETURN_TRUE;
@@ -72,7 +75,7 @@ public class IsErrorFunction implements Function
     {
       return RETURN_TRUE;
     }
-    
+
     return RETURN_FALSE;
   }
 

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.6 2006/12/30 14:54:38 taqua Exp $
+ * $Id: DateFunction.java,v 1.7 2007/01/18 22:34:32 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,11 +36,13 @@ import java.util.GregorianCalendar;
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.coretypes.DateType;
 import org.jfree.formula.typing.coretypes.ErrorType;
+import org.jfree.formula.typing.TypeRegistry;
 
 /**
  * Creation-Date: 04.11.2006, 18:59:11
@@ -68,13 +70,13 @@ public class DateFunction implements Function
     Number n1;
     Number n2;
     Number n3;
-    Object value;
     try
     {
-      n1 = context.getTypeRegistry().convertToNumber(parameters.getType(0), parameters.getValue(0));
-      value = parameters.getValue(1);
-      n2 = context.getTypeRegistry().convertToNumber(parameters.getType(1), value);
-      n3 = context.getTypeRegistry().convertToNumber(parameters.getType(2), parameters.getValue(2));
+      final TypeRegistry typeRegistry = context.getTypeRegistry();
+      n1 = typeRegistry.convertToNumber(parameters.getType(0), parameters.getValue(0));
+      Object value = parameters.getValue(1);
+      n2 = typeRegistry.convertToNumber(parameters.getType(1), value);
+      n3 = typeRegistry.convertToNumber(parameters.getType(2), parameters.getValue(2));
     }
     catch (NumberFormatException e)
     {
@@ -89,9 +91,10 @@ public class DateFunction implements Function
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
-    System.out.println("DEGUG Y:"+n1+" M:"+n2+"["+value+"] D:"+n3);
+    //System.out.println("DEGUG Y:"+n1+" M:"+n2+"["+value+"] D:"+n3);
+    final LocalizationContext localizationContext = context.getLocalizationContext();
     final GregorianCalendar gc = new GregorianCalendar
-        (context.getLocalizationContext().getTimeZone(), context.getLocalizationContext().getLocale());
+        (localizationContext.getTimeZone(), localizationContext.getLocale());
     gc.set(GregorianCalendar.DAY_OF_MONTH, n3.intValue());
     gc.set(GregorianCalendar.MONTH, n2.intValue()-1);
     gc.set(GregorianCalendar.YEAR, n1.intValue());
@@ -101,7 +104,7 @@ public class DateFunction implements Function
     gc.set(GregorianCalendar.SECOND, 0);
 
     final Date date = gc.getTime();
-    System.out.println("Created date("+n2+"): "+date);
+    //System.out.println("Created date("+n2+"): "+date);
     return new TypeValuePair(DateType.TYPE, date);
   }
 }

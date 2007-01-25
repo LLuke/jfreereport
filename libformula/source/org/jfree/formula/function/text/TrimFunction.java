@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TrimFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: TrimFunction.java,v 1.3 2007/01/22 15:54:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,11 +41,12 @@ import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.TextType;
 
 /**
- * This function returns the given text free of leading and trailing spaces.
- * Internal multiple spaces are replaced by one.
+ * This function returns the given text free of leading spaces.
+ * Removes spaces that are in front of a string, or aligns cell contents to
+ * the left.
  *
  * @author Cedric Pronzato
- *
+ * @see http://mercury.ccil.org/%7Ecowan/OF/textfuncs.html
  */
 public class TrimFunction implements Function
 {
@@ -66,10 +67,23 @@ public class TrimFunction implements Function
 
     if(result == null)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      return new TypeValuePair (ErrorType.TYPE, new LibFormulaErrorValue
+              (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
 
-    return new TypeValuePair(TextType.TYPE, result.trim().replaceAll("\\s+", " "));
+    // remove all leading spaces ..
+    int index = 0;
+    final int length = result.length();
+    while (index < length && Character.isWhitespace(result.charAt(index)))
+    {
+      index += 1;
+    }
+    if (index == 0)
+    {
+      return new TypeValuePair(TextType.TYPE, result);
+    }
+
+    return new TypeValuePair(TextType.TYPE, result.substring(index));
   }
 
   public String getCanonicalName()

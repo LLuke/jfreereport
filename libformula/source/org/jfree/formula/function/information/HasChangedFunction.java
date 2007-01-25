@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: HasChangedFunction.java,v 1.2 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -64,20 +64,6 @@ public class HasChangedFunction implements Function
     final int parCount = parameters.getParameterCount();
     for (int i = 0; i < parCount; i++)
     {
-      // Make this configurable ...
-//      final LValue rawValue = parameters.getRaw(i);
-//      if (rawValue instanceof ContextLookup)
-//      {
-//        // OK, it is a context lookup, so lookup.
-//        // this will fail if the context does not track changes.
-//        final ContextLookup cl = (ContextLookup) rawValue;
-//        final String name = cl.getName();
-//        if (context.isReferenceDirty(name))
-//        {
-//          return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
-//        }
-//      }
-
       final Object value = parameters.getValue(i);
       if (value == null)
       {

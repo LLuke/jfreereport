@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ExactFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: MidFunction.java,v 1.1 2007/01/19 23:44:29 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,12 +43,15 @@ import org.jfree.formula.typing.coretypes.TextType;
 
 /**
  * This function returns extracted text, given an original text, starting position, and length.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 public class MidFunction implements Function
 {
+  public MidFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -58,24 +61,24 @@ public class MidFunction implements Function
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    
+
     final Type textType = parameters.getType(0);
     final Object textValue = parameters.getValue(0);
     final Type startType = parameters.getType(1);
     final Object startValue = parameters.getValue(1);
     final Type lengthType = parameters.getType(2);
     final Object lengthValue = parameters.getValue(2);
- 
+
     final String text = typeRegistry.convertToText(textType, textValue);
     final Number start = typeRegistry.convertToNumber(startType, startValue);
     final Number length = typeRegistry.convertToNumber(lengthType, lengthValue);
-    
+
     if(text == null || start == null || length == null ||
         length.intValue() < 0 || start.intValue() < 1)
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
-    
+
     return process(text, start, length);
   }
 

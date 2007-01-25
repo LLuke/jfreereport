@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ExactFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: ReptFunction.java,v 1.1 2007/01/19 23:44:29 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,12 +43,15 @@ import org.jfree.formula.typing.coretypes.TextType;
 
 /**
  * This function returns text repeated Count times.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 public class ReptFunction implements Function
 {
+  public ReptFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -58,19 +61,19 @@ public class ReptFunction implements Function
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    
+
     final Type textType1 = parameters.getType(0);
     final Object textValue1 = parameters.getValue(0);
     final Type countType = parameters.getType(1);
     final Object countValue = parameters.getValue(1);
- 
+
     final String text1 = typeRegistry.convertToText(textType1, textValue1);
     int count = 0;
     if(countType.isFlagSet(Type.NUMERIC_TYPE) || countValue instanceof Number)
     {
       count = typeRegistry.convertToNumber(countType, countValue).intValue();
     }
-    else 
+    else
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }

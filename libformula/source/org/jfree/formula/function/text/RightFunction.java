@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LeftFunction.java,v 1.1 2007/01/19 23:44:29 mimil Exp $
+ * $Id: RightFunction.java,v 1.1 2007/01/23 21:33:16 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,12 +42,15 @@ import org.jfree.formula.typing.coretypes.ErrorType;
 
 /**
  * This function returns a selected number of text characters from the right.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 public class RightFunction implements Function
 {
+  public RightFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -57,10 +60,10 @@ public class RightFunction implements Function
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    
+
     final Type textType = parameters.getType(0);
     final Object textValue = parameters.getValue(0);
-    
+
     final String text = typeRegistry.convertToText(textType, textValue);
     int l = -1;
     if(parameterCount == 2)
@@ -77,12 +80,12 @@ public class RightFunction implements Function
     {
       l = 1;
     }
-    
+
     if(text == null || l < 0)
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
-    
+
     int s = text.length()-l+1;
     if(s < 1)
     {

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LeftFunction.java,v 1.1 2007/01/19 23:44:29 mimil Exp $
+ * $Id: LeftFunction.java,v 1.2 2007/01/23 21:33:16 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,12 +42,15 @@ import org.jfree.formula.typing.coretypes.ErrorType;
 
 /**
  * This function returns a selected number of text characters from the left.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
 public class LeftFunction implements Function
 {
+  public LeftFunction()
+  {
+  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
@@ -57,10 +60,10 @@ public class LeftFunction implements Function
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    
+
     final Type textType = parameters.getType(0);
     final Object textValue = parameters.getValue(0);
-    
+
     final String text = typeRegistry.convertToText(textType, textValue);
     int l = -1;
     if(parameterCount == 2)
@@ -77,12 +80,12 @@ public class LeftFunction implements Function
     {
       l = 1;
     }
-    
+
     if(text == null || l < 0)
     {
       return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
-    
+
     // Note that MID(T;1;Length) produces the same results as LEFT(T;Length).
     final MidFunction function = new MidFunction();
     return function.process(text, new Integer(1), new Integer(l));
