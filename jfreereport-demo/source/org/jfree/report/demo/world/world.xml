@@ -97,7 +97,7 @@
     This will be a little bit easier as soon as we have Excel-Style functions.
     -->
     <report:expression formula="jfreereport:[Population] + [PopulationSum]"
-                       initial="jfreereport:0"
+                       initial="jfreereport:[Population]"
                        name="PopulationSum"
                        deep-traversing="false"
                        precompute="true"
