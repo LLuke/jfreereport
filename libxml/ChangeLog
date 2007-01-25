@@ -3,6 +3,20 @@
 ---------------
 A list of changes in recent versions:
 
+0.9.0: (25-Jan-2007)
+    * LibXML is feature complete. Both the parser and writer classes 
+      are doing what they should and adding anything else would add extra
+      code for no real value.
+      
+    * The XMLWriterSupport does no longer define the namespaces on a per-document
+      basis. Namespaces are declared using attributes and are inherited to all
+      child-elements. Namespaces can be redefined on each element, if needed.
+      
+    * The parser now follows the Namespace standard and accepts namespace 
+      declarations on all elements.
+      
+    * Some first source-code documentation has been added.
+
 0.2.1: (22-Dec-2006)
     * Improved the parsing of xml files that have a DTD. A handler can
       now map the DTD into a default namespace. All elements for that
