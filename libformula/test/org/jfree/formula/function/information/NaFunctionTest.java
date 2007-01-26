@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: NaFunctionTest.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: NaFunctionTest.java,v 1.3 2007/01/18 22:35:53 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -67,7 +67,7 @@ public class NaFunctionTest
   {
     return new Object[][]
     {
-        {"NA()", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_NA)},
+        {"NA()", LibFormulaErrorValue.ERROR_NA_VALUE},
     };
   }
   

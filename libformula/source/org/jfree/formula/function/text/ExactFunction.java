@@ -24,14 +24,11 @@
  *
  *
  * ------------
- * $Id: ExactFunction.java,v 1.3 2007/01/22 15:54:02 taqua Exp $
+ * $Id: ExactFunction.java,v 1.4 2007/01/25 11:44:39 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function.text;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
@@ -41,7 +38,6 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -52,6 +48,9 @@ import org.jfree.formula.typing.coretypes.LogicalType;
  */
 public class ExactFunction implements Function
 {
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+
   public ExactFunction()
   {
   }
@@ -61,7 +60,7 @@ public class ExactFunction implements Function
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount != 2)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
@@ -70,36 +69,37 @@ public class ExactFunction implements Function
     final Type textType2 = parameters.getType(1);
     final Object textValue2 = parameters.getValue(1);
 
-    final String text1 = typeRegistry.convertToText(textType1, textValue1);
-    final String text2 = typeRegistry.convertToText(textType2, textValue2);
-
-    if(text1 == null || text2 == null)
-    {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
-    }
-
     // Numerical comparisons ignore "trivial" differences that
     // depend only on numeric precision of finite numbers.
     if((textType1.isFlagSet(Type.NUMERIC_TYPE) || textValue1 instanceof Number)
         && (textType2.isFlagSet(Type.NUMERIC_TYPE) || textValue2 instanceof Number))
     {
-      final BigDecimal number1 = (BigDecimal)typeRegistry.convertToNumber(textType1, textValue1);
-      final BigDecimal number2 = (BigDecimal)typeRegistry.convertToNumber(textType2, textValue2);
-
-      final BigInteger n1 = number1.toBigInteger();
-      final BigInteger n2 = number2.toBigInteger();
-      if (n1.equals(n2))
+      final Number number1 = typeRegistry.convertToNumber(textType1, textValue1);
+      final Number number2 = typeRegistry.convertToNumber(textType2, textValue2);
+      if(number1 == null || number2 == null)
       {
-        return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
       }
-      return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+
+      if(number1.intValue() == number2.intValue())
+      {
+        return RETURN_TRUE;
+      }
+      return RETURN_FALSE;
+    }
+    
+    final String text1 = typeRegistry.convertToText(textType1, textValue1);
+    final String text2 = typeRegistry.convertToText(textType2, textValue2);
+    if(text1 == null || text2 == null)
+    {
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     if (text1.equals(text2))
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+      return RETURN_TRUE;
     }
-    return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+    return RETURN_FALSE;
   }
 
   public String getCanonicalName()

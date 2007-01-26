@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: NullFunction.java,v 1.1 2006/12/19 18:05:10 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,6 +43,8 @@ import org.jfree.formula.typing.coretypes.AnyType;
  */
 public class NullFunction
 {
+  private static final TypeValuePair NULL = new TypeValuePair(AnyType.TYPE, null);
+
   public NullFunction()
   {
   }
@@ -55,7 +57,7 @@ public class NullFunction
   public TypeValuePair evaluate(FormulaContext context,
                                 ParameterCallback parameters)
   {
-    return new TypeValuePair(AnyType.TYPE, null);
+    return NULL;
   }
 
 }

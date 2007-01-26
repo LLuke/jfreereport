@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IsLogicalFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: IsLogicalFunction.java,v 1.3 2007/01/15 15:36:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,7 +37,6 @@ import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -48,6 +47,9 @@ import org.jfree.formula.typing.coretypes.LogicalType;
  */
 public class IsLogicalFunction implements Function
 {
+  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+
   public IsLogicalFunction()
   {
   }
@@ -57,17 +59,17 @@ public class IsLogicalFunction implements Function
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount < 1)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
 
     final Type type1 = parameters.getType(0);
     final Object value1 = parameters.getValue(0);
     if(value1 instanceof Boolean || type1.isFlagSet(Type.LOGICAL_TYPE))
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+      return RETURN_TRUE;
     }
 
-    return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+    return RETURN_FALSE;
   }
 
   public String getCanonicalName()

@@ -24,16 +24,15 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultFunctionDescription.java,v 1.2 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
-package org.jfree.formula.function.userdefined;
+package org.jfree.formula.function;
 
 import java.util.Locale;
 
-import org.jfree.formula.function.FunctionCategory;
-import org.jfree.formula.function.FunctionDescription;
+import org.jfree.formula.function.userdefined.UserDefinedFunctionCategory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.AnyType;
 

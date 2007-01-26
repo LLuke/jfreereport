@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: MultiplyOperator.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
+ * $Id: MultiplyOperator.java,v 1.5 2007/01/18 21:52:06 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -64,12 +64,6 @@ public class MultiplyOperator implements InfixOperator
       return null;
     }
 
-    //  propagate error
-    final TypeValuePair error = typeRegistry.getError(value1, value2);
-    if(error != null)
-    {
-      return error;
-    }
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), raw1);
     final Number number2 =
@@ -77,7 +71,7 @@ public class MultiplyOperator implements InfixOperator
     if (number1 == null && number2 == null)
     {
       throw new EvaluationException
-          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     final Type resultType = NumberType.GENERIC_NUMBER;

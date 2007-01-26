@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LeftFunctionTest.java,v 1.1 2007/01/19 23:44:30 mimil Exp $
+ * $Id: LeftFunctionTest.java,v 1.2 2007/01/23 21:33:17 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -63,8 +63,7 @@ public class LeftFunctionTest
         {"LEFT(\"Hello\";20)", "Hello"},
         {"LEFT(\"Hello\";0)", ""},
         {"LEFT(\"\";4)", ""},
-        //TODO: Error propagation not respected in all function
-        {"LEN(LEFT(\"xxx\";-0.1))", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT)},
+        {"LEN(LEFT(\"xxx\";-0.1))", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE},
         {"LEN(LEFT(\"xxx\";2^15-1))", new BigDecimal(3)},
         {"LEFT(\"Hello\";2.9)", "He"},
     };

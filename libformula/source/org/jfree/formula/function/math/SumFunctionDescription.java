@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: SumFunctionDescription.java,v 1.4 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -65,7 +65,7 @@ public class SumFunctionDescription implements FunctionDescription
 
   public int getParameterCount()
   {
-    return 1;
+    return 0;
   }
 
   public boolean isInfiniteParameterCount()

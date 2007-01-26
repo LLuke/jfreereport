@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: URLEncodeFunctionDescription.java,v 1.1 2007/01/22 16:08:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,7 +34,6 @@ package org.jfree.formula.function.text;
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.formula.typing.coretypes.TextType;
 
 /**

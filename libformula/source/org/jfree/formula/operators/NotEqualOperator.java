@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: NotEqualOperator.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
+ * $Id: NotEqualOperator.java,v 1.4 2007/01/18 21:52:06 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,6 +44,9 @@ import org.jfree.formula.typing.coretypes.LogicalType;
  */
 public class NotEqualOperator implements InfixOperator
 {
+  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+
   public NotEqualOperator()
   {
   }
@@ -54,12 +57,6 @@ public class NotEqualOperator implements InfixOperator
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
     
-    //  propagate error
-    final TypeValuePair error = typeRegistry.getError(value1, value2);
-    if(error != null)
-    {
-      return error;
-    }
     final ExtendedComparator comparator =
         typeRegistry.getComparator(value1.getType(), value2.getType());
     final boolean result = comparator.isEqual
@@ -68,11 +65,11 @@ public class NotEqualOperator implements InfixOperator
 
     if (result == false)
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+      return RETURN_TRUE;
     }
     else
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+      return RETURN_FALSE;
     }
   }
 

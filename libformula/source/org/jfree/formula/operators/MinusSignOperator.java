@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: MinusSignOperator.java,v 1.4 2007/01/18 21:52:06 mimil Exp $
+ * $Id: MinusSignOperator.java,v 1.5 2007/01/23 21:33:16 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,17 +60,6 @@ public class MinusSignOperator implements PrefixOperator
     final Type type = value1.getType();
     final Object val = value1.getValue();
     
-    // propagate error
-    if (context != null)
-    {
-      final TypeRegistry typeRegistry = context.getTypeRegistry();
-      final TypeValuePair error = typeRegistry.getError(value1, null);
-      if (error != null)
-      {
-        return error;
-      }
-    }
-    
     if (type.isFlagSet(Type.NUMERIC_TYPE))
     {
       final TypeRegistry typeRegistry = context.getTypeRegistry();
@@ -80,7 +69,7 @@ public class MinusSignOperator implements PrefixOperator
       if (number == null)
       {
         throw new EvaluationException
-            (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+            (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
       }
 
       final BigDecimal value = getAsBigDecimal(number);
@@ -93,7 +82,7 @@ public class MinusSignOperator implements PrefixOperator
     }
 
     throw new EvaluationException
-        (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+        (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
   }
 
   private BigDecimal getAsBigDecimal(final Number number)

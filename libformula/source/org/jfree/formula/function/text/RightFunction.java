@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: RightFunction.java,v 1.1 2007/01/23 21:33:16 mimil Exp $
+ * $Id: RightFunction.java,v 1.2 2007/01/25 11:44:39 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,10 +38,12 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.ErrorType;
 
 /**
- * This function returns a selected number of text characters from the right.
+ * This function returns a selected number of text characters from the right.<br/>
+ * This function depends on <code>MidFunction</code>.
+ *
+ * @see MidFunction
  *
  * @author Cedric Pronzato
  *
@@ -57,7 +59,7 @@ public class RightFunction implements Function
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount < 1 || parameterCount > 2)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
@@ -83,7 +85,7 @@ public class RightFunction implements Function
 
     if(text == null || l < 0)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     int s = text.length()-l+1;

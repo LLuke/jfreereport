@@ -24,17 +24,18 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FalseFunction.java,v 1.4 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function.logical;
 
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.EvaluationException;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -44,6 +45,9 @@ import org.jfree.formula.typing.coretypes.LogicalType;
  */
 public class FalseFunction implements Function
 {
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+
+
   public FalseFunction()
   {
   }
@@ -58,6 +62,10 @@ public class FalseFunction implements Function
                                 ParameterCallback parameters)
       throws EvaluationException
   {
-    return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+    if(parameters.getParameterCount() != 0)
+    {
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
+    }
+    return RETURN_FALSE;
   }
 }

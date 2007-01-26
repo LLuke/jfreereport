@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: HasChangedFunctionDescription.java,v 1.3 2006/12/22 10:21:05 taqua Exp $
+ * $Id: ChooseFunctionDescription.java,v 1.1 2007/01/18 22:36:32 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,7 +36,6 @@ import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.formula.typing.coretypes.LogicalType;
-import org.jfree.formula.typing.coretypes.TextType;
 
 /**
  * Describes ChooseFunction function.

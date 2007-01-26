@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DivideOperator.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
+ * $Id: DivideOperator.java,v 1.5 2007/01/18 21:52:06 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -65,14 +65,7 @@ public class DivideOperator implements InfixOperator
     {
       return null;
     }
-    
-    // propagate error
-    final TypeValuePair error = typeRegistry.getError(value1, value2);
-    if(error != null)
-    {
-      return error;
-    }
-    
+  
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), raw1);
     final Number number2 =
@@ -80,7 +73,7 @@ public class DivideOperator implements InfixOperator
     if (number1 == null && number2 == null)
     {
       throw new EvaluationException
-          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     final Type resultType = NumberType.GENERIC_NUMBER;
@@ -91,7 +84,7 @@ public class DivideOperator implements InfixOperator
     if (number2 == null)
     {
       throw new EvaluationException
-          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARITHMETIC));
+          (LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE);
     }
 
     final BigDecimal bd1 = new BigDecimal(number1.toString());
@@ -100,7 +93,7 @@ public class DivideOperator implements InfixOperator
     {
       // prevent a division by zero ..
       throw new EvaluationException
-          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARITHMETIC));
+          (LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE);
     }
     return new TypeValuePair(resultType, bd1.divide(bd2, BigDecimal.ROUND_HALF_UP));
   }

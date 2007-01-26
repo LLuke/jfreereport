@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FormulaFunction.java,v 1.8 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -84,10 +84,8 @@ public class FormulaFunction extends AbstractLValue
         final TypeValuePair converted = typeRegistry.convertTo(paramType, result);
         if (converted == null)
         {
-          final LibFormulaErrorValue errorValue = new LibFormulaErrorValue
-              (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT);
           Log.debug("Failed to evaluate paramter " + pos + " on function " + function);
-          throw new EvaluationException(errorValue);
+          throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
         }
         return converted;
       }
@@ -177,9 +175,7 @@ public class FormulaFunction extends AbstractLValue
     // And if everything is ok, compute the stuff ..
     if (function == null)
     {
-      final LibFormulaErrorValue value =
-          new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT);
-      return new TypeValuePair(ErrorType.TYPE, value);
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     return function.evaluate(context, new FormulaParameterCallback(this));
   }

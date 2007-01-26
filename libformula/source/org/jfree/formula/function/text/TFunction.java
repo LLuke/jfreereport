@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: TFunction.java,v 1.3 2007/01/22 15:54:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,7 +37,6 @@ import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.TextType;
 
 /**
@@ -48,6 +47,8 @@ import org.jfree.formula.typing.coretypes.TextType;
  */
 public class TFunction implements Function
 {
+  private static final TypeValuePair EMPTY_STRING = new TypeValuePair(TextType.TYPE, "");
+
   public TFunction()
   {
   }
@@ -57,19 +58,19 @@ public class TFunction implements Function
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount < 1)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final Type type1 = parameters.getType(0);
     final Object value1 = parameters.getValue(0);
 
-    String res = "";
-
     if(type1 instanceof TextType || value1 instanceof String)
     {
-      res = (String)value1;
+      return new TypeValuePair(TextType.TYPE, value1);
     }
-
-    return new TypeValuePair(TextType.TYPE, res);
+    else
+    {
+      return EMPTY_STRING;  
+    }
   }
 
   public String getCanonicalName()

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: SumFunction.java,v 1.5 2006/12/03 19:22:27 taqua Exp $
+ * $Id: SumFunction.java,v 1.6 2006/12/30 13:50:19 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,7 +39,6 @@ import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
@@ -78,7 +77,7 @@ public class SumFunction implements Function
       final Number n = context.getTypeRegistry().convertToNumber(type, value);
       if(n == null)
       {
-        return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
       }
       
       computedResult = compute(n, computedResult);

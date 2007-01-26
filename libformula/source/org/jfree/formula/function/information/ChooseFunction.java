@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ChooseFunction.java,v 1.1 2007/01/18 22:36:32 mimil Exp $
+ * $Id: ChooseFunction.java,v 1.2 2007/01/25 11:44:39 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,7 +38,6 @@ import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.ErrorType;
 
 /**
  * This function uses an index to return a value from a list of values.
@@ -64,7 +63,7 @@ public class ChooseFunction implements Function
 
     if(parameters.getParameterCount() <= 2)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final Type indexType = parameters.getType(0);
     final Object indexValue = parameters.getValue(0);
@@ -77,7 +76,7 @@ public class ChooseFunction implements Function
         return new TypeValuePair(parameters.getType(index), parameters.getValue(index));
       }
     }
-
-    return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+    // else
+    throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
   }
 }

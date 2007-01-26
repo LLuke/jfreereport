@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: EqualOperator.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,6 +44,9 @@ import org.jfree.formula.lvalues.TypeValuePair;
  */
 public class EqualOperator implements InfixOperator
 {
+  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+
   public EqualOperator()
   {
   }
@@ -61,11 +64,11 @@ public class EqualOperator implements InfixOperator
             value2.getType(), value2.getValue());
     if (result)
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+      return RETURN_TRUE;
     }
     else
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+      return RETURN_FALSE;
     }
   }
 

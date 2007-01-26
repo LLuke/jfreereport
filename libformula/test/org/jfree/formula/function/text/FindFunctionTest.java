@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: FindFunctionTest.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: FindFunctionTest.java,v 1.3 2007/01/18 22:35:53 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,12 +60,12 @@ public class FindFunctionTest
     {
         {"FIND(\"b\";\"abcabc\")", new BigDecimal(2)},
         {"FIND(\"b\";\"abcabcabc\"; 3)", new BigDecimal(5)},
-        {"FIND(\"b\";\"ABC\";1)", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_NOT_FOUND)},
+        {"FIND(\"b\";\"ABC\";1)", LibFormulaErrorValue.ERROR_NOT_FOUND_VALUE},
         {"FIND(\"b\";\"bbbb\")", new BigDecimal(1)},
         {"FIND(\"b\";\"bbbb\";2)", new BigDecimal(2)},
         {"FIND(\"b\";\"bbbb\";2.9)", new BigDecimal(2)},
-        {"FIND(\"b\";\"bbbb\";0)", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS)},
-        {"FIND(\"b\";\"bbbb\";0.9)", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS)},
+        {"FIND(\"b\";\"bbbb\";0)", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE},
+        {"FIND(\"b\";\"bbbb\";0.9)", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE},
     };
   }  
   

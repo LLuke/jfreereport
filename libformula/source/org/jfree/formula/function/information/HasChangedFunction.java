@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: HasChangedFunction.java,v 1.2 2006/12/03 19:22:27 taqua Exp $
+ * $Id: HasChangedFunction.java,v 1.3 2007/01/25 11:44:39 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,6 +45,9 @@ import org.jfree.formula.typing.coretypes.LogicalType;
  */
 public class HasChangedFunction implements Function
 {
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+
   public HasChangedFunction()
   {
   }
@@ -72,9 +75,9 @@ public class HasChangedFunction implements Function
 
       if (context.isReferenceDirty(value))
       {
-        return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+        return RETURN_TRUE;
       }
     }
-    return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+    return RETURN_FALSE;
   }
 }

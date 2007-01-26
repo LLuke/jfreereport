@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IsNaFunctionTest.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: ChooseFunctionTest.java,v 1.1 2007/01/18 22:36:32 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,8 +58,8 @@ public class ChooseFunctionTest
     return new Object[][]
     {
         {"CHOOSE(3;\"Apple\";\"Orange\";\"Grape\";\"Perry\")", "Grape"},
-        {"CHOOSE(0;\"Apple\";\"Orange\";\"Grape\";\"Perry\")", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT)},
-        {"CHOOSE(5;\"Apple\";\"Orange\";\"Grape\";\"Perry\")", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT)},
+        {"CHOOSE(0;\"Apple\";\"Orange\";\"Grape\";\"Perry\")", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE},
+        {"CHOOSE(5;\"Apple\";\"Orange\";\"Grape\";\"Perry\")", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE},
 //        {"CHOOSE(2;SUM([.B4:.B5]);SUM([.B5]))", Boolean.FALSE},
 //        {"SUM(CHOOSE(2;[.B4:.B5];[.B5]))", Boolean.FALSE},
         };

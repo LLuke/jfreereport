@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: Formula.java,v 1.6 2006/12/19 18:04:30 taqua Exp $
+ * $Id: Formula.java,v 1.7 2006/12/30 13:50:15 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -76,13 +76,13 @@ public class Formula implements Serializable, Cloneable
     }
     catch(EvaluationException ee)
     {
-      Log.warn ("Evaluation failed: ", ee);
+      //Log.warn ("Evaluation failed: ", ee);
       return ee.getErrorValue();
     }
     catch (Exception e)
     {
       Log.warn ("Evaluation failed: ", e);
-      return new LibFormulaErrorValue(0);
+      return LibFormulaErrorValue.ERROR_UNEXPECTED_VALUE;
     }
   }
 
@@ -91,12 +91,5 @@ public class Formula implements Serializable, Cloneable
     final Formula o = (Formula) super.clone();
     o.rootReference = (LValue) rootReference.clone();
     return o;
-  }
-
-  public static void main(String[] args)
-      throws ParseException
-  {
-    LibFormulaBoot.getInstance().start();
-    Formula f = new Formula("0");
   }
 }

@@ -24,20 +24,19 @@
  *
  *
  * ------------
- * $Id: OrFunction.java,v 1.4 2006/12/03 19:22:27 taqua Exp $
+ * $Id: OrFunction.java,v 1.5 2006/12/30 13:50:19 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function.logical;
 
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.EvaluationException;
-import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -47,6 +46,9 @@ import org.jfree.formula.typing.coretypes.LogicalType;
  */
 public class OrFunction implements Function
 {
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+
   public OrFunction()
   {
   }
@@ -62,7 +64,7 @@ public class OrFunction implements Function
   {
     if(parameters.getParameterCount() < 1)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final int length = parameters.getParameterCount();
     for (int i = 0; i < length; i++)
@@ -72,14 +74,14 @@ public class OrFunction implements Function
       final Boolean condition = context.getTypeRegistry().convertToLogical(conditionType, conditionValue);
       if(condition == null)
       {
-        return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
       }
       if (Boolean.TRUE.equals(condition))
       {
-        return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+        return RETURN_TRUE;
       }
     }
-    return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+    return RETURN_FALSE;
 
   }
 }

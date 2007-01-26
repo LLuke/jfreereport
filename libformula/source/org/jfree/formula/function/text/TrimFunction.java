@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TrimFunction.java,v 1.3 2007/01/22 15:54:02 taqua Exp $
+ * $Id: TrimFunction.java,v 1.4 2007/01/25 11:44:39 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,7 +37,6 @@ import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.TextType;
 
 /**
@@ -59,7 +58,7 @@ public class TrimFunction implements Function
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount < 1)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final Type type1 = parameters.getType(0);
     final Object value1 = parameters.getValue(0);
@@ -67,8 +66,7 @@ public class TrimFunction implements Function
 
     if(result == null)
     {
-      return new TypeValuePair (ErrorType.TYPE, new LibFormulaErrorValue
-              (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     // remove all leading spaces ..

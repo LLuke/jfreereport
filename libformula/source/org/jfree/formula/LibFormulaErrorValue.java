@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LibFormulaErrorValue.java,v 1.4 2006/12/30 13:50:16 mimil Exp $
+ * $Id: LibFormulaErrorValue.java,v 1.5 2007/01/14 17:49:41 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,16 +43,30 @@ public class LibFormulaErrorValue implements ErrorValue
 
   /** A parse error */
   public static final int ERROR_INVALID_CHARACTER = 501;
-  /** Parameter types are invalid. */
+  /** Parameter types are invalid error code */
   public static final int ERROR_INVALID_ARGUMENT = 502;
-
+  /** Parameter types are invalid error */
+  public static final LibFormulaErrorValue ERROR_INVALID_ARGUMENT_VALUE = new LibFormulaErrorValue(ERROR_INVALID_ARGUMENT);
+  /** Number arithmetic error code */
   public static final int ERROR_ARITHMETIC = 503;
-  
+  /** Number arithmetic error */
+  public static final LibFormulaErrorValue ERROR_ARITHMETIC_VALUE = new LibFormulaErrorValue(ERROR_ARITHMETIC);
+  /** Invalid number of arguments error code*/
   public static final int ERROR_ARGUMENTS = 1;
-  
+  /** Invalid number of arguments error */
+  public static final LibFormulaErrorValue ERROR_ARGUMENTS_VALUE = new LibFormulaErrorValue(ERROR_ARGUMENTS);
+  /** Occurence not found error code */
   public static final int ERROR_NOT_FOUND = 504;
-  /** The NA error*/
+  /** Occurence not found error */
+  public static final LibFormulaErrorValue ERROR_NOT_FOUND_VALUE = new LibFormulaErrorValue(ERROR_NOT_FOUND);
+  /** NA error code*/
   public static final int ERROR_NA = 7;
+  /** NA error*/
+  public static final LibFormulaErrorValue ERROR_NA_VALUE = new LibFormulaErrorValue(ERROR_NA);
+  /** Unexpected error code */
+  public static final int ERROR_UNEXPECTED = 0;
+  /** Unexpected error */
+  public static final LibFormulaErrorValue ERROR_UNEXPECTED_VALUE = new LibFormulaErrorValue(ERROR_UNEXPECTED);
 
   private int errorCode;
 

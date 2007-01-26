@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.7 2007/01/18 22:34:32 mimil Exp $
+ * $Id: DateFunction.java,v 1.8 2007/01/25 11:44:39 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,9 +40,8 @@ import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.typing.coretypes.DateType;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.coretypes.DateType;
 
 /**
  * Creation-Date: 04.11.2006, 18:59:11
@@ -61,11 +60,11 @@ public class DateFunction implements Function
   }
 
   public TypeValuePair evaluate(FormulaContext context,
-                                ParameterCallback parameters)
+                                ParameterCallback parameters) throws EvaluationException
   {
     if (parameters.getParameterCount() != 3)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     Number n1;
     Number n2;
@@ -80,16 +79,12 @@ public class DateFunction implements Function
     }
     catch (NumberFormatException e)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
-    }
-    catch (EvaluationException e)
-    {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     if (n1 == null || n2 == null || n3 == null)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
     //System.out.println("DEGUG Y:"+n1+" M:"+n2+"["+value+"] D:"+n3);
     final LocalizationContext localizationContext = context.getLocalizationContext();

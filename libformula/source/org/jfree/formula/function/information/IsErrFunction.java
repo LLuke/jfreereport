@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IsNaFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: IsErrFunction.java,v 1.1 2007/01/18 22:36:32 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -55,8 +55,9 @@ public class IsErrFunction implements Function
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
-    if(parameters.getParameterCount() != 1) {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+    if(parameters.getParameterCount() != 1) 
+    {
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     
     try

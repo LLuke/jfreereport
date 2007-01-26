@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ConcatOperator.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
+ * $Id: ConcatOperator.java,v 1.5 2007/01/18 21:52:06 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,7 +38,7 @@ import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.TextType;
 
 /**
- * Creation-Date: 03.11.2006, 18:28:48
+ * Concats two strings operator.
  *
  * @author Thomas Morgner
  */
@@ -62,13 +62,6 @@ public class ConcatOperator implements InfixOperator
       return null;
     }
 
-    // propagate error
-    final TypeValuePair error = typeRegistry.getError(value1, value2);
-    if(error != null)
-    {
-      return error;
-    }
-
     final String text1 =
         typeRegistry.convertToText(value1.getType(), raw1);
     final String text2 =
@@ -76,7 +69,7 @@ public class ConcatOperator implements InfixOperator
     if (text1 == null && text2 == null)
     {
       throw new EvaluationException
-          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
     if (text1 == null)
     {

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: GreaterOperator.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,6 +45,9 @@ import org.jfree.formula.typing.coretypes.LogicalType;
  */
 public class GreaterOperator implements InfixOperator
 {
+  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+
   public GreaterOperator()
   {
   }
@@ -62,16 +65,16 @@ public class GreaterOperator implements InfixOperator
     if (result == null)
     {
       throw new EvaluationException
-          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     if (result.intValue() > 0)
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+      return RETURN_TRUE;
     }
     else
     {
-      return new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+      return RETURN_FALSE;
     }
   }
 

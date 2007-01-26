@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IsErrorFunction.java,v 1.1 2007/01/18 22:36:32 mimil Exp $
+ * $Id: IsErrorFunction.java,v 1.2 2007/01/25 11:44:39 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,8 +58,9 @@ public class IsErrorFunction implements Function
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
-    if(parameters.getParameterCount() != 1) {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+    if(parameters.getParameterCount() != 1) 
+    {
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
 
     try

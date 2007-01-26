@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: NaFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: NaFunction.java,v 1.3 2007/01/22 15:54:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,7 +36,6 @@ import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.typing.coretypes.ErrorType;
 
 /**
  * This function class represents the constant error NA.
@@ -52,11 +51,12 @@ public class NaFunction implements Function
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
-    if(parameters.getParameterCount() != 0) {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+    if(parameters.getParameterCount() != 0) 
+    {
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
 
-    return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_NA));
+    throw new EvaluationException(LibFormulaErrorValue.ERROR_NA_VALUE);
   }
 
   public String getCanonicalName()

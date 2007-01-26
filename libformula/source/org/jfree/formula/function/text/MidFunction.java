@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: MidFunction.java,v 1.1 2007/01/19 23:44:29 mimil Exp $
+ * $Id: MidFunction.java,v 1.2 2007/01/25 11:44:39 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,7 +38,6 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.TextType;
 
 /**
@@ -49,6 +48,8 @@ import org.jfree.formula.typing.coretypes.TextType;
  */
 public class MidFunction implements Function
 {
+  private static final TypeValuePair EMPTY_STRING = new TypeValuePair(TextType.TYPE, "");
+
   public MidFunction()
   {
   }
@@ -58,7 +59,7 @@ public class MidFunction implements Function
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount != 3)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
@@ -76,7 +77,7 @@ public class MidFunction implements Function
     if(text == null || start == null || length == null ||
         length.intValue() < 0 || start.intValue() < 1)
     {
-      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     return process(text, start, length);
@@ -88,7 +89,7 @@ public class MidFunction implements Function
     int s = start.intValue()-1;
     if(s >= text.length())
     {
-      return new TypeValuePair(TextType.TYPE, "");
+      return EMPTY_STRING;
     }
     if((l+s) > text.length())
     {

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ExactFunctionTest.java,v 1.3 2007/01/18 22:35:53 mimil Exp $
+ * $Id: MidFunctionTest.java,v 1.1 2007/01/19 23:44:30 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,7 +58,7 @@ public class MidFunctionTest
     {
         {"MID(\"123456789\";5;3)", "567"},
         {"MID(\"123456789\";20;3)", ""},
-        {"MID(\"123456789\";-1;0)", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT)},
+        {"MID(\"123456789\";-1;0)", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE},
         {"MID(\"123456789\";1;0)", ""},
         {"MID(\"123456789\";2.9;1)", "2"},
         {"MID(\"123456789\";2;2.9)", "23"},

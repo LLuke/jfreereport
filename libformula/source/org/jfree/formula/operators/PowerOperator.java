@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: PowerOperator.java,v 1.5 2006/12/03 19:22:28 taqua Exp $
+ * $Id: PowerOperator.java,v 1.6 2007/01/23 21:33:17 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -56,12 +56,6 @@ public class PowerOperator implements InfixOperator
       throws EvaluationException
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    //  propagate error
-    final TypeValuePair error = typeRegistry.getError(value1, null);
-    if(error != null)
-    {
-      return error;
-    }
 
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), value1.getValue());
@@ -70,7 +64,7 @@ public class PowerOperator implements InfixOperator
     if (number1 == null || number2 == null)
     {
       throw new EvaluationException
-          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     final double result = Math.pow(number1.doubleValue(), number2.doubleValue());

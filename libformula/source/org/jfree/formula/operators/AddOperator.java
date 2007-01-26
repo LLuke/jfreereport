@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AddOperator.java,v 1.6 2007/01/18 21:52:06 mimil Exp $
+ * $Id: AddOperator.java,v 1.7 2007/01/23 21:33:17 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -63,13 +63,6 @@ public class AddOperator implements InfixOperator
     {
       return null;
     }
-    
-    // propagate error
-    final TypeValuePair error = typeRegistry.getError(value1, value2);
-    if(error != null)
-    {
-      return error;
-    }
 
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), raw1);
@@ -78,7 +71,7 @@ public class AddOperator implements InfixOperator
     if (number1 == null && number2 == null)
     {
       throw new EvaluationException
-          (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     final Type resultType = NumberType.GENERIC_NUMBER;

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IfFunctionTest.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id: IfFunctionTest.java,v 1.3 2007/01/18 22:35:53 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -66,9 +66,9 @@ public class IfFunctionTest
     { "IF(0;7;8)", new BigDecimal(8) },
     { "IF(TRUE();[.B4];8)", new BigDecimal(2) },
     { "IF(TRUE();[.B4]+5;8)", new BigDecimal(7) },
-    { "IF(\"x\";7;8)", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT) },
-    { "IF(\"1\";7;8)", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT) },
-    { "IF(\"\";7;8)", new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT) },
+    { "IF(\"x\";7;8)", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE },
+    { "IF(\"1\";7;8)", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE },
+    { "IF(\"\";7;8)", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE },
     { "IF(FALSE();7)", Boolean.FALSE },
     //TODO { "IF(FALSE();7;)", new BigDecimal(0) },
     { "IF(TRUE();4;1/0)", new BigDecimal(4) },

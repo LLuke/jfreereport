@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultFunctionRegistry.java,v 1.6 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,13 +34,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.jfree.formula.function.math.SumFunction;
-import org.jfree.formula.function.math.SumFunctionDescription;
-import org.jfree.formula.function.userdefined.DefaultFunctionDescription;
 import org.jfree.util.Configuration;
 import org.jfree.util.HashNMap;
-import org.jfree.util.ObjectUtilities;
 import org.jfree.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Creation-Date: 02.11.2006, 12:48:32

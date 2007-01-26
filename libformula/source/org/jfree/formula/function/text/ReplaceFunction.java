@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: FindFunction.java,v 1.3 2007/01/22 15:54:02 taqua Exp $
+ * $Id: FindFunction.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,80 +40,71 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
- * This function returns the starting position of a given text in the given text.
- *
+ * This function returns text where an old text is substituted with a new text.
+ * 
  * @author Cedric Pronzato
  *
  */
-public class FindFunction implements Function
+public class ReplaceFunction implements Function
 {
-  public FindFunction()
-  {
-  }
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
     final int parameterCount = parameters.getParameterCount();
-    if (parameterCount < 2 || parameterCount > 3)
+    if (parameterCount != 4)
     {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
+      //return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
+    
+    final Type newTextType = parameters.getType(3);
+    final Object newTextValue = parameters.getValue(3);
+    final Type textType = parameters.getType(0);
+    final Object textValue = parameters.getValue(0);
+    final Type startType = parameters.getType(1);
+    final Object startValue = parameters.getValue(1);
+    final Type lengthType = parameters.getType(2);
+    final Object lengthValue = parameters.getValue(2);
 
-    final Type searchType = parameters.getType(0);
-    final Object searchValue = parameters.getValue(0);
-    final Type textType = parameters.getType(1);
-    final Object textValue = parameters.getValue(1);
-    Type indexType = null;
-    Object indexValue = null;
-
-    if(parameterCount == 3) {
-      indexType = parameters.getType(2);
-      indexValue = parameters.getValue(2);
-    }
-
-    final String search = typeRegistry.convertToText(searchType, searchValue);
+    final String search = typeRegistry.convertToText(newTextType, newTextValue);
     final String text = typeRegistry.convertToText(textType, textValue);
-
-    if(search == null || text == null)
+    final Number start = typeRegistry.convertToNumber(startType, startValue);
+    final Number length = typeRegistry.convertToNumber(lengthType, lengthValue);
+    
+    if(search == null || text == null || start == null || length == null)
     {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+      //return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
     }
-    int indexFrom = 0;
+    
+    
+//    if(indexType != null && indexValue != null)
+//    {
+//      final Number n = typeRegistry.convertToNumber(indexType, indexValue);
+//      if(n.intValue() >= 1) 
+//      {
+//        indexFrom = n.intValue()-1;
+//      }
+//      else
+//      {
+//        return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+//      }
+//    }
+//    
+//    int index = text.indexOf(search, indexFrom);
+//    if(index < 0) {
+//      return new TypeValuePair(ErrorType.TYPE, new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_NOT_FOUND));
+//    }
 
-    if(indexType != null && indexValue != null)
-    {
-      final Number n = typeRegistry.convertToNumber(indexType, indexValue);
-      if(n == null)
-      {
-        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-      }
-      
-      if(n.intValue() >= 1)
-      {
-        indexFrom = n.intValue()-1;
-      }
-      else
-      {
-        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-      }
-    }
-
-    int index = text.indexOf(search, indexFrom);
-    if(index < 0) 
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_NOT_FOUND_VALUE);
-    }
-
-    return new TypeValuePair(NumberType.GENERIC_NUMBER, new BigDecimal(index+1));
+    return null;
   }
 
   public String getCanonicalName()
   {
-    return "FIND";
+    return "REPLACE";
   }
 
 }

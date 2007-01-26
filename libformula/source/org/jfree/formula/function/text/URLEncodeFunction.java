@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: URLEncodeFunction.java,v 1.1 2007/01/22 16:08:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,20 +33,19 @@ package org.jfree.formula.function.text;
 
 import java.io.UnsupportedEncodingException;
 
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.EvaluationException;
-import org.jfree.formula.LibFormulaErrorValue;
-import org.jfree.formula.util.URLEncoder;
-import org.jfree.formula.typing.coretypes.ErrorType;
-import org.jfree.formula.typing.coretypes.TextType;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.TextType;
+import org.jfree.formula.util.URLEncoder;
 
 /**
  * This function encodes a given text using the URL-Encoding schema. An optional
- * sencod parameter can be given to specify the character encoding that should
+ * second parameter can be given to specify the character encoding that should
  * be used when converting text to bytes.
  *
  * @author Cedric Pronzato
@@ -62,8 +61,7 @@ public class URLEncodeFunction implements Function
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount < 1)
     {
-      return new TypeValuePair(ErrorType.TYPE,
-          new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_ARGUMENTS));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final Type textType = parameters.getType(0);
     final Object textValue = parameters.getValue(0);
@@ -72,15 +70,20 @@ public class URLEncodeFunction implements Function
 
     if(textResult == null)
     {
-      return new TypeValuePair(ErrorType.TYPE,
-          new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
-
-    final Type encodingType = parameters.getType(0);
-    final Object encodingValue = parameters.getValue(0);
-    final String encodingResult =
-        context.getTypeRegistry().convertToText(encodingType, encodingValue);
-
+    
+    String encodingResult = null;
+    if(parameterCount == 2)
+    {
+      final Type encodingType = parameters.getType(1);
+      final Object encodingValue = parameters.getValue(1);
+      encodingResult = context.getTypeRegistry().convertToText(encodingType, encodingValue);
+      if(encodingResult == null)
+      {
+        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+      }
+    }
     try
     {
       if (encodingResult == null)
@@ -94,8 +97,7 @@ public class URLEncodeFunction implements Function
     }
     catch(UnsupportedEncodingException use)
     {
-      return new TypeValuePair(ErrorType.TYPE,
-          new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT));
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
   }
 
