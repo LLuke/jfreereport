@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: FormulaFunction.java,v 1.8 2006/12/03 19:22:28 taqua Exp $
+ * $Id: FormulaFunction.java,v 1.9 2007/01/26 22:11:52 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,7 +39,6 @@ import org.jfree.formula.function.FunctionRegistry;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.util.Log;
 
 /**

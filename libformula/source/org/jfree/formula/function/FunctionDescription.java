@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FunctionDescription.java,v 1.5 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -59,6 +59,13 @@ public interface FunctionDescription
   public int getParameterCount ();
   public boolean isInfiniteParameterCount();
 
+  /**
+   * Returns the parameter type at the given position using the function
+   * metadata. The first parameter is at the position 0;
+   * 
+   * @param position The parameter index.
+   * @return The parameter type.
+   */
   public Type getParameterType(int position);
   public String getParameterDisplayName(int position, Locale locale);
   public String getParameterDescription(int position, Locale locale);

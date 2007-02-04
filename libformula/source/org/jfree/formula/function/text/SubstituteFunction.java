@@ -31,17 +31,14 @@
 package org.jfree.formula.function.text;
 
 import org.jfree.formula.EvaluationException;
-import org.jfree.formula.Formula;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.parser.ParseException;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.TextType;
-import org.jfree.util.Log;
 
 /**
  * This function returns text where an old text is substituted with a new text.
@@ -49,62 +46,90 @@ import org.jfree.util.Log;
  * @author Cedric Pronzato
  *
  */
-public class ReplaceFunction implements Function
+public class SubstituteFunction implements Function
 {
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
     final int parameterCount = parameters.getParameterCount();
-    if (parameterCount != 4)
+    if (parameterCount < 3 || parameterCount > 4 )
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
     
-    final Type newTextType = parameters.getType(3);
-    final Object newTextValue = parameters.getValue(3);
+    final Type newTextType = parameters.getType(2);
+    final Object newTextValue = parameters.getValue(2);
     final Type textType = parameters.getType(0);
     final Object textValue = parameters.getValue(0);
-    final Type startType = parameters.getType(1);
-    final Object startValue = parameters.getValue(1);
-    final Type lengthType = parameters.getType(2);
-    final Object lengthValue = parameters.getValue(2);
-
+    final Type oldTextType = parameters.getType(1);
+    final Object oldTextValue = parameters.getValue(1);
+    
     final String newText = typeRegistry.convertToText(newTextType, newTextValue);
     final String text = typeRegistry.convertToText(textType, textValue);
-    final Number start = typeRegistry.convertToNumber(startType, startValue);
-    final Number length = typeRegistry.convertToNumber(lengthType, lengthValue);
-    
-    if(newText == null || text == null || start == null || length == null)
+    final String oldText = typeRegistry.convertToText(oldTextType, oldTextValue);
+    int which = -1;
+
+    if(escapeRegexpCharaters(newText) == null || escapeRegexpCharaters(text) == null || escapeRegexpCharaters(oldText) == null)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
     
-    // = LEFT(T;Start-1) & New & MID(T; Start+Len; LEN(T)))
-    final StringBuffer buffer = new StringBuffer();
-    buffer.append("LEFT(\"").append(text).append("\";").append(start.doubleValue()).append("-1) & \"");
-    buffer.append(newText).append("\" & ");
-    buffer.append("MID(\"").append(text).append("\";").append(start.doubleValue()).append("+");
-    buffer.append(length.doubleValue()).append(";").append(text.length()).append("))");
-    
-    Formula formula = null;
-    try
+    Type whichType = null;
+    Object whichValue = null;
+    if (parameterCount == 4)
     {
-      formula = new Formula(buffer.toString());
-    } catch (ParseException e)
-    {
-      Log.debug("Nested formula parsing error", e);
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+      whichType = parameters.getType(3);
+      whichValue = parameters.getValue(3);
+      final Number n = typeRegistry.convertToNumber(whichType, whichValue);
+
+      if(n == null || n.intValue() < 1)
+      {
+        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+      }
+      which = n.intValue();
+      if(which < 1)
+      {
+        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+      }
     }
-    formula.initialize(context);
-    final Object result = formula.evaluate();
     
-    return new TypeValuePair(TextType.TYPE, result.toString());
+    String result = null;
+    
+    // if which specified, replace all
+    if(which < 0)
+    {
+      result = escapeRegexpCharaters(text).replaceAll(escapeRegexpCharaters(oldText), escapeRegexpCharaters(newText));
+    }
+    else // replace only which 
+    {
+      final int index = escapeRegexpCharaters(text).indexOf(escapeRegexpCharaters(oldText), which);
+      if(index < 0)
+      {
+        result = escapeRegexpCharaters(text);
+      }
+      else
+      {
+        final StringBuffer buffer = new StringBuffer();
+        buffer.append(escapeRegexpCharaters(text).substring(0, index));
+        buffer.append(escapeRegexpCharaters(newText));
+        buffer.append(escapeRegexpCharaters(text).substring(index + escapeRegexpCharaters(oldText).length()));
+        result = buffer.toString();
+      }
+    }
+    
+    return new TypeValuePair(TextType.TYPE, escapeRegexpCharaters(result));
+  }
+
+  // TODO escapte '+','*'
+  private String escapeRegexpCharaters(final String oldText)
+  {
+    return oldText;
   }
 
   public String getCanonicalName()
   {
-    return "REPLACE";
+    return "SUBSTITUTE";
   }
 
 }

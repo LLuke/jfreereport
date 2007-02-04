@@ -37,17 +37,17 @@ import org.jfree.formula.typing.coretypes.NumberType;
 import org.jfree.formula.typing.coretypes.TextType;
 
 /**
- * Describes ReptFunction function.
- * @see ReptFunction
+ * Describes SubstituteFunction function.
+ * @see SubstituteFunction
  * 
  * @author Cedric Pronzato
  *
  */
-public class ReptFunctionDescription extends AbstractFunctionDescription
+public class SubstituteFunctionDescription extends AbstractFunctionDescription
 {
-  public ReptFunctionDescription()
+  public SubstituteFunctionDescription()
   {
-    super("org.jfree.formula.function.text.Rept-Function");
+    super("org.jfree.formula.function.text.Substitute-Function");
   }
 
   public FunctionCategory getCategory()
@@ -57,12 +57,12 @@ public class ReptFunctionDescription extends AbstractFunctionDescription
 
   public int getParameterCount()
   {
-    return 2;
+    return 4;
   }
 
   public Type getParameterType(int position)
   {
-    if(position == 1)
+    if(position != 3)
     {
       return TextType.TYPE;
     }
@@ -76,6 +76,10 @@ public class ReptFunctionDescription extends AbstractFunctionDescription
 
   public boolean isParameterMandatory(int position)
   {
+    if(position == 3)
+    {
+      return false;
+    }
     return true;
   }
 
