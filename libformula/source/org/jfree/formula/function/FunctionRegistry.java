@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FunctionRegistry.java,v 1.3 2006/12/03 19:22:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,6 +44,8 @@ public interface FunctionRegistry
   public FunctionCategory[] getCategories();
   public Function[] getFunctions();
   public Function[] getFunctionsByCategory(FunctionCategory category);
+  public String[] getFunctionNames();
+  public String[] getFunctionNamesByCategory(FunctionCategory category);
 
   public Function createFunction(String name);
   public FunctionDescription getMetaData (String name);

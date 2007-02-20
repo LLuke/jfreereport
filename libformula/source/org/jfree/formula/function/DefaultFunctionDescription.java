@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultFunctionDescription.java,v 1.2 2006/12/03 19:22:27 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */

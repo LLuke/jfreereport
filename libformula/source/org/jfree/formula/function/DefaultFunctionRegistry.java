@@ -24,12 +24,13 @@
  *
  *
  * ------------
- * $Id: DefaultFunctionRegistry.java,v 1.6 2006/12/03 19:22:27 taqua Exp $
+ * $Id: DefaultFunctionRegistry.java,v 1.7 2007/01/26 22:11:51 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -68,14 +69,51 @@ public class DefaultFunctionRegistry implements FunctionRegistry
 
   public Function[] getFunctions()
   {
-    return (Function[]) functions.values().toArray
-        (new Function[functions.size()]);
+    final String[] fnClasses = (String[]) functions.values().toArray
+        (new String[functions.size()]);
+    final ArrayList functions = new ArrayList(fnClasses.length);
+    for (int i = 0; i < fnClasses.length; i++)
+    {
+      final String aClass = fnClasses[i];
+      final Function function = (Function) ObjectUtilities.loadAndInstantiate
+          (aClass, DefaultFunctionRegistry.class, Function.class);
+      if (function == null)
+      {
+        Log.debug ("There is no such function: " + aClass);
+      }
+      else
+      {
+        functions.add(function);
+      }
+    }
+    return (Function[]) functions.toArray(new Function[functions.size()]);
+  }
+
+  public String[] getFunctionNames()
+  {
+    return (String[]) functions.keySet().toArray(new String[functions.size()]);
+  }
+
+  public String[] getFunctionNamesByCategory(FunctionCategory category)
+  {
+    return (String[]) categoryFunctions.toArray(category, new String[0]);
   }
 
   public Function[] getFunctionsByCategory(FunctionCategory category)
   {
-    return (Function[]) categoryFunctions.toArray
-        (category, new Function[0]);
+    final String[] fnNames = (String[]) categoryFunctions.toArray
+        (category, new String[0]);
+    final ArrayList functions = new ArrayList(fnNames.length);
+    for (int i = 0; i < fnNames.length; i++)
+    {
+      final String aName = fnNames[i];
+      final Function function = createFunction(aName);
+      if (function != null)
+      {
+        functions.add(function);
+      }
+    }
+    return (Function[]) functions.toArray(new Function[functions.size()]);
   }
 
   public Function createFunction(String name)
@@ -148,7 +186,7 @@ public class DefaultFunctionRegistry implements FunctionRegistry
       }
 
       final FunctionCategory cat = description.getCategory();
-      categoryFunctions.add(cat, className);
+      categoryFunctions.add(cat, function.getCanonicalName());
       functionMetaData.put (function.getCanonicalName(), description);
       functions.put(function.getCanonicalName(), className);
       categories.add(cat);
