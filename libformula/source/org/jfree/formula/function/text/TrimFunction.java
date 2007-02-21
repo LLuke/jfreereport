@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TrimFunction.java,v 1.4 2007/01/25 11:44:39 taqua Exp $
+ * $Id: TrimFunction.java,v 1.5 2007/01/26 22:11:51 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,8 +41,7 @@ import org.jfree.formula.typing.coretypes.TextType;
 
 /**
  * This function returns the given text free of leading spaces.
- * Removes spaces that are in front of a string, or aligns cell contents to
- * the left.
+ * Removes all leading and trailing spaces and all extra spaces inside the text.
  *
  * @author Cedric Pronzato
  * @see http://mercury.ccil.org/%7Ecowan/OF/textfuncs.html
@@ -69,19 +68,45 @@ public class TrimFunction implements Function
       throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
-    // remove all leading spaces ..
-    int index = 0;
-    final int length = result.length();
-    while (index < length && Character.isWhitespace(result.charAt(index)))
+    // remove all unnecessary spaces ..
+    // we dont use regexps, because they are JDK 1.4, but this library is aimed
+    // for JDK 1.2.2
+
+    final char[] chars = result.toCharArray();
+    final StringBuffer b = new StringBuffer(chars.length);
+    boolean removeNextWs = true;
+
+    for (int i = 0; i < chars.length; i++)
     {
-      index += 1;
-    }
-    if (index == 0)
-    {
-      return new TypeValuePair(TextType.TYPE, result);
+      final char c = chars[i];
+      if (Character.isWhitespace(c))
+      {
+        if (removeNextWs)
+        {
+          continue;
+        }
+        b.append(c);
+        removeNextWs = true;
+        continue;
+      }
+
+      b.append(c);
+      removeNextWs = false;
     }
 
-    return new TypeValuePair(TextType.TYPE, result.substring(index));
+    // now check whether the last char is a whitespace and remove that one
+    // if neccessary
+    final String trimmedResult;
+    if (removeNextWs)
+    {
+      trimmedResult = b.substring(0, b.length() - 1);
+    }
+    else
+    {
+      trimmedResult = b.toString();
+    }
+
+    return new TypeValuePair(TextType.TYPE, trimmedResult);
   }
 
   public String getCanonicalName()
