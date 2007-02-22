@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LibFormulaErrorValue.java,v 1.5 2007/01/14 17:49:41 mimil Exp $
+ * $Id: LibFormulaErrorValue.java,v 1.6 2007/01/26 22:11:51 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,6 +43,10 @@ public class LibFormulaErrorValue implements ErrorValue
 
   /** A parse error */
   public static final int ERROR_INVALID_CHARACTER = 501;
+  /** Function name is invalid error code */
+  public static final int ERROR_INVALID_FUNCTION = 505;
+  /** Function name is invalid error */
+  public static final LibFormulaErrorValue ERROR_INVALID_FUNCTION_VALUE = new LibFormulaErrorValue(ERROR_INVALID_FUNCTION);
   /** Parameter types are invalid error code */
   public static final int ERROR_INVALID_ARGUMENT = 502;
   /** Parameter types are invalid error */

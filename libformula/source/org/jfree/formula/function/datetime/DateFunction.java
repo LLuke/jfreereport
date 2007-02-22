@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.8 2007/01/25 11:44:39 taqua Exp $
+ * $Id: DateFunction.java,v 1.9 2007/01/26 22:11:52 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -73,8 +73,7 @@ public class DateFunction implements Function
     {
       final TypeRegistry typeRegistry = context.getTypeRegistry();
       n1 = typeRegistry.convertToNumber(parameters.getType(0), parameters.getValue(0));
-      Object value = parameters.getValue(1);
-      n2 = typeRegistry.convertToNumber(parameters.getType(1), value);
+      n2 = typeRegistry.convertToNumber(parameters.getType(1), parameters.getValue(1));
       n3 = typeRegistry.convertToNumber(parameters.getType(2), parameters.getValue(2));
     }
     catch (NumberFormatException e)
@@ -99,7 +98,6 @@ public class DateFunction implements Function
     gc.set(GregorianCalendar.SECOND, 0);
 
     final Date date = gc.getTime();
-    //System.out.println("Created date("+n2+"): "+date);
     return new TypeValuePair(DateType.TYPE, date);
   }
 }
