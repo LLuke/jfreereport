@@ -24,13 +24,11 @@
  *
  *
  * ------------
- * $Id: EHResourceFactoryCache.java,v 1.2 2006/12/03 16:41:16 taqua Exp $
+ * $Id: EHResourceFactoryCache.java,v 1.3 2006/12/03 17:14:26 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.modules.cache.ehcache;
-
-import java.io.IOException;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
@@ -59,15 +57,9 @@ public class EHResourceFactoryCache implements ResourceFactoryCache
 
   public Resource get(ResourceKey key)
   {
-    final String ext = key.toExternalForm();
-    if (ext == null)
-    {
-      return null;
-    }
-
     try
     {
-      final Element element = factoryCache.get(ext);
+      final Element element = factoryCache.get(key);
       return (Resource) element.getObjectValue();
     }
     catch (CacheException e)
@@ -79,14 +71,9 @@ public class EHResourceFactoryCache implements ResourceFactoryCache
   public void put(final Resource resource)
   {
     final ResourceKey source = resource.getSource();
-    final String ext = source.toExternalForm();
-    if (ext == null)
-    {
-      return;
-    }
     try
     {
-      factoryCache.put(new Element(ext, resource));
+      factoryCache.put(new Element(source, resource));
     }
     catch(Exception e)
     {
@@ -97,13 +84,8 @@ public class EHResourceFactoryCache implements ResourceFactoryCache
   public void remove(final Resource resource)
   {
     final ResourceKey source = resource.getSource();
-    final String ext = source.toExternalForm();
-    if (ext == null)
-    {
-      return;
-    }
 
-    factoryCache.remove(ext);
+    factoryCache.remove(source);
   }
 
   public void clear()

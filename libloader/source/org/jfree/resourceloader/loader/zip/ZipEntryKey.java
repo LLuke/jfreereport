@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ZipEntryKey.java,v 1.2 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,12 +43,13 @@ import org.jfree.resourceloader.ResourceManager;
  *
  * @author Thomas Morgner
  */
-public class ZipEntryKey
+public class ZipEntryKey 
 {
   private ResourceData zipFile;
   private String entryName;
 
-  public ZipEntryKey(final ResourceData zipFile, final String entryName)
+  public ZipEntryKey(final ResourceData zipFile,
+                     final String entryName)
   {
     if (zipFile == null)
     {

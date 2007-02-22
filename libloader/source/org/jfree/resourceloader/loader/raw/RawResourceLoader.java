@@ -24,13 +24,15 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: RawResourceLoader.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.loader.raw;
 
 import java.util.Map;
+import java.util.HashMap;
+import java.net.URL;
 
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
@@ -38,7 +40,6 @@ import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoader;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.resourceloader.AbstractResourceKey;
 
 /**
  * Creation-Date: 12.04.2006, 15:19:03
@@ -53,42 +54,86 @@ public class RawResourceLoader implements ResourceLoader
   {
   }
 
-  public String getSchema()
+  /**
+   * Checks, whether this resource loader implementation was responsible for
+   * creating this key.
+   *
+   * @param key
+   * @return
+   */
+  public boolean isSupportedKey(ResourceKey key)
   {
-    return "raw:bytes";
-  }
-
-  public boolean isSupportedKeyValue(Map values)
-  {
-    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
-    return (value instanceof byte[]);
-  }
-
-  public ResourceKey createKey(Map values) throws ResourceKeyCreationException
-  {
-    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
-    if (value instanceof byte[])
+    if (RawResourceLoader.class.getName().equals(key.getSchema()))
     {
-      return new RawResourceKey(values);
+      return true;
     }
-    throw new ResourceKeyCreationException("The key data was not recognized.");
+    return false;
   }
 
-  public ResourceKey deriveKey(ResourceKey parent, Map data)
-          throws ResourceKeyCreationException
+  /**
+   * Creates a new resource key from the given object and the factory keys.
+   *
+   * @param value
+   * @param factoryKeys
+   * @return the created key.
+   * @throws org.jfree.resourceloader.ResourceKeyCreationException
+   *          if creating the key failed.
+   */
+  public ResourceKey createKey(Object value, Map factoryKeys)
+      throws ResourceKeyCreationException
   {
-    // we do not support derived keys ..
-    throw new ResourceKeyCreationException(
-            "Derived keys are not supported by this implementation.");
+    if (value instanceof byte[] == false)
+    {
+      return null;
+    }
+
+    return new ResourceKey(RawResourceLoader.class.getName(), value, factoryKeys);
+  }
+
+  /**
+   * Derives a new resource key from the given key. If neither a path nor new
+   * factory-keys are given, the parent key is returned.
+   *
+   * @param parent      the parent
+   * @param path        the derived path (can be null).
+   * @param factoryKeys the optional factory keys (can be null).
+   * @return the derived key.
+   * @throws org.jfree.resourceloader.ResourceKeyCreationException
+   *          if the key cannot be derived for any reason.
+   */
+  public ResourceKey deriveKey(ResourceKey parent, String path, Map factoryKeys)
+      throws ResourceKeyCreationException
+  {
+    if (path != null)
+    {
+      throw new ResourceKeyCreationException("Unable to derive key for new path.");
+    }
+    if (isSupportedKey(parent) == false)
+    {
+      throw new ResourceKeyCreationException("Assertation: Unsupported parent key type");
+    }
+
+    if (factoryKeys == null) return parent;
+
+    HashMap map = new HashMap();
+    map.putAll(parent.getFactoryParameters());
+    map.putAll(factoryKeys);
+    return new ResourceKey(parent.getSchema(), parent.getIdentifier(), map);
+  }
+
+  public URL toURL(ResourceKey key)
+  {
+    // not supported ..
+    return null;
   }
 
   public ResourceData load(ResourceKey key) throws ResourceLoadingException
   {
-    if (key instanceof RawResourceKey == false)
+    if (isSupportedKey(key) == false)
     {
       throw new ResourceLoadingException("The key type is not supported.");
     }
-    return new RawResourceData((RawResourceKey) key);
+    return new RawResourceData(key);
   }
 
   public ResourceManager getResourceManager()

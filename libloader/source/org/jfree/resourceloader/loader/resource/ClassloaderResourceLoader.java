@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ClassloaderResourceLoader.java,v 1.4 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,8 +32,9 @@ package org.jfree.resourceloader.loader.resource;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.net.URL;
+import java.io.File;
 
-import org.jfree.resourceloader.AbstractResourceKey;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceKeyCreationException;
@@ -60,90 +61,112 @@ public class ClassloaderResourceLoader implements ResourceLoader
     this.manager = manager;
   }
 
-  public ResourceManager getManager()
+  /**
+   * Checks, whether this resource loader implementation was responsible for
+   * creating this key.
+   *
+   * @param key
+   * @return
+   */
+  public boolean isSupportedKey(ResourceKey key)
   {
-    return manager;
-  }
-
-  public String getSchema()
-  {
-    return "res";
-  }
-
-  public boolean isSupportedKeyValue(Map values)
-  {
-    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
-    if (value instanceof String)
+    if (ClassloaderResourceLoader.class.getName().equals(key.getSchema()))
     {
-      String valueString = (String) value;
-      if (valueString.startsWith("res://"))
-      {
-        return true;
-      }
+      return true;
     }
     return false;
   }
 
-  public ResourceKey createKey(Map values) throws ResourceKeyCreationException
+  /**
+   * Creates a new resource key from the given object and the factory keys.
+   *
+   * @param value
+   * @param factoryKeys
+   * @return the created key.
+   * @throws org.jfree.resourceloader.ResourceKeyCreationException
+   *          if creating the key failed.
+   */
+  public ResourceKey createKey(Object value, Map factoryKeys)
+      throws ResourceKeyCreationException
   {
-    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
     if (value instanceof String)
     {
       String valueString = (String) value;
       if (valueString.startsWith("res://"))
       {
-        return new ClassloaderResourceKey(values);
+        return new ResourceKey(ClassloaderResourceLoader.class.getName(),
+            value, factoryKeys);
       }
     }
-    throw new ResourceKeyCreationException("Unable to create the resource key");
+
+    //throw new ResourceKeyCreationException("Unsupported identifier.");
+    return null;
   }
 
-  public ResourceKey deriveKey(ResourceKey parent, Map values)
-          throws ResourceKeyCreationException
+  /**
+   * Derives a new resource key from the given key. If neither a path nor new
+   * factory-keys are given, the parent key is returned.
+   *
+   * @param parent      the parent
+   * @param path        the derived path (can be null).
+   * @param factoryKeys the optional factory keys (can be null).
+   * @return the derived key.
+   * @throws org.jfree.resourceloader.ResourceKeyCreationException
+   *          if the key cannot be derived for any reason.
+   */
+  public ResourceKey deriveKey(ResourceKey parent, String path, Map factoryKeys)
+      throws ResourceKeyCreationException
   {
-    if (parent instanceof ClassloaderResourceKey == false)
+    if (isSupportedKey(parent) == false)
     {
-      throw new ResourceKeyCreationException
-              ("Parent key format is not recognized.");
-    }
-    final ClassloaderResourceKey resourceKey = (ClassloaderResourceKey) parent;
-    final String parentResourceKey = resourceKey.getResource();
-    final Object data = values.get(AbstractResourceKey.CONTENT_KEY);
-    if (data instanceof String == false)
-    {
-      throw new ResourceKeyCreationException
-              ("Additional parameter format is not recognized.");
+      throw new ResourceKeyCreationException("Assertation: Unsupported parent key type");
     }
 
-    final String childResource = (String) data;
     final String resource;
-    if (childResource.startsWith("res://"))
+    if (path.startsWith("res://"))
     {
-      resource = childResource;
+      resource = path;
     }
-    else if (childResource.startsWith("/"))
+    else if (path.startsWith("/"))
     {
-      resource = "res:/" + childResource;
+      resource = "res:/" + path;
     }
     else
     {
-      resource = LoaderUtils.mergePaths(parentResourceKey, childResource);
+      resource = LoaderUtils.mergePaths((String) parent.getIdentifier(), path);
     }
-    final Map derivedValues = new HashMap (parent.getParameters());
-    derivedValues.putAll(values);
-    derivedValues.put(AbstractResourceKey.CONTENT_KEY, resource);
-    return new ClassloaderResourceKey(derivedValues);
+    Map map;
+    if (factoryKeys != null)
+    {
+      map = new HashMap();
+      map.putAll(parent.getFactoryParameters());
+      map.putAll(factoryKeys);
+    }
+    else
+    {
+      map = parent.getFactoryParameters();
+    }
+    return new ResourceKey(parent.getSchema(), resource, map);
   }
 
+  public URL toURL(ResourceKey key)
+  {
+    return null;
+  }
+
+  public ResourceManager getResourceManager()
+  {
+    return manager;
+  }
 
   public ResourceData load(ResourceKey key) throws ResourceLoadingException
   {
-    if (key instanceof ClassloaderResourceKey == false)
+    if (isSupportedKey(key) == false)
     {
       throw new ResourceLoadingException
               ("Key format is not recognized.");
     }
-    return new ClassloaderResourceData((ClassloaderResourceKey) key);
+    return new ClassloaderResourceData(key);
   }
 
   /**

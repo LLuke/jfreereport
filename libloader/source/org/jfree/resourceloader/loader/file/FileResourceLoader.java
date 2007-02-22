@@ -24,17 +24,18 @@
  *
  *
  * ------------
- * $Id: FileResourceLoader.java,v 1.4 2006/12/08 08:03:52 taqua Exp $
+ * $Id: FileResourceLoader.java,v 1.5 2006/12/19 17:48:26 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.loader.file;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jfree.resourceloader.AbstractResourceKey;
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceKeyCreationException;
@@ -60,90 +61,124 @@ public class FileResourceLoader implements ResourceLoader
     this.manager = manager;
   }
 
-  public ResourceManager getManager()
+  public ResourceManager getResourceManager()
   {
     return manager;
   }
 
-  public String getSchema()
+  /**
+   * Checks, whether this resource loader implementation was responsible for
+   * creating this key.
+   *
+   * @param key
+   * @return
+   */
+  public boolean isSupportedKey(ResourceKey key)
   {
-    return "file";
-  }
-
-  public boolean isSupportedKeyValue(Map values)
-  {
-    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
-    if (value instanceof File)
+    if (FileResourceLoader.class.getName().equals(key.getSchema()))
     {
       return true;
-    }
-    if (value instanceof String)
-    {
-      String valueString = (String) value;
-      if (valueString.startsWith("file://"))
-      {
-        return true;
-      }
     }
     return false;
   }
 
-  public ResourceKey createKey(Map values) throws ResourceKeyCreationException
+  /**
+   * Creates a new resource key from the given object and the factory keys.
+   *
+   * @param value
+   * @param factoryKeys
+   * @return the created key.
+   * @throws org.jfree.resourceloader.ResourceKeyCreationException
+   *          if creating the key failed.
+   */
+  public ResourceKey createKey(Object value, Map factoryKeys)
+      throws ResourceKeyCreationException
   {
-    final Object value = values.get(AbstractResourceKey.CONTENT_KEY);
     if (value instanceof File)
     {
-      return new FileResourceKey(values);
+      return new ResourceKey(FileResourceLoader.class.getName(), value, factoryKeys);
     }
 
     if (value instanceof String)
     {
-      String valueString = (String) value;
-      if (valueString.startsWith("file://"))
+      File f = new File(String.valueOf(value));
+      if (f.exists() && f.isFile())
       {
-        valueString = valueString.substring(7);
+        return new ResourceKey(FileResourceLoader.class.getName(), f, factoryKeys);
       }
-
-      // we accept all strings, which actually point to a file.
-      File f = new File(valueString);
-      final Map derivedValues = new HashMap(values);
-      derivedValues.put(AbstractResourceKey.CONTENT_KEY, f);
-      return new FileResourceKey(derivedValues);
     }
-    throw new ResourceKeyCreationException
-        ("FileResourceLoader: This does not look like a valid file");
+
+    return null;
   }
 
-  public ResourceKey deriveKey(ResourceKey parent, Map data)
+  /**
+   * Derives a new resource key from the given key. If neither a path nor new
+   * factory-keys are given, the parent key is returned.
+   *
+   * @param parent      the parent
+   * @param path        the derived path (can be null).
+   * @param factoryKeys the optional factory keys (can be null).
+   * @return the derived key.
+   * @throws org.jfree.resourceloader.ResourceKeyCreationException
+   *          if the key cannot be derived for any reason.
+   */
+  public ResourceKey deriveKey(ResourceKey parent, String path, Map factoryKeys)
       throws ResourceKeyCreationException
   {
-    if (parent instanceof FileResourceKey == false)
+    if (isSupportedKey(parent) == false)
     {
-      throw new ResourceKeyCreationException
-          ("Parent key format is not recognized.");
+      throw new ResourceKeyCreationException("Assertation: Unsupported parent key type");
     }
-    FileResourceKey key = (FileResourceKey) parent;
 
-    final Object deriveUrl = data.get(AbstractResourceKey.CONTENT_KEY);
-    if (deriveUrl instanceof String == false)
+    File target;
+    if (path != null)
     {
-      throw new ResourceKeyCreationException
-          ("Additional parameter format is not recognized.");
+      target = new File((File) parent.getIdentifier(), path);
+      if (target.exists() == false || target.isFile() == false)
+      {
+        throw new ResourceKeyCreationException("Malformed value: " + path);
+      }
+
     }
-    final Map derivedValues = new HashMap(parent.getParameters());
-    derivedValues.putAll(data);
-    derivedValues.put(AbstractResourceKey.CONTENT_KEY,
-        new File(key.getFile().getParentFile(), (String) deriveUrl));
-    return new FileResourceKey(derivedValues);
+    else
+    {
+      target = (File) parent.getIdentifier();
+    }
+
+    Map map;
+    if (factoryKeys != null)
+    {
+      map = new HashMap();
+      map.putAll(parent.getFactoryParameters());
+      map.putAll(factoryKeys);
+    }
+    else
+    {
+      map = parent.getFactoryParameters();
+    }
+    return new ResourceKey(parent.getSchema(), target, map);
+  }
+
+  public URL toURL(ResourceKey key)
+  {
+    final File file = (File) key.getIdentifier();
+    try
+    {
+      return file.toURL();
+    }
+    catch (MalformedURLException e)
+    {
+      return null;
+    }
   }
 
   public ResourceData load(ResourceKey key) throws ResourceLoadingException
   {
-    if (key instanceof FileResourceKey == false)
+    if (isSupportedKey(key) == false)
     {
       throw new ResourceLoadingException
           ("Key format is not recognized.");
     }
-    return new FileResourceData((FileResourceKey) key);
+    return new FileResourceData(key);
   }
 }

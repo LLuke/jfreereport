@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: OSResourceDataCache.java,v 1.4 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,6 +40,7 @@ import org.jfree.resourceloader.cache.ResourceDataCache;
 import org.jfree.resourceloader.cache.ResourceDataCacheEntry;
 import org.jfree.resourceloader.cache.CachingResourceData;
 import org.jfree.resourceloader.cache.DefaultResourceDataCacheEntry;
+import org.jfree.resourceloader.cache.CacheUtility;
 
 /**
  * Creation-Date: 13.04.2006, 16:30:34
@@ -66,7 +67,7 @@ public class OSResourceDataCache implements ResourceDataCache
    */
   public ResourceDataCacheEntry get(ResourceKey key)
   {
-    final String ext = key.toExternalForm();
+    final String ext = CacheUtility.externalizeKey(key);
     if (ext == null)
     {
       return null;
@@ -96,7 +97,7 @@ public class OSResourceDataCache implements ResourceDataCache
           throws ResourceLoadingException
   {
     final ResourceData cdata = CachingResourceData.createCached(data);
-    final String ext = data.getKey().toExternalForm();
+    final String ext = CacheUtility.externalizeKey(data.getKey());
     if (ext == null)
     {
       return cdata;
@@ -107,7 +108,7 @@ public class OSResourceDataCache implements ResourceDataCache
 
   public void remove(ResourceData data)
   {
-    final String ext = data.getKey().toExternalForm();
+    final String ext = CacheUtility.externalizeKey(data.getKey());
     if (ext == null)
     {
       return;

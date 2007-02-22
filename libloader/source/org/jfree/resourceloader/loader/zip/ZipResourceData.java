@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ZipResourceData.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -49,9 +49,9 @@ import org.jfree.resourceloader.loader.LoaderUtils;
  */
 public class ZipResourceData extends AbstractResourceData
 {
-  private ZipResourceKey key;
+  private ResourceKey key;
 
-  public ZipResourceData(ZipResourceKey key)
+  public ZipResourceData(ResourceKey key)
   {
     if (key == null)
     {
@@ -63,7 +63,7 @@ public class ZipResourceData extends AbstractResourceData
   public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
     // again, this is going to hurt the performance.
-    final ResourceKey parentKey = key.getZipFile();
+    final ResourceKey parentKey = key.getParent();
     final ResourceData data = caller.load(parentKey);
 
     final ZipInputStream zin = new ZipInputStream(data.getResourceAsStream(caller));
@@ -72,7 +72,7 @@ public class ZipResourceData extends AbstractResourceData
       ZipEntry zipEntry = zin.getNextEntry();
       while (zipEntry != null)
       {
-        if (zipEntry.getName().equals(key.getEntryName()) == false)
+        if (zipEntry.getName().equals(key.getIdentifier()) == false)
         {
           zipEntry = zin.getNextEntry();
           continue;
@@ -95,7 +95,7 @@ public class ZipResourceData extends AbstractResourceData
   {
     if (key.equals(ResourceData.FILENAME))
     {
-      return LoaderUtils.getFileName(this.key.getEntryName());
+      return LoaderUtils.getFileName((String) this.key.getIdentifier());
     }
     return null;
   }
@@ -108,7 +108,7 @@ public class ZipResourceData extends AbstractResourceData
   public long getVersion(ResourceManager caller)
           throws ResourceLoadingException
   {
-    final ResourceKey parentKey = key.getZipFile();
+    final ResourceKey parentKey = key.getParent();
     final ResourceData data = caller.load(parentKey);
     return data.getVersion(caller);
   }

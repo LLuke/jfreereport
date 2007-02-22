@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FileResourceData.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -51,16 +51,17 @@ import org.jfree.resourceloader.loader.AbstractResourceData;
  */
 public class FileResourceData extends AbstractResourceData
 {
-  private FileResourceKey key;
+  private ResourceKey key;
+  private File file;
 
-  public FileResourceData(final FileResourceKey key) throws ResourceLoadingException
+  public FileResourceData(final ResourceKey key) throws ResourceLoadingException
   {
     if (key == null)
     {
       throw new NullPointerException();
     }
-    final File file = key.getFile();
-    if (file.isDirectory())
+    final File file = (File) key.getIdentifier();
+    if (file.isFile() == false)
     {
       throw new ResourceLoadingException
               ("File-handle given does not point to a regular file.");
@@ -71,13 +72,14 @@ public class FileResourceData extends AbstractResourceData
               ("File '" + file + "' is not readable.");
     }
     this.key = key;
+    this.file = file;
   }
 
   public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
     try
     {
-      return new BufferedInputStream(new FileInputStream(key.getFile()));
+      return new BufferedInputStream(new FileInputStream(file));
     }
     catch (FileNotFoundException e)
     {
@@ -89,11 +91,11 @@ public class FileResourceData extends AbstractResourceData
   {
     if (attrkey.equals(ResourceData.FILENAME))
     {
-      return key.getFile().getName();
+      return file.getName();
     }
     if (attrkey.equals(ResourceData.CONTENT_LENGTH))
     {
-      return new Long(key.getFile().length());
+      return new Long(file.length());
     }
     return null;
   }
@@ -101,7 +103,7 @@ public class FileResourceData extends AbstractResourceData
   public long getVersion(ResourceManager caller)
           throws ResourceLoadingException
   {
-    return key.getFile().lastModified();
+    return file.lastModified();
   }
 
   public ResourceKey getKey()

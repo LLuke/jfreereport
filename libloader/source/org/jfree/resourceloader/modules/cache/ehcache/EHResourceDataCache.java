@@ -24,13 +24,11 @@
  *
  *
  * ------------
- * $Id: EHResourceDataCache.java,v 1.4 2006/12/03 16:41:16 taqua Exp $
+ * $Id: EHResourceDataCache.java,v 1.5 2006/12/03 17:14:26 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.modules.cache.ehcache;
-
-import java.io.IOException;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
@@ -69,15 +67,9 @@ public class EHResourceDataCache implements ResourceDataCache
    */
   public ResourceDataCacheEntry get(ResourceKey key)
   {
-    final String ext = key.toExternalForm();
-    if (ext == null)
-    {
-      return null;
-    }
-
     try
     {
-      final Element element = dataCache.get(ext);
+      final Element element = dataCache.get(key);
       return (ResourceDataCacheEntry) element.getObjectValue();
     }
     catch (CacheException e)
@@ -97,23 +89,13 @@ public class EHResourceDataCache implements ResourceDataCache
   public ResourceData put(ResourceManager caller, ResourceData data) throws ResourceLoadingException
   {
     final ResourceData cdata = CachingResourceData.createCached(data);
-    final String ext = data.getKey().toExternalForm();
-    if (ext == null)
-    {
-      return cdata;
-    }
-    dataCache.put(new Element(ext, new DefaultResourceDataCacheEntry(cdata, caller)));
+    dataCache.put(new Element(data.getKey(), new DefaultResourceDataCacheEntry(cdata, caller)));
     return cdata;
   }
 
   public void remove(ResourceData data)
   {
-    final String ext = data.getKey().toExternalForm();
-    if (ext == null)
-    {
-      return;
-    }
-    dataCache.remove(ext);
+    dataCache.remove(data.getKey());
   }
 
   /**

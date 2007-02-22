@@ -24,14 +24,15 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ZipResourceLoader.java,v 1.4 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.loader.zip;
 
-import java.util.Map;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
@@ -39,9 +40,7 @@ import org.jfree.resourceloader.ResourceKeyCreationException;
 import org.jfree.resourceloader.ResourceLoader;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.resourceloader.AbstractResourceKey;
 import org.jfree.resourceloader.loader.LoaderUtils;
-import org.jfree.resourceloader.loader.URLResourceKey;
 
 /**
  * Creation-Date: 05.04.2006, 15:53:21
@@ -56,78 +55,98 @@ public class ZipResourceLoader implements ResourceLoader
   {
   }
 
-  public String getSchema()
+  /**
+   * Checks, whether this resource loader implementation was responsible for
+   * creating this key.
+   *
+   * @param key
+   * @return
+   */
+  public boolean isSupportedKey(ResourceKey key)
   {
-    return "zip";
+    return ZipResourceLoader.class.getName().equals(key.getSchema());
   }
 
-  public boolean isSupportedKeyValue(Map values)
+  /**
+   * Creates a new resource key from the given object and the factory keys.
+   *
+   * @param value
+   * @param factoryKeys
+   * @return the created key.
+   * @throws org.jfree.resourceloader.ResourceKeyCreationException
+   *          if creating the key failed.
+   */
+  public ResourceKey createKey(Object value, Map factoryKeys)
+      throws ResourceKeyCreationException
   {
-    try
+    if (value instanceof ZipEntryKey == false)
     {
-      final ResourceKey parent = (ResourceKey) values.get(AbstractResourceKey.PARENT_KEY);
-      final String entry = (String) values.get(AbstractResourceKey.CONTENT_KEY);
-      if (parent != null && entry != null) return true;
+      return null;
     }
-    catch(ClassCastException cce)
-    {
-      return false;
-    }
-    return false;
+
+    final ZipEntryKey entryKey = (ZipEntryKey) value;
+    final ResourceKey parentKey = entryKey.getZipFile().getKey();
+
+    return new ResourceKey(parentKey, ZipResourceLoader.class.getName(),
+        entryKey.getEntryName(), factoryKeys);
   }
 
-  public ResourceKey createKey(Map values) throws ResourceKeyCreationException
+  /**
+   * Derives a new resource key from the given key. If neither a path nor new
+   * factory-keys are given, the parent key is returned.
+   *
+   * @param parent      the parent
+   * @param path        the derived path (can be null).
+   * @param factoryKeys the optional factory keys (can be null).
+   * @return the derived key.
+   * @throws org.jfree.resourceloader.ResourceKeyCreationException
+   *          if the key cannot be derived for any reason.
+   */
+  public ResourceKey deriveKey(ResourceKey parent, String path, Map factoryKeys)
+      throws ResourceKeyCreationException
   {
-    return new ZipResourceKey(values);
-  }
-
-  public ResourceKey deriveKey(ResourceKey parent, Map values)
-          throws ResourceKeyCreationException
-  {
-    // shall we allow to dive into a zip file contained in a zip file using
-    // this method?
-    // For that we have to check, whether one of the intermediate entries
-    // will point to a zip file and then we will have to dive into that file
-    // This sounds like hard work, so leave it out for now ...
-    if (parent instanceof ZipResourceKey == false)
+    if (isSupportedKey(parent) == false)
     {
-      throw new ResourceKeyCreationException
-              ("Key format is not recognized.");
-    }
-    ZipResourceKey zrk = (ZipResourceKey) parent;
-    final ResourceKey declaredParent = (ResourceKey)
-            values.get(AbstractResourceKey.PARENT_KEY);
-    final Object entryName = values.get(AbstractResourceKey.CONTENT_KEY);
-    if (entryName instanceof String == false)
-    {
-      throw new ResourceKeyCreationException
-              ("Parameter format is not recognized.");
+      throw new ResourceKeyCreationException("Assertation: Unsupported parent key type");
     }
 
-    if (declaredParent == null || declaredParent.equals(parent))
+    String entry;
+    if (path != null)
     {
-      final String entry = LoaderUtils.mergePaths
-              (zrk.getEntryName(), String.valueOf(entryName));
-      final Map derivedValues = new HashMap (parent.getParameters());
-      derivedValues.putAll(values);
-      derivedValues.put(AbstractResourceKey.PARENT_KEY, zrk);
-      derivedValues.put(AbstractResourceKey.CONTENT_KEY, entry);
-      return new ZipResourceKey(derivedValues);
+      entry = LoaderUtils.mergePaths((String) parent.getIdentifier(), path);
     }
     else
     {
-      return new ZipResourceKey(values);
+      entry = (String) parent.getIdentifier();
     }
+
+    Map map;
+    if (factoryKeys != null)
+    {
+      map = new HashMap();
+      map.putAll(parent.getFactoryParameters());
+      map.putAll(factoryKeys);
+    }
+    else
+    {
+      map = parent.getFactoryParameters();
+    }
+    return new ResourceKey(parent.getParent(), parent.getSchema(), entry, map);
+  }
+
+  public URL toURL(ResourceKey key)
+  {
+    return null;
   }
 
   public ResourceData load(ResourceKey key) throws ResourceLoadingException
   {
-    if (key instanceof ZipResourceKey == false)
+    if (isSupportedKey(key) == false)
     {
       throw new ResourceLoadingException
               ("Key format is not recognized.");
     }
-    return new ZipResourceData((ZipResourceKey) key);
+    return new ZipResourceData(key);
   }
 
   public void setResourceManager(ResourceManager manager)
@@ -135,7 +154,7 @@ public class ZipResourceLoader implements ResourceLoader
     this.manager = manager;
   }
 
-  public ResourceManager getManager()
+  public ResourceManager getResourceManager()
   {
     return manager;
   }

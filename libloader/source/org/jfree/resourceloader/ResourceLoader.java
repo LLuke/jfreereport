@@ -24,29 +24,76 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ResourceLoader.java,v 1.3 2006/12/03 16:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader;
 
 import java.util.Map;
+import java.net.URL;
 
 /**
  * A resource loader knows how to get binary rawdata from a location specified
- * by an resource key.
+ * by an resource key. A resource key is a wrapper around any kind of data that
+ * is suitable to identify a resource location. The resource key can also hold
+ * configuration data for the factory.
+ *
+ * If the storage system is hierarchical, a new resource key can be derived from
+ * a given path-string.
  *
  * @author Thomas Morgner
  */
 public interface ResourceLoader
 {
-  public String getSchema();
-  public boolean isSupportedKeyValue (Map values);
+  /**
+   * Checks, whether this resource loader implementation was responsible for
+   * creating this key.
+   *
+   * @param key
+   * @return
+   */
+  public boolean isSupportedKey (ResourceKey key);
 
-  public ResourceKey createKey (Map values) throws ResourceKeyCreationException;
-  public ResourceKey deriveKey (ResourceKey parent, Map data) throws ResourceKeyCreationException;
+  /**
+   * Creates a new resource key from the given object and the factory keys.
+   *
+   * @param value
+   * @param factoryKeys
+   * @return the created key or null, if the format was not recognized.
+   * @throws ResourceKeyCreationException if creating the key failed.
+   */
+  public ResourceKey createKey (Object value,
+                                Map factoryKeys)
+      throws ResourceKeyCreationException;
 
-  public ResourceData load (ResourceKey key) throws ResourceLoadingException;
+  /**
+   * Derives a new resource key from the given key. If neither a path nor new
+   * factory-keys are given, the parent key is returned.
+   *
+   * @param parent the parent
+   * @param path the derived path (can be null).
+   * @param factoryKeys the optional factory keys (can be null).
+   * @return the derived key.
+   * @throws ResourceKeyCreationException if the key cannot be derived for any
+   * reason.
+   */
+  public ResourceKey deriveKey (ResourceKey parent,
+                                String path,
+                                Map factoryKeys)
+      throws ResourceKeyCreationException;
+
+  /**
+   * Loads the binary data represented by this key.
+   *
+   * @param key
+   * @return
+   * @throws ResourceLoadingException
+   */
+  public ResourceData load (ResourceKey key)
+      throws ResourceLoadingException;
 
   public void setResourceManager (ResourceManager manager);
+
+  public URL toURL (ResourceKey key);
 }

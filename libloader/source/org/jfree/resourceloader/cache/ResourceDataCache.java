@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ResourceDataCache.java,v 1.3 2006/12/03 16:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -57,7 +57,8 @@ public interface ResourceDataCache
    * @return the resource data object, possibly wrapped by a cache-specific
    * implementation.
    */
-  public ResourceData put (ResourceManager caller, ResourceData data) throws ResourceLoadingException;
+  public ResourceData put (ResourceManager caller,
+                           ResourceData data) throws ResourceLoadingException;
 
   public void remove (ResourceData data);
 

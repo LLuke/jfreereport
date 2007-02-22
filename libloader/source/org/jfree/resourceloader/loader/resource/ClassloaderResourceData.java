@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ClassloaderResourceData.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -47,24 +47,27 @@ import org.jfree.util.ObjectUtilities;
  */
 public class ClassloaderResourceData extends AbstractResourceData
 {
-  private ClassloaderResourceKey key;
+  private ResourceKey key;
+  private String resourcePath;
 
-  public ClassloaderResourceData(final ClassloaderResourceKey key)
+  public ClassloaderResourceData(final ResourceKey key)
   {
     if (key == null)
     {
       throw new NullPointerException();
     }
     this.key = key;
+    final String rawPath = (String) key.getIdentifier();
+    this.resourcePath = rawPath.substring(6);
   }
 
   public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
   {
     final InputStream stream = ObjectUtilities.getResourceAsStream
-        (key.getResourcePath(), ClassloaderResourceData.class);
+        (resourcePath, ClassloaderResourceData.class);
     if (stream == null)
     {
-      throw new ResourceLoadingException("Resource is not available.");
+      throw new ResourceLoadingException("Resource is not available: " + resourcePath);
     }
     return stream;
   }
@@ -74,7 +77,7 @@ public class ClassloaderResourceData extends AbstractResourceData
     // we do not support attributes ...
     if (key.equals(ResourceData.FILENAME))
     {
-      return LoaderUtils.getFileName(this.key.getResourcePath());
+      return LoaderUtils.getFileName(this.resourcePath);
     }
     return null;
   }

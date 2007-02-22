@@ -24,13 +24,14 @@
  *
  *
  * ------------
- * $Id: ResourceManager.java,v 1.11 2006/12/08 10:06:10 taqua Exp $
+ * $Id: ResourceManager.java,v 1.12 2006/12/19 17:48:26 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader;
 
-import java.util.HashMap;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -56,8 +57,8 @@ import org.jfree.util.ObjectUtilities;
 public class ResourceManager
 {
   private static final Set failedModules = new HashSet();
-  private HashMap resourceLoaders;
-  private HashMap resourceFactories;
+  private ArrayList resourceLoaders;
+  private ArrayList resourceFactories;
   private ResourceDataCache dataCache;
   private ResourceFactoryCache factoryCache;
 
@@ -70,8 +71,8 @@ public class ResourceManager
 
   public ResourceManager()
   {
-    resourceLoaders = new HashMap();
-    resourceFactories = new HashMap();
+    resourceLoaders = new ArrayList();
+    resourceFactories = new ArrayList();
     dataCache = new NullResourceDataCache();
     factoryCache = new NullResourceFactoryCache();
   }
@@ -79,16 +80,10 @@ public class ResourceManager
   public synchronized ResourceKey createKey(Object data)
       throws ResourceKeyCreationException
   {
-    if (data instanceof Map)
-    {
-      return createKey((Map) data);
-    }
-    final HashMap map = new HashMap();
-    map.put(AbstractResourceKey.CONTENT_KEY, data);
-    return createKey(map);
+    return createKey(data, null);
   }
 
-  public synchronized ResourceKey createKey(Map data)
+  public synchronized ResourceKey createKey(Object data, Map parameters)
       throws ResourceKeyCreationException
   {
     if (data == null)
@@ -96,91 +91,111 @@ public class ResourceManager
       throw new NullPointerException("Key data must not be null.");
     }
 
-    final Iterator values = resourceLoaders.values().iterator();
+    final Iterator values = resourceLoaders.iterator();
     while (values.hasNext())
     {
       final ResourceLoader loader = (ResourceLoader) values.next();
-      if (loader.isSupportedKeyValue(data) == false)
+      final ResourceKey key = loader.createKey(data, parameters);
+      if (key != null)
       {
-        continue;
+        return key;
       }
-      return loader.createKey(data);
     }
+
     throw new ResourceKeyCreationException
         ("Unable to create key: No loader was able " +
             "to handle the given key data: " + data);
   }
 
-  public ResourceKey deriveKey(ResourceKey parent, Object data)
+  /**
+   * Since LibLoader 0.3.0 only hierarchical keys can be derived. For that, the
+   * deriving path must be given as String.
+   *
+   * @param parent
+   * @param path
+   * @return
+   */
+  public ResourceKey deriveKey(ResourceKey parent, String path)
       throws ResourceKeyCreationException
   {
-    if (data instanceof Map)
-    {
-      return deriveKey(parent, (Map) data);
-    }
-    final HashMap map = new HashMap();
-    map.put(ResourceKey.CONTENT_KEY, data);
-    return deriveKey(parent, map);
+    return deriveKey(parent, path, null);
   }
 
-  public ResourceKey deriveKey(ResourceKey parent, Map data)
+  public ResourceKey deriveKey(ResourceKey parent, String path, Map parameters)
       throws ResourceKeyCreationException
   {
-    if (data == null)
+    if (path == null)
     {
       throw new NullPointerException("Key data must not be null.");
     }
     if (parent == null)
     {
-      return createKey(data);
+      return createKey(path, parameters);
     }
 
     // First, try to load the key as absolute value.
     // This assumes, that we have no catch-all implementation.
-    final Iterator values = resourceLoaders.values().iterator();
-    while (values.hasNext())
+    for (int i = 0; i < resourceLoaders.size(); i++)
     {
-      final ResourceLoader loader = (ResourceLoader) values.next();
-      if (loader.isSupportedKeyValue(data) == false)
+      ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
+      final ResourceKey key = loader.createKey(parameters, parameters);
+      if (key != null)
       {
-        continue;
-      }
-      try
-      {
-        return loader.createKey(data);
-      }
-      catch (Exception e)
-      {
-        // OK, did not work out ..
+        return key;
       }
     }
 
-    ResourceLoader loader =
-        (ResourceLoader) resourceLoaders.get(parent.getSchema());
+    for (int i = 0; i < resourceLoaders.size(); i++)
+    {
+      ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
+      if (loader.isSupportedKey(parent) == false)
+      {
+        continue;
+      }
+      final ResourceKey key = loader.deriveKey(parent, path, parameters);
+      if (key != null)
+      {
+        return key;
+      }
+    }
+
+    throw new ResourceKeyCreationException
+        ("Unable to create key: No such schema or the key was not recognized.");
+  }
+
+  private ResourceLoader findBySchema(ResourceKey key)
+  {
+    for (int i = 0; i < resourceLoaders.size(); i++)
+    {
+      ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
+      if (loader.isSupportedKey(key))
+      {
+        return loader;
+      }
+    }
+    return null;
+  }
+
+
+  public URL toURL(final ResourceKey key)
+  {
+    ResourceLoader loader = findBySchema(key);
     if (loader == null)
     {
-      throw new ResourceKeyCreationException
-          ("Unable to create key: No such schema.");
+      return null;
     }
-    try
-    {
-      return loader.deriveKey(parent, data);
-    }
-    catch (ResourceKeyCreationException ex)
-    {
-      return createKey(data);
-    }
+    return loader.toURL(key);
   }
 
   public ResourceData load(ResourceKey key) throws ResourceLoadingException
   {
-    final ResourceLoader loader = (ResourceLoader)
-        resourceLoaders.get(key.getSchema());
+    final ResourceLoader loader = findBySchema(key);
     if (loader == null)
     {
       throw new ResourceLoadingException
-          ("Unable to create key: No such schema: " + key.getSchema());
+          ("Invalid key: No resource-loader registered for schema: " + key.getSchema());
     }
+
     final ResourceDataCacheEntry cached = dataCache.get(key);
     if (cached != null)
     {
@@ -191,6 +206,7 @@ public class ResourceManager
         // a non versioned entry is always valid. (Maybe this is from a Jar-URL?)
         return data;
       }
+
       final long version = data.getVersion(this);
       if (version < 0)
       {
@@ -250,6 +266,7 @@ public class ResourceManager
     {
       throw new NullPointerException("Key must not be null.");
     }
+
     // ok, we have a handle to the data, and the data is current.
     // Lets check whether we also have a cached result.
     final Resource resource = factoryCache.get(key);
@@ -270,71 +287,89 @@ public class ResourceManager
     // AutoMode ..
     if (target == null)
     {
-      final ResourceData data = load(key);
-
-      final Iterator it = resourceFactories.keySet().iterator();
-      while (it.hasNext())
-      {
-        final Object factorykey = it.next();
-        final ResourceFactory fact = (ResourceFactory)
-            resourceFactories.get(factorykey);
-        try
-        {
-          Resource res = performCreate(data, fact, context);
-          if (res != null)
-          {
-            return res;
-          }
-        }
-        catch (ResourceCreationException rex)
-        {
-          // ignore it, try the next factory ...
-        }
-      }
-      throw new ResourceCreationException
-          ("No known factory was able to handle the given data.");
+      return autoCreateResource(key, context);
     }
-    else
+
+    ResourceCreationException exception = null;
+    final ResourceData data = load(key);
+    for (int i = 0; i < resourceFactories.size(); i++)
     {
-      ResourceCreationException exception = null;
-      final ResourceData data = load(key);
-      for (int i = 0; i < target.length; i++)
+      final ResourceFactory fact =
+          (ResourceFactory) resourceFactories.get(i);
+      if (isSupportedTarget(target, fact) == false)
       {
-        Class targetClass = target[i];
-        ResourceFactory fact = (ResourceFactory) resourceFactories.get
-            (targetClass.getName());
-        if (fact == null)
-        {
-          throw new ResourceCreationException
-              ("No factory known for the given target type: " + targetClass);
-        }
+//        throw new ResourceCreationException
+//            ("No factory known for the given target type: " + targetClass);
+        // try the next factory instead ..
+        continue;
+      }
 
-        try
+      try
+      {
+        return performCreate(data, fact, context);
+      }
+      catch (ContentNotRecognizedException ce)
+      {
+        // Ignore it, unless it is the last one.
+      }
+      catch (ResourceCreationException rex)
+      {
+        // ignore it, try the next factory ...
+        exception = rex;
+        if (Log.isDebugEnabled())
         {
-          return performCreate(data, fact, context);
-        }
-        catch (ContentNotRecognizedException ce)
-        {
-          // Ignore it, unless it is the last one.
-        }
-        catch (ResourceCreationException rex)
-        {
-          // ignore it, try the next factory ...
-          exception = rex;
-          if (Log.isDebugEnabled())
-          {
-            Log.debug("Failed at " + fact.getClass() + ": ", rex);
-          }
+          Log.debug("Failed at " + fact.getClass() + ": ", rex);
         }
       }
 
-      if (exception != null)
-      {
-        throw exception;
-      }
-      throw new ContentNotRecognizedException
-          ("None of the selected factories was able to handle the given data: " + key);
     }
+
+    if (exception != null)
+    {
+      throw exception;
+    }
+    throw new ContentNotRecognizedException
+        ("None of the selected factories was able to handle the given data: " + key);
+  }
+
+  private boolean isSupportedTarget(Class[] target, ResourceFactory fact)
+  {
+    for (int j = 0; j < target.length; j++)
+    {
+      final Class aClass = target[j];
+      if (fact.getFactoryType().isAssignableFrom(aClass))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private Resource autoCreateResource(final ResourceKey key,
+                                      final ResourceKey context)
+      throws ResourceLoadingException, ResourceCreationException
+  {
+    final ResourceData data = load(key);
+
+    final Iterator it = resourceFactories.iterator();
+    while (it.hasNext())
+    {
+      final ResourceFactory fact = (ResourceFactory) it.next();
+      try
+      {
+        Resource res = performCreate(data, fact, context);
+        if (res != null)
+        {
+          return res;
+        }
+      }
+      catch (ResourceCreationException rex)
+      {
+        // ignore it, try the next factory ...
+      }
+    }
+    throw new ResourceCreationException
+        ("No known factory was able to handle the given data.");
   }
 
   private Resource performCreate(final ResourceData data,
@@ -347,7 +382,7 @@ public class ResourceManager
     return created;
   }
 
-  public boolean isResourceUnchanged(final Resource resource)
+  private boolean isResourceUnchanged(final Resource resource)
       throws ResourceLoadingException
   {
     final ResourceKey[] deps = resource.getDependencies();
@@ -463,7 +498,7 @@ public class ResourceManager
       catch (Throwable e)
       {
         // ok, did not work ...
-        synchronized(failedModules)
+        synchronized (failedModules)
         {
           if (failedModules.contains(dataCacheProviderClass) == false)
           {
@@ -500,7 +535,7 @@ public class ResourceManager
       }
       catch (Throwable e)
       {
-        synchronized(failedModules)
+        synchronized (failedModules)
         {
           if (failedModules.contains(cacheProviderClass) == false)
           {
@@ -538,7 +573,7 @@ public class ResourceManager
       throw new NullPointerException("ResourceLoader must not be null.");
     }
     loader.setResourceManager(this);
-    resourceLoaders.put(loader.getSchema(), loader);
+    resourceLoaders.add(loader);
   }
 
   public void registerFactory(ResourceFactory factory)
@@ -547,6 +582,7 @@ public class ResourceManager
     {
       throw new NullPointerException("ResourceFactory must not be null.");
     }
-    resourceFactories.put(factory.getFactoryType().getName(), factory);
+    resourceFactories.add(factory);
   }
+
 }

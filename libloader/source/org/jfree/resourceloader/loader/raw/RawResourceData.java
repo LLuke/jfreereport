@@ -24,14 +24,14 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: RawResourceData.java,v 1.4 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.resourceloader.loader.raw;
 
-import java.io.InputStream;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import org.jfree.resourceloader.ResourceData;
 import org.jfree.resourceloader.ResourceKey;
@@ -45,25 +45,29 @@ import org.jfree.resourceloader.ResourceManager;
  */
 public class RawResourceData implements ResourceData
 {
-  private RawResourceKey rawKey;
+  private ResourceKey rawKey;
+  private byte[] data;
 
-  public RawResourceData(final RawResourceKey rawKey)
+  public RawResourceData(final ResourceKey rawKey)
   {
     if (rawKey == null)
     {
       throw new NullPointerException();
     }
     this.rawKey = rawKey;
+    this.data = (byte[]) rawKey.getIdentifier();
   }
 
-  public byte[] getResource(ResourceManager caller) throws ResourceLoadingException
+  public byte[] getResource(ResourceManager caller)
+      throws ResourceLoadingException
   {
-    return rawKey.getData();
+    return (byte[]) data.clone();
   }
 
-  public InputStream getResourceAsStream(ResourceManager caller) throws ResourceLoadingException
+  public InputStream getResourceAsStream(ResourceManager caller)
+      throws ResourceLoadingException
   {
-    return new ByteArrayInputStream (rawKey.getData());
+    return new ByteArrayInputStream(data);
   }
 
   /**
@@ -82,7 +86,16 @@ public class RawResourceData implements ResourceData
                          int offset,
                          int length) throws ResourceLoadingException
   {
-    return 0;
+    if (offset > data.length)
+    {
+      return -1;
+    }
+
+    final int remaining = data.length - offset;
+    final int maxReadable = Math.min(target.length, Math.min (remaining, length));
+
+    System.arraycopy(data, offset, target, 0, maxReadable);
+    return maxReadable;
   }
 
   /**
@@ -102,7 +115,7 @@ public class RawResourceData implements ResourceData
   }
 
   public long getVersion(ResourceManager caller)
-          throws ResourceLoadingException
+      throws ResourceLoadingException
   {
     return -1;
   }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: URLResourceData.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -55,9 +55,9 @@ public class URLResourceData extends AbstractResourceData
   private String contentType;
   private boolean metaDataOK;
   private URL url;
-  private URLResourceKey key;
+  private ResourceKey key;
 
-  public URLResourceData(final URLResourceKey key)
+  public URLResourceData(final ResourceKey key)
   {
     if (key == null)
     {
@@ -65,7 +65,7 @@ public class URLResourceData extends AbstractResourceData
     }
 
     this.key = key;
-    this.url = key.getUrl();
+    this.url = (URL) key.getIdentifier();
     // for the ease of implementation, we take the file name from the URL.
     // Feel free to add a 'Content-Disposition' parser with all details :)
     this.filename = IOUtils.getInstance().getFileName(url);
