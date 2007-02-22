@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.7 2007/01/15 15:36:02 taqua Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.8 2007/01/18 21:52:06 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -167,13 +167,10 @@ public class DefaultTypeRegistry implements TypeRegistry
     {
       bd = new BigDecimal(number.toString());
     }
-    System.out.println("a: "+bd);
     
     final BigDecimal bigDecimal = bd.multiply(MILLISECS);
-    System.out.println("b: "+bigDecimal);
     //just a test to remove the millisecond part
     final long longValue = (bigDecimal.longValue()/1000)*1000;
-    System.out.println("n-d: "+longValue);
     return new Date(longValue);
   }
 
@@ -183,22 +180,17 @@ public class DefaultTypeRegistry implements TypeRegistry
         (context.getLocalizationContext().getTimeZone(), context.getLocalizationContext().getLocale());
     gc.setTime(date);
     final long timeInMillis = gc.getTime().getTime();
-    System.out.println("d-n: "+timeInMillis + " ("+date+")");
     final long days = timeInMillis / MILLISECS_PER_DAY;
     final long secs = timeInMillis - (days * MILLISECS_PER_DAY);
 
     final BigDecimal daysBd = new BigDecimal(days);
-    System.out.println("0: "+daysBd);
     final BigDecimal secsBd = new BigDecimal(secs);
-    System.out.println("1: "+secsBd);
     
     //fractional part must be between 0.0 to 0.99999
     //reprenting from 00:00:00 to 23:59:59
     final BigDecimal daySecs = secsBd.divide
         (MILLISECS, 5,BigDecimal.ROUND_UP);
-    System.out.println("2: "+daySecs);
     final BigDecimal ret = daysBd.add(daySecs);
-    System.out.println("3: "+ret);
     return ret;
   }
 
