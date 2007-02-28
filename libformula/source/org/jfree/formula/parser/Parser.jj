@@ -256,16 +256,30 @@ LValue parseFunction (String name) :
 }
 {
    (
-      parameter = getExpression(0)
-      {
-        params = new ArrayList();
-        params.add(parameter);
-      }
+     (
       (
-        <SEMICOLON> parameter = getExpression(0)
+        <SEMICOLON>
         {
+          params = new ArrayList();
+          params.add(new StaticValue(null));
+        }
+      )
+    | (
+        parameter = getExpression(0)
+        {
+          params = new ArrayList();
           params.add(parameter);
         }
+      )
+     )
+      (
+        <SEMICOLON>
+       (
+          parameter = getExpression(0)
+          {
+            params.add(parameter);
+          }
+        )?
       )*
    )?
    {

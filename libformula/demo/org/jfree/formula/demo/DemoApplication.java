@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DemoApplication.java,v 1.1 2007/02/21 14:31:25 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,9 +33,9 @@ package org.jfree.formula.demo;
 
 import javax.swing.JOptionPane;
 
-import org.jfree.formula.LibFormulaBoot;
-import org.jfree.formula.Formula;
 import org.jfree.formula.EvaluationException;
+import org.jfree.formula.Formula;
+import org.jfree.formula.LibFormulaBoot;
 import org.jfree.formula.parser.ParseException;
 
 /**
@@ -45,6 +45,10 @@ import org.jfree.formula.parser.ParseException;
  */
 public class DemoApplication
 {
+  private DemoApplication()
+  {
+  }
+
   public static void main(String[] args)
       throws ParseException, EvaluationException
   {
@@ -52,6 +56,11 @@ public class DemoApplication
 
     final String formula = JOptionPane.showInputDialog
         ("Please enter a formula.");
+
+    if (formula == null)
+    {
+      return;
+    }
 
     // first parse the formula. This checks the general syntax, but does not
     // check whether the used functions or references are actually valid.

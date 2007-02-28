@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FormulaParser.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,14 +32,15 @@ package org.jfree.formula.parser;
 
 import java.io.StringReader;
 
-import org.jfree.formula.LibFormulaBoot;
 import org.jfree.formula.DefaultFormulaContext;
 import org.jfree.formula.EvaluationException;
+import org.jfree.formula.LibFormulaBoot;
 import org.jfree.formula.lvalues.LValue;
 import org.jfree.formula.operators.DefaultOperatorFactory;
 import org.jfree.formula.operators.OperatorFactory;
 
-public class FormulaParser extends GeneratedFormulaParser {
+public class FormulaParser extends GeneratedFormulaParser
+{
   // This is my parser class
   private OperatorFactory operatorFactory;
 
@@ -55,8 +56,12 @@ public class FormulaParser extends GeneratedFormulaParser {
     return operatorFactory;
   }
 
-  public LValue parse (String formula) throws ParseException
+  public LValue parse(String formula) throws ParseException
   {
+    if (formula == null)
+    {
+      throw new NullPointerException("Formula given must not be null.");
+    }
     ReInit(new StringReader(formula));
     return getExpression(0);
   }
@@ -68,15 +73,15 @@ public class FormulaParser extends GeneratedFormulaParser {
 
     LValue x = parser.parse("1 * 2 + 3 * 4");
     x.initialize(new DefaultFormulaContext());
-    System.out.println (x);
+    System.out.println(x);
 
     x = parser.parse("[a] * [b] + [c] * [d]");
     x.initialize(new DefaultFormulaContext());
-    System.out.println (x);
+    System.out.println(x);
 
     x = parser.parse("IF([A];[B];[C])");
     x.initialize(new DefaultFormulaContext());
-    System.out.println (x);
+    System.out.println(x);
 
 
   }

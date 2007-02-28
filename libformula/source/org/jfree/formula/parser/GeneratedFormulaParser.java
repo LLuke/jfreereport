@@ -240,6 +240,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
    LValue parameter = null;
     switch (jj_nt.kind) {
     case UNSIGNED_INTEGER:
+    case SEMICOLON:
     case L_PAREN:
     case PLUS:
     case MINUS:
@@ -248,9 +249,30 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
     case STRING_LITERAL:
     case UNSIGNED_NUMERIC_LITERAL:
     case NULL:
-      parameter = getExpression(0);
-        params = new ArrayList();
-        params.add(parameter);
+      switch (jj_nt.kind) {
+      case SEMICOLON:
+        jj_consume_token(SEMICOLON);
+          params = new ArrayList();
+          params.add(new StaticValue(null));
+        break;
+      case UNSIGNED_INTEGER:
+      case L_PAREN:
+      case PLUS:
+      case MINUS:
+      case IDENTIFIER:
+      case COLUMN_LOOKUP:
+      case STRING_LITERAL:
+      case UNSIGNED_NUMERIC_LITERAL:
+      case NULL:
+        parameter = getExpression(0);
+          params = new ArrayList();
+          params.add(parameter);
+        break;
+      default:
+        jj_la1[6] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
       label_2:
       while (true) {
         switch (jj_nt.kind) {
@@ -258,16 +280,31 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
           ;
           break;
         default:
-          jj_la1[6] = jj_gen;
+          jj_la1[7] = jj_gen;
           break label_2;
         }
         jj_consume_token(SEMICOLON);
-        parameter = getExpression(0);
-          params.add(parameter);
+        switch (jj_nt.kind) {
+        case UNSIGNED_INTEGER:
+        case L_PAREN:
+        case PLUS:
+        case MINUS:
+        case IDENTIFIER:
+        case COLUMN_LOOKUP:
+        case STRING_LITERAL:
+        case UNSIGNED_NUMERIC_LITERAL:
+        case NULL:
+          parameter = getExpression(0);
+            params.add(parameter);
+          break;
+        default:
+          jj_la1[8] = jj_gen;
+          ;
+        }
       }
       break;
     default:
-      jj_la1[7] = jj_gen;
+      jj_la1[9] = jj_gen;
       ;
     }
      if (params == null)
@@ -290,7 +327,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
       value = jj_consume_token(MINUS);
       break;
     default:
-      jj_la1[8] = jj_gen;
+      jj_la1[10] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -309,7 +346,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
   JavaCharStream jj_input_stream;
   public Token token, jj_nt;
   private int jj_gen;
-  final private int[] jj_la1 = new int[9];
+  final private int[] jj_la1 = new int[11];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -317,10 +354,10 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
       jj_la1_1();
    }
    private static void jj_la1_0() {
-      jj_la1_0 = new int[] {0xff000000,0xff000000,0x3000000,0x80100,0x0,0x3180100,0x40000,0x3080100,0x3000000,};
+      jj_la1_0 = new int[] {0xff000000,0xff000000,0x3000000,0x80100,0x0,0x3180100,0x30c0100,0x40000,0x3080100,0x30c0100,0x3000000,};
    }
    private static void jj_la1_1() {
-      jj_la1_1 = new int[] {0xf,0xf,0x0,0x21e0,0x10,0x21e0,0x0,0x21e0,0x0,};
+      jj_la1_1 = new int[] {0xf,0xf,0x0,0x21e0,0x10,0x21e0,0x21e0,0x0,0x21e0,0x21e0,0x0,};
    }
 
   public GeneratedFormulaParser(java.io.InputStream stream) {
@@ -329,7 +366,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
     token = new Token();
     token.next = jj_nt = token_source.getNextToken();
     jj_gen = 0;
-    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   public void ReInit(java.io.InputStream stream) {
@@ -338,7 +375,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
     token = new Token();
     token.next = jj_nt = token_source.getNextToken();
     jj_gen = 0;
-    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   public GeneratedFormulaParser(java.io.Reader stream) {
@@ -347,7 +384,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
     token = new Token();
     token.next = jj_nt = token_source.getNextToken();
     jj_gen = 0;
-    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   public void ReInit(java.io.Reader stream) {
@@ -356,7 +393,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
     token = new Token();
     token.next = jj_nt = token_source.getNextToken();
     jj_gen = 0;
-    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   public GeneratedFormulaParser(GeneratedFormulaParserTokenManager tm) {
@@ -364,7 +401,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
     token = new Token();
     token.next = jj_nt = token_source.getNextToken();
     jj_gen = 0;
-    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   public void ReInit(GeneratedFormulaParserTokenManager tm) {
@@ -372,7 +409,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
     token = new Token();
     token.next = jj_nt = token_source.getNextToken();
     jj_gen = 0;
-    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   final private Token jj_consume_token(int kind) throws ParseException {
@@ -419,7 +456,7 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 11; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
