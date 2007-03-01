@@ -23,13 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ResourceFontDataInputSource.java,v 1.2 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.fonts.io;
 
 import java.io.IOException;
+import java.io.File;
 
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
@@ -90,7 +91,13 @@ public class ResourceFontDataInputSource implements FontDataInputSource
 
   public String getFileName()
   {
-    return source.toExternalForm();
+    final Object identifier = source.getIdentifier();
+    if (identifier instanceof File)
+    {
+      File f = (File) identifier;
+      return f.getPath();
+    }
+    return null;
   }
 
   public boolean equals(final Object o)
