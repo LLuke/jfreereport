@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunctionTest.java,v 1.4 2007/01/18 22:34:32 mimil Exp $
+ * $Id: DateDifFunctionTest.java,v 1.1 2007/02/22 21:34:46 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,6 +50,8 @@ public class DateDifFunctionTest
 {
   private FormulaContext context;
 
+  public DateDifFunctionTest() {}
+
   @DataProvider(name = "defaultTestCase")
   public Object[][] createDataTest()
   {
@@ -61,6 +63,15 @@ public class DateDifFunctionTest
         { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"md\")", new Integer(0)},
         { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"ym\")", new Integer(7)},
         //TODO result not found in spec { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"yd\")", new Integer()},
+
+        // Additional specs from
+        // http://www.cpearson.com/excel/datedif.htm
+        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"d\")", new Integer(1626)},
+        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"m\")", new Integer(53)},
+        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"y\")", new Integer(4)},
+        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"ym\")", new Integer(5)},
+        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"yd\")", new Integer(165)},
+        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"md\")", new Integer(14)},
     };
   }
   
@@ -90,6 +101,6 @@ public class DateDifFunctionTest
       Assert.fail("Initialization Error", e);
     }
     Object eval = formula.evaluate();
-    Assert.assertEquals(eval, result);
+    Assert.assertEquals(eval, result, formul);
   }
 }

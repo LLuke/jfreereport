@@ -3,7 +3,26 @@
 ---------------
 A list of changes in recent versions:
 
-0.1.3  (25-Jan-2007)
+0.1.4: (01-Mar-2007)
+        * [BUG] The parser did not accept empty parameters so that syntactilly 
+          valid formulas like "IF(;;;)" failed to parse.
+          
+        * [BUG] The TRIM(..) function was invalid. TRIM has to remove all 
+          leading, trailing and all duplicate inner whitespaces from the give
+          text.
+
+        * New functions added
+          Text:
+          - REPLACE(
+          - SUBSTITUTE(
+
+          Math:
+          - ABS(
+
+          Date:
+          - DATEDIF(
+          
+0.1.3: (25-Jan-2007)
         * [BUG] The power operator was not registered.
 
         * [BUG] The 'minus' prefix operator did not work.

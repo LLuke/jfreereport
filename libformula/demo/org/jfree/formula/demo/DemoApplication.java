@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DemoApplication.java,v 1.1 2007/02/21 14:31:25 taqua Exp $
+ * $Id: DemoApplication.java,v 1.2 2007/02/28 19:30:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -49,7 +49,7 @@ public class DemoApplication
   {
   }
 
-  public static void main(String[] args)
+  public static void main(final String[] args)
       throws ParseException, EvaluationException
   {
     LibFormulaBoot.getInstance().start();
