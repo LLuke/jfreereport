@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FunctionUtilities.java,v 1.5 2006/12/03 18:58:00 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -93,9 +93,14 @@ public class FunctionUtilities
       {
         key = manager.createKey(value);
       }
+      else if (value instanceof String)
+      {
+        key = manager.deriveKey(baseKey, (String) value);
+      }
       else
       {
-        key = manager.deriveKey(baseKey, value);
+        throw new FunctionEvaluationException
+                ("Failed to create URI: Resource loading failed: Key not derivable");
       }
 
       final Resource res = manager.create(key, baseKey, type);

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SimpleStyleRuleMatcher.java,v 1.11 2006/12/09 21:19:52 taqua Exp $
+ * $Id: SimpleStyleRuleMatcher.java,v 1.12 2006/12/19 18:06:33 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -189,7 +189,7 @@ public class SimpleStyleRuleMatcher implements StyleRuleMatcher
       }
       else
       {
-        derivedKey = resourceManager.deriveKey(baseKey, href);
+        derivedKey = resourceManager.deriveKey(baseKey, String.valueOf(href));
       }
 
       StyleSheet styleSheet = parseStyleSheet(derivedKey, null);

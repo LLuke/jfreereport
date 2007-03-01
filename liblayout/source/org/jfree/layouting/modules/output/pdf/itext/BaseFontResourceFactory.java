@@ -23,11 +23,13 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BaseFontResourceFactory.java,v 1.2 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.modules.output.pdf.itext;
+
+import java.util.Map;
 
 import com.lowagie.text.pdf.BaseFont;
 import org.jfree.resourceloader.CompoundResource;
@@ -67,9 +69,10 @@ public class BaseFontResourceFactory implements ResourceFactory
           throws ResourceCreationException, ResourceLoadingException
   {
     final ResourceKey key = data.getKey();
-    final boolean embedded = Boolean.TRUE.equals(key.getFactoryParameter(EMBEDDED));
-    final String encoding = String.valueOf(key.getFactoryParameter(ENCODING));
-    final String fontType = String.valueOf(key.getFactoryParameter(FONTNAME));
+    final Map factoryParameters = key.getFactoryParameters();
+    final boolean embedded = Boolean.TRUE.equals(factoryParameters.get(EMBEDDED));
+    final String encoding = String.valueOf(factoryParameters.get(ENCODING));
+    final String fontType = String.valueOf(factoryParameters.get(FONTNAME));
 
     final DependencyCollector dc = new DependencyCollector
             (key, data.getVersion(manager));

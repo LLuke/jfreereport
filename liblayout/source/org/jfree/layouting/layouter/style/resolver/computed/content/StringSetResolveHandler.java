@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StringSetResolveHandler.java,v 1.6 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.layouting.layouter.style.resolver.computed.content;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.net.URL;
 
 import org.jfree.layouting.DocumentContextUtility;
 import org.jfree.layouting.LayoutProcess;
@@ -65,7 +66,7 @@ import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 import org.jfree.layouting.layouter.style.values.CSSRawValue;
 import org.jfree.layouting.layouter.style.values.CSSResourceValue;
 import org.jfree.resourceloader.ResourceKey;
-import org.jfree.resourceloader.loader.URLResourceKey;
+import org.jfree.resourceloader.ResourceManager;
 import org.jfree.util.Log;
 
 public class StringSetResolveHandler implements ResolveHandler
@@ -205,12 +206,14 @@ public class StringSetResolveHandler implements ResolveHandler
           return new StaticTextToken(String.valueOf(docUrl));
         }
 
-        ResourceKey baseKey = DocumentContextUtility.getBaseResource
-                (process.getDocumentContext());
-        if (baseKey instanceof URLResourceKey)
+        final ResourceKey baseKey =
+            DocumentContextUtility.getBaseResource(process.getDocumentContext());
+        final ResourceManager resourceManager =
+            DocumentContextUtility.getResourceManager(process.getDocumentContext());
+        final URL url = resourceManager.toURL(baseKey);
+        if (url != null)
         {
-          URLResourceKey urlResourceKey = (URLResourceKey) baseKey;
-          return new StaticTextToken(urlResourceKey.toExternalForm());
+          return new StaticTextToken(url.toExternalForm());
         }
         return null;
       }
