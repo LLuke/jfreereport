@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ResourceDataInputSource.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
+ * $Id: ResourceDataInputSource.java,v 1.4 2006/12/19 17:46:36 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -67,7 +67,7 @@ public class ResourceDataInputSource extends InputSource
     this.data = data;
     this.version = data.getVersion(caller);
     setByteStream(data.getResourceAsStream(caller));
-    final URL url = data.getKey().toURL();
+    final URL url = caller.toURL(data.getKey());
     if (url != null)
     {
       setSystemId(url.toExternalForm());

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AbstractXmlResourceFactory.java,v 1.6 2006/12/22 10:18:51 taqua Exp $
+ * $Id: AbstractXmlResourceFactory.java,v 1.7 2007/01/19 16:59:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -173,7 +173,7 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
               contextKey, version, rootHandlers);
 
       final DefaultConfiguration parserConfiguration = handler.getParserConfiguration();
-      final URL value = contextKey.toURL();
+      final URL value = manager.toURL(contextKey);
       if (value != null)
       {
         parserConfiguration.setConfigProperty(CONTENTBASE_KEY, value.toExternalForm());
@@ -185,7 +185,7 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
       reader.setEntityResolver(handler.getEntityResolver());
       reader.setErrorHandler(getErrorHandler());
 
-      final Map parameters = targetKey.getParameters();
+      final Map parameters = targetKey.getFactoryParameters();
       Iterator it = parameters.keySet().iterator();
       while (it.hasNext())
       {
