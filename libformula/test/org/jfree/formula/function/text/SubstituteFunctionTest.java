@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: FindFunctionTest.java,v 1.4 2007/01/26 22:11:52 mimil Exp $
+ * $Id: SubstituteFunctionTest.java,v 1.1 2007/02/04 10:29:28 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,6 +58,7 @@ public class SubstituteFunctionTest
         {"SUBSTITUTE(\"121212\";\"2\";\"ab\")", "1ab1ab1ab"},
         {"SUBSTITUTE(\"121212\";\"2\";\"ab\";2)", "121ab12"},
         {"SUBSTITUTE(\"Hello\";\"x\";\"ab\")", "Hello"},
+        {"SUBSTITUTE(\"Annna\";\"nn\";\"N\";2)", "AnNa"},
     };
   }  
   

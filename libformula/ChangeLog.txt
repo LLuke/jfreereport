@@ -14,13 +14,14 @@ A list of changes in recent versions:
         * New functions added
           Text:
           - REPLACE(
-          - SUBSTITUTE(
+          - SUBSTITUTE(text, old_text, new_text, nth_appearance )
+
 
           Math:
-          - ABS(
+          - ABS(number)
 
           Date:
-          - DATEDIF(
+          - DATEDIF(date1,date2,interval)
           
 0.1.3: (25-Jan-2007)
         * [BUG] The power operator was not registered.

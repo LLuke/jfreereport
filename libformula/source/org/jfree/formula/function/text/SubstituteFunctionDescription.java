@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ReptFunctionDescription.java,v 1.2 2007/01/23 21:33:16 mimil Exp $
+ * $Id: SubstituteFunctionDescription.java,v 1.1 2007/02/04 10:29:28 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,7 +60,7 @@ public class SubstituteFunctionDescription extends AbstractFunctionDescription
     return 4;
   }
 
-  public Type getParameterType(int position)
+  public Type getParameterType(final int position)
   {
     if(position != 3)
     {
@@ -74,7 +74,7 @@ public class SubstituteFunctionDescription extends AbstractFunctionDescription
     return TextType.TYPE;
   }
 
-  public boolean isParameterMandatory(int position)
+  public boolean isParameterMandatory(final int position)
   {
     if(position == 3)
     {
