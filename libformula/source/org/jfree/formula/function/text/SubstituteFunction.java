@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: SubstituteFunction.java,v 1.1 2007/02/04 10:29:28 mimil Exp $
+ * $Id: SubstituteFunction.java,v 1.2 2007/03/01 17:23:54 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -89,13 +89,15 @@ public class SubstituteFunction implements Function
         return new TypeValuePair(TextType.TYPE, text);
       }
 
-      final StringBuffer result = new StringBuffer(text);
+      String result = text;
       while (index >= 0)
       {
-        result.replace(index, index + oldText.length(), newText);
+        final StringBuffer buffer = new StringBuffer(result);
+        buffer.replace(index, index + oldText.length(), newText);
+        result = buffer.toString();
         index = result.indexOf(oldText, index + newText.length());
       }
-      return new TypeValuePair(TextType.TYPE, result.toString());
+      return new TypeValuePair(TextType.TYPE, result);
     }
 
     // Instead of replacing all occurences, the user only requested to replace
@@ -118,22 +120,24 @@ public class SubstituteFunction implements Function
       return new TypeValuePair(TextType.TYPE, text);
     }
 
+    String result = text;
     int counter = 1;
-    final StringBuffer result = new StringBuffer(text);
     while (index >= 0)
     {
       if (counter == nthOccurence)
       {
-        result.replace(index, index + oldText.length(), newText);
+        final StringBuffer buffer = new StringBuffer(result);
+        buffer.replace(index, index + oldText.length(), newText);
+        result = buffer.toString();
         index = result.indexOf(oldText, index + newText.length());
       }
       else
       {
-        index = text.indexOf(oldText, index + 1);
+        index = result.indexOf(oldText, index + 1);
       }
       counter += 1;
     }
-    return new TypeValuePair(TextType.TYPE, result.toString());
+    return new TypeValuePair(TextType.TYPE, result);
   }
 
   public String getCanonicalName()
