@@ -1,8 +1,8 @@
 ************************
-* LibXML 0.9.0         *
+* LibXML 0.9.1         *
 ************************
 
-25 January 2007
+01 March 2007
 
 1. INTRODUCTION
 ---------------
@@ -18,7 +18,7 @@ the original code without creating a mess.
 
 For the latest news and information about libXML, please refer to:
 
-    http://jfreereport.pentaho.org/libxml/
+    http://reporting.pentaho.org/libxml/
 
 2. SUPPORT
 ----------
