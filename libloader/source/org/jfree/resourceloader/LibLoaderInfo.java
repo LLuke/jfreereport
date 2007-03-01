@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LibLoaderInfo.java,v 1.8 2006/12/11 12:29:09 taqua Exp $
+ * $Id: LibLoaderInfo.java,v 1.9 2006/12/22 10:10:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,18 +58,19 @@ public class LibLoaderInfo extends ProjectInfo
   public LibLoaderInfo ()
   {
     setName("LibLoader");
-    setVersion("0.2.2");
+    setVersion("0.2.3");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());
 
-    setInfo("http://jfreereport.pentaho.org/libloader/");
+    setInfo("http://reporting.pentaho.org/libloader/");
     setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
     setLicenceText(Licences.getInstance().getLGPL());
 
     setContributors(Arrays.asList(new Contributor[]
     {
       new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
+      new Contributor("Matt Casters", "mattcasters@users.sourceforge.net"),
     }));
 
 
@@ -80,12 +81,14 @@ public class LibLoaderInfo extends ProjectInfo
     addOptionalLibrary("org.jfree.pixie.PixieInfo");
     addOptionalLibrary(
         new Library(
-            "OSCache", "2.3", "The OpenSymphony Software License", "http://www.opensymphony.com/oscache/license.action"
+            "OSCache", "2.3", "The OpenSymphony Software License",
+            "http://www.opensymphony.com/oscache/license.action"
         )
     );
     addOptionalLibrary(
         new Library(
-            "EHCache", "1.2rc1", "Apache Licence 2.0", "http://ehcache.sourceforge.net/"
+            "EHCache", "1.2rc1", "Apache Licence 2.0",
+            "http://ehcache.sourceforge.net/"
         )
     );
 

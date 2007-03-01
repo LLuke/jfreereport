@@ -4,6 +4,16 @@
 
 A list of changes in recent versions:
 
+0.3.0:  (01-Mar-2007)
+        * The internal resource-key creation and resource-loader architecture
+          has been simplified. Instead of having complex resource-keys for each
+          loader, we now have one generic key that consists of a single object
+          to locate the resource and a map of factory keys to configure the
+          resource creation process.
+
+          This also fixes the various ugly misconfiguration that made working
+          with files and file-URLs so confusing. 
+
 0.2.2:  (22-Dec-2006)
         * [BUG] Caching raw-keys was invalid and consumed enormous amounts
           of memory.

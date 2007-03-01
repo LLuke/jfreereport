@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DependencyCollector.java,v 1.2 2006/12/03 16:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -75,7 +75,7 @@ public class DependencyCollector implements Serializable, Cloneable
     dependencies.put(resourceKey, new Long(version));
   }
 
-  public long getVersion(ResourceKey key)
+  public long getVersion(final ResourceKey key)
   {
     final Long l = (Long) dependencies.get(key);
     if (l == null)
@@ -87,7 +87,7 @@ public class DependencyCollector implements Serializable, Cloneable
 
   public Object clone () throws CloneNotSupportedException
   {
-    DependencyCollector dc = (DependencyCollector) super.clone();
+    final DependencyCollector dc = (DependencyCollector) super.clone();
     dc.dependencies = (HashMap) dependencies.clone();
     return dc;
   }

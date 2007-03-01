@@ -1,8 +1,8 @@
 ************************
-* LIBLOADER 0.2.2      *
+* LIBLOADER 0.2.3      *
 ************************
 
-22 Dec 2006
+01 Mar 2007
 
 1. INTRODUCTION
 ---------------
@@ -13,7 +13,7 @@ transparent to the user of that library.
 
 For the latest news and information about LibLoader, please refer to:
 
-    http://jfreereport.pentaho.org/libloader/
+    http://reporting.pentaho.org/libloader/
 
 
 2. REQUIREMENTS
