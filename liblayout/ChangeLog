@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.3: (01-Mar-2007)
+        * Minor code changes to cope with the latest changes in LibLoader 0.3.0.
+
 0.2.2: (25-Jan-2007)
         * A huge mass of bugfixes. The state management was non-deterministic and
           caused a lot of crashes. Other fixes went in as well.
