@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.3: (01-Mar-2007)
+        * LibLoader changed the way resource-keys are managed.
+
 0.2.2: (03-Dec-2006)
         * AWT-FontMetrics caching
         
