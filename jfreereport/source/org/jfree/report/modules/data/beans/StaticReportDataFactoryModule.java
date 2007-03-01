@@ -27,7 +27,7 @@
  * ------------
  * (C) Copyright 2001-2006, by Object Refinery Ltd, Pentaho Corporation and Contributors.
  */
-package org.jfree.report.modules.misc.datafactory;
+package org.jfree.report.modules.data.beans;
 
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;

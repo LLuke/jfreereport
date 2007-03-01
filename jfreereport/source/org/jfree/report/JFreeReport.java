@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: JFreeReport.java,v 1.40 2006/12/19 17:42:01 taqua Exp $
+ * $Id: JFreeReport.java,v 1.41 2006/12/30 13:45:44 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,7 +31,6 @@
 package org.jfree.report;
 
 import java.awt.print.PageFormat;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.table.TableModel;
@@ -66,7 +65,7 @@ import org.jfree.util.Configuration;
  * @author Thomas Morgner
  */
 public class JFreeReport extends ReportDefinition
-    implements Serializable, ReportStructureRoot
+    implements ReportStructureRoot
 {
   /**
    * The report configuration.
