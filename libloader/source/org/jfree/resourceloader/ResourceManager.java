@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ResourceManager.java,v 1.12 2006/12/19 17:48:26 taqua Exp $
+ * $Id: ResourceManager.java,v 1.13 2007/02/22 20:03:21 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -95,10 +95,17 @@ public class ResourceManager
     while (values.hasNext())
     {
       final ResourceLoader loader = (ResourceLoader) values.next();
-      final ResourceKey key = loader.createKey(data, parameters);
-      if (key != null)
+      try
       {
-        return key;
+        final ResourceKey key = loader.createKey(data, parameters);
+        if (key != null)
+        {
+          return key;
+        }
+      }
+      catch(ResourceKeyCreationException rkce)
+      {
+        // ignore it.
       }
     }
 
