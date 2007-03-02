@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Namespaces.java,v 1.5 2006/12/03 18:58:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -46,18 +46,22 @@ import org.jfree.util.Log;
 public final class Namespaces
 {
   public static final String LIBLAYOUT_NAMESPACE =
-          "http://jfreereport.sourceforge.net/namespaces/layout";
+      "http://jfreereport.sourceforge.net/namespaces/layout";
 
-  /** The XML-Namespace is used for the 'id' attribute. */
+  /**
+   * The XML-Namespace is used for the 'id' attribute.
+   */
   public static final String XML_NAMESPACE =
-          "http://www.w3.org/XML/1998/namespace";
+      "http://www.w3.org/XML/1998/namespace";
 
-  /** The XML-Namespace is used for the 'id' attribute. */
+  /**
+   * The XML-Namespace is used for the 'id' attribute.
+   */
 // The old HTML namespace is not supported, use XHTML instead.
 //  public static final String HTML_NAMESPACE =
 //          "http://www.w3.org/TR/REC-html40";
   public static final String XHTML_NAMESPACE =
-          "http://www.w3.org/1999/xhtml";
+      "http://www.w3.org/1999/xhtml";
 
 
   private Namespaces()
@@ -65,9 +69,9 @@ public final class Namespaces
   }
 
   public static NamespaceDefinition[] createFromConfig
-          (final Configuration config,
-           final String prefix,
-           final ResourceManager resourceManager)
+      (final Configuration config,
+       final String prefix,
+       final ResourceManager resourceManager)
   {
     final ArrayList retvals = new ArrayList();
     final Iterator keys = config.findPropertyKeys(prefix);
@@ -93,12 +97,16 @@ public final class Namespaces
       final String styleAttr = config.getConfigProperty(nsPrefix + "StyleAttr");
       final String prefixAttr = config.getConfigProperty(nsPrefix + "Prefix");
       final String defaultStyle = config.getConfigProperty(
-              nsPrefix + "Default-Style");
+          nsPrefix + "Default-Style");
 
       ResourceKey styleResourceKey = null;
+
       try
       {
-        styleResourceKey = resourceManager.createKey(defaultStyle);
+        if (defaultStyle != null)
+        {
+          styleResourceKey = resourceManager.createKey(defaultStyle);
+        }
       }
       catch (ResourceException e)
       {
@@ -106,10 +114,10 @@ public final class Namespaces
         Log.info("Unable to create resourcekey for style " + trimmedUri);
       }
       retvals.add(new DefaultNamespaceDefinition
-              (trimmedUri, styleResourceKey, classAttr, styleAttr, prefixAttr));
+          (trimmedUri, styleResourceKey, classAttr, styleAttr, prefixAttr));
     }
 
     return (NamespaceDefinition[])
-            retvals.toArray(new NamespaceDefinition[retvals.size()]);
+        retvals.toArray(new NamespaceDefinition[retvals.size()]);
   }
 }
