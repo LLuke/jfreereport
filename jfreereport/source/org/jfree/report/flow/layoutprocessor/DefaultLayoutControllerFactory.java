@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultLayoutControllerFactory.java,v 1.4 2006/12/03 20:24:09 taqua Exp $
+ * $Id: DefaultLayoutControllerFactory.java,v 1.5 2006/12/08 14:20:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,7 +43,8 @@ import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;
 
 /**
- * Creation-Date: 24.11.2006, 14:21:15
+ * A layout controller factory that selects layout controllers by their node
+ * implementation type.
  *
  * @author Thomas Morgner
  */
@@ -58,16 +59,17 @@ public class DefaultLayoutControllerFactory implements LayoutControllerFactory
 
   }
 
-  public void initialize (ReportJob job)
+  public void initialize (final ReportJob job)
   {
     final Configuration configuration = job.getConfiguration();
 
     final Iterator propertyKeys =
-        configuration.findPropertyKeys(PREFIX);
+        configuration.findPropertyKeys(DefaultLayoutControllerFactory.PREFIX);
     while (propertyKeys.hasNext())
     {
       final String key = (String) propertyKeys.next();
-      final String nodeClassName = key.substring(PREFIX.length());
+      final String nodeClassName = key.substring
+          (DefaultLayoutControllerFactory.PREFIX.length());
       final String procClassName = configuration.getConfigProperty(key);
 
       final Class nodeClass = load(nodeClassName);
@@ -83,7 +85,7 @@ public class DefaultLayoutControllerFactory implements LayoutControllerFactory
     }
   }
 
-  private Class load (String className)
+  private Class load (final String className)
   {
     if (className == null)
     {
@@ -108,19 +110,20 @@ public class DefaultLayoutControllerFactory implements LayoutControllerFactory
       throws ReportProcessingException, ReportDataFactoryException, DataSourceException
   {
     Class nodeClass = node.getClass();
-
     while (Node.class.isAssignableFrom(nodeClass))
     {
       final String targetClass = (String) registry.get(nodeClass.getName());
-      final LayoutController lc = (LayoutController)
-          ObjectUtilities.loadAndInstantiate (targetClass,
-              DefaultLayoutControllerFactory.class, LayoutController.class);
-      if (lc != null)
+      if (targetClass != null)
       {
-        lc.initialize(node, controller, parent);
-        return lc;
+        final LayoutController lc = (LayoutController)
+            ObjectUtilities.loadAndInstantiate (targetClass,
+                DefaultLayoutControllerFactory.class, LayoutController.class);
+        if (lc != null)
+        {
+          lc.initialize(node, controller, parent);
+          return lc;
+        }
       }
-
       nodeClass = nodeClass.getSuperclass();
     }
 

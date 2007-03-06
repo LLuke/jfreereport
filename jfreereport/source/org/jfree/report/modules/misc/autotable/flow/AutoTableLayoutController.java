@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AutoTableLayoutController.java,v 1.1 2006/12/09 21:17:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,22 +34,16 @@ import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.data.ExpressionSlot;
-import org.jfree.report.data.PrecomputedValueRegistry;
-import org.jfree.report.data.ReportDataRow;
-import org.jfree.report.expressions.Expression;
-import org.jfree.report.flow.FlowController;
-import org.jfree.report.flow.LayoutExpressionRuntime;
-import org.jfree.report.flow.ReportTarget;
-import org.jfree.report.flow.ReportContext;
 import org.jfree.report.flow.FlowControlOperation;
+import org.jfree.report.flow.FlowController;
+import org.jfree.report.flow.ReportContext;
+import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.layoutprocessor.ElementLayoutController;
 import org.jfree.report.flow.layoutprocessor.LayoutController;
-import org.jfree.report.flow.layoutprocessor.LayoutControllerUtil;
 import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
+import org.jfree.report.flow.layoutprocessor.LayoutControllerUtil;
 import org.jfree.report.modules.misc.autotable.AutoTableElement;
 import org.jfree.report.modules.misc.autotable.AutoTableModule;
-import org.jfree.report.structure.Element;
 
 /**
  * Creation-Date: Dec 9, 2006, 6:05:58 PM
@@ -64,26 +58,29 @@ public class AutoTableLayoutController extends ElementLayoutController
 
   private int currentColumn;
   private int processingState;
-  private int expressionsCount;
   private int columnCount;
-  private AttributeMap tableAttributeMap;
 
   public AutoTableLayoutController()
   {
   }
 
+
   /**
+   * Initializes the layout controller. This method is called exactly once. It
+   * is the creators responsibility to call this method.
+   * <p/>
    * Calling initialize after the first advance must result in a
    * IllegalStateException.
    *
-   * @param flowController
-   * @param initialNode
-   * @throws org.jfree.report.DataSourceException
-   *
-   * @throws org.jfree.report.ReportDataFactoryException
-   *
-   * @throws org.jfree.report.ReportProcessingException
-   *
+   * @param node           the currently processed object or layout node.
+   * @param flowController the current flow controller.
+   * @param parent         the parent layout controller that was responsible for
+   *                       instantiating this controller.
+   * @throws DataSourceException        if there was a problem reading data from
+   *                                    the datasource.
+   * @throws ReportProcessingException  if there was a general problem during
+   *                                    the report processing.
+   * @throws ReportDataFactoryException if a query failed.
    */
   public void initialize(final Object node,
                          final FlowController flowController,
@@ -96,76 +93,6 @@ public class AutoTableLayoutController extends ElementLayoutController
     }
 
     super.initialize(node, flowController, parent);
-  }
-
-  protected LayoutController startElement(final ReportTarget target)
-      throws DataSourceException, ReportProcessingException, ReportDataFactoryException
-  {
-    final FlowController flowController = getFlowController();
-    final ReportDataRow reportDataRow =
-        flowController.getMasterRow().getReportDataRow();
-    final int columnCount = reportDataRow.getColumnCount();
-
-    final Expression[] expressions = getElement().getExpressions();
-    FlowController fc = performElementPrecomputation
-        (expressions, flowController);
-
-    final Element element = getElement();
-    final LayoutExpressionRuntime ler =
-        LayoutControllerUtil.getExpressionRuntime(fc, element);
-    final AttributeMap attributeMap =
-        LayoutControllerUtil.processAttributes(element, target, ler);
-    target.startElement(attributeMap);
-
-    AutoTableLayoutController derived = (AutoTableLayoutController) clone();
-    derived.setProcessingState(OPENED);
-    derived.setFlowController(fc);
-    derived.expressionsCount = expressions.length;
-    derived.tableAttributeMap = attributeMap;
-    derived.columnCount = columnCount;
-    return derived;
-  }
-
-  protected LayoutController finishElement(final ReportTarget target)
-      throws ReportProcessingException, DataSourceException
-  {
-    final Element e = getElement();
-    // Step 1: call End Element
-    target.endElement(tableAttributeMap);
-
-    FlowController fc = getFlowController();
-    final PrecomputedValueRegistry pcvr =
-        fc.getPrecomputedValueRegistry();
-    // grab all values from the expressionsdatarow
-
-
-    // Step 2: Remove the expressions of this element
-    if (expressionsCount != 0)
-    {
-      final ExpressionSlot[] activeExpressions = fc.getActiveExpressions();
-      for (int i = 0; i < activeExpressions.length; i++)
-      {
-        final ExpressionSlot slot = activeExpressions[i];
-        pcvr.addFunction(slot.getName(), slot.getValue());
-      }
-      fc = fc.deactivateExpressions();
-    }
-
-    if (isPrecomputing() == false)
-    {
-      pcvr.finishElement(new ElementPrecomputeKey(e));
-    }
-
-    final LayoutController parent = getParent();
-    if (parent != null)
-    {
-      return parent.join(fc);
-    }
-
-    AutoTableLayoutController derived = (AutoTableLayoutController) clone();
-    derived.setProcessingState(FINISHED);
-    derived.setFlowController(fc);
-    return derived;
   }
 
   protected LayoutController processContent(final ReportTarget target)
@@ -337,12 +264,13 @@ public class AutoTableLayoutController extends ElementLayoutController
    * flow and should *not* (I mean it!) be called from outside. If you do,
    * you'll suffer.
    *
-   * @param flowController
-   * @return
+   * @param flowController the flow controller of the parent.
+   * @return the joined layout controller that incorperates all changes from
+   * the delegate.
    */
-  public LayoutController join(FlowController flowController)
+  public LayoutController join(final FlowController flowController)
   {
-    AutoTableLayoutController derived = (AutoTableLayoutController) clone();
+    final AutoTableLayoutController derived = (AutoTableLayoutController) clone();
     derived.setFlowController(flowController);
     derived.currentColumn += 1;
     return derived;

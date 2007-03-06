@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.5 2006/12/06 17:26:06 taqua Exp $
+ * $Id: LayoutControllerUtil.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,15 +45,22 @@ import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.EmptyReportData;
 import org.jfree.report.JFreeReportInfo;
-import org.jfree.report.modules.misc.autotable.AutoTableModule;
+import org.jfree.report.ReportDataFactoryException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.data.GlobalMasterRow;
+import org.jfree.report.data.PrecomputeNode;
+import org.jfree.report.data.PrecomputeNodeKey;
+import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.data.ReportDataRow;
+import org.jfree.report.data.StaticExpressionRuntimeData;
 import org.jfree.report.expressions.Expression;
 import org.jfree.report.expressions.ExpressionRuntime;
+import org.jfree.report.flow.EmptyReportTarget;
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.LayoutExpressionRuntime;
 import org.jfree.report.flow.ReportContext;
+import org.jfree.report.flow.ReportJob;
 import org.jfree.report.flow.ReportStructureRoot;
 import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.structure.Element;
@@ -78,12 +85,13 @@ public class LayoutControllerUtil
   public static final EmptyReportData EMPTY_REPORT_DATA = new EmptyReportData();
 
 
-  public static int findNodeInParent(Section parentSection, Node n)
+  public static int findNodeInParent(final Section parentSection,
+                                     final Node n)
   {
     final Node[] nodes = parentSection.getNodeArray();
     for (int i = 0; i < nodes.length; i++)
     {
-      Node node = nodes[i];
+      final Node node = nodes[i];
       if (node == n)
       {
         return i;
@@ -92,10 +100,25 @@ public class LayoutControllerUtil
     return -1;
   }
 
+  public static StaticExpressionRuntimeData getStaticExpressionRuntime
+      (final FlowController fc,
+       final Object declaringParent)
+  {
+    final GlobalMasterRow dataRow = fc.getMasterRow();
+    final ReportJob reportJob = fc.getReportJob();
+    final StaticExpressionRuntimeData sdd = new StaticExpressionRuntimeData();
+    sdd.setData(dataRow.getReportDataRow().getReportData());
+    sdd.setDeclaringParent(declaringParent);
+    sdd.setConfiguration(reportJob.getConfiguration());
+    sdd.setReportContext(fc.getReportContext());
+    return sdd;
+  }
+
+
   public static LayoutExpressionRuntime getExpressionRuntime
       (final FlowController fc, final Object node)
   {
-    LayoutExpressionRuntime ler = new LayoutExpressionRuntime();
+    final LayoutExpressionRuntime ler = new LayoutExpressionRuntime();
     ler.setConfiguration(fc.getReportJob().getConfiguration());
     ler.setReportContext(fc.getReportContext());
 
@@ -113,19 +136,19 @@ public class LayoutControllerUtil
       ler.setData(reportDataRow.getReportData());
       ler.setCurrentRow(reportDataRow.getCursor());
     }
-    // ler.setOutputMetaData(fc.getReportJob().getMetaData());
+
     ler.setDeclaringParent(node);
     return ler;
   }
 
 
   public static FlowController processFlowOperations(FlowController fc,
-                                                     FlowControlOperation[] ops)
+                                                     final FlowControlOperation[] ops)
       throws DataSourceException
   {
     for (int i = 0; i < ops.length; i++)
     {
-      FlowControlOperation op = ops[i];
+      final FlowControlOperation op = ops[i];
       fc = fc.performOperation(op);
     }
     return fc;
@@ -142,6 +165,7 @@ public class LayoutControllerUtil
    * @return true, if the group is finished and we should stop reiterating it,
    *         false if the group is not finished and we can start iterating it
    *         again.
+   * @throws org.jfree.report.DataSourceException
    */
   public static boolean isGroupFinished(final FlowController fc,
                                         final Node node)
@@ -196,7 +220,7 @@ public class LayoutControllerUtil
         }
       }
 
-      Node parent = group.getParent();
+      final Node parent = group.getParent();
       if (parent == null)
       {
         group = null;
@@ -210,17 +234,16 @@ public class LayoutControllerUtil
   }
 
 
-
   private static void mergeDeclarationRule(final CSSDeclarationRule target,
-                                    final CSSDeclarationRule source)
+                                           final CSSDeclarationRule source)
   {
-    Iterator it = source.getPropertyKeys();
+    final Iterator it = source.getPropertyKeys();
     while (it.hasNext())
     {
-      StyleKey key = (StyleKey) it.next();
-      CSSValue value = source.getPropertyCSSValue(key);
-      boolean sourceImportant = source.isImportant(key);
-      boolean targetImportant = target.isImportant(key);
+      final StyleKey key = (StyleKey) it.next();
+      final CSSValue value = source.getPropertyCSSValue(key);
+      final boolean sourceImportant = source.isImportant(key);
+      final boolean targetImportant = target.isImportant(key);
       if (targetImportant)
       {
         continue;
@@ -325,7 +348,7 @@ public class LayoutControllerUtil
   }
 
   private static AttributeMap collectAttributes(final Element node,
-                                         final ExpressionRuntime runtime)
+                                                final ExpressionRuntime runtime)
       throws DataSourceException
   {
     final AttributeMap attributes = node.getAttributeMap();
@@ -358,8 +381,8 @@ public class LayoutControllerUtil
   }
 
   public static AttributeMap processAttributes(final Element node,
-                                           final ReportTarget target,
-                                           final ExpressionRuntime runtime)
+                                               final ReportTarget target,
+                                               final ExpressionRuntime runtime)
       throws DataSourceException
   {
     final AttributeMap attributes = collectAttributes(node, runtime);
@@ -386,7 +409,8 @@ public class LayoutControllerUtil
         if (isStyleAttribute(nsDef, node.getType(), key))
         {
           final Object styleAttributeValue = entry.getValue();
-          rule = processStyleAttribute(styleAttributeValue, node, runtime, rule);
+          rule = processStyleAttribute(styleAttributeValue, node, runtime,
+              rule);
         }
         else
         {
@@ -409,19 +433,19 @@ public class LayoutControllerUtil
     return retval;
   }
 
-  private static boolean isStyleAttribute(NamespaceDefinition def,
-                                   String elementName,
-                                   String attrName)
+  private static boolean isStyleAttribute(final NamespaceDefinition def,
+                                          final String elementName,
+                                          final String attrName)
   {
     if (def == null)
     {
       return false;
     }
 
-    String[] styleAttr = def.getStyleAttribute(elementName);
+    final String[] styleAttr = def.getStyleAttribute(elementName);
     for (int i = 0; i < styleAttr.length; i++)
     {
-      String styleAttrib = styleAttr[i];
+      final String styleAttrib = styleAttr[i];
       if (attrName.equals(styleAttrib))
       {
         return true;
@@ -430,13 +454,74 @@ public class LayoutControllerUtil
     return false;
   }
 
-  public static AttributeMap createEmptyMap (String namespace, String tagName)
+  public static AttributeMap createEmptyMap(final String namespace,
+                                            final String tagName)
   {
-    AttributeMap map = new AttributeMap();
+    final AttributeMap map = new AttributeMap();
     map.setAttribute(JFreeReportInfo.REPORT_NAMESPACE,
         Element.NAMESPACE_ATTRIBUTE, namespace);
     map.setAttribute(JFreeReportInfo.REPORT_NAMESPACE,
         Element.TYPE_ATTRIBUTE, tagName);
     return map;
+  }
+
+
+  public static Object performPrecompute(final int expressionPosition,
+                                         final PrecomputeNodeKey nodeKey,
+                                         final LayoutController layoutController,
+                                         final FlowController flowController)
+      throws ReportProcessingException, ReportDataFactoryException,
+      DataSourceException
+  {
+    final FlowController fc = flowController.createPrecomputeInstance();
+    final PrecomputedValueRegistry pcvr =
+        fc.getPrecomputedValueRegistry();
+
+    pcvr.startElementPrecomputation(nodeKey);
+
+    final LayoutController rootLc =
+        layoutController.createPrecomputeInstance(fc);
+
+    final ReportTarget target =
+        new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
+
+    LayoutController lc = rootLc;
+    while (lc.isAdvanceable())
+    {
+      lc = lc.advance(target);
+    }
+
+    final PrecomputeNode precomputeNode = pcvr.currentNode();
+    final Object functionResult = precomputeNode.getFunctionResult(
+        expressionPosition);
+    pcvr.finishElementPrecomputation(nodeKey);
+    return functionResult;
+  }
+
+  public static Object evaluateExpression (final FlowController flowController,
+                                           final Object declaringParent,
+                                           final Expression expression)
+      throws DataSourceException
+  {
+    final ExpressionRuntime runtime =
+        getExpressionRuntime(flowController, declaringParent);
+
+    try
+    {
+      expression.setRuntime(runtime);
+      return expression.computeValue();
+    }
+    catch(DataSourceException dse)
+    {
+      throw dse;
+    }
+    catch(Exception e)
+    {
+      throw new DataSourceException("Failed to evaluate expression", e);
+    }
+    finally
+    {
+      expression.setRuntime(null);
+    }
   }
 }

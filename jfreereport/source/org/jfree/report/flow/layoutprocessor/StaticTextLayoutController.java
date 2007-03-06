@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: StaticTextLayoutController.java,v 1.3 2006/12/08 14:20:41 taqua Exp $
+ * $Id: StaticTextLayoutController.java,v 1.4 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,78 +44,74 @@ import org.jfree.util.Log;
  *
  * @author Thomas Morgner
  */
-public class StaticTextLayoutController implements LayoutController, Cloneable
+public class StaticTextLayoutController extends AbstractLayoutController
 {
   public static final int NOT_STARTED = 0;
   public static final int FINISHED = 2;
 
   private int state;
-  private Node node;
-  private FlowController flowController;
-  private LayoutController parent;
 
   public StaticTextLayoutController()
   {
   }
 
   /**
+   * Initializes the layout controller. This method is called exactly once. It
+   * is the creators responsibility to call this method.
+   * <p/>
    * Calling initialize after the first advance must result in a
    * IllegalStateException.
    *
-   * @param flowController
-   * @param initialNode
-   * @throws org.jfree.report.DataSourceException
-   *
-   * @throws org.jfree.report.ReportDataFactoryException
-   *
-   * @throws org.jfree.report.ReportProcessingException
-   *
+   * @param node           the currently processed object or layout node.
+   * @param flowController the current flow controller.
+   * @param parent         the parent layout controller that was responsible for
+   *                       instantiating this controller.
+   * @throws DataSourceException        if there was a problem reading data from
+   *                                    the datasource.
+   * @throws ReportProcessingException  if there was a general problem during
+   *                                    the report processing.
+   * @throws ReportDataFactoryException if a query failed.
    */
   public void initialize(final Object node,
                          final FlowController flowController,
                          final LayoutController parent)
       throws DataSourceException, ReportDataFactoryException, ReportProcessingException
   {
-
-    this.node = (Node) node;
-    this.flowController = flowController;
-    this.parent = parent;
+    super.initialize(node, flowController, parent);
   }
 
   /**
    * Advances the processing position.
    *
-   * @param target
-   * @return
-   * @throws org.jfree.report.DataSourceException
+   * @param target the report target that receives generated events.
+   * @return the new layout controller instance representing the new state.
    *
-   * @throws org.jfree.report.ReportDataFactoryException
-   *
-   * @throws org.jfree.report.ReportProcessingException
-   *
+   * @throws DataSourceException        if there was a problem reading data from
+   *                                    the datasource.
+   * @throws ReportProcessingException  if there was a general problem during
+   *                                    the report processing.
+   * @throws ReportDataFactoryException if a query failed.
    */
-  public LayoutController advance(ReportTarget target)
+  public LayoutController advance(final ReportTarget target)
       throws DataSourceException, ReportDataFactoryException, ReportProcessingException
   {
-    if (state == NOT_STARTED)
+    if (state != StaticTextLayoutController.NOT_STARTED)
     {
-      final StaticText text = (StaticText) getNode();
-      target.processText(text.getText());
+      throw new IllegalStateException();
+    }
 
-      if (getParent() != null)
-      {
-        return getParent().join(getFlowController());
-      }
-      else
-      {
-        StaticTextLayoutController derived = (StaticTextLayoutController) clone();
-        derived.state = FINISHED;
-        return derived;
-      }
+    final StaticText text = (StaticText) getNode();
+    target.processText(text.getText());
+
+    if (getParent() != null)
+    {
+      return getParent().join(getFlowController());
     }
     else
     {
-      throw new IllegalStateException();
+      final StaticTextLayoutController derived = (StaticTextLayoutController) clone();
+      derived.state = StaticTextLayoutController.FINISHED;
+      return derived;
     }
   }
 
@@ -124,44 +120,37 @@ public class StaticTextLayoutController implements LayoutController, Cloneable
    * flow and should *not* (I mean it!) be called from outside. If you do,
    * you'll suffer.
    *
-   * @param flowController
-   * @return
+   * @param flowController the flow controller of the parent.
+   * @return the joined layout controller that incorperates all changes from
+   * the delegate.
    */
-  public LayoutController join(FlowController flowController)
+  public LayoutController join(final FlowController flowController)
   {
     throw new UnsupportedOperationException("Static text does not have childs.");
   }
 
+  /**
+   * Checks, whether the layout controller would be advanceable. If this method
+   * returns true, it is generally safe to call the 'advance()' method.
+   *
+   * @return true, if the layout controller is advanceable, false otherwise.
+   */
   public boolean isAdvanceable()
   {
-    return state != FINISHED;
+    return state != StaticTextLayoutController.FINISHED;
   }
 
-  public Node getNode()
+  /**
+   * Derives a copy of this controller that is suitable to perform a
+   * precomputation. The returned layout controller must be independent from
+   * the it's anchestor controller.
+   *
+   * @param fc a new flow controller for the precomputation.
+   * @return a copy that is suitable for precomputation.
+   */
+  public LayoutController createPrecomputeInstance(final FlowController fc)
   {
-    return node;
-  }
-
-  public FlowController getFlowController()
-  {
-    return flowController;
-  }
-
-  public LayoutController getParent()
-  {
-    return parent;
-  }
-
-  public Object clone ()
-  {
-    try
-    {
-      return super.clone();
-    }
-    catch (CloneNotSupportedException e)
-    {
-      Log.error("Clone not supported: " , e);
-      throw new IllegalStateException("Clone must be supported.");
-    }
+    throw new UnsupportedOperationException
+        ("Static Text does not perform any precomputation.");
   }
 }

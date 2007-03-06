@@ -23,28 +23,24 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ContentElementLayoutController.java,v 1.4 2006/12/06 17:26:06 taqua Exp $
+ * $Id: ContentElementLayoutController.java,v 1.5 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.flow.layoutprocessor;
 
-import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.data.DefaultDataFlags;
-import org.jfree.report.data.ExpressionSlot;
-import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.LayoutExpressionRuntime;
 import org.jfree.report.flow.ReportContext;
 import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.structure.ContentElement;
-import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
 
 /**
@@ -54,43 +50,8 @@ import org.jfree.report.structure.Node;
  */
 public class ContentElementLayoutController extends ElementLayoutController
 {
-  private int expressionsCount;
-  private AttributeMap attributeMap;
-
   public ContentElementLayoutController()
   {
-  }
-
-  protected LayoutController startElement(final ReportTarget target)
-      throws DataSourceException, ReportProcessingException, ReportDataFactoryException
-  {
-    final Element e = getElement();
-    FlowController fc = getFlowController();
-    // Step 3: Add the expressions. Any expressions defined for the subreport
-    // will work on the queried dataset.
-
-    final Expression[] expressions = e.getExpressions();
-    fc = performElementPrecomputation(expressions, fc);
-
-    final AttributeMap attributeMap;
-    if (e.isVirtual() == false)
-    {
-      final LayoutExpressionRuntime ler =
-          LayoutControllerUtil.getExpressionRuntime(fc, e);
-      attributeMap = LayoutControllerUtil.processAttributes(e, target, ler);
-      target.startElement(attributeMap);
-    }
-    else
-    {
-      attributeMap = null;
-    }
-
-    ContentElementLayoutController derived = (ContentElementLayoutController) clone();
-    derived.setProcessingState(OPENED);
-    derived.setFlowController(fc);
-    derived.expressionsCount = expressions.length;
-    derived.attributeMap = attributeMap;
-    return derived;
   }
 
   protected LayoutController processContent(final ReportTarget target)
@@ -127,8 +88,8 @@ public class ContentElementLayoutController extends ElementLayoutController
     {
       target.processContent((DataFlags) value);
 
-      ContentElementLayoutController derived = (ContentElementLayoutController) clone();
-      derived.setProcessingState(FINISHING);
+      final ContentElementLayoutController derived = (ContentElementLayoutController) clone();
+      derived.setProcessingState(ElementLayoutController.FINISHING);
       derived.setFlowController(flowController);
       return derived;
     }
@@ -151,7 +112,7 @@ public class ContentElementLayoutController extends ElementLayoutController
 
       final ContentElementLayoutController derived =
           (ContentElementLayoutController) clone();
-      derived.setProcessingState(WAITING_FOR_JOIN);
+      derived.setProcessingState(ElementLayoutController.WAITING_FOR_JOIN);
       derived.setFlowController(flowController);
 
       return layoutControllerFactory.create
@@ -163,8 +124,8 @@ public class ContentElementLayoutController extends ElementLayoutController
       target.processContent (new DefaultDataFlags(ex.getName(), value, true));
     }
 
-    ContentElementLayoutController derived = (ContentElementLayoutController) clone();
-    derived.setProcessingState(FINISHING);
+    final ContentElementLayoutController derived = (ContentElementLayoutController) clone();
+    derived.setProcessingState(ElementLayoutController.FINISHING);
     derived.setFlowController(flowController);
     return derived;
   }
@@ -174,59 +135,15 @@ public class ContentElementLayoutController extends ElementLayoutController
    * flow and should *not* (I mean it!) be called from outside. If you do,
    * you'll suffer.
    *
-   * @param flowController
-   * @return
+   * @param flowController the flow controller of the parent.
+   * @return the joined layout controller that incorperates all changes from
+   * the delegate.
    */
-  public LayoutController join(FlowController flowController)
+  public LayoutController join(final FlowController flowController)
   {
-    ContentElementLayoutController derived = (ContentElementLayoutController) clone();
-    derived.setProcessingState(FINISHING);
+    final ContentElementLayoutController derived = (ContentElementLayoutController) clone();
+    derived.setProcessingState(ElementLayoutController.FINISHING);
     derived.setFlowController(flowController);
-    return derived;
-  }
-
-  protected LayoutController finishElement(final ReportTarget target)
-      throws ReportProcessingException, DataSourceException
-  {
-    final Element e = getElement();
-    // Step 1: call End Element
-    FlowController fc = getFlowController();
-    if (e.isVirtual() == false)
-    {
-      target.endElement(attributeMap);
-    }
-
-    final PrecomputedValueRegistry pcvr =
-        fc.getPrecomputedValueRegistry();
-    // grab all values from the expressionsdatarow
-
-
-    // Step 2: Remove the expressions of this element
-    if (expressionsCount != 0)
-    {
-      final ExpressionSlot[] activeExpressions = fc.getActiveExpressions();
-      for (int i = 0; i < activeExpressions.length; i++)
-      {
-        final ExpressionSlot slot = activeExpressions[i];
-        pcvr.addFunction(slot.getName(), slot.getValue());
-      }
-      fc = fc.deactivateExpressions();
-    }
-
-    if (isPrecomputing() == false)
-    {
-      pcvr.finishElement(new ElementPrecomputeKey(e));
-    }
-
-    final LayoutController parent = getParent();
-    if (parent != null)
-    {
-      return parent.join(fc);
-    }
-
-    ContentElementLayoutController derived = (ContentElementLayoutController) clone();
-    derived.setProcessingState(FINISHED);
-    derived.setFlowController(fc);
     return derived;
   }
 }

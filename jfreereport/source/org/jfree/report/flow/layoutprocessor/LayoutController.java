@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutController.java,v 1.4 2006/12/08 14:20:41 taqua Exp $
+ * $Id: LayoutController.java,v 1.5 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,25 +41,33 @@ import org.jfree.report.flow.ReportTarget;
  *
  * @author Thomas Morgner
  */
-public interface LayoutController
+public interface LayoutController extends Cloneable
 {
   /**
-   * Retrieves the parent of this layout controller. This allows childs
-   * to query their context.
+   * Retrieves the parent of this layout controller. This allows childs to query
+   * their context.
    *
-   * @return
+   * @return the layout controller's parent to <code>null</code> if there is no
+   * parent.
    */
   public LayoutController getParent();
 
   /**
+   * Initializes the layout controller. This method is called exactly once. It
+   * is the creators responsibility to call this method.
+   * <p/>
    * Calling initialize after the first advance must result in a
    * IllegalStateException.
    *
-   * @param flowController
-   * @param initialNode
-   * @throws DataSourceException
-   * @throws ReportDataFactoryException
-   * @throws ReportProcessingException
+   * @param node           the currently processed object or layout node.
+   * @param flowController the current flow controller.
+   * @param parent         the parent layout controller that was responsible for
+   *                       instantiating this controller.
+   * @throws DataSourceException        if there was a problem reading data from
+   *                                    the datasource.
+   * @throws ReportProcessingException  if there was a general problem during
+   *                                    the report processing.
+   * @throws ReportDataFactoryException if a query failed.
    */
   public void initialize(final Object node,
                          final FlowController flowController,
@@ -70,25 +78,54 @@ public interface LayoutController
   /**
    * Advances the processing position.
    *
-   * @param target
-   * @return
-   * @throws DataSourceException
-   * @throws ReportDataFactoryException
-   * @throws ReportProcessingException
+   * @param target the report target that receives generated events.
+   * @return the new layout controller instance representing the new state.
+   *
+   * @throws DataSourceException        if there was a problem reading data from
+   *                                    the datasource.
+   * @throws ReportProcessingException  if there was a general problem during
+   *                                    the report processing.
+   * @throws ReportDataFactoryException if a query failed.
    */
-  public LayoutController advance (ReportTarget target)
+  public LayoutController advance(ReportTarget target)
       throws DataSourceException, ReportDataFactoryException,
       ReportProcessingException;
 
   /**
-   * Joins with a delegated process flow. This is generally called from a
-   * child flow and should *not* (I mean it!) be called from outside. If you
-   * do, you'll suffer.
+   * Joins with a delegated process flow. This is generally called from a child
+   * flow and should *not* (I mean it!) be called from outside. If you do,
+   * you'll suffer.
    *
-   * @param flowController
-   * @return
+   * @param flowController the flow controller of the parent.
+   * @return the joined layout controller that incorperates all changes from
+   * the delegate.
    */
-  public LayoutController join (FlowController flowController);
+  public LayoutController join(FlowController flowController)
+      throws DataSourceException, ReportDataFactoryException,
+      ReportProcessingException;
 
-  public boolean isAdvanceable ();
+  /**
+   * Checks, whether the layout controller would be advanceable. If this method
+   * returns true, it is generally safe to call the 'advance()' method.
+   *
+   * @return true, if the layout controller is advanceable, false otherwise.
+   */
+  public boolean isAdvanceable();
+
+  /**
+   * Creates a copy of this layout controller.
+   *
+   * @return a copy.
+   */
+  public Object clone();
+
+  /**
+   * Derives a copy of this controller that is suitable to perform a
+   * precomputation. The returned layout controller must be independent from
+   * the it's anchestor controller.
+   *
+   * @param fc a new flow controller for the precomputation.
+   * @return a copy that is suitable for precomputation.
+   */
+  public LayoutController createPrecomputeInstance(FlowController fc);
 }

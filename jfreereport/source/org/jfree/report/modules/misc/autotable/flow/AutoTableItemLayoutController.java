@@ -23,30 +23,23 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AutoTableItemLayoutController.java,v 1.1 2006/12/09 21:17:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.modules.misc.autotable.flow;
 
-import org.jfree.layouting.util.AttributeMap;
+import org.jfree.report.DataFlags;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.DataFlags;
-import org.jfree.report.modules.misc.autotable.AutoTableCellContent;
-import org.jfree.report.data.ExpressionSlot;
-import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.data.ReportDataRow;
-import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowController;
-import org.jfree.report.flow.LayoutExpressionRuntime;
 import org.jfree.report.flow.ReportTarget;
 import org.jfree.report.flow.layoutprocessor.ElementLayoutController;
 import org.jfree.report.flow.layoutprocessor.LayoutController;
-import org.jfree.report.flow.layoutprocessor.LayoutControllerUtil;
-import org.jfree.report.structure.Element;
+import org.jfree.report.modules.misc.autotable.AutoTableCellContent;
 
 /**
  * Creation-Date: Dec 9, 2006, 8:20:51 PM
@@ -55,34 +48,9 @@ import org.jfree.report.structure.Element;
  */
 public class AutoTableItemLayoutController extends ElementLayoutController
 {
-  private AttributeMap attributeMap;
-  private int expressionsCount;
 
   public AutoTableItemLayoutController()
   {
-  }
-
-  protected LayoutController startElement(final ReportTarget target)
-      throws DataSourceException, ReportProcessingException, ReportDataFactoryException
-  {
-    final FlowController flowController = getFlowController();
-    final Expression[] expressions = getElement().getExpressions();
-    FlowController fc = performElementPrecomputation
-        (expressions, flowController);
-
-    final Element element = getElement();
-    final LayoutExpressionRuntime ler =
-        LayoutControllerUtil.getExpressionRuntime(fc, element);
-    final AttributeMap attributeMap =
-        LayoutControllerUtil.processAttributes(element, target, ler);
-    target.startElement(attributeMap);
-
-    AutoTableItemLayoutController derived = (AutoTableItemLayoutController) clone();
-    derived.setProcessingState(OPENED);
-    derived.setFlowController(fc);
-    derived.attributeMap = attributeMap;
-    derived.expressionsCount = expressions.length;
-    return derived;
   }
 
   protected AutoTableLayoutController findTableParent ()
@@ -137,59 +105,19 @@ public class AutoTableItemLayoutController extends ElementLayoutController
 
   }
 
-  protected LayoutController finishElement(final ReportTarget target)
-      throws ReportProcessingException, DataSourceException
-  {
-    final Element e = getElement();
-    // Step 1: call End Element
-    target.endElement(attributeMap);
-
-    FlowController fc = getFlowController();
-    final PrecomputedValueRegistry pcvr =
-        fc.getPrecomputedValueRegistry();
-    // grab all values from the expressionsdatarow
-
-    // Step 2: Remove the expressions of this element
-    if (expressionsCount != 0)
-    {
-      final ExpressionSlot[] activeExpressions = fc.getActiveExpressions();
-      for (int i = 0; i < activeExpressions.length; i++)
-      {
-        final ExpressionSlot slot = activeExpressions[i];
-        pcvr.addFunction(slot.getName(), slot.getValue());
-      }
-      fc = fc.deactivateExpressions();
-    }
-
-    if (isPrecomputing() == false)
-    {
-      pcvr.finishElement(new ElementPrecomputeKey(e));
-    }
-
-    final LayoutController parent = getParent();
-    if (parent != null)
-    {
-      return parent.join(fc);
-    }
-
-    AutoTableItemLayoutController derived = (AutoTableItemLayoutController) clone();
-    derived.setProcessingState(FINISHED);
-    derived.setFlowController(fc);
-    return derived;
-  }
-
   /**
    * Joins with a delegated process flow. This is generally called from a child
    * flow and should *not* (I mean it!) be called from outside. If you do,
    * you'll suffer.
    *
-   * @param flowController
-   * @return
+   * @param flowController the flow controller of the parent.
+   * @return the joined layout controller that incorperates all changes from
+   * the delegate.
    */
-  public LayoutController join(FlowController flowController)
+  public LayoutController join(final FlowController flowController)
   {
-    AutoTableItemLayoutController derived = (AutoTableItemLayoutController) clone();
-    derived.setProcessingState(FINISHING);
+    final AutoTableItemLayoutController derived = (AutoTableItemLayoutController) clone();
+    derived.setProcessingState(ElementLayoutController.FINISHING);
     derived.setFlowController(flowController);
     return derived;
   }

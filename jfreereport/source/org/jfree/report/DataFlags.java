@@ -23,14 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DataFlags.java,v 1.2 2006/12/03 20:24:08 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.report;
 
 /**
- * Creation-Date: 19.02.2006, 18:17:05
+ * A DataFlags object is an immutable wrapper around a value read from the
+ * datarow.
  *
  * @author Thomas Morgner
  */

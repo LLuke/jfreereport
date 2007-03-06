@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: GlobalMasterRow.java,v 1.5 2006/12/04 19:11:23 taqua Exp $
+ * $Id: GlobalMasterRow.java,v 1.6 2006/12/19 17:42:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -130,7 +130,7 @@ public final class GlobalMasterRow
     return derive(null);
   }
 
-  protected GlobalMasterRow derive(GlobalMasterRow subReportRow)
+  private GlobalMasterRow derive(GlobalMasterRow subReportRow)
           throws DataSourceException
   {
     final GlobalMasterRow dataRow = new GlobalMasterRow();
@@ -157,7 +157,7 @@ public final class GlobalMasterRow
     return advance(false, null);
   }
 
-  protected GlobalMasterRow advance(final boolean deepTraversingOnly,
+  private GlobalMasterRow advance(final boolean deepTraversingOnly,
                                     final GlobalMasterRow subReportRow)
           throws DataSourceException
   {
@@ -266,7 +266,7 @@ public final class GlobalMasterRow
    * rows. (This is only called from the expression row, as all other datarows
    * are static).
    *
-   * @param dataRow
+   * @param chEvent
    */
   public void dataRowChanged(final MasterDataRowChangeEvent chEvent)
           throws DataSourceException

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ElementLayoutController.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
+ * $Id: ElementLayoutController.java,v 1.7 2006/12/19 17:42:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,22 +33,20 @@ package org.jfree.report.flow.layoutprocessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.expressions.Expression;
-import org.jfree.report.data.GlobalMasterRow;
-import org.jfree.report.data.PrecomputeNode;
-import org.jfree.report.data.PrecomputeNodeKey;
-import org.jfree.report.data.PrecomputedValueRegistry;
-import org.jfree.report.data.StaticExpressionRuntimeData;
 import org.jfree.report.data.ExpressionSlot;
+import org.jfree.report.data.PrecomputeNodeKey;
 import org.jfree.report.data.PrecomputedExpressionSlot;
+import org.jfree.report.data.PrecomputedValueRegistry;
 import org.jfree.report.data.RunningExpressionSlot;
-import org.jfree.report.flow.EmptyReportTarget;
-import org.jfree.report.flow.FlowController;
-import org.jfree.report.flow.ReportJob;
-import org.jfree.report.flow.ReportTarget;
+import org.jfree.report.data.StaticExpressionRuntimeData;
+import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowControlOperation;
+import org.jfree.report.flow.FlowController;
+import org.jfree.report.flow.ReportTarget;
+import org.jfree.report.flow.LayoutExpressionRuntime;
 import org.jfree.report.structure.Element;
 import org.jfree.util.Log;
+import org.jfree.layouting.util.AttributeMap;
 
 /**
  * Creation-Date: 24.11.2006, 13:56:30
@@ -56,7 +54,7 @@ import org.jfree.util.Log;
  * @author Thomas Morgner
  */
 public abstract class ElementLayoutController
-    implements LayoutController, Cloneable
+    implements LayoutController
 {
   protected static class ElementPrecomputeKey implements PrecomputeNodeKey
   {
@@ -65,7 +63,7 @@ public abstract class ElementLayoutController
     private String namespace;
     private String tagName;
 
-    public ElementPrecomputeKey(Element element)
+    public ElementPrecomputeKey(final Element element)
     {
       this.name = element.getName();
       this.tagName = element.getType();
@@ -73,18 +71,18 @@ public abstract class ElementLayoutController
       this.id = element.getId();
     }
 
-    public boolean equals(final Object o)
+    public boolean equals(final Object obj)
     {
-      if (this == o)
+      if (this == obj)
       {
         return true;
       }
-      if (o == null || getClass() != o.getClass())
+      if (obj == null || getClass() != obj.getClass())
       {
         return false;
       }
 
-      final ElementPrecomputeKey that = (ElementPrecomputeKey) o;
+      final ElementPrecomputeKey that = (ElementPrecomputeKey) obj;
 
       if (id != null ? !id.equals(that.id) : that.id != null)
       {
@@ -94,11 +92,13 @@ public abstract class ElementLayoutController
       {
         return false;
       }
-      if (namespace != null ? !namespace.equals(that.namespace) : that.namespace != null)
+      if (namespace != null ? !namespace.equals(
+          that.namespace) : that.namespace != null)
       {
         return false;
       }
-      if (tagName != null ? !tagName.equals(that.tagName) : that.tagName != null)
+      if (tagName != null ? !tagName.equals(
+          that.tagName) : that.tagName != null)
       {
         return false;
       }
@@ -108,15 +108,14 @@ public abstract class ElementLayoutController
 
     public int hashCode()
     {
-      int result;
-      result = (name != null ? name.hashCode() : 0);
+      int result = (name != null ? name.hashCode() : 0);
       result = 29 * result + (id != null ? id.hashCode() : 0);
       result = 29 * result + (namespace != null ? namespace.hashCode() : 0);
       result = 29 * result + (tagName != null ? tagName.hashCode() : 0);
       return result;
     }
 
-    public boolean equals(PrecomputeNodeKey otherKey)
+    public boolean equals(final PrecomputeNodeKey otherKey)
     {
       return false;
     }
@@ -134,37 +133,53 @@ public abstract class ElementLayoutController
   private Element element;
   private LayoutController parent;
   private boolean precomputing;
+  private AttributeMap attributeMap;
+  private int expressionsCount;
+  private int iterationCount;
 
   protected ElementLayoutController()
   {
-    this.processingState = NOT_STARTED;
+    this.processingState = ElementLayoutController.NOT_STARTED;
   }
 
+  /**
+   * Retrieves the parent of this layout controller. This allows childs to query
+   * their context.
+   *
+   * @return the layout controller's parent to <code>null</code> if there is no
+   * parent.
+   */
   public LayoutController getParent()
   {
     return parent;
   }
 
+
   /**
+   * Initializes the layout controller. This method is called exactly once. It
+   * is the creators responsibility to call this method.
+   * <p/>
    * Calling initialize after the first advance must result in a
    * IllegalStateException.
    *
-   * @param flowController
-   * @param initialNode
-   * @throws org.jfree.report.DataSourceException
-   *
-   * @throws org.jfree.report.ReportDataFactoryException
-   *
-   * @throws org.jfree.report.ReportProcessingException
-   *
+   * @param node           the currently processed object or layout node.
+   * @param flowController the current flow controller.
+   * @param parent         the parent layout controller that was responsible for
+   *                       instantiating this controller.
+   * @throws DataSourceException        if there was a problem reading data from
+   *                                    the datasource.
+   * @throws ReportProcessingException  if there was a general problem during
+   *                                    the report processing.
+   * @throws ReportDataFactoryException if a query failed.
    */
   public void initialize(final Object node,
                          final FlowController flowController,
                          final LayoutController parent)
-      throws DataSourceException, ReportDataFactoryException, ReportProcessingException
+      throws DataSourceException, ReportDataFactoryException,
+      ReportProcessingException
   {
 
-    if (processingState != NOT_STARTED)
+    if (processingState != ElementLayoutController.NOT_STARTED)
     {
       throw new IllegalStateException();
     }
@@ -172,42 +187,232 @@ public abstract class ElementLayoutController
     this.element = (Element) node;
     this.flowController = flowController;
     this.parent = parent;
+    this.iterationCount = -1;
   }
 
-  public final LayoutController advance(ReportTarget target)
-      throws DataSourceException, ReportProcessingException, ReportDataFactoryException
+  /**
+   * Advances the layout controller to the next state. This method delegates the
+   * call to one of the following methods: <ul> <li>{@link
+   * #startElement(org.jfree.report.flow.ReportTarget)} <li>{@link
+   * #processContent(org.jfree.report.flow.ReportTarget)} <li>{@link
+   * #finishElement(org.jfree.report.flow.ReportTarget)} <li>{@link
+   * #joinWithParent()} </ul>
+   *
+   * @param target the report target that receives generated events.
+   * @return the new layout controller instance representing the new state.
+   *
+   * @throws DataSourceException        if there was a problem reading data from
+   *                                    the datasource.
+   * @throws ReportProcessingException  if there was a general problem during
+   *                                    the report processing.
+   * @throws ReportDataFactoryException if a query failed.
+   */
+  public final LayoutController advance(final ReportTarget target)
+      throws DataSourceException, ReportProcessingException,
+      ReportDataFactoryException
   {
     final int processingState = getProcessingState();
     switch (processingState)
     {
-      case NOT_STARTED:
+      case ElementLayoutController.NOT_STARTED:
         return startElement(target);
-      case OPENED:
+      case ElementLayoutController.OPENED:
         return processContent(target);
-      case FINISHING:
+      case ElementLayoutController.FINISHING:
         return finishElement(target);
-      case JOINING:
+      case ElementLayoutController.JOINING:
         return joinWithParent();
       default:
         throw new IllegalStateException();
     }
   }
 
-  protected abstract LayoutController startElement(final ReportTarget target)
-      throws DataSourceException, ReportProcessingException, ReportDataFactoryException;
-  protected abstract LayoutController processContent(final ReportTarget target)
-      throws DataSourceException, ReportProcessingException, ReportDataFactoryException;
-  protected abstract LayoutController finishElement(final ReportTarget target)
-      throws ReportProcessingException, DataSourceException;
+  /**
+   * This method is called for each newly instantiated layout controller. The
+   * returned layout controller instance should have a processing state of
+   * either 'OPEN' or 'FINISHING' depending on whether there is any content or
+   * any child nodes to process.
+   *
+   * @param target the report target that receives generated events.
+   * @return the new layout controller instance representing the new state.
+   *
+   * @throws DataSourceException        if there was a problem reading data from
+   *                                    the datasource.
+   * @throws ReportProcessingException  if there was a general problem during
+   *                                    the report processing.
+   * @throws ReportDataFactoryException if a query failed.
+   */
+  protected LayoutController startElement(final ReportTarget target)
+      throws DataSourceException, ReportProcessingException,
+      ReportDataFactoryException
+  {
+    final Element s = getElement();
 
+    FlowController fc = getFlowController();
+    // Step 3: Add the expressions. Any expressions defined for the subreport
+    // will work on the queried dataset.
+    fc = startData(target, fc);
+
+    final Expression[] expressions = s.getExpressions();
+    fc = performElementPrecomputation(expressions, fc);
+
+    if (s.isVirtual() == false)
+    {
+      attributeMap = computeAttributes(fc, s, target);
+      target.startElement(attributeMap);
+    }
+
+    final ElementLayoutController derived = (ElementLayoutController) clone();
+    derived.setProcessingState(ElementLayoutController.OPENED);
+    derived.setFlowController(fc);
+    derived.expressionsCount = expressions.length;
+    derived.attributeMap = attributeMap;
+    derived.iterationCount += 1;
+    return derived;
+  }
+
+  public AttributeMap getAttributeMap()
+  {
+    return attributeMap;
+  }
+
+  public int getExpressionsCount()
+  {
+    return expressionsCount;
+  }
+
+  public int getIterationCount()
+  {
+    return iterationCount;
+  }
+
+
+  protected FlowController startData(final ReportTarget target,
+                                     final FlowController fc)
+      throws DataSourceException, ReportProcessingException,
+      ReportDataFactoryException
+  {
+    return fc;
+  }
+  
+  protected AttributeMap computeAttributes(final FlowController fc,
+                                           final Element element,
+                                           final ReportTarget target)
+      throws DataSourceException
+  {
+    final LayoutExpressionRuntime ler =
+        LayoutControllerUtil.getExpressionRuntime(fc, element);
+    return LayoutControllerUtil.processAttributes(element, target, ler);
+  }
+
+
+  /**
+   * Processes any content in this element. This method is called when the
+   * processing state is 'OPENED'. The returned layout controller will retain
+   * the 'OPENED' state as long as there is more content available. Once all
+   * content has been processed, the returned layout controller should carry a
+   * 'FINISHED' state.
+   *
+   * @param target the report target that receives generated events.
+   * @return the new layout controller instance representing the new state.
+   *
+   * @throws DataSourceException        if there was a problem reading data from
+   *                                    the datasource.
+   * @throws ReportProcessingException  if there was a general problem during
+   *                                    the report processing.
+   * @throws ReportDataFactoryException if a query failed.
+   */
+  protected abstract LayoutController processContent(final ReportTarget target)
+      throws DataSourceException, ReportProcessingException,
+      ReportDataFactoryException;
+
+  /**
+   * Finishes the processing of this element. This method is called when the
+   * processing state is 'FINISHING'. The element should be closed now and all
+   * privatly owned resources should be freed. If the element has a parent, it
+   * would be time to join up with the parent now, else the processing state
+   * should be set to 'FINISHED'.
+   *
+   * @param target the report target that receives generated events.
+   * @return the new layout controller instance representing the new state.
+   *
+   * @throws DataSourceException       if there was a problem reading data from
+   *                                   the datasource.
+   * @throws ReportProcessingException if there was a general problem during the
+   *                                   report processing.
+   * @throws ReportDataFactoryException if there was an error trying query data.
+   */
+  protected LayoutController finishElement(final ReportTarget target)
+      throws ReportProcessingException, DataSourceException,
+      ReportDataFactoryException
+  {
+    final FlowController fc = handleDefaultEndElement(target);
+    final LayoutController parent = getParent();
+    if (parent != null)
+    {
+      return parent.join(fc);
+    }
+
+    final ElementLayoutController derived = (ElementLayoutController) clone();
+    derived.setProcessingState(ElementLayoutController.FINISHED);
+    derived.setFlowController(fc);
+    return derived;
+  }
+
+  protected FlowController handleDefaultEndElement (final ReportTarget target)
+      throws ReportProcessingException, DataSourceException,
+      ReportDataFactoryException
+  {
+    final Element e = getElement();
+    // Step 1: call End Element
+    if (e.isVirtual() == false)
+    {
+      target.endElement(getAttributeMap());
+    }
+
+    FlowController fc = getFlowController();
+    final PrecomputedValueRegistry pcvr =
+        fc.getPrecomputedValueRegistry();
+    // Step 2: Remove the expressions of this element
+    final int expressionsCount = getExpressionsCount();
+    if (expressionsCount != 0)
+    {
+      final ExpressionSlot[] activeExpressions = fc.getActiveExpressions();
+      for (int i = activeExpressions.length - expressionsCount; i < activeExpressions.length; i++)
+      {
+        final ExpressionSlot slot = activeExpressions[i];
+        pcvr.addFunction(slot.getName(), slot.getValue());
+      }
+      fc = fc.deactivateExpressions();
+    }
+
+    if (isPrecomputing() == false)
+    {
+      pcvr.finishElement(new ElementPrecomputeKey(e));
+    }
+
+    return fc;
+  }
+
+  /**
+   * Joins the layout controller with the parent. This simply calls
+   * {@link #join(org.jfree.report.flow.FlowController)} on the parent. A join
+   * operation is necessary to propagate changes in the flow-controller to the
+   * parent for further processing.
+   *
+   * @return the joined parent.
+   * @throws IllegalStateException if this layout controller has no parent.
+   */
   protected LayoutController joinWithParent()
+      throws ReportProcessingException, ReportDataFactoryException,
+      DataSourceException
   {
     final LayoutController parent = getParent();
     if (parent == null)
     {
       // skip to the next step ..
       throw new IllegalStateException("There is no parent to join with. " +
-              "This should not happen in a sane environment!");
+                                      "This should not happen in a sane environment!");
     }
 
     return parent.join(getFlowController());
@@ -215,7 +420,7 @@ public abstract class ElementLayoutController
 
   public boolean isAdvanceable()
   {
-    return processingState != FINISHED;
+    return processingState != ElementLayoutController.FINISHED;
   }
 
   public Element getElement()
@@ -248,7 +453,7 @@ public abstract class ElementLayoutController
     this.parent = parent;
   }
 
-  public Object clone ()
+  public Object clone()
   {
     try
     {
@@ -256,21 +461,9 @@ public abstract class ElementLayoutController
     }
     catch (CloneNotSupportedException e)
     {
-      Log.error("Clone not supported: " , e);
+      Log.error("Clone not supported: ", e);
       throw new IllegalStateException("Clone must be supported.");
     }
-  }
-
-  protected StaticExpressionRuntimeData createRuntimeData(final FlowController fc)
-  {
-    final GlobalMasterRow dataRow = fc.getMasterRow();
-    final ReportJob reportJob = fc.getReportJob();
-    final StaticExpressionRuntimeData sdd = new StaticExpressionRuntimeData();
-    sdd.setData(dataRow.getReportDataRow().getReportData());
-    sdd.setDeclaringParent(getElement());
-    sdd.setConfiguration(reportJob.getConfiguration());
-    sdd.setReportContext(fc.getReportContext());
-    return sdd;
   }
 
   public boolean isPrecomputing()
@@ -278,59 +471,24 @@ public abstract class ElementLayoutController
     return precomputing;
   }
 
-  protected void setPrecomputing(final boolean precomputing)
+  protected FlowController performElementPrecomputation(
+      final Expression[] expressions,
+      FlowController fc)
+      throws ReportProcessingException, ReportDataFactoryException,
+      DataSourceException
   {
-    this.precomputing = precomputing;
-  }
-
-
-  protected Object precompute(final int expressionPosition)
-      throws ReportProcessingException, ReportDataFactoryException, DataSourceException
-  {
-    final FlowController fc = getFlowController().createPrecomputeInstance();
-    final PrecomputedValueRegistry pcvr =
-        fc.getPrecomputedValueRegistry();
-
-    final Element element = (Element) getElement();
-    pcvr.startElementPrecomputation(new ElementPrecomputeKey(element));
-
-    final ElementLayoutController layoutController =
-        (ElementLayoutController) this.clone();
-    layoutController.setPrecomputing(true);
-    layoutController.setFlowController(fc);
-    layoutController.setParent(null);
-
-    final ReportTarget target =
-        new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
-
-    LayoutController lc = layoutController;
-    while (lc.isAdvanceable())
-    {
-      lc = lc.advance(target);
-    }
-
-    final PrecomputeNode precomputeNode = pcvr.currentNode();
-    final Object functionResult = precomputeNode.getFunctionResult(expressionPosition);
-    pcvr.finishElementPrecomputation(new ElementPrecomputeKey(element));
-    return functionResult;
-  }
-
-
-  protected FlowController performElementPrecomputation(final Expression[] expressions,
-                                                        FlowController fc)
-      throws ReportProcessingException, ReportDataFactoryException, DataSourceException
-  {
+    final Element element = getElement();
     final PrecomputedValueRegistry pcvr = fc.getPrecomputedValueRegistry();
     if (isPrecomputing() == false)
     {
-      final Element e = (Element) getElement();
-      pcvr.startElement(new ElementPrecomputeKey(e));
+      pcvr.startElement(new ElementPrecomputeKey(element));
     }
 
     if (expressions.length > 0)
     {
       final ExpressionSlot[] slots = new ExpressionSlot[expressions.length];
-      final StaticExpressionRuntimeData runtimeData = createRuntimeData(fc);
+      final StaticExpressionRuntimeData runtimeData =
+          LayoutControllerUtil.getStaticExpressionRuntime(fc, element);
 
       for (int i = 0; i < expressions.length; i++)
       {
@@ -340,13 +498,17 @@ public abstract class ElementLayoutController
           // ok, we have to precompute the expression's value. For that
           // we fork a new layout process, compute the value and then come
           // back with the result.
-          Object value = precompute (i);
-          slots[i] = new PrecomputedExpressionSlot(expression.getName(), value, expression.isPreserve());
+          final Object value = LayoutControllerUtil.performPrecompute
+              (i, new ElementPrecomputeKey(element),
+                  this, getFlowController());
+          slots[i] = new PrecomputedExpressionSlot(expression.getName(), value,
+              expression.isPreserve());
         }
         else
         {
           // thats a bit easier; we dont have to do anything special ..
-          slots[i] = new RunningExpressionSlot(expression, runtimeData, pcvr.currentNode());
+          slots[i] = new RunningExpressionSlot(expression, runtimeData,
+              pcvr.currentNode());
         }
       }
 
@@ -356,7 +518,7 @@ public abstract class ElementLayoutController
   }
 
 
-  protected FlowController tryRepeatingCommit (final FlowController fc)
+  protected FlowController tryRepeatingCommit(final FlowController fc)
       throws DataSourceException
   {
     if (isPrecomputing() == false)
@@ -381,5 +543,22 @@ public abstract class ElementLayoutController
       }
     }
     return null;
+  }
+
+
+  /**
+   * Derives a copy of this controller that is suitable to perform a
+   * precomputation.
+   *
+   * @param fc
+   * @return
+   */
+  public LayoutController createPrecomputeInstance(final FlowController fc)
+  {
+    final ElementLayoutController lc = (ElementLayoutController) clone();
+    lc.setFlowController(fc);
+    lc.setParent(null);
+    lc.precomputing = true;
+    return lc;
   }
 }

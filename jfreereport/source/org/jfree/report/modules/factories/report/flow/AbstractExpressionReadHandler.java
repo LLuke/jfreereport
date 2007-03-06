@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractExpressionReadHandler.java,v 1.7 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -178,7 +178,7 @@ public abstract class AbstractExpressionReadHandler
    * create an object.
    *
    * @return the object.
-   * @throws XmlReaderException if there is a parsing error.
+   * @throws SAXException if there is a parsing error.
    */
   public Object getObject() throws SAXException
   {
