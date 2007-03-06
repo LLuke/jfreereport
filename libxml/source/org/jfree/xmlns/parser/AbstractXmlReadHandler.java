@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AbstractXmlReadHandler.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
+ * $Id: AbstractXmlReadHandler.java,v 1.4 2006/12/19 17:46:36 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,7 +37,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 /**
- * A base class for implementing an {@link org.jfree.xml.parser.XmlReadHandler}.
+ * A base class for implementing an {@link org.jfree.xmlns.parser.XmlReadHandler}.
  * This class takes care of all the delegation management.
  */
 public abstract class AbstractXmlReadHandler implements XmlReadHandler
