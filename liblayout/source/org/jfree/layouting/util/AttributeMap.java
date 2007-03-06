@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AttributeMap.java,v 1.3 2006/12/03 18:58:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,10 +40,12 @@ import java.util.Map;
  *
  * @author Thomas Morgner
  */
-public class AttributeMap implements Serializable
+public class AttributeMap implements Serializable, Cloneable
 {
-  private HashMap namespaces;
+  private static final long serialVersionUID = -7442871030874215436L;
   private static final String[] EMPTY_NAMESPACES = new String[0];
+
+  private HashMap namespaces;
 
   public AttributeMap()
   {
@@ -57,7 +59,7 @@ public class AttributeMap implements Serializable
     }
 
     namespaces = (HashMap) copy.namespaces.clone();
-    Iterator entries = namespaces.entrySet().iterator();
+    final Iterator entries = namespaces.entrySet().iterator();
     while (entries.hasNext())
     {
       final Map.Entry entry = (Map.Entry) entries.next();
@@ -66,9 +68,25 @@ public class AttributeMap implements Serializable
     }
   }
 
-  public synchronized void setAttribute(String namespace,
-                                        String attribute,
-                                        Object value)
+
+  public synchronized Object clone()
+      throws CloneNotSupportedException
+  {
+    final AttributeMap map = (AttributeMap) super.clone();
+    map.namespaces = (HashMap) namespaces.clone();
+    final Iterator entries = map.namespaces.entrySet().iterator();
+    while (entries.hasNext())
+    {
+      final Map.Entry entry = (Map.Entry) entries.next();
+      final HashMap value = (HashMap) entry.getValue();
+      entry.setValue(value.clone());
+    }
+    return map;
+  }
+
+  public synchronized void setAttribute(final String namespace,
+                                        final String attribute,
+                                        final Object value)
   {
     if (namespaces == null)
     {
@@ -83,7 +101,7 @@ public class AttributeMap implements Serializable
         return;
       }
 
-      HashMap newAtts = new HashMap();
+      final HashMap newAtts = new HashMap();
       newAtts.put(attribute, value);
       namespaces.put(namespace, newAtts);
     }
@@ -104,7 +122,8 @@ public class AttributeMap implements Serializable
     }
   }
 
-  public synchronized Object getAttribute(String namespace, String attribute)
+  public synchronized Object getAttribute(final String namespace,
+                                          final String attribute)
   {
     if (namespaces == null)
     {
@@ -122,7 +141,7 @@ public class AttributeMap implements Serializable
     }
   }
 
-  public synchronized Object getFirstAttribute(String attribute)
+  public synchronized Object getFirstAttribute(final String attribute)
   {
     if (namespaces == null)
     {
@@ -134,7 +153,7 @@ public class AttributeMap implements Serializable
     {
       final Map.Entry entry = (Map.Entry) entries.next();
       final HashMap map = (HashMap) entry.getValue();
-      Object val = map.get(attribute);
+      final Object val = map.get(attribute);
       if (val != null)
       {
         return val;
@@ -165,7 +184,7 @@ public class AttributeMap implements Serializable
   {
     if (namespaces == null)
     {
-      return EMPTY_NAMESPACES;
+      return AttributeMap.EMPTY_NAMESPACES;
     }
     return (String[]) namespaces.keySet().toArray(new String[namespaces.size()]);
   }
