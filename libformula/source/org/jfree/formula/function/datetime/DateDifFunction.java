@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DateDifFunction.java,v 1.2 2007/03/01 16:55:30 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -95,12 +95,12 @@ public class DateDifFunction implements Function
     }
 
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    final Date date1 = typeRegistry.convertToDate(parameters.getType(0),
-        parameters.getValue(0));
-    final Date date2 = typeRegistry.convertToDate(parameters.getType(1),
-        parameters.getValue(1));
-    final String formatCode = typeRegistry.convertToText(parameters.getType(2),
-        parameters.getValue(2));
+    final Date date1 = typeRegistry.convertToDate
+        (parameters.getType(0), parameters.getValue(0));
+    final Date date2 = typeRegistry.convertToDate
+        (parameters.getType(1), parameters.getValue(1));
+    final String formatCode = typeRegistry.convertToText
+        (parameters.getType(2), parameters.getValue(2));
 
     if (date1 == null || date2 == null || formatCode == null || "".equals(
         formatCode))

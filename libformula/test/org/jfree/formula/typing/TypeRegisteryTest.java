@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TypeRegisteryTest.java,v 1.3 2007/01/16 07:17:30 mimil Exp $
+ * $Id: TypeRegisteryTest.java,v 1.4 2007/01/18 22:36:32 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,18 +60,28 @@ public class TypeRegisteryTest
   }
   
   @Test
-  public void testDateConvertion()
+  public void testZeroDateConvertion()
   {
-//    final Date d = GregorianCalendar.getInstance().getTime();
-    final Calendar cal = new GregorianCalendar(context.getLocalizationContext().getTimeZone(), context.getLocalizationContext().getLocale());
-//    cal.set(GregorianCalendar.YEAR, 2005);
-//    cal.set(GregorianCalendar.MONTH, GregorianCalendar.JANUARY);
-//    cal.set(GregorianCalendar.DAY_OF_MONTH, 1);
-    cal.set(GregorianCalendar.MILLISECOND, 0);
-//    cal.set(GregorianCalendar.HOUR, 23);
-//    cal.set(GregorianCalendar.MINUTE, 59);
-//    cal.set(GregorianCalendar.SECOND, 59);
-//    
+    final Calendar cal = new GregorianCalendar
+        (context.getLocalizationContext().getTimeZone(),
+            context.getLocalizationContext().getLocale());
+    cal.set(Calendar.MILLISECOND, 0);
+
+    final Date d = cal.getTime();
+    final Number n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
+    Assert.assertNotNull(n, "The date has not been converted to a number");
+    final Date d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
+    Assert.assertNotNull(d1, "The number has not been converted to a date");
+    Assert.assertEquals(d1, d, "dates are differents");
+  }
+
+  @Test
+  public void testNowDateConvertion()
+  {
+    final Calendar cal = new GregorianCalendar
+        (context.getLocalizationContext().getTimeZone(),
+            context.getLocalizationContext().getLocale());
+
     final Date d = cal.getTime();
     final Number n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
     Assert.assertNotNull(n, "The date has not been converted to a number");

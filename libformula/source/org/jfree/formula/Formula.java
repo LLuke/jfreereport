@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: Formula.java,v 1.7 2006/12/30 13:50:15 mimil Exp $
+ * $Id: Formula.java,v 1.8 2007/01/26 22:11:51 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -61,6 +61,17 @@ public class Formula implements Serializable, Cloneable
   public void initialize (FormulaContext context) throws EvaluationException
   {
     rootReference.initialize(context);
+  }
+
+  /**
+   * Returns the root reference for this formula. This allows external programms
+   * to modify the formula directly.
+   *
+   * @return
+   */
+  public LValue getRootReference()
+  {
+    return rootReference;
   }
 
   public Object evaluate ()

@@ -1,8 +1,8 @@
 ***********************
-* LibFormula - 0.1.3  *
+* LibFormula - 0.1.4  *
 ***********************
 
-25 Jan 2007
+01 Mar 2007
 
 1. INTRODUCTION
 ---------------
@@ -16,7 +16,7 @@ cell-ranges).
 
 For the latest news and information about LibFormula, please refer to:
 
-    http://jfreereport.pentaho.org/libformula/
+    http://reporting.pentaho.org/libformula/
 
 
 2. SUPPORT

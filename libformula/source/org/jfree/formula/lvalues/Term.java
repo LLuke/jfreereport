@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: Term.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -208,7 +208,10 @@ public class Term extends AbstractLValue
    */
   public LValue[] getChildValues()
   {
-    return (LValue[]) operandsArray.clone();
+    final LValue[] values = new LValue[operandsArray.length + 1];
+    values[0] = headValue;
+    System.arraycopy(operandsArray, 0, values, 1, operandsArray.length);
+    return values;
   }
 
 
