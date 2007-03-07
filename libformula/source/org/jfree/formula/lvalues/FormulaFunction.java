@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: FormulaFunction.java,v 1.10 2007/02/04 10:29:28 mimil Exp $
+ * $Id: FormulaFunction.java,v 1.11 2007/02/22 21:34:46 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -142,7 +142,7 @@ public class FormulaFunction extends AbstractLValue
     this.parameters = parameters;
   }
 
-  public void initialize(FormulaContext context) throws EvaluationException
+  public void initialize(final FormulaContext context) throws EvaluationException
   {
     super.initialize(context);
     final FunctionRegistry registry = context.getFunctionRegistry();
@@ -155,13 +155,49 @@ public class FormulaFunction extends AbstractLValue
     }
   }
 
+  /**
+   * Returns the function's name. This is the normalized name and may not be
+   * suitable for the user. Query the function's metadata to retrieve a
+   * display-name. 
+   *
+   * @return the function's name.
+   */
+  public String getFunctionName()
+  {
+    return functionName;
+  }
+
+  /**
+   * Returns the initialized function. Be aware that this method will return
+   * null if this LValue instance has not yet been initialized.
+   *
+   * @return the function instance or null, if the FormulaFunction instance has
+   * not yet been initialized.
+   */
+  public Function getFunction()
+  {
+    return function;
+  }
+
+  /**
+   * Returns the function's meta-data. Be aware that this method will return
+   * null if this LValue instance has not yet been initialized.
+   *
+   * @return the function description instance or null, if the FormulaFunction
+   * instance has not yet been initialized.
+   */
+  public FunctionDescription getMetaData()
+  {
+    return metaData;
+  }
+
   public Object clone() throws CloneNotSupportedException
   {
     final FormulaFunction fn = (FormulaFunction) super.clone();
     fn.parameters = (LValue[]) parameters.clone();
     for (int i = 0; i < parameters.length; i++)
     {
-      LValue parameter = parameters[i];
+      final LValue parameter = parameters[i];
       fn.parameters[i] = (LValue) parameter.clone();
     }
     return fn;
