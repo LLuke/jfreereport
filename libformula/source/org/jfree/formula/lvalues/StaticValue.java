@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: StaticValue.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -72,5 +72,10 @@ public class StaticValue extends AbstractLValue
   public boolean isConstant()
   {
     return true;
+  }
+
+  public Object getValue()
+  {
+    return value;
   }
 }

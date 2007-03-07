@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: Term.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
+ * $Id: Term.java,v 1.5 2007/03/06 14:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -291,5 +291,20 @@ public class Term extends AbstractLValue
     o.operatorArray = null;
     o.initialized = false;
     return o;
+  }
+
+  public InfixOperator[] getOperands ()
+  {
+    return (InfixOperator[]) operands.toArray(new InfixOperator[operands.size()]);
+  }
+
+  public LValue[] getOperators ()
+  {
+    return (LValue[]) operators.toArray(new LValue[operators.size()]);
+  }
+
+  public LValue getHeadValue()
+  {
+    return headValue;
   }
 }

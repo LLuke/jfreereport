@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 
+0.1.5: (07-Mar-2007)
+        * Exposed some variables to allow proper inspection of formulas.
+
 0.1.4: (01-Mar-2007)
         * [BUG] The parser did not accept empty parameters so that syntactilly 
           valid formulas like "IF(;;;)" failed to parse.
