@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AbstractURLResourceLoader.java,v 1.3 2006/12/03 16:41:16 taqua Exp $
+ * $Id: URLResourceLoader.java,v 1.1 2007/02/22 20:03:53 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -101,7 +101,11 @@ public class URLResourceLoader implements ResourceLoader
     if (value instanceof String)
     {
       String valueString = (String) value;
-      if (valueString.indexOf("://") >= 0)
+      // the 'file' schema is defined to have double-slashes, but the JDK
+      // ignores RFC 1738 in that case. So we have to check for these beasts
+      // directly ..
+      if (valueString.indexOf("://") >= 0 ||
+          valueString.startsWith("file:/"))
       {
         try
         {

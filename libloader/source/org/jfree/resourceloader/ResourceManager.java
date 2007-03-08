@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ResourceManager.java,v 1.13 2007/02/22 20:03:21 taqua Exp $
+ * $Id: ResourceManager.java,v 1.14 2007/03/02 17:08:11 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -144,28 +144,40 @@ public class ResourceManager
     // This assumes, that we have no catch-all implementation.
     for (int i = 0; i < resourceLoaders.size(); i++)
     {
-      ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
-      final ResourceKey key = loader.createKey(parameters, parameters);
+      final ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
+      final ResourceKey key = loader.createKey(path, parameters);
       if (key != null)
       {
         return key;
       }
     }
 
+    ResourceKeyCreationException rce = null;
     for (int i = 0; i < resourceLoaders.size(); i++)
     {
-      ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
+      final ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
       if (loader.isSupportedKey(parent) == false)
       {
         continue;
       }
-      final ResourceKey key = loader.deriveKey(parent, path, parameters);
-      if (key != null)
+      try
       {
-        return key;
+        final ResourceKey key = loader.deriveKey(parent, path, parameters);
+        if (key != null)
+        {
+          return key;
+        }
+      }
+      catch(ResourceKeyCreationException rcke)
+      {
+        rce = rcke;
       }
     }
 
+    if (rce != null)
+    {
+      throw rce;
+    }
     throw new ResourceKeyCreationException
         ("Unable to create key: No such schema or the key was not recognized.");
   }

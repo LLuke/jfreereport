@@ -4,6 +4,10 @@
 
 A list of changes in recent versions:
 
+0.3.1:  (07-Mar-2007)
+        * [BUG] Creating and deriving File and/or URL keys from Strings failed
+          under certain conditions.  
+
 0.3.0:  (01-Mar-2007)
         * The internal resource-key creation and resource-loader architecture
           has been simplified. Instead of having complex resource-keys for each

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: FileResourceLoader.java,v 1.5 2006/12/19 17:48:26 taqua Exp $
+ * $Id: FileResourceLoader.java,v 1.6 2007/02/22 20:03:22 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -122,7 +122,9 @@ public class FileResourceLoader implements ResourceLoader
    * @throws org.jfree.resourceloader.ResourceKeyCreationException
    *          if the key cannot be derived for any reason.
    */
-  public ResourceKey deriveKey(ResourceKey parent, String path, Map factoryKeys)
+  public ResourceKey deriveKey(final ResourceKey parent,
+                               final String path,
+                               final Map factoryKeys)
       throws ResourceKeyCreationException
   {
     if (isSupportedKey(parent) == false)
@@ -133,10 +135,11 @@ public class FileResourceLoader implements ResourceLoader
     File target;
     if (path != null)
     {
-      target = new File((File) parent.getIdentifier(), path);
+      final File parentResource = (File) parent.getIdentifier();
+      target = new File(parentResource.getParentFile(), path);
       if (target.exists() == false || target.isFile() == false)
       {
-        throw new ResourceKeyCreationException("Malformed value: " + path);
+        throw new ResourceKeyCreationException("Malformed value: " + path + " (" + target + ")");
       }
 
     }
