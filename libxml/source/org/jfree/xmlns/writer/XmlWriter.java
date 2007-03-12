@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: XmlWriter.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -49,12 +49,12 @@ public class XmlWriter extends XmlWriterSupport
   private Writer writer;
 
   /**
-   * Creates a new XML writer for the specified character stream.  By default, four
-   * spaces are used for indentation.
+   * Creates a new XML writer for the specified character stream.  By default,
+   * four spaces are used for indentation.
    *
    * @param writer the character stream.
    */
-  public XmlWriter (final Writer writer)
+  public XmlWriter(final Writer writer)
   {
     this(writer, "  ");
   }
@@ -62,6 +62,9 @@ public class XmlWriter extends XmlWriterSupport
   /**
    * Default Constructor. The created XMLWriterSupport will not have no safe
    * tags and starts with an indention level of 0.
+   *
+   * @param writer         the character stream.
+   * @param tagDescription the tags that are safe for line breaks.
    */
   public XmlWriter(final Writer writer, final TagDescription tagDescription)
   {
@@ -72,10 +75,10 @@ public class XmlWriter extends XmlWriterSupport
    * Creates a new XML writer for the specified character stream.
    *
    * @param writer       the character stream.
-   * @param indentString the string used for indentation (should contain white space,
-   *                     for example four spaces).
+   * @param indentString the string used for indentation (should contain white
+   *                     space, for example four spaces).
    */
-  public XmlWriter (final Writer writer, final String indentString)
+  public XmlWriter(final Writer writer, final String indentString)
   {
     this(writer, new DefaultTagDescription(), indentString);
   }
@@ -83,14 +86,15 @@ public class XmlWriter extends XmlWriterSupport
   /**
    * Creates a new support instance.
    *
-   * @param safeTags     the tags that are safe for line breaks.
-   * @param indentString the indent string.
+   * @param writer         the character stream.
+   * @param tagDescription the tags that are safe for line breaks.
+   * @param indentString   the indent string.
    */
-  public XmlWriter (final Writer writer,
-                    final TagDescription safeTags,
-                    final String indentString)
+  public XmlWriter(final Writer writer,
+                   final TagDescription tagDescription,
+                   final String indentString)
   {
-    super(safeTags, indentString);
+    super(tagDescription, indentString);
     if (writer == null)
     {
       throw new NullPointerException("Writer must not be null.");
@@ -100,38 +104,53 @@ public class XmlWriter extends XmlWriterSupport
   }
 
   /**
-   * Writes the XML declaration that usually appears at the top of every XML file.
+   * Writes the XML declaration that usually appears at the top of every XML
+   * file.
    *
-   * @throws java.io.IOException if there is a problem writing to the character stream.
+   * @param encoding the encoding that should be declared (this has to match the
+   *                 encoding of the writer, or funny things may happen when
+   *                 parsing the xml file later).
+   * @throws java.io.IOException if there is a problem writing to the character
+   *                             stream.
    */
-  public void writeXmlDeclaration (String encoding)
-          throws IOException
+  public void writeXmlDeclaration(final String encoding)
+      throws IOException
   {
+    if (encoding == null)
+    {
+      this.writer.write("<?xml version=\"1.0\"");
+      this.writer.write("\"?>");
+      this.writer.write(XmlWriterSupport.getLineSeparator());
+      return;
+    }
+
     this.writer.write("<?xml version=\"1.0\" encoding=\"");
     this.writer.write(encoding);
-    this.writer.write ("\"?>");
-    this.writer.write(getLineSeparator());
+    this.writer.write("\"?>");
+    this.writer.write(XmlWriterSupport.getLineSeparator());
   }
 
   /**
    * Writes an opening XML tag that has no attributes.
    *
-   * @param name  the tag name.
-   * @param close a flag that controls whether or not the tag is closed immediately.
+   * @param namespace the namespace URI for the element
+   * @param name      the tag name.
+   * @param close     a flag that controls whether or not the tag is closed
+   *                  immediately.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeTag (final String namespace,
-                        final String name,
-                        final boolean close)
-          throws IOException
+  public void writeTag(final String namespace,
+                       final String name,
+                       final boolean close)
+      throws IOException
   {
     if (close)
     {
-      writeTag(this.writer, namespace, name, null, CLOSE);
+      writeTag(this.writer, namespace, name, null, XmlWriterSupport.CLOSE);
     }
     else
     {
-      writeTag(this.writer, namespace, name, null, OPEN);
+      writeTag(this.writer, namespace, name, null, XmlWriterSupport.OPEN);
     }
   }
 
@@ -140,8 +159,8 @@ public class XmlWriter extends XmlWriterSupport
    *
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeCloseTag ()
-          throws IOException
+  public void writeCloseTag()
+      throws IOException
   {
     super.writeCloseTag(this.writer);
   }
@@ -149,35 +168,38 @@ public class XmlWriter extends XmlWriterSupport
   /**
    * Writes an opening XML tag with an attribute/value pair.
    *
+   * @param namespace      the namespace URI for the element
    * @param name           the tag name.
    * @param attributeName  the attribute name.
    * @param attributeValue the attribute value.
    * @param close          controls whether the tag is closed.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeTag (final String namespace,
-                        final String name,
-                        final String attributeName,
-                        final String attributeValue,
-                        final boolean close)
-          throws IOException
+  public void writeTag(final String namespace,
+                       final String name,
+                       final String attributeName,
+                       final String attributeValue,
+                       final boolean close)
+      throws IOException
   {
-    writeTag(this.writer, namespace, name, attributeName, attributeValue, close);
+    writeTag(this.writer, namespace, name, attributeName, attributeValue,
+        close);
   }
 
   /**
    * Writes an opening XML tag along with a list of attribute/value pairs.
    *
+   * @param namespace  the namespace URI for the element
    * @param name       the tag name.
    * @param attributes the attributes.
    * @param close      controls whether the tag is closed.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeTag (final String namespace,
-                        final String name,
-                        final AttributeList attributes,
-                        final boolean close)
-          throws IOException
+  public void writeTag(final String namespace,
+                       final String name,
+                       final AttributeList attributes,
+                       final boolean close)
+      throws IOException
   {
     writeTag(this.writer, namespace, name, attributes, close);
   }
@@ -188,8 +210,8 @@ public class XmlWriter extends XmlWriterSupport
    * @param text the text.
    * @throws IOException if there is a problem writing to the character stream.
    */
-  public void writeText (final String text)
-          throws IOException
+  public void writeText(final String text)
+      throws IOException
   {
     this.writer.write(text);
     setLineEmpty(false);
@@ -200,18 +222,29 @@ public class XmlWriter extends XmlWriterSupport
    *
    * @throws IOException if there is a problem closing the character stream.
    */
-  public void close ()
-          throws IOException
+  public void close()
+      throws IOException
   {
     this.writer.close();
   }
 
-  public void writeComment (String s)
-          throws IOException
+  /**
+   * Writes a comment into the generated xml file.
+   *
+   * @param comment the comment text
+   * @throws IOException if there is a problem writing to the character stream.
+   */
+  public void writeComment(final String comment)
+      throws IOException
   {
-    super.writeComment(writer, s);
+    super.writeComment(writer, comment);
   }
 
+  /**
+   * Writes a linebreak to the writer.
+   *
+   * @throws IOException if there is a problem writing to the character stream.
+   */
   public void writeNewLine()
       throws IOException
   {
