@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Element.java,v 1.9 2006/12/03 20:24:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,6 +35,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Iterator;
+import java.util.Collections;
 
 import org.jfree.layouting.input.style.CSSStyleRule;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
@@ -52,8 +54,7 @@ import org.jfree.report.expressions.Expression;
  * Both the name and the id attribute may be null.
  * <p/>
  * Properties in the 'http://jfreereport.sourceforge.net/namespaces/engine/flow'
- * namespace and in the
- * 'http://jfreereport.sourceforge.net/namespaces/engine/compatibility'
+ * namespace and in the 'http://jfreereport.sourceforge.net/namespaces/engine/compatibility'
  * namespace are considered internal. You should only touch them, if you really
  * know what you are doing.
  *
@@ -62,17 +63,25 @@ import org.jfree.report.expressions.Expression;
 public abstract class Element extends Node
 {
   private static final Expression[] EMPTY_EXPRESSIONS = new Expression[0];
-
+  private static final String[] EMPTY_STRINGS = new String[0];
+  private static final Map EMPTY_MAP = Collections.unmodifiableMap(
+      new HashMap());
   public static final String NAME_ATTRIBUTE = "name";
   public static final String ID_ATTRIBUTE = "id";
-  /** The type corresponds (somewhat) to the tagname of HTML. */
+  /**
+   * The type corresponds (somewhat) to the tagname of HTML.
+   */
   public static final String TYPE_ATTRIBUTE = "type";
-  /** See XML-Namespaces for the idea of that one ... */
+  /**
+   * See XML-Namespaces for the idea of that one ...
+   */
   public static final String NAMESPACE_ATTRIBUTE = "namespace";
   public static final String VIRTUAL_ATTRIBUTE = "virtual";
 
 
-  /** The name of the element. */
+  /**
+   * The name of the element.
+   */
   private AttributeMap attributes;
   private CSSStyleRule style;
   private ArrayList expressions;
@@ -95,43 +104,50 @@ public abstract class Element extends Node
    */
   protected Element()
   {
-    this.attributes = new AttributeMap();
     this.style = new CSSStyleRule(null, null);
-    this.expressions = new ArrayList();
-    this.attributeExpressions = new AttributeMap();
-    this.styleExpressions = new HashMap();
+    this.attributes = new AttributeMap();
+
+//    this.expressions = new ArrayList();
+//    this.attributeExpressions = new AttributeMap();
+//    this.styleExpressions = new HashMap();
+
     this.enabled = true;
     setNamespace(JFreeReportInfo.REPORT_NAMESPACE);
   }
 
   public String getNamespace()
   {
-    return (String) getAttribute(JFreeReportInfo.REPORT_NAMESPACE, NAMESPACE_ATTRIBUTE);
+    return (String) getAttribute
+        (JFreeReportInfo.REPORT_NAMESPACE, Element.NAMESPACE_ATTRIBUTE);
   }
 
   public void setNamespace(final String id)
   {
-    setAttribute(JFreeReportInfo.REPORT_NAMESPACE, NAMESPACE_ATTRIBUTE, id);
+    setAttribute
+        (JFreeReportInfo.REPORT_NAMESPACE, Element.NAMESPACE_ATTRIBUTE, id);
   }
 
   public String getId()
   {
-    return (String) getAttribute(Namespaces.XML_NAMESPACE, ID_ATTRIBUTE);
+    return (String) getAttribute
+        (Namespaces.XML_NAMESPACE, Element.ID_ATTRIBUTE);
   }
 
   public void setId(final String id)
   {
-    setAttribute(Namespaces.XML_NAMESPACE, ID_ATTRIBUTE, id);
+    setAttribute(Namespaces.XML_NAMESPACE, Element.ID_ATTRIBUTE, id);
   }
 
   public String getType()
   {
-    return (String) getAttribute(JFreeReportInfo.REPORT_NAMESPACE, TYPE_ATTRIBUTE);
+    return (String) getAttribute
+        (JFreeReportInfo.REPORT_NAMESPACE, Element.TYPE_ATTRIBUTE);
   }
 
   public void setType(final String type)
   {
-    setAttribute(JFreeReportInfo.REPORT_NAMESPACE, TYPE_ATTRIBUTE, type);
+    setAttribute
+        (JFreeReportInfo.REPORT_NAMESPACE, Element.TYPE_ATTRIBUTE, type);
   }
 
   /**
@@ -145,7 +161,7 @@ public abstract class Element extends Node
    */
   public void setName(final String name)
   {
-    setAttribute(Namespaces.XML_NAMESPACE, NAME_ATTRIBUTE, name);
+    setAttribute(Namespaces.XML_NAMESPACE, Element.NAME_ATTRIBUTE, name);
   }
 
 
@@ -156,35 +172,50 @@ public abstract class Element extends Node
    */
   public String getName()
   {
-    return (String) getAttribute(Namespaces.XML_NAMESPACE, NAME_ATTRIBUTE);
+    return (String) getAttribute
+        (Namespaces.XML_NAMESPACE, Element.NAME_ATTRIBUTE);
   }
 
-  public void setAttribute(String name, Object value)
+  public void setAttribute(final String name, final Object value)
   {
     setAttribute(getNamespace(), name, value);
   }
 
-  public void setAttribute(final String namespace, String name, Object value)
+  public void setAttribute(final String namespace,
+                           final String name,
+                           final Object value)
   {
     if (name == null)
     {
       throw new NullPointerException();
     }
+    if (attributes == null)
+    {
+      this.attributes = new AttributeMap();
+    }
     this.attributes.setAttribute(namespace, name, value);
   }
 
-  public Object getAttribute(String name)
+  public Object getAttribute(final String name)
   {
     return getAttribute(getNamespace(), name);
   }
 
-  public Object getAttribute(String namespace, String name)
+  public Object getAttribute(final String namespace, final String name)
   {
+    if (this.attributes == null)
+    {
+      return null;
+    }
     return this.attributes.getAttribute(namespace, name);
   }
 
-  public Map getAttributes(String namespace)
+  public Map getAttributes(final String namespace)
   {
+    if (this.attributes == null)
+    {
+      return null;
+    }
     return this.attributes.getAttributes(namespace);
   }
 
@@ -195,6 +226,10 @@ public abstract class Element extends Node
 
   public String[] getAttributeNameSpaces()
   {
+    if (this.attributes == null)
+    {
+      return Element.EMPTY_STRINGS;
+    }
     return this.attributes.getNameSpaces();
   }
 
@@ -209,7 +244,7 @@ public abstract class Element extends Node
     return style;
   }
 
-  public void setVisibility(CSSConstant v)
+  public void setVisibility(final CSSConstant v)
   {
     getStyle().setPropertyValue(BoxStyleKeys.VISIBILITY, v);
   }
@@ -217,7 +252,8 @@ public abstract class Element extends Node
 
   public CSSConstant getVisibility()
   {
-    return (CSSConstant) getStyle().getPropertyCSSValue(BoxStyleKeys.VISIBILITY);
+    return (CSSConstant) getStyle().getPropertyCSSValue(
+        BoxStyleKeys.VISIBILITY);
   }
 
   public void setAttributeExpression(final String attr,
@@ -229,18 +265,30 @@ public abstract class Element extends Node
   /**
    * Adds a function to the report's collection of expressions.
    *
-   * @param function the function.
+   * @param namespace
+   * @param attr
+   * @param function  the function.
    */
   public void setAttributeExpression(final String namespace,
                                      final String attr,
                                      final Expression function)
   {
+
+    if (attributeExpressions == null)
+    {
+      if (function == null)
+      {
+        return;
+      }
+      this.attributeExpressions = new AttributeMap();
+    }
     attributeExpressions.setAttribute(namespace, attr, function);
   }
 
   /**
    * Returns the expressions for the report.
    *
+   * @param attr
    * @return the expressions.
    */
   public Expression getAttributeExpression(final String attr)
@@ -251,16 +299,29 @@ public abstract class Element extends Node
   public Expression getAttributeExpression(final String namespace,
                                            final String attr)
   {
+    if (attributeExpressions == null)
+    {
+      return null;
+    }
     return (Expression) attributeExpressions.getAttribute(namespace, attr);
   }
 
-  public Map getAttributeExpressions(String namespace)
+  public Map getAttributeExpressions(final String namespace)
   {
+    if (attributeExpressions == null)
+    {
+      return null;
+    }
     return attributeExpressions.getAttributes(namespace);
   }
 
   public AttributeMap getAttributeExpressionMap()
   {
+    if (this.attributeExpressions == null)
+    {
+      return new AttributeMap();
+    }
+
     return new AttributeMap(this.attributeExpressions);
   }
 
@@ -269,16 +330,24 @@ public abstract class Element extends Node
    * Adds a function to the report's collection of expressions.
    *
    * @param function the function.
+   * @param property
    */
   public void setStyleExpression(final String property,
                                  final Expression function)
   {
     if (function == null)
     {
-      styleExpressions.remove(property);
+      if (styleExpressions != null)
+      {
+        styleExpressions.remove(property);
+      }
     }
     else
     {
+      if (styleExpressions == null)
+      {
+        styleExpressions = new HashMap();
+      }
       styleExpressions.put(property, function);
     }
   }
@@ -286,16 +355,25 @@ public abstract class Element extends Node
   /**
    * Returns the expressions for the report.
    *
+   * @param property
    * @return the expressions.
    */
   public Expression getStyleExpression(final String property)
   {
+    if (styleExpressions == null)
+    {
+      return null;
+    }
     return (Expression) styleExpressions.get(property);
   }
 
   public Map getStyleExpressions()
   {
-    return styleExpressions;
+    if (styleExpressions == null)
+    {
+      return Element.EMPTY_MAP;
+    }
+    return Collections.unmodifiableMap(styleExpressions);
   }
 
   /**
@@ -305,6 +383,10 @@ public abstract class Element extends Node
    */
   public void addExpression(final Expression function)
   {
+    if (expressions == null)
+    {
+      expressions = new ArrayList();
+    }
     expressions.add(function);
   }
 
@@ -315,12 +397,12 @@ public abstract class Element extends Node
    */
   public Expression[] getExpressions()
   {
-    if (expressions.size() == 0)
+    if (expressions == null)
     {
-      return EMPTY_EXPRESSIONS;
+      return Element.EMPTY_EXPRESSIONS;
     }
-    return (Expression[]) expressions.toArray(
-            new Expression[expressions.size()]);
+    return (Expression[]) expressions.toArray
+        (new Expression[expressions.size()]);
   }
 
   /**
@@ -333,9 +415,16 @@ public abstract class Element extends Node
     if (expressions == null)
     {
       throw new NullPointerException(
-              "JFreeReport.setExpressions(...) : null not permitted.");
+          "JFreeReport.setExpressions(...) : null not permitted.");
     }
-    this.expressions.clear();
+    if (this.expressions == null)
+    {
+      this.expressions = new ArrayList(expressions.length);
+    }
+    else
+    {
+      this.expressions.clear();
+    }
     this.expressions.addAll(Arrays.asList(expressions));
   }
 
@@ -382,7 +471,7 @@ public abstract class Element extends Node
     return super.getLocale();
   }
 
-  protected Locale getLocaleFromAttributes ()
+  protected Locale getLocaleFromAttributes()
   {
     final Object mayBeXmlLang = getAttribute(Namespaces.XML_NAMESPACE, "lang");
     if (mayBeXmlLang instanceof String)
@@ -394,7 +483,8 @@ public abstract class Element extends Node
       return (Locale) mayBeXmlLang;
     }
 
-    final Object mayBeXhtmlLang = getAttribute(Namespaces.XHTML_NAMESPACE, "lang");
+    final Object mayBeXhtmlLang = getAttribute(Namespaces.XHTML_NAMESPACE,
+        "lang");
     if (mayBeXhtmlLang instanceof String)
     {
       return LocaleUtility.createLocale((String) mayBeXhtmlLang);
@@ -425,5 +515,66 @@ public abstract class Element extends Node
   public void setVirtual(final boolean virtual)
   {
     this.virtual = virtual;
+  }
+
+
+  public Object clone()
+      throws CloneNotSupportedException
+  {
+    final Element element = (Element) super.clone();
+    element.style = (CSSStyleRule) style.clone();
+    if (attributes != null)
+    {
+      element.attributes = (AttributeMap) attributes.clone();
+    }
+
+    if (attributeExpressions != null)
+    {
+      element.attributeExpressions = (AttributeMap) attributeExpressions.clone();
+      final String[] namespaces = element.attributeExpressions.getNameSpaces();
+      for (int i = 0; i < namespaces.length; i++)
+      {
+        final String namespace = namespaces[i];
+        final Map attrsNs = element.attributeExpressions.getAttributes(
+            namespace);
+        final Iterator it =
+            attrsNs.entrySet().iterator();
+        while (it.hasNext())
+        {
+          final Map.Entry entry = (Map.Entry) it.next();
+          final Expression exp = (Expression) entry.getValue();
+          entry.setValue(exp.clone());
+        }
+      }
+    }
+
+    if (expressions != null)
+    {
+      element.expressions = (ArrayList) expressions.clone();
+      element.expressions.clear();
+      for (int i = 0; i < expressions.size(); i++)
+      {
+        final Expression expression = (Expression) expressions.get(i);
+        element.expressions.add(expression.clone());
+      }
+    }
+    if (styleExpressions != null)
+    {
+      element.styleExpressions = (HashMap) styleExpressions.clone();
+      final Iterator styleExpressionsIt =
+          element.styleExpressions.entrySet().iterator();
+      while (styleExpressionsIt.hasNext())
+      {
+        final Map.Entry entry = (Map.Entry) styleExpressionsIt.next();
+        final Expression exp = (Expression) entry.getValue();
+        entry.setValue(exp.clone());
+      }
+    }
+
+    if (displayCondition != null)
+    {
+      element.displayCondition = (Expression) displayCondition.clone();
+    }
+    return element;
   }
 }

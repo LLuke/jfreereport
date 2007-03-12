@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BufferingLayoutController.java,v 1.1 2007/03/06 14:38:43 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -149,7 +149,6 @@ public abstract class BufferingLayoutController
   {
     super.initialize(node, flowController, parent);
     delegate = getInitialDelegate();
-    delegate.initialize(getNode(), getFlowController(), this);
   }
 
   protected abstract LayoutController getInitialDelegate();

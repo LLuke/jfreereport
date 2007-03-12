@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AutoTableLayoutController.java,v 1.1 2006/12/09 21:17:59 taqua Exp $
+ * $Id: AutoTableLayoutController.java,v 1.2 2007/03/06 14:37:38 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -64,47 +64,17 @@ public class AutoTableLayoutController extends ElementLayoutController
   {
   }
 
-
-  /**
-   * Initializes the layout controller. This method is called exactly once. It
-   * is the creators responsibility to call this method.
-   * <p/>
-   * Calling initialize after the first advance must result in a
-   * IllegalStateException.
-   *
-   * @param node           the currently processed object or layout node.
-   * @param flowController the current flow controller.
-   * @param parent         the parent layout controller that was responsible for
-   *                       instantiating this controller.
-   * @throws DataSourceException        if there was a problem reading data from
-   *                                    the datasource.
-   * @throws ReportProcessingException  if there was a general problem during
-   *                                    the report processing.
-   * @throws ReportDataFactoryException if a query failed.
-   */
-  public void initialize(final Object node,
-                         final FlowController flowController,
-                         final LayoutController parent)
-      throws DataSourceException, ReportDataFactoryException, ReportProcessingException
-  {
-    if (node instanceof AutoTableElement == false)
-    {
-      throw new ReportProcessingException("Element type is no auto-table.");
-    }
-
-    super.initialize(node, flowController, parent);
-  }
-
   protected LayoutController processContent(final ReportTarget target)
       throws DataSourceException, ReportProcessingException, ReportDataFactoryException
   {
     switch(processingState)
     {
-      case HANDLING_HEADER: return processHeader(target);
-      case HANDLING_FOOTER: return processFooter(target);
-      case HANDLING_DATA: return processData(target);
+      case AutoTableLayoutController.HANDLING_HEADER: return processHeader(target);
+      case AutoTableLayoutController.HANDLING_FOOTER: return processFooter(target);
+      case AutoTableLayoutController.HANDLING_DATA: return processData(target);
+      default: throw new ReportProcessingException("No such state.");
     }
-    throw new ReportProcessingException("No such state.");
+
   }
 
   private LayoutController processData(final ReportTarget target)
@@ -152,7 +122,7 @@ public class AutoTableLayoutController extends ElementLayoutController
     {
       // Go back to the beginning. We have made a commit, so the cursor points
       // to the next row of data ..
-      AutoTableLayoutController derived = (AutoTableLayoutController) clone();
+      final AutoTableLayoutController derived = (AutoTableLayoutController) clone();
       derived.setFlowController(cfc);
       derived.currentColumn = 0;
       return derived;
@@ -161,9 +131,9 @@ public class AutoTableLayoutController extends ElementLayoutController
 
     // Advance is impossible, that means we reached the end of the group or
     // the end of the table ..
-    AutoTableLayoutController derived = (AutoTableLayoutController) clone();
+    final AutoTableLayoutController derived = (AutoTableLayoutController) clone();
     derived.currentColumn = 0;
-    derived.processingState = HANDLING_FOOTER;
+    derived.processingState = AutoTableLayoutController.HANDLING_FOOTER;
     return derived;
   }
 
@@ -173,7 +143,7 @@ public class AutoTableLayoutController extends ElementLayoutController
     final AutoTableElement node = (AutoTableElement) getElement();
     if (node.getFooterCount() == 0)
     {
-      AutoTableLayoutController derived = (AutoTableLayoutController) clone();
+      final AutoTableLayoutController derived = (AutoTableLayoutController) clone();
       derived.currentColumn = 0;
       derived.processingState = -1;
       derived.setProcessingState(ElementLayoutController.FINISHING);
@@ -207,7 +177,7 @@ public class AutoTableLayoutController extends ElementLayoutController
         (AutoTableModule.AUTOTABLE_NAMESPACE, "footer-row");
     target.endElement(elementMap);
 
-    AutoTableLayoutController derived = (AutoTableLayoutController) clone();
+    final AutoTableLayoutController derived = (AutoTableLayoutController) clone();
     derived.currentColumn = 0;
     derived.processingState = -1;
     derived.setProcessingState(ElementLayoutController.FINISHING);
@@ -220,9 +190,9 @@ public class AutoTableLayoutController extends ElementLayoutController
     final AutoTableElement node = (AutoTableElement) getElement();
     if (node.getHeaderCount() == 0)
     {
-      AutoTableLayoutController derived = (AutoTableLayoutController) clone();
+      final AutoTableLayoutController derived = (AutoTableLayoutController) clone();
       derived.currentColumn = 0;
-      derived.processingState = HANDLING_DATA;
+      derived.processingState = AutoTableLayoutController.HANDLING_DATA;
       return derived;
     }
 
@@ -253,9 +223,9 @@ public class AutoTableLayoutController extends ElementLayoutController
         (AutoTableModule.AUTOTABLE_NAMESPACE, "header-row");
     target.endElement(elementMap);
 
-    AutoTableLayoutController derived = (AutoTableLayoutController) clone();
+    final AutoTableLayoutController derived = (AutoTableLayoutController) clone();
     derived.currentColumn = 0;
-    derived.processingState = HANDLING_DATA;
+    derived.processingState = AutoTableLayoutController.HANDLING_DATA;
     return derived;
   }
 

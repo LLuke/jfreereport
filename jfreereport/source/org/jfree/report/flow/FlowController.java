@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FlowController.java,v 1.5 2006/12/06 17:26:06 taqua Exp $
+ * $Id: FlowController.java,v 1.6 2006/12/19 17:42:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -67,7 +67,6 @@ public interface FlowController
    * Activates expressions that compute running values. This does not activate
    * precomputed expressions.
    *
-   * @param element
    * @param expressions
    * @return
    * @throws DataSourceException

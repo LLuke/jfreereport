@@ -9,11 +9,9 @@ import org.jfree.report.i18n.ResourceBundleFactory;
 import org.jfree.report.util.ReportParameters;
 
 /**
- * Created by IntelliJ IDEA.
- * User: user
- * Date: 08.12.2006
- * Time: 15:09:50
- * To change this template use File | Settings | File Templates.
+ * A report job holds all properties that are required to successfully execute
+ * a report process. A report job does not hold output target specific
+ * parameters like target file names etc.
  */
 public interface ReportJob extends Serializable, Cloneable
 {
@@ -33,7 +31,7 @@ public interface ReportJob extends Serializable, Cloneable
 
   String getName();
 
-  PageFormat getPageFormat();
-
-  void setPageFormat(PageFormat pageFormat);
+//  PageFormat getPageFormat();
+//
+//  void setPageFormat(PageFormat pageFormat);
 }

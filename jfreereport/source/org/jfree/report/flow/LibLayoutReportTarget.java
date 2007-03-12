@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LibLayoutReportTarget.java,v 1.10 2006/12/03 20:24:09 taqua Exp $
+ * $Id: LibLayoutReportTarget.java,v 1.11 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -96,9 +96,11 @@ public class LibLayoutReportTarget extends AbstractReportTarget
   private LayoutProcess layoutProcess;
 
   /**
-   * @param basResourceKey  may be null, if the report has not gone through the parser
+   *
+   * @param reportJob
+   * @param baseResourceKey  may be null, if the report has not gone through the parser
    * @param resourceManager may be null, a generic resource manager will be built
-   * @param feed
+   * @param layoutProcess
    */
   public LibLayoutReportTarget (final ReportJob reportJob,
                                 final ResourceKey baseResourceKey,

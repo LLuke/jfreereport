@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractExpression.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.4 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,13 +45,13 @@ import org.jfree.util.Configuration;
  */
 public abstract class AbstractExpression implements Expression
 {
+  private transient ExpressionRuntime runtime;
   private String name;
-  private ExpressionRuntime runtime;
   private boolean deepTraversing;
   private boolean precompute;
   private boolean preserve;
 
-  public AbstractExpression()
+  protected AbstractExpression()
   {
   }
 
@@ -71,7 +71,7 @@ public abstract class AbstractExpression implements Expression
    *
    * @param name the name.
    */
-  public void setName(String name)
+  public void setName(final String name)
   {
     this.name = name;
   }
@@ -117,7 +117,7 @@ public abstract class AbstractExpression implements Expression
    *
    * @param runtime the runtime information for the expression
    */
-  public void setRuntime(ExpressionRuntime runtime)
+  public void setRuntime(final ExpressionRuntime runtime)
   {
     this.runtime = runtime;
   }
@@ -128,7 +128,7 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Returns the current {@link MasterDataRow}.
+   * Returns the current {@link DataRow}.
    *
    * @return the data row.
    */

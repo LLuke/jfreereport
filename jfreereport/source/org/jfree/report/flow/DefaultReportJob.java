@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultReportJob.java,v 1.1 2006/12/08 14:21:24 taqua Exp $
+ * $Id: DefaultReportJob.java,v 1.2 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -52,7 +52,7 @@ implements ReportJob
   private ModifiableConfiguration configuration;
   private ResourceBundleFactory resourceBundleFactory;
   private String name;
-  private PageFormat pageFormat;
+  //private PageFormat pageFormat;
 
   public DefaultReportJob(final ReportStructureRoot report)
   {
@@ -144,14 +144,14 @@ implements ReportJob
   {
     this.name = name;
   }
-
-  public PageFormat getPageFormat()
-  {
-    return pageFormat;
-  }
-
-  public void setPageFormat(PageFormat pageFormat)
-  {
-    this.pageFormat = pageFormat;
-  }
+//
+//  public PageFormat getPageFormat()
+//  {
+//    return pageFormat;
+//  }
+//
+//  public void setPageFormat(PageFormat pageFormat)
+//  {
+//    this.pageFormat = pageFormat;
+//  }
 }

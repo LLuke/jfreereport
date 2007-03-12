@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: StaticTextLayoutController.java,v 1.4 2006/12/09 21:19:04 taqua Exp $
+ * $Id: StaticTextLayoutController.java,v 1.5 2007/03/06 14:37:38 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,9 +35,7 @@ import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.ReportTarget;
-import org.jfree.report.structure.Node;
 import org.jfree.report.structure.StaticText;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 24.11.2006, 15:06:56
@@ -53,31 +51,6 @@ public class StaticTextLayoutController extends AbstractLayoutController
 
   public StaticTextLayoutController()
   {
-  }
-
-  /**
-   * Initializes the layout controller. This method is called exactly once. It
-   * is the creators responsibility to call this method.
-   * <p/>
-   * Calling initialize after the first advance must result in a
-   * IllegalStateException.
-   *
-   * @param node           the currently processed object or layout node.
-   * @param flowController the current flow controller.
-   * @param parent         the parent layout controller that was responsible for
-   *                       instantiating this controller.
-   * @throws DataSourceException        if there was a problem reading data from
-   *                                    the datasource.
-   * @throws ReportProcessingException  if there was a general problem during
-   *                                    the report processing.
-   * @throws ReportDataFactoryException if a query failed.
-   */
-  public void initialize(final Object node,
-                         final FlowController flowController,
-                         final LayoutController parent)
-      throws DataSourceException, ReportDataFactoryException, ReportProcessingException
-  {
-    super.initialize(node, flowController, parent);
   }
 
   /**

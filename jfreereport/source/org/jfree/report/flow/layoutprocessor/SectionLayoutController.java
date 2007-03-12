@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionLayoutController.java,v 1.7 2006/12/09 21:19:04 taqua Exp $
+ * $Id: SectionLayoutController.java,v 1.8 2007/03/06 14:37:38 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,10 +33,10 @@ package org.jfree.report.flow.layoutprocessor;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.expressions.Expression;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.ReportContext;
 import org.jfree.report.flow.ReportTarget;
-import org.jfree.report.structure.Element;
 import org.jfree.report.structure.Node;
 import org.jfree.report.structure.Section;
 
@@ -80,9 +80,19 @@ public class SectionLayoutController extends ElementLayoutController
     if (index < nodes.length)
     {
       final SectionLayoutController derived = (SectionLayoutController) clone();
-      derived.setProcessingState(ElementLayoutController.WAITING_FOR_JOIN);
-      return layoutControllerFactory.create
-          (flowController, nodes[index], derived);
+      final Node node = nodes[index];
+
+      if (isDisplayable(node))
+      {
+        derived.setProcessingState(ElementLayoutController.WAITING_FOR_JOIN);
+        return layoutControllerFactory.create
+            (flowController, node, derived);
+      }
+      else
+      {
+        derived.index += 1;
+        return LayoutControllerUtil.skipInvisibleElement(derived);
+      }
     }
     else
     {
@@ -90,6 +100,29 @@ public class SectionLayoutController extends ElementLayoutController
       derived.setProcessingState(ElementLayoutController.FINISHING);
       return derived;
     }
+  }
+
+  private boolean isDisplayable (final Node node)
+      throws DataSourceException
+  {
+    if (node.isEnabled() == false)
+    {
+      return false;
+    }
+
+    final Expression expression = node.getDisplayCondition();
+    if (expression == null)
+    {
+      return true;
+    }
+    
+    final Object result = LayoutControllerUtil.evaluateExpression
+        (getFlowController(), node, expression);
+    if (Boolean.TRUE.equals (result))
+    {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -171,12 +204,7 @@ public class SectionLayoutController extends ElementLayoutController
     for (; index < nodes.length; index++)
     {
       final Node node = nodes[index];
-      if (node instanceof Element == false)
-      {
-        break;
-      }
-      final Element e = (Element) node;
-      if (e.isEnabled())
+      if (node.isEnabled())
       {
         break;
       }

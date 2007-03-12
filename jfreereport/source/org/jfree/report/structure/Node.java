@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: Node.java,v 1.3 2006/12/03 20:24:17 taqua Exp $
+ * $Id: Node.java,v 1.4 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.expressions.Expression;
 
 /**
  * A node is the most basic unit in a report. It acts as general superclass for
@@ -40,7 +41,7 @@ import org.jfree.report.JFreeReport;
  *
  * @author Thomas Morgner
  */
-public abstract class Node implements Serializable
+public abstract class Node implements Serializable, Cloneable
 {
   private Node parent;
 
@@ -121,5 +122,20 @@ public abstract class Node implements Serializable
       return parent.getLocale();
     }
     return Locale.getDefault();
+  }
+
+  public Expression getDisplayCondition()
+  {
+    return null;
+  }
+
+  public boolean isEnabled()
+  {
+    return true;
+  }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    return super.clone();
   }
 }

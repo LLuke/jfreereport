@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractReportProcessor.java,v 1.6 2006/12/08 14:20:41 taqua Exp $
+ * $Id: AbstractReportProcessor.java,v 1.7 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -51,7 +51,8 @@ public abstract class AbstractReportProcessor implements ReportProcessor
   }
 
   protected void processReportRun
-      (final ReportJob job, final ReportTarget target)
+      (final ReportJob job,
+       final ReportTarget target)
       throws ReportDataFactoryException,
       DataSourceException, ReportProcessingException
   {

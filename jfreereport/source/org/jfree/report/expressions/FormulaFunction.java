@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FormulaFunction.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
+ * $Id: FormulaFunction.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,6 +31,7 @@ package org.jfree.report.expressions;
 
 import org.jfree.formula.Formula;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.parser.ParseException;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.flow.ReportContext;
 import org.jfree.util.Log;
@@ -268,5 +269,23 @@ public class FormulaFunction extends AbstractExpression implements Function
       o.compiledFormula = (Formula) compiledFormula.clone();
     }
     return o;
+  }
+
+
+  /**
+   * Returns the compiled formula. The formula is not connected to a formula
+   * context.
+   *
+   * @return the formula.
+   * @throws org.jfree.formula.parser.ParseException if the formula contains syntax errors.
+   */
+  public Formula getCompiledFormula()
+      throws ParseException
+  {
+    if (compiledFormula == null)
+    {
+      compiledFormula = new Formula(formulaExpression);
+    }
+    return compiledFormula;
   }
 }

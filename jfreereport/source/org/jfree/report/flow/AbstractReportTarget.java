@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractReportTarget.java,v 1.5 2006/12/03 20:24:09 taqua Exp $
+ * $Id: AbstractReportTarget.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,6 +36,7 @@ import org.jfree.report.JFreeReportInfo;
 import org.jfree.report.structure.Element;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * Creation-Date: 03.07.2006, 16:31:12
@@ -112,6 +113,20 @@ public abstract class AbstractReportTarget implements ReportTarget
       return (String) attribute;
     }
     return "element";
+  }
+
+  protected final boolean isElementOfType (final String uri,
+                                     final String tagName,
+                                     final AttributeMap attrs)
+  {
+    final String namespace = getNamespaceFromAttribute(attrs);
+    if (ObjectUtilities.equal(namespace, uri) == false)
+    {
+      return false;
+    }
+
+    final String elementTagName = getElemenTypeFromAttribute(attrs);
+    return ObjectUtilities.equal(tagName, elementTagName);
   }
 
 

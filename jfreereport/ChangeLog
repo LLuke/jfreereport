@@ -2,7 +2,16 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.9.0-02  (25-Jan-2006)
+
+0.9.0-04: 
+        * Simplified the layout controller API. It should be easier now to
+          derive own layout controller without having to reimplement everything
+          from scratch.
+
+        * FormulaExpression and FormulaFunction now allow some introspection of
+          the contained formula without having to recompile it every time. 
+
+0.9.0-02: (25-Jan-2006)
         * [BUG] Thousands of bugs fixed, which caused weird crashes everywhere.
 
         * Bean-DataSources and SQL-DataSources aligned with the 0.8 codeline. 

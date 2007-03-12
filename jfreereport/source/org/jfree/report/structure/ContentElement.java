@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ContentElement.java,v 1.5 2006/12/03 20:24:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,9 +32,9 @@ package org.jfree.report.structure;
 import org.jfree.report.expressions.Expression;
 
 /**
- * A element holding values from the report data sources. These values
- * can be URLs (pointing to text, images or drawables), Images, Text, Nodes,
- * Drawables or Shapes.
+ * A element holding values from the report data sources. These values can be
+ * URLs (pointing to text, images or drawables), Images, Text, Nodes, Drawables
+ * or Shapes.
  *
  * @author Thomas Morgner
  */
@@ -47,13 +47,25 @@ public class ContentElement extends Element
     setType("content");
   }
 
-  public Expression getValueExpression ()
+  public Expression getValueExpression()
   {
     return valueExpression;
   }
 
-  public void setValueExpression (Expression valueExpression)
+  public void setValueExpression(final Expression valueExpression)
   {
     this.valueExpression = valueExpression;
+  }
+
+
+  public Object clone()
+      throws CloneNotSupportedException
+  {
+    final ContentElement ce = (ContentElement) super.clone();
+    if (valueExpression != null)
+    {
+      ce.valueExpression = (Expression) valueExpression.clone();
+    }
+    return ce;
   }
 }

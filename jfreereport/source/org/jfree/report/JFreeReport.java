@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: JFreeReport.java,v 1.41 2006/12/30 13:45:44 taqua Exp $
+ * $Id: JFreeReport.java,v 1.42 2007/03/01 18:27:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -218,5 +218,35 @@ public class JFreeReport extends ReportDefinition
       return Locale.getDefault();
     }
     return locale;
+  }
+
+
+  /**
+   private ModifiableConfiguration reportConfiguration;
+
+   private ArrayList styleSheets;
+   private StyleSheet pageFormatStyleSheet;
+   private CSSPageRule pageRule;
+
+   private ReportParameters parameters;
+
+   private ReportDataFactory dataFactory;
+
+   private ResourceManager resourceManager;
+   private ResourceKey baseResource;
+   *
+   * @return
+   * @throws CloneNotSupportedException
+   */
+  public Object clone()
+      throws CloneNotSupportedException
+  {
+    final JFreeReport report = (JFreeReport) super.clone();
+    report.dataFactory = dataFactory.derive();
+    report.parameters = (ReportParameters) parameters.clone();
+    report.pageRule = (CSSPageRule) pageRule.clone();
+    report.styleSheets = (ArrayList) styleSheets.clone();
+    report.pageFormatStyleSheet = pageFormatStyleSheet;
+    return report;
   }
 }

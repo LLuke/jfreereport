@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultFlowController.java,v 1.6 2006/12/06 17:26:06 taqua Exp $
+ * $Id: DefaultFlowController.java,v 1.7 2006/12/19 17:42:02 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -197,7 +197,7 @@ public class DefaultFlowController implements FlowController
    * Job-Definition, while subreports will read their parameters from the
    * current datarow state.
    *
-   * @param report
+   * @param query
    * @return
    * @throws ReportDataFactoryException
    * @throws DataSourceException

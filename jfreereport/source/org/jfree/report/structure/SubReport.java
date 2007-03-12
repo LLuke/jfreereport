@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SubReport.java,v 1.5 2006/12/06 17:26:06 taqua Exp $
+ * $Id: SubReport.java,v 1.6 2006/12/08 14:20:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -51,17 +51,18 @@ public class SubReport extends ReportDefinition
     inputParameters = new HashMap();
   }
 
-  public void addExportParameter (String outerName, String innerName)
+  public void addExportParameter (final String outerName,
+                                  final String innerName)
   {
     exportParameters.put(outerName, innerName);
   }
 
-  public void removeExportParameter (String outerName)
+  public void removeExportParameter (final String outerName)
   {
     exportParameters.remove(outerName);
   }
 
-  public String getExportParameter (String outerName)
+  public String getExportParameter (final String outerName)
   {
     return (String) exportParameters.get(outerName);
   }
@@ -94,17 +95,18 @@ public class SubReport extends ReportDefinition
     return mapping;
   }
 
-  public void addInputParameter (String outerName, String innerName)
+  public void addInputParameter (final String outerName,
+                                 final String innerName)
   {
     inputParameters.put(outerName, innerName);
   }
 
-  public void removeInputParameter (String outerName)
+  public void removeInputParameter (final String outerName)
   {
     inputParameters.remove(outerName);
   }
 
-  public String getInnerParameter (String outerName)
+  public String getInnerParameter (final String outerName)
   {
     return (String) inputParameters.get(outerName);
   }
@@ -145,5 +147,15 @@ public class SubReport extends ReportDefinition
   public boolean isGlobalExport()
   {
     return "*".equals(exportParameters.get("*"));
+  }
+
+
+  public Object clone()
+      throws CloneNotSupportedException
+  {
+    final SubReport report = (SubReport) super.clone();
+    report.inputParameters = (HashMap) inputParameters.clone();
+    report.exportParameters = (HashMap) exportParameters.clone();
+    return report;
   }
 }

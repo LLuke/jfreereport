@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
+ * $Id: LayoutControllerUtil.java,v 1.7 2007/03/06 14:37:38 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -78,12 +78,11 @@ import org.jfree.resourceloader.ResourceManager;
  */
 public class LayoutControllerUtil
 {
+  public static final EmptyReportData EMPTY_REPORT_DATA = new EmptyReportData();
+
   private LayoutControllerUtil()
   {
   }
-
-  public static final EmptyReportData EMPTY_REPORT_DATA = new EmptyReportData();
-
 
   public static int findNodeInParent(final Section parentSection,
                                      final Node n)
@@ -165,7 +164,9 @@ public class LayoutControllerUtil
    * @return true, if the group is finished and we should stop reiterating it,
    *         false if the group is not finished and we can start iterating it
    *         again.
+   *
    * @throws org.jfree.report.DataSourceException
+   *
    */
   public static boolean isGroupFinished(final FlowController fc,
                                         final Node node)
@@ -498,9 +499,28 @@ public class LayoutControllerUtil
     return functionResult;
   }
 
-  public static Object evaluateExpression (final FlowController flowController,
-                                           final Object declaringParent,
-                                           final Expression expression)
+
+  public static LayoutController skipInvisibleElement
+      (final LayoutController layoutController)
+      throws ReportProcessingException, ReportDataFactoryException,
+      DataSourceException
+  {
+    final FlowController fc = layoutController.getFlowController();
+    final ReportTarget target =
+        new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
+
+    LayoutController lc = layoutController;
+    while (lc.isAdvanceable())
+    {
+      lc = lc.advance(target);
+    }
+
+    return lc;
+  }
+
+  public static Object evaluateExpression(final FlowController flowController,
+                                          final Object declaringParent,
+                                          final Expression expression)
       throws DataSourceException
   {
     final ExpressionRuntime runtime =
@@ -511,11 +531,11 @@ public class LayoutControllerUtil
       expression.setRuntime(runtime);
       return expression.computeValue();
     }
-    catch(DataSourceException dse)
+    catch (DataSourceException dse)
     {
       throw dse;
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       throw new DataSourceException("Failed to evaluate expression", e);
     }

@@ -23,20 +23,23 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ParameterMapping.java,v 1.1 2006/12/06 17:26:48 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.flow;
 
+import java.io.Serializable;
+
 /**
  * Creation-Date: Dec 6, 2006, 3:25:22 PM
  *
  * @author Thomas Morgner
  */
-public class ParameterMapping
+public class ParameterMapping implements Serializable
 {
+  private static final long serialVersionUID = -3666118451657430360L;
   private String name;
   private String alias;
 

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrinterUtility.java,v 1.3 2006/12/08 14:20:42 taqua Exp $
+ * $Id: PrinterUtility.java,v 1.4 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -67,15 +67,15 @@ public class PrinterUtility
     printerJob.setCopies(getNumberOfCopies(reportConfiguration));
 
     // this tries to resolve at least some of the pain ..
-    final PageFormat pageFormat = report.getPageFormat();
-    if (pageFormat != null)
-    {
-      report.setPageFormat(printerJob.validatePage(pageFormat));
-    }
-    else
-    {
-      report.setPageFormat(printerJob.defaultPage());
-    }
+//    final PageFormat pageFormat = report.getPageFormat();
+//    if (pageFormat != null)
+//    {
+//      report.setPageFormat(printerJob.validatePage(pageFormat));
+//    }
+//    else
+//    {
+//      report.setPageFormat(printerJob.defaultPage());
+//    }
     printerJob.print();
   }
 
@@ -89,15 +89,15 @@ public class PrinterUtility
     final PrintReportProcessor document = new PrintReportProcessor(report);
 
     final PrinterJob printerJob = PrinterJob.getPrinterJob();
-    final PageFormat pageFormat = report.getPageFormat();
-    if (pageFormat != null)
-    {
-      report.setPageFormat(printerJob.validatePage(pageFormat));
-    }
-    else
-    {
-      report.setPageFormat(printerJob.defaultPage());
-    }
+//    final PageFormat pageFormat = report.getPageFormat();
+//    if (pageFormat != null)
+//    {
+//      report.setPageFormat(printerJob.validatePage(pageFormat));
+//    }
+//    else
+//    {
+//      report.setPageFormat(printerJob.defaultPage());
+//    }
 
     printerJob.setJobName(jobName);
     printerJob.setPageable(document);

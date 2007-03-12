@@ -23,12 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Expression.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.expressions;
+
+import java.io.Serializable;
 
 import org.jfree.report.DataSourceException;
 
@@ -44,7 +46,7 @@ import org.jfree.report.DataSourceException;
  * @author Thomas Morgner
  * @see Function
  */
-public interface Expression extends Cloneable
+public interface Expression extends Cloneable, Serializable
 {
   /**
    * Returns the name of the expression. An expression without a name cannot be

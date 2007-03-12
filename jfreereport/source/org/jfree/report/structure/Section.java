@@ -23,14 +23,13 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: Section.java,v 1.4 2006/12/03 20:24:17 taqua Exp $
+ * $Id: Section.java,v 1.5 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.structure;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -56,16 +55,21 @@ import org.jfree.report.flow.FlowControlOperation;
  *
  * @author Thomas Morgner
  */
-public class Section extends Element implements Serializable
+public class Section extends Element
 {
-
-  /** An empty array to prevent object creation. */
-  private static Node[] EMPTY_ARRAY = new Node[0];
-  private static FlowControlOperation[] EMPTY_FLOWCONTROL = new FlowControlOperation[0];
-  /** All the elements for this band, stored by name. */
+  /**
+   * An empty array to prevent object creation.
+   */
+  private static final Node[] EMPTY_ARRAY = new Node[0];
+  private static final FlowControlOperation[] EMPTY_FLOWCONTROL = new FlowControlOperation[0];
+  /**
+   * All the elements for this band, stored by name.
+   */
   private ArrayList allElements;
 
-  /** Cached elements. */
+  /**
+   * Cached elements.
+   */
   private transient Node[] allElementsCached;
 
   private ArrayList operationsBefore;
@@ -74,7 +78,9 @@ public class Section extends Element implements Serializable
   private transient FlowControlOperation[] operationsAfterCached;
   private boolean repeat;
 
-  /** Constructs a new band (initially empty). */
+  /**
+   * Constructs a new band (initially empty).
+   */
   public Section()
   {
     setType("section");
@@ -133,7 +139,7 @@ public class Section extends Element implements Serializable
         if (band == element)
         {
           throw new IllegalArgumentException(
-                  "adding container's parent to itself");
+              "adding container's parent to itself");
         }
         band = band.getParent();
       }
@@ -152,7 +158,7 @@ public class Section extends Element implements Serializable
 
       if (parent instanceof Section)
       {
-        Section section = (Section) parent;
+        final Section section = (Section) parent;
         section.removeNode(element);
       }
       else
@@ -182,7 +188,7 @@ public class Section extends Element implements Serializable
     if (elements == null)
     {
       throw new NullPointerException(
-              "Band.addElements(...): collection is null.");
+          "Band.addElements(...): collection is null.");
     }
 
     final Iterator iterator = elements.iterator();
@@ -199,6 +205,7 @@ public class Section extends Element implements Serializable
    * @param name the element name.
    * @return the first element with the specified name, or <code>null</code> if
    *         there is no such element.
+   *
    * @throws NullPointerException if the given name is null.
    */
   public Element getElementByName(final String name)
@@ -257,6 +264,7 @@ public class Section extends Element implements Serializable
    * Returns all child-elements of this band as immutable list.
    *
    * @return an immutable list of all registered elements for this band.
+   *
    * @deprecated use <code>getElementArray()</code> instead.
    */
   public List getNodes()
@@ -287,9 +295,9 @@ public class Section extends Element implements Serializable
   {
     if (allElementsCached == null)
     {
-      if (allElements.size() == 0)
+      if (allElements.isEmpty())
       {
-        allElementsCached = EMPTY_ARRAY;
+        allElementsCached = Section.EMPTY_ARRAY;
       }
       else
       {
@@ -306,15 +314,16 @@ public class Section extends Element implements Serializable
    *
    * @param index the element position within this band
    * @return the element
+   *
    * @throws IndexOutOfBoundsException if the index is invalid.
    */
   public Node getNode(final int index)
   {
     if (allElementsCached == null)
     {
-      if (allElements.size() == 0)
+      if (allElements.isEmpty())
       {
-        allElementsCached = EMPTY_ARRAY;
+        allElementsCached = Section.EMPTY_ARRAY;
       }
       else
       {
@@ -344,35 +353,35 @@ public class Section extends Element implements Serializable
     return b.toString();
   }
 
-  public synchronized FlowControlOperation[] getOperationBefore()
+  public FlowControlOperation[] getOperationBefore()
   {
     if (operationsBefore == null)
     {
-      return EMPTY_FLOWCONTROL;
+      return Section.EMPTY_FLOWCONTROL;
     }
     if (operationsBeforeCached == null)
     {
       operationsBeforeCached = (FlowControlOperation[])
-              operationsBefore.toArray(EMPTY_FLOWCONTROL);
+          operationsBefore.toArray(Section.EMPTY_FLOWCONTROL);
     }
     return operationsBeforeCached;
   }
 
-  public synchronized FlowControlOperation[] getOperationAfter()
+  public FlowControlOperation[] getOperationAfter()
   {
     if (operationsAfter == null)
     {
-      return EMPTY_FLOWCONTROL;
+      return Section.EMPTY_FLOWCONTROL;
     }
     if (operationsAfterCached == null)
     {
       operationsAfterCached = (FlowControlOperation[])
-              operationsAfter.toArray(EMPTY_FLOWCONTROL);
+          operationsAfter.toArray(Section.EMPTY_FLOWCONTROL);
     }
     return operationsAfterCached;
   }
 
-  public synchronized void setOperationBefore(FlowControlOperation[] before)
+  public void setOperationBefore(final FlowControlOperation[] before)
   {
     if (operationsBefore == null)
     {
@@ -389,10 +398,10 @@ public class Section extends Element implements Serializable
     }
 
     operationsBeforeCached =
-            (FlowControlOperation[]) before.clone();
+        (FlowControlOperation[]) before.clone();
   }
 
-  public synchronized void setOperationAfter(FlowControlOperation[] ops)
+  public void setOperationAfter(final FlowControlOperation[] ops)
   {
     if (operationsAfter == null)
     {
@@ -409,10 +418,10 @@ public class Section extends Element implements Serializable
     }
 
     operationsAfterCached =
-            (FlowControlOperation[]) ops.clone();
+        (FlowControlOperation[]) ops.clone();
   }
 
-  public synchronized void addOperationAfter(FlowControlOperation op)
+  public void addOperationAfter(final FlowControlOperation op)
   {
     if (operationsAfter == null)
     {
@@ -422,7 +431,7 @@ public class Section extends Element implements Serializable
     operationsAfterCached = null;
   }
 
-  public synchronized void addOperationBefore(FlowControlOperation op)
+  public void addOperationBefore(final FlowControlOperation op)
   {
     if (operationsBefore == null)
     {
@@ -440,5 +449,44 @@ public class Section extends Element implements Serializable
   public void setRepeat(final boolean repeat)
   {
     this.repeat = repeat;
+  }
+
+  public Object clone()
+      throws CloneNotSupportedException
+  {
+    final Section section = (Section) super.clone();
+    if (operationsAfter != null)
+    {
+      section.operationsAfter = (ArrayList) operationsAfter.clone();
+    }
+    if (operationsBefore != null)
+    {
+      section.operationsBefore = (ArrayList) operationsBefore.clone();
+    }
+    section.allElements = (ArrayList) allElements.clone();
+    section.allElements.clear();
+    final int elementSize = allElements.size();
+    if (allElementsCached != null)
+    {
+      section.allElementsCached = (Node[]) allElementsCached.clone();
+      for (int i = 0; i < allElementsCached.length; i++)
+      {
+        final Node eC = (Node) allElementsCached[i].clone();
+        section.allElements.add(eC);
+        section.allElementsCached[i] = eC;
+        eC.setParent(section);
+      }
+    }
+    else
+    {
+      for (int i = 0; i < elementSize; i++)
+      {
+        final Node e = (Node) allElements.get(i);
+        final Node eC = (Node) e.clone();
+        section.allElements.add(eC);
+        eC.setParent(section);
+      }
+    }
+    return section;
   }
 }

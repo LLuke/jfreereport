@@ -23,14 +23,12 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: Group.java,v 1.4 2006/12/03 20:24:17 taqua Exp $
+ * $Id: Group.java,v 1.5 2006/12/06 17:26:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.report.structure;
-
-import java.io.Serializable;
 
 import org.jfree.report.expressions.Expression;
 
@@ -38,20 +36,18 @@ import org.jfree.report.expressions.Expression;
  * A report group. A group is a repeated section which is bound to an
  * expression.
  * <p/>
- * <h2>Default Behaviour</h2>
- * Whether a new group should be started is evaluated by the group's expression.
- * If that expression returns Boolean.TRUE, a new group instance is started.
- * (That expression answers the Questions: 'Does this group instance end
- * here?').
+ * <h2>Default Behaviour</h2> Whether a new group should be started is evaluated
+ * by the group's expression. If that expression returns Boolean.TRUE, a new
+ * group instance is started. (That expression answers the Questions: 'Does this
+ * group instance end here?').
  * <p/>
- * If the group expression is invalid or there is no group
- * expression at all, a group will consume all rows until the datasource is no
- * longer advanceable.
+ * If the group expression is invalid or there is no group expression at all, a
+ * group will consume all rows until the datasource is no longer advanceable.
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class Group extends Section implements Serializable
+public class Group extends Section
 {
   private Expression groupingExpression;
 
@@ -91,5 +87,17 @@ public class Group extends Section implements Serializable
   public Group getGroup()
   {
     return this;
+  }
+
+
+  public Object clone()
+      throws CloneNotSupportedException
+  {
+    final Group group = (Group) super.clone();
+    if (groupingExpression != null)
+    {
+      group.groupingExpression = (Expression) groupingExpression.clone();
+    }
+    return group;
   }
 }

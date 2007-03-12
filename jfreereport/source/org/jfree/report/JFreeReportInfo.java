@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: JFreeReportInfo.java,v 1.49 2007/01/25 14:22:35 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.50 2007/03/01 18:27:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -91,7 +91,7 @@ public class JFreeReportInfo extends ProjectInfo
   private JFreeReportInfo ()
   {
     setName("JFreeReport");
-    setVersion("0.9.0-03");
+    setVersion("0.9.0-04");
     setInfo("http://reporting.pentaho.org/");
     setCopyright
             ("(C)opyright 2000-2007, by Thomas Morgner, Object Refinery Limited and Contributors");

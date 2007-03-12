@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutController.java,v 1.5 2006/12/09 21:19:04 taqua Exp $
+ * $Id: LayoutController.java,v 1.6 2007/03/06 14:37:38 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -128,4 +128,6 @@ public interface LayoutController extends Cloneable
    * @return a copy that is suitable for precomputation.
    */
   public LayoutController createPrecomputeInstance(FlowController fc);
+
+  public FlowController getFlowController();
 }

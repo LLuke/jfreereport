@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionReadHandler.java,v 1.7 2006/12/19 17:42:02 taqua Exp $
+ * $Id: SectionReadHandler.java,v 1.8 2007/01/22 15:43:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -59,6 +59,13 @@ public class SectionReadHandler extends AbstractElementReadHandler
     nodes = new ArrayList();
     operationsAfter = new ArrayList();
     operationsBefore = new ArrayList();
+  }
+
+
+  public SectionReadHandler(final Section section)
+  {
+    this();
+    this.section = section;
   }
 
   protected Element getElement()
@@ -120,7 +127,6 @@ public class SectionReadHandler extends AbstractElementReadHandler
    * @param atts    the attributes.
    * @return the handler or null, if the tagname is invalid.
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild(final String uri,
                                               final String tagName,
@@ -170,7 +176,6 @@ public class SectionReadHandler extends AbstractElementReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing() throws SAXException
   {
