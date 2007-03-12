@@ -3,6 +3,12 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.4: (07-Mar-2007)
+        * [BUG] A Namespace definition without a valid default stylesheet generated
+          a NullPointerException
+        
+        * AttributeMap is now cloneable.
+
 0.2.3: (01-Mar-2007)
         * Minor code changes to cope with the latest changes in LibLoader 0.3.0.
 

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StyleSheet.java,v 1.4 2006/12/03 18:57:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
@@ -54,15 +55,16 @@ import org.jfree.resourceloader.ResourceManager;
  *
  * @author Thomas Morgner
  */
-public class StyleSheet
+public class StyleSheet implements Cloneable, Serializable
 {
+  private transient ResourceManager resourceManager;
+  private transient Map roNamespaces;
+
   private boolean readOnly;
   private ResourceKey source;
-  private ResourceManager resourceManager;
   private ArrayList rules;
   private ArrayList styleSheets;
   private HashMap namespaces;
-  private transient Map roNamespaces;
 
   public StyleSheet()
   {
@@ -203,5 +205,13 @@ public class StyleSheet
       roNamespaces = Collections.unmodifiableMap(namespaces);
     }
     return roNamespaces;
+  }
+
+  public Object clone()
+      throws CloneNotSupportedException
+  {
+    final StyleSheet styleSheet = (StyleSheet) super.clone();
+    // todo: Implement the cloneable hierarchy ..
+    return styleSheet;
   }
 }

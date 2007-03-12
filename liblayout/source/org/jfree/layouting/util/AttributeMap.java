@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AttributeMap.java,v 1.3 2006/12/03 18:58:13 taqua Exp $
+ * $Id: AttributeMap.java,v 1.4 2007/03/06 14:35:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,6 +53,11 @@ public class AttributeMap implements Serializable, Cloneable
 
   public AttributeMap(final AttributeMap copy)
   {
+    if (copy == null)
+    {
+      return;
+    }
+    
     if (copy.namespaces == null)
     {
       return;

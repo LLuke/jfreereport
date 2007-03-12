@@ -5,7 +5,7 @@
  *
  * Project Info:  http://jfreereport.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LibLayoutInfo.java,v 1.7 2007/01/25 12:51:38 taqua Exp $
+ * $Id: LibLayoutInfo.java,v 1.8 2007/03/01 17:59:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,9 +50,9 @@ public class LibLayoutInfo extends ProjectInfo
   private LibLayoutInfo ()
   {
     setName("LibLayout");
-    setVersion("0.2.3");
+    setVersion("0.2.4");
     setInfo("http://reporting.pentaho.org/liblayout/");
-    setCopyright ("(C)opyright 2007, by Pentaho Corporation and Contributors");
+    setCopyright ("(C)opyright 2006,2007, by Pentaho Corporation and Contributors");
 
     setContributors(Arrays.asList(
         new Contributor[]
