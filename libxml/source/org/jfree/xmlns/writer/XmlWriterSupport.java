@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.9 2007/01/24 19:31:42 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.10 2007/03/12 18:06:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -390,6 +390,11 @@ public class XmlWriterSupport
 
     //noinspection UseOfPropertiesAsHashtable
     impliedNamespaces.putAll(parent.getNamespaces());
+    if (writerSupport.impliedNamespaces != null)
+    {
+      //noinspection UseOfPropertiesAsHashtable
+      impliedNamespaces.putAll(writerSupport.impliedNamespaces);
+    }
   }
 
   /**
@@ -537,12 +542,12 @@ public class XmlWriterSupport
   }
 
   /**
-   * Processes a single attribute and searches for namespace declarations.
-   * If a namespace declaration is found, it is returned in a normalized way.
-   * If namespace processing is active, the attribute name will be fully
-   * qualified with the prefix registered for the attribute's namespace URI. 
+   * Processes a single attribute and searches for namespace declarations. If a
+   * namespace declaration is found, it is returned in a normalized way. If
+   * namespace processing is active, the attribute name will be fully qualified
+   * with the prefix registered for the attribute's namespace URI.
    *
-   * @param entry the attribute enty.
+   * @param entry      the attribute enty.
    * @param namespaces the currently known namespaces.
    * @return the normalized attribute name.
    */
@@ -768,7 +773,7 @@ public class XmlWriterSupport
   /**
    * Writes a comment into the generated xml file.
    *
-   * @param writer the writer.
+   * @param writer  the writer.
    * @param comment the comment text
    * @throws IOException if there is a problem writing to the character stream.
    */
@@ -801,7 +806,7 @@ public class XmlWriterSupport
    * recommendation)
    *
    * @return true, if attributes in the element's namespace should be written
-   * without a prefix, false to write all attributes with a prefix.
+   *         without a prefix, false to write all attributes with a prefix.
    */
   public boolean isAssumeDefaultNamespace()
   {
@@ -816,7 +821,7 @@ public class XmlWriterSupport
    * recommendation)
    *
    * @return true, if attributes in the element's namespace should be written
-   * without a prefix, false to write all attributes with a prefix.
+   *         without a prefix, false to write all attributes with a prefix.
    */
   public void setAssumeDefaultNamespace(final boolean assumeDefaultNamespace)
   {
