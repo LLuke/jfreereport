@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ResourceKey.java,v 1.4 2006/12/19 17:48:26 taqua Exp $
+ * $Id: ResourceKey.java,v 1.5 2007/02/22 20:03:20 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -161,6 +161,17 @@ public final class ResourceKey implements Serializable
   public Object getSchema ()
   {
     return schema;
+  }
+
+
+  public String toString()
+  {
+    return "ResourceKey{" +
+           "schema=" + schema +
+           ", identifier=" + identifier +
+           ", factoryParameters=" + factoryParameters +
+           ", parent=" + parent +
+           '}';
   }
 }
 
