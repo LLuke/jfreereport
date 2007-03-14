@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: Section.java,v 1.5 2006/12/09 21:19:04 taqua Exp $
+ * $Id: Section.java,v 1.6 2007/03/12 18:03:14 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.report.flow.FlowControlOperation;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * A report section is a collection of other elements and sections.
@@ -451,6 +452,26 @@ public class Section extends Element
     this.repeat = repeat;
   }
 
+  public Element findFirstChild (final String uri, final String tagName)
+  {
+    final Node[] nodes = getNodeArray();
+    for (int i = 0; i < nodes.length; i++)
+    {
+      final Node node = nodes[i];
+      if (node instanceof Element == false)
+      {
+        continue;
+      }
+      final Element e = (Element) node;
+      if (ObjectUtilities.equal(uri, e.getNamespace()) &&
+          ObjectUtilities.equal(tagName, e.getType()))
+      {
+        return e;
+      }
+    }
+    return null;
+  }
+  
   public Object clone()
       throws CloneNotSupportedException
   {
