@@ -23,11 +23,13 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CSSValueResolverUtility.java,v 1.5 2006/12/03 18:58:00 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.layouter.style;
+
+import java.math.BigDecimal;
 
 import org.jfree.fonts.registry.FontMetrics;
 import org.jfree.layouting.input.style.values.CSSNumericType;
@@ -40,6 +42,7 @@ import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.output.OutputProcessorFeature;
 import org.jfree.layouting.output.OutputProcessorMetaData;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
 
 /**
  * Creation-Date: 15.12.2005, 11:29:22
@@ -125,9 +128,9 @@ public class CSSValueResolverUtility
    * @param metaData
    * @return
    */
-  public static double convertLengthToDouble(final CSSValue rawValue,
-                                             final LayoutContext context,
-                                             final OutputProcessorMetaData metaData)
+  public static strictfp double convertLengthToDouble(final CSSValue rawValue,
+                                                      final LayoutContext context,
+                                                      final OutputProcessorMetaData metaData)
   {
     if (rawValue instanceof CSSNumericValue == false)
     {
@@ -149,11 +152,11 @@ public class CSSValueResolverUtility
     }
     if (CSSNumericType.CM.equals(value.getType()))
     {
-      return (value.getValue() * (72d / 254d) * 100d);
+      return (value.getValue() * 100 * (72d / 254d));
     }
     if (CSSNumericType.MM.equals(value.getType()))
     {
-      return (value.getValue() * (72d / 254d) * 10d);
+      return (value.getValue() * 10 * 72d / 254d);
     }
 
     if (metaData == null)
@@ -201,6 +204,90 @@ public class CSSValueResolverUtility
     return 0;
   }
 
+  /**
+   * Returns the length in point as a double primitive value.
+   *
+   * @param rawValue
+   * @param context
+   * @param metaData
+   * @return
+   */
+  public static strictfp long convertLengthToLong(final CSSValue rawValue,
+                                                  final LayoutContext context,
+                                                  final OutputProcessorMetaData metaData)
+  {
+    if (rawValue instanceof CSSNumericValue == false)
+    {
+      return 0;
+    }
+
+    final CSSNumericValue value = (CSSNumericValue) rawValue;
+    final long internal = StrictGeomUtility.toInternalValue(value.getValue());
+    if (CSSNumericType.PT.equals(value.getType()))
+    {
+      return internal;
+    }
+    if (CSSNumericType.PC.equals(value.getType()))
+    {
+      return (internal / 12);
+    }
+    if (CSSNumericType.INCH.equals(value.getType()))
+    {
+      return (internal / 72);
+    }
+    if (CSSNumericType.CM.equals(value.getType()))
+    {
+      return (internal * 100 * 72 / 254);
+    }
+    if (CSSNumericType.MM.equals(value.getType()))
+    {
+      return (internal * 10 * 72 / 254);
+    }
+
+    if (metaData == null)
+    {
+      return 0;
+    }
+
+    if (CSSNumericType.PX.equals(value.getType()))
+    {
+      final int pixelPerInch = (int) metaData.getNumericFeatureValue
+          (OutputProcessorFeature.DEVICE_RESOLUTION);
+      if (pixelPerInch <= 0)
+      {
+        // we assume 72 pixel per inch ...
+        return internal;
+      }
+      return internal * 72 / pixelPerInch;
+    }
+
+    if (context != null)
+    {
+      if (CSSNumericType.EM.equals(value.getType()))
+      {
+        final FontSpecification fspec =
+            context.getFontSpecification();
+        final double fontSize = fspec.getFontSize();
+        return (long) (fontSize * internal);
+      }
+      if (CSSNumericType.EX.equals(value.getType()))
+      {
+        final FontSpecification fspec =
+            context.getFontSpecification();
+        final FontMetrics fontMetrics = metaData.getFontMetrics(fspec);
+        if (fontMetrics == null)
+        {
+          final double fontSize = fspec.getFontSize() * DEFAULT_X_HEIGHT_FACTOR;
+          return (long) (internal * fontSize);
+        }
+        else
+        {
+          return (long) (internal * fontMetrics.getXHeight());
+        }
+      }
+    }
+    return 0;
+  }
 
   public static CSSNumericValue convertLength(final CSSValue rawValue,
                                               final LayoutContext context,
@@ -269,7 +356,9 @@ public class CSSValueResolverUtility
     {
       return null;
     }
-    final double fs = parent.getLayoutContext().getFontSpecification().getFontSize();
+    final double fs = parent.getLayoutContext()
+        .getFontSpecification()
+        .getFontSize();
     return new CSSNumericValue(CSSNumericType.PT, fs);
   }
 
