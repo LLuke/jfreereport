@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LibFormulaInfo.java,v 1.6 2007/01/25 12:51:55 taqua Exp $
+ * $Id: LibFormulaInfo.java,v 1.7 2007/03/01 17:30:37 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,7 +58,7 @@ public class LibFormulaInfo extends ProjectInfo
   public LibFormulaInfo()
   {
     setName("LibFormula");
-    setVersion("0.1.4");
+    setVersion("0.1.5");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());

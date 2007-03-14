@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultComparator.java,v 1.3 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -51,30 +51,24 @@ public class DefaultComparator implements ExtendedComparator
   {
   }
 
-  public void inititalize(FormulaContext context)
+  public void inititalize(final FormulaContext context)
   {
     this.context = context;
   }
 
-  public boolean isEqual(Type type1, Object value1, Type type2, Object value2)
+  public boolean isEqual(final Type type1,
+                         final Object value1,
+                         final Type type2,
+                         final Object value2)
   {
     // this is rather easy. If at least one of the types is a numeric,
     // try to compare them as numbers. (And here it gets messy.)
 
-    if (type1.isFlagSet(Type.NUMERIC_TYPE) ||
-        type2.isFlagSet(Type.NUMERIC_TYPE))
+    final TypeRegistry typeRegistry = context.getTypeRegistry();
+    final Number number1 = typeRegistry.convertToNumber(type1, value1);
+    final Number number2 = typeRegistry.convertToNumber(type2, value2);
+    if (number1 != null && number2 != null)
     {
-      final TypeRegistry typeRegistry = context.getTypeRegistry();
-      final Number number1 = typeRegistry.convertToNumber(type1, value1);
-      final Number number2 = typeRegistry.convertToNumber(type2, value2);
-      if (number1 == null && number2 == null)
-      {
-        return true;
-      }
-      if (number1 == null || number2 == null)
-      {
-        return false;
-      }
       final BigDecimal bd1 = new BigDecimal(number1.toString());
       final BigDecimal bd2 = new BigDecimal(number2.toString());
       if (bd1.signum() != bd2.signum())
@@ -90,7 +84,6 @@ public class DefaultComparator implements ExtendedComparator
         type2.isFlagSet(Type.TEXT_TYPE))
     {
       // Convert both values to text ..
-      final TypeRegistry typeRegistry = context.getTypeRegistry();
       final String text1 = typeRegistry.convertToText(type1, value1);
       final String text2 = typeRegistry.convertToText(type2, value2);
 
@@ -113,98 +106,62 @@ public class DefaultComparator implements ExtendedComparator
    * Returns null, if the types are not comparable and are not convertible at
    * all.
    *
-   * @param t1
-   * @param o1
-   * @param t2
-   * @param o2
+   * @param type1
+   * @param value1
+   * @param type2
+   * @param value2
    * @return
    */
-  public Integer compare(Type type1, Object value1, Type type2, Object value2)
+  public Integer compare(final Type type1,
+                         final Object value1,
+                         final Type type2,
+                         final Object value2)
   {
     // this is rather easy. If at least one of the types is a numeric,
     // try to compare them as numbers. (And here it gets messy.)
-
-    if (type1.isFlagSet(Type.NUMERIC_TYPE) ||
-        type2.isFlagSet(Type.NUMERIC_TYPE))
+    if (value1 == null && value2 == null)
     {
-      final TypeRegistry typeRegistry = context.getTypeRegistry();
-      final Number number1 = typeRegistry.convertToNumber(type1, value1);
-      final Number number2 = typeRegistry.convertToNumber(type2, value2);
+      return DefaultComparator.EQUAL;
+    }
+    if (value1 == null)
+    {
+      return DefaultComparator.LESS;
+    }
+    if (value2 == null)
+    {
+      return DefaultComparator.MORE;
+    }
 
-      if (number1 == null && number2 == null)
-      {
-        return EQUAL;
-      }
-      if (number1 == null)
-      {
-        return LESS;
-      }
-      if (number2 == null)
-      {
-        return MORE;
-      }
-
+    final TypeRegistry typeRegistry = context.getTypeRegistry();
+    final Number number1 = typeRegistry.convertToNumber(type1, value1);
+    final Number number2 = typeRegistry.convertToNumber(type2, value2);
+    if (number1 != null && number2 != null)
+    {
       final BigDecimal bd1 = new BigDecimal(number1.toString());
       final BigDecimal bd2 = new BigDecimal(number2.toString());
+
       if (bd1.signum() != bd2.signum())
       {
         if (bd1.signum() < 0)
         {
-          return LESS;
+          return DefaultComparator.LESS;
         }
         else if (bd1.signum() > 0)
         {
-          return MORE;
+          return DefaultComparator.MORE;
         }
       }
 
       final BigDecimal result = bd1.subtract(bd2);
       if (result.signum() == 0)
       {
-        return EQUAL;
+        return DefaultComparator.EQUAL;
       }
       if (result.signum() > 0)
       {
-        return MORE;
+        return DefaultComparator.MORE;
       }
-      return LESS;
-    }
-
-    if (type1.isFlagSet(Type.TEXT_TYPE) ||
-        type2.isFlagSet(Type.TEXT_TYPE))
-    {
-      // Convert both values to text ..
-      final TypeRegistry typeRegistry = context.getTypeRegistry();
-      final String text1 = typeRegistry.convertToText(type1, value1);
-      final String text2 = typeRegistry.convertToText(type2, value2);
-
-      if (text1 == null && text2 == null)
-      {
-        return EQUAL;
-      }
-      if (text1 == null)
-      {
-        return LESS;
-      }
-      if (text2 == null)
-      {
-        return MORE;
-      }
-
-      final int result = text1.compareTo(text2);
-      if (result == 0)
-      {
-        return EQUAL;
-      }
-      else if (result > 0)
-      {
-        return MORE;
-      }
-      else
-      {
-        return LESS;
-      }
-
+      return DefaultComparator.LESS;
     }
 
     if (type1.isFlagSet(Type.SCALAR_TYPE) && type2.isFlagSet(Type.SCALAR_TYPE))
@@ -212,22 +169,21 @@ public class DefaultComparator implements ExtendedComparator
       // this is something else
       if (value1 instanceof Comparable && value2 instanceof Comparable)
       {
-        Comparable c1 = (Comparable) value1;
-
+        final Comparable c1 = (Comparable) value1;
         try
         {
           final int result = c1.compareTo(value2);
           if (result == 0)
           {
-            return EQUAL;
+            return DefaultComparator.EQUAL;
           }
           else if (result > 0)
           {
-            return MORE;
+            return DefaultComparator.MORE;
           }
           else
           {
-            return LESS;
+            return DefaultComparator.LESS;
           }
         }
         catch(Exception e)
@@ -237,7 +193,35 @@ public class DefaultComparator implements ExtendedComparator
       }
     }
 
-    // Indicate that these beasts are not comparable ..
-    return null;
+    // Convert both values to text ..
+    final String text1 = typeRegistry.convertToText(type1, value1);
+    final String text2 = typeRegistry.convertToText(type2, value2);
+
+    if (text1 == null && text2 == null)
+    {
+      return DefaultComparator.EQUAL;
+    }
+    if (text1 == null)
+    {
+      return DefaultComparator.LESS;
+    }
+    if (text2 == null)
+    {
+      return DefaultComparator.MORE;
+    }
+
+    final int result = text1.compareTo(text2);
+    if (result == 0)
+    {
+      return DefaultComparator.EQUAL;
+    }
+    else if (result > 0)
+    {
+      return DefaultComparator.MORE;
+    }
+    else
+    {
+      return DefaultComparator.LESS;
+    }
   }
 }

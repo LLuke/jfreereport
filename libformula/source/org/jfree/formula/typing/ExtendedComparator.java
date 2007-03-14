@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ExtendedComparator.java,v 1.2 2006/12/03 19:22:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,17 +38,23 @@ package org.jfree.formula.typing;
  */
 public interface ExtendedComparator
 {
-  public boolean isEqual(Type t1, Object o1, Type t2, Object o2);
+  public boolean isEqual(final Type type1,
+                         final Object value1,
+                         final Type type2,
+                         final Object value2);
 
   /**
    * Returns null, if the types are not comparable and are not convertible at
    * all.
    *
-   * @param t1
-   * @param o1
-   * @param t2
-   * @param o2
+   * @param type1
+   * @param value1
+   * @param type2
+   * @param value2
    * @return
    */
-  public Integer compare(Type t1, Object o1, Type t2, Object o2);
+  public Integer compare(final Type type1,
+                         final Object value1,
+                         final Type type2,
+                         final Object value2);
 }
