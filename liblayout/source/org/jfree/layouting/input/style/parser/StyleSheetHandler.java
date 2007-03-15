@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StyleSheetHandler.java,v 1.8 2006/12/03 18:57:50 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -79,30 +79,40 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
   private String defaultNamespace;
   private ResourceManager manager;
 
-  public StyleSheetHandler(final ResourceManager manager,
-                           final ResourceKey source,
-                           final long version,
-                           final StyleKeyRegistry registry,
-                           final StyleRule parentRule)
+
+  public StyleSheetHandler()
+  {
+    this.namespaces = new HashMap();
+    this.parentRules = new FastStack();
+  }
+
+  public void init(final ResourceManager manager,
+                   final ResourceKey source,
+                   final long version,
+                   final StyleKeyRegistry registry,
+                   final StyleRule parentRule)
   {
     if (registry == null)
     {
       throw new NullPointerException();
     }
 
-    this.manager = manager;
     this.registry = registry;
-    this.parentRules = new FastStack();
+
+    this.parentRules.clear();
     if (parentRule != null)
     {
       parentRules.push(parentRule);
     }
+    
+    this.manager = manager;
     this.source = source;
     if (source != null)
     {
       this.dependencies = new DependencyCollector(source, version);
     }
-    this.namespaces = new HashMap();
+    
+    this.namespaces.clear();
   }
 
   public void registerNamespace(String prefix, String uri)
@@ -163,7 +173,7 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
     return manager;
   }
 
-  public void init(InputSource source)
+  public void initParseContext(InputSource source)
   {
     // the default namespace might be fed from outside ..
     CSSParserContext.getContext().setNamespaces(namespaces);
@@ -181,9 +191,10 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void startDocument(InputSource source) throws CSSException
+  public void startDocument(InputSource source)
+      throws CSSException
   {
-    init(source);
+    initParseContext(source);
     if (this.styleSheet == null)
     {
       this.styleSheet = new StyleSheet();
@@ -203,7 +214,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void endDocument(InputSource source) throws CSSException
+  public void endDocument(InputSource source)
+      throws CSSException
   {
     final Iterator entries = namespaces.entrySet().iterator();
     while (entries.hasNext())
@@ -224,7 +236,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void comment(String text) throws CSSException
+  public void comment(String text)
+      throws CSSException
   {
     // comments are ignored ..
   }
@@ -237,7 +250,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void ignorableAtRule(String atRule) throws CSSException
+  public void ignorableAtRule(String atRule)
+      throws CSSException
   {
     StringTokenizer strtok = new StringTokenizer(atRule);
     if (strtok.hasMoreTokens() == false)
@@ -271,20 +285,20 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
           return;
         }
       }
-      Log.info ("Did not recognize page @rule: " + atRule);
+      Log.info("Did not recognize page @rule: " + atRule);
     }
     else
     {
-      Log.info ("Ignorable @rule: " + atRule);
+      Log.info("Ignorable @rule: " + atRule);
     }
   }
 
-  private CSSPageAreaRule parsePageRule (PageAreaType areaType, String atRule)
+  private CSSPageAreaRule parsePageRule(PageAreaType areaType, String atRule)
   {
     final ResourceManager manager = getResourceManager();
     final ResourceKey source = this.source;
     final CSSPageAreaRule areaRule =
-            new CSSPageAreaRule(styleSheet, styleRule, areaType);
+        new CSSPageAreaRule(styleSheet, styleRule, areaType);
     final int firstBrace = atRule.indexOf('{');
     final int lastBrace = atRule.indexOf('}');
     if (firstBrace < 0 || lastBrace < firstBrace)
@@ -293,9 +307,9 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
       return null;
     }
 
-    StyleSheetParserUtil.parseStyleRule
-            (namespaces, atRule.substring(firstBrace + 1, lastBrace - 1),
-                    manager, source, areaRule);
+    StyleSheetParserUtil.getInstance().parseStyleRule
+        (namespaces, atRule.substring(firstBrace + 1, lastBrace - 1),
+            manager, source, areaRule);
     return areaRule;
   }
 
@@ -347,7 +361,7 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    *                      exception.
    */
   public void namespaceDeclaration(String prefix, String uri)
-          throws CSSException
+      throws CSSException
   {
     if (prefix == null || "".equals(prefix))
     {
@@ -374,7 +388,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    */
   public void importStyle(String uri,
                           SACMediaList media,
-                          String defaultNamespaceURI) throws CSSException
+                          String defaultNamespaceURI)
+      throws CSSException
   {
     //  instantiate a new parser and parse the stylesheet.
     final ResourceManager manager = getResourceManager();
@@ -397,7 +412,7 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
       }
       else
       {
-        key  = manager.deriveKey(source, uri);
+        key = manager.deriveKey(source, uri);
       }
 
       final Resource res = manager.create(key, source, StyleSheet.class);
@@ -432,7 +447,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void startMedia(SACMediaList media) throws CSSException
+  public void startMedia(SACMediaList media)
+      throws CSSException
   {
     // ignore for now ..
     styleRule = new CSSMediaRule(styleSheet, getParentRule());
@@ -447,7 +463,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void endMedia(SACMediaList media) throws CSSException
+  public void endMedia(SACMediaList media)
+      throws CSSException
   {
     parentRules.pop();
     styleSheet.addRule(styleRule);
@@ -466,7 +483,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void startPage(String name, String pseudo_page) throws CSSException
+  public void startPage(String name, String pseudo_page)
+      throws CSSException
   {
     // Log.debug ("Page Rule: " + name + " / " + pseudo_page);
     // yes, we have to parse that.
@@ -482,7 +500,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void endPage(String name, String pseudo_page) throws CSSException
+  public void endPage(String name, String pseudo_page)
+      throws CSSException
   {
     parentRules.pop();
     styleSheet.addRule(styleRule);
@@ -499,7 +518,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void startFontFace() throws CSSException
+  public void startFontFace()
+      throws CSSException
   {
     // font-face events are ignored for now.
     styleRule = new CSSFontFaceRule(styleSheet, getParentRule());
@@ -521,7 +541,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void endFontFace() throws CSSException
+  public void endFontFace()
+      throws CSSException
   {
     parentRules.pop();
   }
@@ -533,7 +554,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void startSelector(SelectorList selectors) throws CSSException
+  public void startSelector(SelectorList selectors)
+      throws CSSException
   {
     styleRule = new CSSStyleRule(styleSheet, getParentRule());
   }
@@ -545,7 +567,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    * @throws CSSException Any CSS exception, possibly wrapping another
    *                      exception.
    */
-  public void endSelector(SelectorList selectors) throws CSSException
+  public void endSelector(SelectorList selectors)
+      throws CSSException
   {
     if (styleRule.getSize() == 0)
     {
@@ -579,7 +602,7 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    *                      exception.
    */
   public void property(String name, LexicalUnit value, boolean important)
-          throws CSSException
+      throws CSSException
   {
     CSSValueFactory factory = CSSParserContext.getContext().getValueFactory();
     try
@@ -611,7 +634,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    *                      exception.
    * @see CSSParseException
    */
-  public void warning(CSSParseException exception) throws CSSException
+  public void warning(CSSParseException exception)
+      throws CSSException
   {
     Log.warn("Warning: " + exception.getMessage());
   }
@@ -636,7 +660,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    *                      exception.
    * @see CSSParseException
    */
-  public void error(CSSParseException exception) throws CSSException
+  public void error(CSSParseException exception)
+      throws CSSException
   {
     Log.warn("Error: ", exception);
   }
@@ -660,7 +685,8 @@ public class StyleSheetHandler implements DocumentHandler, ErrorHandler
    *                      exception.
    * @see CSSParseException
    */
-  public void fatalError(CSSParseException exception) throws CSSException
+  public void fatalError(CSSParseException exception)
+      throws CSSException
   {
     Log.warn("Fatal Error: ", exception);
   }

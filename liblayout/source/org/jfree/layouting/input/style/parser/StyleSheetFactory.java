@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StyleSheetFactory.java,v 1.7 2006/12/03 18:57:50 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -79,7 +79,8 @@ public class StyleSheetFactory implements ResourceFactory
         version = -1;
       }
 
-      final StyleSheetHandler handler = new StyleSheetHandler
+      final StyleSheetHandler handler = new StyleSheetHandler();
+      handler.init
               (manager, key, version, StyleKeyRegistry.getRegistry(), null);
       parser.setDocumentHandler(handler);
       parser.setErrorHandler(handler);

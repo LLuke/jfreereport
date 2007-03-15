@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StyleRuleFactory.java,v 1.5 2006/12/03 18:57:50 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -78,14 +78,14 @@ public class StyleRuleFactory implements ResourceFactory
         key = context;
         version = -1;
       }
-      final StyleSheetHandler handler = new StyleSheetHandler
-              (manager, key, version, StyleKeyRegistry.getRegistry(), null);
+      final StyleSheetHandler handler = new StyleSheetHandler();
+      handler.init (manager, key, version, StyleKeyRegistry.getRegistry(), null);
       parser.setDocumentHandler(handler);
 
       final InputSource inputSource = new InputSource();
       inputSource.setByteStream(data.getResourceAsStream(manager));
 
-      handler.init(inputSource);
+      handler.initParseContext(inputSource);
       handler.setStyleRule(new CSSStyleRule(null, null));
       parser.parseStyleDeclaration(inputSource);
 

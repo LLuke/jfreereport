@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CSSDeclarationRule.java,v 1.8 2006/12/03 18:57:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -52,6 +52,7 @@ public abstract class CSSDeclarationRule extends StyleRule
   private HashMap declarations;
   private HashSet importantDeclarations;
   private transient StyleKey[] declaredKeys;
+  private StyleSheetParserUtil styleSheetParserUtil;
 
   protected CSSDeclarationRule(final StyleSheet parentStyle,
                                final StyleRule parentRule)
@@ -126,10 +127,15 @@ public abstract class CSSDeclarationRule extends StyleRule
       source = parentStyle.getSource();
       resourceManager = parentStyle.getResourceManager();
     }
-    StyleSheet parent = getParentStyle();
+    if (styleSheetParserUtil == null)
+    {
+      styleSheetParserUtil = StyleSheetParserUtil.getInstance();
+    }
+    
+    final StyleSheet parent = getParentStyle();
     if (parent != null)
     {
-      final CSSStyleRule cssValues = StyleSheetParserUtil.parseStyles
+      final CSSStyleRule cssValues = styleSheetParserUtil.parseStyles
           (parent.getNamespaces(), name, value, resourceManager, source);
       if (cssValues != null)
       {
@@ -144,7 +150,7 @@ public abstract class CSSDeclarationRule extends StyleRule
     }
     else
     {
-      final CSSStyleRule cssValues = StyleSheetParserUtil.parseStyles
+      final CSSStyleRule cssValues = styleSheetParserUtil.parseStyles
           (null, name, value, resourceManager, source);
       if (cssValues != null)
       {
@@ -211,9 +217,10 @@ public abstract class CSSDeclarationRule extends StyleRule
 
   public Object clone() throws CloneNotSupportedException
   {
-    CSSDeclarationRule rule = (CSSDeclarationRule) super.clone();
+    final CSSDeclarationRule rule = (CSSDeclarationRule) super.clone();
     rule.declarations = (HashMap) declarations.clone();
     rule.importantDeclarations = (HashSet) importantDeclarations.clone();
+    rule.styleSheetParserUtil = null;
     return rule;
   }
 

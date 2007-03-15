@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SelectorTest.java,v 1.5 2006/12/03 18:58:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,8 +53,8 @@ public class SelectorTest
     resourceManager.registerDefaults();
 
     final Parser parser = CSSParserFactory.getInstance().createCSSParser();
-    final StyleSheetHandler handler = new StyleSheetHandler
-            (resourceManager, null, 0, StyleKeyRegistry.getRegistry(), null);
+    final StyleSheetHandler handler = new StyleSheetHandler();
+    handler.init (resourceManager, null, 0, StyleKeyRegistry.getRegistry(), null);
     parser.setDocumentHandler(handler);
     SelectorList sl =
             parser.parseSelectors(new StringInputSource (selector, new URL("http://localhost")));

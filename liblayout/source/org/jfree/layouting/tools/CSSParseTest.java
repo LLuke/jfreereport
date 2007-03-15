@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CSSParseTest.java,v 1.9 2006/12/03 18:58:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -52,7 +52,8 @@ public class CSSParseTest
     final HashMap namespaces = new HashMap();
     namespaces.put("xml", "balh");
 
-    Object value = StyleSheetParserUtil.parseStyleValue
+    final StyleSheetParserUtil styleSheetParserUtil = StyleSheetParserUtil.getInstance();
+    Object value = styleSheetParserUtil.parseStyleValue
             (namespaces, LineStyleKeys.VERTICAL_ALIGN,
                     "baseline", null, null);
     System.out.println ("Value: " + value);
