@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionLayoutController.java,v 1.8 2007/03/06 14:37:38 taqua Exp $
+ * $Id: SectionLayoutController.java,v 1.9 2007/03/12 18:03:14 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -72,27 +72,13 @@ public class SectionLayoutController extends ElementLayoutController
   {
 
     final FlowController flowController = getFlowController();
-    final ReportContext reportContext = flowController.getReportContext();
-    final LayoutControllerFactory layoutControllerFactory =
-        reportContext.getLayoutControllerFactory();
 
     final Node[] nodes = getNodes();
     if (index < nodes.length)
     {
-      final SectionLayoutController derived = (SectionLayoutController) clone();
       final Node node = nodes[index];
-
-      if (isDisplayable(node))
-      {
-        derived.setProcessingState(ElementLayoutController.WAITING_FOR_JOIN);
-        return layoutControllerFactory.create
-            (flowController, node, derived);
-      }
-      else
-      {
-        derived.index += 1;
-        return LayoutControllerUtil.skipInvisibleElement(derived);
-      }
+      final SectionLayoutController derived = (SectionLayoutController) clone();
+      return processChild(derived, node, flowController);
     }
     else
     {
@@ -102,7 +88,28 @@ public class SectionLayoutController extends ElementLayoutController
     }
   }
 
-  private boolean isDisplayable (final Node node)
+  protected LayoutController processChild(final SectionLayoutController derived,
+                                          final Node node,
+                                          final FlowController flowController)
+      throws DataSourceException, ReportProcessingException,
+      ReportDataFactoryException
+  {
+    final ReportContext reportContext = flowController.getReportContext();
+    final LayoutControllerFactory layoutControllerFactory =
+        reportContext.getLayoutControllerFactory();
+    if (isDisplayable(node))
+    {
+      derived.setProcessingState(ElementLayoutController.WAITING_FOR_JOIN);
+      return layoutControllerFactory.create(flowController, node, derived);
+    }
+    else
+    {
+      derived.index += 1;
+      return LayoutControllerUtil.skipInvisibleElement(derived);
+    }
+  }
+
+  private boolean isDisplayable(final Node node)
       throws DataSourceException
   {
     if (node.isEnabled() == false)
@@ -115,10 +122,10 @@ public class SectionLayoutController extends ElementLayoutController
     {
       return true;
     }
-    
+
     final Object result = LayoutControllerUtil.evaluateExpression
         (getFlowController(), node, expression);
-    if (Boolean.TRUE.equals (result))
+    if (Boolean.TRUE.equals(result))
     {
       return true;
     }
@@ -147,7 +154,7 @@ public class SectionLayoutController extends ElementLayoutController
       ReportDataFactoryException
   {
     FlowController fc = handleDefaultEndElement(target);
-    
+
     // unwind the stack ..
     final Section s = (Section) getElement();
     fc = finishData(target, fc);
