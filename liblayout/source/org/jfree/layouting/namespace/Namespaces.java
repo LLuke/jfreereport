@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: Namespaces.java,v 1.5 2006/12/03 18:58:05 taqua Exp $
+ * $Id: Namespaces.java,v 1.6 2007/03/02 17:25:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -100,18 +100,20 @@ public final class Namespaces
           nsPrefix + "Default-Style");
 
       ResourceKey styleResourceKey = null;
-
-      try
+      if (resourceManager != null)
       {
-        if (defaultStyle != null)
+        try
         {
-          styleResourceKey = resourceManager.createKey(defaultStyle);
+          if (defaultStyle != null)
+          {
+            styleResourceKey = resourceManager.createKey(defaultStyle);
+          }
         }
-      }
-      catch (ResourceException e)
-      {
-        // ignored ..
-        Log.info("Unable to create resourcekey for style " + trimmedUri);
+        catch (ResourceException e)
+        {
+          // ignored ..
+          Log.info("Unable to create resourcekey for style " + trimmedUri);
+        }
       }
       retvals.add(new DefaultNamespaceDefinition
           (trimmedUri, styleResourceKey, classAttr, styleAttr, prefixAttr));

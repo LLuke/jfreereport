@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultNamespaceCollection.java,v 1.4 2006/12/03 18:58:05 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,7 +45,16 @@ public class DefaultNamespaceCollection implements NamespaceCollection
     namespaces = new HashMap();
   }
 
-  public void addDefinition (NamespaceDefinition definition)
+  public void addDefinitions (final NamespaceDefinition[] definitions)
+  {
+    for (int i = 0; i < definitions.length; i++)
+    {
+      final NamespaceDefinition definition = definitions[i];
+      namespaces.put(definition.getURI(), definition);
+    }
+  }
+
+  public void addDefinition (final NamespaceDefinition definition)
   {
     namespaces.put(definition.getURI(), definition);
   }
@@ -56,7 +65,7 @@ public class DefaultNamespaceCollection implements NamespaceCollection
             (new String[namespaces.size()]);
   }
 
-  public NamespaceDefinition getDefinition(String namespace)
+  public NamespaceDefinition getDefinition(final String namespace)
   {
     return (NamespaceDefinition) namespaces.get(namespace);
   }
