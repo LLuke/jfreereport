@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AttributeList.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
+ * $Id: AttributeList.java,v 1.4 2007/01/19 14:05:29 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,9 +35,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jfree.util.ObjectUtilities;
+
 /**
- * The attribute list is used by a writer to specify the attributes of an XML element in a
- * certain order.
+ * The attribute list is used by a writer to specify the attributes of an XML
+ * element in a certain order.
  *
  * @author Thomas Morgner
  */
@@ -66,20 +68,22 @@ public class AttributeList
     /**
      * Creates a new attribute entry for the given name and value.
      *
-     * @param name  the attribute name (<code>null</code> not permitted).
-     * @param value the attribute value (<code>null</code> not permitted).
+     * @param namespace the namespace of the attribute.
+     * @param name      the attribute name (<code>null</code> not permitted).
+     * @param value     the attribute value (<code>null</code> not permitted).
      */
-    public AttributeEntry (final String namespace, final String name, final String value)
+    public AttributeEntry(final String namespace, final String name,
+                          final String value)
     {
       if (name == null)
       {
         throw new NullPointerException("Name must not be null. ["
-                + name + ", " + value + "]");
+                                       + name + ", " + value + "]");
       }
       if (value == null)
       {
         throw new NullPointerException("Value must not be null. ["
-                + name + ", " + value + "]");
+                                       + name + ", " + value + "]");
       }
       this.namespace = namespace;
       this.name = name;
@@ -91,7 +95,7 @@ public class AttributeList
      *
      * @return the name.
      */
-    public String getName ()
+    public String getName()
     {
       return this.name;
     }
@@ -101,17 +105,17 @@ public class AttributeList
      *
      * @return the value of the entry.
      */
-    public String getValue ()
+    public String getValue()
     {
       return this.value;
     }
 
-    public String getNamespace ()
+    public String getNamespace()
     {
       return namespace;
     }
 
-    public boolean equals (Object o)
+    public boolean equals(Object o)
     {
       if (this == o)
       {
@@ -128,7 +132,8 @@ public class AttributeList
       {
         return false;
       }
-      if (namespace != null ? !namespace.equals(that.namespace) : that.namespace != null)
+      if (namespace != null ? !namespace.equals(
+          that.namespace) : that.namespace != null)
       {
         return false;
       }
@@ -136,7 +141,7 @@ public class AttributeList
       return true;
     }
 
-    public int hashCode ()
+    public int hashCode()
     {
       int result;
       result = (namespace != null ? namespace.hashCode() : 0);
@@ -153,12 +158,12 @@ public class AttributeList
   /**
    * Creates an empty attribute list with no default values.
    */
-  public AttributeList ()
+  public AttributeList()
   {
     this.entryList = new ArrayList();
   }
 
-  public Iterator iterator ()
+  public Iterator iterator()
   {
     return entryList.iterator();
   }
@@ -166,15 +171,16 @@ public class AttributeList
   /**
    * Defines an attribute.
    *
-   * @param name  the name of the attribute to be defined
-   * @param value the value of the attribute.
+   * @param namespace the namespace of the attribute.
+   * @param name      the name of the attribute to be defined
+   * @param value     the value of the attribute.
    */
-  public synchronized void setAttribute (final String namespace,
-                                         final String name,
-                                         final String value)
+  public void setAttribute(final String namespace,
+                           final String name,
+                           final String value)
   {
     final AttributeEntry entry =
-            new AttributeEntry(namespace, name, value);
+        new AttributeEntry(namespace, name, value);
     final int pos = this.entryList.indexOf(entry);
     if (pos != -1)
     {
@@ -184,29 +190,31 @@ public class AttributeList
   }
 
   /**
-   * Returns the attribute value for the given attribute name or null, if the attribute
-   * is not defined in this list.
+   * Returns the attribute value for the given attribute name or null, if the
+   * attribute is not defined in this list.
    *
-   * @param name the name of the attribute
+   * @param namespace the namespace of the attribute.
+   * @param name      the name of the attribute
    * @return the attribute value or null.
    */
-  public synchronized String getAttribute (final String namespace,
-                                           final String name)
+  public String getAttribute(final String namespace,
+                             final String name)
   {
     return getAttribute(namespace, name, null);
   }
 
   /**
-   * Returns the attribute value for the given attribute name or the given defaultvalue,
-   * if the attribute is not defined in this list.
+   * Returns the attribute value for the given attribute name or the given
+   * defaultvalue, if the attribute is not defined in this list.
    *
+   * @param namespace    the namespace of the attribute.
    * @param name         the name of the attribute.
    * @param defaultValue the default value.
    * @return the attribute value or the defaultValue.
    */
-  public synchronized String getAttribute (final String namespace,
-                                           final String name,
-                                           final String defaultValue)
+  public String getAttribute(final String namespace,
+                             final String name,
+                             final String defaultValue)
   {
     for (int i = 0; i < this.entryList.size(); i++)
     {
@@ -222,10 +230,11 @@ public class AttributeList
   /**
    * Removes the attribute with the given name from the list.
    *
-   * @param name the name of the attribute which should be removed..
+   * @param namespace the namespace of the attribute that should be removed.
+   * @param name      the name of the attribute which should be removed..
    */
-  public synchronized void removeAttribute (final String namespace,
-                                            final String name)
+  public void removeAttribute(final String namespace,
+                              final String name)
   {
     for (int i = 0; i < this.entryList.size(); i++)
     {
@@ -248,11 +257,30 @@ public class AttributeList
   {
     if (prefix == null || "".equals(prefix))
     {
-      setAttribute(XMLNS_NAMESPACE, "", namespaceUri);
+      setAttribute(AttributeList.XMLNS_NAMESPACE, "", namespaceUri);
     }
     else
     {
-      setAttribute(XMLNS_NAMESPACE, prefix, namespaceUri);
+      setAttribute(AttributeList.XMLNS_NAMESPACE, prefix, namespaceUri);
     }
+  }
+
+  public boolean isNamespacePrefixDefined(final String prefix)
+  {
+    return getAttribute(AttributeList.XMLNS_NAMESPACE, prefix) != null;
+  }
+
+  public boolean isNamespaceUriDefined(final String uri)
+  {
+    for (int i = 0; i < this.entryList.size(); i++)
+    {
+      final AttributeEntry ae = (AttributeEntry) this.entryList.get(i);
+      if (ObjectUtilities.equal(ae.getValue(), uri) &&
+          AttributeList.XMLNS_NAMESPACE.equals(ae.getNamespace()))
+      {
+        return true;
+      }
+    }
+    return false;
   }
 }

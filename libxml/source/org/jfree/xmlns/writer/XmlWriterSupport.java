@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.10 2007/03/12 18:06:42 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.11 2007/03/14 17:14:00 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -397,6 +397,59 @@ public class XmlWriterSupport
     }
   }
 
+  public boolean isNamespaceDefined (final String uri)
+  {
+    if (impliedNamespaces != null)
+    {
+      if (impliedNamespaces.containsKey(uri))
+      {
+        return true;
+      }
+    }
+    if (openTags.isEmpty())
+    {
+      return false;
+    }
+    final ElementLevel parent = (ElementLevel) openTags.peek();
+    return parent.getNamespaces().containsKey(uri);
+  }
+
+  public boolean isNamespacePrefixDefined(String prefix)
+  {
+    if (impliedNamespaces != null)
+    {
+      if (impliedNamespaces.containsValue(prefix))
+      {
+        return true;
+      }
+    }
+    if (openTags.isEmpty())
+    {
+      return false;
+    }
+    final ElementLevel parent = (ElementLevel) openTags.peek();
+    return parent.getNamespaces().containsValue(prefix);
+  }
+
+
+  public Properties getNamespaces()
+  {
+    if (openTags.isEmpty())
+    {
+      final Properties namespaces = new Properties();
+      if (impliedNamespaces != null)
+      {
+        namespaces.putAll(impliedNamespaces);
+      }
+      return namespaces;
+    }
+
+    final ElementLevel parent = (ElementLevel) openTags.peek();
+    final Properties namespaces = new Properties();
+    namespaces.putAll(parent.getNamespaces());
+    return namespaces;
+  }
+
   /**
    * Writes an opening XML tag along with a list of attribute/value pairs.
    *
@@ -422,16 +475,7 @@ public class XmlWriterSupport
     indent(w);
     setLineEmpty(false);
 
-    final Properties namespaces;
-    if (openTags.isEmpty())
-    {
-      namespaces = new Properties(impliedNamespaces);
-    }
-    else
-    {
-      final ElementLevel parent = (ElementLevel) openTags.peek();
-      namespaces = new Properties(parent.getNamespaces());
-    }
+    final Properties namespaces = getNamespaces();
 
     if (attributes != null)
     {
@@ -783,8 +827,8 @@ public class XmlWriterSupport
     if (openTags.isEmpty() == false)
     {
       final ElementLevel level = (ElementLevel) openTags.peek();
-      if (getTagDescription().hasCData(level.getNamespace(),
-          level.getTagName()) == false)
+      if (getTagDescription().hasCData
+          (level.getNamespace(), level.getTagName()) == false)
       {
         indent(writer);
       }
@@ -820,8 +864,9 @@ public class XmlWriterSupport
    * is implementation dependent. (Appendix A; Section 6.2 of the XmlNamespaces
    * recommendation)
    *
-   * @return true, if attributes in the element's namespace should be written
-   *         without a prefix, false to write all attributes with a prefix.
+   * @param assumeDefaultNamespace true, if attributes in the element's
+   *                               namespace should be written without a prefix,
+   *                               false to write all attributes with a prefix.
    */
   public void setAssumeDefaultNamespace(final boolean assumeDefaultNamespace)
   {

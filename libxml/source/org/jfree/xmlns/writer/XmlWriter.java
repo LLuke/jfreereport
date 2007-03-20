@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriter.java,v 1.3 2006/12/03 17:39:29 taqua Exp $
+ * $Id: XmlWriter.java,v 1.4 2007/03/12 18:06:42 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,7 +42,6 @@ import org.jfree.xmlns.common.AttributeList;
  */
 public class XmlWriter extends XmlWriterSupport
 {
-
   /**
    * The character stream.
    */
@@ -249,6 +248,12 @@ public class XmlWriter extends XmlWriterSupport
       throws IOException
   {
     super.writeNewLine(writer);
+  }
+
+  public void flush ()
+      throws IOException
+  {
+    this.writer.flush();
   }
 
 }
