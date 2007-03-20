@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RawReportTarget.java,v 1.8 2006/12/08 14:20:41 taqua Exp $
+ * $Id: RawReportTarget.java,v 1.9 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -49,7 +49,7 @@ public class RawReportTarget implements ReportTarget
 {
   private ReportJob reportJob;
 
-  public RawReportTarget(ReportJob job)
+  public RawReportTarget(final ReportJob job)
   {
     this.reportJob = job;
   }
@@ -59,10 +59,10 @@ public class RawReportTarget implements ReportTarget
     return reportJob;
   }
 
-  public void startReport(ReportStructureRoot report)
+  public void startReport(final ReportStructureRoot report)
       throws DataSourceException, ReportProcessingException
   {
-
+    
   }
 
   public void startElement(final AttributeMap attrs)

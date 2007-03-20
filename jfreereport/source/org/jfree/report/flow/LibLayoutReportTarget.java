@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LibLayoutReportTarget.java,v 1.11 2006/12/09 21:19:04 taqua Exp $
+ * $Id: LibLayoutReportTarget.java,v 1.12 2007/03/12 18:03:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -72,7 +72,7 @@ public class LibLayoutReportTarget extends AbstractReportTarget
     {
     }
 
-    public void fill (LibLayoutReportTarget target) throws StateException
+    public void fill (final LibLayoutReportTarget target) throws StateException
     {
       this.layoutProcess = target.getLayoutProcess().saveState();
       this.reportJob = target.getReportJob();
@@ -81,7 +81,7 @@ public class LibLayoutReportTarget extends AbstractReportTarget
       this.namespaceCollection = target.getNamespaces();
     }
 
-    public ReportTarget restore(OutputProcessor out)
+    public ReportTarget restore(final OutputProcessor out)
         throws StateException
     {
       final LayoutProcess layoutProcess = this.layoutProcess.restore(out);
@@ -217,8 +217,8 @@ public class LibLayoutReportTarget extends AbstractReportTarget
   {
     try
     {
-      final String namespace = getNamespaceFromAttribute(attrs);
-      final String type = getElemenTypeFromAttribute(attrs);
+      final String namespace = ReportTargetUtil.getNamespaceFromAttribute(attrs);
+      final String type = ReportTargetUtil.getElemenTypeFromAttribute(attrs);
       final InputFeed feed = getInputFeed();
       feed.startElement(namespace, type);
       handleAttributes(attrs);

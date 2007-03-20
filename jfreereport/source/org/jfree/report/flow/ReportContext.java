@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportContext.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: ReportContext.java,v 1.4 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,7 +35,14 @@ import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
 import org.jfree.report.i18n.ResourceBundleFactory;
 
 /**
- * Creation-Date: 24.11.2006, 14:23:35
+ * THe global report context. This context acts as global structure that holds
+ * all processing factories and allows to store global attributes. The
+ * attribute collection is a global collection, all layout controller have
+ * shared access to the same collection.
+ *
+ * Each report run (prepare, paginate, content-generate) uses its own context
+ * implementation - attributes are not shared or preserved among the different
+ * runs. 
  *
  * @author Thomas Morgner
  */

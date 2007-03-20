@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: StaticTextLayoutController.java,v 1.5 2007/03/06 14:37:38 taqua Exp $
+ * $Id: StaticTextLayoutController.java,v 1.6 2007/03/12 18:03:14 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -76,16 +76,9 @@ public class StaticTextLayoutController extends AbstractLayoutController
     final StaticText text = (StaticText) getNode();
     target.processText(text.getText());
 
-    if (getParent() != null)
-    {
-      return getParent().join(getFlowController());
-    }
-    else
-    {
-      final StaticTextLayoutController derived = (StaticTextLayoutController) clone();
-      derived.state = StaticTextLayoutController.FINISHED;
-      return derived;
-    }
+    final StaticTextLayoutController derived = (StaticTextLayoutController) clone();
+    derived.state = StaticTextLayoutController.FINISHED;
+    return derived;
   }
 
   /**

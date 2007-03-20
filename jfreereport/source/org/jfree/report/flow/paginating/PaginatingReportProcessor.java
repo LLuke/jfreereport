@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PaginatingReportProcessor.java,v 1.11 2006/12/08 14:20:41 taqua Exp $
+ * $Id: PaginatingReportProcessor.java,v 1.12 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -57,6 +57,8 @@ import org.jfree.util.Log;
  * This is written to use LibLayout. It will never work with other report
  * targets.
  *
+ * Be aware that this class is not synchronized. 
+ *
  * @author Thomas Morgner
  */
 public abstract class PaginatingReportProcessor extends AbstractReportProcessor
@@ -66,7 +68,7 @@ public abstract class PaginatingReportProcessor extends AbstractReportProcessor
   private IntList physicalMapping;
   private IntList logicalMapping;
 
-  public PaginatingReportProcessor(final PageableOutputProcessor outputProcessor)
+  protected PaginatingReportProcessor(final PageableOutputProcessor outputProcessor)
   {
     this.outputProcessor = outputProcessor;
   }
@@ -76,13 +78,12 @@ public abstract class PaginatingReportProcessor extends AbstractReportProcessor
     return outputProcessor;
   }
 
-  protected LibLayoutReportTarget createTarget(ReportJob job)
+  protected LibLayoutReportTarget createTarget(final ReportJob job)
   {
     if (outputProcessor == null)
     {
       throw new IllegalStateException("OutputProcessor is invalid.");
     }
-
     final LayoutProcess layoutProcess =
         new ChainingLayoutProcess(new DefaultLayoutProcess(outputProcessor));
     final ResourceManager resourceManager = job.getReportStructureRoot().getResourceManager();
@@ -108,7 +109,7 @@ public abstract class PaginatingReportProcessor extends AbstractReportProcessor
       throw new NullPointerException();
     }
 
-    long start = System.currentTimeMillis();
+    final long start = System.currentTimeMillis();
     // first, compute the globals
     processReportRun(job, createTarget(job));
     if (outputProcessor.isGlobalStateComputed() == false)
@@ -130,8 +131,7 @@ public abstract class PaginatingReportProcessor extends AbstractReportProcessor
       throw new ReportProcessingException
           ("Illegal State.");
     }
-
-    long end = System.currentTimeMillis();
+    final long end = System.currentTimeMillis();
     System.out.println("Pagination-Time: " + (end - start));
   }
 
@@ -140,96 +140,104 @@ public abstract class PaginatingReportProcessor extends AbstractReportProcessor
       throws ReportDataFactoryException,
       DataSourceException, ReportProcessingException
   {
-    synchronized (job)
+    if (job == null)
     {
-      stateList = new PageStateList(this);
-      physicalMapping = new IntList(40);
-      logicalMapping = new IntList(20);
-
-      final ReportContext context = createReportContext(job, target);
-      final LayoutControllerFactory layoutFactory =
-          context.getLayoutControllerFactory();
-
-      // we have the data and we have our position inside the report.
-      // lets generate something ...
-      final FlowController flowController = createFlowControler(context, job);
-
-      LayoutController layoutController =
-          layoutFactory.create(flowController, job.getReportStructureRoot(), null);
-
-      try
-      {
-        stateList.add(new PageState(target.saveState(), layoutController,
-            outputProcessor.getPageCursor()));
-        int logPageCount = outputProcessor.getLogicalPageCount();
-        int physPageCount = outputProcessor.getPhysicalPageCount();
-
-        while (layoutController.isAdvanceable())
-        {
-          layoutController = layoutController.advance(target);
-          target.commit();
-
-          // check whether a pagebreak has been encountered.
-          if (target.isPagebreakEncountered())
-          {
-            // So we hit a pagebreak. Store the state for later reuse.
-            // A single state can refer to more than one physical page.
-
-            int newLogPageCount = outputProcessor.getLogicalPageCount();
-            int newPhysPageCount = outputProcessor.getPhysicalPageCount();
-
-            int result = stateList.size() - 1;
-            for (; physPageCount < newPhysPageCount; physPageCount++)
-            {
-              physicalMapping.add(result);
-            }
-
-            for (; logPageCount < newLogPageCount; logPageCount++)
-            {
-              logicalMapping.add(result);
-            }
-
-            final ReportTargetState targetState = target.saveState();
-            final PageState state =
-                new PageState (targetState, layoutController,
-                outputProcessor.getPageCursor());
-            stateList.add(state);
-
-            // This is an assertation that we do not run into invalid states
-            // later.
-            if (ASSERTATION)
-            {
-              final ReportTarget reportTarget =
-                targetState.restore(outputProcessor);
-            }
-
-            target.resetPagebreakFlag();
-          }
-        }
-
-        // And when we reached the end, add the remaining pages ..
-        int newLogPageCount = outputProcessor.getLogicalPageCount();
-        int newPhysPageCount = outputProcessor.getPhysicalPageCount();
-
-        int result = stateList.size() - 1;
-        for (; physPageCount < newPhysPageCount; physPageCount++)
-        {
-          physicalMapping.add(result);
-        }
-
-        for (; logPageCount < newLogPageCount; logPageCount++)
-        {
-          logicalMapping.add(result);
-        }
-      }
-      catch (StateException e)
-      {
-        throw new ReportProcessingException("Argh, Unable to save the state!");
-      }
-
-      Log.debug("After pagination we have " + stateList.size() + " states");
-      return stateList;
+      throw new NullPointerException();
     }
+    stateList = new PageStateList(this);
+    physicalMapping = new IntList(40);
+    logicalMapping = new IntList(20);
+
+    final ReportContext context = createReportContext(job, target);
+    final LayoutControllerFactory layoutFactory =
+        context.getLayoutControllerFactory();
+
+    // we have the data and we have our position inside the report.
+    // lets generate something ...
+    final FlowController flowController = createFlowControler(context, job);
+
+    LayoutController layoutController =
+        layoutFactory.create(flowController, job.getReportStructureRoot(), null);
+
+    try
+    {
+      stateList.add(new PageState(target.saveState(), layoutController,
+          outputProcessor.getPageCursor()));
+      int logPageCount = outputProcessor.getLogicalPageCount();
+      int physPageCount = outputProcessor.getPhysicalPageCount();
+
+      while (layoutController.isAdvanceable())
+      {
+        layoutController = layoutController.advance(target);
+        target.commit();
+
+        while (layoutController.isAdvanceable() == false &&
+               layoutController.getParent() != null)
+        {
+          final LayoutController parent = layoutController.getParent();
+          layoutController = parent.join(layoutController.getFlowController());
+        }
+
+        // check whether a pagebreak has been encountered.
+        if (target.isPagebreakEncountered())
+        {
+          // So we hit a pagebreak. Store the state for later reuse.
+          // A single state can refer to more than one physical page.
+
+          final int newLogPageCount = outputProcessor.getLogicalPageCount();
+          final int newPhysPageCount = outputProcessor.getPhysicalPageCount();
+
+          final int result = stateList.size() - 1;
+          for (; physPageCount < newPhysPageCount; physPageCount++)
+          {
+            physicalMapping.add(result);
+          }
+
+          for (; logPageCount < newLogPageCount; logPageCount++)
+          {
+            logicalMapping.add(result);
+          }
+
+          final ReportTargetState targetState = target.saveState();
+          final PageState state =
+              new PageState (targetState, layoutController,
+              outputProcessor.getPageCursor());
+          stateList.add(state);
+
+          // This is an assertation that we do not run into invalid states
+          // later.
+          if (PaginatingReportProcessor.ASSERTATION)
+          {
+            final ReportTarget reportTarget =
+              targetState.restore(outputProcessor);
+          }
+
+          target.resetPagebreakFlag();
+        }
+      }
+
+      // And when we reached the end, add the remaining pages ..
+      final int newLogPageCount = outputProcessor.getLogicalPageCount();
+      final int newPhysPageCount = outputProcessor.getPhysicalPageCount();
+
+      final int result = stateList.size() - 1;
+      for (; physPageCount < newPhysPageCount; physPageCount++)
+      {
+        physicalMapping.add(result);
+      }
+
+      for (; logPageCount < newLogPageCount; logPageCount++)
+      {
+        logicalMapping.add(result);
+      }
+    }
+    catch (final StateException e)
+    {
+      throw new ReportProcessingException("Argh, Unable to save the state!");
+    }
+
+    Log.debug("After pagination we have " + stateList.size() + " states");
+    return stateList;
   }
 
   public boolean isPaginated()
@@ -237,17 +245,17 @@ public abstract class PaginatingReportProcessor extends AbstractReportProcessor
     return outputProcessor.isPaginationFinished();
   }
 
-  protected PageState getLogicalPageState (int page)
+  protected PageState getLogicalPageState (final int page)
   {
     return stateList.get(logicalMapping.get(page));
   }
 
-  protected PageState getPhysicalPageState (int page)
+  protected PageState getPhysicalPageState (final int page)
   {
     return stateList.get(physicalMapping.get(page));
   }
 
-  public PageState processPage(PageState previousState)
+  public PageState processPage(final PageState previousState)
       throws StateException, ReportProcessingException,
       ReportDataFactoryException, DataSourceException
   {
@@ -266,6 +274,15 @@ public abstract class PaginatingReportProcessor extends AbstractReportProcessor
       position = position.advance(target);
       target.commit();
 
+      // else check whether this state is finished, and try to join the subflow
+      // with the parent.
+      while (position.isAdvanceable() == false &&
+             position.getParent() != null)
+      {
+        final LayoutController parent = position.getParent();
+        position = parent.join(position.getFlowController());
+      }
+
       // check whether a pagebreak has been encountered.
       if (target.isPagebreakEncountered())
       {
@@ -276,7 +293,9 @@ public abstract class PaginatingReportProcessor extends AbstractReportProcessor
         target.resetPagebreakFlag();
         return state;
       }
+
     }
+
     // reached the finish state .. this is bad!
     return null;
   }

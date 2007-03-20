@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutController.java,v 1.6 2007/03/06 14:37:38 taqua Exp $
+ * $Id: LayoutController.java,v 1.7 2007/03/12 18:03:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -92,6 +92,14 @@ public interface LayoutController extends Cloneable
       ReportProcessingException;
 
   /**
+   * Checks, whether the layout controller would be advanceable. If this method
+   * returns true, it is generally safe to call the 'advance()' method.
+   *
+   * @return true, if the layout controller is advanceable, false otherwise.
+   */
+  public boolean isAdvanceable();
+
+  /**
    * Joins with a delegated process flow. This is generally called from a child
    * flow and should *not* (I mean it!) be called from outside. If you do,
    * you'll suffer.
@@ -103,14 +111,6 @@ public interface LayoutController extends Cloneable
   public LayoutController join(FlowController flowController)
       throws DataSourceException, ReportDataFactoryException,
       ReportProcessingException;
-
-  /**
-   * Checks, whether the layout controller would be advanceable. If this method
-   * returns true, it is generally safe to call the 'advance()' method.
-   *
-   * @return true, if the layout controller is advanceable, false otherwise.
-   */
-  public boolean isAdvanceable();
 
   /**
    * Creates a copy of this layout controller.

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.7 2007/03/06 14:37:38 taqua Exp $
+ * $Id: LayoutControllerUtil.java,v 1.8 2007/03/12 18:03:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -490,7 +490,14 @@ public class LayoutControllerUtil
     while (lc.isAdvanceable())
     {
       lc = lc.advance(target);
+      while (layoutController.isAdvanceable() == false &&
+             layoutController.getParent() != null)
+      {
+        final LayoutController parent = lc.getParent();
+        lc = parent.join(lc.getFlowController());
+      }
     }
+    target.commit();
 
     final PrecomputeNode precomputeNode = pcvr.currentNode();
     final Object functionResult = precomputeNode.getFunctionResult(
@@ -513,7 +520,14 @@ public class LayoutControllerUtil
     while (lc.isAdvanceable())
     {
       lc = lc.advance(target);
+      while (layoutController.isAdvanceable() == false &&
+             layoutController.getParent() != null)
+      {
+        final LayoutController parent = lc.getParent();
+        lc = parent.join(lc.getFlowController());
+      }
     }
+    target.commit();
 
     return lc;
   }

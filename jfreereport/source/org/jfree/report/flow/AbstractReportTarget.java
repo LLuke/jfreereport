@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractReportTarget.java,v 1.7 2007/03/12 18:03:13 taqua Exp $
+ * $Id: AbstractReportTarget.java,v 1.8 2007/03/14 17:12:43 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -91,42 +91,6 @@ public abstract class AbstractReportTarget implements ReportTarget
   public ReportJob getReportJob()
   {
     return reportJob;
-  }
-
-  protected final String getNamespaceFromAttribute(AttributeMap attrs)
-  {
-    final Object attribute = attrs.getAttribute
-        (JFreeReportInfo.REPORT_NAMESPACE, Element.NAMESPACE_ATTRIBUTE);
-    if (attribute instanceof String)
-    {
-      return (String) attribute;
-    }
-    return JFreeReportInfo.REPORT_NAMESPACE;
-  }
-
-  protected final String getElemenTypeFromAttribute(AttributeMap attrs)
-  {
-    final Object attribute = attrs.getAttribute
-        (JFreeReportInfo.REPORT_NAMESPACE, Element.TYPE_ATTRIBUTE);
-    if (attribute instanceof String)
-    {
-      return (String) attribute;
-    }
-    return "element";
-  }
-
-  protected final boolean isElementOfType(final String uri,
-                                          final String tagName,
-                                          final AttributeMap attrs)
-  {
-    final String namespace = getNamespaceFromAttribute(attrs);
-    if (ObjectUtilities.equal(namespace, uri) == false)
-    {
-      return false;
-    }
-
-    final String elementTagName = getElemenTypeFromAttribute(attrs);
-    return ObjectUtilities.equal(tagName, elementTagName);
   }
 
 

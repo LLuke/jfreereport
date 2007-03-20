@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ElementLayoutController.java,v 1.7 2006/12/19 17:42:02 taqua Exp $
+ * $Id: ElementLayoutController.java,v 1.8 2007/03/06 14:37:38 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -125,8 +125,8 @@ public abstract class ElementLayoutController
   public static final int OPENED = 1;
   public static final int WAITING_FOR_JOIN = 2;
   public static final int FINISHING = 3;
-  public static final int JOINING = 4;
-  public static final int FINISHED = 5;
+  //public static final int JOINING = 4;
+  public static final int FINISHED = 4;
 
   private int processingState;
   private FlowController flowController;
@@ -195,8 +195,7 @@ public abstract class ElementLayoutController
    * call to one of the following methods: <ul> <li>{@link
    * #startElement(org.jfree.report.flow.ReportTarget)} <li>{@link
    * #processContent(org.jfree.report.flow.ReportTarget)} <li>{@link
-   * #finishElement(org.jfree.report.flow.ReportTarget)} <li>{@link
-   * #joinWithParent()} </ul>
+   * #finishElement(org.jfree.report.flow.ReportTarget)} </ul>
    *
    * @param target the report target that receives generated events.
    * @return the new layout controller instance representing the new state.
@@ -220,8 +219,8 @@ public abstract class ElementLayoutController
         return processContent(target);
       case ElementLayoutController.FINISHING:
         return finishElement(target);
-      case ElementLayoutController.JOINING:
-        return joinWithParent();
+//      case ElementLayoutController.JOINING:
+//        return joinWithParent();
       default:
         throw new IllegalStateException();
     }
@@ -347,12 +346,6 @@ public abstract class ElementLayoutController
       ReportDataFactoryException
   {
     final FlowController fc = handleDefaultEndElement(target);
-    final LayoutController parent = getParent();
-    if (parent != null)
-    {
-      return parent.join(fc);
-    }
-
     final ElementLayoutController derived = (ElementLayoutController) clone();
     derived.setProcessingState(ElementLayoutController.FINISHED);
     derived.setFlowController(fc);
@@ -393,30 +386,30 @@ public abstract class ElementLayoutController
 
     return fc;
   }
-
-  /**
-   * Joins the layout controller with the parent. This simply calls
-   * {@link #join(org.jfree.report.flow.FlowController)} on the parent. A join
-   * operation is necessary to propagate changes in the flow-controller to the
-   * parent for further processing.
-   *
-   * @return the joined parent.
-   * @throws IllegalStateException if this layout controller has no parent.
-   */
-  protected LayoutController joinWithParent()
-      throws ReportProcessingException, ReportDataFactoryException,
-      DataSourceException
-  {
-    final LayoutController parent = getParent();
-    if (parent == null)
-    {
-      // skip to the next step ..
-      throw new IllegalStateException("There is no parent to join with. " +
-                                      "This should not happen in a sane environment!");
-    }
-
-    return parent.join(getFlowController());
-  }
+//
+//  /**
+//   * Joins the layout controller with the parent. This simply calls
+//   * {@link #join(org.jfree.report.flow.FlowController)} on the parent. A join
+//   * operation is necessary to propagate changes in the flow-controller to the
+//   * parent for further processing.
+//   *
+//   * @return the joined parent.
+//   * @throws IllegalStateException if this layout controller has no parent.
+//   */
+//  protected LayoutController joinWithParent()
+//      throws ReportProcessingException, ReportDataFactoryException,
+//      DataSourceException
+//  {
+//    final LayoutController parent = getParent();
+//    if (parent == null)
+//    {
+//      // skip to the next step ..
+//      throw new IllegalStateException("There is no parent to join with. " +
+//                                      "This should not happen in a sane environment!");
+//    }
+//
+//    return parent.join(getFlowController());
+//  }
 
   public boolean isAdvanceable()
   {

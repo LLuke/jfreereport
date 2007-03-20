@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionLayoutController.java,v 1.9 2007/03/12 18:03:14 taqua Exp $
+ * $Id: SectionLayoutController.java,v 1.10 2007/03/19 18:03:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -171,12 +171,6 @@ public class SectionLayoutController extends ElementLayoutController
         derived.setIndex(0);
         return derived;
       }
-    }
-
-    final LayoutController parent = getParent();
-    if (parent != null)
-    {
-      return parent.join(fc);
     }
 
     // Go back to the beginning ...

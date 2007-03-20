@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractReportProcessor.java,v 1.7 2006/12/09 21:19:04 taqua Exp $
+ * $Id: AbstractReportProcessor.java,v 1.8 2007/03/12 18:03:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -46,7 +46,7 @@ import org.jfree.report.flow.layoutprocessor.LayoutControllerFactory;
  */
 public abstract class AbstractReportProcessor implements ReportProcessor
 {
-  public AbstractReportProcessor()
+  protected AbstractReportProcessor()
   {
   }
 
@@ -71,15 +71,22 @@ public abstract class AbstractReportProcessor implements ReportProcessor
       while (layoutController.isAdvanceable())
       {
         layoutController = layoutController.advance(target);
-        target.commit();
+        while (layoutController.isAdvanceable() == false &&
+               layoutController.getParent() != null)
+        {
+          final LayoutController parent = layoutController.getParent();
+          target.commit();
+          layoutController = parent.join(layoutController.getFlowController());
+        }
       }
+      target.commit();
     }
   }
 
   protected ReportContext createReportContext (final ReportJob job,
                                                final ReportTarget target)
   {
-    ReportContextImpl context = new ReportContextImpl();
+    final ReportContextImpl context = new ReportContextImpl();
     context.setExportDescriptor(target.getExportDescriptor());
     final DefaultLayoutControllerFactory lcf = new DefaultLayoutControllerFactory();
     lcf.initialize(job);

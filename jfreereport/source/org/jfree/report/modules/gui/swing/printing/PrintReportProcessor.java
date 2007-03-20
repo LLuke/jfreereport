@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PrintReportProcessor.java,v 1.6 2006/12/08 14:20:42 taqua Exp $
+ * $Id: PrintReportProcessor.java,v 1.7 2006/12/09 21:19:04 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -124,11 +124,20 @@ public class PrintReportProcessor extends PaginatingReportProcessor
       {
         position = position.advance(target);
         target.commit();
+
+        while (position.isAdvanceable() == false &&
+               position.getParent() != null)
+        {
+          final LayoutController parent = position.getParent();
+          position = parent.join(position.getFlowController());
+        }
+
         if (interceptor.isMoreContentNeeded() == false)
         {
           outputProcessor.setInterceptor(null);
           return interceptor.getDrawable();
         }
+
       }
 
       outputProcessor.setInterceptor(null);
@@ -202,7 +211,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
    * @throws IndexOutOfBoundsException if the <code>Pageable</code> does not
    *                                   contain the requested page.
    */
-  public synchronized PageFormat getPageFormat(int pageIndex)
+  public synchronized PageFormat getPageFormat(final int pageIndex)
       throws IndexOutOfBoundsException
   {
     if (isError())
@@ -244,7 +253,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
    * @throws IndexOutOfBoundsException if the <code>Pageable</code> does not
    *                                   contain the requested page.
    */
-  public synchronized Printable getPrintable(int pageIndex)
+  public synchronized Printable getPrintable(final int pageIndex)
       throws IndexOutOfBoundsException
   {
     if (isError())
@@ -276,7 +285,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
     }
   }
 
-  public PageDrawable getPageDrawable(int pageIndex)
+  public PageDrawable getPageDrawable(final int pageIndex)
   {
     if (isError())
     {
@@ -316,7 +325,7 @@ public class PrintReportProcessor extends PaginatingReportProcessor
    * @param job
    * @throws UnsupportedOperationException
    */
-  public final void processReport(ReportJob job)
+  public final void processReport(final ReportJob job)
   {
     throw new UnsupportedOperationException("Printing is a passive process.");
   }
