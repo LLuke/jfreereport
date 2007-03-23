@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: FormulaParser.java,v 1.4 2006/12/03 19:22:28 taqua Exp $
+ * $Id: FormulaParser.java,v 1.5 2007/02/28 19:30:15 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,7 +60,7 @@ public class FormulaParser extends GeneratedFormulaParser
   {
     if (formula == null)
     {
-      throw new NullPointerException("Formula given must not be null.");
+      throw new NullPointerException("Formula-text given must not be null.");
     }
     ReInit(new StringReader(formula));
     return getExpression(0);
