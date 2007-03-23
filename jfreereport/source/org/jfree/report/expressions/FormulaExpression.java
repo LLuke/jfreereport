@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FormulaExpression.java,v 1.3 2006/12/03 20:24:09 taqua Exp $
+ * $Id: FormulaExpression.java,v 1.4 2007/03/06 14:37:38 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -87,9 +87,17 @@ public class FormulaExpression extends AbstractExpression
       final int separator = formula.indexOf(':');
       if (separator <= 0 || ((separator + 1) == formula.length()))
       {
-        // error: invalid formula.
-        formulaNamespace = null;
-        formulaExpression = null;
+        if (formula.startsWith("="))
+        {
+          formulaNamespace = "report";
+          formulaExpression = formula.substring(1);
+        }
+        else
+        {
+          // error: invalid formula.
+          formulaNamespace = null;
+          formulaExpression = null;
+        }
       }
       else
       {

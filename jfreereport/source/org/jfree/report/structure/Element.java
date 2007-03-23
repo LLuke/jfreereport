@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: Element.java,v 1.9 2006/12/03 20:24:17 taqua Exp $
+ * $Id: Element.java,v 1.10 2007/03/12 18:03:14 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -106,11 +106,6 @@ public abstract class Element extends Node
   {
     this.style = new CSSStyleRule(null, null);
     this.attributes = new AttributeMap();
-
-//    this.expressions = new ArrayList();
-//    this.attributeExpressions = new AttributeMap();
-//    this.styleExpressions = new HashMap();
-
     this.enabled = true;
     setNamespace(JFreeReportInfo.REPORT_NAMESPACE);
   }
