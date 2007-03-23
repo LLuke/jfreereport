@@ -24,75 +24,53 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.10 2007/02/22 21:34:46 mimil Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
+
 package org.jfree.formula.function.datetime;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 
-import org.jfree.formula.EvaluationException;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.LibFormulaErrorValue;
-import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.typing.coretypes.DateType;
 
 /**
- * Creation-Date: 04.11.2006, 18:59:11
+ * Todo: Document me!
  *
  * @author Thomas Morgner
+ * @since 23.03.2007
  */
-public class DateFunction implements Function
+public class TodayFunction implements Function
 {
-  public DateFunction()
+  public TodayFunction()
   {
   }
 
   public String getCanonicalName()
   {
-    return "DATE";
+    return "TODAY";
   }
 
   public TypeValuePair evaluate(final FormulaContext context,
-                                final ParameterCallback parameters) throws EvaluationException
+                                final ParameterCallback parameters)
+      throws EvaluationException
   {
-    if (parameters.getParameterCount() != 3)
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
-    }
-    Number n1;
-    Number n2;
-    Number n3;
-    try
-    {
-      final TypeRegistry typeRegistry = context.getTypeRegistry();
-      n1 = typeRegistry.convertToNumber(parameters.getType(0), parameters.getValue(0));
-      n2 = typeRegistry.convertToNumber(parameters.getType(1), parameters.getValue(1));
-      n3 = typeRegistry.convertToNumber(parameters.getType(2), parameters.getValue(2));
-    }
-    catch (NumberFormatException e)
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
-
-    if (n1 == null || n2 == null || n3 == null)
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
     //System.out.println("DEGUG Y:"+n1+" M:"+n2+"["+value+"] D:"+n3);
     final LocalizationContext localizationContext = context.getLocalizationContext();
     final GregorianCalendar gc = new GregorianCalendar
         (localizationContext.getTimeZone(), localizationContext.getLocale());
-    gc.set(Calendar.DAY_OF_MONTH, n3.intValue());
-    gc.set(Calendar.MONTH, n2.intValue()-1);
-    gc.set(Calendar.YEAR, n1.intValue());
+
+    // Time is implicitly set to the current time. All we have to do is to
+    // remove the fractional part ..
     gc.set(Calendar.MILLISECOND, 0);
     gc.set(Calendar.HOUR_OF_DAY, 0);
     gc.set(Calendar.MINUTE, 0);
