@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionLayoutController.java,v 1.10 2007/03/19 18:03:59 taqua Exp $
+ * $Id: SectionLayoutController.java,v 1.11 2007/03/20 14:56:31 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -74,9 +74,10 @@ public class SectionLayoutController extends ElementLayoutController
     final FlowController flowController = getFlowController();
 
     final Node[] nodes = getNodes();
-    if (index < nodes.length)
+    final int currentIndex = getIndex();
+    if (currentIndex < nodes.length)
     {
-      final Node node = nodes[index];
+      final Node node = nodes[currentIndex];
       final SectionLayoutController derived = (SectionLayoutController) clone();
       return processChild(derived, node, flowController);
     }
@@ -104,7 +105,7 @@ public class SectionLayoutController extends ElementLayoutController
     }
     else
     {
-      derived.index += 1;
+      derived.setIndex(derived.getIndex() + 1);
       return LayoutControllerUtil.skipInvisibleElement(derived);
     }
   }

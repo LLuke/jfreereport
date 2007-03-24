@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AttributeNameGenerator.java,v 1.1 2007/03/20 14:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -68,5 +68,10 @@ public class AttributeNameGenerator
       names.put (base, new Long (keyIdx));
       return newName;
     }
+  }
+
+  public void reset ()
+  {
+    names.clear();
   }
 }
