@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.11 2007/03/14 17:14:00 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.12 2007/03/20 14:52:46 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,6 +38,7 @@ import java.util.Properties;
 
 import org.jfree.util.FastStack;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 import org.jfree.xmlns.common.AttributeList;
 
 /**
@@ -145,6 +146,7 @@ public class XmlWriterSupport
   private boolean alwaysAddNamespace;
   private boolean assumeDefaultNamespace;
   private Properties impliedNamespaces;
+  private boolean writeFinalLinebreak;
 
   /**
    * Default Constructor. The created XMLWriterSupport will not have no safe
@@ -178,6 +180,7 @@ public class XmlWriterSupport
     this.openTags = new FastStack();
     this.indentString = indentString;
     this.lineEmpty = true;
+    this.writeFinalLinebreak = true;
   }
 
   public boolean isAlwaysAddNamespace()
@@ -397,7 +400,7 @@ public class XmlWriterSupport
     }
   }
 
-  public boolean isNamespaceDefined (final String uri)
+  public boolean isNamespaceDefined(final String uri)
   {
     if (impliedNamespaces != null)
     {
@@ -572,7 +575,10 @@ public class XmlWriterSupport
   {
     if (openTags.isEmpty())
     {
-      writeNewLine(w);
+      if (isWriteFinalLinebreak())
+      {
+        writeNewLine(w);
+      }
     }
     else
     {
@@ -881,5 +887,16 @@ public class XmlWriterSupport
   public int getCurrentIndentLevel()
   {
     return additionalIndent + openTags.size();
+  }
+
+
+  public void setWriteFinalLinebreak(final boolean writeFinalLinebreak)
+  {
+    this.writeFinalLinebreak = writeFinalLinebreak;
+  }
+
+  public boolean isWriteFinalLinebreak()
+  {
+    return writeFinalLinebreak;
   }
 }
