@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.12 2007/03/20 14:52:46 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.13 2007/03/24 14:29:57 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -379,20 +379,18 @@ public class XmlWriterSupport
    */
   public void copyNamespaces(final XmlWriterSupport writerSupport)
   {
-    if (writerSupport.openTags.isEmpty())
-    {
-      return;
-    }
-
-    final ElementLevel parent = (ElementLevel) writerSupport.openTags.peek();
-
     if (impliedNamespaces == null)
     {
       impliedNamespaces = new Properties();
     }
 
-    //noinspection UseOfPropertiesAsHashtable
-    impliedNamespaces.putAll(parent.getNamespaces());
+    if (writerSupport.openTags.isEmpty() == false)
+    {
+      final ElementLevel parent = (ElementLevel) writerSupport.openTags.peek();
+      //noinspection UseOfPropertiesAsHashtable
+      impliedNamespaces.putAll(parent.getNamespaces());
+    }
+
     if (writerSupport.impliedNamespaces != null)
     {
       //noinspection UseOfPropertiesAsHashtable
