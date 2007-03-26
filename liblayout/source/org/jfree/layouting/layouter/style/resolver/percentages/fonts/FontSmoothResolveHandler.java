@@ -23,13 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontSmoothResolveHandler.java,v 1.7 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.layouting.layouter.style.resolver.percentages.fonts;
 
 import org.jfree.layouting.LayoutProcess;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontSmooth;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
@@ -83,7 +84,7 @@ public class FontSmoothResolveHandler implements ResolveHandler
     }
 
     final double fontSize =
-            (currentNode.getLayoutContext().getFontSpecification().getFontSize());
+            (currentNode.getLayoutContext().getFontSpecification().getFontSizeInPt());
     final double length = CSSValueResolverUtility.convertLengthToDouble
             (value, currentNode.getLayoutContext(), process.getOutputMetaData());
 

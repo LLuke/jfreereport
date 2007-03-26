@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: VerticalAlignReadHandler.java,v 1.5 2006/12/03 18:57:53 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -79,7 +79,7 @@ public class VerticalAlignReadHandler extends OneOfConstantsReadHandler
     }
     else if (value.getLexicalUnitType() == LexicalUnit.SAC_PERCENTAGE)
     {
-      return new CSSNumericValue(CSSNumericType.PERCENTAGE,
+      return CSSNumericValue.createValue(CSSNumericType.PERCENTAGE,
               value.getFloatValue());
     }
 

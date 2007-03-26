@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CSSValueFactory.java,v 1.11 2006/12/03 18:57:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -471,12 +471,12 @@ public class CSSValueFactory
   {
     if (value.getLexicalUnitType() == LexicalUnit.SAC_INTEGER)
     {
-      return new CSSNumericValue(CSSNumericType.NUMBER,
+      return CSSNumericValue.createValue(CSSNumericType.NUMBER,
               value.getIntegerValue());
     }
     if (value.getLexicalUnitType() == LexicalUnit.SAC_REAL)
     {
-      return new CSSNumericValue(CSSNumericType.NUMBER,
+      return CSSNumericValue.createValue(CSSNumericType.NUMBER,
               value.getFloatValue());
     }
     return null;
@@ -528,46 +528,45 @@ public class CSSValueFactory
       {
         return null;
       }
-      return new CSSNumericValue(CSSNumericType.PT, 0);
+      return CSSNumericValue.createValue(CSSNumericType.PT, 0);
     }
     if (value.getLexicalUnitType() == LexicalUnit.SAC_EM)
     {
-      return new CSSNumericValue(CSSNumericType.EM,
-              value.getFloatValue());
+      return CSSNumericValue.createValue(CSSNumericType.EM, value.getFloatValue());
     }
     else if (value.getLexicalUnitType() == LexicalUnit.SAC_EX)
     {
-      return new CSSNumericValue(CSSNumericType.EX,
+      return CSSNumericValue.createValue(CSSNumericType.EX,
               value.getFloatValue());
     }
     else if (value.getLexicalUnitType() == LexicalUnit.SAC_PIXEL)
     {
-      return new CSSNumericValue(CSSNumericType.PX,
+      return CSSNumericValue.createValue(CSSNumericType.PX,
               value.getFloatValue());
     }
     else if (value.getLexicalUnitType() == LexicalUnit.SAC_INCH)
     {
-      return new CSSNumericValue(CSSNumericType.INCH,
+      return CSSNumericValue.createValue(CSSNumericType.INCH,
               value.getFloatValue());
     }
     else if (value.getLexicalUnitType() == LexicalUnit.SAC_CENTIMETER)
     {
-      return new CSSNumericValue(CSSNumericType.CM,
+      return CSSNumericValue.createValue(CSSNumericType.CM,
               value.getFloatValue());
     }
     else if (value.getLexicalUnitType() == LexicalUnit.SAC_MILLIMETER)
     {
-      return new CSSNumericValue(CSSNumericType.MM,
+      return CSSNumericValue.createValue(CSSNumericType.MM,
               value.getFloatValue());
     }
     else if (value.getLexicalUnitType() == LexicalUnit.SAC_PICA)
     {
-      return new CSSNumericValue(CSSNumericType.PC,
+      return CSSNumericValue.createValue(CSSNumericType.PC,
               value.getFloatValue());
     }
     else if (value.getLexicalUnitType() == LexicalUnit.SAC_POINT)
     {
-      return new CSSNumericValue(CSSNumericType.PT,
+      return CSSNumericValue.createValue(CSSNumericType.PT,
               value.getFloatValue());
     }
     return null;

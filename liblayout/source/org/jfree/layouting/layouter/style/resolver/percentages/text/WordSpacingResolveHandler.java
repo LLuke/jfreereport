@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: WordSpacingResolveHandler.java,v 1.6 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -98,7 +98,7 @@ public class WordSpacingResolveHandler implements ResolveHandler
     }
     final double width = fm.getCharWidth(0x20);
     final CSSNumericValue percentageBase =
-            new CSSNumericValue(CSSNumericType.PT, width);
+            CSSNumericValue.createValue(CSSNumericType.PT, width);
     final CSSNumericValue min = CSSValueResolverUtility.getLength
             (resolveValue(layoutContext, TextStyleKeys.X_MIN_WORD_SPACING), percentageBase);
     final CSSNumericValue max = CSSValueResolverUtility.getLength

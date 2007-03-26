@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LogicalPageDrawable.java,v 1.8 2007/01/15 14:57:09 taqua Exp $
+ * $Id: LogicalPageDrawable.java,v 1.9 2007/01/25 14:55:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -260,7 +260,7 @@ public class LogicalPageDrawable implements PageDrawable
 
     g2.setColor(cssColor);
     g2.setFont(new Font(fontSpecification.getFontFamily(), style,
-            (int) fontSpecification.getFontSize()));
+            (int) fontSpecification.getFontSizeInPt()));
 
     int length = renderableText.getOffset() + renderableText.getLength();
     for (int i = renderableText.getOffset(); i < length; i++)

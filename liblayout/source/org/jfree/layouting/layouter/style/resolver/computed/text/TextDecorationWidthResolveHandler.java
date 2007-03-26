@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TextDecorationWidthResolveHandler.java,v 1.5 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -46,11 +46,11 @@ public class TextDecorationWidthResolveHandler extends ConstantsResolveHandler
 {
   public TextDecorationWidthResolveHandler ()
   {
-    addValue(BorderWidth.THIN, new CSSNumericValue(CSSNumericType.PT, 0.5));
-    addValue(BorderWidth.MEDIUM, new CSSNumericValue(CSSNumericType.PT, 1));
-    addValue(BorderWidth.THICK, new CSSNumericValue(CSSNumericType.PT, 1.5));
-    addValue(TextDecorationWidth.DASH, new CSSNumericValue(CSSNumericType.PT, 0.75));
-    addValue(TextDecorationWidth.BOLD, new CSSNumericValue(CSSNumericType.PT, 1.25));
+    addValue(BorderWidth.THIN, CSSNumericValue.createValue(CSSNumericType.PT, 0.5));
+    addValue(BorderWidth.MEDIUM, CSSNumericValue.createValue(CSSNumericType.PT, 1));
+    addValue(BorderWidth.THICK, CSSNumericValue.createValue(CSSNumericType.PT, 1.5));
+    addValue(TextDecorationWidth.DASH, CSSNumericValue.createValue(CSSNumericType.PT, 0.75));
+    addValue(TextDecorationWidth.BOLD, CSSNumericValue.createValue(CSSNumericType.PT, 1.25));
     setFallback(CSSNumericValue.ZERO_LENGTH);
   }
 

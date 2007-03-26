@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: CSSValueResolverUtility.java,v 1.5 2006/12/03 18:58:00 taqua Exp $
+ * $Id: CSSValueResolverUtility.java,v 1.6 2007/03/14 17:12:13 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -122,6 +122,7 @@ public class CSSValueResolverUtility
 
   /**
    * Returns the length in point as a double primitive value.
+   * Be aware that using double-values is not very accurate.
    *
    * @param rawValue
    * @param context
@@ -137,26 +138,26 @@ public class CSSValueResolverUtility
       return 0;
     }
 
-    CSSNumericValue value = (CSSNumericValue) rawValue;
+    final CSSNumericValue value = (CSSNumericValue) rawValue;
     if (CSSNumericType.PT.equals(value.getType()))
     {
       return value.getValue();
     }
     if (CSSNumericType.PC.equals(value.getType()))
     {
-      return (value.getValue() / 12d);
+      return (value.getValue() / 12.0d);
     }
     if (CSSNumericType.INCH.equals(value.getType()))
     {
-      return (value.getValue() / 72d);
+      return (value.getValue() / 72.0d);
     }
     if (CSSNumericType.CM.equals(value.getType()))
     {
-      return (value.getValue() * 100 * (72d / 254d));
+      return ((value.getValue() * 100 * 72.0d) / 254.0d);
     }
     if (CSSNumericType.MM.equals(value.getType()))
     {
-      return (value.getValue() * 10 * 72d / 254d);
+      return ((value.getValue() * 10 * 72.0d) / 254.0d);
     }
 
     if (metaData == null)
@@ -182,7 +183,7 @@ public class CSSValueResolverUtility
       {
         final FontSpecification fspec =
             context.getFontSpecification();
-        final double fontSize = fspec.getFontSize();
+        final double fontSize = fspec.getFontSizeInPt();
         return (fontSize * value.getValue());
       }
       if (CSSNumericType.EX.equals(value.getType()))
@@ -192,7 +193,8 @@ public class CSSValueResolverUtility
         final FontMetrics fontMetrics = metaData.getFontMetrics(fspec);
         if (fontMetrics == null)
         {
-          final double fontSize = fspec.getFontSize() * DEFAULT_X_HEIGHT_FACTOR;
+          final double fontSize = 
+              fspec.getFontSizeInPt() * DEFAULT_X_HEIGHT_FACTOR;
           return (value.getValue() * fontSize);
         }
         else
@@ -267,7 +269,7 @@ public class CSSValueResolverUtility
       {
         final FontSpecification fspec =
             context.getFontSpecification();
-        final double fontSize = fspec.getFontSize();
+        final double fontSize = fspec.getFontSizeInPt();
         return (long) (fontSize * internal);
       }
       if (CSSNumericType.EX.equals(value.getType()))
@@ -277,7 +279,7 @@ public class CSSValueResolverUtility
         final FontMetrics fontMetrics = metaData.getFontMetrics(fspec);
         if (fontMetrics == null)
         {
-          final double fontSize = fspec.getFontSize() * DEFAULT_X_HEIGHT_FACTOR;
+          final double fontSize = fspec.getFontSizeInPt() * DEFAULT_X_HEIGHT_FACTOR;
           return (long) (internal * fontSize);
         }
         else
@@ -293,18 +295,18 @@ public class CSSValueResolverUtility
                                               final LayoutContext context,
                                               final OutputProcessorMetaData metaData)
   {
-    return new CSSNumericValue(CSSNumericType.PT,
+    return CSSNumericValue.createValue(CSSNumericType.PT,
         convertLengthToDouble(rawValue, context, metaData));
   }
 
-  public static CSSNumericValue getLength(CSSValue value)
+  public static CSSNumericValue getLength(final CSSValue value)
   {
     if (value instanceof CSSNumericValue == false)
     {
       return null;
     }
 
-    CSSNumericValue nval = (CSSNumericValue) value;
+    final CSSNumericValue nval = (CSSNumericValue) value;
     if (isNumericType(CSSNumericType.PERCENTAGE, nval))
     {
       return null;
@@ -313,13 +315,14 @@ public class CSSValueResolverUtility
     return nval;
   }
 
-  public static boolean isNumericType(CSSNumericType type, CSSValue value)
+  private static boolean isNumericType(final CSSNumericType type,
+                                       final CSSValue value)
   {
     if (value instanceof CSSNumericValue == false)
     {
       return false;
     }
-    CSSNumericValue nval = (CSSNumericValue) value;
+    final CSSNumericValue nval = (CSSNumericValue) value;
     return nval.getType().equals(type);
   }
 
@@ -332,7 +335,7 @@ public class CSSValueResolverUtility
       return null;
     }
 
-    CSSNumericValue nval = (CSSNumericValue) value;
+    final CSSNumericValue nval = (CSSNumericValue) value;
     if (isNumericType(CSSNumericType.PERCENTAGE, nval))
     {
       if (percentageBase == null)
@@ -341,43 +344,43 @@ public class CSSValueResolverUtility
       }
 
       final double percentage = nval.getValue();
-      return new CSSNumericValue(percentageBase.getType(),
-          percentageBase.getValue() * percentage / 100d);
+      return CSSNumericValue.createValue(percentageBase.getType(),
+          percentageBase.getValue() * percentage / 100.0d);
     }
 
     return nval;
   }
 
+//
+//  public static CSSNumericValue getParentFontSize(final LayoutElement node)
+//  {
+//    final LayoutElement parent = node.getParent();
+//    if (parent == null)
+//    {
+//      return null;
+//    }
+//    final long fs =
+//        parent.getLayoutContext().getFontSpecification().getFontSize();
+//    return CSSNumericValue.createInternalValue(CSSNumericType.PT, fs);
+//  }
+//
 
-  public static CSSNumericValue getParentFontSize(final LayoutElement node)
-  {
-    final LayoutElement parent = node.getParent();
-    if (parent == null)
-    {
-      return null;
-    }
-    final double fs = parent.getLayoutContext()
-        .getFontSpecification()
-        .getFontSize();
-    return new CSSNumericValue(CSSNumericType.PT, fs);
-  }
-
-
-  public static boolean isURI(CSSValue value)
+  public static boolean isURI(final CSSValue value)
   {
     if (value instanceof CSSStringValue == false)
     {
       return false;
     }
-    CSSStringValue sval = (CSSStringValue) value;
+    final CSSStringValue sval = (CSSStringValue) value;
     return sval.getType().equals(CSSStringType.URI);
   }
 
-  public static double getNumericValue(CSSValue value, double defaultValue)
+  public static double getNumericValue(final CSSValue value,
+                                       final double defaultValue)
   {
     if (value instanceof CSSNumericValue)
     {
-      CSSNumericValue nval = (CSSNumericValue) value;
+      final CSSNumericValue nval = (CSSNumericValue) value;
       if (CSSNumericType.NUMBER.equals(nval.getType()))
       {
         return nval.getValue();

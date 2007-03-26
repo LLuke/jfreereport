@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SpacingLimitReadHandler.java,v 1.5 2006/12/03 18:57:55 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -103,7 +103,7 @@ public abstract class SpacingLimitReadHandler implements CSSCompoundValueReadHan
     }
     if (value.getLexicalUnitType() == LexicalUnit.SAC_PERCENTAGE)
     {
-      return new CSSNumericValue(CSSNumericType.PERCENTAGE,
+      return CSSNumericValue.createValue(CSSNumericType.PERCENTAGE,
               value.getFloatValue());
     }
 

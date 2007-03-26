@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontSizeAdjustResolveHandler.java,v 1.6 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,34 +60,28 @@ public class FontSizeAdjustResolveHandler implements ResolveHandler
    */
   public StyleKey[] getRequiredStyles()
   {
-    return new StyleKey[] {
-            FontStyleKeys.FONT_SIZE,
-            FontStyleKeys.FONT_FAMILY,
-            FontStyleKeys.FONT_EFFECT,
-            FontStyleKeys.FONT_SMOOTH,
-            FontStyleKeys.FONT_STRETCH,
-            FontStyleKeys.FONT_VARIANT,
-            FontStyleKeys.FONT_WEIGHT,
+    return new StyleKey[]{
+        FontStyleKeys.FONT_SIZE,
+        FontStyleKeys.FONT_FAMILY,
+        FontStyleKeys.FONT_EFFECT,
+        FontStyleKeys.FONT_SMOOTH,
+        FontStyleKeys.FONT_STRETCH,
+        FontStyleKeys.FONT_VARIANT,
+        FontStyleKeys.FONT_WEIGHT,
     };
   }
 
-  /**
-   * Resolves a single property.
-   *
-   * @param currentNode
-   * @param style
-   */
-  public void resolve(LayoutProcess process,
-                         LayoutElement currentNode,
-                         StyleKey key)
+  public void resolve(final LayoutProcess process,
+                      final LayoutElement currentNode,
+                      final StyleKey key)
   {
-    LayoutContext layoutContext = currentNode.getLayoutContext();
-    CSSValue value = layoutContext.getValue(key);
+    final LayoutContext layoutContext = currentNode.getLayoutContext();
+    final CSSValue value = layoutContext.getValue(key);
     if (value instanceof CSSNumericValue == false)
     {
       return; // do nothing
     }
-    CSSNumericValue nval = (CSSNumericValue) value;
+    final CSSNumericValue nval = (CSSNumericValue) value;
     if (CSSNumericType.NUMBER.equals(nval.getType()) == false)
     {
       return; // syntax error, do nothing
@@ -98,10 +92,11 @@ public class FontSizeAdjustResolveHandler implements ResolveHandler
       return; // no parent to resolve against ...
     }
 
-    final double adjustFactor = nval.getValue();
+    final long adjustFactor = nval.getRawValue();
     final FontSpecification fontSpecification =
-            currentNode.getLayoutContext().getFontSpecification();
-    final FontMetrics fontMetrics = process.getOutputMetaData().getFontMetrics(fontSpecification);
+        currentNode.getLayoutContext().getFontSpecification();
+    final FontMetrics fontMetrics =
+        process.getOutputMetaData().getFontMetrics(fontSpecification);
     if (fontMetrics == null)
     {
       return; // no font metrics means no valid font...
@@ -109,9 +104,9 @@ public class FontSizeAdjustResolveHandler implements ResolveHandler
 
     final double actualFontXHeight = fontMetrics.getXHeight();
 
-    final double fontSize = fontSpecification.getFontSize();
+    final long fontSize = fontSpecification.getFontSize();
     final double aspectRatio = actualFontXHeight / fontSize;
-    final double result = fontSize * (adjustFactor / aspectRatio);
+    final long result = (long) (fontSize * (adjustFactor / aspectRatio));
     fontSpecification.setFontSize(result);
   }
 }

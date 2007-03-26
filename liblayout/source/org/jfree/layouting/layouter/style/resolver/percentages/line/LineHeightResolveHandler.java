@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LineHeightResolveHandler.java,v 1.7 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -120,9 +120,9 @@ public class LineHeightResolveHandler implements ResolveHandler
 
 
     final double fontSize =
-            layoutContext.getFontSpecification().getFontSize();
+            layoutContext.getFontSpecification().getFontSizeInPt();
     layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
-            new CSSNumericValue(CSSNumericType.PT, fontSize * factor));
+            CSSNumericValue.createValue(CSSNumericType.PT, fontSize * factor));
 
   }
 
@@ -130,28 +130,28 @@ public class LineHeightResolveHandler implements ResolveHandler
   {
     final LayoutContext layoutContext = currentNode.getLayoutContext();
     final double fontSize =
-            layoutContext.getFontSpecification().getFontSize();
+            layoutContext.getFontSpecification().getFontSizeInPt();
     if (fontSize < 10)
     {
       layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
-              new CSSNumericValue(CSSNumericType.PT, fontSize * 1.2));
+              CSSNumericValue.createValue(CSSNumericType.PT, fontSize * 1.2));
     }
     else if (fontSize < 24)
     {
       layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
-              new CSSNumericValue(CSSNumericType.PT, fontSize * 1.1));
+              CSSNumericValue.createValue(CSSNumericType.PT, fontSize * 1.1));
     }
     else
     {
       layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
-              new CSSNumericValue(CSSNumericType.PT, fontSize * 1.05));
+              CSSNumericValue.createValue(CSSNumericType.PT, fontSize * 1.05));
     }
 
   }
 
   private void handleNone (LayoutElement currentNode)
   {
-    final double fontSize;
+    final long fontSize;
     final LayoutElement parent = currentNode.getParent();
     final LayoutContext layoutContext = currentNode.getLayoutContext();
     if (parent == null)
@@ -164,6 +164,6 @@ public class LineHeightResolveHandler implements ResolveHandler
       fontSize = parent.getLayoutContext().getFontSpecification().getFontSize();
     }
     layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
-            new CSSNumericValue(CSSNumericType.PT, fontSize));
+            CSSNumericValue.createInternalValue(CSSNumericType.PT, fontSize));
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: XRowSpanReadHandler.java,v 1.3 2006/12/03 18:57:55 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -51,7 +51,7 @@ public class XRowSpanReadHandler implements CSSValueReadHandler
   {
     if (value.getLexicalUnitType() == LexicalUnit.SAC_INTEGER)
     {
-      return new CSSNumericValue(CSSNumericType.NUMBER,
+      return CSSNumericValue.createValue(CSSNumericType.NUMBER,
               value.getIntegerValue());
     }
     return null;

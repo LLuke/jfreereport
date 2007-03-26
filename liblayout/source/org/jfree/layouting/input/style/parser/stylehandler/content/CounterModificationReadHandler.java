@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CounterModificationReadHandler.java,v 1.3 2006/12/03 18:57:53 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,7 +50,7 @@ import org.w3c.css.sac.LexicalUnit;
 public class CounterModificationReadHandler implements CSSValueReadHandler
 {
   public static final CSSNumericValue ZERO =
-          new CSSNumericValue(CSSNumericType.NUMBER, 0);
+          CSSNumericValue.createValue(CSSNumericType.NUMBER, 0);
 
   public CounterModificationReadHandler()
   {
@@ -82,7 +82,7 @@ public class CounterModificationReadHandler implements CSSValueReadHandler
       {
         if (value.getLexicalUnitType() == LexicalUnit.SAC_INTEGER)
         {
-          counterValue = new CSSNumericValue
+          counterValue = CSSNumericValue.createValue
                   (CSSNumericType.NUMBER, value.getIntegerValue());
           value = value.getNextLexicalUnit();
         }

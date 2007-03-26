@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: InlineBoxAlignReadHandler.java,v 1.3 2006/12/03 18:57:53 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -60,7 +60,7 @@ public class InlineBoxAlignReadHandler extends OneOfConstantsReadHandler
     }
     else if (value.getLexicalUnitType() == LexicalUnit.SAC_INTEGER)
     {
-      return new CSSNumericValue(CSSNumericType.NUMBER,
+      return CSSNumericValue.createValue(CSSNumericType.NUMBER,
               value.getIntegerValue());
     }
 

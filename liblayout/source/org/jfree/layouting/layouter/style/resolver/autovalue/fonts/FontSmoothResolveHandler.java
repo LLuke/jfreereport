@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontSmoothResolveHandler.java,v 1.6 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -81,7 +81,7 @@ public class FontSmoothResolveHandler implements ResolveHandler
     final double threshold =
             process.getOutputMetaData().getNumericFeatureValue
             (OutputProcessorFeature.FONT_SMOOTH_THRESHOLD);
-    if (fs.getFontSize() < threshold)
+    if (fs.getFontSizeInPt() < threshold)
     {
       layoutContext.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.NEVER);
     }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DocumentConverter.java,v 1.3 2006/12/03 18:57:57 taqua Exp $
+ * $Id: DocumentConverter.java,v 1.4 2007/01/05 21:16:50 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -145,22 +145,22 @@ public class DocumentConverter implements Converter
     else if(styleKey.equals(RTF_MARGINLEFT))
     {
       final float floatValue = ((Float) value).floatValue();
-      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_LEFT.getName(), new CSSNumericValue(CSSNumericType.PT, floatValue));
+      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_LEFT.getName(), CSSNumericValue.createValue(CSSNumericType.PT, floatValue));
     }
     else if(styleKey.equals(RTF_MARGINRIGHT))
     {
       final float floatValue = ((Float) value).floatValue();
-      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_RIGHT.getName(), new CSSNumericValue(CSSNumericType.PT, floatValue));
+      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_RIGHT.getName(), CSSNumericValue.createValue(CSSNumericType.PT, floatValue));
     }
     else if(styleKey.equals(RTF_MARGINTOP))
     {
       final float floatValue = ((Float) value).floatValue();
-      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_TOP.getName(), new CSSNumericValue(CSSNumericType.PT, floatValue));
+      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_TOP.getName(), CSSNumericValue.createValue(CSSNumericType.PT, floatValue));
     }
     else if(styleKey.equals(RTF_MARGINBOTTOM))
     {
       final float floatValue = ((Float) value).floatValue();
-      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_BOTTOM.getName(), new CSSNumericValue(CSSNumericType.PT, floatValue));
+      attr.addAttribute(PAGE_RULE_TYPE, BoxStyleKeys.MARGIN_BOTTOM.getName(), CSSNumericValue.createValue(CSSNumericType.PT, floatValue));
     }
     else if(styleKey.equals(RTF_LANDSCAPE))
     {

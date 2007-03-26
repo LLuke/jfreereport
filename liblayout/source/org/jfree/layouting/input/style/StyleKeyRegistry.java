@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StyleKeyRegistry.java,v 1.6 2006/12/03 18:57:49 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -59,19 +59,18 @@ public class StyleKeyRegistry
   }
 
   private HashMap knownStyleKeys;
-  private transient StyleKey[] cachedStyleKeys;
 
   private StyleKeyRegistry()
   {
     knownStyleKeys = new HashMap();
   }
 
-  public StyleKey findKeyByName(String name)
+  public StyleKey findKeyByName(final String name)
   {
     return (StyleKey) knownStyleKeys.get(name);
   }
 
-  public int getIndexForKey(StyleKey key)
+  public int getIndexForKey(final StyleKey key)
   {
     final Integer index = (Integer) knownStyleKeys.get(key.getName());
     if (index != null)
@@ -82,24 +81,24 @@ public class StyleKeyRegistry
     throw new IllegalStateException("This key is not registered. How could that be?");
   }
 
-  public synchronized int getKeyCount()
+  public int getKeyCount()
   {
     return knownStyleKeys.size();
   }
 
-  public void registerDefaults()
+  public synchronized void registerDefaults()
   {
     final Configuration config = LibLayoutBoot.getInstance().getGlobalConfig();
-    Iterator it = config.findPropertyKeys("org.jfree.layouting.stylekeys.");
+    final Iterator it = config.findPropertyKeys("org.jfree.layouting.stylekeys.");
     final ClassLoader classLoader =
             ObjectUtilities.getClassLoader(StyleKeyRegistry.class);
 
     while (it.hasNext())
     {
-      String key = (String) it.next();
+      final String key = (String) it.next();
       try
       {
-        Class c = classLoader.loadClass(config.getConfigProperty(key));
+        final Class c = classLoader.loadClass(config.getConfigProperty(key));
         registerClass(c);
       }
       catch (ClassNotFoundException e)
@@ -114,15 +113,15 @@ public class StyleKeyRegistry
 
   }
 
-  public void registerClass(Class c)
+  public synchronized void registerClass(final Class c)
   {
-    Log.debug ("Registering stylekeys from " + c);
+    // Log.debug ("Registering stylekeys from " + c);
     try
     {
-      Field[] fields = c.getFields();
+      final Field[] fields = c.getFields();
       for (int i = 0; i < fields.length; i++)
       {
-        Field field = fields[i];
+        final Field field = fields[i];
         final int modifiers = field.getModifiers();
         if (Modifier.isPublic(modifiers) &&
             Modifier.isStatic(modifiers))
@@ -133,7 +132,7 @@ public class StyleKeyRegistry
           }
           if (field.getType().isAssignableFrom(StyleKey.class))
           {
-            StyleKey value = (StyleKey) field.get(null);
+            final StyleKey value = (StyleKey) field.get(null);
             // ignore the returned value, all we want is to trigger the key
             // creation
             // Log.debug ("Loaded key " + value);
@@ -168,7 +167,7 @@ public class StyleKeyRegistry
     return getKeys(new StyleKey[knownStyleKeys.size()]);
   }
 
-  public synchronized StyleKey[] getKeys(StyleKey[] input)
+  public synchronized StyleKey[] getKeys(final StyleKey[] input)
   {
     return (StyleKey[]) knownStyleKeys.values().toArray(input);
   }

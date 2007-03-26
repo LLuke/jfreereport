@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontWeightResolveHandler.java,v 1.6 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -114,7 +114,7 @@ public class FontWeightResolveHandler implements ResolveHandler
     }
 
     layoutContext.setValue(FontStyleKeys.FONT_WEIGHT,
-            new CSSNumericValue(CSSNumericType.NUMBER, fontWeight));
+            CSSNumericValue.createValue(CSSNumericType.NUMBER, fontWeight));
   }
 
   private int queryParent(final LayoutElement parent)

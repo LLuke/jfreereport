@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: OverflowClipReadHandler.java,v 1.4 2006/12/03 18:57:52 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -94,7 +94,7 @@ public class OverflowClipReadHandler implements CSSValueReadHandler
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_PERCENTAGE)
       {
-        list[index] = new CSSNumericValue(CSSNumericType.PERCENTAGE, value.getFloatValue());
+        list[index] = CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, value.getFloatValue());
       }
       else
       {

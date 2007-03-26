@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BorderWidthResolveHandler.java,v 1.7 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -62,9 +62,9 @@ public class BorderWidthResolveHandler extends ConstantsResolveHandler
     keyMapping.put(BorderStyleKeys.BORDER_RIGHT_WIDTH, BorderStyleKeys.BORDER_RIGHT_STYLE);
     keyMapping.put(BorderStyleKeys.BORDER_BREAK_WIDTH, BorderStyleKeys.BORDER_BREAK_STYLE);
 
-    addValue(BorderWidth.THIN, new CSSNumericValue(CSSNumericType.PT, 1));
-    addValue(BorderWidth.MEDIUM, new CSSNumericValue(CSSNumericType.PT, 3));
-    addValue(BorderWidth.THICK, new CSSNumericValue(CSSNumericType.PT, 5));
+    addValue(BorderWidth.THIN, CSSNumericValue.createValue(CSSNumericType.PT, 1));
+    addValue(BorderWidth.MEDIUM, CSSNumericValue.createValue(CSSNumericType.PT, 3));
+    addValue(BorderWidth.THICK, CSSNumericValue.createValue(CSSNumericType.PT, 5));
     setFallback(CSSNumericValue.ZERO_LENGTH);
   }
 

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ParagraphConverter.java,v 1.3 2006/12/03 18:57:57 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -88,32 +88,32 @@ public class ParagraphConverter implements Converter {
 
     if(paragraphConstant == StyleConstants.FirstLineIndent)
     {
-      final CSSNumericValue cssNumericValue = new CSSNumericValue(CSSNumericType.PT, Double.valueOf(value.toString()));
+      final CSSNumericValue cssNumericValue = CSSNumericValue.createValue(CSSNumericType.PT, Double.parseDouble(value.toString()));
       attr.addAttribute(TextStyleKeys.TEXT_INDENT.getName(), cssNumericValue);
     }
     else if(paragraphConstant == StyleConstants.RightIndent)
     {
-      final CSSNumericValue cssNumericValue = new CSSNumericValue(CSSNumericType.PT, Double.valueOf(value.toString()));
+      final CSSNumericValue cssNumericValue = CSSNumericValue.createValue(CSSNumericType.PT, Double.parseDouble(value.toString()));
       attr.addAttribute(BoxStyleKeys.MARGIN_RIGHT.getName(), cssNumericValue);
     }
     else if(paragraphConstant == StyleConstants.LeftIndent)
     {
-      final CSSNumericValue cssNumericValue = new CSSNumericValue(CSSNumericType.PT, Double.valueOf(value.toString()));
+      final CSSNumericValue cssNumericValue = CSSNumericValue.createValue(CSSNumericType.PT, Double.parseDouble(value.toString()));
       attr.addAttribute(BoxStyleKeys.MARGIN_LEFT.getName(), cssNumericValue);
     }
     else if(paragraphConstant == StyleConstants.LineSpacing)
     {
-      final CSSNumericValue cssNumericValue = new CSSNumericValue(CSSNumericType.EM, Double.valueOf(value.toString()));
+      final CSSNumericValue cssNumericValue = CSSNumericValue.createValue(CSSNumericType.EM, Double.parseDouble(value.toString()));
       attr.addAttribute(LineStyleKeys.LINE_HEIGHT, cssNumericValue);
     }
     else if(paragraphConstant == StyleConstants.SpaceAbove)
     {
-      final CSSNumericValue cssNumericValue = new CSSNumericValue(CSSNumericType.PT, Double.valueOf(value.toString()));
+      final CSSNumericValue cssNumericValue = CSSNumericValue.createValue(CSSNumericType.PT, Double.parseDouble(value.toString()));
       attr.addAttribute(BoxStyleKeys.MARGIN_TOP.getName(), cssNumericValue);
     }
     else if(paragraphConstant == StyleConstants.SpaceBelow)
     {
-      final CSSNumericValue cssNumericValue = new CSSNumericValue(CSSNumericType.PT, Double.valueOf(value.toString()));
+      final CSSNumericValue cssNumericValue = CSSNumericValue.createValue(CSSNumericType.PT, Double.parseDouble(value.toString()));
       attr.addAttribute(BoxStyleKeys.MARGIN_BOTTOM.getName(), cssNumericValue);
     }
     else if(paragraphConstant == StyleConstants.Alignment)

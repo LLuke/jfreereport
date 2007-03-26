@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DropInitialSizeReadHandler.java,v 1.4 2006/12/03 18:57:53 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -61,11 +61,11 @@ public class DropInitialSizeReadHandler implements CSSValueReadHandler
     }
     if (value.getLexicalUnitType() == LexicalUnit.SAC_PERCENTAGE)
     {
-      return new CSSNumericValue(CSSNumericType.PERCENTAGE, value.getFloatValue());
+      return CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, value.getFloatValue());
     }
     if (value.getLexicalUnitType() == LexicalUnit.SAC_INTEGER)
     {
-      return new CSSNumericValue(CSSNumericType.NUMBER, value.getIntegerValue());
+      return CSSNumericValue.createValue(CSSNumericType.NUMBER, value.getIntegerValue());
     }
     return CSSValueFactory.createLengthValue(value);
   }

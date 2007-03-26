@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: HtmlPrinter.java,v 1.4 2006/12/03 18:58:03 taqua Exp $
+ * $Id: HtmlPrinter.java,v 1.5 2007/01/22 16:52:51 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -377,7 +377,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
 
     final FontSpecification fs = layoutContext.getFontSpecification();
-    final double fontSize = fs.getFontSize();
+    final double fontSize = fs.getFontSizeInPt();
     builder.append(FontStyleKeys.FONT_SIZE, toPointString(fontSize), "pt");
     builder.append(FontStyleKeys.FONT_FAMILY, fs.getFontFamily());
     builder.append(FontStyleKeys.FONT_WEIGHT,

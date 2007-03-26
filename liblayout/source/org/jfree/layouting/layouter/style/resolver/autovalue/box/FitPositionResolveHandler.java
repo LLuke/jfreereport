@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FitPositionResolveHandler.java,v 1.6 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,8 +45,8 @@ import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
 
 public class FitPositionResolveHandler implements ResolveHandler
 {
-  private static CSSNumericValue LEFT_TOP = new CSSNumericValue(CSSNumericType.PERCENTAGE, 0);
-  private static CSSNumericValue RIGHT_BOTTOM = new CSSNumericValue(CSSNumericType.PERCENTAGE, 100);
+  private static final CSSNumericValue LEFT_TOP = CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 0);
+  private static final CSSNumericValue RIGHT_BOTTOM = CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 100);
 
   public FitPositionResolveHandler ()
   {

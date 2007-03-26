@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FunctionUtilities.java,v 1.5 2006/12/03 18:58:00 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.6 2007/03/01 17:42:39 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -203,7 +203,7 @@ public class FunctionUtilities
     {
       final String number = stringValue.trim();
       final double nVal = Double.parseDouble(number);
-      return new CSSNumericValue(type, nVal);
+      return CSSNumericValue.createValue(type, nVal);
     }
     catch (Exception e)
     {

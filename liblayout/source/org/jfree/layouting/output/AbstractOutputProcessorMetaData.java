@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.12 2006/12/03 18:58:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -283,7 +283,7 @@ public abstract class AbstractOutputProcessorMetaData
       return null;
     }
     final DefaultFontContext fontContext = new DefaultFontContext
-                    (this, spec.isAntiAliasing(), spec.getFontSize());
+                    (this, spec.isAntiAliasing(), spec.getFontSizeInPt());
 
     final FontRecord record = family.getFontRecord
             (spec.getFontWeight() > 600, spec.isItalic() || spec.isOblique());

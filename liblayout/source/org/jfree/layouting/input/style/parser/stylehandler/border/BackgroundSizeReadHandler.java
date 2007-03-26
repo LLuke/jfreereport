@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BackgroundSizeReadHandler.java,v 1.3 2006/12/03 18:57:52 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -91,7 +91,7 @@ public class BackgroundSizeReadHandler implements CSSValueReadHandler
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_PERCENTAGE)
       {
-        firstValue = new CSSNumericValue(CSSNumericType.PERCENTAGE, value.getFloatValue());
+        firstValue = CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, value.getFloatValue());
       }
       else
       {
@@ -141,7 +141,7 @@ public class BackgroundSizeReadHandler implements CSSValueReadHandler
       }
       else if (value.getLexicalUnitType() == LexicalUnit.SAC_PERCENTAGE)
       {
-        secondValue = new CSSNumericValue(CSSNumericType.PERCENTAGE, value.getFloatValue());
+        secondValue = CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, value.getFloatValue());
       }
       else
       {

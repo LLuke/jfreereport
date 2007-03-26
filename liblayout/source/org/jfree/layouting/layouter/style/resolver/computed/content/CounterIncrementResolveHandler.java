@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CounterIncrementResolveHandler.java,v 1.6 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -85,7 +85,7 @@ public class CounterIncrementResolveHandler implements ResolveHandler
       {
         continue;
       }
-      CSSValuePair counter = (CSSValuePair) item;
+      final CSSValuePair counter = (CSSValuePair) item;
       final CSSValue counterName = counter.getFirstValue();
       if (counterName instanceof CSSConstant == false)
       {
@@ -105,7 +105,7 @@ public class CounterIncrementResolveHandler implements ResolveHandler
     if (rawValue instanceof CSSNumericValue)
     {
       final CSSNumericValue nval = (CSSNumericValue) rawValue;
-      return nval.intValue();
+      return (int) (nval.getRawValue() / 1000);
     }
     if (rawValue instanceof CSSAttrFunction)
     {

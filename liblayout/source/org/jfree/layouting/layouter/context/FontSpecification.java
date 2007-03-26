@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontSpecification.java,v 1.3 2006/12/03 18:57:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,6 +35,7 @@ import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.keys.font.FontVariant;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
 
 /**
  * Creation-Date: 15.12.2005, 11:44:22
@@ -45,9 +46,7 @@ public class FontSpecification
 {
   private LayoutStyle style;
 
-  private FontStretch fontStretch;
-
-  private double fontSize;
+  private long fontSize;
   private String fontFamily;
   private boolean antiAliasing;
 
@@ -64,22 +63,32 @@ public class FontSpecification
   /**
    * The requested font size. A font may have a fractional font size (ie. 8.5
    * point). The font size may be influenced by the output target.
+   * This font size is given in micro-point.
    *
    * @return the font size.
    */
-  public double getFontSize()
+  public long getFontSize()
   {
     return fontSize;
   }
+
+  public double getFontSizeInPt()
+  {
+    return StrictGeomUtility.toExternalValue(fontSize);
+  }
+
+
 
   /**
    * The font size is resolved once during the resolve cycle. It is more than
    * just looking up the value in the stylesheet, as we have to take the font
    * size adjustment into account.
    *
+   * This font size is given in micro-point.
+   *
    * @param fontSize the font size as used during the rendering.
    */
-  public void setFontSize(final double fontSize)
+  public void setFontSize(final long fontSize)
   {
     this.fontSize = fontSize;
   }

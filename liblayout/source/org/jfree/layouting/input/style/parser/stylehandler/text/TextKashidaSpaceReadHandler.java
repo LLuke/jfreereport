@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TextKashidaSpaceReadHandler.java,v 1.3 2006/12/03 18:57:55 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -53,7 +53,7 @@ public class TextKashidaSpaceReadHandler implements CSSValueReadHandler
     {
       return null;
     }
-    return new CSSNumericValue
+    return CSSNumericValue.createValue
             (CSSNumericType.PERCENTAGE, value.getFloatValue());
   }
 }

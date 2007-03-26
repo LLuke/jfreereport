@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TextDecorationWidthResolveHandler.java,v 1.5 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -66,6 +66,6 @@ public class TextDecorationWidthResolveHandler implements ResolveHandler
                        StyleKey key)
   {
     final LayoutContext layoutContext = currentNode.getLayoutContext();
-    layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PT, 1));
+    layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PT, 1));
   }
 }

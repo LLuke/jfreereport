@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontSizeResolveHandler.java,v 1.6 2006/12/03 18:58:01 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,6 +31,7 @@ package org.jfree.layouting.layouter.style.resolver.computed.fonts;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.LibLayoutBoot;
+import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontSizeConstant;
 import org.jfree.layouting.input.style.keys.font.RelativeFontSize;
@@ -53,7 +54,7 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
           "org.jfree.layouting.defaults.FontSizeFactor.";
   private double fontSize;
   private CSSNumericValue[] predefinedSizes;
-  private double[] predefinedScalingFactors;
+  private long[] predefinedScalingFactors;
 
   public FontSizeResolveHandler()
   {
@@ -67,7 +68,7 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
     predefinedSizes[5] = computePredefinedSize(FontSizeConstant.X_LARGE);
     predefinedSizes[6] = computePredefinedSize(FontSizeConstant.XX_LARGE);
 
-    predefinedScalingFactors = new double[7];
+    predefinedScalingFactors = new long[7];
     predefinedScalingFactors[0] = computePredefinedScalingFactor(FontSizeConstant.XX_SMALL);
     predefinedScalingFactors[1] = computePredefinedScalingFactor(FontSizeConstant.X_SMALL);
     predefinedScalingFactors[2] = computePredefinedScalingFactor(FontSizeConstant.SMALL);
@@ -87,20 +88,20 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
 
   private CSSNumericValue computePredefinedSize(CSSConstant c)
   {
-    String key = SIZE_FACTOR_PREFIX + c.getCSSText();
-    double scaling = parseDouble(key, 100);
-    return new CSSNumericValue(CSSNumericType.PT, fontSize * scaling / 100d);
+    final String key = FontSizeResolveHandler.SIZE_FACTOR_PREFIX + c.getCSSText();
+    final double scaling = parseDouble(key, 100);
+    return CSSNumericValue.createValue(CSSNumericType.PT, fontSize * scaling / 100.0d);
   }
 
-  private double computePredefinedScalingFactor(CSSConstant c)
+  private long computePredefinedScalingFactor(CSSConstant c)
   {
-    String key = SIZE_FACTOR_PREFIX + c.getCSSText();
-    return parseDouble(key, 100);
+    final String key = FontSizeResolveHandler.SIZE_FACTOR_PREFIX + c.getCSSText();
+    return StrictGeomUtility.toInternalValue(parseDouble(key, 100));
   }
 
-  private double parseDouble(String configKey, double defaultValue)
+  private double parseDouble(final String configKey, final double defaultValue)
   {
-    String value = LibLayoutBoot.getInstance().getGlobalConfig()
+    final String value = LibLayoutBoot.getInstance().getGlobalConfig()
             .getConfigProperty(configKey);
     if (value == null)
     {
@@ -148,19 +149,19 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
     final LayoutElement parent = currentNode.getParent();
     if (parent != null)
     {
-      final double parentFontSize =
+      final long parentFontSize =
               parent.getLayoutContext().getFontSpecification().getFontSize();
       if (RelativeFontSize.LARGER.equals(value))
       {
-        final double scaleFactor = getScaleLargerFactor(parentFontSize);
-        layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
+        final long scaleFactor = getScaleLargerFactor(parentFontSize);
+        layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PERCENTAGE, scaleFactor));
         return;
       }
 
       if (RelativeFontSize.SMALLER.equals(value))
       {
-        final double scaleFactor = getScaleSmallerFactor(parentFontSize);
-        layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, scaleFactor));
+        final long scaleFactor = getScaleSmallerFactor(parentFontSize);
+        layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PERCENTAGE, scaleFactor));
         return;
       }
     }
@@ -169,13 +170,13 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
       // we might not have a parent, but that won't stop us ..
       if (RelativeFontSize.LARGER.equals(value))
       {
-        layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 120));
+        layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 120.0));
         return ;
       }
 
       if (RelativeFontSize.SMALLER.equals(value))
       {
-        layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 85));
+        layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 85.0));
         return;
       }
     }
@@ -188,10 +189,10 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
     }
 
     // do not change the font size..
-    layoutContext.setValue(key, new CSSNumericValue(CSSNumericType.PERCENTAGE, 100));
+    layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 100.0));
   }
 
-  public double getScaleLargerFactor(double parentSize)
+  private long getScaleLargerFactor(final long parentSize)
   {
     for (int i = 0; i < predefinedSizes.length; i++)
     {
@@ -204,7 +205,7 @@ public class FontSizeResolveHandler extends ConstantsResolveHandler
     return predefinedScalingFactors[6];
   }
 
-  public double getScaleSmallerFactor(double parentSize)
+  private long getScaleSmallerFactor(final long parentSize)
   {
     for (int i = predefinedSizes.length; i >= 0; i--)
     {

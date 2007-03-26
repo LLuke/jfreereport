@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CSSTimeValue.java,v 1.3 2006/12/03 18:57:56 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,7 +36,7 @@ package org.jfree.layouting.input.style.values;
  */
 public class CSSTimeValue extends CSSNumericValue
 {
-  public CSSTimeValue(final CSSTimeType type, final double value)
+  public CSSTimeValue(final CSSTimeType type, final long value)
   {
     super(type, value);
   }

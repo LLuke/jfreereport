@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BackgroundPositionReadHandler.java,v 1.3 2006/12/03 18:57:52 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -46,15 +46,15 @@ import org.w3c.css.sac.LexicalUnit;
 public class BackgroundPositionReadHandler extends ListOfPairReadHandler
 {
   public static final CSSNumericValue CENTER =
-          new CSSNumericValue(CSSNumericType.PERCENTAGE, 50);
+          CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 50);
   public static final CSSNumericValue TOP =
-          new CSSNumericValue(CSSNumericType.PERCENTAGE, 0);
+          CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 0);
   public static final CSSNumericValue LEFT =
-          new CSSNumericValue(CSSNumericType.PERCENTAGE, 0);
+          CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 0);
   public static final CSSNumericValue BOTTOM =
-          new CSSNumericValue(CSSNumericType.PERCENTAGE, 100);
+          CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 100);
   public static final CSSNumericValue RIGHT =
-          new CSSNumericValue(CSSNumericType.PERCENTAGE, 100);
+          CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, 100);
 
   public BackgroundPositionReadHandler()
   {
@@ -96,7 +96,7 @@ public class BackgroundPositionReadHandler extends ListOfPairReadHandler
 
     if (value.getLexicalUnitType() == LexicalUnit.SAC_PERCENTAGE)
     {
-      return new CSSNumericValue(CSSNumericType.PERCENTAGE,
+      return CSSNumericValue.createValue(CSSNumericType.PERCENTAGE,
               value.getFloatValue());
     }
     if (CSSValueFactory.isLengthValue(value))
@@ -158,7 +158,7 @@ public class BackgroundPositionReadHandler extends ListOfPairReadHandler
     }
     if (value.getLexicalUnitType() == LexicalUnit.SAC_PERCENTAGE)
     {
-      return new CSSNumericValue(CSSNumericType.PERCENTAGE,
+      return CSSNumericValue.createValue(CSSNumericType.PERCENTAGE,
               value.getFloatValue());
     }
     else if (CSSValueFactory.isLengthValue(value))

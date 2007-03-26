@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TextKashidaSpaceResolveHandler.java,v 1.6 2006/12/03 18:58:03 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -92,6 +92,6 @@ public class TextKashidaSpaceResolveHandler implements ResolveHandler
       percentage = 100;
     }
     layoutContext.setValue(TextStyleKeys.TEXT_KASHIDA_SPACE,
-            new CSSNumericValue(CSSNumericType.PERCENTAGE, percentage));
+            CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, percentage));
   }
 }
