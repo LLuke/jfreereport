@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: RenderLength.java,v 1.7 2006/12/03 18:58:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -104,7 +104,7 @@ public class RenderLength
   {
     if (isPercentage())
     {
-      return (value * parent) / (100 * 1000);
+      return StrictGeomUtility.multiply(value, parent) / 100;
     }
     else if (value == Long.MIN_VALUE)
     {
@@ -126,7 +126,7 @@ public class RenderLength
         return RenderLength.AUTO;
       }
       // This may resolve to zero - which is valid
-      return new RenderLength((value * parent) / (100 * 1000), false);
+      return new RenderLength(StrictGeomUtility.multiply(value, parent) / 100, false);
     }
     else if (value <= 0)
     {

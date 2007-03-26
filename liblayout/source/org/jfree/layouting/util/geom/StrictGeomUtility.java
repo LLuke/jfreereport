@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StrictGeomUtility.java,v 1.3 2006/12/03 18:58:16 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -149,5 +149,10 @@ public class StrictGeomUtility
   public static double toExternalValue (final long value)
   {
     return (value / CORRECTION_FACTOR);
+  }
+
+  public static long multiply (final long x, final long y)
+  {
+    return (long) ((x * y) / CORRECTION_FACTOR);
   }
 }

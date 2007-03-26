@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: HtmlPrinter.java,v 1.5 2007/01/22 16:52:51 taqua Exp $
+ * $Id: HtmlPrinter.java,v 1.6 2007/03/26 13:50:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -606,7 +606,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     return pointConverter.format(d);
   }
 
-  protected void finishInlineBox(InlineRenderBox box)
+  protected void finishInlineBox(final InlineRenderBox box)
   {
     try
     {
