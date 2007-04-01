@@ -3,7 +3,7 @@
  * LibXML : a free Java layouting library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libxml/
+ * Project Info:  http://reporting.pentaho.org/libxml/
  *
  * (C) Copyright 2006, by Object Refinery Ltd, Pentaho Corporation and Contributors.
  *
@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlDocumentInfo.java,v 1.2 2006/12/03 17:39:29 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
