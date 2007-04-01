@@ -3,7 +3,7 @@
  * LibLoader : a free Java resource loading library
  * ================================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libloader/
+ * Project Info:  http://reporting.pentaho.org/libloader/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ResourceKey.java,v 1.5 2007/02/22 20:03:20 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */

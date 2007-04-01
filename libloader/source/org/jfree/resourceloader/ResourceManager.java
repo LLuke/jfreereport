@@ -3,7 +3,7 @@
  * LibLoader : a free Java resource loading library
  * ================================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libloader/
+ * Project Info:  http://reporting.pentaho.org/libloader/
  *
  * (C) Copyright 2006, by Pentaho Corporation and Contributors.
  *
@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ResourceManager.java,v 1.15 2007/03/08 12:15:22 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -186,7 +186,7 @@ public class ResourceManager
 
     // First, try to derive the resource directly. This makes sure, that we preserve the parent's context.
     // If a file is derived, we assume that the result will be a file; and only if that fails we'll try to
-    // query the other contexts. If the parent is an URL-context, the result is assumed to be an URL as well. 
+    // query the other contexts. If the parent is an URL-context, the result is assumed to be an URL as well.
     ResourceKeyCreationException rce = null;
     for (int i = 0; i < resourceLoaders.size(); i++)
     {
