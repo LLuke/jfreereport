@@ -1,8 +1,8 @@
 ************************
-* LIBLOADER 0.3.0      *
+* LIBLOADER 0.3.2      *
 ************************
 
-01 Mar 2007
+01 Apr 2007
 
 1. INTRODUCTION
 ---------------
@@ -27,7 +27,7 @@ included by default. It can be built manually using the supplied ANT-script.
 3. SUPPORT
 ----------
 Free support is available via the Pentaho forum, follow the link
-from the home page.  Please note that questions are answered by volunteers, 
+from the home page.  Please note that questions are answered by volunteers,
 so there is no guaranteed response time or level of service.
 
 Please avoid e-mailing the developers directly for support questions.
