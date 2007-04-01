@@ -4,9 +4,18 @@
 
 A list of changes in recent versions:
 
+0.3.2:  (01-Apr-2007)
+        * Added stronger logging and cleaned up the error messages returned
+          from the loader framework.
+
+        * Derived resource-keys now preserve the parent's context. The system
+          first tries to create the derived key before it falls back to create
+          an absolute key from the given path. This mimics the default URL
+          behavior now.
+
 0.3.1:  (07-Mar-2007)
         * [BUG] Creating and deriving File and/or URL keys from Strings failed
-          under certain conditions.  
+          under certain conditions.
 
 0.3.0:  (01-Mar-2007)
         * The internal resource-key creation and resource-loader architecture
@@ -16,16 +25,16 @@ A list of changes in recent versions:
           resource creation process.
 
           This also fixes the various ugly misconfiguration that made working
-          with files and file-URLs so confusing. 
+          with files and file-URLs so confusing.
 
 0.2.2:  (22-Dec-2006)
         * [BUG] Caching raw-keys was invalid and consumed enormous amounts
           of memory.
 
-        * The EHCache-Module has been upgraded to work with EHCache 1.2.4.  
+        * The EHCache-Module has been upgraded to work with EHCache 1.2.4.
 
 0.2.1:  (11-Dec-2006)
-        * [BUG] File-URLs failed with LibLoader if the URL's file part was 
+        * [BUG] File-URLs failed with LibLoader if the URL's file part was
           URL-Encoded. We now use a special handler for these cases.
 
 0.2.0:  (03-Dec-2006)

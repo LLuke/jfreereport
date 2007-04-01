@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ResourceManager.java,v 1.14 2007/03/02 17:08:11 taqua Exp $
+ * $Id: ResourceManager.java,v 1.15 2007/03/08 12:15:22 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -49,23 +49,35 @@ import org.jfree.util.Log;
 import org.jfree.util.ObjectUtilities;
 
 /**
- * The manager takes care about the loaded resources, performs any caching, if
- * needed and is the central instance when dealing with resources.
+ * The resource manager takes care about the loaded resources, performs caching, if needed and is the central instance
+ * when dealing with resources. Resource loading is a two-step process. In the first step, the {@link ResourceLoader}
+ * accesses the physical storage or network connection to read in the binary data. The loaded {@link ResourceData}
+ * carries versioning information with it an can be cached indendently from the produced result. Once the loading is
+ * complete, a {@link ResourceFactory} interprets the binary data and produces a Java-Object from it.
+ * <p/>
+ * Resources are identified by an Resource-Key and some optional loader parameters (which can be used to parametrize the
+ * resource-factories).
  *
  * @author Thomas Morgner
+ * @see ResourceData
+ * @see ResourceLoader
+ * @see ResourceFactory
  */
 public class ResourceManager
 {
+  /**
+   * A set that contains the class-names of all cache-modules, which could not be instantiated correctly.
+   * This set is used to limit the number of warnings in the log to exactly one per class.
+   */
   private static final Set failedModules = new HashSet();
+
   private ArrayList resourceLoaders;
   private ArrayList resourceFactories;
   private ResourceDataCache dataCache;
   private ResourceFactoryCache factoryCache;
 
-  private static final String LOADER_PREFIX =
-      "org.jfree.resourceloader.loader.";
-  private static final String FACTORY_TYPE_PREFIX =
-      "org.jfree.resourceloader.factory.type.";
+  private static final String LOADER_PREFIX = "org.jfree.resourceloader.loader.";
+  private static final String FACTORY_TYPE_PREFIX = "org.jfree.resourceloader.factory.type.";
   public static final String DATA_CACHE_PROVIDER_KEY = "org.jfree.resourceloader.cache.DataCacheProvider";
   public static final String FACTORY_CACHE_PROVIDER_KEY = "org.jfree.resourceloader.cache.FactoryCacheProvider";
 
@@ -77,13 +89,28 @@ public class ResourceManager
     factoryCache = new NullResourceFactoryCache();
   }
 
-  public synchronized ResourceKey createKey(Object data)
+  /**
+   * Creates a ResourceKey that carries no Loader-Parameters from the given object.
+   *
+   * @param data the key-data
+   * @return the generated resource-key, never null.
+   * @throws ResourceKeyCreationException if the key-creation failed.
+   */
+  public synchronized ResourceKey createKey(final Object data)
       throws ResourceKeyCreationException
   {
     return createKey(data, null);
   }
 
-  public synchronized ResourceKey createKey(Object data, Map parameters)
+  /**
+   * Creates a ResourceKey that carries the given Loader-Parameters contained in the optional map.
+   *
+   * @param data       the key-data
+   * @param parameters an optional map of parameters.
+   * @return the generated resource-key, never null.
+   * @throws ResourceKeyCreationException if the key-creation failed.
+   */
+  public synchronized ResourceKey createKey(final Object data, final Map parameters)
       throws ResourceKeyCreationException
   {
     if (data == null)
@@ -103,7 +130,7 @@ public class ResourceManager
           return key;
         }
       }
-      catch(ResourceKeyCreationException rkce)
+      catch (ResourceKeyCreationException rkce)
       {
         // ignore it.
       }
@@ -115,20 +142,37 @@ public class ResourceManager
   }
 
   /**
-   * Since LibLoader 0.3.0 only hierarchical keys can be derived. For that, the
-   * deriving path must be given as String.
+   * Derives a new key from the given resource-key. Only keys for a hierarchical storage system (like file-systems or
+   * URLs) can have derived keys. Since LibLoader 0.3.0 only hierarchical keys can be derived. For that, the deriving
+   * path must be given as String.
+   * <p/>
+   * Before trying to derive the key, the system tries to interpret the path as absolute key-value.
    *
-   * @param parent
-   * @param path
-   * @return
+   * @param parent the parent key, must never be null
+   * @param path   the relative path, that is used to derive the key.
+   * @return the derived key.
    */
-  public ResourceKey deriveKey(ResourceKey parent, String path)
+  public ResourceKey deriveKey(final ResourceKey parent, final String path)
       throws ResourceKeyCreationException
   {
     return deriveKey(parent, path, null);
   }
 
-  public ResourceKey deriveKey(ResourceKey parent, String path, Map parameters)
+  /**
+   * Derives a new key from the given resource-key. Only keys for a hierarchical storage system (like file-systems or
+   * URLs) can have derived keys. Since LibLoader 0.3.0 only hierarchical keys can be derived. For that, the deriving
+   * path must be given as String.
+   * <p/>
+   * The optional parameter-map will be applied to the derived key after the parent's parameters have been copied to
+   * the new key.
+   * <p/>
+   * Before trying to derive the key, the system tries to interpret the path as absolute key-value.
+   *
+   * @param parent the parent key, or null to interpret the path as absolute key.
+   * @param path   the relative path, that is used to derive the key.
+   * @return the derived key.
+   */
+  public ResourceKey deriveKey(final ResourceKey parent, final String path, final Map parameters)
       throws ResourceKeyCreationException
   {
     if (path == null)
@@ -140,18 +184,9 @@ public class ResourceManager
       return createKey(path, parameters);
     }
 
-    // First, try to load the key as absolute value.
-    // This assumes, that we have no catch-all implementation.
-    for (int i = 0; i < resourceLoaders.size(); i++)
-    {
-      final ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
-      final ResourceKey key = loader.createKey(path, parameters);
-      if (key != null)
-      {
-        return key;
-      }
-    }
-
+    // First, try to derive the resource directly. This makes sure, that we preserve the parent's context.
+    // If a file is derived, we assume that the result will be a file; and only if that fails we'll try to
+    // query the other contexts. If the parent is an URL-context, the result is assumed to be an URL as well. 
     ResourceKeyCreationException rce = null;
     for (int i = 0; i < resourceLoaders.size(); i++)
     {
@@ -168,9 +203,21 @@ public class ResourceManager
           return key;
         }
       }
-      catch(ResourceKeyCreationException rcke)
+      catch (ResourceKeyCreationException rcke)
       {
         rce = rcke;
+      }
+    }
+
+    // First, try to load the key as absolute value.
+    // This assumes, that we have no catch-all implementation.
+    for (int i = 0; i < resourceLoaders.size(); i++)
+    {
+      final ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
+      final ResourceKey key = loader.createKey(path, parameters);
+      if (key != null)
+      {
+        return key;
       }
     }
 
@@ -182,11 +229,17 @@ public class ResourceManager
         ("Unable to create key: No such schema or the key was not recognized.");
   }
 
-  private ResourceLoader findBySchema(ResourceKey key)
+  /**
+   * Tries to find the first resource-loader that would be able to process the key.
+   *
+   * @param key the resource-key.
+   * @return the resourceloader for that key, or null, if no resource-loader is able to process the key.
+   */
+  private ResourceLoader findBySchema(final ResourceKey key)
   {
     for (int i = 0; i < resourceLoaders.size(); i++)
     {
-      ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
+      final ResourceLoader loader = (ResourceLoader) resourceLoaders.get(i);
       if (loader.isSupportedKey(key))
       {
         return loader;
@@ -195,10 +248,16 @@ public class ResourceManager
     return null;
   }
 
-
+  /**
+   * Tries to convert the resource-key into an URL. Not all resource-keys have an URL representation. This method
+   * exists to make it easier to connect LibLoader to other resource-loading frameworks.
+   *
+   * @param key the resource-key
+   * @return the URL for the key, or null if there is no such key.
+   */
   public URL toURL(final ResourceKey key)
   {
-    ResourceLoader loader = findBySchema(key);
+    final ResourceLoader loader = findBySchema(key);
     if (loader == null)
     {
       return null;
@@ -206,7 +265,7 @@ public class ResourceManager
     return loader.toURL(key);
   }
 
-  public ResourceData load(ResourceKey key) throws ResourceLoadingException
+  public ResourceData load(final ResourceKey key) throws ResourceLoadingException
   {
     final ResourceLoader loader = findBySchema(key);
     if (loader == null)
@@ -247,7 +306,7 @@ public class ResourceManager
     return dataCache.put(this, data);
   }
 
-  public Resource createDirectly(Object keyValue, Class target)
+  public Resource createDirectly(final Object keyValue, final Class target)
       throws ResourceLoadingException,
       ResourceCreationException,
       ResourceKeyCreationException
@@ -256,7 +315,7 @@ public class ResourceManager
     return create(key, null, target);
   }
 
-  public Resource create(ResourceKey key, ResourceKey context, Class target)
+  public Resource create(final ResourceKey key, final ResourceKey context, final Class target)
       throws ResourceLoadingException, ResourceCreationException
   {
     if (target == null)
@@ -270,15 +329,13 @@ public class ResourceManager
     return create(key, context, new Class[]{target});
   }
 
-  public Resource create(ResourceKey key, ResourceKey context)
+  public Resource create(final ResourceKey key, final ResourceKey context)
       throws ResourceLoadingException, ResourceCreationException
   {
     return create(key, context, (Class[]) null);
   }
 
-  public Resource create(ResourceKey key,
-                         ResourceKey context,
-                         Class[] target)
+  public Resource create(final ResourceKey key, final ResourceKey context, final Class[] target)
       throws ResourceLoadingException, ResourceCreationException
   {
     if (key == null)
@@ -317,9 +374,7 @@ public class ResourceManager
           (ResourceFactory) resourceFactories.get(i);
       if (isSupportedTarget(target, fact) == false)
       {
-//        throw new ResourceCreationException
-//            ("No factory known for the given target type: " + targetClass);
-        // try the next factory instead ..
+        // Unsupported keys: Try the next factory ..
         continue;
       }
 
@@ -351,7 +406,7 @@ public class ResourceManager
         ("None of the selected factories was able to handle the given data: " + key);
   }
 
-  private boolean isSupportedTarget(Class[] target, ResourceFactory fact)
+  private boolean isSupportedTarget(final Class[] target, final ResourceFactory fact)
   {
     for (int j = 0; j < target.length; j++)
     {
@@ -376,7 +431,7 @@ public class ResourceManager
       final ResourceFactory fact = (ResourceFactory) it.next();
       try
       {
-        Resource res = performCreate(data, fact, context);
+        final Resource res = performCreate(data, fact, context);
         if (res != null)
         {
           return res;
@@ -505,7 +560,7 @@ public class ResourceManager
             (dataCacheProviderClass, ResourceManager.class, ResourceDataCacheProvider.class);
     if (maybeDataCacheProvider instanceof ResourceDataCacheProvider)
     {
-      ResourceDataCacheProvider provider = (ResourceDataCacheProvider) maybeDataCacheProvider;
+      final ResourceDataCacheProvider provider = (ResourceDataCacheProvider) maybeDataCacheProvider;
       try
       {
         final ResourceDataCache cache = provider.createDataCache();
@@ -541,9 +596,9 @@ public class ResourceManager
     final Object maybeCacheProvider = ObjectUtilities.loadAndInstantiate
         (cacheProviderClass, ResourceManager.class, ResourceFactoryCacheProvider.class);
 
-    if (maybeCacheProvider instanceof ResourceFactoryCacheProvider)
+    if (maybeCacheProvider != null)
     {
-      ResourceFactoryCacheProvider provider = (ResourceFactoryCacheProvider) maybeCacheProvider;
+      final ResourceFactoryCacheProvider provider = (ResourceFactoryCacheProvider) maybeCacheProvider;
       try
       {
         final ResourceFactoryCache cache = provider.createFactoryCache();
@@ -574,9 +629,8 @@ public class ResourceManager
     {
       final String key = (String) it.next();
       final String value = config.getConfigProperty(key);
-      final Object o =
-          ObjectUtilities.loadAndInstantiate(value, ResourceManager.class, ResourceLoader.class);
-      if (o instanceof ResourceLoader)
+      final Object o = ObjectUtilities.loadAndInstantiate(value, ResourceManager.class, ResourceLoader.class);
+      if (o != null)
       {
         final ResourceLoader loader = (ResourceLoader) o;
         //Log.debug("Registering loader for " + loader.getSchema());
@@ -585,7 +639,7 @@ public class ResourceManager
     }
   }
 
-  public void registerLoader(ResourceLoader loader)
+  public void registerLoader(final ResourceLoader loader)
   {
     if (loader == null)
     {
@@ -595,7 +649,7 @@ public class ResourceManager
     resourceLoaders.add(loader);
   }
 
-  public void registerFactory(ResourceFactory factory)
+  public void registerFactory(final ResourceFactory factory)
   {
     if (factory == null)
     {

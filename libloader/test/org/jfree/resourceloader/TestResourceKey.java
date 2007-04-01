@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: TestResourceKey.java,v 1.1 2007/03/08 12:17:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
+import org.jfree.util.Log;
 
 /**
  * Todo: Document me!
@@ -64,7 +65,7 @@ public class TestResourceKey extends TestCase
   public void testResourceKeyCreation ()
       throws ResourceKeyCreationException
   {
-    ResourceManager manager = new ResourceManager();
+    final ResourceManager manager = new ResourceManager();
     manager.registerDefaults();
 
     final ResourceKey key = manager.createKey
@@ -77,7 +78,7 @@ public class TestResourceKey extends TestCase
   public void testURLKeyCreation ()
       throws ResourceKeyCreationException
   {
-    ResourceManager manager = new ResourceManager();
+    final ResourceManager manager = new ResourceManager();
     manager.registerDefaults();
 
     final URL url = TestResourceKey.class.getResource
@@ -92,7 +93,7 @@ public class TestResourceKey extends TestCase
   public void testFileKeyCreation ()
       throws ResourceKeyCreationException, IOException
   {
-    ResourceManager manager = new ResourceManager();
+    final ResourceManager manager = new ResourceManager();
     manager.registerDefaults();
 
     final File f1 = File.createTempFile("junit-test", ".tmp");
@@ -118,12 +119,22 @@ public class TestResourceKey extends TestCase
         ("/org/jfree/resourceloader/test1.properties");
     assertNotNull(url);
 
-    ResourceManager manager = new ResourceManager();
+    final ResourceManager manager = new ResourceManager();
     manager.registerDefaults();
     final ResourceKey key = manager.createKey(f1);
     assertNotNull(key);
+    Log.debug ("Key 1: " + key);
 
     final ResourceKey key2 = manager.deriveKey(key, url.toString());
     assertNotNull(key2);
+    Log.debug ("Key 2: " + key2);
+
+    final ResourceKey key3 = manager.createKey(url);
+    assertNotNull(key3);
+    Log.debug ("Key 3: " + key3);
+
+    final ResourceKey key4 = manager.deriveKey(key3, f1.getAbsolutePath());
+    assertNotNull(key4);
+    Log.debug ("Key 4: " + key4);
   }
 }
