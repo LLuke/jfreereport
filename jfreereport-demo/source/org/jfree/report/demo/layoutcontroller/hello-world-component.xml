@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  ~ Copyright (c) 2007, Pentaho Corporation. All Rights Reserved.
   -->
 
 <report:report xmlns="http://www.w3.org/1999/xhtml"
@@ -19,7 +19,7 @@
   </report:inline-stylesheet>
 
   <p>
-    This demo shows how to include a very simple custom Layout-Controller. 
+    This demo shows how to include a very simple custom Layout-Controller.
   </p>
 
   <helloworld:hello text="Hey, you, I've been specified in the demo."/>

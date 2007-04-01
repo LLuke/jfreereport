@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  ~ Copyright (c) 2007, Pentaho Corporation. All Rights Reserved.
   -->
 
 <report:report xmlns="http://www.w3.org/1999/xhtml"
@@ -180,7 +180,7 @@
           <div>
           <report:content>
             <report:value-expression formula="jfreereport:[POSITIONTITLE]"/>
-          </report:content> - 
+          </report:content> -
             <report:content>
               <report:value-expression formula="jfreereport:[REGION]"/>
             </report:content>

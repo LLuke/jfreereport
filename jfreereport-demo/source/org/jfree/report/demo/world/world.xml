@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
+  ~ Copyright (c) 2007, Pentaho Corporation. All Rights Reserved.
   -->
 
 <report:report xmlns="http://www.w3.org/1999/xhtml"
@@ -105,7 +105,7 @@
 
     <h2 style="background-color: #C8FAF4; font-size: 14pt">Country:
       <report:content>
-        <report:value-expression formula="jfreereport:[Continent]"/>
+        <report:value-expression report:formula="jfreereport:[Continent]"/>
       </report:content>
     </h2>
 

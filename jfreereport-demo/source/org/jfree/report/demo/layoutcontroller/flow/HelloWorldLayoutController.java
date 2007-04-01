@@ -3,9 +3,9 @@
  * JFreeReport : a free Java reporting library
  * ===========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/
+ * Project Info:  http://reporting.pentaho.org/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -25,7 +25,7 @@
  * ------------
  * HelloWorldLayoutController.java
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 
 package org.jfree.report.demo.layoutcontroller.flow;
@@ -64,8 +64,8 @@ public class HelloWorldLayoutController extends ElementLayoutController
     final AttributeMap attributeMap = new AttributeMap(element.getAttributeMap());
     target.startElement(attributeMap);
 
-    HelloWorldLayoutController derived = (HelloWorldLayoutController) clone();
-    derived.setProcessingState(OPENED);
+    final HelloWorldLayoutController derived = (HelloWorldLayoutController) clone();
+    derived.setProcessingState(ElementLayoutController.OPENED);
     derived.attributeMap = attributeMap;
     return derived;
   }
@@ -80,13 +80,30 @@ public class HelloWorldLayoutController extends ElementLayoutController
     target.processText(element.getText());
     target.processText("'");
 
-    HelloWorldLayoutController derived = (HelloWorldLayoutController) clone();
-    derived.setProcessingState(FINISHING);
+    final HelloWorldLayoutController derived = (HelloWorldLayoutController) clone();
+    derived.setProcessingState(ElementLayoutController.FINISHING);
     return derived;
   }
 
+  /**
+   * Finishes the processing of this element. This method is called when the
+   * processing state is 'FINISHING'. The element should be closed now and all
+   * privatly owned resources should be freed. If the element has a parent, it
+   * would be time to join up with the parent now, else the processing state
+   * should be set to 'FINISHED'.
+   *
+   * @param target the report target that receives generated events.
+   * @return the new layout controller instance representing the new state.
+   *
+   * @throws DataSourceException       if there was a problem reading data from
+   *                                   the datasource.
+   * @throws ReportProcessingException if there was a general problem during the
+   *                                   report processing.
+   * @throws ReportDataFactoryException if there was an error trying query data.
+   */
   protected LayoutController finishElement(final ReportTarget target)
-      throws ReportProcessingException, DataSourceException
+      throws ReportProcessingException, DataSourceException,
+      ReportDataFactoryException
   {
 
     target.endElement(attributeMap);
@@ -98,8 +115,8 @@ public class HelloWorldLayoutController extends ElementLayoutController
       return parent.join(fc);
     }
 
-    HelloWorldLayoutController derived = (HelloWorldLayoutController) clone();
-    derived.setProcessingState(FINISHED);
+    final HelloWorldLayoutController derived = (HelloWorldLayoutController) clone();
+    derived.setProcessingState(ElementLayoutController.FINISHED);
     return derived;
   }
 
@@ -108,10 +125,11 @@ public class HelloWorldLayoutController extends ElementLayoutController
    * flow and should *not* (I mean it!) be called from outside. If you do,
    * you'll suffer.
    *
-   * @param flowController
-   * @return
+   * @param flowController the flow controller of the parent.
+   * @return the joined layout controller that incorperates all changes from
+   * the delegate.
    */
-  public LayoutController join(FlowController flowController)
+  public LayoutController join(final FlowController flowController)
   {
     // We do not expect any calls here, so ..
     throw new UnsupportedOperationException();
