@@ -3,9 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/
+ * Project Info:  http://reporting.pentaho.org/
  *
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * (C) Copyright 2000-2007, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -25,7 +25,8 @@
  * ------------
  * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2000-2005, by Object Refinery Limited.
+ * (C) Copyright 2005-2007, by Pentaho Corporation.
  */
 
 package org.jfree.report.modules.gui.swing.preview;
@@ -61,6 +62,7 @@ import org.jfree.report.modules.gui.swing.preview.actions.ControlActionPlugin;
 import org.jfree.report.modules.gui.swing.preview.actions.ExportAction;
 import org.jfree.report.modules.gui.swing.preview.actions.ZoomAction;
 import org.jfree.report.modules.gui.swing.preview.actions.ZoomListActionPlugin;
+import org.jfree.report.util.TextUtilities;
 import org.jfree.ui.FloatingButtonEnabler;
 import org.jfree.ui.KeyedComboBoxModel;
 import org.jfree.ui.action.ActionButton;
@@ -537,7 +539,7 @@ public class PreviewPaneUtilities
       }
 
       final String positionText = configuration.getConfigProperty(base + ".position");
-      actionCategory.setPosition(parseInt(positionText, 0));
+      actionCategory.setPosition(TextUtilities.parseInt(positionText, 0));
       actionCategory.setName(categoryKey);
       actionCategory.setResourceBase(configuration.getConfigProperty(base + ".resource-base"));
       actionCategory.setResourcePrefix(configuration.getConfigProperty(base + ".resource-prefix"));
@@ -548,26 +550,4 @@ public class PreviewPaneUtilities
     return (ActionCategory[]) categories.toArray
         (new ActionCategory[categories.size()]);
   }
-
-  /**
-   * Parses an integer.
-   *
-   * @param text the text.
-   * @param def  the default value.
-   * @return The parsed integer, or the default value if the string didn't
-   *         contain a value.
-   */
-  public static int parseInt(final String text, final int def)
-  {
-    try
-    {
-      return Integer.parseInt(text);
-    }
-    catch (NumberFormatException fe)
-    {
-      return def;
-    }
-  }
-
-
 }

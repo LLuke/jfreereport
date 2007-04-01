@@ -3,9 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/
+ * Project Info:  http://reporting.pentaho.org/
  *
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * (C) Copyright 2000-2007, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -25,7 +25,8 @@
  * ------------
  * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2000-2005, by Object Refinery Limited.
+ * (C) Copyright 2005-2007, by Pentaho Corporation.
  */
 package org.jfree.report.util;
 
@@ -188,7 +189,7 @@ public class CharacterEntityParser
       // at this point we know, that there is at least one entity ..
       if (value.charAt(subStart + 1) == '#')
       {
-        final int subValue = parseInt(value.substring(subStart + 2, subEnd), 0);
+        final int subValue = TextUtilities.parseInt(value.substring(subStart + 2, subEnd), 0);
         if ((subValue >= 1) && (subValue <= 65536))
         {
           final char[] chr = new char[1];
@@ -240,31 +241,5 @@ public class CharacterEntityParser
 
     return bufValue.toString();
   }
-
-
-  /**
-   * Parses the given string and returns the parsed integer value or the given default if
-   * the parsing failed.
-   *
-   * @param value        the to be parsed string
-   * @param defaultValue the default value
-   * @return the parsed string.
-   */
-  public static int parseInt (final String value, final int defaultValue)
-  {
-    if (value == null)
-    {
-      return defaultValue;
-    }
-    try
-    {
-      return Integer.parseInt(value);
-    }
-    catch (Exception e)
-    {
-      return defaultValue;
-    }
-  }
-
 }
 

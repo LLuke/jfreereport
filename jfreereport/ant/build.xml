@@ -1,7 +1,3 @@
-<!--
-  ~ Copyright (c) 2006, Your Corporation. All Rights Reserved.
-  -->
-
 <!-- An ANT build file for JFreeReport. -->
 
 <!-- Written by David Gilbert and modified for libFonts by Thomas Morgner. -->

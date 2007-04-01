@@ -3,9 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/
+ * Project Info:  http://reporting.pentaho.org/
  *
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * (C) Copyright 2000-2007, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,10 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FormulaFunction.java,v 1.6 2006/12/09 21:19:04 taqua Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2000-2005, by Object Refinery Limited.
+ * (C) Copyright 2005-2007, by Pentaho Corporation.
  */
 package org.jfree.report.expressions;
 
@@ -91,9 +92,17 @@ public class FormulaFunction extends AbstractExpression implements Function
       final int separator = initial.indexOf(':');
       if (separator <= 0 || ((separator + 1) == initial.length()))
       {
-        // error: invalid formula.
-        initialNamespace = null;
-        initialExpression = null;
+        if (formula.startsWith("="))
+        {
+          initialNamespace = "report";
+          initialExpression = initial.substring(1);
+        }
+        else
+        {
+          // error: invalid formula.
+          initialNamespace = null;
+          initialExpression = null;
+        }
       }
       else
       {
@@ -132,9 +141,17 @@ public class FormulaFunction extends AbstractExpression implements Function
       final int separator = formula.indexOf(':');
       if (separator <= 0 || ((separator + 1) == formula.length()))
       {
-        // error: invalid formula.
-        formulaNamespace = null;
-        formulaExpression = null;
+        if (formula.startsWith("="))
+        {
+          formulaNamespace = "report";
+          formulaExpression = formula.substring(1);
+        }
+        else
+        {
+          // error: invalid formula.
+          formulaNamespace = null;
+          formulaExpression = null;
+        }
       }
       else
       {
@@ -173,7 +190,7 @@ public class FormulaFunction extends AbstractExpression implements Function
     {
       if (initial != null)
       {
-        Formula initFormula = new Formula(initialExpression);
+        final Formula initFormula = new Formula(initialExpression);
         final ReportFormulaContext context =
             new ReportFormulaContext(getFormulaContext(), getDataRow());
         context.setDeclaringElement(getRuntime().getDeclaringParent());

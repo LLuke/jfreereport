@@ -3,9 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/
+ * Project Info:  http://reporting.pentaho.org/
  *
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * (C) Copyright 2000-2007, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -25,7 +25,8 @@
  * ------------
  * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2000-2005, by Object Refinery Limited.
+ * (C) Copyright 2005-2007, by Pentaho Corporation.
  */
 
 package org.jfree.report.flow.layoutprocessor;
@@ -44,7 +45,7 @@ import org.jfree.report.flow.ReportTarget;
  * Todo: Document me!
  *
  * @author Thomas Morgner
- * @since 05.03.2007 
+ * @since 05.03.2007
  */
 public class BufferedReportTarget implements ReportTarget, Cloneable
 {

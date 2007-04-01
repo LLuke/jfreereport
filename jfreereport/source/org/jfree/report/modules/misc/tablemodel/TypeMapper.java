@@ -3,9 +3,9 @@
  * JFreeReport : a free Java report library
  * ========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/
+ * Project Info:  http://reporting.pentaho.org/
  *
- * (C) Copyright 2000-2006, by Object Refinery Limited, Pentaho Corporation and Contributors.
+ * (C) Copyright 2000-2007, by Object Refinery Limited, Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -25,7 +25,8 @@
  * ------------
  * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2000-2005, by Object Refinery Limited.
+ * (C) Copyright 2005-2007, by Pentaho Corporation.
  */
 package org.jfree.report.modules.misc.tablemodel;
 
@@ -43,7 +44,7 @@ import org.jfree.util.ObjectUtilities;
 
 /**
  * @author $Author: taqua $
- * @version $Id: TypeMapper.java,v 1.6 2006/04/18 11:28:41 taqua Exp $
+ * @version $Id: TypeMapper.java,v 1.7 2006/12/03 20:24:17 taqua Exp $
  */
 public class TypeMapper
 {

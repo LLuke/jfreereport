@@ -3,18 +3,21 @@
 ---------------
 A list of changes in recent versions:
 
-0.9.0-04: 
+0.9.0-04: (01-Apr-2007) 
         * Simplified the layout controller API. It should be easier now to
           derive own layout controller without having to reimplement everything
           from scratch.
 
         * FormulaExpression and FormulaFunction now allow some introspection of
-          the contained formula without having to recompile it every time. 
+          the contained formula without having to recompile it every time.
 
-0.9.0-02: (25-Jan-2006)
+0.9.0-03: (07-Mar-2007)
+        * Libraries updated.
+
+0.9.0-02: (25-Jan-2007)
         * [BUG] Thousands of bugs fixed, which caused weird crashes everywhere.
 
-        * Bean-DataSources and SQL-DataSources aligned with the 0.8 codeline. 
+        * Bean-DataSources and SQL-DataSources aligned with the 0.8 codeline.
 
 0.9.0-01  (11-Dec-2006)
         * [BUG] The ZIP-HTML-Dialog crashed due to an invalid resource reference.
