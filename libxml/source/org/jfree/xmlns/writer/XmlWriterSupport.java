@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.13 2007/03/24 14:29:57 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.14 2007/03/26 17:32:30 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,7 +38,6 @@ import java.util.Properties;
 
 import org.jfree.util.FastStack;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.util.Log;
 import org.jfree.xmlns.common.AttributeList;
 
 /**
@@ -415,7 +414,7 @@ public class XmlWriterSupport
     return parent.getNamespaces().containsKey(uri);
   }
 
-  public boolean isNamespacePrefixDefined(String prefix)
+  public boolean isNamespacePrefixDefined(final String prefix)
   {
     if (impliedNamespaces != null)
     {
@@ -440,6 +439,7 @@ public class XmlWriterSupport
       final Properties namespaces = new Properties();
       if (impliedNamespaces != null)
       {
+        //noinspection UseOfPropertiesAsHashtable
         namespaces.putAll(impliedNamespaces);
       }
       return namespaces;
@@ -447,6 +447,7 @@ public class XmlWriterSupport
 
     final ElementLevel parent = (ElementLevel) openTags.peek();
     final Properties namespaces = new Properties();
+    //noinspection UseOfPropertiesAsHashtable
     namespaces.putAll(parent.getNamespaces());
     return namespaces;
   }

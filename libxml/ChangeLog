@@ -3,18 +3,25 @@
 ---------------
 A list of changes in recent versions:
 
+0.9.2: (01-Apr-2007)
+    * Improved the ability to create XML-Snipplets and to embed the XMLWriter's
+      output in other content.
+
+0.9.1: (07-Mar-2007)
+    * LibLoader's new resource-key system required some change.
+
 0.9.0: (25-Jan-2007)
-    * LibXML is feature complete. Both the parser and writer classes 
+    * LibXML is feature complete. Both the parser and writer classes
       are doing what they should and adding anything else would add extra
       code for no real value.
-      
+
     * The XMLWriterSupport does no longer define the namespaces on a per-document
       basis. Namespaces are declared using attributes and are inherited to all
       child-elements. Namespaces can be redefined on each element, if needed.
-      
-    * The parser now follows the Namespace standard and accepts namespace 
+
+    * The parser now follows the Namespace standard and accepts namespace
       declarations on all elements.
-      
+
     * Some first source-code documentation has been added.
 
 0.2.1: (22-Dec-2006)

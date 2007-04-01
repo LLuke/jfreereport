@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AttributeList.java,v 1.4 2007/01/19 14:05:29 taqua Exp $
+ * $Id: AttributeList.java,v 1.5 2007/03/20 14:52:46 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -179,8 +179,7 @@ public class AttributeList
                            final String name,
                            final String value)
   {
-    final AttributeEntry entry =
-        new AttributeEntry(namespace, name, value);
+    final AttributeEntry entry = new AttributeEntry(namespace, name, value);
     final int pos = this.entryList.indexOf(entry);
     if (pos != -1)
     {
