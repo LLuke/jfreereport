@@ -3,9 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/liblayout/
+ * Project Info:  http://reporting.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LibLayoutBoot.java,v 1.5 2006/12/03 18:57:49 taqua Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 
 package org.jfree.layouting;

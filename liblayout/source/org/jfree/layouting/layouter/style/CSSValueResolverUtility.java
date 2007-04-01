@@ -3,9 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/liblayout/
+ * Project Info:  http://reporting.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: CSSValueResolverUtility.java,v 1.6 2007/03/14 17:12:13 taqua Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.layouting.layouter.style;
 
@@ -193,7 +193,7 @@ public class CSSValueResolverUtility
         final FontMetrics fontMetrics = metaData.getFontMetrics(fspec);
         if (fontMetrics == null)
         {
-          final double fontSize = 
+          final double fontSize =
               fspec.getFontSizeInPt() * DEFAULT_X_HEIGHT_FACTOR;
           return (value.getValue() * fontSize);
         }

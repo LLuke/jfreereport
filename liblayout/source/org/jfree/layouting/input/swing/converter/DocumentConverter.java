@@ -3,9 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/liblayout/
+ * Project Info:  http://reporting.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DocumentConverter.java,v 1.4 2007/01/05 21:16:50 mimil Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.layouting.input.swing.converter;
 
@@ -101,7 +101,7 @@ public class DocumentConverter implements Converter
   private ConverterAttributeSet handleStringAttributes(Object key, Object value, ConverterAttributeSet cssAttr)
   {
     final ConverterAttributeSet attr = new ConverterAttributeSet();
-    
+
     final String styleKey = (String) key;
 
     if (styleKey.equals(RTF_PAGEWIDTH) || styleKey.equals(RTF_PAGEHEIGHT))

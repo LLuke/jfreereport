@@ -3,9 +3,9 @@
  * LibLayout : a free Java layouting library
  * ===========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/liblayout/
+ * Project Info:  http://reporting.pentaho.org/liblayout/
  *
- * (C) Copyright 2000-2005, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: StyleSheetParserUtil.java,v 1.7 2006/12/03 18:57:50 taqua Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.layouting.input.style.parser;
 
@@ -147,7 +147,7 @@ public final class StyleSheetParserUtil
    * representation.
    *
    * @param namespaces an optional map of known namespaces (prefix -> uri)
-   * @param key the stylekey to which the value should be assigned. 
+   * @param key the stylekey to which the value should be assigned.
    * @param value the value text
    * @param resourceManager an optional resource manager
    * @param baseURL an optional base url
@@ -204,7 +204,7 @@ public final class StyleSheetParserUtil
   /**
    * Parses an single lexical unit. This returns the un-interpreted tokenized
    * value. The only use this method has is to parse performance critical
-   * tokens. 
+   * tokens.
    *
    * @param value the value as string.
    * @return the parsed value or null, if the string was unparseable.
@@ -296,7 +296,7 @@ public final class StyleSheetParserUtil
         parser.parseStyleDeclaration(source);
         final CSSDeclarationRule rule = handler.getStyleRule();
         CSSParserContext.getContext().destroy();
-        return rule;  
+        return rule;
       }
     }
     catch (Exception e)
