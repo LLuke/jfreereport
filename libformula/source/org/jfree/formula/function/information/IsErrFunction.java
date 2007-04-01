@@ -3,9 +3,9 @@
  * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libformula
+ * Project Info:  http://reporting.pentaho.org/libformula/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: IsErrFunction.java,v 1.1 2007/01/18 22:36:32 mimil Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.function.information;
 
@@ -43,7 +43,7 @@ import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
  * This function returns true if the parameter is of error and not of error type NA.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
@@ -55,16 +55,16 @@ public class IsErrFunction implements Function
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
-    if(parameters.getParameterCount() != 1) 
+    if(parameters.getParameterCount() != 1)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
-    
+
     try
     {
       final Type type = parameters.getType(0);
       Object value = parameters.getValue(0);
-      
+
       if(ErrorType.TYPE.equals(type) && value instanceof ErrorValue)
       {
         final ErrorValue na = (ErrorValue)value;
@@ -88,7 +88,7 @@ public class IsErrFunction implements Function
         return RETURN_TRUE;
       }
     }
-    
+
     return RETURN_FALSE;
   }
 

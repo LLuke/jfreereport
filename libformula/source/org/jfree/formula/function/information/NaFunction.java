@@ -3,9 +3,9 @@
  * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libformula
+ * Project Info:  http://reporting.pentaho.org/libformula/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: NaFunction.java,v 1.3 2007/01/22 15:54:02 taqua Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.function.information;
 
@@ -51,7 +51,7 @@ public class NaFunction implements Function
 
   public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
-    if(parameters.getParameterCount() != 0) 
+    if(parameters.getParameterCount() != 0)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }

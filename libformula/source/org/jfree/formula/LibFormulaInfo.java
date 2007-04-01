@@ -3,9 +3,9 @@
  * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libformula
+ * Project Info:  http://reporting.pentaho.org/libformula/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: LibFormulaInfo.java,v 1.7 2007/03/01 17:30:37 taqua Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula;
 
@@ -58,7 +58,7 @@ public class LibFormulaInfo extends ProjectInfo
   public LibFormulaInfo()
   {
     setName("LibFormula");
-    setVersion("0.1.5");
+    setVersion("0.1.6");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());

@@ -3,9 +3,9 @@
  * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libformula
+ * Project Info:  http://reporting.pentaho.org/libformula/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: DivideOperator.java,v 1.5 2007/01/18 21:52:06 mimil Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.operators;
 
@@ -65,7 +65,7 @@ public class DivideOperator implements InfixOperator
     {
       return null;
     }
-  
+
     final Number number1 =
         typeRegistry.convertToNumber(value1.getType(), raw1);
     final Number number2 =

@@ -3,9 +3,9 @@
  * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libformula
+ * Project Info:  http://reporting.pentaho.org/libformula/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: TypeRegistry.java,v 1.6 2007/01/18 21:52:06 mimil Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.typing;
 
@@ -74,22 +74,22 @@ public interface TypeRegistry
 
   /**
    * Converts the object of the given type into a boolean.
-   * 
+   *
    * @param type1
    * @param value
    * @return The value as Boolean or null.
    */
   public Boolean convertToLogical (Type type1, Object value);
-  
+
   /**
    * Converts the object of the given type into a date.
-   * 
+   *
    * @param type1
    * @param value
    * @return The value as Date or null.
    */
   public Date convertToDate(Type type1, Object value);
-  
+
   /**
    * Checks, whether the target type would accept the specified value object
    * and value type. (This conversion is used by the functions.)
@@ -99,11 +99,11 @@ public interface TypeRegistry
    */
   public TypeValuePair convertTo(final Type targetType,
                                  final TypeValuePair valuePair);
-  
+
   /**
    * Returns the first non null error value of the passed arguments or null if there is no error.
-   * It is used ot propagate the errors. 
-   * 
+   * It is used ot propagate the errors.
+   *
    * @param value1 First value to check.
    * @param value2 Second value to check.
    * @return The error or null if no errors.

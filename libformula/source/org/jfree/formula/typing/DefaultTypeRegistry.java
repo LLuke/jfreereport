@@ -3,9 +3,9 @@
  * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libformula
+ * Project Info:  http://reporting.pentaho.org/libformula/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.8 2007/01/18 21:52:06 mimil Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.typing;
 
@@ -167,7 +167,7 @@ public class DefaultTypeRegistry implements TypeRegistry
     {
       bd = new BigDecimal(number.toString());
     }
-    
+
     final BigDecimal bigDecimal = bd.multiply(MILLISECS);
     //just a test to remove the millisecond part
     final long longValue = (bigDecimal.longValue()/1000)*1000;
@@ -185,7 +185,7 @@ public class DefaultTypeRegistry implements TypeRegistry
 
     final BigDecimal daysBd = new BigDecimal(days);
     final BigDecimal secsBd = new BigDecimal(secs);
-    
+
     //fractional part must be between 0.0 to 0.99999
     //reprenting from 00:00:00 to 23:59:59
     final BigDecimal daySecs = secsBd.divide

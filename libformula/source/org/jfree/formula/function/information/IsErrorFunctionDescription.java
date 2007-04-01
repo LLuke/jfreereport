@@ -3,9 +3,9 @@
  * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libformula
+ * Project Info:  http://reporting.pentaho.org/libformula/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: IsNaFunctionDescription.java,v 1.2 2007/01/14 18:28:57 mimil Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.function.information;
 
@@ -39,7 +39,7 @@ import org.jfree.formula.typing.coretypes.LogicalType;
 /**
  * Describes IsErrFunction function.
  * @see IsErrFunction
- * 
+ *
  * @author Cedric Pronzato
  *
  */
@@ -50,7 +50,7 @@ public class IsErrorFunctionDescription extends AbstractFunctionDescription
   {
     super("org.jfree.formula.function.information.IsError-Function");
   }
-  
+
   public FunctionCategory getCategory()
   {
     return InformationFunctionCategory.CATEGORY;

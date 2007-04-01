@@ -3,9 +3,9 @@
  * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libformula
+ * Project Info:  http://reporting.pentaho.org/libformula/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: FormulaFunction.java,v 1.11 2007/02/22 21:34:46 mimil Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.lvalues;
 
@@ -158,7 +158,7 @@ public class FormulaFunction extends AbstractLValue
   /**
    * Returns the function's name. This is the normalized name and may not be
    * suitable for the user. Query the function's metadata to retrieve a
-   * display-name. 
+   * display-name.
    *
    * @return the function's name.
    */

@@ -3,9 +3,9 @@
  * LibFormula : a free Java formula library
  * =========================================
  *
- * Project Info:  http://jfreereport.pentaho.org/libformula
+ * Project Info:  http://reporting.pentaho.org/libformula/
  *
- * (C) Copyright 2006, by Pentaho Corporation and Contributors.
+ * (C) Copyright 2006-2007, by Pentaho Corporation and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -24,9 +24,9 @@
  *
  *
  * ------------
- * $Id: ReplaceFunction.java,v 1.1 2007/01/26 22:11:51 mimil Exp $
+ * $Id$
  * ------------
- * (C) Copyright 2006, by Pentaho Corporation.
+ * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.function.text;
 
@@ -45,7 +45,7 @@ import org.jfree.util.Log;
 
 /**
  * This function returns text where an old text is substituted with a new text.
- * 
+ *
  * @author Cedric Pronzato
  *
  */
@@ -60,7 +60,7 @@ public class ReplaceFunction implements Function
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    
+
     final Type newTextType = parameters.getType(3);
     final Object newTextValue = parameters.getValue(3);
     final Type textType = parameters.getType(0);
@@ -74,19 +74,19 @@ public class ReplaceFunction implements Function
     final String text = typeRegistry.convertToText(textType, textValue);
     final Number start = typeRegistry.convertToNumber(startType, startValue);
     final Number length = typeRegistry.convertToNumber(lengthType, lengthValue);
-    
+
     if(newText == null || text == null || start == null || length == null)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
-    
+
     // = LEFT(T;Start-1) & New & MID(T; Start+Len; LEN(T)))
     final StringBuffer buffer = new StringBuffer();
     buffer.append("LEFT(\"").append(text).append("\";").append(start.doubleValue()).append("-1) & \"");
     buffer.append(newText).append("\" & ");
     buffer.append("MID(\"").append(text).append("\";").append(start.doubleValue()).append("+");
     buffer.append(length.doubleValue()).append(";").append(text.length()).append("))");
-    
+
     Formula formula = null;
     try
     {
@@ -98,7 +98,7 @@ public class ReplaceFunction implements Function
     }
     formula.initialize(context);
     final Object result = formula.evaluate();
-    
+
     return new TypeValuePair(TextType.TYPE, result.toString());
   }
 

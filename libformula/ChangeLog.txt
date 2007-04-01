@@ -3,15 +3,26 @@
 ---------------
 A list of changes in recent versions:
 
+0.1.6: (01-Apr-2007)
+        * [BUG] Comparing two untyped (Any-Type) values always failed. The new
+          implementation now tries to convert these values into Numbers, Dates,
+          and Strings to compare them. (This is a quick-fix for Bug #1680148;
+          however, it needs more testing before we can close that bug.)
+
+        * New functions added
+          Date:
+          - NOW()
+          - TODAY()
+
 0.1.5: (07-Mar-2007)
         * Exposed some previously private variables to allow proper inspection
           of formulas.
 
 0.1.4: (01-Mar-2007)
-        * [BUG] The parser did not accept empty parameters so that syntactilly 
+        * [BUG] The parser did not accept empty parameters so that syntactilly
           valid formulas like "IF(;;;)" failed to parse.
-          
-        * [BUG] The TRIM(..) function was invalid. TRIM has to remove all 
+
+        * [BUG] The TRIM(..) function was invalid. TRIM has to remove all
           leading, trailing and all duplicate inner whitespaces from the give
           text.
 
@@ -20,13 +31,12 @@ A list of changes in recent versions:
           - REPLACE(
           - SUBSTITUTE(text, old_text, new_text, nth_appearance )
 
-
           Math:
           - ABS(number)
 
           Date:
           - DATEDIF(date1,date2,interval)
-          
+
 0.1.3: (25-Jan-2007)
         * [BUG] The power operator was not registered.
 
