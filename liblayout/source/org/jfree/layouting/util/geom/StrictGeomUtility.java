@@ -45,7 +45,7 @@ public class StrictGeomUtility
   /**
    * This is the correction factor used to convert points into 'Micro-Points'.
    */
-  private static final float CORRECTION_FACTOR = 1000f;
+  private static final double CORRECTION_FACTOR = 1000.0d;
 
   /**
    * Hidden, non usable constructor.
@@ -109,7 +109,7 @@ public class StrictGeomUtility
           (final long width, final long height)
   {
     return new FloatDimension
-            (width / CORRECTION_FACTOR, height / CORRECTION_FACTOR);
+            ((float) (width / CORRECTION_FACTOR), (float) (height / CORRECTION_FACTOR));
   }
 
   /**

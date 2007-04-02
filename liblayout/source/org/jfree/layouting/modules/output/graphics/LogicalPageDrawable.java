@@ -68,7 +68,7 @@ import org.jfree.ui.Drawable;
  */
 public class LogicalPageDrawable implements PageDrawable
 {
-  private static final boolean OUTLINE_MODE = false;
+  private static final boolean OUTLINE_MODE = true;
   private LogicalPageBox rootBox;
   private PageFormat pageFormat;
   private double width;
@@ -259,14 +259,13 @@ public class LogicalPageDrawable implements PageDrawable
             layoutContext.getValue(ColorStyleKeys.COLOR);
 
     g2.setColor(cssColor);
-    g2.setFont(new Font(fontSpecification.getFontFamily(), style,
-            (int) fontSpecification.getFontSizeInPt()));
+    g2.setFont(new Font(fontSpecification.getFontFamily(), style, (int) fontSpecification.getFontSize()));
 
     int length = renderableText.getOffset() + renderableText.getLength();
     for (int i = renderableText.getOffset(); i < length; i++)
     {
       Glyph g = gs[i];
-      g2.drawString(org.jfree.layouting.modules.output.graphics.LogicalPageDrawable.glpyhToString(g), runningPos / 1000f, (posY + g.getBaseLine()) / 1000f);
+      g2.drawString(LogicalPageDrawable.glpyhToString(g), runningPos / 1000f, (posY + g.getBaseLine()) / 1000f);
       runningPos += g.getWidth();
     }
   }

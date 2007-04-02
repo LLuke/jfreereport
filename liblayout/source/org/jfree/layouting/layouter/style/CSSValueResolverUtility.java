@@ -183,7 +183,7 @@ public class CSSValueResolverUtility
       {
         final FontSpecification fspec =
             context.getFontSpecification();
-        final double fontSize = fspec.getFontSizeInPt();
+        final double fontSize = fspec.getFontSize();
         return (fontSize * value.getValue());
       }
       if (CSSNumericType.EX.equals(value.getType()))
@@ -193,8 +193,7 @@ public class CSSValueResolverUtility
         final FontMetrics fontMetrics = metaData.getFontMetrics(fspec);
         if (fontMetrics == null)
         {
-          final double fontSize =
-              fspec.getFontSizeInPt() * DEFAULT_X_HEIGHT_FACTOR;
+          final double fontSize = fspec.getFontSize() * DEFAULT_X_HEIGHT_FACTOR;
           return (value.getValue() * fontSize);
         }
         else
@@ -269,7 +268,7 @@ public class CSSValueResolverUtility
       {
         final FontSpecification fspec =
             context.getFontSpecification();
-        final double fontSize = fspec.getFontSizeInPt();
+        final double fontSize = fspec.getFontSize();
         return (long) (fontSize * internal);
       }
       if (CSSNumericType.EX.equals(value.getType()))
@@ -279,7 +278,7 @@ public class CSSValueResolverUtility
         final FontMetrics fontMetrics = metaData.getFontMetrics(fspec);
         if (fontMetrics == null)
         {
-          final double fontSize = fspec.getFontSizeInPt() * DEFAULT_X_HEIGHT_FACTOR;
+          final double fontSize = fspec.getFontSize() * DEFAULT_X_HEIGHT_FACTOR;
           return (long) (internal * fontSize);
         }
         else

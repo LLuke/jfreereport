@@ -124,13 +124,18 @@ public final class LayoutStyleImpl implements LayoutStyle
     }
 
     final LayoutStyleImpl rawstyle = (LayoutStyleImpl) style;
-    final int length = rawstyle.values.length;
+    if (rawstyle.values == null)
+    {
+      return true;
+    }
+
     if (values == null)
     {
       values = (CSSValue[]) rawstyle.values.clone();
       return true;
     }
 
+    final int length = rawstyle.values.length;
     for (int i = 0; i < length; i++)
     {
       final CSSValue o = rawstyle.values[i];

@@ -31,7 +31,6 @@
 package org.jfree.layouting.layouter.style.resolver.computed.content;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.keys.box.DisplayRole;
@@ -119,7 +118,7 @@ public class CounterResetResolveHandler implements ResolveHandler
     if (rawValue instanceof CSSNumericValue)
     {
       final CSSNumericValue nval = (CSSNumericValue) rawValue;
-      return (int) StrictGeomUtility.toExternalValue(nval.getRawValue());
+      return (int) nval.getValue();
     }
     if (rawValue instanceof CSSAttrFunction)
     {

@@ -31,7 +31,6 @@
 package org.jfree.layouting.layouter.style.resolver.computed.content;
 
 import org.jfree.layouting.LayoutProcess;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.content.ContentStyleKeys;
 import org.jfree.layouting.input.style.values.CSSAttrFunction;
@@ -86,7 +85,7 @@ public class CounterIncrementResolveHandler implements ResolveHandler
       {
         continue;
       }
-      final CSSValuePair counter = (CSSValuePair) item;
+      CSSValuePair counter = (CSSValuePair) item;
       final CSSValue counterName = counter.getFirstValue();
       if (counterName instanceof CSSConstant == false)
       {
@@ -106,7 +105,7 @@ public class CounterIncrementResolveHandler implements ResolveHandler
     if (rawValue instanceof CSSNumericValue)
     {
       final CSSNumericValue nval = (CSSNumericValue) rawValue;
-      return (int) StrictGeomUtility.toExternalValue(nval.getRawValue());
+      return (int) nval.getValue();
     }
     if (rawValue instanceof CSSAttrFunction)
     {

@@ -38,13 +38,12 @@ import org.jfree.layouting.util.geom.StrictGeomUtility;
  */
 public class CSSNumericValue implements CSSValue
 {
-  public static final CSSNumericValue ZERO_LENGTH =
-      CSSNumericValue.createValue(CSSNumericType.PT, 0);
+  public static final CSSNumericValue ZERO_LENGTH = CSSNumericValue.createValue(CSSNumericType.PT, 0);
 
-  private long value;
+  private double value;
   private CSSNumericType type;
 
-  protected CSSNumericValue(final CSSNumericType type, final long value)
+  protected CSSNumericValue(final CSSNumericType type, final double value)
   {
     if (type == null)
     {
@@ -55,11 +54,6 @@ public class CSSNumericValue implements CSSValue
   }
 
   public double getValue()
-  {
-    return StrictGeomUtility.toExternalValue(value);
-  }
-
-  public long getRawValue()
   {
     return value;
   }
@@ -96,18 +90,11 @@ public class CSSNumericValue implements CSSValue
 
   public static CSSNumericValue createPtValue(final double value)
   {
-    return new CSSNumericValue
-        (CSSNumericType.PT, StrictGeomUtility.toInternalValue(value));
+    return new CSSNumericValue(CSSNumericType.PT, value);
   }
 
   public static CSSNumericValue createValue(final CSSNumericType type,
                                             final double value)
-  {
-    return new CSSNumericValue(type, StrictGeomUtility.toInternalValue(value));
-  }
-
-  public static CSSNumericValue createInternalValue(final CSSNumericType type,
-                                                    final long value)
   {
     return new CSSNumericValue(type, value);
   }

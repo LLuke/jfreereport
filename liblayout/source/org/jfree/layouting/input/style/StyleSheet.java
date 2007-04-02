@@ -144,12 +144,12 @@ public class StyleSheet implements Cloneable, Serializable
     return rules.size();
   }
 
-  public synchronized StyleRule getRule(int index)
+  public synchronized StyleRule getRule(final int index)
   {
     return (StyleRule) rules.get(index);
   }
 
-  public synchronized void addStyleSheet (StyleSheet styleSheet)
+  public synchronized void addStyleSheet (final StyleSheet styleSheet)
   {
     styleSheets.add(styleSheet);
   }
@@ -159,17 +159,17 @@ public class StyleSheet implements Cloneable, Serializable
     return styleSheets.size();
   }
 
-  public synchronized StyleSheet getStyleSheet (int index)
+  public synchronized StyleSheet getStyleSheet (final int index)
   {
     return (StyleSheet) styleSheets.get(index);
   }
 
-  public synchronized void removeStyleSheet (StyleSheet styleSheet)
+  public synchronized void removeStyleSheet (final StyleSheet styleSheet)
   {
     styleSheets.remove(styleSheet);
   }
 
-  public synchronized void addNamespace (String prefix, String uri)
+  public synchronized void addNamespace (final String prefix, final String uri)
   {
     if (isReadOnly())
     {
@@ -187,7 +187,7 @@ public class StyleSheet implements Cloneable, Serializable
     roNamespaces = null;
   }
 
-  public synchronized String getNamespaceURI (String prefix)
+  public synchronized String getNamespaceURI (final String prefix)
   {
     return (String) namespaces.get(prefix);
   }

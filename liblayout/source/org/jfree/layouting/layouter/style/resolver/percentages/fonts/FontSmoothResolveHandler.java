@@ -84,7 +84,7 @@ public class FontSmoothResolveHandler implements ResolveHandler
     }
 
     final double fontSize =
-            (currentNode.getLayoutContext().getFontSpecification().getFontSizeInPt());
+            (currentNode.getLayoutContext().getFontSpecification().getFontSize());
     final double length = CSSValueResolverUtility.convertLengthToDouble
             (value, currentNode.getLayoutContext(), process.getOutputMetaData());
 

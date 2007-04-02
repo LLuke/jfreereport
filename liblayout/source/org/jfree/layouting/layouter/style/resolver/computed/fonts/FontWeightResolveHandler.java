@@ -113,8 +113,7 @@ public class FontWeightResolveHandler implements ResolveHandler
       fontWeight = queryParent(currentNode.getParent());
     }
 
-    layoutContext.setValue(FontStyleKeys.FONT_WEIGHT,
-            CSSNumericValue.createValue(CSSNumericType.NUMBER, fontWeight));
+    layoutContext.setValue(FontStyleKeys.FONT_WEIGHT, CSSNumericValue.createValue(CSSNumericType.NUMBER, fontWeight));
   }
 
   private int queryParent(final LayoutElement parent)

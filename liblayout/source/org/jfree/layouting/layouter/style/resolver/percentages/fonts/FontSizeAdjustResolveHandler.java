@@ -92,7 +92,7 @@ public class FontSizeAdjustResolveHandler implements ResolveHandler
       return; // no parent to resolve against ...
     }
 
-    final long adjustFactor = nval.getRawValue();
+    final double adjustFactor = nval.getValue();
     final FontSpecification fontSpecification =
         currentNode.getLayoutContext().getFontSpecification();
     final FontMetrics fontMetrics =
@@ -104,9 +104,9 @@ public class FontSizeAdjustResolveHandler implements ResolveHandler
 
     final double actualFontXHeight = fontMetrics.getXHeight();
 
-    final long fontSize = fontSpecification.getFontSize();
+    final double fontSize = fontSpecification.getFontSize();
     final double aspectRatio = actualFontXHeight / fontSize;
-    final long result = (long) (fontSize * (adjustFactor / aspectRatio));
+    final double result = (fontSize * (adjustFactor / aspectRatio));
     fontSpecification.setFontSize(result);
   }
 }

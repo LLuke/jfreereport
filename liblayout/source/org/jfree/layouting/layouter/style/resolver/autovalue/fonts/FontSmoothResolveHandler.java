@@ -81,7 +81,7 @@ public class FontSmoothResolveHandler implements ResolveHandler
     final double threshold =
             process.getOutputMetaData().getNumericFeatureValue
             (OutputProcessorFeature.FONT_SMOOTH_THRESHOLD);
-    if (fs.getFontSizeInPt() < threshold)
+    if (fs.getFontSize() < threshold)
     {
       layoutContext.setValue(FontStyleKeys.X_FONT_SMOOTH_FLAG, FontSmooth.NEVER);
     }

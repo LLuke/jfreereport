@@ -99,7 +99,7 @@ import org.jfree.util.WaitingImageObserver;
  */
 public abstract class AbstractRenderer implements Renderer
 {
-  protected abstract static class RendererState implements State
+  protected static abstract class RendererState implements State
   {
     private BoxDefinitionFactory boxDefinitionFactory;
     private State pageContext;

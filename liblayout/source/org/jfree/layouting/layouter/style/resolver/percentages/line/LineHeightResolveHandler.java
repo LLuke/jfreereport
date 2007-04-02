@@ -119,8 +119,7 @@ public class LineHeightResolveHandler implements ResolveHandler
     }
 
 
-    final double fontSize =
-            layoutContext.getFontSpecification().getFontSizeInPt();
+    final double fontSize = layoutContext.getFontSpecification().getFontSize();
     layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
             CSSNumericValue.createValue(CSSNumericType.PT, fontSize * factor));
 
@@ -129,8 +128,7 @@ public class LineHeightResolveHandler implements ResolveHandler
   private void handleNormal (LayoutElement currentNode)
   {
     final LayoutContext layoutContext = currentNode.getLayoutContext();
-    final double fontSize =
-            layoutContext.getFontSpecification().getFontSizeInPt();
+    final double fontSize = layoutContext.getFontSpecification().getFontSize();
     if (fontSize < 10)
     {
       layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
@@ -151,7 +149,7 @@ public class LineHeightResolveHandler implements ResolveHandler
 
   private void handleNone (LayoutElement currentNode)
   {
-    final long fontSize;
+    final double fontSize;
     final LayoutElement parent = currentNode.getParent();
     final LayoutContext layoutContext = currentNode.getLayoutContext();
     if (parent == null)
@@ -163,7 +161,6 @@ public class LineHeightResolveHandler implements ResolveHandler
     {
       fontSize = parent.getLayoutContext().getFontSpecification().getFontSize();
     }
-    layoutContext.setValue(LineStyleKeys.LINE_HEIGHT,
-            CSSNumericValue.createInternalValue(CSSNumericType.PT, fontSize));
+    layoutContext.setValue(LineStyleKeys.LINE_HEIGHT, CSSNumericValue.createValue(CSSNumericType.PT, fontSize));
   }
 }

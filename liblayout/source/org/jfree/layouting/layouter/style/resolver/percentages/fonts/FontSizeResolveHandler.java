@@ -32,7 +32,6 @@ package org.jfree.layouting.layouter.style.resolver.percentages.fonts;
 import org.jfree.fonts.LibFontsDefaults;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.values.CSSNumericType;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
@@ -50,13 +49,11 @@ import org.jfree.layouting.layouter.style.resolver.ResolveHandler;
  */
 public class FontSizeResolveHandler implements ResolveHandler
 {
-  private long baseFontSize;
+  private double baseFontSize;
 
   public FontSizeResolveHandler()
   {
-    baseFontSize =
-        StrictGeomUtility.toInternalValue(parseDouble
-            ("org.jfree.layouting.defaults.FontSize", 12));
+    baseFontSize = parseDouble ("org.jfree.layouting.defaults.FontSize", 12);
   }
 
   private double parseDouble(final String configKey,
@@ -105,17 +102,15 @@ public class FontSizeResolveHandler implements ResolveHandler
       if (parent == null)
       {
         fontSpecification.setFontSize(this.baseFontSize);
-        layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PT,
-            baseFontSize));
+        layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PT, baseFontSize));
       }
       else
       {
         final LayoutContext parentContext = parent.getLayoutContext();
         final FontSpecification parentFont = parentContext.getFontSpecification();
-        final long fontSize = parentFont.getFontSize();
+        final double fontSize = parentFont.getFontSize();
         fontSpecification.setFontSize(fontSize);
-        layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PT,
-            fontSize));
+        layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PT, fontSize));
       }
       return;
     }
@@ -125,15 +120,14 @@ public class FontSizeResolveHandler implements ResolveHandler
     {
       final CSSNumericValue fsize = CSSValueResolverUtility.convertLength
           (nval, currentNode.getLayoutContext(), process.getOutputMetaData());
-      final long fontSize = fsize.getRawValue();
+      final double fontSize = fsize.getValue();
       fontSpecification.setFontSize(fontSize);
-      layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PT,
-          fontSize));
+      layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PT, fontSize));
     }
     // we encountered one of the relative values.
     else if (CSSNumericType.EM.equals(nval.getType()))
     {
-      final long parentSize;
+      final double parentSize;
       if (parent == null)
       {
         parentSize = this.baseFontSize;
@@ -144,20 +138,17 @@ public class FontSizeResolveHandler implements ResolveHandler
         final FontSpecification parentFont = parentContext.getFontSpecification();
         parentSize = parentFont.getFontSize();
       }
-      final long fontSize = parentSize * nval.getRawValue();
+      final double fontSize = parentSize * nval.getValue();
       fontSpecification.setFontSize(fontSize);
-      layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PT,
-          fontSize));
+      layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PT, fontSize));
     }
     else if (CSSNumericType.EX.equals(nval.getType()))
     {
-      final long parentSize;
+      final double parentSize;
       if (parent == null)
       {
         // if we have no parent, we create a fixed default value.
-        parentSize = (long) (this.baseFontSize *
-                             LibFontsDefaults.DEFAULT_XHEIGHT_SIZE /
-                              LibFontsDefaults.DEFAULT_ASCENT_SIZE);
+        parentSize = this.baseFontSize * LibFontsDefaults.DEFAULT_XHEIGHT_SIZE / LibFontsDefaults.DEFAULT_ASCENT_SIZE;
       }
       else
       {
@@ -165,14 +156,13 @@ public class FontSizeResolveHandler implements ResolveHandler
         final FontSpecification parentFont = parentContext.getFontSpecification();
         parentSize = parentFont.getFontSize();
       }
-      final long fontSize = parentSize * nval.getRawValue();
-      layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PT,
-          fontSize));
+      final double fontSize = parentSize * nval.getValue();
+      layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PT, fontSize));
       fontSpecification.setFontSize(fontSize);
     }
     else if (CSSNumericType.PERCENTAGE.equals(nval.getType()))
     {
-      final long parentSize;
+      final double parentSize;
       if (parent == null)
       {
         // if we have no parent, we create a fixed default value.
@@ -184,16 +174,14 @@ public class FontSizeResolveHandler implements ResolveHandler
         final FontSpecification parentFont = parentContext.getFontSpecification();
         parentSize = parentFont.getFontSize();
       }
-      final long fontSize = parentSize * nval.getRawValue() / 100;
+      final double fontSize = parentSize * nval.getValue() / 100.0d;
       fontSpecification.setFontSize(fontSize);
-      layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PT,
-          fontSize));
+      layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PT, fontSize));
     }
     else
     {
       fontSpecification.setFontSize(this.baseFontSize);
-      layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PT,
-          this.baseFontSize));
+      layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PT, this.baseFontSize));
     }
   }
 }

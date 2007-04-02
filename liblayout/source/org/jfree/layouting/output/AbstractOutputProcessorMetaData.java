@@ -282,8 +282,7 @@ public abstract class AbstractOutputProcessorMetaData
       Log.warn("Unable to lookup the font family.");
       return null;
     }
-    final DefaultFontContext fontContext = new DefaultFontContext
-                    (this, spec.isAntiAliasing(), spec.getFontSizeInPt());
+    final DefaultFontContext fontContext = new DefaultFontContext (this, spec.isAntiAliasing(), spec.getFontSize());
 
     final FontRecord record = family.getFontRecord
             (spec.getFontWeight() > 600, spec.isItalic() || spec.isOblique());

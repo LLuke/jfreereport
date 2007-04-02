@@ -129,7 +129,7 @@ public abstract class CSSDeclarationRule extends StyleRule
     }
     if (styleSheetParserUtil == null)
     {
-      styleSheetParserUtil = StyleSheetParserUtil.getInstance();
+      styleSheetParserUtil = new StyleSheetParserUtil();
     }
 
     final StyleSheet parent = getParentStyle();

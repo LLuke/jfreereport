@@ -36,7 +36,7 @@ package org.jfree.layouting.input.style.values;
  */
 public class CSSTimeValue extends CSSNumericValue
 {
-  public CSSTimeValue(final CSSTimeType type, final long value)
+  public CSSTimeValue(final CSSTimeType type, final double value)
   {
     super(type, value);
   }

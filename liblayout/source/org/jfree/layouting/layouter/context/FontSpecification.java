@@ -29,13 +29,11 @@
  */
 package org.jfree.layouting.layouter.context;
 
-import org.jfree.layouting.input.style.keys.font.FontStretch;
 import org.jfree.layouting.input.style.keys.font.FontStyle;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.keys.font.FontVariant;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
 
 /**
  * Creation-Date: 15.12.2005, 11:44:22
@@ -46,7 +44,7 @@ public class FontSpecification
 {
   private LayoutStyle style;
 
-  private long fontSize;
+  private double fontSize;
   private String fontFamily;
   private boolean antiAliasing;
 
@@ -63,21 +61,14 @@ public class FontSpecification
   /**
    * The requested font size. A font may have a fractional font size (ie. 8.5
    * point). The font size may be influenced by the output target.
-   * This font size is given in micro-point.
+   * This font size is given in point.
    *
    * @return the font size.
    */
-  public long getFontSize()
+  public double getFontSize()
   {
     return fontSize;
   }
-
-  public double getFontSizeInPt()
-  {
-    return StrictGeomUtility.toExternalValue(fontSize);
-  }
-
-
 
   /**
    * The font size is resolved once during the resolve cycle. It is more than
@@ -88,7 +79,7 @@ public class FontSpecification
    *
    * @param fontSize the font size as used during the rendering.
    */
-  public void setFontSize(final long fontSize)
+  public void setFontSize(final double fontSize)
   {
     this.fontSize = fontSize;
   }

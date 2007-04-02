@@ -165,7 +165,7 @@ public abstract class AbstractStyleResolver implements StyleResolver
       int rc = initialStyleSheet.getRuleCount();
       for (int i = 0; i < rc; i++)
       {
-        StyleRule rule = initialStyleSheet.getRule(i);
+        final StyleRule rule = initialStyleSheet.getRule(i);
         if (rule instanceof CSSDeclarationRule)
         {
           final CSSDeclarationRule drule = (CSSDeclarationRule) rule;
@@ -175,8 +175,7 @@ public abstract class AbstractStyleResolver implements StyleResolver
     }
     catch (Exception e)
     {
-      // Not yet handled ...
-      // e.printStackTrace();
+      throw new IllegalStateException("Initial-StyleSheet could not be parsed. This is a FATAL error.");
     }
 
     final DocumentContext documentContext = layoutProcess.getDocumentContext();

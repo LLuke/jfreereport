@@ -31,7 +31,6 @@ package org.jfree.layouting.layouter.style.resolver.computed.fonts;
 
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.LibLayoutBoot;
-import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.input.style.StyleKey;
 import org.jfree.layouting.input.style.keys.font.FontSizeConstant;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
@@ -56,7 +55,7 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
           "org.jfree.layouting.defaults.FontSizeFactor.";
   private double fontSize;
   private CSSNumericValue[] predefinedSizes;
-  private long[] predefinedScalingFactors;
+  private double[] predefinedScalingFactors;
 
   public MinMaxFontSizeResolveHandler()
   {
@@ -70,7 +69,7 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
     predefinedSizes[5] = computePredefinedSize(FontSizeConstant.X_LARGE);
     predefinedSizes[6] = computePredefinedSize(FontSizeConstant.XX_LARGE);
 
-    predefinedScalingFactors = new long[7];
+    predefinedScalingFactors = new double[7];
     predefinedScalingFactors[0] = computePredefinedScalingFactor(FontSizeConstant.XX_SMALL);
     predefinedScalingFactors[1] = computePredefinedScalingFactor(FontSizeConstant.X_SMALL);
     predefinedScalingFactors[2] = computePredefinedScalingFactor(FontSizeConstant.SMALL);
@@ -95,10 +94,10 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
     return CSSNumericValue.createValue(CSSNumericType.PT, fontSize * scaling / 100d);
   }
 
-  private long computePredefinedScalingFactor(CSSConstant c)
+  private double computePredefinedScalingFactor(CSSConstant c)
   {
-    final String key = MinMaxFontSizeResolveHandler.SIZE_FACTOR_PREFIX + c.getCSSText();
-    return StrictGeomUtility.toInternalValue(parseDouble(key, 100));
+    String key = SIZE_FACTOR_PREFIX + c.getCSSText();
+    return parseDouble(key, 100);
   }
 
   private double parseDouble(String configKey, double defaultValue)
@@ -132,6 +131,12 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
     };
   }
 
+  /**
+   * Resolves a single property.
+   *
+   * @param currentNode
+   * @param style
+   */
   public void resolve(LayoutProcess process,
                          LayoutElement currentNode,
                          StyleKey key)
@@ -144,19 +149,17 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
       return ;
     }
     CSSConstant constant = (CSSConstant) value;
+    final double parentFontSize =
+            currentNode.getLayoutContext().getFontSpecification().getFontSize();
     if (RelativeFontSize.LARGER.equals(value))
     {
-      final long parentFontSize =
-              currentNode.getLayoutContext().getFontSpecification().getFontSize();
-      final long scaleFactor = getScaleLargerFactor(parentFontSize);
-      layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PERCENTAGE, scaleFactor));
+      final double scaleFactor = getScaleLargerFactor(parentFontSize);
+      layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, scaleFactor));
     }
     else if (RelativeFontSize.SMALLER.equals(value))
     {
-      final long parentFontSize =
-              currentNode.getLayoutContext().getFontSpecification().getFontSize();
-      final long scaleFactor = getScaleSmallerFactor(parentFontSize);
-      layoutContext.setValue(key, CSSNumericValue.createInternalValue(CSSNumericType.PERCENTAGE, scaleFactor));
+      final double scaleFactor = getScaleSmallerFactor(parentFontSize);
+      layoutContext.setValue(key, CSSNumericValue.createValue(CSSNumericType.PERCENTAGE, scaleFactor));
     }
 
     final CSSValue resolvedValue = lookupValue(constant);
@@ -177,7 +180,7 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
     }
   }
 
-  public long getScaleLargerFactor(long parentSize)
+  public double getScaleLargerFactor(double parentSize)
   {
     for (int i = 0; i < predefinedSizes.length; i++)
     {
@@ -190,7 +193,7 @@ public class MinMaxFontSizeResolveHandler extends ConstantsResolveHandler
     return predefinedScalingFactors[6];
   }
 
-  public long getScaleSmallerFactor(long parentSize)
+  public double getScaleSmallerFactor(double parentSize)
   {
     for (int i = predefinedSizes.length; i >= 0; i--)
     {

@@ -377,7 +377,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
 
     final FontSpecification fs = layoutContext.getFontSpecification();
-    final double fontSize = fs.getFontSizeInPt();
+    final double fontSize = fs.getFontSize();
     builder.append(FontStyleKeys.FONT_SIZE, toPointString(fontSize), "pt");
     builder.append(FontStyleKeys.FONT_FAMILY, fs.getFontFamily());
     builder.append(FontStyleKeys.FONT_WEIGHT,
