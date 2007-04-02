@@ -36,6 +36,7 @@ import javax.swing.JComponent;
 
 import org.jfree.report.demo.util.AbstractXmlDemoHandler;
 import org.jfree.report.demo.util.ReportDefinitionException;
+import org.jfree.report.demo.JFreeReportDemoBoot;
 import org.jfree.report.flow.DefaultReportJob;
 import org.jfree.report.flow.ReportJob;
 import org.jfree.report.JFreeReport;
@@ -116,5 +117,14 @@ public class WorldDemoHandler extends AbstractXmlDemoHandler
   public URL getReportDefinitionSource()
   {
     return ObjectUtilities.getResourceRelative("world.xml", WorldDemoHandler.class);
+  }
+
+  public static void main(String[] args)
+      throws ReportDefinitionException
+  {
+    JFreeReportDemoBoot.getInstance().start();
+    final WorldDemoHandler demoHandler = new WorldDemoHandler();
+    final ReportJob report = demoHandler.createReport();
+    
   }
 }
