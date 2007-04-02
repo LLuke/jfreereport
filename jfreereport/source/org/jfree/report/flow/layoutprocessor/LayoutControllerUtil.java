@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LayoutControllerUtil.java,v 1.10 2007/04/01 18:49:26 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -156,16 +156,13 @@ public class LayoutControllerUtil
 
 
   /**
-   * Checks, whether the current group should continue. If there is no group, we
-   * assume that we should continue. (This emulates the control-break-algorithm's
-   * default behaviour if testing an empty set of arguments.)
+   * Checks, whether the current group should continue. If there is no group, we assume that we should continue. (This
+   * emulates the control-break-algorithm's default behaviour if testing an empty set of arguments.)
    *
    * @param fc   the current flow controller holding the data
    * @param node the current node.
-   * @return true, if the group is finished and we should stop reiterating it,
-   *         false if the group is not finished and we can start iterating it
-   *         again.
-   *
+   * @return true, if the group is finished and we should stop reiterating it, false if the group is not finished and we
+   *         can start iterating it again.
    * @throws org.jfree.report.DataSourceException
    *
    */
@@ -476,23 +473,19 @@ public class LayoutControllerUtil
       DataSourceException
   {
     final FlowController fc = flowController.createPrecomputeInstance();
-    final PrecomputedValueRegistry pcvr =
-        fc.getPrecomputedValueRegistry();
+    final PrecomputedValueRegistry pcvr = fc.getPrecomputedValueRegistry();
 
     pcvr.startElementPrecomputation(nodeKey);
+    final PrecomputeNode startNode = pcvr.currentNode();
+    final LayoutController rootLc = layoutController.createPrecomputeInstance(fc);
 
-    final LayoutController rootLc =
-        layoutController.createPrecomputeInstance(fc);
-
-    final ReportTarget target =
-        new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
+    final ReportTarget target = new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
 
     LayoutController lc = rootLc;
     while (lc.isAdvanceable())
     {
       lc = lc.advance(target);
-      while (layoutController.isAdvanceable() == false &&
-             layoutController.getParent() != null)
+      while (lc.isAdvanceable() == false && lc.getParent() != null)
       {
         final LayoutController parent = lc.getParent();
         lc = parent.join(lc.getFlowController());
@@ -501,8 +494,7 @@ public class LayoutControllerUtil
     target.commit();
 
     final PrecomputeNode precomputeNode = pcvr.currentNode();
-    final Object functionResult = precomputeNode.getFunctionResult(
-        expressionPosition);
+    final Object functionResult = precomputeNode.getFunctionResult(expressionPosition);
     pcvr.finishElementPrecomputation(nodeKey);
     return functionResult;
   }
@@ -510,19 +502,17 @@ public class LayoutControllerUtil
 
   public static LayoutController skipInvisibleElement
       (final LayoutController layoutController)
-      throws ReportProcessingException, ReportDataFactoryException,
-      DataSourceException
+      throws ReportProcessingException, ReportDataFactoryException, DataSourceException
   {
     final FlowController fc = layoutController.getFlowController();
-    final ReportTarget target =
-        new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
+    final ReportTarget target = new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
 
     LayoutController lc = layoutController;
     while (lc.isAdvanceable())
     {
       lc = lc.advance(target);
       while (layoutController.isAdvanceable() == false &&
-             layoutController.getParent() != null)
+          layoutController.getParent() != null)
       {
         final LayoutController parent = lc.getParent();
         lc = parent.join(lc.getFlowController());

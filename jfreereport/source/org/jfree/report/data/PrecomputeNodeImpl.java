@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrecomputeNodeImpl.java,v 1.5 2007/04/01 18:49:24 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -34,11 +34,11 @@ package org.jfree.report.data;
 import java.util.ArrayList;
 
 /**
- * A precompute-node represents a resolved element or section of the report
- * definition. Unlike the structural nodes, these nodes can always have childs.
+ * A precompute-node represents a resolved element or section of the report definition. Unlike the structural nodes,
+ * these nodes can always have childs.
  * <p/>
- * The resulting tree gets pruned as early as possible - nodes which do not
- * contain precomputed or preserved expressions will not be stored.
+ * The resulting tree gets pruned as early as possible - nodes which do not contain precomputed or preserved expressions
+ * will not be stored.
  *
  * @author Thomas Morgner
  */
@@ -55,7 +55,10 @@ public class PrecomputeNodeImpl implements PrecomputeNode
 
   public PrecomputeNodeImpl(PrecomputeNodeKey key)
   {
-    if (key == null) throw new NullPointerException();
+    if (key == null)
+    {
+      throw new NullPointerException();
+    }
     this.key = key;
   }
 
@@ -104,7 +107,7 @@ public class PrecomputeNodeImpl implements PrecomputeNode
     this.lastChild = lastChild;
   }
 
-  public void add (PrecomputeNodeImpl node)
+  public void add(PrecomputeNodeImpl node)
   {
     if (firstChild == null)
     {
@@ -157,7 +160,7 @@ public class PrecomputeNodeImpl implements PrecomputeNode
     return functionResults.get(idx);
   }
 
-  public void prune ()
+  public void prune()
   {
     if (parent == null)
     {

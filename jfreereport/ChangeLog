@@ -3,7 +3,7 @@
 ---------------
 A list of changes in recent versions:
 
-0.9.0-04: (01-Apr-2007) 
+0.9.0-04: (02-Apr-2007) 
         * Simplified the layout controller API. It should be easier now to
           derive own layout controller without having to reimplement everything
           from scratch.
