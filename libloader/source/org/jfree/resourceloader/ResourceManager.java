@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ResourceManager.java,v 1.17 2007/04/01 13:43:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -408,10 +408,11 @@ public class ResourceManager
 
   private boolean isSupportedTarget(final Class[] target, final ResourceFactory fact)
   {
+    final Class factoryType = fact.getFactoryType();
     for (int j = 0; j < target.length; j++)
     {
       final Class aClass = target[j];
-      if (fact.getFactoryType().isAssignableFrom(aClass))
+      if (aClass != null && aClass.isAssignableFrom(factoryType))
       {
         return true;
       }
