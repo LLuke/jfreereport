@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: RenderableText.java,v 1.17 2007/04/02 11:41:18 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -31,8 +31,8 @@ package org.jfree.layouting.renderer.model;
 
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.Glyph;
-import org.jfree.layouting.renderer.text.Spacing;
-import org.jfree.layouting.renderer.text.breaks.BreakOpportunityProducer;
+import org.jfree.fonts.text.Spacing;
+import org.jfree.fonts.text.breaks.BreakOpportunityProducer;
 
 /**
  * The renderable text is a text chunk, enriched with layouting information,

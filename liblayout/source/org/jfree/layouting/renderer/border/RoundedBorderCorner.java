@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: RoundedBorderCorner.java,v 1.4 2007/04/02 11:41:18 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -55,3 +55,4 @@ public class RoundedBorderCorner implements BorderCorner
     return height;
   }
 }
+

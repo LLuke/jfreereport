@@ -3,7 +3,11 @@
 ---------------
 A list of changes in recent versions:
 
-0.2.4: (07-Mar-2007)
+0.2.5: (02-Apr-2007)
+        * Undone the CSSNumberValue patch after it caused more trouble than good
+           things. The drawbacks outweighted the positive things.
+
+0.2.4: (01-Apr-2007)
         * [BUG] A Namespace definition without a valid default stylesheet generated
           a NullPointerException
 

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: RenderBox.java,v 1.32 2007/04/02 11:41:18 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -1047,15 +1047,6 @@ public abstract class RenderBox extends RenderNode
     return boxLayoutProperties;
   }
 
-  protected RenderBox performSimpleSplit(int axis)
-  {
-    final RenderBox otherBox = (RenderBox) derive(false);
-    final BoxDefinition[] boxDefinitions = boxDefinition.split(axis);
-    boxDefinition = boxDefinitions[0];
-    otherBox.boxDefinition = boxDefinitions[1];
-    return otherBox;
-  }
-
   public long getContentAreaX1()
   {
     return contentAreaX1;
@@ -1088,9 +1079,13 @@ public abstract class RenderBox extends RenderNode
    * @param axis
    * @return
    */
-  public RenderBox split(int axis)
+  public RenderBox split(final int axis)
   {
-    return performSimpleSplit(axis);
+    final RenderBox otherBox = (RenderBox) derive(false);
+    final BoxDefinition[] boxDefinitions = boxDefinition.split(axis);
+    boxDefinition = boxDefinitions[0];
+    otherBox.boxDefinition = boxDefinitions[1];
+    return otherBox;
   }
 
   public long getEffectiveMarginTop()
