@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultRenderableTextFactory.java,v 1.16 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,6 +32,29 @@ package org.jfree.layouting.renderer.text;
 import java.util.ArrayList;
 
 import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.fonts.text.whitespace.WhiteSpaceFilter;
+import org.jfree.fonts.text.whitespace.CollapseWhiteSpaceFilter;
+import org.jfree.fonts.text.whitespace.DiscardWhiteSpaceFilter;
+import org.jfree.fonts.text.whitespace.PreserveWhiteSpaceFilter;
+import org.jfree.fonts.text.whitespace.PreserveBreaksWhiteSpaceFilter;
+import org.jfree.fonts.text.breaks.BreakOpportunityProducer;
+import org.jfree.fonts.text.breaks.LineBreakProducer;
+import org.jfree.fonts.text.breaks.WordBreakProducer;
+import org.jfree.fonts.text.classifier.GlyphClassificationProducer;
+import org.jfree.fonts.text.classifier.LinebreakClassificationProducer;
+import org.jfree.fonts.text.classifier.WhitespaceClassificationProducer;
+import org.jfree.fonts.text.font.GlyphMetrics;
+import org.jfree.fonts.text.font.FontSizeProducer;
+import org.jfree.fonts.text.font.KerningProducer;
+import org.jfree.fonts.text.font.VariableFontSizeProducer;
+import org.jfree.fonts.text.font.NoKerningProducer;
+import org.jfree.fonts.text.ClassificationProducer;
+import org.jfree.fonts.text.LanguageClassifier;
+import org.jfree.fonts.text.DefaultLanguageClassifier;
+import org.jfree.fonts.text.GraphemeClusterProducer;
+import org.jfree.fonts.text.SpacingProducer;
+import org.jfree.fonts.text.Spacing;
+import org.jfree.fonts.text.StaticSpacingProducer;
 import org.jfree.layouting.LayoutProcess;
 import org.jfree.layouting.State;
 import org.jfree.layouting.StateException;
@@ -47,22 +70,6 @@ import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
-import org.jfree.layouting.renderer.text.breaks.BreakOpportunityProducer;
-import org.jfree.layouting.renderer.text.breaks.LineBreakProducer;
-import org.jfree.layouting.renderer.text.breaks.WordBreakProducer;
-import org.jfree.layouting.renderer.text.classifier.GlyphClassificationProducer;
-import org.jfree.layouting.renderer.text.classifier.LinebreakClassificationProducer;
-import org.jfree.layouting.renderer.text.classifier.WhitespaceClassificationProducer;
-import org.jfree.layouting.renderer.text.font.FontSizeProducer;
-import org.jfree.layouting.renderer.text.font.GlyphMetrics;
-import org.jfree.layouting.renderer.text.font.KerningProducer;
-import org.jfree.layouting.renderer.text.font.NoKerningProducer;
-import org.jfree.layouting.renderer.text.font.VariableFontSizeProducer;
-import org.jfree.layouting.renderer.text.whitespace.CollapseWhiteSpaceFilter;
-import org.jfree.layouting.renderer.text.whitespace.DiscardWhiteSpaceFilter;
-import org.jfree.layouting.renderer.text.whitespace.PreserveBreaksWhiteSpaceFilter;
-import org.jfree.layouting.renderer.text.whitespace.PreserveWhiteSpaceFilter;
-import org.jfree.layouting.renderer.text.whitespace.WhiteSpaceFilter;
 import org.jfree.util.ObjectUtilities;
 
 /**
@@ -75,17 +82,17 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 {
   protected static class DefaultRenderableTextFactoryState implements State
   {
-    private State clusterProducer;
+    private GraphemeClusterProducer clusterProducer;
     private boolean startText;
     private boolean produced;
-    private State fontSizeProducer;
-    private State kerningProducer;
-    private State spacingProducer;
-    private State breakOpportunityProducer;
-    private State whitespaceFilter;
+    private FontSizeProducer fontSizeProducer;
+    private KerningProducer kerningProducer;
+    private SpacingProducer spacingProducer;
+    private BreakOpportunityProducer breakOpportunityProducer;
+    private WhiteSpaceFilter whitespaceFilter;
     private CSSValue whitespaceCollapseValue;
-    private State classificationProducer;
-    private State languageClassifier;
+    private ClassificationProducer classificationProducer;
+    private LanguageClassifier languageClassifier;
 
     private ArrayList words;
     private ArrayList glyphList;
@@ -95,24 +102,31 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     public DefaultRenderableTextFactoryState(DefaultRenderableTextFactory factory)
         throws StateException
     {
-      this.lastLanguage = factory.lastLanguage;
-      this.leadingMargin = factory.leadingMargin;
-      this.glyphList = (ArrayList) factory.glyphList.clone();
-      this.words = (ArrayList) factory.words.clone();
-      this.languageClassifier = factory.languageClassifier.saveState();
-      this.clusterProducer = factory.clusterProducer.saveState();
-      this.produced = factory.produced;
-      this.startText = factory.startText;
-
-      if (factory.layoutContext != null)
+      try
       {
-        this.classificationProducer = factory.classificationProducer.saveState();
-        this.whitespaceCollapseValue = factory.whitespaceCollapseValue;
-        this.whitespaceFilter = factory.whitespaceFilter.saveState();
-        this.breakOpportunityProducer = factory.breakOpportunityProducer.saveState();
-        this.spacingProducer = factory.spacingProducer.saveState();
-        this.kerningProducer = factory.kerningProducer.saveState();
-        this.fontSizeProducer = factory.fontSizeProducer.saveState();
+        this.lastLanguage = factory.lastLanguage;
+        this.leadingMargin = factory.leadingMargin;
+        this.glyphList = (ArrayList) factory.glyphList.clone();
+        this.words = (ArrayList) factory.words.clone();
+        this.languageClassifier = (LanguageClassifier) factory.languageClassifier.clone();
+        this.clusterProducer = (GraphemeClusterProducer) factory.clusterProducer.clone();
+        this.produced = factory.produced;
+        this.startText = factory.startText;
+
+        if (factory.layoutContext != null)
+        {
+          this.classificationProducer = (ClassificationProducer) factory.classificationProducer.clone();
+          this.whitespaceCollapseValue = factory.whitespaceCollapseValue;
+          this.whitespaceFilter = (WhiteSpaceFilter) factory.whitespaceFilter.clone();
+          this.breakOpportunityProducer = (BreakOpportunityProducer) factory.breakOpportunityProducer.clone();
+          this.spacingProducer = (SpacingProducer) factory.spacingProducer.clone();
+          this.kerningProducer = (KerningProducer) factory.kerningProducer.clone();
+          this.fontSizeProducer = (FontSizeProducer) factory.fontSizeProducer.clone();
+        }
+      }
+      catch(CloneNotSupportedException cne)
+      {
+        throw new StateException("Failed to save state", cne);
       }
     }
 
@@ -130,39 +144,38 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     public StatefullComponent restore(LayoutProcess layoutProcess)
         throws StateException
     {
-      DefaultRenderableTextFactory factory =
-          new DefaultRenderableTextFactory(layoutProcess, false);
-      factory.dims = null;
-      factory.lastLanguage = this.lastLanguage;
-      factory.leadingMargin = this.leadingMargin;
-      factory.glyphList = (ArrayList) this.glyphList.clone();
-      factory.words = (ArrayList) this.words.clone();
-      factory.languageClassifier = (LanguageClassifier)
-          this.languageClassifier.restore(layoutProcess);
-      factory.clusterProducer = (GraphemeClusterProducer)
-          this.clusterProducer.restore(layoutProcess);
-      factory.produced = this.produced;
-      factory.startText = this.startText;
-
-      if (factory.classificationProducer != null)
+      try
       {
-        factory.classificationProducer = (GlyphClassificationProducer)
-            this.classificationProducer.restore(layoutProcess);
-        factory.whitespaceCollapseValue = this.whitespaceCollapseValue;
-        factory.whitespaceFilter = (WhiteSpaceFilter)
-            this.whitespaceFilter.restore(layoutProcess);
+        DefaultRenderableTextFactory factory =
+            new DefaultRenderableTextFactory(layoutProcess, false);
+        factory.dims = null;
+        factory.lastLanguage = this.lastLanguage;
+        factory.leadingMargin = this.leadingMargin;
+        factory.glyphList = (ArrayList) this.glyphList.clone();
+        factory.words = (ArrayList) this.words.clone();
+        factory.languageClassifier = (LanguageClassifier) this.languageClassifier.clone();
+        factory.clusterProducer = (GraphemeClusterProducer) this.clusterProducer.clone();
+        factory.produced = this.produced;
+        factory.startText = this.startText;
 
-        factory.breakOpportunityProducer = (BreakOpportunityProducer)
-            this.breakOpportunityProducer.restore(layoutProcess);
-        factory.spacingProducer = (SpacingProducer)
-            this.spacingProducer.restore(layoutProcess);
-        factory.kerningProducer = (KerningProducer)
-            this.kerningProducer.restore(layoutProcess);
-        factory.fontSizeProducer = (FontSizeProducer)
-            this.fontSizeProducer.restore(layoutProcess);
+        if (factory.classificationProducer != null)
+        {
+          factory.classificationProducer = (GlyphClassificationProducer) this.classificationProducer.clone();
+          factory.whitespaceCollapseValue = this.whitespaceCollapseValue;
+          factory.whitespaceFilter = (WhiteSpaceFilter) this.whitespaceFilter.clone();
+
+          factory.breakOpportunityProducer = (BreakOpportunityProducer) this.breakOpportunityProducer.clone();
+          factory.spacingProducer = (SpacingProducer) this.spacingProducer.clone();
+          factory.kerningProducer = (KerningProducer) this.kerningProducer.clone();
+          factory.fontSizeProducer = (FontSizeProducer) this.fontSizeProducer.clone();
+        }
+
+        return factory;
       }
-
-      return factory;
+      catch(CloneNotSupportedException cne)
+      {
+        throw new StateException("Restoring the state failed", cne);
+      }
     }
   }
 
@@ -367,7 +380,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
     }
 
     int glyphClassification = classificationProducer.getClassification(codePoint);
-    int kerning = kerningProducer.getKerning(codePoint);
+    long kerning = kerningProducer.getKerning(codePoint);
     int breakweight = breakOpportunityProducer.createBreakOpportunity(codePoint);
     Spacing spacing = spacingProducer.createSpacing(codePoint);
     dims = fontSizeProducer.getCharacterSize(codePoint, dims);
@@ -410,7 +423,7 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
     Glyph glyph = new Glyph(codePoint, breakweight,
         glyphClassification, spacing, width, height,
-        dims.getBaselinePosition(), kerning, extraChars);
+        dims.getBaselinePosition(), (int) kerning, extraChars);
     glyphList.add(glyph);
     // Log.debug ("Adding Glyph");
 

@@ -23,11 +23,13 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Glyph.java,v 1.7 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.text;
+
+import org.jfree.fonts.text.Spacing;
 
 /**
  * A glyph represents a printable textual item. It can span more than one
