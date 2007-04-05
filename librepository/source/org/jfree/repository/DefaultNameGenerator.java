@@ -47,7 +47,8 @@ public class DefaultNameGenerator implements NameGenerator
     this(location, defaultNameHint, null);
   }
 
-  public DefaultNameGenerator(final ContentLocation location, final String defaultNameHint,
+  public DefaultNameGenerator(final ContentLocation location,
+                              final String defaultNameHint,
                               final String defaultSuffix)
   {
     if (location == null)

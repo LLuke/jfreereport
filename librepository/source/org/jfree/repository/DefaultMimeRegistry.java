@@ -30,6 +30,8 @@
 
 package org.jfree.repository;
 
+import org.jfree.util.StringUtils;
+
 /**
  * Creation-Date: 13.11.2006, 12:24:19
  *
@@ -43,6 +45,47 @@ public class DefaultMimeRegistry implements MimeRegistry
 
   public String getMimeType(ContentItem item)
   {
+    final String name = item.getName();
+    if (name == null)
+    {
+      return "application/octet-stream";
+    }
+    if (StringUtils.endsWithIgnoreCase(name, ".png"))
+    {
+      return "image/png";
+    }
+    if (StringUtils.endsWithIgnoreCase(name, ".png"))
+    {
+      return "image/png";
+    }
+    if (StringUtils.endsWithIgnoreCase(name, ".jpg"))
+    {
+      return "image/jpeg";
+    }
+    if (StringUtils.endsWithIgnoreCase(name, ".jpeg"))
+    {
+      return "image/jpeg";
+    }
+    if (StringUtils.endsWithIgnoreCase(name, ".gif"))
+    {
+      return "image/gif";
+    }
+    if (StringUtils.endsWithIgnoreCase(name, ".pdf"))
+    {
+      return "application/pdf";
+    }
+    if (StringUtils.endsWithIgnoreCase(name, ".txt"))
+    {
+      return "text/plain";
+    }
+    if (StringUtils.endsWithIgnoreCase(name, ".html"))
+    {
+      return "text/html";
+    }
+    if (StringUtils.endsWithIgnoreCase(name, ".htm"))
+    {
+      return "text/html";
+    }
     return "application/octet-stream";
   }
 
