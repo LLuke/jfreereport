@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RenderableText.java,v 1.17 2007/04/02 11:41:18 taqua Exp $
+ * $Id: RenderableText.java,v 1.18 2007/04/04 10:51:07 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -128,8 +128,8 @@ public class RenderableText extends RenderNode
     final int lastPos = Math.min(glyphs.length, offset + length);
     for (int i = offset; i < lastPos; i++)
     {
-      Glyph glyph = glyphs[i];
-      Spacing spacing = glyph.getSpacing();
+      final Glyph glyph = glyphs[i];
+      final Spacing spacing = glyph.getSpacing();
     //      heightAbove = Math.max(glyph.getBaseLine(), heightAbove);
     //      heightBelow = Math.max(glyph.getHeight() - glyph.getBaseLine(), heightBelow);
       final int kerning = glyph.getKerning();
@@ -199,43 +199,43 @@ public class RenderableText extends RenderNode
   {
     return length;
   }
-
-  public BreakAfterEnum getBreakAfterAllowed(final int axis)
-  {
-    if (axis == getMinorAxis())
-    {
-      return BreakAfterEnum.BREAK_ALLOW;
-    }
-
-    if (isForceLinebreak())
-    {
-      return BreakAfterEnum.BREAK_ALLOW;
-    }
-
-    if (glyphs.length > 0)
-    {
-      final int breakWeight = glyphs[glyphs.length - 1].getBreakWeight();
-      if (breakWeight != BreakOpportunityProducer.BREAK_NEVER)
-      {
-        return BreakAfterEnum.BREAK_ALLOW;
-      }
-    }
-    return BreakAfterEnum.BREAK_DISALLOW;
-  }
+//
+//  public BreakAfterEnum getBreakAfterAllowed(final int axis)
+//  {
+//    if (axis == getMinorAxis())
+//    {
+//      return BreakAfterEnum.BREAK_ALLOW;
+//    }
+//
+//    if (isForceLinebreak())
+//    {
+//      return BreakAfterEnum.BREAK_ALLOW;
+//    }
+//
+//    if (glyphs.length > 0)
+//    {
+//      final int breakWeight = glyphs[glyphs.length - 1].getBreakWeight();
+//      if (breakWeight != BreakOpportunityProducer.BREAK_NEVER)
+//      {
+//        return BreakAfterEnum.BREAK_ALLOW;
+//      }
+//    }
+//    return BreakAfterEnum.BREAK_DISALLOW;
+//  }
 
   public String getRawText()
   {
-    Glyph[] gs = getGlyphs();
-    int length = getLength();
-    StringBuffer b = new StringBuffer();
+    final Glyph[] gs = getGlyphs();
+    final int length = getLength();
+    final StringBuffer b = new StringBuffer();
     for (int i = getOffset(); i < length; i++)
     {
-      Glyph g = gs[i];
+      final Glyph g = gs[i];
       b.append((char) (0xffff & g.getCodepoint()));
-      int[] extraCPs = g.getExtraChars();
+      final int[] extraCPs = g.getExtraChars();
       for (int j = 0; j < extraCPs.length; j++)
       {
-        int extraCP = extraCPs[j];
+        final int extraCP = extraCPs[j];
         b.append(extraCP);
       }
     }
@@ -282,50 +282,50 @@ public class RenderableText extends RenderNode
   {
     return preferredWidth;
   }
-
-  /**
-   * Splits the text along its major axis (horizontal for roman text) at the
-   * given position (relative to the element's origin!)
-   *
-   * Split sizes are relative to the text's minimum size.
-   *
-   * @param position the split position.
-   * @return the split elements.
-   */
-  public RenderableText[] split (long position)
-  {
-//    final Glyph[] glyphs,
-//    final int offset,
-//    final int length,
-
-    int breakPos = offset;
-    long size = 0;
-    final int maxPos = (offset + length);
-    for (int i = offset; i < maxPos; i++)
-    {
-      Glyph glyph = glyphs[i];
-      size += glyph.getWidth();
-      size += glyph.getSpacing().getMinimum();
-
-      if (size >= position)
-      {
-        breakPos = i;
-        break;
-      }
-    }
-
-    final RenderableText[] result = new RenderableText[2];
-    if (breakPos == offset || breakPos == maxPos)
-    {
-      result[0] = (RenderableText) derive(false);
-      result[1] = null;
-      return result;
-    }
-
-    result[0] = new RenderableText(baselineInfo, glyphs,
-            offset, breakPos - offset, script, false);
-    result[1] = new RenderableText(baselineInfo, glyphs,
-            breakPos, length - (breakPos - offset), script, forceLinebreak);
-    return result;
-  }
+//
+//  /**
+//   * Splits the text along its major axis (horizontal for roman text) at the
+//   * given position (relative to the element's origin!)
+//   *
+//   * Split sizes are relative to the text's minimum size.
+//   *
+//   * @param position the split position.
+//   * @return the split elements.
+//   */
+//  public RenderableText[] split (long position)
+//  {
+////    final Glyph[] glyphs,
+////    final int offset,
+////    final int length,
+//
+//    int breakPos = offset;
+//    long size = 0;
+//    final int maxPos = (offset + length);
+//    for (int i = offset; i < maxPos; i++)
+//    {
+//      Glyph glyph = glyphs[i];
+//      size += glyph.getWidth();
+//      size += glyph.getSpacing().getMinimum();
+//
+//      if (size >= position)
+//      {
+//        breakPos = i;
+//        break;
+//      }
+//    }
+//
+//    final RenderableText[] result = new RenderableText[2];
+//    if (breakPos == offset || breakPos == maxPos)
+//    {
+//      result[0] = (RenderableText) derive(false);
+//      result[1] = null;
+//      return result;
+//    }
+//
+//    result[0] = new RenderableText(baselineInfo, glyphs,
+//            offset, breakPos - offset, script, false);
+//    result[1] = new RenderableText(baselineInfo, glyphs,
+//            breakPos, length - (breakPos - offset), script, forceLinebreak);
+//    return result;
+//  }
 }

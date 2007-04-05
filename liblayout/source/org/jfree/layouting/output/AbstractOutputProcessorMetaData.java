@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.15 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -75,7 +75,7 @@ public abstract class AbstractOutputProcessorMetaData
     this.features = new HashSet();
     this.numericFeatures = new HashMap();
 
-    ExtendedConfiguration extendedConfig =
+    final ExtendedConfiguration extendedConfig =
             LibLayoutBoot.getInstance().getExtendedConfig();
     defaultFontSize =
             extendedConfig.getIntProperty(

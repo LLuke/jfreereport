@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ComputeStaticPropertiesStep.java,v 1.6 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -246,8 +246,8 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
       if (marginLeft != RenderLength.AUTO &&
           marginRight == RenderLength.AUTO)
       {
-        long mlValue = marginLeft.resolve(rbcw);
-        long pwValue = preferredWidth.resolve(rbcw);
+        final long mlValue = marginLeft.resolve(rbcw);
+        final long pwValue = preferredWidth.resolve(rbcw);
 
         blp.setMarginLeft(mlValue);
         box.setComputedLayoutProperties
@@ -258,10 +258,10 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     }
     // If width and one or both margins are 'auto', the margins that
     // are 'auto' are set to 0 and the equation is solved for width.
-    if (preferredWidth == RenderLength.AUTO)
+    else // if (preferredWidth == RenderLength.AUTO)
     {
-      long mlValue = marginLeft.resolve(rbcw);
-      long mrValue = marginRight.resolve(rbcw);
+      final long mlValue = marginLeft.resolve(rbcw);
+      final long mrValue = marginRight.resolve(rbcw);
 
       blp.setMarginLeft(mlValue);
       blp.setMarginRight(mrValue);
@@ -286,7 +286,7 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
 
     // If both margin-left and margin-right are 'auto', the equation is
     // solved under the extra constraint that margin-left = margin-right.
-    long pwValue = preferredWidth.resolve(rbcw);
+    final long pwValue = preferredWidth.resolve(rbcw);
 
     final long margins = rbcw - pwValue;
     final long mlValue = margins / 2;
@@ -342,7 +342,8 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
   }
 
   private void computeBorder(final BoxDefinition boxDefinition,
-                             final StaticBoxLayoutProperties slp, final long bcw)
+                             final StaticBoxLayoutProperties slp,
+                             final long bcw)
   {
     final Border border = boxDefinition.getBorder();
     slp.setBorderTop(resolveBorderEdge(bcw, border.getTop()));
@@ -373,7 +374,7 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     }
   }
 
-  private long resolveBorderEdge (final long bcw, BorderEdge borderEdge)
+  private long resolveBorderEdge (final long bcw, final BorderEdge borderEdge)
   {
     if (BorderStyle.NONE.equals(borderEdge.getBorderStyle()))
     {

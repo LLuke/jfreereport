@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: RenderLength.java,v 1.10 2007/04/02 11:41:18 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -44,8 +44,8 @@ import org.jfree.layouting.util.geom.StrictGeomUtility;
  */
 public class RenderLength
 {
-  public static RenderLength AUTO = new RenderLength(Long.MIN_VALUE, false);
-  public static RenderLength EMPTY = new RenderLength(0, false);
+  public static final RenderLength AUTO = new RenderLength(Long.MIN_VALUE, false);
+  public static final RenderLength EMPTY = new RenderLength(0, false);
 
   private long value;
   private boolean percentage;

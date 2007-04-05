@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontWeightResolveHandler.java,v 1.9 2007/04/02 11:41:14 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -68,9 +68,9 @@ public class FontWeightResolveHandler implements ResolveHandler
    * @param currentNode
    * @param style
    */
-  public void resolve(LayoutProcess process,
-                      LayoutElement currentNode,
-                      StyleKey key)
+  public void resolve(final LayoutProcess process,
+                      final LayoutElement currentNode,
+                      final StyleKey key)
   {
     final LayoutContext layoutContext = currentNode.getLayoutContext();
     final CSSValue value = layoutContext.getValue(key);

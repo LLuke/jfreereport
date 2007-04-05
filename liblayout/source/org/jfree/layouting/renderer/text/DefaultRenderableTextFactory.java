@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultRenderableTextFactory.java,v 1.16 2007/04/02 11:41:20 taqua Exp $
+ * $Id: DefaultRenderableTextFactory.java,v 1.17 2007/04/04 10:33:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -48,6 +48,7 @@ import org.jfree.fonts.text.font.FontSizeProducer;
 import org.jfree.fonts.text.font.KerningProducer;
 import org.jfree.fonts.text.font.VariableFontSizeProducer;
 import org.jfree.fonts.text.font.NoKerningProducer;
+import org.jfree.fonts.text.font.DefaultKerningProducer;
 import org.jfree.fonts.text.ClassificationProducer;
 import org.jfree.fonts.text.LanguageClassifier;
 import org.jfree.fonts.text.DefaultLanguageClassifier;
@@ -62,9 +63,11 @@ import org.jfree.layouting.StatefullComponent;
 import org.jfree.layouting.input.style.keys.text.TextStyleKeys;
 import org.jfree.layouting.input.style.keys.text.TextWrap;
 import org.jfree.layouting.input.style.keys.text.WhitespaceCollapse;
+import org.jfree.layouting.input.style.keys.text.KerningMode;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
+import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.style.CSSValueResolverUtility;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.model.RenderNode;
@@ -581,11 +584,11 @@ public class DefaultRenderableTextFactory implements RenderableTextFactory
 
   protected KerningProducer createKerningProducer(final LayoutContext layoutContext)
   {
-
-//    final LayoutStyle style = layoutContext.getStyle();
-//    if (KerningMode.NONE.equals(style.getValue(TextStyleKeys.KERNING_MODE)))
-//    {
     return new NoKerningProducer();
+//
+//    if (KerningMode.NONE.equals(layoutContext.getValue(TextStyleKeys.KERNING_MODE)))
+//    {
+//      return new NoKerningProducer();
 //    }
 //
 //    final FontSpecification fontSpecification =

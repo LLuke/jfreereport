@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PhysicalPageBox.java,v 1.17 2007/04/02 11:41:18 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -37,12 +37,9 @@ import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.layouter.context.PageContext;
-import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.renderer.border.RenderLength;
-import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
-import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.util.Log;
 
 /**

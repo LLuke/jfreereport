@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: IterateStructuralProcessStep.java,v 1.7 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -50,7 +50,7 @@ public abstract class IterateStructuralProcessStep
   {
   }
 
-  protected void startProcessing (RenderNode node)
+  protected void startProcessing (final RenderNode node)
   {
     if (node instanceof InlineRenderBox)
     {
@@ -68,7 +68,7 @@ public abstract class IterateStructuralProcessStep
       final NormalFlowRenderBox[] flows = box.getFlows();
       for (int i = 0; i < flows.length; i++)
       {
-        NormalFlowRenderBox flow = flows[i];
+        final NormalFlowRenderBox flow = flows[i];
         startProcessing(flow);
       }
       processBoxChilds(box);
@@ -85,7 +85,7 @@ public abstract class IterateStructuralProcessStep
     }
     else if (node instanceof LogicalPageBox)
     {
-      LogicalPageBox box = (LogicalPageBox) node;
+      final LogicalPageBox box = (LogicalPageBox) node;
       if (startBlockBox(box))
       {
         startProcessing(box.getHeaderArea());
@@ -142,38 +142,38 @@ public abstract class IterateStructuralProcessStep
     }
   }
 
-  protected void startOtherNode (RenderNode node)
+  protected void startOtherNode (final RenderNode node)
   {
   }
 
-  protected void finishOtherNode (RenderNode node)
+  protected void finishOtherNode (final RenderNode node)
   {
   }
 
-  protected boolean startBlockBox (BlockRenderBox box)
-  {
-    return true;
-  }
-
-  protected void finishBlockBox (BlockRenderBox box)
-  {
-  }
-
-  protected boolean startInlineBox (InlineRenderBox box)
+  protected boolean startBlockBox (final BlockRenderBox box)
   {
     return true;
   }
 
-  protected void finishInlineBox (InlineRenderBox box)
+  protected void finishBlockBox (final BlockRenderBox box)
   {
   }
 
-  protected boolean startOtherBox (RenderBox box)
+  protected boolean startInlineBox (final InlineRenderBox box)
   {
     return true;
   }
 
-  protected void finishOtherBox (RenderBox box)
+  protected void finishInlineBox (final InlineRenderBox box)
+  {
+  }
+
+  protected boolean startOtherBox (final RenderBox box)
+  {
+    return true;
+  }
+
+  protected void finishOtherBox (final RenderBox box)
   {
   }
 }

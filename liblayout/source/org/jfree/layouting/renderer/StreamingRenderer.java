@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StreamingRenderer.java,v 1.7 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -52,6 +52,7 @@ import org.jfree.layouting.renderer.process.SimplePaginationStep;
 import org.jfree.layouting.renderer.process.TableRowHeightStep;
 import org.jfree.layouting.renderer.process.TableValidationStep;
 import org.jfree.layouting.renderer.process.ValidateModelStep;
+import org.jfree.layouting.renderer.process.UpdateTokensStep;
 import org.jfree.util.Log;
 
 /**
@@ -76,6 +77,7 @@ public class StreamingRenderer extends AbstractRenderer
     private ComputeBreakabilityStep breakabilityStep;
     private SimplePaginationStep paginationStep;
     private CleanStreamedBoxesStep cleanBoxesStep;
+    private UpdateTokensStep updateTokensStep;
 
     public DefaultFlowRendererState(StreamingRenderer renderer)
         throws StateException
@@ -95,6 +97,7 @@ public class StreamingRenderer extends AbstractRenderer
       this.breakabilityStep = renderer.breakabilityStep;
       this.paginationStep = renderer.paginationStep;
       this.cleanBoxesStep = renderer.cleanBoxesStep;
+      this.updateTokensStep = renderer.updateTokensStep;
     }
 
     /**
@@ -125,6 +128,7 @@ public class StreamingRenderer extends AbstractRenderer
       defaultRenderer.paginationStep = this.paginationStep;
       defaultRenderer.cleanBoxesStep = this.cleanBoxesStep;
       defaultRenderer.breakabilityStep = this.breakabilityStep;
+      defaultRenderer.updateTokensStep = this.updateTokensStep;
       return defaultRenderer;
     }
   }
@@ -142,8 +146,10 @@ public class StreamingRenderer extends AbstractRenderer
   private ComputeBreakabilityStep breakabilityStep;
   private SimplePaginationStep paginationStep;
   private CleanStreamedBoxesStep cleanBoxesStep;
+  private UpdateTokensStep updateTokensStep;
 
-  protected StreamingRenderer(final LayoutProcess layoutProcess, boolean init)
+  protected StreamingRenderer(final LayoutProcess layoutProcess,
+                              final boolean init)
   {
     super(layoutProcess, init);
     if (init)
@@ -161,6 +167,7 @@ public class StreamingRenderer extends AbstractRenderer
       this.breakabilityStep = new ComputeBreakabilityStep();
       this.paginationStep = new SimplePaginationStep();
       this.cleanBoxesStep = new CleanStreamedBoxesStep();
+      this.updateTokensStep = new UpdateTokensStep();
     }
   }
 
@@ -195,6 +202,8 @@ public class StreamingRenderer extends AbstractRenderer
 
     tableValidationStep.validate(logicalPageBox);
 
+    updateTokensStep.compute
+        (logicalPageBox, getLayoutProcess(), getPageContext());
     staticPropertiesStep.compute(logicalPageBox);
     marginsStep.compute(logicalPageBox);
     paragraphLinebreakStep.compute(logicalPageBox);

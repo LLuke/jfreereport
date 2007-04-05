@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ParagraphLineBreakStep.java,v 1.8 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -39,7 +39,6 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.util.FastStack;
-import org.jfree.util.Log;
 
 /**
  * This static computation step performs manual linebreaks on all paragraphs.

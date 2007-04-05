@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontSpecification.java,v 1.6 2007/04/02 11:41:13 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.layouting.layouter.context;
 import org.jfree.layouting.input.style.keys.font.FontStyle;
 import org.jfree.layouting.input.style.keys.font.FontStyleKeys;
 import org.jfree.layouting.input.style.keys.font.FontVariant;
+import org.jfree.layouting.input.style.keys.font.FontSmooth;
 import org.jfree.layouting.input.style.values.CSSNumericValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 
@@ -133,11 +134,7 @@ public class FontSpecification
 
   public boolean isAntiAliasing()
   {
-    return antiAliasing;
-  }
-
-  public void setAntiAliasing(final boolean antiAliasing)
-  {
-    this.antiAliasing = antiAliasing;
+    final CSSValue value = style.getValue(FontStyleKeys.X_FONT_SMOOTH_FLAG);
+    return FontSmooth.ALWAYS.equals(value);
   }
 }

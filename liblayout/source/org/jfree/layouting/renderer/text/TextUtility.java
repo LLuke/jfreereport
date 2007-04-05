@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TextUtility.java,v 1.6 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -141,7 +141,7 @@ public class TextUtility
     return defaultValue;
   }
 
-  public static int translateBaselines(int baseline)
+  public static int translateBaselines(final int baseline)
   {
     switch (baseline)
     {
@@ -157,13 +157,12 @@ public class TextUtility
         return ExtendedBaselineInfo.MATHEMATICAL;
       case BaselineInfo.MIDDLE:
         return ExtendedBaselineInfo.MIDDLE;
+      default:
+        throw new IllegalArgumentException("Invalid baseline");
     }
-
-    throw new IllegalArgumentException("Invalid baseline");
   }
 
-  public static ExtendedBaselineInfo createBaselineInfo
-      (int codepoint, FontMetrics fontMetrics)
+  public static ExtendedBaselineInfo createBaselineInfo (final int codepoint, final FontMetrics fontMetrics)
   {
     final BaselineInfo baselineInfo = fontMetrics.getBaselines(codepoint, null);
     final int dominantBaseline =

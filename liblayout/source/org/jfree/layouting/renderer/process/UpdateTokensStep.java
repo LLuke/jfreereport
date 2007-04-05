@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: UpdateTokensStep.java,v 1.5 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -91,7 +91,7 @@ public class UpdateTokensStep extends IterateStructuralProcessStep
     this.pageContext = null;
   }
 
-  protected boolean startInlineBox(InlineRenderBox box)
+  protected boolean startInlineBox(final InlineRenderBox box)
   {
     if (box instanceof RenderableTextBox)
     {
@@ -116,6 +116,7 @@ public class UpdateTokensStep extends IterateStructuralProcessStep
         {
           textBox.addGeneratedChild(text[i]);
         }
+
         final RenderNode[] renderNodes = rtf.finishText();
         for (int i = 0; i < renderNodes.length; i++)
         {
