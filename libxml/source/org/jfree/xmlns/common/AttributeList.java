@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AttributeList.java,v 1.7 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -238,7 +238,7 @@ public class AttributeList
     for (int i = 0; i < this.entryList.size(); i++)
     {
       final AttributeEntry ae = (AttributeEntry) this.entryList.get(i);
-      if (ae.getName().equals(name) && namespace.equals(name))
+      if (ae.getName().equals(name) && ae.getNamespace().equals(namespace))
       {
         this.entryList.remove(ae);
         return;
