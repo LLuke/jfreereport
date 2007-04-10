@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ExactFunction.java,v 1.6 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -38,6 +38,7 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.TypeConversionException;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -69,23 +70,28 @@ public class ExactFunction implements Function
     final Type textType2 = parameters.getType(1);
     final Object textValue2 = parameters.getValue(1);
 
+
     // Numerical comparisons ignore "trivial" differences that
     // depend only on numeric precision of finite numbers.
-    if((textType1.isFlagSet(Type.NUMERIC_TYPE) || textValue1 instanceof Number)
-        && (textType2.isFlagSet(Type.NUMERIC_TYPE) || textValue2 instanceof Number))
+
+    // This fixes the common rounding errors, that are encountered when computing "((1/3) * 3)", which results
+    // in 0.99999 and not 1, as expected.
+    try
     {
       final Number number1 = typeRegistry.convertToNumber(textType1, textValue1);
       final Number number2 = typeRegistry.convertToNumber(textType2, textValue2);
-      if(number1 == null || number2 == null)
-      {
-        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-      }
 
-      if(number1.intValue() == number2.intValue())
+      final double delta =
+          StrictMath.abs(StrictMath.abs(number1.doubleValue()) - StrictMath.abs(number2.doubleValue()));
+      if(delta < 0.00005)
       {
         return RETURN_TRUE;
       }
       return RETURN_FALSE;
+    }
+    catch(TypeConversionException tce)
+    {
+      // Ignore, try to compare them as strings ..
     }
 
     final String text1 = typeRegistry.convertToText(textType1, textValue1);

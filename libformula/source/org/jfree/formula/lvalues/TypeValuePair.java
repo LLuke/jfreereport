@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: TypeValuePair.java,v 1.3 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -46,6 +46,10 @@ public class TypeValuePair implements Serializable
 
   public TypeValuePair(final Type type, final Object value)
   {
+    if (type == null)
+    {
+      throw new NullPointerException("Type must be given.");
+    }
     this.type = type;
     this.value = value;
   }

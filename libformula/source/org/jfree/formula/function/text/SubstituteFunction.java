@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: SubstituteFunction.java,v 1.4 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -69,17 +69,9 @@ public class SubstituteFunction implements Function
     final Type oldTextType = parameters.getType(1);
     final Object oldTextValue = parameters.getValue(1);
 
-    final String newText = typeRegistry.convertToText(newTextType,
-        newTextValue);
+    final String newText = typeRegistry.convertToText(newTextType, newTextValue);
     final String text = typeRegistry.convertToText(textType, textValue);
-    final String oldText = typeRegistry.convertToText(oldTextType,
-        oldTextValue);
-
-    if (newText == null || text == null || oldText == null)
-    {
-      throw new EvaluationException(
-          LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
+    final String oldText = typeRegistry.convertToText(oldTextType, oldTextValue);
 
     if (parameterCount == 3)
     {
@@ -105,8 +97,7 @@ public class SubstituteFunction implements Function
     final Type whichType = parameters.getType(3);
     final Object whichValue = parameters.getValue(3);
     final Number n = typeRegistry.convertToNumber(whichType, whichValue);
-
-    if (n == null || n.intValue() < 1)
+    if (n.doubleValue() < 1)
     {
       throw new EvaluationException(
           LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);

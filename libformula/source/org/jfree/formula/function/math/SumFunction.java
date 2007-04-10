@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: SumFunction.java,v 1.8 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -34,11 +34,11 @@ import java.math.BigDecimal;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
-import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.TypeConversionException;
 import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
@@ -59,12 +59,13 @@ public class SumFunction implements Function
     return "SUM";
   }
 
-  public TypeValuePair evaluate(FormulaContext context,
-                                ParameterCallback parameters)
+  public TypeValuePair evaluate(final FormulaContext context,
+                                final ParameterCallback parameters)
       throws EvaluationException
   {
     BigDecimal computedResult = ZERO;
     final int parameterCount = parameters.getParameterCount();
+
     for (int paramIdx = 0; paramIdx < parameterCount; paramIdx++)
     {
       final Object value = parameters.getValue(paramIdx);
@@ -74,14 +75,17 @@ public class SumFunction implements Function
         continue;
       }
 
-      final Number n = context.getTypeRegistry().convertToNumber(type, value);
-      if(n == null)
+      try
       {
-        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+        final Number n = context.getTypeRegistry().convertToNumber(type, value);
+        computedResult = compute(n, computedResult);
       }
-
-      computedResult = compute(n, computedResult);
+      catch(TypeConversionException tce)
+      {
+        // The sum function ignores invalid values ..
+      }
     }
+
       //    TODO: Array not yet supported
       /*final Type type = parameters.getType(paramIdx);
       if (type.isFlagSet(Type.ARRAY_TYPE) == false)
@@ -103,7 +107,7 @@ public class SumFunction implements Function
     return new TypeValuePair(NumberType.GENERIC_NUMBER, computedResult);
   }
 
-  private BigDecimal compute(Object value,
+  private BigDecimal compute(final Object value,
                              final BigDecimal computedResult)
   {
     if (value == null)
@@ -124,8 +128,8 @@ public class SumFunction implements Function
     }
     else
     {
-      Number n = (Number) value;
-      BigDecimal nval = new BigDecimal(n.toString());
+      final Number n = (Number) value;
+      final BigDecimal nval = new BigDecimal(n.toString());
       return computedResult.add(nval);
     }
   }

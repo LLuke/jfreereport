@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: SubtractOperator.java,v 1.6 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,50 +32,30 @@ package org.jfree.formula.operators;
 
 import java.math.BigDecimal;
 
-import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.EvaluationException;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.LibFormulaErrorValue;
-import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
  * Creation-Date: 31.10.2006, 16:34:11
  *
  * @author Thomas Morgner
  */
-public class SubtractOperator implements InfixOperator
+public class SubtractOperator extends AbstractNumericOperator
 {
   public SubtractOperator()
   {
   }
 
-  public TypeValuePair evaluate(final FormulaContext context,
-                                TypeValuePair value1, TypeValuePair value2)
-      throws EvaluationException
+  protected Number evaluate(final Number number1, final Number number2) throws EvaluationException
   {
-    final TypeRegistry typeRegistry = context.getTypeRegistry();
-
-    final Number number1 =
-        typeRegistry.convertToNumber(value1.getType(), value1.getValue());
-    final Number number2 =
-        typeRegistry.convertToNumber(value2.getType(), value2.getValue());
-    if (number1 == null || number2 == null)
-    {
-      throw new EvaluationException
-          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
-
     if ((number1 instanceof Integer || number1 instanceof Short) &&
         (number2 instanceof Integer || number2 instanceof Short))
     {
-      return new TypeValuePair(NumberType.GENERIC_NUMBER,
-          new BigDecimal (number1.longValue() - number2.longValue()));
+      return new BigDecimal (number1.longValue() - number2.longValue());
     }
 
     final BigDecimal bd1 = new BigDecimal(number1.toString());
     final BigDecimal bd2 = new BigDecimal(number2.toString());
-    return new TypeValuePair(NumberType.GENERIC_NUMBER, bd1.subtract(bd2));
+    return bd1.subtract(bd2);
   }
 
   public int getLevel()

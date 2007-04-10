@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: Function.java,v 1.5 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -35,6 +35,7 @@ import java.io.Serializable;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.EvaluationException;
+import org.jfree.formula.typing.TypeConversionException;
 
 /**
  * A function is an arbitary computation. A return value type is not available
@@ -50,5 +51,5 @@ public interface Function extends Serializable
   public String getCanonicalName();
   public TypeValuePair evaluate (FormulaContext context,
                                  ParameterCallback parameters)
-      throws EvaluationException;
+      throws EvaluationException, TypeConversionException;
 }

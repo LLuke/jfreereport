@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: PercentageOperator.java,v 1.6 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -54,25 +54,20 @@ public class PercentageOperator implements PostfixOperator
   }
 
 
-  public TypeValuePair evaluate(FormulaContext context, TypeValuePair value1)
+  public TypeValuePair evaluate(final FormulaContext context, final TypeValuePair value1)
       throws EvaluationException
   {
     final Type type = value1.getType();
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
-    if (type.isFlagSet(Type.NUMERIC_TYPE) == false)
+    if (type.isFlagSet(Type.NUMERIC_TYPE) == false &&
+        type.isFlagSet(Type.ANY_TYPE) == false)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     // return the same as zero minus value.
-    final Number number =
-        typeRegistry.convertToNumber(type, value1.getValue());
-    if (number == null)
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
-
+    final Number number = typeRegistry.convertToNumber(type, value1.getValue());
     final BigDecimal value = OperatorUtility.getAsBigDecimal(number);
     return new TypeValuePair(type, value.divide(HUNDRED, BigDecimal.ROUND_HALF_UP));
   }

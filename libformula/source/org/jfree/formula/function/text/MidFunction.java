@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: MidFunction.java,v 1.4 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -48,13 +48,12 @@ import org.jfree.formula.typing.coretypes.TextType;
  */
 public class MidFunction implements Function
 {
-  private static final TypeValuePair EMPTY_STRING = new TypeValuePair(TextType.TYPE, "");
-
   public MidFunction()
   {
   }
 
-  public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
+  public TypeValuePair evaluate(final FormulaContext context,
+                                final ParameterCallback parameters) throws EvaluationException
   {
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount != 3)
@@ -74,30 +73,29 @@ public class MidFunction implements Function
     final Number start = typeRegistry.convertToNumber(startType, startValue);
     final Number length = typeRegistry.convertToNumber(lengthType, lengthValue);
 
-    if(text == null || start == null || length == null ||
-        length.intValue() < 0 || start.intValue() < 1)
+    if(length.doubleValue() < 0 || start.doubleValue() < 1)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
-    return process(text, start, length);
+    return new TypeValuePair(TextType.TYPE, process(text, start, length));
   }
 
-  public TypeValuePair process(final String text, final Number start, final Number length)
+  public String process(final String text, final Number start, final Number length)
   {
-    int l = length.intValue();
-    int s = start.intValue()-1;
-    if(s >= text.length())
+    int lengthValue = length.intValue();
+    final int startValue = start.intValue()-1;
+    if(startValue >= text.length())
     {
-      return EMPTY_STRING;
-    }
-    if((l+s) > text.length())
-    {
-      l = text.length()-s;
+      return "";
     }
 
-    final String txt = text.substring(s, s+l);
-    return new TypeValuePair(TextType.TYPE, txt);
+    if((lengthValue +startValue) > text.length())
+    {
+      lengthValue = text.length()-startValue;
+    }
+
+    return text.substring(startValue, startValue +lengthValue);
   }
 
   public String getCanonicalName()

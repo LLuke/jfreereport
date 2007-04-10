@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: TypeRegistry.java,v 1.8 2007/04/01 13:51:58 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -58,17 +58,17 @@ public interface TypeRegistry
    * @param type1
    * @param value
    * @return the value as number or ZERO if the value is unconvertible.
-   * @throws NumberFormatException if the type cannot be represented as number.
+   * @throws TypeConversionException if the type cannot be represented as number.
    */
   public Number convertToNumber (Type type1, Object value)
-      throws NumberFormatException;
+      throws TypeConversionException ;
 
   /**
    * (This conversion is used by the operator implementations.)
    *
    * @param type1
    * @param value
-   * @return the value as string or an empty string.
+   * @return the value as string or an empty string, if the value given is null.
    */
   public String convertToText (Type type1, Object value);
 
@@ -79,7 +79,7 @@ public interface TypeRegistry
    * @param value
    * @return The value as Boolean or null.
    */
-  public Boolean convertToLogical (Type type1, Object value);
+  public Boolean convertToLogical (Type type1, Object value) throws TypeConversionException;
 
   /**
    * Converts the object of the given type into a date.
@@ -88,7 +88,7 @@ public interface TypeRegistry
    * @param value
    * @return The value as Date or null.
    */
-  public Date convertToDate(Type type1, Object value);
+  public Date convertToDate(Type type1, Object value)  throws TypeConversionException;
 
   /**
    * Checks, whether the target type would accept the specified value object
@@ -98,15 +98,5 @@ public interface TypeRegistry
    * @param valuePair
    */
   public TypeValuePair convertTo(final Type targetType,
-                                 final TypeValuePair valuePair);
-
-  /**
-   * Returns the first non null error value of the passed arguments or null if there is no error.
-   * It is used ot propagate the errors.
-   *
-   * @param value1 First value to check.
-   * @param value2 Second value to check.
-   * @return The error or null if no errors.
-   */
-  public TypeValuePair getError(final TypeValuePair value1, final TypeValuePair value2);
+                                 final TypeValuePair valuePair) throws TypeConversionException;
 }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ReptFunction.java,v 1.4 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -52,7 +52,8 @@ public class ReptFunction implements Function
   {
   }
 
-  public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
+  public TypeValuePair evaluate(final FormulaContext context,
+                                final ParameterCallback parameters) throws EvaluationException
   {
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount != 2)
@@ -67,15 +68,7 @@ public class ReptFunction implements Function
     final Object countValue = parameters.getValue(1);
 
     final String text1 = typeRegistry.convertToText(textType1, textValue1);
-    int count = 0;
-    if(countType.isFlagSet(Type.NUMERIC_TYPE) || countValue instanceof Number)
-    {
-      count = typeRegistry.convertToNumber(countType, countValue).intValue();
-    }
-    else
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
+    final int count = typeRegistry.convertToNumber(countType, countValue).intValue();
     if(text1 == null && count >= 0)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);

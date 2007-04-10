@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DivideOperator.java,v 1.7 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,13 +32,8 @@ package org.jfree.formula.operators;
 
 import java.math.BigDecimal;
 
-import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.EvaluationException;
-import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
-import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
  * A division operation. This operation expects two valid numbers.
@@ -46,56 +41,22 @@ import org.jfree.formula.typing.coretypes.NumberType;
  *
  * @author Thomas Morgner
  */
-public class DivideOperator implements InfixOperator
+public class DivideOperator extends AbstractNumericOperator
 {
   public DivideOperator()
   {
   }
 
-  public TypeValuePair evaluate(final FormulaContext context,
-                                TypeValuePair value1, TypeValuePair value2)
-      throws EvaluationException
+  public Number evaluate(final Number number1, final Number number2) throws EvaluationException
   {
-    final TypeRegistry typeRegistry = context.getTypeRegistry();
-
-    final Object raw1 = value1.getValue();
-    final Object raw2 = value2.getValue();
-
-    if (raw1 == null && raw2 == null)
-    {
-      return null;
-    }
-
-    final Number number1 =
-        typeRegistry.convertToNumber(value1.getType(), raw1);
-    final Number number2 =
-        typeRegistry.convertToNumber(value2.getType(), raw2);
-    if (number1 == null && number2 == null)
-    {
-      throw new EvaluationException
-          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
-
-    final Type resultType = NumberType.GENERIC_NUMBER;
-    if (number1 == null)
-    {
-      return new TypeValuePair(resultType, new BigDecimal(0));
-    }
-    if (number2 == null)
-    {
-      throw new EvaluationException
-          (LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE);
-    }
-
     final BigDecimal bd1 = new BigDecimal(number1.toString());
     final BigDecimal bd2 = new BigDecimal(number2.toString());
     if (bd2.signum() == 0)
     {
       // prevent a division by zero ..
-      throw new EvaluationException
-          (LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE);
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE);
     }
-    return new TypeValuePair(resultType, bd1.divide(bd2, BigDecimal.ROUND_HALF_UP));
+    return bd1.divide(bd2, BigDecimal.ROUND_HALF_UP);
   }
 
   public int getLevel()

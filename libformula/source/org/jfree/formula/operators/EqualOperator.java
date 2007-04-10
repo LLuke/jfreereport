@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: EqualOperator.java,v 1.5 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.typing.ExtendedComparator;
 import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.LogicalType;
 import org.jfree.formula.lvalues.TypeValuePair;
 
@@ -57,11 +58,10 @@ public class EqualOperator implements InfixOperator
       throws EvaluationException
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    final ExtendedComparator comparator =
-        typeRegistry.getComparator(value1.getType(), value2.getType());
-    final boolean result = comparator.isEqual
-        (value1.getType(), value1.getValue(),
-            value2.getType(), value2.getValue());
+    final Type type1 = value1.getType();
+    final Type type2 = value2.getType();
+    final ExtendedComparator comparator = typeRegistry.getComparator(type1, type2);
+    final boolean result = comparator.isEqual (type1, value1.getValue(), type2, value2.getValue());
     if (result)
     {
       return RETURN_TRUE;

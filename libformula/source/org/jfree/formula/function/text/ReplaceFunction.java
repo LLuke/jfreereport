@@ -24,35 +24,35 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ReplaceFunction.java,v 1.3 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.function.text;
 
 import org.jfree.formula.EvaluationException;
-import org.jfree.formula.Formula;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.parser.ParseException;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.TextType;
-import org.jfree.util.Log;
 
 /**
  * This function returns text where an old text is substituted with a new text.
  *
  * @author Cedric Pronzato
- *
  */
 public class ReplaceFunction implements Function
 {
+  public ReplaceFunction()
+  {
+  }
 
-  public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
+  public TypeValuePair evaluate(final FormulaContext context,
+                                final ParameterCallback parameters) throws EvaluationException
   {
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount != 4)
@@ -75,31 +75,19 @@ public class ReplaceFunction implements Function
     final Number start = typeRegistry.convertToNumber(startType, startValue);
     final Number length = typeRegistry.convertToNumber(lengthType, lengthValue);
 
-    if(newText == null || text == null || start == null || length == null)
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
+    // = MID(T;1,Start-1) & New & MID(T; Start+Len; LEN(T)))
 
-    // = LEFT(T;Start-1) & New & MID(T; Start+Len; LEN(T)))
+    final MidFunction function = new MidFunction();
+    final String result1 = function.process(text, new Integer(1), new Integer(start.intValue() - 1));
+    final String result2 = function.process(text,
+        new Integer(start.intValue() + length.intValue()), new Integer(text.length()));
+
+
     final StringBuffer buffer = new StringBuffer();
-    buffer.append("LEFT(\"").append(text).append("\";").append(start.doubleValue()).append("-1) & \"");
-    buffer.append(newText).append("\" & ");
-    buffer.append("MID(\"").append(text).append("\";").append(start.doubleValue()).append("+");
-    buffer.append(length.doubleValue()).append(";").append(text.length()).append("))");
-
-    Formula formula = null;
-    try
-    {
-      formula = new Formula(buffer.toString());
-    } catch (ParseException e)
-    {
-      Log.debug("Nested formula parsing error", e);
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
-    formula.initialize(context);
-    final Object result = formula.evaluate();
-
-    return new TypeValuePair(TextType.TYPE, result.toString());
+    buffer.append(result1);
+    buffer.append(newText);
+    buffer.append(result2);
+    return new TypeValuePair(TextType.TYPE, buffer.toString());
   }
 
   public String getCanonicalName()

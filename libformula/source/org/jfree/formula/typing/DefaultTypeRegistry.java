@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultTypeRegistry.java,v 1.10 2007/04/01 13:51:58 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -48,6 +48,7 @@ import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.operators.InfixOperator;
 import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.util.Configuration;
+import org.jfree.util.ObjectUtilities;
 
 
 /**
@@ -75,7 +76,7 @@ public class DefaultTypeRegistry implements TypeRegistry
    * @param type2
    * @return
    */
-  public ExtendedComparator getComparator(Type type1, Type type2)
+  public ExtendedComparator getComparator(final Type type1, final Type type2)
   {
     final DefaultComparator comparator = new DefaultComparator();
     comparator.inititalize(context);
@@ -92,8 +93,8 @@ public class DefaultTypeRegistry implements TypeRegistry
    * @return
    * @throws NumberFormatException if the type cannot be represented as number.
    */
-  public Number convertToNumber(Type type1, Object value)
-      throws NumberFormatException
+  public Number convertToNumber(final Type type1, final Object value)
+      throws TypeConversionException
   {
     if (value instanceof Number)
     {
@@ -126,19 +127,6 @@ public class DefaultTypeRegistry implements TypeRegistry
       {
         // ignore ..
       }
-      // iterate through the various number and date formats.
-      for (int i = 0; i < numberFormats.length; i++)
-      {
-        try
-        {
-          final NumberFormat format = numberFormats[i];
-          return format.parse(val);
-        }
-        catch (ParseException e)
-        {
-          // ignore ..
-        }
-      }
       for (int i = 0; i < dateFormats.length; i++)
       {
         try
@@ -152,8 +140,22 @@ public class DefaultTypeRegistry implements TypeRegistry
           // ignore as well ..
         }
       }
+
+      // iterate through the various number and date formats.
+      for (int i = 0; i < numberFormats.length; i++)
+      {
+        try
+        {
+          final NumberFormat format = numberFormats[i];
+          return format.parse(val);
+        }
+        catch (ParseException e)
+        {
+          // ignore ..
+        }
+      }
     }
-    return new Integer(0);
+    throw new TypeConversionException();
   }
 
   private Date convertNumberToDate(final Number number)
@@ -170,8 +172,8 @@ public class DefaultTypeRegistry implements TypeRegistry
 
     final BigDecimal bigDecimal = bd.multiply(MILLISECS);
     //just a test to remove the millisecond part
-    final long longValue = (bigDecimal.longValue()/1000)*1000;
-    return new Date(longValue);
+    // final long longValue = (bigDecimal.longValue()/1000)*1000;
+    return new Date(bigDecimal.longValue());
   }
 
   private Number convertDateToNumber(final Date date)
@@ -188,39 +190,8 @@ public class DefaultTypeRegistry implements TypeRegistry
 
     //fractional part must be between 0.0 to 0.99999
     //reprenting from 00:00:00 to 23:59:59
-    final BigDecimal daySecs = secsBd.divide
-        (MILLISECS, 5,BigDecimal.ROUND_UP);
-    final BigDecimal ret = daysBd.add(daySecs);
-    return ret;
-  }
-
-
-  /**
-   * Computes the combined type that would result in the combination of the
-   * given types.
-   *
-   * @param type1
-   * @param type2
-   * @return
-   */
-  public Type combine(Type type1, InfixOperator operator, Type type2)
-  {
-    final boolean anyType1 = type1.isFlagSet(Type.ANY_TYPE);
-    final boolean anyType2 = type2.isFlagSet(Type.ANY_TYPE);
-    if (anyType1 && anyType2)
-    {
-      return type1;
-    }
-    else if (anyType1)
-    {
-      return type2;
-    }
-    else if (anyType2)
-    {
-      return type1;
-    }
-
-    return null;
+    final BigDecimal daySecs = secsBd.divide(MILLISECS, 25,BigDecimal.ROUND_UP);
+    return daysBd.add(daySecs);
   }
 
   public void initialize(final Configuration configuration,
@@ -233,40 +204,43 @@ public class DefaultTypeRegistry implements TypeRegistry
 
   protected DateFormat[] loadDateFormats()
   {
-    ArrayList formats = new ArrayList();
-    final SimpleDateFormat defaultDateFormat =
-        new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+    final ArrayList formats = new ArrayList();
+    formats.add(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US));
+    formats.add(new SimpleDateFormat("yyyy-MM-dd", Locale.US));
+    formats.add(new SimpleDateFormat("hh:mm:ss", Locale.US));
+    // todo: This should also be configurable ..
 
-    formats.add(defaultDateFormat);
     return (DateFormat[]) formats.toArray(new DateFormat[formats.size()]);
   }
 
   protected NumberFormat[] loadNumberFormats()
   {
-    ArrayList formats = new ArrayList();
-    final DecimalFormat defaultFormat =
-        new DecimalFormat("#0.###", new DecimalFormatSymbols(Locale.US));
+    final ArrayList formats = new ArrayList();
+    final DecimalFormat defaultFormat = new DecimalFormat("#0.###", new DecimalFormatSymbols(Locale.US));
     activateBigDecimalMode(defaultFormat);
     formats.add(defaultFormat);
 
     return (NumberFormat[]) formats.toArray(new NumberFormat[formats.size()]);
   }
 
-  private void activateBigDecimalMode(DecimalFormat format)
+  private void activateBigDecimalMode(final DecimalFormat format)
   {
-    try
+    if (ObjectUtilities.isJDK14())
     {
-      final Method method = DecimalFormat.class.getMethod
-          ("setParseBigDecimal", new Class[]{Boolean.TYPE});
-      method.invoke(format, new Object[]{Boolean.TRUE});
-    }
-    catch (Exception e)
-    {
-      // ignore it, as it will always fail on JDK 1.4 or lower ..
+      try
+      {
+        final Method method = DecimalFormat.class.getMethod
+            ("setParseBigDecimal", new Class[]{Boolean.TYPE});
+        method.invoke(format, new Object[]{Boolean.TRUE});
+      }
+      catch (Exception e)
+      {
+        // ignore it, as it will always fail on JDK 1.4 or lower ..
+      }
     }
   }
 
-  public String convertToText(Type type1, Object value)
+  public String convertToText(final Type type1, final Object value)
   {
     if (value instanceof String)
     {
@@ -291,17 +265,21 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
     }
 
-    Number n = convertToNumber(type1, value);
-    if (n != null)
+    try
     {
-      NumberFormat format = getDefaultNumberFormat();
+      final Number n = convertToNumber(type1, value);
+      final NumberFormat format = getDefaultNumberFormat();
       return format.format(n);
+    }
+    catch(TypeConversionException nfe)
+    {
+      // ignore ..
     }
 
     return value.toString();
   }
 
-  public Boolean convertToLogical(Type type1, Object value)
+  public Boolean convertToLogical(final Type type1, final Object value) throws TypeConversionException
   {
     if (value instanceof Boolean)
     {
@@ -331,10 +309,10 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
     }
 
-    return null;
+    throw new TypeConversionException();
   }
 
-  public Date convertToDate(Type type1, Object value)
+  public Date convertToDate(final Type type1, final Object value) throws TypeConversionException
   {
     if (value instanceof Date)
     {
@@ -354,13 +332,13 @@ public class DefaultTypeRegistry implements TypeRegistry
       return convertNumberToDate(conv);
     }
 
-    return null;
+    throw new TypeConversionException();
   }
 
   protected NumberFormat getDefaultNumberFormat()
   {
-    Locale locale = context.getLocalizationContext().getLocale();
-    return new DecimalFormat("#0.###", new DecimalFormatSymbols(locale));
+    final Locale locale = context.getLocalizationContext().getLocale();
+    return new DecimalFormat("#0.#########", new DecimalFormatSymbols(locale));
   }
 
   /**
@@ -372,7 +350,7 @@ public class DefaultTypeRegistry implements TypeRegistry
    * @param value
    */
   public TypeValuePair convertTo(final Type targetType,
-                                 final TypeValuePair valuePair)
+                                 final TypeValuePair valuePair) throws TypeConversionException
   {
     if (targetType.isFlagSet(Type.ARRAY_TYPE))
     {
@@ -400,7 +378,7 @@ public class DefaultTypeRegistry implements TypeRegistry
 
   private Object convertPlainToPlain(final Type targetType,
                                      final Type type,
-                                     final Object value)
+                                     final Object value) throws TypeConversionException
   {
     if (targetType.isFlagSet(Type.TEXT_TYPE))
     {
@@ -409,12 +387,7 @@ public class DefaultTypeRegistry implements TypeRegistry
         return value;
       }
 
-      final String text = convertToText(type, value);
-      if (text == null)
-      {
-        return null;
-      }
-      return text;
+      return convertToText(type, value);
     }
 
     if (targetType.isFlagSet(Type.DATE_TYPE))
@@ -424,19 +397,15 @@ public class DefaultTypeRegistry implements TypeRegistry
         return value;
       }
 
-      final Number number = convertToNumber(type, value);
-      // OK, lets reverse it ..
-      if (number == null)
+      try
       {
-        return null;
+        final Number number = convertToNumber(type, value);
+        return convertNumberToDate(number);
       }
-
-      final Date date = convertNumberToDate(number);
-      if (date == null)
+      catch (TypeConversionException e)
       {
-        return null;
+        throw e;
       }
-      return date;
     }
 
     if (targetType.isFlagSet(Type.NUMERIC_TYPE))
@@ -446,12 +415,7 @@ public class DefaultTypeRegistry implements TypeRegistry
         return value;
       }
 
-      final Number number = convertToNumber(type, value);
-      if (number == null)
-      {
-        return null;
-      }
-      return number;
+      return convertToNumber(type, value);
     }
 
     if (targetType.isFlagSet(Type.LOGICAL_TYPE))
@@ -461,12 +425,7 @@ public class DefaultTypeRegistry implements TypeRegistry
         return value;
       }
 
-      final Boolean b = convertToLogical(type, value);
-      if (b == null)
-      {
-        return null;
-      }
-      return b;
+      return convertToLogical(type, value);
     }
 
     // Unknown type - ignore it, crash later :)
@@ -474,7 +433,7 @@ public class DefaultTypeRegistry implements TypeRegistry
   }
 
   private TypeValuePair convertArrayToArray(final Type targetType,
-                                            final TypeValuePair pair)
+                                            final TypeValuePair pair) throws TypeConversionException
   {
     final Type type = pair.getType();
     // the pair value is also an array ...
@@ -490,26 +449,5 @@ public class DefaultTypeRegistry implements TypeRegistry
       target[i] = converted;
     }
     return new TypeValuePair(targetType, target);
-  }
-
-  public TypeValuePair getError(final TypeValuePair value1, final TypeValuePair value2)
-  {
-    if(value1 != null)
-    {
-      final Type type1 = value1.getType();
-      if (type1 instanceof ErrorType)
-      {
-        return value1;
-      }
-    }
-    if(value2 != null)
-    {
-      final Type type2 = value2.getType();
-      if (type2 instanceof ErrorType)
-      {
-        return value2;
-      }
-    }
-    return null;
   }
 }

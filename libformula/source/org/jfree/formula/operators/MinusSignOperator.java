@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: MinusSignOperator.java,v 1.7 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -64,17 +64,11 @@ public class MinusSignOperator implements PrefixOperator
     {
       final TypeRegistry typeRegistry = context.getTypeRegistry();
       // return the same as zero minus value.
-      final Number number =
-          typeRegistry.convertToNumber(type, val);
-      if (number == null)
-      {
-        throw new EvaluationException
-            (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-      }
-
+      final Number number = typeRegistry.convertToNumber(type, val);
       final BigDecimal value = getAsBigDecimal(number);
       return new TypeValuePair(type, ZERO.subtract(value));
     }
+
     if(val instanceof Number)
     {
       final BigDecimal value = getAsBigDecimal((Number)val);
@@ -98,5 +92,4 @@ public class MinusSignOperator implements PrefixOperator
   {
     return "-";
   }
-
 }

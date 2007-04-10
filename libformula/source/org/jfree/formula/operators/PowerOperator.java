@@ -24,18 +24,13 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: PowerOperator.java,v 1.8 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.operators;
 
 import org.jfree.formula.EvaluationException;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.LibFormulaErrorValue;
-import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
  * This has to be implemented manually if we want to support arbitary precision.
@@ -44,32 +39,16 @@ import org.jfree.formula.typing.coretypes.NumberType;
  *
  * @author Thomas Morgner
  */
-public class PowerOperator implements InfixOperator
+public class PowerOperator extends AbstractNumericOperator
 {
   public PowerOperator()
   {
   }
 
-  public TypeValuePair evaluate(final FormulaContext context,
-                                final TypeValuePair value1,
-                                final TypeValuePair value2)
-      throws EvaluationException
+  protected Number evaluate(final Number number1, final Number number2) throws EvaluationException
   {
-    final TypeRegistry typeRegistry = context.getTypeRegistry();
-
-    final Number number1 =
-        typeRegistry.convertToNumber(value1.getType(), value1.getValue());
-    final Number number2 =
-        typeRegistry.convertToNumber(value2.getType(), value2.getValue());
-    if (number1 == null || number2 == null)
-    {
-      throw new EvaluationException
-          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
-
     final double result = Math.pow(number1.doubleValue(), number2.doubleValue());
-    final Double value = new Double(result);
-    return new TypeValuePair(NumberType.GENERIC_NUMBER, value);
+    return new Double(result);
   }
 
   public int getLevel()

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TestFormulaContext.java,v 1.4 2007/01/14 18:28:57 mimil Exp $
+ * $Id: TestFormulaContext.java,v 1.5 2007/01/18 22:36:32 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,7 +34,6 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -42,28 +41,36 @@ import javax.swing.table.TableModel;
 import org.jfree.formula.ContextEvaluationException;
 import org.jfree.formula.DefaultFormulaContext;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.function.FunctionRegistry;
 import org.jfree.formula.operators.OperatorFactory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.util.Configuration;
 
 /**
- * 
  * @author Cedric Pronzato
- *
  */
 public class TestFormulaContext implements FormulaContext
 {
-  private FormulaContext formulaContext;
-  private TableModel model;
-  /*public static final TableModel testCaseDataset;
-  static {
-    testCaseDataset = new DefaultTableModel(18, 2);
-    testCaseDataset.setValueAt(aValue, rowIndex, columnIndex)
-  }*/
-  
+  public static Date createDate1(int year, int month, int day, int hour, int minute, int sec, int millisec)
+  {
+    Calendar cal = GregorianCalendar.getInstance();
+    cal.set(GregorianCalendar.YEAR, year);
+    cal.set(GregorianCalendar.MONTH, month);
+    cal.set(GregorianCalendar.DAY_OF_MONTH, day);
+    cal.set(GregorianCalendar.HOUR_OF_DAY, hour);
+    cal.set(GregorianCalendar.MINUTE, minute);
+    cal.set(GregorianCalendar.SECOND, sec);
+    cal.set(GregorianCalendar.MILLISECOND, millisec);
+    return cal.getTime();
+  }
+
+  private static class TestCaseTableModel extends AbstractTableModel
+  {
+
 /*
 id B C
 3 ="7"
@@ -82,62 +89,46 @@ id B C
 16 3 2
 17 4 1
  */
-  public static final TableModel testCaseDataset = new AbstractTableModel()
-  {
-    private Date createDate1() {
-      Calendar cal = GregorianCalendar.getInstance();
-      cal.set(GregorianCalendar.YEAR, 2005);
-      cal.set(GregorianCalendar.MONTH, GregorianCalendar.JANUARY);
-      cal.set(GregorianCalendar.DAY_OF_MONTH, 31);
-      cal.set(GregorianCalendar.MILLISECOND, 0);
-      cal.set(GregorianCalendar.HOUR_OF_DAY, 0);
-      cal.set(GregorianCalendar.MINUTE, 0);
-      cal.set(GregorianCalendar.SECOND, 0);
-      return cal.getTime();
-    }
-    private Date createDate2() {
-      return null;
-    }
-    private Object[][] data = new Object[][] {
+
+    private Object[][] data = new Object[][]{
         {null, null},
         {null, null},
         {null, null},
         {"7", null},
         {new BigDecimal(2), new BigDecimal(4)},
         {new BigDecimal(3), new BigDecimal(5)},
-        {"1=1", new BigDecimal(7)},
-        {"Hello", createDate1()},
-        {null, createDate2()},
+        {Boolean.TRUE, new BigDecimal(7)},
+        {"Hello", createDate1(2005, Calendar.JANUARY, 31, 0, 0, 0, 0)},
+        {null, createDate1(2006, Calendar.JANUARY, 31, 0, 0, 0, 0)},
+        {LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE, createDate1(0, 0, 0, 2, 0, 0, 0)},
+        {new BigDecimal(0), createDate1(0, 0, 0, 23, 0, 0, 0)},
+        {new BigDecimal(3), new BigDecimal(5)},
+        {new BigDecimal(4), new BigDecimal(6)},
         {null, null},
-        {null, null},
-        {null, null},
-        {null, null},
-        {null, null},
-        {null, null},
-        {null, null},
-        {null, null},
-        {null, null},
-        {null, null},
+        {new BigDecimal(1), new BigDecimal(4)},
+        {new BigDecimal(2), new BigDecimal(3)},
+        {new BigDecimal(3), new BigDecimal(2)},
+        {new BigDecimal(4), new BigDecimal(1)},
     };
 
     public int getColumnCount()
     {
       return 2;
     }
-    
+
     public String getColumnName(int column)
     {
-      if(column==0)
+      if (column == 0)
       {
         return "B";
       }
-      else if(column==1)
+      else if (column == 1)
       {
         return "C";
       }
       return null;
     }
-    
+
     public int getRowCount()
     {
       return 18;
@@ -145,22 +136,32 @@ id B C
 
     public Object getValueAt(int rowIndex, int columnIndex)
     {
-     return data[rowIndex][columnIndex];
+      return data[rowIndex][columnIndex];
     }
-    
-  };
-  
+
+  }
+
+  private FormulaContext formulaContext;
+  private TableModel model;
+  /*public static final TableModel testCaseDataset;
+  static {
+    testCaseDataset = new DefaultTableModel(18, 2);
+    testCaseDataset.setValueAt(aValue, rowIndex, columnIndex)
+  }*/
+
+  public static final TableModel testCaseDataset = new TestCaseTableModel();
+
   public TestFormulaContext()
   {
     this(new DefaultTableModel());
   }
-  
+
   public TestFormulaContext(TableModel model)
   {
     formulaContext = new DefaultFormulaContext();
     this.model = model;
   }
-  
+
   public Configuration getConfiguration()
   {
     return formulaContext.getConfiguration();
@@ -193,13 +194,15 @@ id B C
 
   public Object resolveReference(Object name) throws ContextEvaluationException
   {
-    if(name instanceof String)
+    if (name instanceof String)
     {
-      String ref = ((String)name);
-      final String columnName = ref.substring(1,2);
+      String ref = ((String) name);
+      final String columnName = ref.substring(1, 2);
       int col = -1;
-      for(int i=0; i<model.getColumnCount(); i++) {
-        if(columnName.equalsIgnoreCase(model.getColumnName(i))) {
+      for (int i = 0; i < model.getColumnCount(); i++)
+      {
+        if (columnName.equalsIgnoreCase(model.getColumnName(i)))
+        {
           col = i;
         }
       }
@@ -213,7 +216,7 @@ id B C
   public Type resolveReferenceType(Object name) throws ContextEvaluationException
   {
     // TODO Auto-generated method stub
-    return null;
+    return AnyType.TYPE;
   }
 
 }

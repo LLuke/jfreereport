@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FindFunction.java,v 1.5 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -46,7 +46,6 @@ import org.jfree.formula.typing.coretypes.NumberType;
  * This function returns the starting position of a given text in the given text.
  *
  * @author Cedric Pronzato
- *
  */
 public class FindFunction implements Function
 {
@@ -70,7 +69,8 @@ public class FindFunction implements Function
     Type indexType = null;
     Object indexValue = null;
 
-    if(parameterCount == 3) {
+    if (parameterCount == 3)
+    {
       indexType = parameters.getType(2);
       indexValue = parameters.getValue(2);
     }
@@ -78,23 +78,18 @@ public class FindFunction implements Function
     final String search = typeRegistry.convertToText(searchType, searchValue);
     final String text = typeRegistry.convertToText(textType, textValue);
 
-    if(search == null || text == null)
+    if (search == null || text == null)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
     int indexFrom = 0;
 
-    if(indexType != null && indexValue != null)
+    if (indexType != null && indexValue != null)
     {
       final Number n = typeRegistry.convertToNumber(indexType, indexValue);
-      if(n == null)
+      if (n.intValue() >= 1)
       {
-        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-      }
-
-      if(n.intValue() >= 1)
-      {
-        indexFrom = n.intValue()-1;
+        indexFrom = n.intValue() - 1;
       }
       else
       {
@@ -102,13 +97,13 @@ public class FindFunction implements Function
       }
     }
 
-    int index = text.indexOf(search, indexFrom);
-    if(index < 0)
+    final int index = text.indexOf(search, indexFrom);
+    if (index < 0)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_NOT_FOUND_VALUE);
     }
 
-    return new TypeValuePair(NumberType.GENERIC_NUMBER, new BigDecimal(index+1));
+    return new TypeValuePair(NumberType.GENERIC_NUMBER, new BigDecimal(index + 1));
   }
 
   public String getCanonicalName()

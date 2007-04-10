@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: Formula.java,v 1.10 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -36,6 +36,7 @@ import org.jfree.formula.lvalues.LValue;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.parser.FormulaParser;
 import org.jfree.formula.parser.ParseException;
+import org.jfree.formula.parser.TokenMgrError;
 import org.jfree.util.Log;
 
 /**
@@ -49,8 +50,16 @@ public class Formula implements Serializable, Cloneable
 
   public Formula(final String formulaText) throws ParseException
   {
-    FormulaParser parser = new FormulaParser();
-    this.rootReference = parser.parse(formulaText);
+    try
+    {
+      final FormulaParser parser = new FormulaParser();
+      this.rootReference = parser.parse(formulaText);
+    }
+    catch(TokenMgrError tokenMgrError)
+    {
+      // This is ugly.
+      throw new ParseException(tokenMgrError.getMessage());
+    }
   }
 
   public Formula(final LValue rootReference)
@@ -58,7 +67,7 @@ public class Formula implements Serializable, Cloneable
     this.rootReference = rootReference;
   }
 
-  public void initialize (FormulaContext context) throws EvaluationException
+  public void initialize (final FormulaContext context) throws EvaluationException
   {
     rootReference.initialize(context);
   }

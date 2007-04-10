@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AbsFunction.java,v 1.2 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -63,11 +63,6 @@ public class AbsFunction implements Function
     final Type type1 = parameters.getType(0);
     final Object value1 = parameters.getValue(0);
     final Number result = context.getTypeRegistry().convertToNumber(type1, value1);
-
-    if(result == null)
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
 
     final BigDecimal num = new BigDecimal(result.toString());
     return new TypeValuePair(NumberType.GENERIC_NUMBER, num.abs());

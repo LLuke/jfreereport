@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ChooseFunction.java,v 1.4 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -56,8 +56,8 @@ public class ChooseFunction implements Function
     return "CHOOSE";
   }
 
-  public TypeValuePair evaluate(FormulaContext context,
-                                ParameterCallback parameters)
+  public TypeValuePair evaluate(final FormulaContext context,
+                                final ParameterCallback parameters)
       throws EvaluationException
   {
 
@@ -65,16 +65,14 @@ public class ChooseFunction implements Function
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
+
     final Type indexType = parameters.getType(0);
     final Object indexValue = parameters.getValue(0);
 
-    if(indexType.isFlagSet(Type.NUMERIC_TYPE) || indexValue instanceof Number)
+    final int index= context.getTypeRegistry().convertToNumber(indexType, indexValue).intValue();
+    if(index >= 1 && index < parameters.getParameterCount())
     {
-      final int index= context.getTypeRegistry().convertToNumber(indexType, indexValue).intValue();
-      if(index >= 1 && index < parameters.getParameterCount())
-      {
-        return new TypeValuePair(parameters.getType(index), parameters.getValue(index));
-      }
+      return new TypeValuePair(parameters.getType(index), parameters.getValue(index));
     }
     // else
     throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);

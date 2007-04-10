@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunctionTest.java,v 1.4 2007/01/18 22:34:32 mimil Exp $
+ * $Id: DateFunctionTest.java,v 1.5 2007/02/22 21:34:46 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.formula.function.datetime;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.math.BigDecimal;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.Formula;
@@ -45,7 +46,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * 
+ *
  * @author Cedric Pronzato
  *
  */
@@ -59,7 +60,7 @@ public class DateFunctionTest
     return new Object[][]
     {
    { "DATE(2005;1;31)=[.C7]", Boolean.TRUE },
-//TODO lets check this one later    { "DATE(2005;12;31)-DATE(1904;1;1)", new BigDecimal(37255) },
+   // { "DATE(2005;12;31)-DATE(1904;1;1)", new BigDecimal(37255) },
     { "DATE(2004;2;29)=DATE(2004;2;28)+1", Boolean.TRUE },
     { "DATE(2000;2;29)=DATE(2000;2;28)+1", Boolean.TRUE },
     { "DATE(2005;3;1)=DATE(2005;2;28)+1", Boolean.TRUE },
@@ -75,13 +76,13 @@ public class DateFunctionTest
     { "DATE(2003;2;29)=DATE(2003;3;1)", Boolean.TRUE },
     };
   }
-  
+
   @Test
   public void gregorianTest()
   {
     final Date d1 = new GregorianCalendar(2006,-1,1).getTime();
     final Date d2 = new GregorianCalendar(2005, 11, 1).getTime();
-   
+
     Assert.assertEquals(d1, d2);
   }
 
@@ -111,6 +112,6 @@ public class DateFunctionTest
       Assert.fail("Initialization Error", e);
     }
     Object eval = formula.evaluate();
-    Assert.assertEquals(eval, result);
+    Assert.assertEquals(eval, result, "Failure on " + eval.getClass());
   }
 }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DateFunction.java,v 1.12 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -67,25 +67,12 @@ public class DateFunction implements Function
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
-    Number n1;
-    Number n2;
-    Number n3;
-    try
-    {
-      final TypeRegistry typeRegistry = context.getTypeRegistry();
-      n1 = typeRegistry.convertToNumber(parameters.getType(0), parameters.getValue(0));
-      n2 = typeRegistry.convertToNumber(parameters.getType(1), parameters.getValue(1));
-      n3 = typeRegistry.convertToNumber(parameters.getType(2), parameters.getValue(2));
-    }
-    catch (NumberFormatException e)
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
 
-    if (n1 == null || n2 == null || n3 == null)
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
+    final TypeRegistry typeRegistry = context.getTypeRegistry();
+    final Number n1 = typeRegistry.convertToNumber(parameters.getType(0), parameters.getValue(0));
+    final Number n2 = typeRegistry.convertToNumber(parameters.getType(1), parameters.getValue(1));
+    final Number n3 = typeRegistry.convertToNumber(parameters.getType(2), parameters.getValue(2));
+
     //System.out.println("DEGUG Y:"+n1+" M:"+n2+"["+value+"] D:"+n3);
     final LocalizationContext localizationContext = context.getLocalizationContext();
     final GregorianCalendar gc = new GregorianCalendar

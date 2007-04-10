@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultComparator.java,v 1.5 2007/04/01 13:51:58 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -65,10 +65,10 @@ public class DefaultComparator implements ExtendedComparator
     // try to compare them as numbers. (And here it gets messy.)
 
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    final Number number1 = typeRegistry.convertToNumber(type1, value1);
-    final Number number2 = typeRegistry.convertToNumber(type2, value2);
-    if (number1 != null && number2 != null)
+    try
     {
+      final Number number1 = typeRegistry.convertToNumber(type1, value1);
+      final Number number2 = typeRegistry.convertToNumber(type2, value2);
       final BigDecimal bd1 = new BigDecimal(number1.toString());
       final BigDecimal bd2 = new BigDecimal(number2.toString());
       if (bd1.signum() != bd2.signum())
@@ -79,9 +79,12 @@ public class DefaultComparator implements ExtendedComparator
       final BigDecimal result = bd1.subtract(bd2);
       return (result.signum() == 0);
     }
+    catch(TypeConversionException nfe)
+    {
+      // ignore ..
+    }
 
-    if (type1.isFlagSet(Type.TEXT_TYPE) ||
-        type2.isFlagSet(Type.TEXT_TYPE))
+    if (type1.isFlagSet(Type.TEXT_TYPE) || type2.isFlagSet(Type.TEXT_TYPE))
     {
       // Convert both values to text ..
       final String text1 = typeRegistry.convertToText(type1, value1);
@@ -132,38 +135,8 @@ public class DefaultComparator implements ExtendedComparator
       return DefaultComparator.MORE;
     }
 
-    final TypeRegistry typeRegistry = context.getTypeRegistry();
-    final Number number1 = typeRegistry.convertToNumber(type1, value1);
-    final Number number2 = typeRegistry.convertToNumber(type2, value2);
-    if (number1 != null && number2 != null)
-    {
-      final BigDecimal bd1 = new BigDecimal(number1.toString());
-      final BigDecimal bd2 = new BigDecimal(number2.toString());
-
-      if (bd1.signum() != bd2.signum())
-      {
-        if (bd1.signum() < 0)
-        {
-          return DefaultComparator.LESS;
-        }
-        else if (bd1.signum() > 0)
-        {
-          return DefaultComparator.MORE;
-        }
-      }
-
-      final BigDecimal result = bd1.subtract(bd2);
-      if (result.signum() == 0)
-      {
-        return DefaultComparator.EQUAL;
-      }
-      if (result.signum() > 0)
-      {
-        return DefaultComparator.MORE;
-      }
-      return DefaultComparator.LESS;
-    }
-
+    // First, we try to compare both types directly. This is the least-expensive solution, as it does
+    // not include any conversion operations ..
     if (type1.isFlagSet(Type.SCALAR_TYPE) && type2.isFlagSet(Type.SCALAR_TYPE))
     {
       // this is something else
@@ -193,6 +166,44 @@ public class DefaultComparator implements ExtendedComparator
       }
     }
 
+    // Next, we check the types on a numeric level.
+    final TypeRegistry typeRegistry = context.getTypeRegistry();
+    try
+    {
+      final Number number1 = typeRegistry.convertToNumber(type1, value1);
+      final Number number2 = typeRegistry.convertToNumber(type2, value2);
+      final BigDecimal bd1 = new BigDecimal(number1.toString());
+      final BigDecimal bd2 = new BigDecimal(number2.toString());
+
+      if (bd1.signum() != bd2.signum())
+      {
+        if (bd1.signum() < 0)
+        {
+          return DefaultComparator.LESS;
+        }
+        else if (bd1.signum() > 0)
+        {
+          return DefaultComparator.MORE;
+        }
+      }
+
+      final BigDecimal result = bd1.subtract(bd2);
+      if (result.signum() == 0)
+      {
+        return DefaultComparator.EQUAL;
+      }
+      if (result.signum() > 0)
+      {
+        return DefaultComparator.MORE;
+      }
+      return DefaultComparator.LESS;
+    }
+    catch(TypeConversionException nfe)
+    {
+      // Ignore ..
+    }
+
+    // And finally convert them to text and compare the text values ..
     // Convert both values to text ..
     final String text1 = typeRegistry.convertToText(type1, value1);
     final String text2 = typeRegistry.convertToText(type2, value2);

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FormulaFunction.java,v 1.13 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -212,7 +212,18 @@ public class FormulaFunction extends AbstractLValue
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_FUNCTION_VALUE);
     }
-    return function.evaluate(context, new FormulaParameterCallback(this));
+    try
+    {
+      return function.evaluate(context, new FormulaParameterCallback(this));
+    }
+    catch(EvaluationException e)
+    {
+      throw e;
+    }
+    catch(Exception e)
+    {
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_UNEXPECTED_VALUE);
+    }
   }
 
   /**

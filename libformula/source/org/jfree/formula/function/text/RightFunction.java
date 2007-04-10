@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: RightFunction.java,v 1.4 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -38,6 +38,7 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
+import org.jfree.formula.typing.coretypes.TextType;
 
 /**
  * This function returns a selected number of text characters from the right.<br/>
@@ -54,7 +55,8 @@ public class RightFunction implements Function
   {
   }
 
-  public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
+  public TypeValuePair evaluate(final FormulaContext context,
+                                final ParameterCallback parameters) throws EvaluationException
   {
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount < 1 || parameterCount > 2)
@@ -67,34 +69,33 @@ public class RightFunction implements Function
     final Object textValue = parameters.getValue(0);
 
     final String text = typeRegistry.convertToText(textType, textValue);
-    int l = -1;
+    final int length;
     if(parameterCount == 2)
     {
-      final Type lengthType = parameters.getType(1);
-      final Object lengthValue = parameters.getValue(1);
-      final Number length = typeRegistry.convertToNumber(lengthType, lengthValue);
-      if(length != null)
+      final Number lengthVal = typeRegistry.convertToNumber(parameters.getType(1), parameters.getValue(1));
+      if (lengthVal.doubleValue() < 0)
       {
-        l = length.intValue();
+        throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
       }
+      length = lengthVal.intValue();
     }
     else
     {
-      l = 1;
+      length = 1;
     }
 
-    if(text == null || l < 0)
+    if(text == null || length < 0)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
-    int s = text.length()-l+1;
+    int s = text.length()-length +1;
     if(s < 1)
     {
       s = 1;
     }
     final MidFunction function = new MidFunction();
-    return function.process(text, new Integer(s), new Integer(l));
+    return new TypeValuePair(TextType.TYPE, function.process(text, new Integer(s), new Integer(length)));
   }
 
   public String getCanonicalName()
