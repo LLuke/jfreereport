@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PageStateList.java,v 1.3 2007/04/01 18:49:26 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -143,7 +143,7 @@ public class PageStateList
      *
      * @throws ReportProcessingException if there was a problem processing the report.
      */
-    protected PageState restoreState (final int count, final PageState rootstate)
+    private PageState restoreState (final int count, final PageState rootstate)
         throws ReportProcessingException, StateException,
         ReportDataFactoryException, DataSourceException
     {

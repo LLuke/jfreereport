@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PaginatingReportProcessor.java,v 1.14 2007/04/01 18:49:26 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -198,6 +198,9 @@ public abstract class PaginatingReportProcessor extends AbstractReportProcessor
           {
             logicalMapping.add(result);
           }
+
+          logPageCount = newLogPageCount;
+          physPageCount = newPhysPageCount;
 
           final ReportTargetState targetState = target.saveState();
           final PageState state =

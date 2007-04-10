@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SectionLayoutController.java,v 1.13 2007/04/01 18:49:26 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -170,7 +170,7 @@ public class SectionLayoutController extends ElementLayoutController
         final SectionLayoutController derived = (SectionLayoutController) clone();
         derived.setProcessingState(ElementLayoutController.NOT_STARTED);
         derived.setFlowController(cfc);
-        derived.setIndex(0);
+        derived.resetSectionForRepeat();
         return derived;
       }
     }
@@ -180,6 +180,11 @@ public class SectionLayoutController extends ElementLayoutController
     derived.setProcessingState(ElementLayoutController.FINISHED);
     derived.setFlowController(fc);
     return derived;
+  }
+
+  protected void resetSectionForRepeat()
+  {
+    setIndex(0);
   }
 
   protected FlowController finishData(final ReportTarget target,
