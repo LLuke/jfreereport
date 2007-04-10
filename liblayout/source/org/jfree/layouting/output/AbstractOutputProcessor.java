@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractOutputProcessor.java,v 1.10 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -245,7 +245,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor
   }
 
 
-  public final void processContent(LogicalPageBox logicalPage)
+  public final void processContent(final LogicalPageBox logicalPage)
   {
     if (isGlobalStateComputed() == false)
     {
@@ -283,7 +283,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor
   protected abstract void processPageContent(final LogicalPageKey logicalPageKey,
                                              final LogicalPageBox logicalPage);
 
-  public void processDocumentMetaData(DocumentContext documentContext)
+  public void processDocumentMetaData(final DocumentContext documentContext)
   {
     this.documentContext = documentContext;
   }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PaginatingRenderer.java,v 1.11 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -84,7 +84,7 @@ public class PaginatingRenderer extends AbstractRenderer
     private CleanPaginatedBoxesStep cleanPaginatedBoxesStep;
     private UpdateTokensStep updateTokensStep;
 
-    public DefaultFlowRendererState(PaginatingRenderer renderer)
+    protected DefaultFlowRendererState(final PaginatingRenderer renderer)
         throws StateException
     {
       super(renderer);
@@ -116,7 +116,7 @@ public class PaginatingRenderer extends AbstractRenderer
      * @return the saved state
      * @throws StateException
      */
-    public StatefullComponent restore(LayoutProcess layoutProcess)
+    public StatefullComponent restore(final LayoutProcess layoutProcess)
         throws StateException
     {
       final PaginatingRenderer defaultRenderer = new PaginatingRenderer(layoutProcess, false);
@@ -157,7 +157,7 @@ public class PaginatingRenderer extends AbstractRenderer
   private CleanPaginatedBoxesStep cleanPaginatedBoxesStep;
   private UpdateTokensStep updateTokensStep;
 
-  protected PaginatingRenderer(final LayoutProcess layoutProcess, boolean init)
+  protected PaginatingRenderer(final LayoutProcess layoutProcess, final boolean init)
   {
     super(layoutProcess, init);
     if (init)
@@ -187,7 +187,7 @@ public class PaginatingRenderer extends AbstractRenderer
 
   protected void validateOutput() throws NormalizationException
   {
-    LogicalPageBox logicalPageBox = getLogicalPageBox();
+    final LogicalPageBox logicalPageBox = getLogicalPageBox();
     if (validateModelStep.isLayoutable(logicalPageBox) == false)
     {
 //      final RenderNode nodeById = logicalPageBox.findNodeById(validateModelStep.getLayoutFailureNodeId());
@@ -222,6 +222,9 @@ public class PaginatingRenderer extends AbstractRenderer
       if (paginationStep.performPagebreak(logicalPageBox) ||
           logicalPageBox.isOpen() == false)
       {
+        // Note: This logic might fail if the last commit causes more than one pagebreak.
+        // We may have to find a 'content-based' indicator when to shut-down the system.
+
         // A new page has been started. Recover the page-grid, then restart
         // everything from scratch. (We have to recompute, as the pages may
         // be different now, due to changed margins or page definitions)

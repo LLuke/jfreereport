@@ -23,13 +23,11 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CSSValueResolverUtility.java,v 1.9 2007/04/02 11:41:13 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.layouting.layouter.style;
-
-import java.math.BigDecimal;
 
 import org.jfree.fonts.registry.FontMetrics;
 import org.jfree.layouting.input.style.values.CSSNumericType;
@@ -39,7 +37,6 @@ import org.jfree.layouting.input.style.values.CSSStringValue;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.layouter.context.FontSpecification;
 import org.jfree.layouting.layouter.context.LayoutContext;
-import org.jfree.layouting.layouter.model.LayoutElement;
 import org.jfree.layouting.output.OutputProcessorFeature;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
@@ -160,21 +157,28 @@ public class CSSValueResolverUtility
       return ((value.getValue() * 10 * 72.0d) / 254.0d);
     }
 
-    if (metaData == null)
-    {
-      return 0;
-    }
-
     if (CSSNumericType.PX.equals(value.getType()))
     {
-      final int pixelPerInch = (int) metaData.getNumericFeatureValue
-          (OutputProcessorFeature.DEVICE_RESOLUTION);
+      final int pixelPerInch;
+      if (metaData != null)
+      {
+        pixelPerInch = (int) metaData.getNumericFeatureValue(OutputProcessorFeature.DEVICE_RESOLUTION);
+      }
+      else
+      {
+        pixelPerInch = 96;
+      }
       if (pixelPerInch <= 0)
       {
         // we assume 72 pixel per inch ...
         return value.getValue();
       }
       return value.getValue() * 72d / pixelPerInch;
+    }
+
+    if (metaData == null)
+    {
+      return 0;
     }
 
     if (context != null)
@@ -245,21 +249,28 @@ public class CSSValueResolverUtility
       return (internal * 10 * 72 / 254);
     }
 
-    if (metaData == null)
-    {
-      return 0;
-    }
-
     if (CSSNumericType.PX.equals(value.getType()))
     {
-      final int pixelPerInch = (int) metaData.getNumericFeatureValue
-          (OutputProcessorFeature.DEVICE_RESOLUTION);
+      final int pixelPerInch;
+      if (metaData != null)
+      {
+        pixelPerInch = (int) metaData.getNumericFeatureValue(OutputProcessorFeature.DEVICE_RESOLUTION);
+      }
+      else
+      {
+        pixelPerInch = 96;
+      }
       if (pixelPerInch <= 0)
       {
         // we assume 72 pixel per inch ...
         return internal;
       }
       return internal * 72 / pixelPerInch;
+    }
+
+    if (metaData == null)
+    {
+      return 0;
     }
 
     if (context != null)
@@ -388,6 +399,60 @@ public class CSSValueResolverUtility
     return defaultValue;
   }
 
+
+  public static CSSNumericValue convertLength(final CSSNumericValue value, final CSSNumericType type)
+  {
+    if (type == CSSNumericType.NUMBER || type == CSSNumericType.PERCENTAGE || type == CSSNumericType.DEG)
+    {
+      throw new IllegalArgumentException();
+    }
+    final CSSNumericType valueType = value.getType();
+    if (valueType == CSSNumericType.NUMBER || valueType == CSSNumericType.PERCENTAGE || valueType == CSSNumericType.DEG)
+    {
+      throw new IllegalArgumentException();
+    }
+    if (valueType == type)
+    {
+      return value;
+    }
+
+    final double targetFactor = getFactor(type);
+    final double sourceFactor = getFactor(valueType);
+    final double unitvalue = value.getValue() * targetFactor / sourceFactor;
+    return CSSNumericValue.createValue(type, unitvalue);
+  }
+
+  private static double getFactor (final CSSNumericType type)
+  {
+    for (int i = 0; i < types.length; i++)
+    {
+      final CSSNumericType numericType = types[i];
+      if (type == numericType)
+      {
+        return vals[i];
+      }
+    }
+    throw new IllegalArgumentException();
+  }
+
+  private static CSSNumericType[] types = new CSSNumericType[]{
+      CSSNumericType.CM,
+      CSSNumericType.MM,
+      CSSNumericType.PX,
+      CSSNumericType.PT,
+      CSSNumericType.PC,
+      CSSNumericType.INCH
+  };
+
+  private static double[] vals = new double[]{
+      254, // CM
+      2540, //MM
+      9600, // PX
+      7200, // PT
+      600, // PC
+      100 // Inch
+  };
+  
   private CSSValueResolverUtility()
   {
   }

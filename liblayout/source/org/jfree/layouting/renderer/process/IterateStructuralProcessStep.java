@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: IterateStructuralProcessStep.java,v 1.7 2007/04/02 11:41:20 taqua Exp $
+ * $Id: IterateStructuralProcessStep.java,v 1.8 2007/04/05 10:01:12 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -132,7 +132,7 @@ public abstract class IterateStructuralProcessStep
 
   }
 
-  protected void processBoxChilds(RenderBox box)
+  protected void processBoxChilds(final RenderBox box)
   {
     RenderNode node = box.getFirstChild();
     while (node != null)

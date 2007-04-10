@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: EndSequenceElement.java,v 1.6 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.layouting.renderer.process.layoutrules;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 
 /**
  * This marks the end of an inline-element. It represents the border and
@@ -55,7 +56,7 @@ public class EndSequenceElement  implements InlineSequenceElement
    */
   public long getMinimumWidth()
   {
-    final StaticBoxLayoutProperties blp = node.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = node.getComputedLayoutProperties();
     return blp.getBorderRight() + blp.getPaddingRight() + blp.getMarginRight();
   }
 

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TextElementAlignContext.java,v 1.5 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -45,12 +45,12 @@ public class TextElementAlignContext extends AlignContext
   public TextElementAlignContext(final RenderableText text)
   {
     super(text);
-    ExtendedBaselineInfo baselineInfo = text.getBaselineInfo();
+    final ExtendedBaselineInfo baselineInfo = text.getBaselineInfo();
     this.baselines = baselineInfo.getBaselines();
     setDominantBaseline(baselineInfo.getDominantBaseline());
   }
 
-  public long getBaselineDistance(int baseline)
+  public long getBaselineDistance(final int baseline)
   {
     return (baselines[baseline] - baselines[getDominantBaseline()]) + baselineShift;
   }

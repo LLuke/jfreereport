@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ComputeICMMetricsStep.java,v 1.9 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -35,6 +35,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.util.geom.StrictDimension;
 import org.jfree.util.Log;
@@ -107,7 +108,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
   protected void finishInlineLevelBox(final RenderBox box)
   {
     // Sum up the width; Maximize the height.; add borders and padding
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
 
     // horizontal border and padding ..
     final long hbp = blp.getBorderLeft() + blp.getBorderRight() +
@@ -138,7 +139,7 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
   protected void finishBlockLevelBox(final RenderBox box)
   {
     // Sum up the height; Maximize the width.; add borders and padding
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
 
     // horizontal border and padding ..
     final long hbp = blp.getBorderLeft() + blp.getBorderRight() +

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: GraphicsOutputProcessor.java,v 1.7 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -52,10 +52,10 @@ public class GraphicsOutputProcessor extends AbstractPageableProcessor
   private OutputProcessorMetaData metaData;
   private GraphicsContentInterceptor interceptor;
 
-  public GraphicsOutputProcessor(Configuration configuration)
+  public GraphicsOutputProcessor(final Configuration configuration)
   {
     super(configuration);
-    DefaultFontStorage fontStorage = new DefaultFontStorage(new AWTFontRegistry());
+    final DefaultFontStorage fontStorage = new DefaultFontStorage(new AWTFontRegistry());
     metaData = new GraphicsOutputProcessorMetaData(fontStorage, false);
   }
 
@@ -92,7 +92,7 @@ public class GraphicsOutputProcessor extends AbstractPageableProcessor
     interceptor.processPhysicalPage(pageKey, pageDrawable);
   }
 
-  protected void processLogicalPage (LogicalPageKey key, LogicalPageBox logicalPage)
+  protected void processLogicalPage (final LogicalPageKey key, final LogicalPageBox logicalPage)
   {
     final LogicalPageDrawable drawable = new LogicalPageDrawable(logicalPage);
     interceptor.processLogicalPage(key, drawable);

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlPrinter.java,v 1.9 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -82,6 +82,7 @@ import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
@@ -389,7 +390,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
 
     final NodeLayoutProperties nlp = box.getNodeLayoutProperties();
     //final BoxLayoutProperties blp = box.getBoxLayoutProperties();
-    final StaticBoxLayoutProperties sblp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties sblp = box.getComputedLayoutProperties();
     builder.append(LineStyleKeys.VERTICAL_ALIGN, nlp.getVerticalAlignment());
 
     if (sblp.getPaddingTop() > 0 ||

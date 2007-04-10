@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractPageableProcessor.java,v 1.13 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -39,7 +39,6 @@ import org.jfree.layouting.output.AbstractOutputProcessor;
 import org.jfree.layouting.renderer.PaginatingRenderer;
 import org.jfree.layouting.renderer.PrototypeBuildingRenderer;
 import org.jfree.layouting.renderer.Renderer;
-import org.jfree.layouting.renderer.PrintingRenderer;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.util.Configuration;
@@ -61,7 +60,7 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
     this.physicalPages = new ArrayList();
   }
 
-  public Renderer createRenderer(LayoutProcess layoutProcess)
+  public Renderer createRenderer(final LayoutProcess layoutProcess)
   {
     if (isGlobalStateComputed() == false)
     {
@@ -91,7 +90,7 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
     return physicalPages.size();
   }
 
-  public PhysicalPageKey getPhysicalPage(int page)
+  public PhysicalPageKey getPhysicalPage(final int page)
   {
     if (isPaginationFinished() == false)
     {
@@ -134,7 +133,7 @@ public abstract class AbstractPageableProcessor extends AbstractOutputProcessor
       {
         for (int col = 0; col < colCount; col++)
         {
-          PhysicalPageKey pageKey = logicalPageKey.getPage(col, row);
+          final PhysicalPageKey pageKey = logicalPageKey.getPage(col, row);
           if (selector.isPhysicalPageAccepted(pageKey))
           {
             processPhysicalPage(pageGrid, logicalPage, row, col, pageKey);

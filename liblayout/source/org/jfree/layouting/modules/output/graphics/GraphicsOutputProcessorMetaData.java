@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: GraphicsOutputProcessorMetaData.java,v 1.6 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -66,11 +66,6 @@ public class GraphicsOutputProcessorMetaData
   public String getExportDescriptor()
   {
     return "pageable/X-AWT-Graphics";
-  }
-
-  public boolean isPagebreakAware()
-  {
-    return true;
   }
 
   public boolean isIterative()

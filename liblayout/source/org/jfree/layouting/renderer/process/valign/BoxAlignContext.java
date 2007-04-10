@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BoxAlignContext.java,v 1.7 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.layouting.renderer.process.valign;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.text.ExtendedBaselineInfo;
 import org.jfree.layouting.renderer.text.TextUtility;
 
@@ -62,7 +63,7 @@ public class BoxAlignContext extends AlignContext
     setDominantBaseline(TextUtility.translateDominantBaseline
         (dominantBaselineValue, baselineInfo.getDominantBaseline()));
 
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
     insetsTop = blp.getBorderTop() + blp.getPaddingTop();
     insetsBottom = blp.getBorderBottom() + blp.getPaddingBottom();
 

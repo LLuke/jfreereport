@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LogicalPageBox.java,v 1.21 2007/04/02 11:41:18 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -111,7 +111,7 @@ public class LogicalPageBox extends BlockRenderBox
     }
 
     //this.subFlows = new ArrayList();
-    NormalFlowRenderBox contentArea =
+    final NormalFlowRenderBox contentArea =
         new NormalFlowRenderBox(EmptyBoxDefinition.getInstance());
     this.contentAreaId = contentArea.getInstanceId();
     this.headerArea = new PageAreaRenderBox(EmptyBoxDefinition.getInstance());
@@ -131,7 +131,7 @@ public class LogicalPageBox extends BlockRenderBox
     nodeLayoutProperties.setTagName("logical-page");
   }
 
-  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  public void appyStyle(final LayoutContext context, final OutputProcessorMetaData metaData)
   {
     super.appyStyle(context, metaData);
     final NodeLayoutProperties nodeLayoutProperties = getNodeLayoutProperties();
@@ -139,7 +139,7 @@ public class LogicalPageBox extends BlockRenderBox
     nodeLayoutProperties.setTagName("logical-page");
   }
 
-  public void updatePageArea(PageGrid pageGrid)
+  public void updatePageArea(final PageGrid pageGrid)
   {
     if (pageGrid == null)
     {
@@ -161,7 +161,7 @@ public class LogicalPageBox extends BlockRenderBox
     {
       for (int col = 0; col < pageGrid.getColumnCount(); col++)
       {
-        PhysicalPageBox box = pageGrid.getPage(row, col);
+        final PhysicalPageBox box = pageGrid.getPage(row, col);
         pageHeights[row] = Math.min(pageHeights[row], box.getImageableHeight());
         pageWidths[col] = Math.min(pageWidths[col], box.getImageableWidth());
       }
@@ -238,7 +238,7 @@ public class LogicalPageBox extends BlockRenderBox
     return getContentArea().getInsertationPoint();
   }
 
-  public long[] getPhysicalBreaks(int axis)
+  public long[] getPhysicalBreaks(final int axis)
   {
     if (axis == HORIZONTAL_AXIS)
     {
@@ -259,7 +259,7 @@ public class LogicalPageBox extends BlockRenderBox
    *
    * @return
    */
-  public RenderNode deriveFrozen(boolean deepDerive)
+  public RenderNode deriveFrozen(final boolean deepDerive)
   {
     final LogicalPageBox box = (LogicalPageBox) super.deriveFrozen(deepDerive);
     box.headerArea = (PageAreaRenderBox) headerArea.deriveFrozen(deepDerive);
@@ -283,7 +283,7 @@ public class LogicalPageBox extends BlockRenderBox
    *
    * @return
    */
-  public RenderNode derive(boolean deepDerive)
+  public RenderNode derive(final boolean deepDerive)
   {
     final LogicalPageBox box = (LogicalPageBox) super.derive(deepDerive);
     box.headerArea = (PageAreaRenderBox) headerArea.derive(deepDerive);
@@ -376,17 +376,17 @@ public class LogicalPageBox extends BlockRenderBox
     this.normalFlowActive = normalFlowActive;
   }
 
-  public void insertFirst(RenderNode node)
+  public void insertFirst(final RenderNode node)
   {
     insertBefore(getFirstChild(), node);
   }
 
-  public void insertLast(RenderNode node)
+  public void insertLast(final RenderNode node)
   {
     insertAfter(getLastChild(), node);
   }
 
-  public RenderNode findNodeById(Object instanceId)
+  public RenderNode findNodeById(final Object instanceId)
   {
     // quick check
     final RenderNode footerNode = footerArea.findNodeById(instanceId);

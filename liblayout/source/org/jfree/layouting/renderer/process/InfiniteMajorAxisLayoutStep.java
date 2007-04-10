@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: InfiniteMajorAxisLayoutStep.java,v 1.12 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -31,26 +31,25 @@ package org.jfree.layouting.renderer.process;
 
 import org.jfree.layouting.renderer.border.RenderLength;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.FinishedRenderNode;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
-import org.jfree.layouting.renderer.model.NodeLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphPoolBox;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
+import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
-import org.jfree.layouting.renderer.model.RenderableReplacedContent;
-import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
 import org.jfree.layouting.renderer.process.valign.BoxAlignContext;
 import org.jfree.layouting.renderer.process.valign.InlineBlockAlignContext;
 import org.jfree.layouting.renderer.process.valign.NodeAlignContext;
+import org.jfree.layouting.renderer.process.valign.ReplacedContentAlignContext;
 import org.jfree.layouting.renderer.process.valign.TextElementAlignContext;
 import org.jfree.layouting.renderer.process.valign.VerticalAlignmentProcessor;
-import org.jfree.layouting.renderer.process.valign.ReplacedContentAlignContext;
 import org.jfree.util.FastStack;
 
 /**
@@ -239,7 +238,7 @@ public class InfiniteMajorAxisLayoutStep
       }
       else
       {
-        final StaticBoxLayoutProperties blp = parent.getStaticBoxLayoutProperties();
+        final ComputedLayoutProperties blp = parent.getComputedLayoutProperties();
         final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
 
         node.setDirty(true);
@@ -249,7 +248,7 @@ public class InfiniteMajorAxisLayoutStep
     // The parent is a inline box.
     else if (parent != null)
     {
-      final StaticBoxLayoutProperties blp = parent.getStaticBoxLayoutProperties();
+      final ComputedLayoutProperties blp = parent.getComputedLayoutProperties();
       final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
 
       node.setDirty(true);
@@ -272,7 +271,7 @@ public class InfiniteMajorAxisLayoutStep
     final long computedHeight =
         preferredHeight.resolve(computedWidth.resolve(0));
 
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
     final long insetBottom = blp.getBorderBottom() + blp.getPaddingBottom();
 
     final RenderNode lastChildNode = box.getLastChild();
@@ -504,7 +503,7 @@ public class InfiniteMajorAxisLayoutStep
     // or whether moving them violated any of the inner-pagebreak constraints.
     final VerticalAlignmentProcessor processor = new VerticalAlignmentProcessor();
 
-    final StaticBoxLayoutProperties blp = inlineRenderBox.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = inlineRenderBox.getComputedLayoutProperties();
     final long insetTop = (blp.getBorderTop() + blp.getPaddingTop());
 
     final long contentAreaY1 = inlineRenderBox.getY() + insetTop;

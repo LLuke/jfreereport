@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractAlignmentProcessor.java,v 1.10 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,16 +32,16 @@ package org.jfree.layouting.renderer.process;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.jfree.layouting.renderer.ModelPrinter;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
 import org.jfree.layouting.renderer.process.layoutrules.EndSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
-import org.jfree.layouting.renderer.ModelPrinter;
 import org.jfree.layouting.util.LongList;
 import org.jfree.util.FastStack;
 
@@ -112,7 +112,7 @@ public abstract class AbstractAlignmentProcessor
     return endOfLine;
   }
 
-  protected long getPageBreak(int pageIndex)
+  protected long getPageBreak(final int pageIndex)
   {
     return pagebreaks[pageIndex];
   }
@@ -137,7 +137,7 @@ public abstract class AbstractAlignmentProcessor
     this.skipIndex = skipIndex;
   }
 
-  public int iterate(InlineSequenceElement[] elements, int maxPos)
+  public int iterate(final InlineSequenceElement[] elements, final int maxPos)
   {
     breakableIndex = -1;
     skipIndex = -1;
@@ -163,7 +163,7 @@ public abstract class AbstractAlignmentProcessor
     for (int i = 1; i < maxPos; i++)
     {
       final InlineSequenceElement element = elements[i];
-      int elementType = classifyInput(element);
+      final int elementType = classifyInput(element);
       if (elementType == END)
       {
         lastElementType = elementType;
@@ -176,7 +176,7 @@ public abstract class AbstractAlignmentProcessor
         continue;
       }
 
-      int newIndex = handleElement(startIndex, i - startIndex);
+      final int newIndex = handleElement(startIndex, i - startIndex);
       if (newIndex <= startIndex)
       {
         return startIndex;
@@ -199,10 +199,10 @@ public abstract class AbstractAlignmentProcessor
    * @param end
    * @param breaks
    */
-  public void initialize(InlineSequenceElement[] sequence,
-                         long start,
-                         long end,
-                         PageGrid breaks)
+  public void initialize(final InlineSequenceElement[] sequence,
+                         final long start,
+                         final long end,
+                         final PageGrid breaks)
   {
     if (end < start)
     {
@@ -345,7 +345,7 @@ public abstract class AbstractAlignmentProcessor
       {
         for (int j = 0; j < pendingElements.size(); j++)
         {
-          RenderNode node = (RenderNode) pendingElements.get(j);
+          final RenderNode node = (RenderNode) pendingElements.get(j);
           box.addGeneratedChild(node);
         }
         pendingElements.clear();
@@ -369,7 +369,7 @@ public abstract class AbstractAlignmentProcessor
     final int openContexts = contexts.size();
     for (int i = 0; i < openContexts; i++)
     {
-      RenderBox renderBox = (RenderBox) contexts.get(i);
+      final RenderBox renderBox = (RenderBox) contexts.get(i);
       renderBox.setWidth(getEndOfLine() - box.getX());
 
       final InlineRenderBox rightBox = (InlineRenderBox)
@@ -394,7 +394,7 @@ public abstract class AbstractAlignmentProcessor
    * @return the processing position. Linebreaks will be inserted, if the
    *         returned value is equal or less the start index.
    */
-  protected int handleElement(int start, int count)
+  protected int handleElement(final int start, final int count)
   {
     final int endIndex = start + count;
     // always look at all elements.
@@ -406,7 +406,7 @@ public abstract class AbstractAlignmentProcessor
     long width = 0;
     for (int i = 0; i < endIndex; i++)
     {
-      InlineSequenceElement element = sequenceElements[i];
+      final InlineSequenceElement element = sequenceElements[i];
       width += element.getMaximumWidth();
       if (element instanceof StartSequenceElement ||
           element instanceof EndSequenceElement)
@@ -428,7 +428,7 @@ public abstract class AbstractAlignmentProcessor
 
   protected abstract int handleLayout(int start, int count, int contentIndex, long usedWidth);
 
-  private int classifyInput(InlineSequenceElement element)
+  private int classifyInput(final InlineSequenceElement element)
   {
     if (element instanceof StartSequenceElement)
     {
@@ -449,7 +449,7 @@ public abstract class AbstractAlignmentProcessor
                                     final long position,
                                     final long itemElementWidth)
   {
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
     box.setX(position + blp.getMarginLeft());
     final long width = itemElementWidth - blp.getMarginLeft() - blp.getMarginRight();
     if (width == 0)
@@ -466,7 +466,7 @@ public abstract class AbstractAlignmentProcessor
     box.setContentAreaX1(box.getX() + leftInsets);
     box.setContentAreaX2(box.getX() + box.getWidth() - rightInsets);
 
-    InfiniteMinorAxisLayoutStep layoutStep = new InfiniteMinorAxisLayoutStep();
+    final InfiniteMinorAxisLayoutStep layoutStep = new InfiniteMinorAxisLayoutStep();
     layoutStep.continueComputation(getPageGrid(), box);
   }
 

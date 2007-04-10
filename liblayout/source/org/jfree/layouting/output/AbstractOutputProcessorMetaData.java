@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractOutputProcessorMetaData.java,v 1.15 2007/04/02 11:41:16 taqua Exp $
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.16 2007/04/05 10:01:12 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -57,7 +57,6 @@ public abstract class AbstractOutputProcessorMetaData
         implements OutputProcessorMetaData
 {
   private HashSet features;
-  private int defaultFontSize;
   private HashMap fontSizes;
   private HashMap numericFeatures;
   private HashMap fontFamilies;
@@ -77,9 +76,8 @@ public abstract class AbstractOutputProcessorMetaData
 
     final ExtendedConfiguration extendedConfig =
             LibLayoutBoot.getInstance().getExtendedConfig();
-    defaultFontSize =
-            extendedConfig.getIntProperty(
-                    "org.jfree.layouting.defaults.FontSize", 12);
+    final double defaultFontSize = extendedConfig.getIntProperty
+        ("org.jfree.layouting.defaults.FontSize", 12);
 
     final int xxSmall = extendedConfig.getIntProperty
             ("org.jfree.layouting.defaults.FontSizeFactor.xx-small", 60);
@@ -118,9 +116,13 @@ public abstract class AbstractOutputProcessorMetaData
     setNumericFeatureValue(OutputProcessorFeature.DEFAULT_FONT_SIZE,
             defaultFontSize);
 
+    final double fontSmoothThreshold =
+        extendedConfig.getIntProperty("org.jfree.layouting.defaults.FontSmoothThreshold", 8);
+    setNumericFeatureValue(OutputProcessorFeature.FONT_SMOOTH_THRESHOLD, fontSmoothThreshold);
+
   }
 
-  protected void setFamilyMapping(CSSConstant family, String name)
+  protected void setFamilyMapping(final CSSConstant family, final String name)
   {
     if (family == null)
     {
@@ -133,12 +135,12 @@ public abstract class AbstractOutputProcessorMetaData
     fontFamilies.put(family, name);
   }
 
-  public double getFontSize(CSSConstant constant)
+  public double getFontSize(final CSSConstant constant)
   {
     Double d = (Double) fontSizes.get(constant);
     if (d == null)
     {
-      return defaultFontSize;
+      return getNumericFeatureValue(OutputProcessorFeature.DEFAULT_FONT_SIZE);
     }
     return d.doubleValue();
   }

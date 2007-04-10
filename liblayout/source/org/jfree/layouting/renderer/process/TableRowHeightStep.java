@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableRowHeightStep.java,v 1.11 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -41,7 +41,6 @@ import org.jfree.layouting.renderer.model.table.cols.TableColumnModel;
 import org.jfree.layouting.renderer.model.table.rows.TableRow;
 import org.jfree.layouting.renderer.model.table.rows.TableRowModel;
 import org.jfree.util.FastStack;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 10.10.2006, 14:10:08

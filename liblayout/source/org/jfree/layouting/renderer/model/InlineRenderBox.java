@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: InlineRenderBox.java,v 1.16 2007/04/02 11:41:18 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -53,7 +53,7 @@ public class InlineRenderBox extends RenderBox
     // Minor: The childs might be aligned on their position (shifted up or down)
     setMinorAxis(VERTICAL_AXIS);
   }
-
+  
 //
 //  /**
 //   * Returns the baseline info for the given node. This can be null, if the node

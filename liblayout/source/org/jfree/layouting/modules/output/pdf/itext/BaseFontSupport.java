@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BaseFontSupport.java,v 1.4 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -55,7 +55,7 @@ public class BaseFontSupport implements FontMapper
 {
   private static ResourceManager resourceManager;
 
-  protected synchronized static ResourceManager getResourceManager ()
+  protected static synchronized ResourceManager getResourceManager ()
   {
     if (resourceManager == null)
     {
@@ -212,7 +212,7 @@ public class BaseFontSupport implements FontMapper
           // strict mode here?
           embeddedOverride = false;
         }
-        BaseFontRecord fontRecord = createFontFromTTF
+        final BaseFontRecord fontRecord = createFontFromTTF
                 (registryFontRecord, bold, italic,
                         encoding, stringEncoding, embeddedOverride);
         if (fontRecord != null)
@@ -319,7 +319,7 @@ public class BaseFontSupport implements FontMapper
     final String rawFilename;
     if (fontRecord instanceof TrueTypeFontRecord)
     {
-      TrueTypeFontRecord ttfRecord = (TrueTypeFontRecord) fontRecord;
+      final TrueTypeFontRecord ttfRecord = (TrueTypeFontRecord) fontRecord;
       if (ttfRecord.getCollectionIndex() >= 0)
       {
         rawFilename = ttfRecord.getFontFile() + "," + ttfRecord.getCollectionIndex();
@@ -540,7 +540,7 @@ public class BaseFontSupport implements FontMapper
   public Font pdfToAwt (final BaseFont font, final int size)
   {
     final String logicalName = getFontName(font);
-    int style;
+    final int style;
     if (StringUtils.endsWithIgnoreCase(logicalName, "bolditalic"))
     {
       style = Font.ITALIC | Font.BOLD;
@@ -563,7 +563,7 @@ public class BaseFontSupport implements FontMapper
 
   private String getFontName (final BaseFont font)
   {
-    final String names[][] = font.getFullFontName();
+    final String[][] names = font.getFullFontName();
     if (names.length == 1)
     {
       return names[0][3];
@@ -572,14 +572,14 @@ public class BaseFontSupport implements FontMapper
     String nameExtr = null;
     for (int k = 0; k < names.length; ++k)
     {
-      final String name[] = names[k];
+      final String[] name = names[k];
       // Macintosh language english
-      if (name[0].equals("1") && name[1].equals("0"))
+      if ("1".equals(name[0]) && "0".equals(name[1]))
       {
         nameExtr = name[3];
       }
       // Microsoft language code for US-English ...
-      else if (name[2].equals("1033"))
+      else if ("1033".equals(name[2]))
       {
         nameExtr = name[3];
         break;
@@ -600,7 +600,7 @@ public class BaseFontSupport implements FontMapper
    *
    * @return true or false.
    */
-  public boolean isSansSerif (String fontName)
+  public boolean isSansSerif (final String fontName)
   {
     return StringUtils.startsWithIgnoreCase(fontName, "SansSerif")
             || StringUtils.startsWithIgnoreCase(fontName, "Dialog")
@@ -614,7 +614,7 @@ public class BaseFontSupport implements FontMapper
    *
    * @return true or false.
    */
-  public boolean isCourier (String fontName)
+  public boolean isCourier (final String fontName)
   {
     return (StringUtils.startsWithIgnoreCase(fontName, "dialoginput")
             || StringUtils.startsWithIgnoreCase(fontName, "monospaced"));
@@ -625,7 +625,7 @@ public class BaseFontSupport implements FontMapper
    *
    * @return true or false.
    */
-  public boolean isSerif (String fontName)
+  public boolean isSerif (final String fontName)
   {
     return (StringUtils.startsWithIgnoreCase(fontName, "serif"));
   }

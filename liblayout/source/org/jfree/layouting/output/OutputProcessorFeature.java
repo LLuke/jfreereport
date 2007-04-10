@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: OutputProcessorFeature.java,v 1.5 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -38,7 +38,7 @@ import java.io.Serializable;
  */
 public abstract class OutputProcessorFeature implements Serializable
 {
-  public static class BooleanOutputProcessorFeature extends OutputProcessorFeature
+  public static final class BooleanOutputProcessorFeature extends OutputProcessorFeature
   {
     public BooleanOutputProcessorFeature(final String name)
     {
@@ -46,7 +46,7 @@ public abstract class OutputProcessorFeature implements Serializable
     }
   }
 
-  public static class NumericOutputProcessorFeature extends OutputProcessorFeature
+  public static final class NumericOutputProcessorFeature extends OutputProcessorFeature
   {
     public NumericOutputProcessorFeature(final String name)
     {

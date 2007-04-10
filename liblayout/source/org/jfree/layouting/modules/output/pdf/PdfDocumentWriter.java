@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfDocumentWriter.java,v 1.4 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -72,7 +72,7 @@ public class PdfDocumentWriter
    * random values, but Adobe allows to have encryption without an owner password set.
    * Copied from iText
    */
-  private static final byte PDF_PASSWORD_PAD[] = {
+  private static final byte[] PDF_PASSWORD_PAD = {
     (byte) 0x28, (byte) 0xBF, (byte) 0x4E, (byte) 0x5E, (byte) 0x4E, (byte) 0x75,
     (byte) 0x8A, (byte) 0x41, (byte) 0x64, (byte) 0x00, (byte) 0x4E, (byte) 0x56,
     (byte) 0xFF, (byte) 0xFA, (byte) 0x01, (byte) 0x08, (byte) 0x2E, (byte) 0x2E,
@@ -85,14 +85,11 @@ public class PdfDocumentWriter
   private PdfWriter writer;
   private boolean awaitOpenDocument;
   private Configuration config;
-  private float width;
-  private float height;
 
   /**
    * The PDF font support.
    */
   private BaseFontSupport fontSupport;
-  private Graphics2D graphics;
 
   public PdfDocumentWriter(final Configuration config,
                            final OutputStream out)
@@ -176,8 +173,8 @@ public class PdfDocumentWriter
       throws DocumentException
   {
     final PhysicalPageBox page = pageGrid.getPage(row, col);
-    width = (float) StrictGeomUtility.toExternalValue(page.getWidth());
-    height = (float) StrictGeomUtility.toExternalValue(page.getHeight());
+    final float width = (float) StrictGeomUtility.toExternalValue(page.getWidth());
+    final float height = (float) StrictGeomUtility.toExternalValue(page.getHeight());
 
     final Rectangle pageSize = new Rectangle(width, height);
 
@@ -205,10 +202,10 @@ public class PdfDocumentWriter
     }
     // todo: We should set some clipping or spanned pages will look funny ..
     // and now process the box ..
-    graphics = writer.getDirectContent().createGraphics(width, height, fontSupport);
+    final Graphics2D graphics = writer.getDirectContent().createGraphics(width, height, fontSupport);
 
-    LogicalPageDrawable logicalPageDrawable = new LogicalPageDrawable(logicalPage);
-    PhysicalPageDrawable drawable = new PhysicalPageDrawable(logicalPageDrawable, page);
+    final LogicalPageDrawable logicalPageDrawable = new LogicalPageDrawable(logicalPage);
+    final PhysicalPageDrawable drawable = new PhysicalPageDrawable(logicalPageDrawable, page);
     drawable.draw(graphics, new Rectangle2D.Double(0,0, width, height));
 
     graphics.dispose();
@@ -216,13 +213,13 @@ public class PdfDocumentWriter
     getDocument().newPage();
   }
 
-  protected void processLogicalPage(LogicalPageKey key,
-                                    LogicalPageBox logicalPage)
+  protected void processLogicalPage(final LogicalPageKey key,
+                                    final LogicalPageBox logicalPage)
       throws DocumentException
   {
 
-    width = (float) StrictGeomUtility.toExternalValue(logicalPage.getPageWidth());
-    height = (float) StrictGeomUtility.toExternalValue(logicalPage.getPageHeight());
+    final float width = (float) StrictGeomUtility.toExternalValue(logicalPage.getPageWidth());
+    final float height = (float) StrictGeomUtility.toExternalValue(logicalPage.getPageHeight());
 
     final Rectangle pageSize = new Rectangle(width, height);
 
@@ -234,9 +231,9 @@ public class PdfDocumentWriter
       getDocument().open();
     }
 
-    graphics = writer.getDirectContent().createGraphics(width, height, fontSupport);
+    final Graphics2D graphics = writer.getDirectContent().createGraphics(width, height, fontSupport);
     // and now process the box ..
-    LogicalPageDrawable logicalPageDrawable = new LogicalPageDrawable(logicalPage);
+    final LogicalPageDrawable logicalPageDrawable = new LogicalPageDrawable(logicalPage);
     logicalPageDrawable.draw(graphics, new Rectangle2D.Double(0,0, width, height));
 
     graphics.dispose();
@@ -272,7 +269,7 @@ public class PdfDocumentWriter
    */
   private char getVersion ()
   {
-    String version = config.getConfigProperty
+    final String version = config.getConfigProperty
         ("org.jfree.layouting.modules.output.pdf.Version");
 
     if (version == null)

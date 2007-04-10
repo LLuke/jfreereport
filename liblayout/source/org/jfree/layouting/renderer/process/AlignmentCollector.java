@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AlignmentCollector.java,v 1.7 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -35,6 +35,7 @@ import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.process.layoutrules.EndSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.InlineSequenceElement;
 import org.jfree.layouting.renderer.process.layoutrules.StartSequenceElement;
@@ -94,7 +95,7 @@ public class AlignmentCollector
     if (sequenceElement instanceof StartSequenceElement)
     {
       RenderBox box = (RenderBox) sequenceElement.getNode();
-      final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+      final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
       offset = blp.getBorderTop() + blp.getPaddingTop();
       height = offset + blp.getBorderBottom() + blp.getPaddingBottom();
       return offset;

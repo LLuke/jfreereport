@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BorderShapeFactory.java,v 1.12 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -45,8 +45,8 @@ import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.layouting.renderer.border.Border;
 import org.jfree.layouting.renderer.border.BorderCorner;
 import org.jfree.layouting.renderer.border.BorderEdge;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.layouting.util.geom.StrictInsets;
 
@@ -94,7 +94,7 @@ public class BorderShapeFactory
       this.stroke = stroke;
     }
 
-    public void draw(Graphics2D g2)
+    public void draw(final Graphics2D g2)
     {
       if (shape == null)
       {
@@ -153,7 +153,7 @@ public class BorderShapeFactory
     fillOps = new ArrayList();
 
     border = box.getBorder();
-    final StaticBoxLayoutProperties layoutProperties = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties layoutProperties = box.getComputedLayoutProperties();
     final StrictInsets bWidths = new StrictInsets
         (layoutProperties.getBorderTop(), layoutProperties.getBorderLeft(),
             layoutProperties.getBorderBottom(), layoutProperties.getBorderRight());
@@ -172,17 +172,17 @@ public class BorderShapeFactory
     backgroundColor = box.getBoxDefinition().getBackgroundColor();
   }
 
-  private Arc2D generateCorner(int type,
-                               double cornerX,
-                               double cornerY,
-                               BorderCorner corner,
-                               boolean fillShape)
+  private Arc2D generateCorner(final int type,
+                               final double cornerX,
+                               final double cornerY,
+                               final BorderCorner corner,
+                               final boolean fillShape)
   {
     if (corner.getHeight().getValue() == 0 || corner.getWidth().getValue() == 0)
     {
       return null;
     }
-    byte[] cornerFactors = CORNER_FACTORS[type];
+    final byte[] cornerFactors = CORNER_FACTORS[type];
 
     final double widthTopLeft =
         StrictGeomUtility.toExternalValue(corner.getWidth().getValue());
@@ -206,7 +206,7 @@ public class BorderShapeFactory
             Math.PI * type / 4.0, Math.PI / 4.0, open);
   }
 
-  private BasicStroke createStroke(BorderEdge edge, long internalWidth)
+  private BasicStroke createStroke(final BorderEdge edge, final long internalWidth)
   {
     final float effectiveWidth = (float) StrictGeomUtility.toExternalValue(internalWidth);
     // todo: depending on the stroke type, we need other strokes instead.
@@ -243,7 +243,7 @@ public class BorderShapeFactory
     return new BasicStroke(effectiveWidth);
   }
 
-  public void generateBorder(Graphics2D g2)
+  public void generateBorder(final Graphics2D g2)
   {
     generateTopEdge();
     generateLeftEdge();
@@ -252,13 +252,13 @@ public class BorderShapeFactory
 
     for (int i = 0; i < drawOps.size(); i++)
     {
-      BorderDrawOperation operation = (BorderDrawOperation) drawOps.get(i);
+      final BorderDrawOperation operation = (BorderDrawOperation) drawOps.get(i);
       operation.draw(g2);
     }
 
     for (int i = 0; i < fillOps.size(); i++)
     {
-      BorderDrawOperation operation = (BorderDrawOperation) fillOps.get(i);
+      final BorderDrawOperation operation = (BorderDrawOperation) fillOps.get(i);
       operation.fill(g2);
     }
 
@@ -268,7 +268,7 @@ public class BorderShapeFactory
     }
 
     // now we need some geometry stuff (yeah, I'm lazy!)
-    Area globalArea = new Area(new Rectangle2D.Double(x, y, width, height));
+    final Area globalArea = new Area(new Rectangle2D.Double(x, y, width, height));
 
     // for each corner:
     //
@@ -276,14 +276,14 @@ public class BorderShapeFactory
     // the global area.
     for (int i = 0; i < fillOps.size(); i++)
     {
-      BorderDrawOperation operation = (BorderDrawOperation) fillOps.get(i);
+      final BorderDrawOperation operation = (BorderDrawOperation) fillOps.get(i);
       final Shape shape = operation.shape;
       if (shape == null)
       {
         continue;
       }
 
-      Area cornerArea = new Area(shape.getBounds2D());
+      final Area cornerArea = new Area(shape.getBounds2D());
       cornerArea.subtract(new Area(shape));
       globalArea.subtract(cornerArea);
     }
@@ -294,7 +294,7 @@ public class BorderShapeFactory
     g2.fill(globalArea);
   }
 
-  private void draw(Shape s)
+  private void draw(final Shape s)
   {
     if (s == null)
     {
@@ -303,7 +303,7 @@ public class BorderShapeFactory
     drawOps.add(new BorderDrawOperation(s, color, stroke));
   }
 
-  private void fill(Shape s)
+  private void fill(final Shape s)
   {
     if (s == null)
     {
@@ -390,7 +390,7 @@ public class BorderShapeFactory
             y + height - secondHeight));
   }
 
-  private boolean isSimpleStyle (CSSValue value)
+  private boolean isSimpleStyle (final CSSValue value)
   {
     if (BorderStyle.GROOVE.equals(value))
     {

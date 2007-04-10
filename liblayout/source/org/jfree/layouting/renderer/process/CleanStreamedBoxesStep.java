@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CleanStreamedBoxesStep.java,v 1.4 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -45,7 +45,7 @@ public class CleanStreamedBoxesStep extends IterateVisualProcessStep
   {
   }
 
-  public void compute(LogicalPageBox pageBox)
+  public void compute(final LogicalPageBox pageBox)
   {
     if (startBlockLevelBox(pageBox))
     {

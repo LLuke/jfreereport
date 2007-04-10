@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: InfiniteMinorAxisLayoutStep.java,v 1.14 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -44,6 +44,7 @@ import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.page.PageGrid;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
@@ -257,7 +258,7 @@ public class InfiniteMinorAxisLayoutStep
     cellRenderBox.setX(effectiveCellPosition);
     cellRenderBox.setWidth(effectiveSize);
 
-    final StaticBoxLayoutProperties blp = cellRenderBox.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = cellRenderBox.getComputedLayoutProperties();
     // next, compute the width ...
 
     long leftPadding = blp.getBorderLeft();
@@ -286,7 +287,7 @@ public class InfiniteMinorAxisLayoutStep
       return;
     }
 
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
     final long x = computeX(box) + blp.getMarginLeft();
     box.setX(x);
     // next, compute the width ...
@@ -342,7 +343,7 @@ public class InfiniteMinorAxisLayoutStep
   {
     final long x = box.getX();
     final long contentEnd = box.getContentAreaX2();
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
     final long boxEnd = contentEnd + blp.getBorderRight() + blp.getPaddingRight();
     box.setWidth(boxEnd - x);
   }

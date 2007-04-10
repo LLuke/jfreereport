@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: QueryLogicalPageInterceptor.java,v 1.5 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -48,22 +48,22 @@ public class QueryLogicalPageInterceptor implements GraphicsContentInterceptor
     this.pageKey = pageKey;
   }
 
-  public boolean isLogicalPageAccepted(LogicalPageKey key)
+  public boolean isLogicalPageAccepted(final LogicalPageKey key)
   {
     return pageKey.equals(key);
   }
 
-  public void processLogicalPage(LogicalPageKey key, PageDrawable page)
+  public void processLogicalPage(final LogicalPageKey key, final PageDrawable page)
   {
     this.drawable = page;
   }
 
-  public boolean isPhysicalPageAccepted(PhysicalPageKey key)
+  public boolean isPhysicalPageAccepted(final PhysicalPageKey key)
   {
     return false;
   }
 
-  public void processPhysicalPage(PhysicalPageKey key, PageDrawable page)
+  public void processPhysicalPage(final PhysicalPageKey key, final PageDrawable page)
   {
   }
 

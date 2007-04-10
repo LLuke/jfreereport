@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RenderBox.java,v 1.32 2007/04/02 11:41:18 taqua Exp $
+ * $Id: RenderBox.java,v 1.33 2007/04/04 10:51:07 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -49,17 +49,13 @@ import org.jfree.util.Log;
 /**
  * A render-box corresponds to elements in a DOM tree.
  * <p/>
- * Each box has a size, paddings, margins and borders. Boxes may have one or
- * more childs.
+ * Each box has a size, paddings, margins and borders. Boxes may have one or more childs.
  * <p/>
- * While all nodes may have a position or dimensions, boxes are special, as they
- * can have borders, margins and paddings. Borders, paddings  and margins can
- * have percentages, the margins can additionally be 'auto'.
+ * While all nodes may have a position or dimensions, boxes are special, as they can have borders, margins and paddings.
+ * Borders, paddings  and margins can have percentages, the margins can additionally be 'auto'.
  * <p/>
- * The StrictInset variables for these properties contain the resolved values,
- * while the box-definition contain the unresolved values. The resolve values
- * are not valid unless the object has been validated to least least
- * 'LAYOUTING'.
+ * The StrictInset variables for these properties contain the resolved values, while the box-definition contain the
+ * unresolved values. The resolve values are not valid unless the object has been validated to least least 'LAYOUTING'.
  *
  * @author Thomas Morgner
  */
@@ -100,7 +96,7 @@ public abstract class RenderBox extends RenderNode
     return staticBoxLayoutProperties;
   }
 
-  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  public void appyStyle(final LayoutContext context, final OutputProcessorMetaData metaData)
   {
     super.appyStyle(context, metaData);
 
@@ -304,8 +300,7 @@ public abstract class RenderBox extends RenderNode
   }
 
   /**
-   * Inserts the given target after the specified node. If the node is null, the
-   * target is inserted as first node.
+   * Inserts the given target after the specified node. If the node is null, the target is inserted as first node.
    *
    * @param node
    * @param target
@@ -359,8 +354,8 @@ public abstract class RenderBox extends RenderNode
   }
 
   /**
-   * Inserts the given target directly before the the specified node. If the
-   * node is null, the element is inserted at the last position.
+   * Inserts the given target directly before the the specified node. If the node is null, the element is inserted at
+   * the last position.
    *
    * @param node
    * @param target
@@ -599,8 +594,8 @@ public abstract class RenderBox extends RenderNode
   }
 
   /**
-   * Clones this node. Be aware that cloning can get you into deep trouble, as
-   * the relations this node has may no longer be valid.
+   * Clones this node. Be aware that cloning can get you into deep trouble, as the relations this node has may no longer
+   * be valid.
    *
    * @return
    */
@@ -623,9 +618,8 @@ public abstract class RenderBox extends RenderNode
   }
 
   /**
-   * Derive creates a disconnected node that shares all the properties of the
-   * original node. The derived node will no longer have any parent, silbling,
-   * child or any other relationships with other nodes.
+   * Derive creates a disconnected node that shares all the properties of the original node. The derived node will no
+   * longer have any parent, silbling, child or any other relationships with other nodes.
    *
    * @return
    */
@@ -672,9 +666,8 @@ public abstract class RenderBox extends RenderNode
 
 
   /**
-   * Derive creates a disconnected node that shares all the properties of the
-   * original node. The derived node will no longer have any parent, silbling,
-   * child or any other relationships with other nodes.
+   * Derive creates a disconnected node that shares all the properties of the original node. The derived node will no
+   * longer have any parent, silbling, child or any other relationships with other nodes.
    *
    * @return
    */
@@ -713,9 +706,8 @@ public abstract class RenderBox extends RenderNode
 
 
   /**
-   * Derive creates a disconnected node that shares all the properties of the
-   * original node. The derived node will no longer have any parent, silbling,
-   * child or any other relationships with other nodes.
+   * Derive creates a disconnected node that shares all the properties of the original node. The derived node will no
+   * longer have any parent, silbling, child or any other relationships with other nodes.
    *
    * @return
    */
@@ -1072,9 +1064,11 @@ public abstract class RenderBox extends RenderNode
   }
 
   /**
-   * Performs a simple split. This box will be altered to form the left/top side
-   * of the split, and a derived empty box will be returned, which makes up the
-   * right/bottom side.
+   * Performs a simple split. This box will be altered to form the left/top side of the split, and a derived empty box
+   * will be returned, which makes up the right/bottom side.
+   * <p/>
+   * A split will only happen on inline-boxes during the line-break-step. In the ordinary layouting, splitting is not
+   * necesary.
    *
    * @param axis
    * @return

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ComputedLayoutProperties.java,v 1.3 2007/04/02 11:41:18 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -41,19 +41,36 @@ import org.jfree.layouting.renderer.border.RenderLength;
  */
 public class ComputedLayoutProperties implements Serializable
 {
+  private long marginLeft;
+  private long marginRight;
+  private long marginTop;
+  private long marginBottom;
+  private long paddingLeft;
+  private long paddingTop;
+  private long paddingRight;
+  private long paddingBottom;
+  private long borderLeft;
+  private long borderRight;
+  private long borderTop;
+  private long borderBottom;
+
   // This represents the computed with.
   private RenderLength blockContextWidth;
   // Either AUTO or a valid width.
   private RenderLength computedWidth;
 
-  public ComputedLayoutProperties(final RenderLength blockContextWidth,
-                                  final RenderLength computedWidth)
+  public ComputedLayoutProperties()
   {
-    setBlockContextWidth(blockContextWidth);
-    setComputedWidth(computedWidth);
   }
+  
+//  public ComputedLayoutProperties(final RenderLength blockContextWidth,
+//                                  final RenderLength computedWidth)
+//  {
+//    setBlockContextWidth(blockContextWidth);
+//    setComputedWidth(computedWidth);
+//  }
 
-  private void setBlockContextWidth(final RenderLength blockContextWidth)
+  public void setBlockContextWidth(final RenderLength blockContextWidth)
   {
     if (blockContextWidth.isPercentage())
     {
@@ -74,7 +91,7 @@ public class ComputedLayoutProperties implements Serializable
     }
   }
 
-  private void setComputedWidth(final RenderLength computedWidth)
+  public void setComputedWidth(final RenderLength computedWidth)
   {
     if (computedWidth.isPercentage())
     {
@@ -103,5 +120,146 @@ public class ComputedLayoutProperties implements Serializable
   public RenderLength getComputedWidth()
   {
     return computedWidth;
+  }
+
+  public long getMarginLeft()
+  {
+    return marginLeft;
+  }
+
+  public void setMarginLeft(final long marginLeft)
+  {
+    this.marginLeft = marginLeft;
+  }
+
+  public long getMarginRight()
+  {
+    return marginRight;
+  }
+
+  public void setMarginRight(final long marginRight)
+  {
+    this.marginRight = marginRight;
+  }
+
+  public long getMarginTop()
+  {
+    return marginTop;
+  }
+
+  public void setMarginTop(final long marginTop)
+  {
+    this.marginTop = marginTop;
+  }
+
+  public long getMarginBottom()
+  {
+    return marginBottom;
+  }
+
+  public void setMarginBottom(final long marginBottom)
+  {
+    this.marginBottom = marginBottom;
+  }
+
+  public long getPaddingLeft()
+  {
+    return paddingLeft;
+  }
+
+  public void setPaddingLeft(final long paddingLeft)
+  {
+    this.paddingLeft = paddingLeft;
+  }
+
+  public long getPaddingTop()
+  {
+    return paddingTop;
+  }
+
+  public void setPaddingTop(final long paddingTop)
+  {
+    this.paddingTop = paddingTop;
+  }
+
+  public long getPaddingRight()
+  {
+    return paddingRight;
+  }
+
+  public void setPaddingRight(final long paddingRight)
+  {
+    this.paddingRight = paddingRight;
+  }
+
+  public long getPaddingBottom()
+  {
+    return paddingBottom;
+  }
+
+  public void setPaddingBottom(final long paddingBottom)
+  {
+    this.paddingBottom = paddingBottom;
+  }
+
+  public long getBorderLeft()
+  {
+    return borderLeft;
+  }
+
+  public void setBorderLeft(final long borderLeft)
+  {
+    this.borderLeft = borderLeft;
+  }
+
+  public long getBorderRight()
+  {
+    return borderRight;
+  }
+
+  public void setBorderRight(final long borderRight)
+  {
+    this.borderRight = borderRight;
+  }
+
+  public long getBorderTop()
+  {
+    return borderTop;
+  }
+
+  public void setBorderTop(final long borderTop)
+  {
+    this.borderTop = borderTop;
+  }
+
+  public long getBorderBottom()
+  {
+    return borderBottom;
+  }
+
+  public void setBorderBottom(final long borderBottom)
+  {
+    this.borderBottom = borderBottom;
+  }
+
+
+  public String toString()
+  {
+    return "ComputedLayoutProperties{" +
+        "marginLeft=" + marginLeft +
+        ", marginRight=" + marginRight +
+        ", marginTop=" + marginTop +
+        ", marginBottom=" + marginBottom +
+        ", paddingLeft=" + paddingLeft +
+        ", paddingTop=" + paddingTop +
+        ", paddingRight=" + paddingRight +
+        ", paddingBottom=" + paddingBottom +
+        ", borderLeft=" + borderLeft +
+        ", borderRight=" + borderRight +
+        ", borderTop=" + borderTop +
+        ", borderBottom=" + borderBottom +
+        ", blockContextWidth=" + blockContextWidth +
+        ", computedWidth=" + computedWidth +
+        '}';
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ComputeMarginsStep.java,v 1.8 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -36,6 +36,7 @@ import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRowRenderBox;
@@ -138,7 +139,6 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
   protected boolean startBlockLevelBox(final RenderBox box)
   {
     final BoxLayoutProperties blp = box.getBoxLayoutProperties();
-    final StaticBoxLayoutProperties sblp = box.getStaticBoxLayoutProperties();
 
     if (blp.getMarginOpenState() == marginChangeKey)
     {
@@ -165,7 +165,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
     }
     else
     {
-      final StaticBoxLayoutProperties sBlp = boxParent.getStaticBoxLayoutProperties();
+      final ComputedLayoutProperties sBlp = boxParent.getComputedLayoutProperties();
       final BoxLayoutProperties pBlp = boxParent.getBoxLayoutProperties();
       infiniteMarginTop =
           (pBlp.isInfiniteMarginTop() && visiblePrev == null &&
@@ -180,7 +180,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
     {
       marginCollection.add(marginBox);
 
-      final StaticBoxLayoutProperties cblp = marginBox.getStaticBoxLayoutProperties();
+      final ComputedLayoutProperties cblp = marginBox.getComputedLayoutProperties();
       if (cblp.getBorderBottom() != 0)
       {
         break;
@@ -217,6 +217,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
     // Compute the top margin.
     long topMarginPositive = 0;
     long topMarginNegative = 0;
+    final ComputedLayoutProperties sblp = box.getComputedLayoutProperties();
     final long marginTop = sblp.getMarginTop();
     if (marginTop < 0)
     {
@@ -249,7 +250,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
     {
       RenderBox renderBox = (RenderBox) marginCollection.get(i);
       final BoxLayoutProperties cblp = renderBox.getBoxLayoutProperties();
-      final StaticBoxLayoutProperties scblp = renderBox.getStaticBoxLayoutProperties();
+      final ComputedLayoutProperties scblp = renderBox.getComputedLayoutProperties();
       final long childMarginTop = scblp.getMarginTop();
 
       if (childMarginTop < 0)
@@ -311,7 +312,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
       {
         break;
       }
-      final StaticBoxLayoutProperties sblp = parent.getStaticBoxLayoutProperties();
+      final ComputedLayoutProperties sblp = parent.getComputedLayoutProperties();
       if (sblp.getBorderBottom() != 0)
       {
         break;
@@ -349,11 +350,11 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
     {
       final RenderBox renderBox = (RenderBox) marginCollection.get(i);
       final BoxLayoutProperties cblp = renderBox.getBoxLayoutProperties();
-      final StaticBoxLayoutProperties sblp = renderBox.getStaticBoxLayoutProperties();
       cblp.setMarginCloseState(marginChangeKey);
       cblp.setInfiniteMarginBottom(false);
       cblp.setEffectiveMarginBottom(0);
 
+      final ComputedLayoutProperties sblp = renderBox.getComputedLayoutProperties();
       marginNegative = Math.min (marginNegative, sblp.getMarginBottom());
       marginPositive = Math.max (marginPositive, sblp.getMarginBottom());
     }
@@ -371,7 +372,7 @@ public class ComputeMarginsStep extends IterateVisualProcessStep
       return false;
     }
     final RenderBox marginBox = (RenderBox) node;
-    final StaticBoxLayoutProperties blp = marginBox.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = marginBox.getComputedLayoutProperties();
     if (blp.getBorderTop() != 0)
     {
       return false;

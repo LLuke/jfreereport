@@ -23,15 +23,14 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: InlineBoxSequenceElement.java,v 1.7 2007/04/02 11:41:20 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.layouting.renderer.process.layoutrules;
 
-import org.jfree.layouting.renderer.model.NodeLayoutProperties;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.RenderBox;
-import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 
 /**
  * Anthing that is not text. This could be an image or an inline-block element.
@@ -57,14 +56,14 @@ public class InlineBoxSequenceElement extends InlineNodeSequenceElement
    */
   public long getMinimumWidth()
   {
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
     return box.getMinimumChunkWidth() +
         blp.getMarginLeft() + blp.getMarginRight();
   }
 
   public long getMaximumWidth()
   {
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+    final ComputedLayoutProperties blp = box.getComputedLayoutProperties();
     return box.getMaximumBoxWidth() +
         blp.getMarginLeft() + blp.getMarginRight();
   }
