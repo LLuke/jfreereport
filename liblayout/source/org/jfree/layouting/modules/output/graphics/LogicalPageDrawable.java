@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LogicalPageDrawable.java,v 1.12 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -228,8 +228,10 @@ public class LogicalPageDrawable implements PageDrawable
       final double y = (int) StrictGeomUtility.toExternalValue(content.getY());
       final double width = (int) StrictGeomUtility.toExternalValue(content.getWidth());
       final double height = (int) StrictGeomUtility.toExternalValue(content.getHeight());
-      Drawable d = (Drawable) o;
-      d.draw(g2, new Rectangle2D.Double(x,y,width, height));
+      final Drawable d = (Drawable) o;
+      final Graphics2D g2Clone = (Graphics2D) g2.create();
+      d.draw(g2Clone, new Rectangle2D.Double(x,y,width, height));
+      g2Clone.dispose();
     }
   }
 
