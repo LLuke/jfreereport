@@ -3,6 +3,10 @@
 ---------------
 A list of changes in recent versions:
 
+0.9.0-05: (27-Apr-2007)
+        * SectionLayoutController has been changed to be more extensible when
+          subclasses try to implement different iteration patterns.
+
 0.9.0-04: (02-Apr-2007) 
         * Simplified the layout controller API. It should be easier now to
           derive own layout controller without having to reimplement everything
