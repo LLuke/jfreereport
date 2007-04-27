@@ -90,13 +90,13 @@ public class HtmlWorldDemo
       DataSourceException,
       ContentIOException
   {
-    URL url = HtmlWorldDemo.class.getResource(sourceFile);
-    ResourceManager manager = new ResourceManager();
+    final URL url = HtmlWorldDemo.class.getResource(sourceFile);
+    final ResourceManager manager = new ResourceManager();
     manager.registerDefaults();
-    Resource res = manager.createDirectly(url, JFreeReport.class);
+    final Resource res = manager.createDirectly(url, JFreeReport.class);
     final JFreeReport resource = (JFreeReport) res.getResource();
 
-    DefaultReportJob job = new DefaultReportJob(resource);
+    final DefaultReportJob job = new DefaultReportJob(resource);
     final TableReportDataFactory dataFactory =
         new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);

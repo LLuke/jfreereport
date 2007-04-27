@@ -58,7 +58,7 @@ public class PdfWorldDemo
   {
   }
 
-  public static void main(String[] args)
+  public static void main(final String[] args)
   {
     JFreeReportBoot.getInstance().start();
 
@@ -80,31 +80,31 @@ public class PdfWorldDemo
     }
   }
 
-  private static void processReport(String sourceFile,
-                                    String targetFile)
+  private static void processReport(final String sourceFile,
+                                    final String targetFile)
       throws ResourceException,
       ReportException,
       DataSourceException,
       FileNotFoundException
   {
     // Step 1: Get a report object.
-    URL url = PdfWorldDemo.class.getResource(sourceFile);
-    ResourceManager manager = new ResourceManager();
+    final URL url = PdfWorldDemo.class.getResource(sourceFile);
+    final ResourceManager manager = new ResourceManager();
     manager.registerDefaults();
-    Resource res = manager.createDirectly(url, JFreeReport.class);
+    final Resource res = manager.createDirectly(url, JFreeReport.class);
     final JFreeReport resource = (JFreeReport) res.getResource();
 
     // Step 2: Make a job out of it.
     // (There is no need to redeclare the datasource, if the parsed report
     // contains a valid one.)
-    DefaultReportJob job = new DefaultReportJob(resource);
+    final DefaultReportJob job = new DefaultReportJob(resource);
     final TableReportDataFactory dataFactory =
         new TableReportDataFactory("default", new CountryDataTableModel());
     job.setDataFactory(dataFactory);
 
     // And finally: Print ..
-    FileOutputStream fout = new FileOutputStream(targetFile);
-    StreamingReportProcessor sp = new StreamingReportProcessor();
+    final FileOutputStream fout = new FileOutputStream(targetFile);
+    final StreamingReportProcessor sp = new StreamingReportProcessor();
     final PdfOutputProcessor outputProcessor =
         new PdfOutputProcessor(job.getConfiguration(), fout);
     sp.setOutputProcessor(outputProcessor);
