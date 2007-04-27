@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.10 2007/04/01 13:51:58 taqua Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.11 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.formula.typing;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -40,13 +41,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.operators.InfixOperator;
-import org.jfree.formula.typing.coretypes.ErrorType;
+import org.jfree.formula.util.org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;
 
@@ -96,32 +95,34 @@ public class DefaultTypeRegistry implements TypeRegistry
   public Number convertToNumber(final Type type1, final Object value)
       throws TypeConversionException
   {
+    Number n = null;
+    
     if (value instanceof Number)
     {
-      return (Number) value;
+      n = (Number) value;
     }
-
-    if (value instanceof Date)
+    else if (value instanceof Date)
     {
-      return convertDateToNumber((Date) value);
+      n = convertDateToNumber((Date) value);
     }
-
-    if (value instanceof Boolean)
+    else if (value instanceof Boolean)
     {
       if (Boolean.TRUE.equals(value))
       {
-        return new Integer(1);
+        n = new Integer(1);
       }
-      return new Integer(0);
+      else
+      {
+        n = new Integer(0);
+      }
     }
-
-    if (value instanceof String)
+    else if (value instanceof String)
     {
       final String val = (String) value;
       try
       {
         // first, try to parse the value as a big-decimal.
-        return new BigDecimal(val);
+        n = new BigDecimal(val);
       }
       catch (NumberFormatException e)
       {
@@ -133,7 +134,8 @@ public class DefaultTypeRegistry implements TypeRegistry
         {
           final DateFormat dateFormat = dateFormats[i];
           final Date date = dateFormat.parse(val);
-          return convertDateToNumber(date);
+          n = convertDateToNumber(date);
+          break;
         }
         catch (ParseException e)
         {
@@ -141,26 +143,56 @@ public class DefaultTypeRegistry implements TypeRegistry
         }
       }
 
+      
       // iterate through the various number and date formats.
+      if(n == null)
+      {
       for (int i = 0; i < numberFormats.length; i++)
       {
         try
         {
           final NumberFormat format = numberFormats[i];
-          return format.parse(val);
+          n = format.parse(val);
+          break;
         }
         catch (ParseException e)
         {
           // ignore ..
         }
       }
+      }
     }
+    //System.out.println("["+value+"]Date converted to number "+n);
+    if(n != null)
+    {
+      if(value instanceof Time || (type1 != null && type1.isFlagSet(Type.TIME_TYPE)))
+      {
+        // only return the decimal part
+        final Double d = new Double(n.doubleValue() - n.intValue());
+        return d;
+      }
+      else if(value instanceof java.sql.Date || (type1 != null && type1.isFlagSet(Type.DATE_TYPE)))
+      {
+        // only return the integer part
+        return new Integer(n.intValue());
+      }
+      else
+      {
+        return n;
+      }
+    }
+    
     throw new TypeConversionException();
   }
 
-  private Date convertNumberToDate(final Number number)
+  private Date convertNumberToDate(final Number number) throws TypeConversionException
   {
-    final BigDecimal bd;
+    final Date javaDate = HSSFDateUtil.getJavaDate(number.doubleValue());
+    if(javaDate == null)
+    {
+      throw new TypeConversionException();
+    }
+    /*final BigDecimal bd;
     if (number instanceof BigDecimal)
     {
       bd = (BigDecimal) number;
@@ -173,12 +205,13 @@ public class DefaultTypeRegistry implements TypeRegistry
     final BigDecimal bigDecimal = bd.multiply(MILLISECS);
     //just a test to remove the millisecond part
     // final long longValue = (bigDecimal.longValue()/1000)*1000;
-    return new Date(bigDecimal.longValue());
+    return new Date(bigDecimal.longValue());*/
+    return javaDate;
   }
 
-  private Number convertDateToNumber(final Date date)
+  private Number convertDateToNumber(final Date date) throws TypeConversionException
   {
-    final GregorianCalendar gc = new GregorianCalendar
+    /*final GregorianCalendar gc = new GregorianCalendar
         (context.getLocalizationContext().getTimeZone(), context.getLocalizationContext().getLocale());
     gc.setTime(date);
     final long timeInMillis = gc.getTime().getTime();
@@ -191,7 +224,12 @@ public class DefaultTypeRegistry implements TypeRegistry
     //fractional part must be between 0.0 to 0.99999
     //reprenting from 00:00:00 to 23:59:59
     final BigDecimal daySecs = secsBd.divide(MILLISECS, 25,BigDecimal.ROUND_UP);
-    return daysBd.add(daySecs);
+    return daysBd.add(daySecs);*/
+    final double excelDate = HSSFDateUtil.getExcelDate(date);
+    if(!HSSFDateUtil.isValidExcelDate(excelDate)) {
+      throw new TypeConversionException();
+    }
+    return new BigDecimal(excelDate);
   }
 
   public void initialize(final Configuration configuration,
@@ -205,9 +243,9 @@ public class DefaultTypeRegistry implements TypeRegistry
   protected DateFormat[] loadDateFormats()
   {
     final ArrayList formats = new ArrayList();
-    formats.add(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US));
-    formats.add(new SimpleDateFormat("yyyy-MM-dd", Locale.US));
-    formats.add(new SimpleDateFormat("hh:mm:ss", Locale.US));
+    formats.add(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
+    formats.add(new SimpleDateFormat("yyyy-MM-dd"));
+    formats.add(new SimpleDateFormat("hh:mm:ss"));
     // todo: This should also be configurable ..
 
     return (DateFormat[]) formats.toArray(new DateFormat[formats.size()]);
@@ -314,24 +352,45 @@ public class DefaultTypeRegistry implements TypeRegistry
 
   public Date convertToDate(final Type type1, final Object value) throws TypeConversionException
   {
-    if (value instanceof Date)
-    {
-      return (Date) value;
-    }
-    if (value instanceof Number)
-    {
-      return convertNumberToDate((Number) value);
-    }
-    if (value instanceof String)
+    Date date = null;
+    
+    if(value instanceof Time || value instanceof java.sql.Date || value instanceof String)
     {
       final Number conv = convertToNumber(type1, value);
       if (conv == null)
       {
-        return null;
+        throw new TypeConversionException();
       }
-      return convertNumberToDate(conv);
+      date = convertNumberToDate(conv);
     }
-
+    else if (value instanceof Date)
+    {
+      date = (Date)value;
+    }
+    else if (value instanceof Number)
+    {
+      date = convertNumberToDate((Number) value);
+    }
+    else
+    {
+      throw new TypeConversionException();
+    }
+    
+    if(type1 != null && type1.isFlagSet(Type.TIME_TYPE))
+    {
+      return new Time(date.getTime());
+    }
+    else if(type1 != null && type1.isFlagSet(Type.DATE_TYPE))
+    {
+      return new java.sql.Date(date.getTime());
+    }
+    else
+    {
+    	if(date != null)
+    	{
+      	return date;
+      }  
+    }
     throw new TypeConversionException();
   }
 

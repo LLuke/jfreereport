@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: Type.java,v 1.4 2007/04/01 13:51:58 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -45,6 +45,8 @@ public interface Type
   public static final String ANY_TYPE = "type.any";
   public static final String ERROR_TYPE = "type.error";
   public static final String DATE_TYPE = "type.date";
+  public static final String TIME_TYPE = "type.time";
+  public static final String DATETIME_TYPE = "type.datetime";
   public static final String ARRAY_TYPE = "type.array";
   public static final String DATATABLE_TYPE = "type.datatable";
 

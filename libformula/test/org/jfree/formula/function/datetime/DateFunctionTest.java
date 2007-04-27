@@ -24,16 +24,19 @@
  *
  *
  * ------------
- * $Id: DateFunctionTest.java,v 1.5 2007/02/22 21:34:46 mimil Exp $
+ * $Id: DateFunctionTest.java,v 1.6 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function.datetime;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.math.BigDecimal;
 
+import org.jfree.formula.ContextEvaluationException;
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.Formula;
 import org.jfree.formula.FormulaContext;
@@ -60,7 +63,7 @@ public class DateFunctionTest
     return new Object[][]
     {
    { "DATE(2005;1;31)=[.C7]", Boolean.TRUE },
-   // { "DATE(2005;12;31)-DATE(1904;1;1)", new BigDecimal(37255) },
+    { "DATE(2005;12;31)-DATE(1904;1;1)", new BigDecimal(37255) },
     { "DATE(2004;2;29)=DATE(2004;2;28)+1", Boolean.TRUE },
     { "DATE(2000;2;29)=DATE(2000;2;28)+1", Boolean.TRUE },
     { "DATE(2005;3;1)=DATE(2005;2;28)+1", Boolean.TRUE },
@@ -77,6 +80,39 @@ public class DateFunctionTest
     };
   }
 
+  @Test(enabled=false)
+  public void debugDates()
+  {
+    Formula formula = null;
+    try
+    {
+      formula = new Formula("DATE(2005;1;31)");
+    } catch (ParseException e1)
+    {
+      Assert.fail("Error while parsing the formula", e1);
+    }
+    try
+    {
+      formula.initialize(context);
+    } catch (EvaluationException e)
+    {
+      Assert.fail("Initialization Error", e);
+    }
+    Date eval = (Date)formula.evaluate();
+    final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    System.out.println(eval.getClass().getName()+":"+df.format(eval)+";"+eval.getTime());
+    try
+    {
+      final Date date = (Date)context.resolveReference(".C7");
+      System.out.println(df.format(date)+";"+date.getTime());
+      Assert.assertEquals(date, eval);
+    } catch (ContextEvaluationException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+  
   @Test
   public void gregorianTest()
   {

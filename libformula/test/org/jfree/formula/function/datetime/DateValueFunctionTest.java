@@ -24,11 +24,16 @@
  *
  *
  * ------------
- * $Id: DateDifFunctionTest.java,v 1.2 2007/03/01 16:55:30 taqua Exp $
+ * $Id: DateDifFunctionTest.java,v 1.1 2007/02/22 21:34:46 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function.datetime;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.Formula;
@@ -46,39 +51,16 @@ import org.testng.annotations.Test;
  * @author Cedric Pronzato
  *
  */
-public class DateDifFunctionTest
+public class DateValueFunctionTest
 {
   private FormulaContext context;
-
-  public DateDifFunctionTest() {}
 
   @DataProvider(name = "defaultTestCase")
   public Object[][] createDataTest()
   {
     return new Object[][]
     {
-        { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"y\")", new Integer(3)},
-        { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"m\")", new Integer(43)},
-        //TODO result not found in spec { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"d\")", new Integer()},
-        { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"md\")", new Integer(0)},
-        { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"ym\")", new Integer(7)},
-        //TODO result not found in spec { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"yd\")", new Integer()},
-    };
-  }
-  
-  // Additional specs from
-  // http://www.cpearson.com/excel/datedif.htm
-  @DataProvider(name = "additionalTestCase")
-  public Object[][] createAdditionalDataTest()
-  {
-    return new Object[][]
-    {
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"d\")", new Integer(1626)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"m\")", new Integer(53)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"y\")", new Integer(4)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"ym\")", new Integer(5)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"yd\")", new Integer(165)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"md\")", new Integer(14)},
+        { "DATEVALUE(\"2004-12-25\")=DATE(2004;12;25)", Boolean.TRUE},
     };
   }
   
@@ -89,9 +71,18 @@ public class DateDifFunctionTest
     LibFormulaBoot.getInstance().start();
   }
   
-  @Test(dataProvider = "additionalTestCase", groups = "functions")
-  public void additionalTest(String formul, Object result) {
-    test(formul, result);
+  @Test(enabled=false)
+  public void testSimpleDateFormat() {
+    final DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
+    try
+    {
+      final Date date = df.parse("2005-10-01");
+      System.out.println(date);
+    } catch (java.text.ParseException e)
+    {
+      Assert.fail("Unable to parse the give date", e);
+    }
+    
   }
 
   @Test(dataProvider = "defaultTestCase", groups = "functions")
@@ -113,6 +104,6 @@ public class DateDifFunctionTest
       Assert.fail("Initialization Error", e);
     }
     Object eval = formula.evaluate();
-    Assert.assertEquals(eval, result, formul);
+    Assert.assertEquals(eval, result,  "Eval class: "+eval.getClass().getName());
   }
 }

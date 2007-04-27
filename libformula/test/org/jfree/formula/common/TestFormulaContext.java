@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TestFormulaContext.java,v 1.5 2007/01/18 22:36:32 mimil Exp $
+ * $Id: TestFormulaContext.java,v 1.6 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -55,22 +56,23 @@ import org.jfree.util.Configuration;
  */
 public class TestFormulaContext implements FormulaContext
 {
-  public static Date createDate1(int year, int month, int day, int hour, int minute, int sec, int millisec)
-  {
-    Calendar cal = GregorianCalendar.getInstance();
-    cal.set(GregorianCalendar.YEAR, year);
-    cal.set(GregorianCalendar.MONTH, month);
-    cal.set(GregorianCalendar.DAY_OF_MONTH, day);
-    cal.set(GregorianCalendar.HOUR_OF_DAY, hour);
-    cal.set(GregorianCalendar.MINUTE, minute);
-    cal.set(GregorianCalendar.SECOND, sec);
-    cal.set(GregorianCalendar.MILLISECOND, millisec);
-    return cal.getTime();
-  }
+
 
   private static class TestCaseTableModel extends AbstractTableModel
   {
 
+    public static Date createDate1(int year, int month, int day, int hour, int minute, int sec, int millisec)
+    {
+      Calendar cal = GregorianCalendar.getInstance();
+      cal.set(GregorianCalendar.YEAR, year);
+      cal.set(GregorianCalendar.MONTH, month);
+      cal.set(GregorianCalendar.DAY_OF_MONTH, day);
+      cal.set(GregorianCalendar.HOUR_OF_DAY, hour);
+      cal.set(GregorianCalendar.MINUTE, minute);
+      cal.set(GregorianCalendar.SECOND, sec);
+      cal.set(GregorianCalendar.MILLISECOND, millisec);
+      return cal.getTime();
+    }
 /*
 id B C
 3 ="7"
@@ -89,6 +91,28 @@ id B C
 16 3 2
 17 4 1
  */
+    private Date createDate1() {
+      Calendar cal = GregorianCalendar.getInstance();
+      cal.set(GregorianCalendar.YEAR, 2005);
+      cal.set(GregorianCalendar.MONTH, GregorianCalendar.JANUARY);
+      cal.set(GregorianCalendar.DAY_OF_MONTH, 31);
+      cal.set(GregorianCalendar.MILLISECOND, 0);
+      cal.set(GregorianCalendar.HOUR_OF_DAY, 0);
+      cal.set(GregorianCalendar.MINUTE, 0);
+      cal.set(GregorianCalendar.SECOND, 0);
+      return cal.getTime();
+    }
+    private java.sql.Date createDate(int year, int month, int day) {
+      Calendar cal = GregorianCalendar.getInstance();
+      cal.set(GregorianCalendar.YEAR, year);
+      cal.set(GregorianCalendar.MONTH, month);
+      cal.set(GregorianCalendar.DAY_OF_MONTH, day);
+      cal.set(GregorianCalendar.MILLISECOND, 0);
+      cal.set(GregorianCalendar.HOUR_OF_DAY, 0);
+      cal.set(GregorianCalendar.MINUTE, 0);
+      cal.set(GregorianCalendar.SECOND, 0);
+      return new java.sql.Date(cal.getTime().getTime());
+    }
 
     private Object[][] data = new Object[][]{
         {null, null},
@@ -98,7 +122,7 @@ id B C
         {new BigDecimal(2), new BigDecimal(4)},
         {new BigDecimal(3), new BigDecimal(5)},
         {Boolean.TRUE, new BigDecimal(7)},
-        {"Hello", createDate1(2005, Calendar.JANUARY, 31, 0, 0, 0, 0)},
+        {"Hello", createDate(2005, Calendar.JANUARY, 31)},
         {null, createDate1(2006, Calendar.JANUARY, 31, 0, 0, 0, 0)},
         {LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE, createDate1(0, 0, 0, 2, 0, 0, 0)},
         {new BigDecimal(0), createDate1(0, 0, 0, 23, 0, 0, 0)},

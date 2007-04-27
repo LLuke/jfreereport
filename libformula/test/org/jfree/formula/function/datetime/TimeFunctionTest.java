@@ -24,11 +24,13 @@
  *
  *
  * ------------
- * $Id: DateDifFunctionTest.java,v 1.2 2007/03/01 16:55:30 taqua Exp $
+ * $Id: DateFunctionTest.java,v 1.5 2007/02/22 21:34:46 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function.datetime;
+
+import java.math.BigDecimal;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.Formula;
@@ -46,39 +48,27 @@ import org.testng.annotations.Test;
  * @author Cedric Pronzato
  *
  */
-public class DateDifFunctionTest
+public class TimeFunctionTest
 {
   private FormulaContext context;
-
-  public DateDifFunctionTest() {}
 
   @DataProvider(name = "defaultTestCase")
   public Object[][] createDataTest()
   {
     return new Object[][]
     {
-        { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"y\")", new Integer(3)},
-        { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"m\")", new Integer(43)},
-        //TODO result not found in spec { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"d\")", new Integer()},
-        { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"md\")", new Integer(0)},
-        { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"ym\")", new Integer(7)},
-        //TODO result not found in spec { "DATEDIF(DATE(1990;2;15);DATE(1993;9;15); \"yd\")", new Integer()},
-    };
-  }
-  
-  // Additional specs from
-  // http://www.cpearson.com/excel/datedif.htm
-  @DataProvider(name = "additionalTestCase")
-  public Object[][] createAdditionalDataTest()
-  {
-    return new Object[][]
-    {
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"d\")", new Integer(1626)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"m\")", new Integer(53)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"y\")", new Integer(4)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"ym\")", new Integer(5)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"yd\")", new Integer(165)},
-        { "DATEDIF(DATE(1995;1;1);DATE(1999;6;15); \"md\")", new Integer(14)},
+        { "TIME(0;0;0)=0", Boolean.TRUE},
+      //  { "TIME(23;59;59)*60*60*24", new BigDecimal(86399)},
+        /*{ "", Boolean.TRUE },
+        { "", Boolean.TRUE },
+        { "", Boolean.TRUE },
+        { "", Boolean.TRUE },
+        { "", Boolean.TRUE },
+        { "", Boolean.TRUE },
+        { "", Boolean.TRUE },
+        { "", Boolean.TRUE },
+        { "", Boolean.TRUE },
+*/
     };
   }
   
@@ -87,11 +77,6 @@ public class DateDifFunctionTest
   {
     context = new TestFormulaContext();
     LibFormulaBoot.getInstance().start();
-  }
-  
-  @Test(dataProvider = "additionalTestCase", groups = "functions")
-  public void additionalTest(String formul, Object result) {
-    test(formul, result);
   }
 
   @Test(dataProvider = "defaultTestCase", groups = "functions")
@@ -113,6 +98,6 @@ public class DateDifFunctionTest
       Assert.fail("Initialization Error", e);
     }
     Object eval = formula.evaluate();
-    Assert.assertEquals(eval, result, formul);
+    Assert.assertEquals(eval, result);
   }
 }

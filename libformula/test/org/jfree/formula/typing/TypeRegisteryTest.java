@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TypeRegisteryTest.java,v 1.4 2007/01/18 22:36:32 mimil Exp $
+ * $Id: TypeRegisteryTest.java,v 1.5 2007/03/06 14:13:45 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,6 +39,7 @@ import org.jfree.formula.LibFormulaBoot;
 import org.jfree.formula.common.TestFormulaContext;
 import org.jfree.formula.typing.coretypes.DateType;
 import org.jfree.formula.typing.coretypes.NumberType;
+import org.jfree.formula.typing.coretypes.TextType;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -68,10 +69,27 @@ public class TypeRegisteryTest
     cal.set(Calendar.MILLISECOND, 0);
 
     final Date d = cal.getTime();
-    final Number n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
-    Assert.assertNotNull(n, "The date has not been converted to a number");
-    final Date d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
-    Assert.assertNotNull(d1, "The number has not been converted to a date");
+    
+    Number n = null;
+    try
+    {
+      n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
+      Assert.assertNotNull(n, "The date has not been converted to a number");
+    } catch (TypeConversionException e)
+    {
+      Assert.fail("Conversion failed", e);
+    }
+    
+    Date d1 = null;
+    try
+    {
+      d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
+      Assert.assertNotNull(d1, "The number has not been converted to a date");
+    } catch (TypeConversionException e)
+    {
+      Assert.fail("Conversion failed", e);
+    }
+    
     Assert.assertEquals(d1, d, "dates are differents");
   }
 
@@ -83,10 +101,61 @@ public class TypeRegisteryTest
             context.getLocalizationContext().getLocale());
 
     final Date d = cal.getTime();
-    final Number n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
-    Assert.assertNotNull(n, "The date has not been converted to a number");
-    final Date d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
-    Assert.assertNotNull(d1, "The number has not been converted to a date");
+    Number n = null;
+    try
+    {
+      n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
+      Assert.assertNotNull(n, "The date has not been converted to a number");
+    } catch (TypeConversionException e)
+    {
+      Assert.fail("Conversion failed", e);
+    }
+    
+    Date d1 = null;
+    try
+    {
+      d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
+      Assert.assertNotNull(d1, "The number has not been converted to a date");
+    } catch (TypeConversionException e)
+    {
+      Assert.fail("Conversion failed", e);
+    }
+    
     Assert.assertEquals(d1, d, "dates are differents");
   }
+  
+//  @Test
+//  public void testStringDateConversion () throws TypeConversionException
+//  {
+//    final Date d = TestFormulaContext.createDate1(2004, GregorianCalendar.JANUARY, 1, 0, 0, 0, 0);
+//    final TypeRegistry typeRegistry = context.getTypeRegistry();
+//    final Number n = typeRegistry.convertToNumber(DateType.TYPE, d);
+//    final Date d1 = typeRegistry.convertToDate(TextType.TYPE, "2004-01-01");
+//
+//    if (d1.getTime() != d.getTime())
+//    {
+//      final Number n2 = typeRegistry.convertToNumber(DateType.TYPE, d);
+//      final Date dx = typeRegistry.convertToDate(TextType.TYPE, "2004-01-01");
+//    }
+//
+//    Assert.assertEquals(d1.getTime(), d.getTime(), "dates are different");
+//  }
+//
+//
+//  @Test
+//  public void testStringNumberConversion () throws TypeConversionException
+//  {
+//    final Number d = new Double(2000.5);
+//    final TypeRegistry typeRegistry = context.getTypeRegistry();
+//    final Number n = typeRegistry.convertToNumber(NumberType.GENERIC_NUMBER, d);
+//    final Number d1 = typeRegistry.convertToNumber(TextType.TYPE, "2000.5");
+//
+//    if (d1.doubleValue() != d.doubleValue())
+//    {
+//      final Number n2 = typeRegistry.convertToNumber(DateType.TYPE, d);
+//      final Date dx = typeRegistry.convertToDate(TextType.TYPE, "2004-01-01");
+//    }
+//
+//    Assert.assertEquals(d1.doubleValue(), d.doubleValue(), "dates are different");
+//  }
 }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LibFormulaInfo.java,v 1.9 2007/04/01 13:51:52 taqua Exp $
+ * $Id: LibFormulaInfo.java,v 1.10 2007/04/27 11:27:05 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -70,7 +70,7 @@ public class LibFormulaInfo extends ProjectInfo
     setContributors(Arrays.asList(new Contributor[]
     {
       new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
-      new Contributor("Cedric Pronzato", "-"),
+      new Contributor("Cedric Pronzato", "mimil@users.sourceforge.net"),
     }));
 
     setBootClass("org.jfree.formula.LibFormulaBoot");
