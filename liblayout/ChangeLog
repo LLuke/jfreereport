@@ -3,9 +3,15 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.6: (27-Apr-2007)
+        * [BUG] Drawing drawables must use a private copy of the Graphics2D context
+          or the drawable could alter the state of the globla rendering context.
+          
+        * Moved the text-classification code of the rendering stage into LibFonts.
+
 0.2.5: (02-Apr-2007)
         * Undone the CSSNumberValue patch after it caused more trouble than good
-           things. The drawbacks outweighted the positive things.
+          things. The drawbacks outweighted the positive things.
 
 0.2.4: (01-Apr-2007)
         * [BUG] A Namespace definition without a valid default stylesheet generated
