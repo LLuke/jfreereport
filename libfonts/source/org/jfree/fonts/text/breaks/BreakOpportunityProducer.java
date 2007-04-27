@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BreakOpportunityProducer.java,v 1.1 2007/04/03 14:13:56 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -68,4 +68,6 @@ public interface BreakOpportunityProducer extends ClassificationProducer
   public int createBreakOpportunity(int codepoint);
 
   public Object clone() throws CloneNotSupportedException;
+
+  public void reset();
 }

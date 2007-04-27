@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: VariableFontSizeProducer.java,v 1.1 2007/04/03 14:13:56 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -59,7 +59,7 @@ public class VariableFontSizeProducer implements FontSizeProducer
             (fontMetrics.getMaxHeight() - fontMetrics.getMaxDescent()));
   }
 
-  public GlyphMetrics getCharacterSize(int codePoint,
+  public GlyphMetrics getCharacterSize(final int codePoint,
                                        GlyphMetrics dimension)
   {
     final int width;

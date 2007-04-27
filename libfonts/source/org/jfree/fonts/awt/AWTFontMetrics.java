@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AWTFontMetrics.java,v 1.10 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,7 @@ import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 import org.jfree.fonts.encoding.CodePointUtilities;
 import org.jfree.fonts.registry.BaselineInfo;
@@ -53,7 +54,7 @@ public class AWTFontMetrics implements FontMetrics
   private static final Graphics2D[] graphics = new Graphics2D[4];
 
   private Font font;
-  private FontContext context;
+  //private FontContext context;
   private java.awt.FontMetrics fontMetrics;
   private double lineHeight;
   private double maxCharAdvance;
@@ -61,29 +62,30 @@ public class AWTFontMetrics implements FontMetrics
   private FontRenderContext frc;
   private double xheight;
 
+  private double[] cachedWidths;
+
   public AWTFontMetrics(final Font font, final FontContext context)
   {
     this.font = font;
-    this.context = context;
     this.frc = new FontRenderContext
             (null, context.isAntiAliased(), context.isFractionalMetrics());
 
-
-    Graphics2D graphics = createGraphics();
+    final Graphics2D graphics = createGraphics(context);
     this.fontMetrics = graphics.getFontMetrics(font);
     final Rectangle2D rect = this.font.getMaxCharBounds(frc);
     this.lineHeight = rect.getHeight();
     this.maxCharAdvance = rect.getWidth();
 
-    GlyphVector gv = font.createGlyphVector(frc, "x");
-    Rectangle2D bounds = gv.getVisualBounds();
+    final GlyphVector gv = font.createGlyphVector(frc, "x");
+    final Rectangle2D bounds = gv.getVisualBounds();
     this.xheight = bounds.getHeight();
 
     this.cpBuffer = new char[4];
-
+    this.cachedWidths = new double[256- 32];
+    Arrays.fill(cachedWidths, -1);
   }
 
-  protected Graphics2D createGraphics()
+  protected Graphics2D createGraphics(final FontContext context)
   {
     int idx = 0;
     if (context.isAntiAliased())
@@ -197,13 +199,39 @@ public class AWTFontMetrics implements FontMetrics
     return maxCharAdvance;
   }
 
-  public synchronized double getCharWidth(int character)
+  public synchronized double getCharWidth(final int character)
   {
+    if (character >=32 && character < 256)
+    {
+      // can be cached ..
+      final int index = character - 32;
+      final double cachedWidth = cachedWidths[index];
+      if (cachedWidth >= 0)
+      {
+        return cachedWidth;
+      }
+
+      final int retval = CodePointUtilities.toChars(character, cpBuffer, 0);
+
+      if (retval > 0)
+      {
+        final Rectangle2D lm = font.getStringBounds(cpBuffer, 0, retval, frc);
+        final double width = lm.getWidth();
+        cachedWidths[index] = width;
+        return width;
+      }
+      else
+      {
+        cachedWidths[index] = 0;
+        return 0;
+      }
+    }
+
     final int retval = CodePointUtilities.toChars(character, cpBuffer, 0);
 
     if (retval > 0)
     {
-      Rectangle2D lm = font.getStringBounds(cpBuffer, 0, retval, frc);
+      final Rectangle2D lm = font.getStringBounds(cpBuffer, 0, retval, frc);
       return lm.getWidth();
     }
     else
@@ -218,7 +246,7 @@ public class AWTFontMetrics implements FontMetrics
    * @param character
    * @return
    */
-  public synchronized double getKerning(int previous, int character)
+  public synchronized double getKerning(final int previous, final int character)
   {
     final int retvalC1 = CodePointUtilities.toChars(previous, cpBuffer, 0);
     if (retvalC1 <= 0)
@@ -230,7 +258,7 @@ public class AWTFontMetrics implements FontMetrics
     if (retvalC2 > 0)
     {
       final int limit = (retvalC1 + retvalC2);
-      GlyphVector gv = font.createGlyphVector(frc, new String (cpBuffer, 0, limit));
+      final GlyphVector gv = font.createGlyphVector(frc, new String (cpBuffer, 0, limit));
       final double totalSize = gv.getGlyphPosition(limit).getX();
       final double renderedWidth = gv.getOutline().getBounds2D().getWidth();
       return totalSize - renderedWidth;
@@ -251,11 +279,11 @@ public class AWTFontMetrics implements FontMetrics
    * @param c the character that is used to select the script type.
    * @return
    */
-  public BaselineInfo getBaselines(int c, BaselineInfo info)
+  public BaselineInfo getBaselines(final int c, BaselineInfo info)
   {
-    LineMetrics lm = font.getLineMetrics(((char) (c & 0xFFFF)) + "", frc);
-    float[] bls = lm.getBaselineOffsets();
-    int idx = lm.getBaselineIndex();
+    final LineMetrics lm = font.getLineMetrics(((char) (c & 0xFFFF)) + "", frc);
+    final float[] bls = lm.getBaselineOffsets();
+    final int idx = lm.getBaselineIndex();
 
     if (info == null)
     {
@@ -295,7 +323,7 @@ public class AWTFontMetrics implements FontMetrics
         info.setDominantBaseline(BaselineInfo.HANGING);
         break;
       }
-      case Font.ROMAN_BASELINE:
+      default: // ROMAN Base-line
       {
         info.setBaseline(BaselineInfo.ALPHABETIC, base);
         info.setBaseline(BaselineInfo.CENTRAL,
@@ -309,26 +337,26 @@ public class AWTFontMetrics implements FontMetrics
 
     return info;
   }
-
-  public static void main(String[] args)
-  {
-    Font f = new Font ("dialog", Font.PLAIN, 10);
-    FontRenderContext frc = new FontRenderContext
-            (null, true, true);
-
-    LineMetrics lm = f.getLineMetrics("\u0915\u092a", frc);
-    System.out.println ("Ascent: " + lm.getAscent());
-    System.out.println ("Leading: " + lm.getLeading());
-    System.out.println ("Descent: " + lm.getDescent());
-
-    float[] bls = lm.getBaselineOffsets();
-    int idx = lm.getBaselineIndex();
-    for (int i = 0; i < bls.length; i++)
-    {
-      float v = bls[i];
-      System.out.println ("BaseLine: " + i + " " + v);
-    }
-
-    System.out.println ("Dominantbaseline: " + idx);
-  }
+//
+//  public static void main(String[] args)
+//  {
+//    Font f = new Font ("dialog", Font.PLAIN, 10);
+//    FontRenderContext frc = new FontRenderContext
+//            (null, true, true);
+//
+//    LineMetrics lm = f.getLineMetrics("\u0915\u092a", frc);
+//    System.out.println ("Ascent: " + lm.getAscent());
+//    System.out.println ("Leading: " + lm.getLeading());
+//    System.out.println ("Descent: " + lm.getDescent());
+//
+//    float[] bls = lm.getBaselineOffsets();
+//    int idx = lm.getBaselineIndex();
+//    for (int i = 0; i < bls.length; i++)
+//    {
+//      float v = bls[i];
+//      System.out.println ("BaseLine: " + i + " " + v);
+//    }
+//
+//    System.out.println ("Dominantbaseline: " + idx);
+//  }
 }

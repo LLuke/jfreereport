@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: EmptyFontMetrics.java,v 1.4 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -122,12 +122,12 @@ public class EmptyFontMetrics implements FontMetrics
     return baseWidth;
   }
 
-  public double getCharWidth(int codePoint)
+  public double getCharWidth(final int codePoint)
   {
     return baseWidth;
   }
 
-  public double getKerning(int previous, int codePoint)
+  public double getKerning(final int previous, final int codePoint)
   {
     return 0;
   }
@@ -140,7 +140,7 @@ public class EmptyFontMetrics implements FontMetrics
    * @param c
    * @return
    */
-  public BaselineInfo getBaselines(int c, BaselineInfo info)
+  public BaselineInfo getBaselines(final int c, BaselineInfo info)
   {
     if (info == null)
     {
@@ -153,8 +153,7 @@ public class EmptyFontMetrics implements FontMetrics
     // The ascent is local - but we need the global baseline, relative to the
     // MaxAscent.
     final double maxAscent = getMaxAscent();
-    info.setBaseline(BaselineInfo.MATHEMATICAL,
-            maxAscent - getXHeight());
+    info.setBaseline(BaselineInfo.MATHEMATICAL, maxAscent - getXHeight());
     info.setBaseline(BaselineInfo.IDEOGRAPHIC, getMaxHeight());
     info.setBaseline(BaselineInfo.MIDDLE, maxAscent / 2);
     info.setBaseline(BaselineInfo.ALPHABETIC, maxAscent);

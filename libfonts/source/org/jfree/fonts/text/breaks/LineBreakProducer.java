@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: LineBreakProducer.java,v 1.1 2007/04/03 14:13:56 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -74,5 +74,10 @@ public class LineBreakProducer implements BreakOpportunityProducer
   public Object clone() throws CloneNotSupportedException
   {
     return super.clone();
+  }
+
+  public void reset()
+  {
+    lastCodePoint = 0;
   }
 }
