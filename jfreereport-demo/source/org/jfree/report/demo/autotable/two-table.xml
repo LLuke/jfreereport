@@ -1,0 +1,73 @@
+<!--
+  ~ Copyright (c) 2007, Pentaho Corporation. All Rights Reserved.
+  -->
+
+<report:report xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:report="http://jfreereport.sourceforge.net/namespaces/reports/flow"
+        xmlns:autotable="http://jfreereport.sourceforge.net/namespaces/reports/flow/extension/autotable">
+  <report:query>default</report:query>
+
+  <report:inline-stylesheet>
+    * {
+      font-family: "Arial", Sans-Serif;
+    }
+
+    @page {
+       margin: 2cm;
+       size: A4;
+    }
+  </report:inline-stylesheet>
+
+  <p>
+    This table is auto-generated.
+  </p>
+
+  <report:sub-report>
+    <report:import-parameter name="chart1"/>
+    <report:query>table1</report:query>
+
+    <h1>
+      This is the first report.
+    </h1>
+    <p>
+      <report:content style="width:100%; height: 250pt;">
+        <report:value-expression report:formula="jfreereport:[chart1]"/>
+      </report:content>
+    </p>
+
+
+    <autotable:auto-table style="width:100%">
+      <autotable:auto-table-header>
+        <autotable:auto-table-content item="name"/>
+      </autotable:auto-table-header>
+      <autotable:auto-table-cell>
+        <autotable:auto-table-content item="value"/>
+      </autotable:auto-table-cell>
+    </autotable:auto-table>
+
+  </report:sub-report>
+
+  <report:sub-report>
+    <report:import-parameter name="chart2"/>
+    <report:query>table2</report:query>
+
+    <h1>
+      This is the first report.
+    </h1>
+    <p>
+      <report:content style="width:100%; height: 250pt;">
+        <report:value-expression report:formula="jfreereport:[chart1]"/>
+      </report:content>
+    </p>
+
+    <autotable:auto-table style="width:100%">
+      <autotable:auto-table-header>
+        <autotable:auto-table-content item="name"/>
+      </autotable:auto-table-header>
+      <autotable:auto-table-cell>
+        <autotable:auto-table-content item="value"/>
+      </autotable:auto-table-cell>
+    </autotable:auto-table>
+
+  </report:sub-report>
+</report:report>
