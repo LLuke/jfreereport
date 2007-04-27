@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: RenderBox.java,v 1.33 2007/04/04 10:51:07 taqua Exp $
+ * $Id: RenderBox.java,v 1.34 2007/04/10 19:27:09 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -61,7 +61,7 @@ import org.jfree.util.Log;
  */
 public abstract class RenderBox extends RenderNode
 {
-  public static final boolean LOG_PRUNE = true;
+  public static final boolean LOG_PRUNE = false;
 
   private RenderNode firstChild;
   private RenderNode lastChild;

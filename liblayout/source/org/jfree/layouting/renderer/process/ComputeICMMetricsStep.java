@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ComputeICMMetricsStep.java,v 1.9 2007/04/02 11:41:20 taqua Exp $
+ * $Id: ComputeICMMetricsStep.java,v 1.10 2007/04/10 19:27:09 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -71,8 +71,8 @@ public class ComputeICMMetricsStep extends IterateVisualProcessStep
 
   protected void processParagraphChilds(final ParagraphRenderBox box)
   {
-    //processBoxChilds(box.getLineboxContainer());
-    startProcessing(box.getLineboxContainer());
+    processBoxChilds(box.getLineboxContainer());
+    //startProcessing(box.getLineboxContainer());
   }
 
 
