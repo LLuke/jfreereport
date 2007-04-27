@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ExactFunction.java,v 1.6 2007/04/01 13:51:53 taqua Exp $
+ * $Id: ExactFunction.java,v 1.7 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -82,7 +82,7 @@ public class ExactFunction implements Function
       final Number number2 = typeRegistry.convertToNumber(textType2, textValue2);
 
       final double delta =
-          StrictMath.abs(StrictMath.abs(number1.doubleValue()) - StrictMath.abs(number2.doubleValue()));
+          Math.abs(Math.abs(number1.doubleValue()) - Math.abs(number2.doubleValue()));
       if(delta < 0.00005)
       {
         return RETURN_TRUE;
