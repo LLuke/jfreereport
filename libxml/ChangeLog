@@ -3,6 +3,9 @@
 ---------------
 A list of changes in recent versions:
 
+0.9.3: (27-Apr-2007)
+    * [BUG] AttributeList.removeAttribute(..) did not work at all.
+
 0.9.2: (01-Apr-2007)
     * Improved the ability to create XML-Snipplets and to embed the XMLWriter's
       output in other content.

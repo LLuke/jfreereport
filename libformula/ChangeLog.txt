@@ -3,6 +3,11 @@
 ---------------
 A list of changes in recent versions:
 
+0.1.7: (27-Apr-2007)
+        * [BUG] Fixed a couple of type-conversion issues when converting from and
+          to numeric types. Now, if a value is not convertible, a 
+          TypeConversionException will be thrown.
+
 0.1.6: (01-Apr-2007)
         * [BUG] Comparing two untyped (Any-Type) values always failed. The new
           implementation now tries to convert these values into Numbers, Dates,
