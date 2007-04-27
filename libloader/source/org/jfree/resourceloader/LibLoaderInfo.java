@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: LibLoaderInfo.java,v 1.14 2007/04/01 13:43:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,7 +58,7 @@ public class LibLoaderInfo extends ProjectInfo
   public LibLoaderInfo ()
   {
     setName("LibLoader");
-    setVersion("0.3.2");
+    setVersion("0.3.3");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());

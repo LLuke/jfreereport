@@ -4,6 +4,11 @@
 
 A list of changes in recent versions:
 
+0.3.3:  (27-Apr-2007)
+        * [BUG] The ResourceManager's search for usable factories also included
+          factories which were no longer assignable to the requested target
+          type.
+
 0.3.2:  (01-Apr-2007)
         * Added stronger logging and cleaned up the error messages returned
           from the loader framework.
