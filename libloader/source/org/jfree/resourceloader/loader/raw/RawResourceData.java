@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: RawResourceData.java,v 1.6 2007/04/01 13:43:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,13 +58,13 @@ public class RawResourceData implements ResourceData
     this.data = (byte[]) rawKey.getIdentifier();
   }
 
-  public byte[] getResource(ResourceManager caller)
+  public byte[] getResource(final ResourceManager caller)
       throws ResourceLoadingException
   {
     return (byte[]) data.clone();
   }
 
-  public InputStream getResourceAsStream(ResourceManager caller)
+  public InputStream getResourceAsStream(final ResourceManager caller)
       throws ResourceLoadingException
   {
     return new ByteArrayInputStream(data);
@@ -81,10 +81,10 @@ public class RawResourceData implements ResourceData
    * @throws org.jfree.resourceloader.ResourceLoadingException
    *
    */
-  public int getResource(ResourceManager caller,
-                         byte[] target,
-                         int offset,
-                         int length) throws ResourceLoadingException
+  public int getResource(final ResourceManager caller,
+                         final byte[] target,
+                         final int offset,
+                         final int length) throws ResourceLoadingException
   {
     if (offset > data.length)
     {
@@ -104,7 +104,7 @@ public class RawResourceData implements ResourceData
    * @param key
    * @return
    */
-  public Object getAttribute(String key)
+  public Object getAttribute(final String key)
   {
     return null;
   }
@@ -114,7 +114,7 @@ public class RawResourceData implements ResourceData
     return rawKey;
   }
 
-  public long getVersion(ResourceManager caller)
+  public long getVersion(final ResourceManager caller)
       throws ResourceLoadingException
   {
     return -1;

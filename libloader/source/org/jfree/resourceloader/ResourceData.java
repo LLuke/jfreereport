@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ResourceData.java,v 1.5 2007/04/01 13:43:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -74,8 +74,7 @@ public interface ResourceData
    * @return the number of bytes read or -1 if no more data can be read.
    * @throws ResourceLoadingException
    */
-  public int getResource
-      (ResourceManager caller, byte[] target, int offset, int length)
+  public int getResource(ResourceManager caller, byte[] target, int offset, int length)
       throws ResourceLoadingException;
 
   public Object getAttribute (String key);

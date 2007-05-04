@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ResourceKey.java,v 1.7 2007/04/01 13:43:17 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 /**
  * The key is an unique identifier for the resource. Most of the time,
@@ -115,16 +116,22 @@ public final class ResourceKey implements Serializable
 
     final ResourceKey that = (ResourceKey) o;
 
+    if (!schema.equals(that.schema))
+    {
+      return false;
+    }
     if (!factoryParameters.equals(that.factoryParameters))
     {
       return false;
     }
     if (!identifier.equals(that.identifier))
     {
-      return false;
-    }
-    if (!schema.equals(that.schema))
-    {
+      if (identifier instanceof byte[] && that.identifier instanceof byte[])
+      {
+        final byte[] me = (byte[]) identifier;
+        final byte[] he = (byte[]) that.identifier;
+        Arrays.equals(me, he);
+      }
       return false;
     }
 
