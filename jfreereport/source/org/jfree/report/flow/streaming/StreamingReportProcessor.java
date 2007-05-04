@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StreamingReportProcessor.java,v 1.10 2007/04/01 18:49:26 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -66,7 +66,7 @@ public class StreamingReportProcessor extends AbstractReportProcessor
     this.outputProcessor = outputProcessor;
   }
 
-  public void processReport(ReportJob job)
+  public void processReport(final ReportJob job)
       throws ReportDataFactoryException, DataSourceException, ReportProcessingException
   {
     if (job == null)

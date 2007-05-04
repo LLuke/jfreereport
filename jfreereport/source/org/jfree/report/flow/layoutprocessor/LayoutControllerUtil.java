@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.10 2007/04/01 18:49:26 taqua Exp $
+ * $Id: LayoutControllerUtil.java,v 1.11 2007/04/02 13:04:09 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -500,8 +500,7 @@ public class LayoutControllerUtil
   }
 
 
-  public static LayoutController skipInvisibleElement
-      (final LayoutController layoutController)
+  public static LayoutController skipInvisibleElement(final LayoutController layoutController)
       throws ReportProcessingException, ReportDataFactoryException, DataSourceException
   {
     final FlowController fc = layoutController.getFlowController();

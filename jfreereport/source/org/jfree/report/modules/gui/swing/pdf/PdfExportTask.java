@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfExportTask.java,v 1.6 2007/04/01 18:49:31 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -51,7 +51,7 @@ public class PdfExportTask implements Runnable
   private ReportJob job;
   private File targetFile;
 
-  public PdfExportTask(ReportJob job)
+  public PdfExportTask(final ReportJob job)
       throws ReportConfigurationException
   {
     if (job == null)
@@ -60,8 +60,7 @@ public class PdfExportTask implements Runnable
     }
     this.job = job;
     final Configuration config = job.getConfiguration();
-    String targetFileName = config.getConfigProperty
-        ("org.jfree.report.modules.gui.common.pdf.TargetFileName");
+    final String targetFileName = config.getConfigProperty("org.jfree.report.modules.gui.common.pdf.TargetFileName");
 
     targetFile = new File(targetFileName);
     if (targetFile.exists())
@@ -88,10 +87,9 @@ public class PdfExportTask implements Runnable
   {
     try
     {
-      FileOutputStream fout = new FileOutputStream(targetFile);
+      final FileOutputStream fout = new FileOutputStream(targetFile);
       final StreamingReportProcessor sp = new StreamingReportProcessor();
-      final PdfOutputProcessor outputProcessor =
-          new PdfOutputProcessor(job.getConfiguration(), fout);
+      final PdfOutputProcessor outputProcessor = new PdfOutputProcessor(job.getConfiguration(), fout);
       sp.setOutputProcessor(outputProcessor);
       sp.processReport(job);
 
