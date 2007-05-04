@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: LibXmlInfo.java,v 1.7 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -57,6 +57,7 @@ public class LibXmlInfo extends ProjectInfo
         {
           new Contributor("Peter Becker", "-"),
           new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
+          new Contributor("Michael D'Amourr", "mdamour1976@users.sourceforge.net"),
         }
     ));
 

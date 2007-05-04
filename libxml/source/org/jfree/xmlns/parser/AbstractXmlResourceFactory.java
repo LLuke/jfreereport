@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AbstractXmlResourceFactory.java,v 1.9 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -48,6 +48,8 @@ import org.jfree.resourceloader.ResourceFactory;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.resourceloader.ResourceKeyCreationException;
+import org.jfree.resourceloader.loader.raw.RawResourceData;
 import org.jfree.util.Configuration;
 import org.jfree.util.DefaultConfiguration;
 import org.jfree.util.Log;
@@ -55,6 +57,7 @@ import org.jfree.util.ObjectUtilities;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.InputSource;
 
 /**
  * Creation-Date: 07.04.2006, 14:53:07
@@ -148,11 +151,8 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
       final SAXParser parser = getParser();
 
       final XMLReader reader = parser.getXMLReader();
-      final XmlFactoryModule[] rootHandlers =
-          (XmlFactoryModule[]) modules.toArray
-              (new XmlFactoryModule[modules.size()]);
-      final ResourceDataInputSource input =
-          new ResourceDataInputSource(data, manager);
+      final XmlFactoryModule[] rootHandlers = getModules();
+      final ResourceDataInputSource input = new ResourceDataInputSource(data, manager);
 
       final ResourceKey contextKey;
       final long version;
@@ -186,13 +186,13 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
       reader.setErrorHandler(getErrorHandler());
 
       final Map parameters = targetKey.getFactoryParameters();
-      Iterator it = parameters.keySet().iterator();
+      final Iterator it = parameters.keySet().iterator();
       while (it.hasNext())
       {
-        Object o = it.next();
+        final Object o = it.next();
         if (o instanceof FactoryParameterKey)
         {
-          FactoryParameterKey fpk = (FactoryParameterKey) o;
+          final FactoryParameterKey fpk = (FactoryParameterKey) o;
           handler.setHelperObject(fpk.getName(), parameters.get(fpk));
         }
       }
@@ -219,9 +219,77 @@ public abstract class AbstractXmlResourceFactory implements ResourceFactory
     }
   }
 
+  public Object parseDirectly(final ResourceManager manager, final InputSource input,
+                              final ResourceKey context, final Map parameters)
+      throws ResourceKeyCreationException, ResourceCreationException, ResourceLoadingException
+  {
+    try
+    {
+      final SAXParser parser = getParser();
+
+      final XMLReader reader = parser.getXMLReader();
+      final XmlFactoryModule[] rootHandlers = getModules();
+
+      final ResourceKey targetKey = manager.createKey(new byte[0]);
+      final ResourceKey contextKey;
+      if (context == null)
+      {
+        contextKey = targetKey;
+      }
+      else
+      {
+        contextKey = context;
+      }
+
+      final MultiplexRootElementHandler handler =
+          new MultiplexRootElementHandler(manager, targetKey, contextKey, -1, rootHandlers);
+
+      configureReader(reader, handler);
+      reader.setContentHandler(handler);
+      reader.setDTDHandler(handler);
+      reader.setEntityResolver(handler.getEntityResolver());
+      reader.setErrorHandler(getErrorHandler());
+
+      final Iterator it = parameters.keySet().iterator();
+      while (it.hasNext())
+      {
+        final Object o = it.next();
+        if (o instanceof FactoryParameterKey)
+        {
+          final FactoryParameterKey fpk = (FactoryParameterKey) o;
+          handler.setHelperObject(fpk.getName(), parameters.get(fpk));
+        }
+      }
+
+      reader.parse(input);
+
+      return finishResult (handler.getResult(), manager, new RawResourceData(targetKey), contextKey);
+    }
+    catch (ParserConfigurationException e)
+    {
+      throw new ResourceCreationException
+          ("Unable to initialize the XML-Parser", e);
+    }
+    catch (SAXException e)
+    {
+      throw new ResourceCreationException("Unable to parse the document", e);
+    }
+    catch (IOException e)
+    {
+      throw new ResourceLoadingException("Unable to read the stream", e);
+    }
+
+  }
+
+
+  private XmlFactoryModule[] getModules()
+  {
+    return (XmlFactoryModule[]) modules.toArray(new XmlFactoryModule[modules.size()]);
+  }
+
   protected Resource createResource(final ResourceKey targetKey,
-                                  final MultiplexRootElementHandler handler,
-                                  final Object createdProduct)
+                                    final MultiplexRootElementHandler handler,
+                                    final Object createdProduct)
   {
     return new CompoundResource
         (targetKey, handler.getDependencyCollector(), createdProduct);
