@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: FormulaFunction.java,v 1.13 2007/04/01 13:51:54 taqua Exp $
+ * $Id: FormulaFunction.java,v 1.14 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -84,7 +84,7 @@ public class FormulaFunction extends AbstractLValue
         if (converted == null)
         {
           Log.debug("Failed to evaluate parameter " + pos + " on function " + function);
-          throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+          throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_AUTO_ARGUMENT_VALUE);
         }
         return converted;
       }

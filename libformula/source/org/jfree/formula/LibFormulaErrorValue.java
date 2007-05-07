@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: LibFormulaErrorValue.java,v 1.8 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -51,6 +51,10 @@ public class LibFormulaErrorValue implements ErrorValue
   public static final int ERROR_INVALID_ARGUMENT = 502;
   /** Parameter types are invalid error */
   public static final LibFormulaErrorValue ERROR_INVALID_ARGUMENT_VALUE = new LibFormulaErrorValue(ERROR_INVALID_ARGUMENT);
+  /** Parameter types are invalid error code */
+  public static final int ERROR_INVALID_AUTO_ARGUMENT = 666;
+  /** Parameter types are invalid error */
+public static final LibFormulaErrorValue ERROR_INVALID_AUTO_ARGUMENT_VALUE = new LibFormulaErrorValue(ERROR_INVALID_AUTO_ARGUMENT);
   /** Number arithmetic error code */
   public static final int ERROR_ARITHMETIC = 503;
   /** Number arithmetic error */

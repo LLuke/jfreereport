@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: PrefixTerm.java,v 1.5 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -71,7 +71,7 @@ public class PrefixTerm extends AbstractLValue
 
   public TypeValuePair evaluate() throws EvaluationException
   {
-    return operator.evaluate(null, value.evaluate());
+    return operator.evaluate(getContext(), value.evaluate());
   }
 
 

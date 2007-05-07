@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: StaticValue.java,v 1.5 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.formula.lvalues;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.AnyType;
 
 /**
@@ -42,10 +43,17 @@ import org.jfree.formula.typing.coretypes.AnyType;
 public class StaticValue extends AbstractLValue
 {
   private Object value;
+  private Type type;
 
   public StaticValue(final Object value)
   {
+    this(value, AnyType.TYPE);
+  }
+  
+  public StaticValue(final Object value, Type type)
+  {
     this.value = value;
+    this.type = type;
   }
 
   public void initialize(FormulaContext context) throws EvaluationException
@@ -54,7 +62,7 @@ public class StaticValue extends AbstractLValue
 
   public TypeValuePair evaluate()
   {
-    return new TypeValuePair(AnyType.TYPE, value);
+    return new TypeValuePair(type, value);
   }
 
 
