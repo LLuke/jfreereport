@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: GeneratedFormulaParser.java,v 1.7 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -46,6 +46,8 @@ import org.jfree.formula.operators.InfixOperator;
 import org.jfree.formula.operators.OperatorFactory;
 import org.jfree.formula.operators.PostfixOperator;
 import org.jfree.formula.operators.PrefixOperator;
+import org.jfree.formula.typing.coretypes.NumberType;
+import org.jfree.formula.typing.coretypes.TextType;
 
 public abstract class GeneratedFormulaParser implements GeneratedFormulaParserConstants {
 
@@ -186,15 +188,15 @@ public abstract class GeneratedFormulaParser implements GeneratedFormulaParserCo
       break;
     case STRING_LITERAL:
       value = jj_consume_token(STRING_LITERAL);
-                                 retval = new StaticValue (ParserTools.stripQuote(value.image));
+                                 retval = new StaticValue (ParserTools.stripQuote(value.image), TextType.TYPE);
       break;
     case UNSIGNED_NUMERIC_LITERAL:
       value = jj_consume_token(UNSIGNED_NUMERIC_LITERAL);
-                                           retval = new StaticValue (new BigDecimal (value.image));
+                                           retval = new StaticValue (new BigDecimal (value.image), NumberType.GENERIC_NUMBER);
       break;
     case UNSIGNED_INTEGER:
       value = jj_consume_token(UNSIGNED_INTEGER);
-                                   retval = new StaticValue (new BigDecimal (value.image));
+                                   retval = new StaticValue (new BigDecimal (value.image), NumberType.GENERIC_NUMBER);
       break;
     case NULL:
       value = jj_consume_token(NULL);
