@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: IsLogicalFunctionDescription.java,v 1.3 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ package org.jfree.formula.function.information;
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
@@ -62,7 +63,7 @@ public class IsLogicalFunctionDescription extends AbstractFunctionDescription
 
   public Type getParameterType(int position)
   {
-    return LogicalType.TYPE;
+    return AnyType.TYPE;
   }
 
   public Type getValueType()

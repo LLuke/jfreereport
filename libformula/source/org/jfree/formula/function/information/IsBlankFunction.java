@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: IsBlankFunction.java,v 1.6 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -36,18 +36,23 @@ import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
+import org.jfree.formula.lvalues.ContextLookup;
+import org.jfree.formula.lvalues.LValue;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
  * Document me!
- *
+ * 
  * @author : Thomas Morgner
  */
 public class IsBlankFunction implements Function
 {
-  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
-  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(
+      LogicalType.TYPE, Boolean.FALSE);
+
+  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(
+      LogicalType.TYPE, Boolean.TRUE);
 
   public IsBlankFunction()
   {
@@ -58,17 +63,23 @@ public class IsBlankFunction implements Function
     return "ISBLANK";
   }
 
-  public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
+  public TypeValuePair evaluate(FormulaContext context,
+      ParameterCallback parameters) throws EvaluationException
   {
     final int parameterCount = parameters.getParameterCount();
     if (parameterCount < 1)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
+    final Object value = parameters.getValue(0);
 
-    if (parameters.getValue(0) == null)
+    final LValue raw = parameters.getRaw(0);
+    if (raw instanceof ContextLookup)
     {
-      return RETURN_TRUE;
+      if (value == null)
+      {
+        return RETURN_TRUE;
+      }
     }
 
     return RETURN_FALSE;

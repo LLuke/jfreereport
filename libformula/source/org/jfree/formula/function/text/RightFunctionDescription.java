@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: RightFunctionDescription.java,v 1.2 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -62,7 +62,7 @@ public class RightFunctionDescription extends AbstractFunctionDescription
 
   public Type getParameterType(int position)
   {
-    if(position == 1)
+    if(position == 0)
     {
       return TextType.TYPE;
     }

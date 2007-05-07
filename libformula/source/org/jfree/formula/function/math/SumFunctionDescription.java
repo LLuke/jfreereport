@@ -24,15 +24,13 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: SumFunctionDescription.java,v 1.6 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.function.math;
 
-import java.util.Locale;
-
-import org.jfree.formula.function.FunctionDescription;
+import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.NumberType;
@@ -42,25 +40,16 @@ import org.jfree.formula.typing.coretypes.NumberType;
  *
  * @author Thomas Morgner
  */
-public class SumFunctionDescription implements FunctionDescription
+public class SumFunctionDescription extends AbstractFunctionDescription
 {
   public SumFunctionDescription()
   {
+    super("org.jfree.formula.function.math.Sum-Function");
   }
 
   public Type getValueType()
   {
     return NumberType.GENERIC_NUMBER;
-  }
-
-  public String getDisplayName(Locale locale)
-  {
-    return "SUM";
-  }
-
-  public String getDescription(Locale locale)
-  {
-    return "Adds all given numeric arguments.";
   }
 
   public int getParameterCount()
@@ -75,17 +64,7 @@ public class SumFunctionDescription implements FunctionDescription
 
   public Type getParameterType(int position)
   {
-    return NumberType.GENERIC_NUMBER_ARRAY;
-  }
-
-  public String getParameterDisplayName(int position, Locale locale)
-  {
-    return "NumberList";
-  }
-
-  public String getParameterDescription(int position, Locale locale)
-  {
-    return "A list of numeric parameters";
+    return NumberType.GENERIC_NUMBER;
   }
 
   /**
@@ -96,24 +75,6 @@ public class SumFunctionDescription implements FunctionDescription
    * @return
    */
   public boolean isParameterMandatory(int position)
-  {
-    return false;
-  }
-
-  /**
-   * Returns the default value for an optional parameter. If the value returned
-   * here is null, then this either means, that the parameter is mandatory or
-   * that the default value is computed by the expression itself.
-   *
-   * @param position
-   * @return
-   */
-  public Object getDefaultValue(int position)
-  {
-    return null;
-  }
-
-  public boolean isVolatile()
   {
     return false;
   }

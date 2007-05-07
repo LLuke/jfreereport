@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: IsBlankFunctionDescription.java,v 1.2 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -34,12 +34,12 @@ package org.jfree.formula.function.information;
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.formula.typing.coretypes.LogicalType;
-import org.jfree.formula.typing.coretypes.TextType;
 
 /**
  * Creation-Date: 31.10.2006, 17:41:12
- *
+ * 
  * @author Thomas Morgner
  */
 public class IsBlankFunctionDescription extends AbstractFunctionDescription
@@ -61,14 +61,14 @@ public class IsBlankFunctionDescription extends AbstractFunctionDescription
 
   public Type getParameterType(int position)
   {
-    return TextType.TYPE;
+    return AnyType.TYPE;
   }
 
   /**
    * Defines, whether the parameter at the given position is mandatory. A
    * mandatory parameter must be filled in, while optional parameters need not
    * to be filled in.
-   *
+   * 
    * @return false
    */
   public boolean isParameterMandatory(int position)

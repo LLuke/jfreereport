@@ -24,64 +24,65 @@
  *
  *
  * ------------
- * $Id: LeftFunctionDescription.java,v 1.3 2007/04/01 13:51:53 taqua Exp $
+ * $Id: SumFunctionDescription.java,v 1.6 2007/04/01 13:51:53 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
-package org.jfree.formula.function.text;
+package org.jfree.formula.function.math;
 
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.NumberType;
-import org.jfree.formula.typing.coretypes.TextType;
 
 /**
- * Describes LeftFunction function.
- * @see LeftFunction
+ * Describes AverageFunction function.
+ * @see AverageFunction
  *
  * @author Cedric Pronzato
  *
  */
-public class LeftFunctionDescription extends AbstractFunctionDescription
+public class AverageFunctionDescription extends AbstractFunctionDescription
 {
-  public LeftFunctionDescription()
+  public AverageFunctionDescription()
   {
-    super("org.jfree.formula.function.text.Left-Function");
-  }
-
-  public FunctionCategory getCategory()
-  {
-    return TextFunctionCategory.CATEGORY;
-  }
-
-  public int getParameterCount()
-  {
-    return 2;
-  }
-
-  public Type getParameterType(int position)
-  {
-    if(position == 0)
-    {
-      return TextType.TYPE;
-    }
-
-    return NumberType.GENERIC_NUMBER;
+    super("org.jfree.formula.function.math.Average-Function");
   }
 
   public Type getValueType()
   {
-    return TextType.TYPE;
+    return NumberType.GENERIC_NUMBER;
   }
 
-  public boolean isParameterMandatory(int position)
+  public int getParameterCount()
   {
-    if(position == 2)
-    {
-      return false;
-    }
+    return 0;
+  }
+
+  public boolean isInfiniteParameterCount()
+  {
     return true;
   }
 
+  public Type getParameterType(int position)
+  {
+    return NumberType.GENERIC_NUMBER;
+  }
+
+  /**
+   * Defines, whether the parameter at the given position is mandatory. A
+   * mandatory parameter must be filled in, while optional parameters need not
+   * to be filled in.
+   *
+   * @return
+   */
+  public boolean isParameterMandatory(int position)
+  {
+    return false;
+  }
+
+  public FunctionCategory getCategory()
+  {
+    return MathFunctionCategory.CATEGORY;
+  }
 }

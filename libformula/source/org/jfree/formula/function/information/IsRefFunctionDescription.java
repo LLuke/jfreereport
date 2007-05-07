@@ -24,63 +24,55 @@
  *
  *
  * ------------
- * $Id: LeftFunctionDescription.java,v 1.3 2007/04/01 13:51:53 taqua Exp $
+ * $Id: IsTextFunctionDescription.java,v 1.3 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
-package org.jfree.formula.function.text;
+package org.jfree.formula.function.information;
 
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.NumberType;
-import org.jfree.formula.typing.coretypes.TextType;
+import org.jfree.formula.typing.coretypes.AnyType;
+import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
- * Describes LeftFunction function.
- * @see LeftFunction
+ * Describes IsRefFunction function.
+ * @see IsRefFunction
  *
  * @author Cedric Pronzato
  *
  */
-public class LeftFunctionDescription extends AbstractFunctionDescription
+public class IsRefFunctionDescription extends AbstractFunctionDescription
 {
-  public LeftFunctionDescription()
+
+  public IsRefFunctionDescription()
   {
-    super("org.jfree.formula.function.text.Left-Function");
+    super("org.jfree.formula.function.information.IsRef-Function");
   }
 
   public FunctionCategory getCategory()
   {
-    return TextFunctionCategory.CATEGORY;
+    return InformationFunctionCategory.CATEGORY;
   }
 
   public int getParameterCount()
   {
-    return 2;
+    return 1;
   }
 
   public Type getParameterType(int position)
   {
-    if(position == 0)
-    {
-      return TextType.TYPE;
-    }
-
-    return NumberType.GENERIC_NUMBER;
+    return AnyType.TYPE;
   }
 
   public Type getValueType()
   {
-    return TextType.TYPE;
+    return LogicalType.TYPE;
   }
 
   public boolean isParameterMandatory(int position)
   {
-    if(position == 2)
-    {
-      return false;
-    }
     return true;
   }
 

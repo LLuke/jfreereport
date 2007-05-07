@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: SumFunction.java,v 1.8 2007/04/01 13:51:53 taqua Exp $
+ * $Id: SumFunction.java,v 1.9 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import java.math.BigDecimal;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
@@ -65,6 +66,11 @@ public class SumFunction implements Function
   {
     BigDecimal computedResult = ZERO;
     final int parameterCount = parameters.getParameterCount();
+    
+    if(parameterCount == 0)
+    {
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
+    }
 
     for (int paramIdx = 0; paramIdx < parameterCount; paramIdx++)
     {

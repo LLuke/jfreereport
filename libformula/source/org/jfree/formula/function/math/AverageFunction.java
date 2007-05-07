@@ -24,64 +24,50 @@
  *
  *
  * ------------
- * $Id: LeftFunctionDescription.java,v 1.3 2007/04/01 13:51:53 taqua Exp $
+ * $Id: SumFunction.java,v 1.9 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
-package org.jfree.formula.function.text;
+package org.jfree.formula.function.math;
 
-import org.jfree.formula.function.AbstractFunctionDescription;
-import org.jfree.formula.function.FunctionCategory;
-import org.jfree.formula.typing.Type;
+import java.math.BigDecimal;
+
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
+import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.coretypes.NumberType;
-import org.jfree.formula.typing.coretypes.TextType;
 
 /**
- * Describes LeftFunction function.
- * @see LeftFunction
+ * This function returns the average of the number sequence.
  *
  * @author Cedric Pronzato
- *
  */
-public class LeftFunctionDescription extends AbstractFunctionDescription
+public class AverageFunction implements Function
 {
-  public LeftFunctionDescription()
+
+  public AverageFunction()
   {
-    super("org.jfree.formula.function.text.Left-Function");
   }
 
-  public FunctionCategory getCategory()
+  public String getCanonicalName()
   {
-    return TextFunctionCategory.CATEGORY;
+    return "AVERAGE";
   }
 
-  public int getParameterCount()
+  public TypeValuePair evaluate(final FormulaContext context,
+                                final ParameterCallback parameters)
+      throws EvaluationException
   {
-    return 2;
+    final SumFunction sumFunction = new SumFunction();
+    final TypeValuePair sum = sumFunction.evaluate(context, parameters);
+    
+    final Number n = context.getTypeRegistry().convertToNumber(sum.getType(),
+        sum.getValue());
+    final BigDecimal avg = new BigDecimal(n.toString()).divide(new BigDecimal(
+        parameters.getParameterCount()));
+    
+    return new TypeValuePair(NumberType.GENERIC_NUMBER, avg);
   }
-
-  public Type getParameterType(int position)
-  {
-    if(position == 0)
-    {
-      return TextType.TYPE;
-    }
-
-    return NumberType.GENERIC_NUMBER;
-  }
-
-  public Type getValueType()
-  {
-    return TextType.TYPE;
-  }
-
-  public boolean isParameterMandatory(int position)
-  {
-    if(position == 2)
-    {
-      return false;
-    }
-    return true;
-  }
-
 }

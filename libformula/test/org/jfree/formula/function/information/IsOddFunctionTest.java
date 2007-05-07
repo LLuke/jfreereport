@@ -24,13 +24,11 @@
  *
  *
  * ------------
- * $Id: IfFunctionTest.java,v 1.4 2007/01/26 22:11:52 mimil Exp $
+ * $Id: IsTextFunctionTest.java,v 1.3 2007/01/18 22:35:53 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
-package org.jfree.formula.function.logical;
-
-import java.math.BigDecimal;
+package org.jfree.formula.function.information;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.Formula;
@@ -47,9 +45,9 @@ import org.testng.annotations.Test;
 /**
  * 
  * @author Cedric Pronzato
- *
+ * 
  */
-public class IfFunctionTest
+public class IsOddFunctionTest
 {
   private FormulaContext context;
 
@@ -58,28 +56,29 @@ public class IfFunctionTest
   {
     return new Object[][]
     {
-    { "IF(FALSE();7;8)", new BigDecimal(8) },
-    { "IF(TRUE();7;8)", new BigDecimal(7) },
-    { "IF(TRUE();\"HI\";8)",  "HI"},
-    { "IF(1;7;8)", new BigDecimal(7) },
-    { "IF(5;7;8)", new BigDecimal(7) },
-    { "IF(0;7;8)", new BigDecimal(8) },
-    { "IF(TRUE();[.B4];8)", new BigDecimal(2) },
-    { "IF(TRUE();[.B4]+5;8)", new BigDecimal(7) },
-    { "IF(\"x\";7;8)", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE },
-    { "IF(\"1\";7;8)", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE },
-    { "IF(\"\";7;8)", LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE },
-    { "IF(FALSE();7)", Boolean.FALSE },
-    //TODO { "IF(FALSE();7;)", new BigDecimal(0) }, we will not allow this syntax
-    { "IF(TRUE();4;1/0)", new BigDecimal(4) },
-    { "IF(FALSE();1/0;5)", new BigDecimal(5) },
-    };
+    { "ISODD(3)", Boolean.TRUE },
+    { "ISODD(5)", Boolean.TRUE },
+    { "ISODD(3.1)", Boolean.TRUE },
+    { "ISODD(3.5)", Boolean.TRUE },
+    { "ISODD(3.9)", Boolean.TRUE },
+    { "ISODD(4)", Boolean.FALSE },
+    { "ISODD(4.9)", Boolean.FALSE },
+    { "ISODD(-3)", Boolean.TRUE },
+    { "ISODD(-3.1)", Boolean.TRUE },
+    { "ISODD(-3.5)", Boolean.TRUE },
+    { "ISODD(-3.9)", Boolean.TRUE },
+    { "ISODD(-4)", Boolean.FALSE },
+    { "ISODD(NA())", LibFormulaErrorValue.ERROR_NA_VALUE },
+    { "ISODD(0)", Boolean.FALSE },
+    { "ISODD(1)", Boolean.TRUE },
+    { "ISODD(2)", Boolean.FALSE },
+    { "ISODD(2.9)", Boolean.FALSE }, };
   }
 
-  @BeforeClass(alwaysRun=true)
+  @BeforeClass(alwaysRun = true)
   public void setup()
   {
-    context = new TestFormulaContext(TestFormulaContext.testCaseDataset);
+    context = new TestFormulaContext();
     LibFormulaBoot.getInstance().start();
   }
 
@@ -90,14 +89,16 @@ public class IfFunctionTest
     try
     {
       formula = new Formula(formul);
-    } catch (ParseException e1)
+    }
+    catch (ParseException e1)
     {
       Assert.fail("Error while parsing the formula", e1);
     }
     try
     {
       formula.initialize(context);
-    } catch (EvaluationException e)
+    }
+    catch (EvaluationException e)
     {
       Assert.fail("Initialization Error", e);
     }

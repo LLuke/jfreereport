@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IsLogicalFunction.java,v 1.5 2007/04/01 13:51:52 taqua Exp $
+ * $Id: IsTextFunction.java,v 1.5 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -37,15 +37,16 @@ import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
- * This function checks whatever the given value is of Logical type.
+ * This function retruns true if the given value is an odd number.
  * 
  * @author Cedric Pronzato
  * 
  */
-public class IsLogicalFunction implements Function
+public class IsOddFunction implements Function
 {
   private static final TypeValuePair RETURN_TRUE = new TypeValuePair(
       LogicalType.TYPE, Boolean.TRUE);
@@ -53,7 +54,7 @@ public class IsLogicalFunction implements Function
   private static final TypeValuePair RETURN_FALSE = new TypeValuePair(
       LogicalType.TYPE, Boolean.FALSE);
 
-  public IsLogicalFunction()
+  public IsOddFunction()
   {
   }
 
@@ -66,27 +67,35 @@ public class IsLogicalFunction implements Function
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
 
-     final Type type1 = parameters.getType(0);
-     final Object value1 = parameters.getValue(0);
-     if(value1 instanceof Boolean || type1.isFlagSet(Type.LOGICAL_TYPE))
-     {
-     return RETURN_TRUE;
-     }
+    final Type type1 = parameters.getType(0);
+    final Object value = parameters.getValue(0);
 
-    // we don't want the auto convertion of paramaters (paramerter.getValue) so
-    // we run the evaluate method ourself
-//    final TypeValuePair eval = parameters.getRaw(0).evaluate();
-//    if (eval.getType().isFlagSet(Type.LOGICAL_TYPE))
-//    {
-//      return RETURN_TRUE;
-//    }
+    final TypeRegistry typeRegistry = context.getTypeRegistry();
+    final Number number = typeRegistry.convertToNumber(type1, value);
+
+    if (number == null)
+    {
+      throw new EvaluationException(
+          LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+    }
+
+    int intValue = number.intValue();
+    if (intValue < 0)
+    {
+      intValue *= -1;
+    }
+
+    if (intValue % 2 == 1)
+    {
+      return RETURN_TRUE;
+    }
 
     return RETURN_FALSE;
   }
 
   public String getCanonicalName()
   {
-    return "ISLOGICAL";
+    return "ISODD";
   }
 
 }

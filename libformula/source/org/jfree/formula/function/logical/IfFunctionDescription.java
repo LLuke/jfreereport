@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: IfFunctionDescription.java,v 1.4 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -38,7 +38,7 @@ import org.jfree.formula.typing.coretypes.AnyType;
 
 /**
  * Creation-Date: 04.11.2006, 18:28:55
- *
+ * 
  * @author Thomas Morgner
  */
 public class IfFunctionDescription extends AbstractFunctionDescription
@@ -55,7 +55,14 @@ public class IfFunctionDescription extends AbstractFunctionDescription
 
   public Type getParameterType(int position)
   {
-    return LogicalType.TYPE;
+    if (position == 0)
+    {
+      return LogicalType.TYPE;
+    }
+    else
+    {
+      return AnyType.TYPE;
+    }
   }
 
   public Type getValueType()
@@ -67,19 +74,26 @@ public class IfFunctionDescription extends AbstractFunctionDescription
    * Defines, whether the parameter at the given position is mandatory. A
    * mandatory parameter must be filled in, while optional parameters need not
    * to be filled in.
-   *
+   * 
    * @return
    */
   public boolean isParameterMandatory(int position)
   {
-    return true;
+    if (position == 1 || position == 2)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   /**
    * Returns the default value for an optional parameter. If the value returned
    * here is null, then this either means, that the parameter is mandatory or
    * that the default value is computed by the expression itself.
-   *
+   * 
    * @param position
    * @return
    */

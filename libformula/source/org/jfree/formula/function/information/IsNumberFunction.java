@@ -24,64 +24,56 @@
  *
  *
  * ------------
- * $Id: LeftFunctionDescription.java,v 1.3 2007/04/01 13:51:53 taqua Exp $
+ * $Id: IsTextFunction.java,v 1.5 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
-package org.jfree.formula.function.text;
+package org.jfree.formula.function.information;
 
-import org.jfree.formula.function.AbstractFunctionDescription;
-import org.jfree.formula.function.FunctionCategory;
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.function.Function;
+import org.jfree.formula.function.ParameterCallback;
+import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.NumberType;
-import org.jfree.formula.typing.coretypes.TextType;
+import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
- * Describes LeftFunction function.
- * @see LeftFunction
+ * This function retruns true if the given value is of type Number.
  *
  * @author Cedric Pronzato
  *
  */
-public class LeftFunctionDescription extends AbstractFunctionDescription
+public class IsNumberFunction implements Function
 {
-  public LeftFunctionDescription()
+  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
+  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
+
+  public IsNumberFunction()
   {
-    super("org.jfree.formula.function.text.Left-Function");
   }
 
-  public FunctionCategory getCategory()
+  public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
   {
-    return TextFunctionCategory.CATEGORY;
-  }
-
-  public int getParameterCount()
-  {
-    return 2;
-  }
-
-  public Type getParameterType(int position)
-  {
-    if(position == 0)
+    final int parameterCount = parameters.getParameterCount();
+    if (parameterCount < 1)
     {
-      return TextType.TYPE;
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
 
-    return NumberType.GENERIC_NUMBER;
-  }
-
-  public Type getValueType()
-  {
-    return TextType.TYPE;
-  }
-
-  public boolean isParameterMandatory(int position)
-  {
-    if(position == 2)
+    final Type type1 = parameters.getType(0);
+    if(type1.isFlagSet(Type.NUMERIC_TYPE))
     {
-      return false;
+      return RETURN_TRUE;
     }
-    return true;
+
+    return RETURN_FALSE;
+  }
+
+  public String getCanonicalName()
+  {
+    return "ISNUMBER";
   }
 
 }
