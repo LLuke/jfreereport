@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultFunctionRegistry.java,v 1.9 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -172,8 +172,9 @@ public class DefaultFunctionRegistry implements FunctionRegistry
 
       final int endIndex = classKey.length() - ".class".length();
       final String descrKey = classKey.substring(0, endIndex) + ".description";
+      final String descrClassName = configuration.getConfigProperty(descrKey);
       final Object descr = ObjectUtilities.loadAndInstantiate
-          (descrKey, DefaultFunctionRegistry.class, FunctionDescription.class);
+          (descrClassName, DefaultFunctionRegistry.class, FunctionDescription.class);
 
       final FunctionDescription description;
       if (descr instanceof FunctionDescription == false)
