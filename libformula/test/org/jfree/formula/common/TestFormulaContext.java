@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TestFormulaContext.java,v 1.6 2007/04/10 14:10:41 taqua Exp $
+ * $Id: TestFormulaContext.java,v 1.7 2007/04/27 22:00:47 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -228,6 +228,7 @@ id B C
         if (columnName.equalsIgnoreCase(model.getColumnName(i)))
         {
           col = i;
+          break;
         }
       }
       final int row = Integer.parseInt(ref.substring(2));
@@ -239,8 +240,7 @@ id B C
 
   public Type resolveReferenceType(Object name) throws ContextEvaluationException
   {
-    // TODO Auto-generated method stub
-    return AnyType.TYPE;
+    return getTypeRegistry().guessTypeOfObject(name);
   }
 
 }

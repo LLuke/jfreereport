@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunctionTest.java,v 1.5 2007/02/22 21:34:46 mimil Exp $
+ * $Id: TimeFunctionTest.java,v 1.1 2007/04/27 22:00:47 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -57,8 +57,8 @@ public class TimeFunctionTest
   {
     return new Object[][]
     {
-        { "TIME(0;0;0)=0", Boolean.TRUE},
-      //  { "TIME(23;59;59)*60*60*24", new BigDecimal(86399)},
+//        { "TIME(0;0;0)=0", Boolean.TRUE},
+        { "TIME(23;59;59)*60*60*24", new BigDecimal(86399)},
         /*{ "", Boolean.TRUE },
         { "", Boolean.TRUE },
         { "", Boolean.TRUE },

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateType.java,v 1.2 2006/12/03 19:22:28 taqua Exp $
+ * $Id: DateTimeType.java,v 1.1 2007/04/27 22:00:47 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,7 +43,7 @@ public class DateTimeType extends DefaultType
 
   public DateTimeType()
   {
-    addFlag(Type.TIME_TYPE);
+    addFlag(Type.DATETIME_TYPE);
     addFlag(Type.NUMERIC_TYPE);
     addFlag(Type.SCALAR_TYPE);
   }

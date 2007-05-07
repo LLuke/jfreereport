@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TypeRegistry.java,v 1.8 2007/04/01 13:51:58 taqua Exp $
+ * $Id: TypeRegistry.java,v 1.9 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -69,8 +69,9 @@ public interface TypeRegistry
    * @param type1
    * @param value
    * @return the value as string or an empty string, if the value given is null.
+   * @throws TypeConversionException 
    */
-  public String convertToText (Type type1, Object value);
+  public String convertToText (Type type1, Object value) throws TypeConversionException;
 
   /**
    * Converts the object of the given type into a boolean.
@@ -99,4 +100,6 @@ public interface TypeRegistry
    */
   public TypeValuePair convertTo(final Type targetType,
                                  final TypeValuePair valuePair) throws TypeConversionException;
+  
+  public Type guessTypeOfObject(Object o);
 }

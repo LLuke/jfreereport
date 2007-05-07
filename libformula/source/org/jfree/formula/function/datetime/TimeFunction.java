@@ -24,15 +24,13 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.10 2007/02/22 21:34:46 mimil Exp $
+ * $Id: TimeFunction.java,v 1.1 2007/04/27 22:00:47 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function.datetime;
 
 import java.sql.Time;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
@@ -43,10 +41,11 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.TimeType;
+import org.jfree.formula.util.DateUtil;
 
 /**
  * This fonction constructs a time from hours, minutes, and seconds.
- *
+ * 
  * @author Cedric Pronzato
  */
 public class TimeFunction implements Function
@@ -61,7 +60,7 @@ public class TimeFunction implements Function
   }
 
   public TypeValuePair evaluate(FormulaContext context,
-                                ParameterCallback parameters) throws EvaluationException
+      ParameterCallback parameters) throws EvaluationException
   {
     if (parameters.getParameterCount() != 3)
     {
@@ -73,35 +72,32 @@ public class TimeFunction implements Function
     try
     {
       final TypeRegistry typeRegistry = context.getTypeRegistry();
-      n1 = typeRegistry.convertToNumber(parameters.getType(0), parameters.getValue(0));
-      n2 = typeRegistry.convertToNumber(parameters.getType(1), parameters.getValue(1));
-      n3 = typeRegistry.convertToNumber(parameters.getType(2), parameters.getValue(2));
-    }
-    catch (NumberFormatException e)
+      n1 = typeRegistry.convertToNumber(parameters.getType(0), parameters
+          .getValue(0));
+      n2 = typeRegistry.convertToNumber(parameters.getType(1), parameters
+          .getValue(1));
+      n3 = typeRegistry.convertToNumber(parameters.getType(2), parameters
+          .getValue(2));
+    } catch (NumberFormatException e)
     {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+      throw new EvaluationException(
+          LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
 
     if (n1 == null || n2 == null || n3 == null)
     {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+      throw new EvaluationException(
+          LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
     final int hours = n1.intValue();
     final int minutes = n2.intValue();
     final int seconds = n3.intValue();
-    
-    final LocalizationContext localizationContext = context.getLocalizationContext();
-    final GregorianCalendar gc = new GregorianCalendar
-        (localizationContext.getTimeZone(), localizationContext.getLocale());
-//    gc.set(GregorianCalendar.DAY_OF_MONTH, 0);
-//    gc.set(GregorianCalendar.MONTH, 0);
-//    gc.set(GregorianCalendar.YEAR, 0);
-    gc.set(GregorianCalendar.MILLISECOND, 0);
-    gc.set(GregorianCalendar.HOUR_OF_DAY, hours);
-    gc.set(GregorianCalendar.MINUTE, minutes);
-    gc.set(GregorianCalendar.SECOND, seconds);
 
-    final Date date = gc.getTime();
-    return new TypeValuePair(TimeType.TYPE, new Time(date.getTime()));
+    final LocalizationContext localizationContext = context
+        .getLocalizationContext();
+    final Time time = DateUtil.createTime(hours, minutes, seconds,
+        localizationContext);
+
+    return new TypeValuePair(TimeType.TYPE, time);
   }
 }

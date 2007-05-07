@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultComparator.java,v 1.5 2007/04/01 13:51:58 taqua Exp $
+ * $Id: DefaultComparator.java,v 1.6 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -37,14 +37,17 @@ import org.jfree.util.ObjectUtilities;
 
 /**
  * Creation-Date: 03.11.2006, 16:15:28
- *
+ * 
  * @author Thomas Morgner
  */
 public class DefaultComparator implements ExtendedComparator
 {
   private FormulaContext context;
+
   public static final Integer LESS = new Integer(-1);
+
   public static final Integer EQUAL = new Integer(0);
+
   private static final Integer MORE = new Integer(1);
 
   public DefaultComparator()
@@ -56,10 +59,8 @@ public class DefaultComparator implements ExtendedComparator
     this.context = context;
   }
 
-  public boolean isEqual(final Type type1,
-                         final Object value1,
-                         final Type type2,
-                         final Object value2)
+  public boolean isEqual(final Type type1, final Object value1,
+      final Type type2, final Object value2)
   {
     // this is rather easy. If at least one of the types is a numeric,
     // try to compare them as numbers. (And here it gets messy.)
@@ -79,16 +80,25 @@ public class DefaultComparator implements ExtendedComparator
       final BigDecimal result = bd1.subtract(bd2);
       return (result.signum() == 0);
     }
-    catch(TypeConversionException nfe)
+    catch (TypeConversionException nfe)
     {
       // ignore ..
     }
 
     if (type1.isFlagSet(Type.TEXT_TYPE) || type2.isFlagSet(Type.TEXT_TYPE))
     {
-      // Convert both values to text ..
-      final String text1 = typeRegistry.convertToText(type1, value1);
-      final String text2 = typeRegistry.convertToText(type2, value2);
+      String text1 = null;
+      String text2 = null;
+      try
+      {
+        // Convert both values to text ..
+        text1 = typeRegistry.convertToText(type1, value1);
+        text2 = typeRegistry.convertToText(type2, value2);
+      }
+      catch (TypeConversionException nfe)
+      {
+        // ignore ..
+      }
 
       if (text1 == null && text2 == null)
       {
@@ -98,7 +108,8 @@ public class DefaultComparator implements ExtendedComparator
       {
         return false;
       }
-      return (ObjectUtilities.equal(text1, text2));
+      return ObjectUtilities.equal(text1, text2);
+
     }
 
     // Fall back to Java's equals method and hope the best ..
@@ -108,17 +119,15 @@ public class DefaultComparator implements ExtendedComparator
   /**
    * Returns null, if the types are not comparable and are not convertible at
    * all.
-   *
+   * 
    * @param type1
    * @param value1
    * @param type2
    * @param value2
    * @return
    */
-  public Integer compare(final Type type1,
-                         final Object value1,
-                         final Type type2,
-                         final Object value2)
+  public Integer compare(final Type type1, final Object value1,
+      final Type type2, final Object value2)
   {
     // this is rather easy. If at least one of the types is a numeric,
     // try to compare them as numbers. (And here it gets messy.)
@@ -135,7 +144,8 @@ public class DefaultComparator implements ExtendedComparator
       return DefaultComparator.MORE;
     }
 
-    // First, we try to compare both types directly. This is the least-expensive solution, as it does
+    // First, we try to compare both types directly. This is the least-expensive
+    // solution, as it does
     // not include any conversion operations ..
     if (type1.isFlagSet(Type.SCALAR_TYPE) && type2.isFlagSet(Type.SCALAR_TYPE))
     {
@@ -159,7 +169,7 @@ public class DefaultComparator implements ExtendedComparator
             return DefaultComparator.LESS;
           }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
           // ignore any exception ..
         }
@@ -198,15 +208,23 @@ public class DefaultComparator implements ExtendedComparator
       }
       return DefaultComparator.LESS;
     }
-    catch(TypeConversionException nfe)
+    catch (TypeConversionException nfe)
     {
       // Ignore ..
     }
 
     // And finally convert them to text and compare the text values ..
     // Convert both values to text ..
-    final String text1 = typeRegistry.convertToText(type1, value1);
-    final String text2 = typeRegistry.convertToText(type2, value2);
+    String text1 = null;
+    String text2 = null;
+    try
+    {
+      text1 = typeRegistry.convertToText(type1, value1);
+      text2 = typeRegistry.convertToText(type2, value2);
+    }
+    catch (TypeConversionException e)
+    {
+    }
 
     if (text1 == null && text2 == null)
     {

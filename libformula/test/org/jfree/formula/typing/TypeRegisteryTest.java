@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TypeRegisteryTest.java,v 1.5 2007/03/06 14:13:45 taqua Exp $
+ * $Id: TypeRegisteryTest.java,v 1.6 2007/04/27 22:00:47 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,7 @@ import java.util.GregorianCalendar;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaBoot;
 import org.jfree.formula.common.TestFormulaContext;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 import org.jfree.formula.typing.coretypes.DateType;
 import org.jfree.formula.typing.coretypes.NumberType;
 import org.jfree.formula.typing.coretypes.TextType;
@@ -73,7 +74,7 @@ public class TypeRegisteryTest
     Number n = null;
     try
     {
-      n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
+      n = context.getTypeRegistry().convertToNumber(DateTimeType.TYPE, d);
       Assert.assertNotNull(n, "The date has not been converted to a number");
     } catch (TypeConversionException e)
     {
@@ -83,46 +84,45 @@ public class TypeRegisteryTest
     Date d1 = null;
     try
     {
-      d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
+      d1 = context.getTypeRegistry().convertToDate(DateTimeType.TYPE, n);
       Assert.assertNotNull(d1, "The number has not been converted to a date");
     } catch (TypeConversionException e)
     {
       Assert.fail("Conversion failed", e);
     }
-    
     Assert.assertEquals(d1, d, "dates are differents");
   }
 
-  @Test
-  public void testNowDateConvertion()
-  {
-    final Calendar cal = new GregorianCalendar
-        (context.getLocalizationContext().getTimeZone(),
-            context.getLocalizationContext().getLocale());
-
-    final Date d = cal.getTime();
-    Number n = null;
-    try
-    {
-      n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
-      Assert.assertNotNull(n, "The date has not been converted to a number");
-    } catch (TypeConversionException e)
-    {
-      Assert.fail("Conversion failed", e);
-    }
-    
-    Date d1 = null;
-    try
-    {
-      d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
-      Assert.assertNotNull(d1, "The number has not been converted to a date");
-    } catch (TypeConversionException e)
-    {
-      Assert.fail("Conversion failed", e);
-    }
-    
-    Assert.assertEquals(d1, d, "dates are differents");
-  }
+//  @Test(enabled=false)
+//  public void testNowDateConvertion()
+//  {
+//    final Calendar cal = new GregorianCalendar
+//        (context.getLocalizationContext().getTimeZone(),
+//            context.getLocalizationContext().getLocale());
+//
+//    final Date d = cal.getTime();
+//    Number n = null;
+//    try
+//    {
+//      n = context.getTypeRegistry().convertToNumber(DateType.TYPE, d);
+//      Assert.assertNotNull(n, "The date has not been converted to a number");
+//    } catch (TypeConversionException e)
+//    {
+//      Assert.fail("Conversion failed", e);
+//    }
+//    
+//    Date d1 = null;
+//    try
+//    {
+//      d1 = context.getTypeRegistry().convertToDate(NumberType.GENERIC_NUMBER, n);
+//      Assert.assertNotNull(d1, "The number has not been converted to a date");
+//    } catch (TypeConversionException e)
+//    {
+//      Assert.fail("Conversion failed", e);
+//    }
+//    
+//    Assert.assertEquals(d1, d, "dates are differents");
+//  }
   
 //  @Test
 //  public void testStringDateConversion () throws TypeConversionException

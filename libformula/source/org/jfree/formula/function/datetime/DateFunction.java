@@ -24,15 +24,11 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.12 2007/04/01 13:51:52 taqua Exp $
+ * $Id: DateFunction.java,v 1.13 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.function.datetime;
-
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Calendar;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
@@ -43,10 +39,11 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.DateType;
+import org.jfree.formula.util.DateUtil;
 
 /**
  * Creation-Date: 04.11.2006, 18:59:11
- *
+ * 
  * @author Thomas Morgner
  */
 public class DateFunction implements Function
@@ -61,7 +58,7 @@ public class DateFunction implements Function
   }
 
   public TypeValuePair evaluate(final FormulaContext context,
-                                final ParameterCallback parameters) throws EvaluationException
+      final ParameterCallback parameters) throws EvaluationException
   {
     if (parameters.getParameterCount() != 3)
     {
@@ -69,23 +66,25 @@ public class DateFunction implements Function
     }
 
     final TypeRegistry typeRegistry = context.getTypeRegistry();
-    final Number n1 = typeRegistry.convertToNumber(parameters.getType(0), parameters.getValue(0));
-    final Number n2 = typeRegistry.convertToNumber(parameters.getType(1), parameters.getValue(1));
-    final Number n3 = typeRegistry.convertToNumber(parameters.getType(2), parameters.getValue(2));
 
-    //System.out.println("DEGUG Y:"+n1+" M:"+n2+"["+value+"] D:"+n3);
-    final LocalizationContext localizationContext = context.getLocalizationContext();
-    final GregorianCalendar gc = new GregorianCalendar
-        (localizationContext.getTimeZone(), localizationContext.getLocale());
-    gc.set(Calendar.DAY_OF_MONTH, n3.intValue());
-    gc.set(Calendar.MONTH, n2.intValue()-1);
-    gc.set(Calendar.YEAR, n1.intValue());
-    gc.set(Calendar.MILLISECOND, 0);
-    gc.set(Calendar.HOUR_OF_DAY, 0);
-    gc.set(Calendar.MINUTE, 0);
-    gc.set(Calendar.SECOND, 0);
+    final Number n1 = typeRegistry.convertToNumber(parameters.getType(0),
+        parameters.getValue(0));
+    final Number n2 = typeRegistry.convertToNumber(parameters.getType(1),
+        parameters.getValue(1));
+    final Number n3 = typeRegistry.convertToNumber(parameters.getType(2),
+        parameters.getValue(2));
 
-    final Date date = gc.getTime();
+    if (n1 == null || n2 == null || n3 == null)
+    {
+      throw new EvaluationException(
+          LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
+    }
+
+    final LocalizationContext localizationContext = context
+        .getLocalizationContext();
+    final java.sql.Date date = DateUtil.createDate(n1.intValue(),
+        n2.intValue(), n3.intValue(), localizationContext);
+
     return new TypeValuePair(DateType.TYPE, date);
   }
 }
