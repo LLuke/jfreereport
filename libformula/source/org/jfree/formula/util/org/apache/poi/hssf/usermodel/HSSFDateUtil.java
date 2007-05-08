@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ArrayConverter.java,v 1.3 2007/04/01 13:51:58 taqua Exp $
+ * $Id: HSSFDateUtil.java,v 1.1 2007/04/27 22:00:47 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -137,9 +137,9 @@ public class HSSFDateUtil
     {
       final String dateSystem = LibFormulaBoot.getInstance().getGlobalConfig()
         .getConfigProperty("org.jfree.formula.datesystem.1904", "false");
-      return getJavaDate(date, Boolean.parseBoolean(dateSystem));
+      return getJavaDate(date, "true".equals(dateSystem));
     }
-    
+
     /**
      *  Given an Excel date with either 1900 or 1904 date windowing,
      *  converts it to a java.util.Date.
@@ -175,7 +175,7 @@ public class HSSFDateUtil
             }
             GregorianCalendar calendar = new GregorianCalendar(startYear,0,
                                                      wholeDays + dayAdjust);
-            int millisecondsInDay = (int)((date - Math.floor(date)) * 
+            int millisecondsInDay = (int)((date - Math.floor(date)) *
                                           (double) DAY_MILLISECONDS + 0.5);
             calendar.set(GregorianCalendar.MILLISECOND, millisecondsInDay);
             return calendar.getTime();
@@ -187,7 +187,7 @@ public class HSSFDateUtil
 
     /**
      * given a format ID this will check whether the format represents
-     * an internal date format or not. 
+     * an internal date format or not.
      */
     public static boolean isInternalDateFormat(int format) {
       boolean retval =false;
@@ -209,7 +209,7 @@ public class HSSFDateUtil
                 case 0x2f:
                     retval = true;
                     break;
-                    
+
                 default:
                     retval = false;
                     break;

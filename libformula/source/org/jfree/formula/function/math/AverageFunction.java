@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: SumFunction.java,v 1.9 2007/04/10 14:10:41 taqua Exp $
+ * $Id: AverageFunction.java,v 1.1 2007/05/07 23:00:37 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -62,12 +62,12 @@ public class AverageFunction implements Function
   {
     final SumFunction sumFunction = new SumFunction();
     final TypeValuePair sum = sumFunction.evaluate(context, parameters);
-    
-    final Number n = context.getTypeRegistry().convertToNumber(sum.getType(),
-        sum.getValue());
-    final BigDecimal avg = new BigDecimal(n.toString()).divide(new BigDecimal(
-        parameters.getParameterCount()));
-    
+
+    final Number n = context.getTypeRegistry().convertToNumber(sum.getType(), sum.getValue());
+    final BigDecimal divident = new BigDecimal(n.toString());
+    final BigDecimal divisor = new BigDecimal(parameters.getParameterCount());
+    final BigDecimal avg = divident.divide(divisor, BigDecimal.ROUND_HALF_UP);
+
     return new TypeValuePair(NumberType.GENERIC_NUMBER, avg);
   }
 }

@@ -24,15 +24,13 @@
  *
  *
  * ------------
- * $Id: URLEncoder.java,v 1.2 2007/04/01 13:51:58 taqua Exp $
+ * $Id: DateUtil.java,v 1.1 2007/05/07 22:57:01 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.util;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,23 +43,22 @@ import org.jfree.formula.typing.coretypes.DateType;
 import org.jfree.formula.util.org.apache.poi.hssf.usermodel.HSSFDateUtil;
 
 /**
- * 
+ *
  * @author Cedric Pronzato
- * 
+ *
  */
 public class DateUtil
 {
   private static final long MILLISECS_PER_DAY = 24 * 60 * 60 * 1000;
 
-  private static final long ISO8001_TIME = new GregorianCalendar()
-      .getTimeInMillis();
+  private static final Date ISO8001_TIME = new GregorianCalendar().getTime();
 
   /**
    * Converts a <code>Date</code> value according to the requested
    * <code>Type</code> to the proper <code>Date</code> subclasses (<code>java.sql.Time</code>,
    * <code>java.sql.Date</code>) if needed. If the requested type is unknown,
    * no conversion takes place and the input date is returned.
-   * 
+   *
    * @param fromDate
    *          The date to convert.
    * @param toType
@@ -106,9 +103,9 @@ public class DateUtil
     {
       throw new IllegalArgumentException();
     }
-   
+
     final BigDecimal o = new BigDecimal(fromSerialDate.doubleValue()).setScale(5, BigDecimal.ROUND_UP);
-   
+
     if (toType.isFlagSet(Type.TIME_TYPE))
     {
       return o.subtract(new BigDecimal(o.intValue()));
@@ -188,12 +185,12 @@ public class DateUtil
   {
     final GregorianCalendar gc = new GregorianCalendar(context.getTimeZone(),
         context.getLocale());
-    gc.setTimeInMillis(ISO8001_TIME);
+    gc.setTime(ISO8001_TIME);
     gc.set(Calendar.MILLISECOND, 0);
     gc.set(Calendar.HOUR_OF_DAY, hour);
     gc.set(Calendar.MINUTE, minute);
     gc.set(Calendar.SECOND, second);
-    return new Time(gc.getTimeInMillis());
+    return new Time(gc.getTime().getTime());
   }
 
   public static java.sql.Date createDate(int year, int month, int day,
@@ -208,7 +205,7 @@ public class DateUtil
     gc.set(Calendar.HOUR_OF_DAY, 0);
     gc.set(Calendar.MINUTE, 0);
     gc.set(Calendar.SECOND, 0);
-    return new java.sql.Date(gc.getTimeInMillis());
+    return new java.sql.Date(gc.getTime().getTime());
   }
 
 }
