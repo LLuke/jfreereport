@@ -24,27 +24,27 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: NowFunction.java,v 1.2 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 
 package org.jfree.formula.function.datetime;
 
-import java.util.GregorianCalendar;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.EvaluationException;
-import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.typing.coretypes.DateType;
 
 /**
- * Todo: Document me!
+ * Return the serial number of the current date and time. This returns the current day and time serial number, using the
+ * current locale. If you want only the serial number of the current day, use TODAY.
  *
  * @author Thomas Morgner
  * @since 23.03.2007
@@ -68,12 +68,6 @@ public class NowFunction implements Function
     final LocalizationContext localizationContext = context.getLocalizationContext();
     final GregorianCalendar gc = new GregorianCalendar
         (localizationContext.getTimeZone(), localizationContext.getLocale());
-
-    // Time is implicitly set to the current time. All we have to do is to
-    // remove the fractional part ..
-    gc.set(Calendar.DAY_OF_MONTH, 0);
-    gc.set(Calendar.MONTH, 0);
-    gc.set(Calendar.YEAR, 0);
 
     final Date date = gc.getTime();
     return new TypeValuePair(DateType.TYPE, date);

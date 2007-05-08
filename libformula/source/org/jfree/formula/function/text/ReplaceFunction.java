@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: ReplaceFunction.java,v 1.3 2007/04/01 13:51:53 taqua Exp $
+ * $Id: ReplaceFunction.java,v 1.4 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -74,9 +74,7 @@ public class ReplaceFunction implements Function
     final String text = typeRegistry.convertToText(textType, textValue);
     final Number start = typeRegistry.convertToNumber(startType, startValue);
     final Number length = typeRegistry.convertToNumber(lengthType, lengthValue);
-
-    // = MID(T;1,Start-1) & New & MID(T; Start+Len; LEN(T)))
-
+    
     final MidFunction function = new MidFunction();
     final String result1 = function.process(text, new Integer(1), new Integer(start.intValue() - 1));
     final String result2 = function.process(text,
