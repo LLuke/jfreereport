@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultFlowController.java,v 1.9 2007/04/01 18:49:25 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -215,7 +215,7 @@ public class DefaultFlowController implements FlowController
     masterRow.setReportDataRow(ReportDataRow.createDataRow
         (reportDataFactory, query, dataRow.getGlobalView()));
 
-    DefaultFlowController fc = new DefaultFlowController(this, masterRow);
+    final DefaultFlowController fc = new DefaultFlowController(this, masterRow);
     fc.reportStack.push(new ReportDataContext(fc.markStack, advanceRequested));
     fc.markStack = new FastStack();
     fc.dataRow = masterRow;

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportData.java,v 1.5 2007/04/01 18:49:23 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -40,6 +40,8 @@ package org.jfree.report;
  * data will restart from there. It is guaranteed, that the cursor will never
  * be set to a row that is beyond the last row that has been read with 'next()'.
  *
+ * If the cursor is out of range, any call to get must return 'null'. 
+ *
  * @author Thomas Morgner
  */
 public interface ReportData extends DataSet
@@ -55,9 +57,10 @@ public interface ReportData extends DataSet
    * error, which invalidated the whole report-data object).
    *
    * @param cursor
+   * @return true, if moving the cursor succeeded, false otherwise.
    * @throws DataSourceException
    */
-  public void setCursorPosition(int cursor) throws DataSourceException;
+  public boolean setCursorPosition(int cursor) throws DataSourceException;
 
   /**
    * This operation checks, whether a call to next will be likely to succeed.
@@ -68,6 +71,12 @@ public interface ReportData extends DataSet
    */
   public boolean isAdvanceable () throws DataSourceException;
 
+  /**
+   * This method produces the same result as 'setCursorPosition(getCursorPosition() + 1);'
+   *
+   * @return
+   * @throws DataSourceException
+   */
   public boolean next() throws DataSourceException;
 
   /**

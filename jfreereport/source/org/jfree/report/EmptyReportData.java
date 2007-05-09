@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: EmptyReportData.java,v 1.6 2007/04/01 18:49:23 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -51,13 +51,9 @@ public class EmptyReportData implements ReportData
     return true;
   }
 
-  public void setCursorPosition(int cursor) throws DataSourceException
+  public boolean setCursorPosition(int cursor) throws DataSourceException
   {
-    if (cursor == 0)
-    {
-      return;
-    }
-    throw new DataSourceException("This beast is empty!");
+    return false;
   }
 
   /**

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportDataRow.java,v 1.6 2007/04/01 18:49:24 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -74,7 +74,7 @@ public final class ReportDataRow implements DataRow
     final int columnCount = reportData.getColumnCount();
     this.data = new DataFlags[columnCount];
 
-    HashMap nameCache = new HashMap();
+    final HashMap nameCache = new HashMap();
     for (int i = 0; i < columnCount; i++)
     {
       final String columnName = reportData.getColumnName(i);
@@ -83,15 +83,22 @@ public final class ReportDataRow implements DataRow
         nameCache.put(columnName, IntegerCache.getInteger(i));
       }
 
-      final Object value = reportData.get(i);
-      this.data[i] = new DefaultDataFlags(columnName, value, true);
+      if (reportData.isEmpty() == false)
+      {
+        final Object value = reportData.get(i);
+        this.data[i] = new DefaultDataFlags(columnName, value, true);
+      }
+      else
+      {
+        this.data[i] = new DefaultDataFlags(columnName, null, true);
+      }
     }
     this.nameCache = Collections.unmodifiableMap(nameCache);
   }
 
   private ReportDataRow(final ReportData reportData,
                         final ReportDataRow reportDataRow)
-          throws DataSourceException
+      throws DataSourceException
   {
     this(reportData);
 
@@ -109,10 +116,9 @@ public final class ReportDataRow implements DataRow
       {
         final String columnName = reportData.getColumnName(i);
         final Object value = reportData.get(i);
-        final boolean changed = ObjectUtilities.equal
-                (value, reportDataRow.get(i));
+        final boolean changed = ObjectUtilities.equal(value, reportDataRow.get(i));
         this.data[i] = new DefaultDataFlags
-                (columnName, value, changed);
+            (columnName, value, changed);
       }
       this.nameCache = reportDataRow.nameCache;
     }
@@ -130,11 +136,9 @@ public final class ReportDataRow implements DataRow
   }
 
   /**
-   * Returns the value of the expression or column in the tablemodel using the
-   * given column number as index. For functions and expressions, the
-   * <code>getValue()</code> method is called and for columns from the
-   * tablemodel the tablemodel method <code>getValueAt(row, column)</code> gets
-   * called.
+   * Returns the value of the expression or column in the tablemodel using the given column number as index. For
+   * functions and expressions, the <code>getValue()</code> method is called and for columns from the tablemodel the
+   * tablemodel method <code>getValueAt(row, column)</code> gets called.
    *
    * @param col the item index.
    * @return the value.
@@ -146,12 +150,10 @@ public final class ReportDataRow implements DataRow
   }
 
   /**
-   * Returns the value of the function, expression or column using its specific
-   * name. The given name is translated into a valid column number and the the
-   * column is queried. For functions and expressions, the
-   * <code>getValue()</code> method is called and for columns from the
-   * tablemodel the tablemodel method <code>getValueAt(row, column)</code> gets
-   * called.
+   * Returns the value of the function, expression or column using its specific name. The given name is translated into
+   * a valid column number and the the column is queried. For functions and expressions, the <code>getValue()</code>
+   * method is called and for columns from the tablemodel the tablemodel method <code>getValueAt(row, column)</code>
+   * gets called.
    *
    * @param col the item index.
    * @return the value.
@@ -163,17 +165,16 @@ public final class ReportDataRow implements DataRow
     if (colIdx == null)
     {
       throw new DataSourceException
-              ("Invalid name specified. There is no such column.");
+          ("Invalid name specified. There is no such column.");
     }
 
     return data[colIdx.intValue()].getValue();
   }
 
   /**
-   * Returns the name of the column, expression or function. For columns from
-   * the tablemodel, the tablemodels <code>getColumnName</code> method is
-   * called. For functions, expressions and report properties the assigned name
-   * is returned.
+   * Returns the name of the column, expression or function. For columns from the tablemodel, the tablemodels
+   * <code>getColumnName</code> method is called. For functions, expressions and report properties the assigned name is
+   * returned.
    *
    * @param col the item index.
    * @return the name.
@@ -184,8 +185,7 @@ public final class ReportDataRow implements DataRow
   }
 
   /**
-   * Returns the number of columns, expressions and functions and marked
-   * ReportProperties in the report.
+   * Returns the number of columns, expressions and functions and marked ReportProperties in the report.
    *
    * @return the item count.
    */
@@ -200,7 +200,7 @@ public final class ReportDataRow implements DataRow
     if (colIdx == null)
     {
       throw new DataSourceException
-              ("Invalid name specified. There is no such column.");
+          ("Invalid name specified. There is no such column.");
     }
 
     return data[colIdx.intValue()];
@@ -212,8 +212,7 @@ public final class ReportDataRow implements DataRow
   }
 
   /**
-   * Advances to the next row and attaches the given master row to the objects
-   * contained in that client data row.
+   * Advances to the next row and attaches the given master row to the objects contained in that client data row.
    *
    * @param master
    * @return
@@ -225,14 +224,16 @@ public final class ReportDataRow implements DataRow
       if (reportData.getCursorPosition() != cursor)
       {
         // directly go to the position we need.
-        reportData.setCursorPosition(cursor + 1);
+        if (reportData.setCursorPosition(cursor + 1) == false)
+        {
+          throw new DataSourceException("Unable to advance cursor position");
+        }
       }
       else
       {
         if (reportData.next() == false)
         {
-          throw new DataSourceException(
-                  "Unable to advance cursor position");
+          throw new DataSourceException("Unable to advance cursor position");
         }
       }
       return new ReportDataRow(reportData, this);
@@ -246,7 +247,10 @@ public final class ReportDataRow implements DataRow
       if (reportData.getCursorPosition() != cursor)
       {
         // directly go to the position we need.
-        reportData.setCursorPosition(cursor);
+        if (reportData.setCursorPosition(cursor) == false)
+        {
+          return false;
+        }
       }
       return reportData.isAdvanceable();
     }

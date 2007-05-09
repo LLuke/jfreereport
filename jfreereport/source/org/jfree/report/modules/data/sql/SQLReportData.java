@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: SQLReportData.java,v 1.5 2007/04/01 18:49:26 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -125,19 +125,20 @@ public class SQLReportData implements ReportData
     return columnCount;
   }
 
-  public void setCursorPosition(int row) throws DataSourceException
+  public boolean setCursorPosition(int row) throws DataSourceException
   {
     if (row < 0)
     {
       throw new DataSourceException("Negative row number is not valid");
     }
-    if (row > 0 && row >= rowCount)
+    if (row >= rowCount)
     {
-      throw new DataSourceException("OutOfBounds:");
+      return false;
+      // throw new DataSourceException("OutOfBounds:");
     }
-    if (isEmpty() && row == 0)
+    if (isEmpty())
     {
-      return;
+      return false;
     }
 
     try
@@ -145,11 +146,10 @@ public class SQLReportData implements ReportData
       if (resultSet.absolute(row + 1))
       {
         cursor = row;
+        return true;
       }
-      else
-      {
-        throw new DataSourceException("Unable to scroll the resultset.");
-      }
+      return false;
+      //throw new DataSourceException("Unable to scroll the resultset.");
     }
     catch (SQLException e)
     {

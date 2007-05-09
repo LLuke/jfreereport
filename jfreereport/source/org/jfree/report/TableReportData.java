@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TableReportData.java,v 1.5 2007/04/01 18:49:23 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -66,23 +66,26 @@ public class TableReportData implements ReportData
     return tableModel.getRowCount() == 0;
   }
 
-  public void setCursorPosition(int row) throws DataSourceException
+  public boolean setCursorPosition(int row) throws DataSourceException
   {
-    if (row == 0)
+    if (isEmpty())
     {
       cursor = 0;
-      return;
+      return false;
     }
 
     if (row >= rowMax)
     {
-      throw new DataSourceException("> Max");
+      // throw new DataSourceException("> Max");
+      return false;
     }
     else if (row < rowMin)
     {
-      throw new DataSourceException("< Min");
+      return false;
+      //throw new DataSourceException("< Min");
     }
     cursor = row;
+    return true;
   }
 
   /**

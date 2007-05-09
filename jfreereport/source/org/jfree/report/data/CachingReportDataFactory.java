@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CachingReportDataFactory.java,v 1.3 2007/04/01 18:49:23 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -54,7 +54,7 @@ public class CachingReportDataFactory implements ReportDataFactory
     private String[] nameStore;
     private Integer hashCode;
 
-    public Parameters(DataSet dataSet) throws DataSourceException
+    protected Parameters(final DataSet dataSet) throws DataSourceException
     {
       final int columnCount = dataSet.getColumnCount();
       dataStore = new Object[columnCount];
@@ -72,12 +72,12 @@ public class CachingReportDataFactory implements ReportDataFactory
       return dataStore.length;
     }
 
-    public String getColumnName(int column) throws DataSourceException
+    public String getColumnName(final int column) throws DataSourceException
     {
       return nameStore[column];
     }
 
-    public Object get(int column) throws DataSourceException
+    public Object get(final int column) throws DataSourceException
     {
       return dataStore[column];
     }
@@ -116,7 +116,7 @@ public class CachingReportDataFactory implements ReportDataFactory
       int hashCode = 0;
       for (int i = 0; i < dataStore.length; i++)
       {
-        Object o = dataStore[i];
+        final Object o = dataStore[i];
         if (o != null)
         {
           hashCode = hashCode * 23 + o.hashCode();
@@ -128,7 +128,7 @@ public class CachingReportDataFactory implements ReportDataFactory
       }
       for (int i = 0; i < nameStore.length; i++)
       {
-        Object o = nameStore[i];
+        final Object o = nameStore[i];
         if (o != null)
         {
           hashCode = hashCode * 23 + o.hashCode();
@@ -163,8 +163,8 @@ public class CachingReportDataFactory implements ReportDataFactory
   }
 
   /**
-   * Queries a datasource. The string 'query' defines the name of the query. The
-   * Parameterset given here may contain more data than actually needed.
+   * Queries a datasource. The string 'query' defines the name of the query. The Parameterset given here may contain
+   * more data than actually needed.
    * <p/>
    * The dataset may change between two calls, do not assume anything!
    *
@@ -181,52 +181,61 @@ public class CachingReportDataFactory implements ReportDataFactory
       if (parameterCache == null)
       {
         // totally new query here.
-        HashMap newParams = new HashMap();
+        final HashMap newParams = new HashMap();
         queryCache.put(query, newParams);
 
-        Parameters params = new Parameters(parameters);
+        final Parameters params = new Parameters(parameters);
         final ReportData newData = backend.queryData(query, params);
         newParams.put(params, newData);
-        newData.setCursorPosition(0);
+        if (newData.isEmpty() == false)
+        {
+          newData.setCursorPosition(0);
+        }
         return newData;
       }
       else
       {
         // Lookup the parameters ...
-        Parameters params = new Parameters(parameters);
+        final Parameters params = new Parameters(parameters);
         final ReportData data = (ReportData) parameterCache.get(params);
         if (data != null)
         {
-          data.setCursorPosition(0);
+          if (data.isEmpty() == false)
+          {
+            data.setCursorPosition(0);
+          }
           return data;
         }
 
         final ReportData newData = backend.queryData(query, params);
         parameterCache.put(params, newData);
-        newData.setCursorPosition(0);
+        if (newData.isEmpty() == false)
+        {
+          newData.setCursorPosition(0);
+        }
         return newData;
       }
     }
     catch (DataSourceException e)
     {
+      e.printStackTrace();
       throw new ReportDataFactoryException("Failed to query data", e);
     }
   }
 
   /**
-   * Closes the report data factory and all report data instances that have been
-   * returned by this instance.
+   * Closes the report data factory and all report data instances that have been returned by this instance.
    */
   public void close()
   {
     final Iterator queries = queryCache.values().iterator();
     while (queries.hasNext())
     {
-      HashMap map = (HashMap) queries.next();
+      final HashMap map = (HashMap) queries.next();
       final Iterator dataSets = map.values().iterator();
       while (dataSets.hasNext())
       {
-        ReportData data = (ReportData) dataSets.next();
+        final ReportData data = (ReportData) dataSets.next();
         try
         {
           data.close();
@@ -241,9 +250,8 @@ public class CachingReportDataFactory implements ReportDataFactory
   }
 
   /**
-   * Derives a freshly initialized report data factory, which is independend of
-   * the original data factory. Opening or Closing one data factory must not
-   * affect the other factories.
+   * Derives a freshly initialized report data factory, which is independend of the original data factory. Opening or
+   * Closing one data factory must not affect the other factories.
    *
    * @return
    */
