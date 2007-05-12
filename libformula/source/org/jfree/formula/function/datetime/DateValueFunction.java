@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateDifFunction.java,v 1.1 2007/02/22 21:34:46 mimil Exp $
+ * $Id: DateValueFunction.java,v 1.1 2007/04/27 22:00:43 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -43,14 +43,14 @@ import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.DateType;
 
 /**
- * This function returns 
+ * This function returns
  * 
- *
+ * 
  * @author Cedric Pronzato
  */
 public class DateValueFunction implements Function
 {
- 
+
   public DateValueFunction()
   {
   }
@@ -61,32 +61,19 @@ public class DateValueFunction implements Function
   }
 
   public TypeValuePair evaluate(FormulaContext context,
-                                ParameterCallback parameters) throws EvaluationException
+      ParameterCallback parameters) throws EvaluationException
   {
     if (parameters.getParameterCount() != 1)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
-    
+
     final TypeRegistry typeRegistry = context.getTypeRegistry();
     final Type type = parameters.getType(0);
     final Object value = parameters.getValue(0);
-    
-    if(type.isFlagSet(Type.TEXT_TYPE) || value instanceof String)
-    {
 
-      final Date date1 = typeRegistry.convertToDate(type, value);
-      if (date1 != null)
-      {
-        return new TypeValuePair(DateType.TYPE, new java.sql.Date(date1.getTime()));
-      }
-        
-    }
-    else
-    {
-      throw new EvaluationException(LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
-    
-    return null;
+    final Date date1 = typeRegistry.convertToDate(type, value);
+    return new TypeValuePair(DateType.TYPE, date1);
+
   }
 }

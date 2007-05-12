@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: Formula.java,v 1.10 2007/04/01 13:51:52 taqua Exp $
+ * $Id: Formula.java,v 1.11 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -37,6 +37,8 @@ import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.parser.FormulaParser;
 import org.jfree.formula.parser.ParseException;
 import org.jfree.formula.parser.TokenMgrError;
+import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.util.Log;
 
 /**
@@ -83,27 +85,32 @@ public class Formula implements Serializable, Cloneable
     return rootReference;
   }
 
-  public Object evaluate ()
+  public TypeValuePair evaluateTyped ()
   {
     try
     {
       final TypeValuePair typeValuePair = rootReference.evaluate();
-      if (typeValuePair.getValue() instanceof LibFormulaErrorValue)
+      if(typeValuePair.getType().isFlagSet(Type.ERROR_TYPE))
       {
         Log.debug ("Error: " + typeValuePair.getValue());
       }
-      return typeValuePair.getValue();
+      return typeValuePair;
     }
     catch(EvaluationException ee)
     {
-      //Log.warn ("Evaluation failed: ", ee);
-      return ee.getErrorValue();
+      Log.warn ("Evaluation failed: ", ee);
+      return new TypeValuePair(ErrorType.TYPE, ee.getErrorValue());
     }
     catch (Exception e)
     {
       Log.warn ("Evaluation failed: ", e);
-      return LibFormulaErrorValue.ERROR_UNEXPECTED_VALUE;
+      return new TypeValuePair(ErrorType.TYPE, LibFormulaErrorValue.ERROR_UNEXPECTED_VALUE);
     }
+  }
+  
+  public Object evaluate ()
+  {
+    return evaluateTyped().getValue();
   }
 
   public Object clone () throws CloneNotSupportedException

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: TodayFunction.java,v 1.2 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,16 +32,15 @@
 package org.jfree.formula.function.datetime;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Calendar;
 
+import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.EvaluationException;
-import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.typing.coretypes.DateType;
+import org.jfree.formula.util.DateUtil;
 
 /**
  * Todo: Document me!
@@ -64,19 +63,10 @@ public class TodayFunction implements Function
                                 final ParameterCallback parameters)
       throws EvaluationException
   {
-    //System.out.println("DEGUG Y:"+n1+" M:"+n2+"["+value+"] D:"+n3);
     final LocalizationContext localizationContext = context.getLocalizationContext();
-    final GregorianCalendar gc = new GregorianCalendar
-        (localizationContext.getTimeZone(), localizationContext.getLocale());
+    final Date now = DateUtil.now(localizationContext);
 
-    // Time is implicitly set to the current time. All we have to do is to
-    // remove the fractional part ..
-    gc.set(Calendar.MILLISECOND, 0);
-    gc.set(Calendar.HOUR_OF_DAY, 0);
-    gc.set(Calendar.MINUTE, 0);
-    gc.set(Calendar.SECOND, 0);
-
-    final Date date = gc.getTime();
+    final Date date = DateUtil.normalizeDate(now, DateType.TYPE);
     return new TypeValuePair(DateType.TYPE, date);
   }
 }

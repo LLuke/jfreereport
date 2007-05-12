@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultFormulaContext.java,v 1.6 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -52,7 +52,7 @@ public class DefaultFormulaContext implements FormulaContext
   private DefaultTypeRegistry typeRegistry;
   private DefaultFunctionRegistry functionRegistry;
   private OperatorFactory operatorFactory;
-  private LocalizationContext localizationContext;
+  private DefaultLocalizationContext localizationContext;
   private Configuration config;
   private HashMap references;
 
@@ -65,6 +65,7 @@ public class DefaultFormulaContext implements FormulaContext
   {
     this.config = config;
     localizationContext = new DefaultLocalizationContext();
+    localizationContext.initialize(config);
     typeRegistry = new DefaultTypeRegistry();
     typeRegistry.initialize(config, this);
     functionRegistry = new DefaultFunctionRegistry();

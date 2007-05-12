@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateUtil.java,v 1.1 2007/05/07 22:57:01 mimil Exp $
+ * $Id: DateUtil.java,v 1.2 2007/05/08 09:47:09 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -40,7 +40,6 @@ import org.jfree.formula.DefaultLocalizationContext;
 import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.DateType;
-import org.jfree.formula.util.org.apache.poi.hssf.usermodel.HSSFDateUtil;
 
 /**
  *
@@ -49,8 +48,6 @@ import org.jfree.formula.util.org.apache.poi.hssf.usermodel.HSSFDateUtil;
  */
 public class DateUtil
 {
-  private static final long MILLISECS_PER_DAY = 24 * 60 * 60 * 1000;
-
   private static final Date ISO8001_TIME = new GregorianCalendar().getTime();
 
   /**
@@ -128,6 +125,7 @@ public class DateUtil
   public static Date toJavaDate(Number serialDate, LocalizationContext context)
   {
     final Date javaDate = HSSFDateUtil.getJavaDate(serialDate.doubleValue());
+    //check for null (error)
     final long l = (javaDate.getTime()/1000)*1000;
     // final GregorianCalendar gc = new GregorianCalendar(context.getTimeZone(),
     // context.getLocale());
@@ -163,6 +161,15 @@ public class DateUtil
     System.out.println(normalizeDate(toJavaDate, DateType.TYPE));
     System.out.println(toJavaDate);
     System.out.println(HSSFDateUtil.getJavaDate(serial.doubleValue()));
+  }
+  
+  public static Date now(LocalizationContext context)
+  {
+    final GregorianCalendar gc = new GregorianCalendar(context.getTimeZone(),
+        context.getLocale());
+    gc.set(Calendar.MILLISECOND, 0);
+    
+    return gc.getTime();
   }
 
   public static Date createDateTime(int year, int month, int day, int hour,

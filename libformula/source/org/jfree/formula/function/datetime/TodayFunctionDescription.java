@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: TodayFunctionDescription.java,v 1.2 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -35,7 +35,6 @@ import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.DateType;
-import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
  * Creation-Date: 04.11.2006, 18:59:11
@@ -67,7 +66,7 @@ public class TodayFunctionDescription extends AbstractFunctionDescription
 
   public Type getParameterType(int position)
   {
-    return NumberType.GENERIC_NUMBER;
+    return null;
   }
 
   /**

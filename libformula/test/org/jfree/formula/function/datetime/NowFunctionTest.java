@@ -24,13 +24,11 @@
  *
  *
  * ------------
- * $Id: DateValueFunctionTest.java,v 1.1 2007/04/27 22:00:47 mimil Exp $
+ * $Id: DateFunctionTest.java,v 1.7 2007/04/27 22:00:47 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.formula.function.datetime;
-
-import java.util.Locale;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.Formula;
@@ -44,11 +42,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * 
+ *
  * @author Cedric Pronzato
  *
  */
-public class DateValueFunctionTest
+public class NowFunctionTest
 {
   private FormulaContext context;
 
@@ -57,24 +55,16 @@ public class DateValueFunctionTest
   {
     return new Object[][]
     {
-        { "DATEVALUE(\"2004-12-25\")=DATE(2004;12;25)", Boolean.TRUE},
-    };
+   { "NOW()>DATE(2006;1;3)", Boolean.TRUE },
+   { "INT(NOW())=TODAY()", Boolean.TRUE  },
+   };
   }
-  
+
   @BeforeClass(alwaysRun=true)
   public void setup()
   {
     context = new TestFormulaContext();
     LibFormulaBoot.getInstance().start();
-  }
-  
-  @Test(groups="functions")
-  public void testFrenchDateParsing() 
-  {
-    if(Locale.getDefault().equals(Locale.FRENCH))
-    {
-      test("DATEVALUE(\"25/12/2004\")=DATE(2004;12;25)", Boolean.TRUE);
-    }
   }
 
   @Test(dataProvider = "defaultTestCase", groups = "functions")
@@ -96,6 +86,6 @@ public class DateValueFunctionTest
       Assert.fail("Initialization Error", e);
     }
     Object eval = formula.evaluate();
-    Assert.assertEquals(eval, result,  "Eval class: "+eval.getClass().getName());
+    Assert.assertEquals(eval, result, "Failure on " + eval.getClass());
   }
 }

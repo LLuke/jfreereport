@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: HSSFDateUtil.java,v 1.1 2007/04/27 22:00:47 mimil Exp $
+ * $Id: HSSFDateUtil.java,v 1.2 2007/05/08 09:47:09 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -52,7 +52,7 @@
  *
  * Created on January 19, 2002, 9:30 AM
  */
-package org.jfree.formula.util.org.apache.poi.hssf.usermodel;
+package org.jfree.formula.util;
 
 import java.util.Calendar;
 import java.util.Date;

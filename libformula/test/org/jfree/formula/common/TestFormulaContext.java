@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TestFormulaContext.java,v 1.7 2007/04/27 22:00:47 mimil Exp $
+ * $Id: TestFormulaContext.java,v 1.8 2007/05/07 22:57:01 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -240,7 +240,8 @@ id B C
 
   public Type resolveReferenceType(Object name) throws ContextEvaluationException
   {
-    return getTypeRegistry().guessTypeOfObject(name);
+    return AnyType.TYPE;
+    //return getTypeRegistry().guessTypeOfObject(name);
   }
 
 }

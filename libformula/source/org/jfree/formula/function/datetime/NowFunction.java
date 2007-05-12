@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: NowFunction.java,v 1.2 2007/04/01 13:51:52 taqua Exp $
+ * $Id: NowFunction.java,v 1.3 2007/05/08 11:12:24 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,7 +32,6 @@
 package org.jfree.formula.function.datetime;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
@@ -40,7 +39,8 @@ import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.typing.coretypes.DateType;
+import org.jfree.formula.typing.coretypes.DateTimeType;
+import org.jfree.formula.util.DateUtil;
 
 /**
  * Return the serial number of the current date and time. This returns the current day and time serial number, using the
@@ -64,12 +64,10 @@ public class NowFunction implements Function
                                 final ParameterCallback parameters)
       throws EvaluationException
   {
-    //System.out.println("DEGUG Y:"+n1+" M:"+n2+"["+value+"] D:"+n3);
     final LocalizationContext localizationContext = context.getLocalizationContext();
-    final GregorianCalendar gc = new GregorianCalendar
-        (localizationContext.getTimeZone(), localizationContext.getLocale());
+    final Date now = DateUtil.now(localizationContext);
 
-    final Date date = gc.getTime();
-    return new TypeValuePair(DateType.TYPE, date);
+    final Date date = DateUtil.normalizeDate(now, DateTimeType.TYPE);
+    return new TypeValuePair(DateTimeType.TYPE, date);
   }
 }

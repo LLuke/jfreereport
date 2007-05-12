@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.12 2007/04/27 22:00:47 mimil Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.13 2007/05/07 22:57:01 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -41,6 +41,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import org.jfree.formula.FormulaContext;
@@ -72,8 +74,6 @@ public class DefaultTypeRegistry implements TypeRegistry
   private static final BigDecimal MILLISECS = new BigDecimal(MILLISECS_PER_DAY);
 
   private NumberFormat[] numberFormats;
-
-  private DateFormat[] dateFormats;
 
   public DefaultTypeRegistry()
   {
@@ -107,18 +107,19 @@ public class DefaultTypeRegistry implements TypeRegistry
   public Number convertToNumber(final Type type1, final Object value)
       throws TypeConversionException
   {
-    if (type1.isFlagSet(Type.NUMERIC_TYPE))
+    if (type1.isFlagSet(Type.NUMERIC_TYPE) || type1.isFlagSet(Type.ANY_TYPE))
     {
       if (type1.isFlagSet(Type.DATETIME_TYPE)
-          || type1.isFlagSet(Type.TIME_TYPE) || type1.isFlagSet(Type.DATE_TYPE))
+          || type1.isFlagSet(Type.TIME_TYPE) || type1.isFlagSet(Type.DATE_TYPE)
+          || type1.isFlagSet(Type.ANY_TYPE))
       {
         if (value instanceof Date)
         {
           final Number serial = DateUtil.toSerialDate((Date) value, context
               .getLocalizationContext());
-          //System.out.println(serial);
+          // System.out.println(serial);
           final Number ret = DateUtil.normalizeDate(serial, type1);
-          //System.out.println(ret);
+          // System.out.println(ret);
           return ret;
         }
       }
@@ -129,7 +130,7 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
     }
 
-    if (type1.isFlagSet(Type.LOGICAL_TYPE))
+    if (type1.isFlagSet(Type.LOGICAL_TYPE) || type1.isFlagSet(Type.ANY_TYPE))
     {
       if (value instanceof Boolean)
       {
@@ -144,7 +145,7 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
     }
 
-    if (type1.isFlagSet(Type.TEXT_TYPE))
+    if (type1.isFlagSet(Type.TEXT_TYPE) || type1.isFlagSet(Type.ANY_TYPE))
     {
       final String val = value.toString();
 
@@ -158,19 +159,57 @@ public class DefaultTypeRegistry implements TypeRegistry
         // ignore ..
       }
 
-      // then checking for dates
-      for (int i = 0; i < dateFormats.length; i++)
+      // then checking for datetimes
+      final Iterator datetimeIterator = context.getLocalizationContext()
+          .getDateFormats(DateTimeType.TYPE).iterator();
+      while (datetimeIterator.hasNext())
       {
+        final DateFormat df = (DateFormat) datetimeIterator.next();
         try
         {
-          final DateFormat dateFormat = dateFormats[i];
-          final Date date = dateFormat.parse(val);
+          final Date date = df.parse(val);
           final Number serial = DateUtil.toSerialDate(date, context
               .getLocalizationContext());
-          // TODO : check which type of date it is (date, time, datetime)
-          // DateUtil.normalizeDate(fromSerialDate, toType)
+          // return DateUtil.normalizeDate(serial, DateTimeType.TYPE);
           return serial;
-          // return convertDateToNumber(date);
+        }
+        catch (ParseException e)
+        {
+          // ignore as well ..
+        }
+      }
+      // then checking for datetimes
+      final Iterator dateIterator = context.getLocalizationContext()
+          .getDateFormats(DateType.TYPE).iterator();
+      while (dateIterator.hasNext())
+      {
+        final DateFormat df = (DateFormat) dateIterator.next();
+        try
+        {
+          final Date date = df.parse(val);
+          final Number serial = DateUtil.toSerialDate(date, context
+              .getLocalizationContext());
+          // return DateUtil.normalizeDate(serial, DateType.TYPE);
+          return serial;
+        }
+        catch (ParseException e)
+        {
+          // ignore as well ..
+        }
+      }
+      // then checking for datetimes
+      final Iterator timeIterator = context.getLocalizationContext()
+          .getDateFormats(TimeType.TYPE).iterator();
+      while (timeIterator.hasNext())
+      {
+        final DateFormat df = (DateFormat) timeIterator.next();
+        try
+        {
+          final Date date = df.parse(val);
+          final Number serial = DateUtil.toSerialDate(date, context
+              .getLocalizationContext());
+          // return DateUtil.normalizeDate(serial, TimeType.TYPE);
+          return serial;
         }
         catch (ParseException e)
         {
@@ -201,18 +240,6 @@ public class DefaultTypeRegistry implements TypeRegistry
   {
     this.context = formulaContext;
     this.numberFormats = loadNumberFormats();
-    this.dateFormats = loadDateFormats();
-  }
-
-  protected DateFormat[] loadDateFormats()
-  {
-    final ArrayList formats = new ArrayList();
-    formats.add(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
-    formats.add(new SimpleDateFormat("yyyy-MM-dd"));
-    formats.add(new SimpleDateFormat("hh:mm:ss"));
-    // todo: This should also be configurable ..
-
-    return (DateFormat[]) formats.toArray(new DateFormat[formats.size()]);
   }
 
   protected NumberFormat[] loadNumberFormats()
@@ -287,8 +314,19 @@ public class DefaultTypeRegistry implements TypeRegistry
           || type1.isFlagSet(Type.DATE_TYPE) || type1.isFlagSet(Type.TIME_TYPE))
       {
         final Date d = convertToDate(type1, value);
-        final DateFormat format = getDefaultDateFormat(type1);
-        return format.format(d);
+        final List dateFormats = context.getLocalizationContext()
+            .getDateFormats(type1);
+        if (dateFormats != null && dateFormats.size() >= 1)
+        {
+          final DateFormat format = (DateFormat) dateFormats.get(0);
+          return format.format(d);
+        }
+        else
+        {
+          // fallback
+          return SimpleDateFormat.getDateTimeInstance(
+              SimpleDateFormat.FULL, SimpleDateFormat.FULL).format(d);
+        }
       }
       else
       {
@@ -318,7 +356,7 @@ public class DefaultTypeRegistry implements TypeRegistry
     }
 
     // already converted or compatible
-    if (type1.isFlagSet(Type.LOGICAL_TYPE))
+    if (type1.isFlagSet(Type.LOGICAL_TYPE) || type1.isFlagSet(Type.ANY_TYPE))
     {
       if (value instanceof Boolean)
       {
@@ -365,11 +403,11 @@ public class DefaultTypeRegistry implements TypeRegistry
   public Date convertToDate(final Type type1, final Object value)
       throws TypeConversionException
   {
-    if (type1.isFlagSet(Type.NUMERIC_TYPE))
+    if (type1.isFlagSet(Type.NUMERIC_TYPE) || type1.isFlagSet(Type.ANY_TYPE))
     {
       if (type1.isFlagSet(Type.DATE_TYPE)
           || type1.isFlagSet(Type.DATETIME_TYPE)
-          || type1.isFlagSet(Type.TIME_TYPE))
+          || type1.isFlagSet(Type.TIME_TYPE) || type1.isFlagSet(Type.ANY_TYPE))
       {
         if (value instanceof Date)
         {
@@ -385,28 +423,6 @@ public class DefaultTypeRegistry implements TypeRegistry
   {
     final Locale locale = context.getLocalizationContext().getLocale();
     return new DecimalFormat("#0.#########", new DecimalFormatSymbols(locale));
-  }
-
-  protected DateFormat getDefaultDateFormat(Type dateType)
-  {
-    final Locale locale = context.getLocalizationContext().getLocale();
-    if (dateType.isFlagSet(Type.DATE_TYPE))
-    {
-      return SimpleDateFormat.getDateInstance(SimpleDateFormat.DEFAULT, locale);
-    }
-    else if (dateType.isFlagSet(Type.DATETIME_TYPE))
-    {
-      return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.DEFAULT,
-          SimpleDateFormat.DEFAULT, locale);
-    }
-    else if (dateType.isFlagSet(Type.TIME_TYPE))
-    {
-      return SimpleDateFormat.getTimeInstance(SimpleDateFormat.DEFAULT, locale);
-    }
-
-    // fallback with a full detail formatting
-    return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.FULL,
-        SimpleDateFormat.FULL, locale);
   }
 
   /**
@@ -450,15 +466,10 @@ public class DefaultTypeRegistry implements TypeRegistry
       final Object value) throws TypeConversionException
   {
     // lazy check
-//    if (targetType.equals(type))
-//    {
-//      return value;
-//    }
-
-    if (targetType.isFlagSet(Type.TEXT_TYPE))
-    {
-      return convertToText(type, value);
-    }
+    // if (targetType.equals(type))
+    // {
+    // return value;
+    // }
 
     if (targetType.isFlagSet(Type.NUMERIC_TYPE))
     {
@@ -474,8 +485,7 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
       return serial;
     }
-
-    if (targetType.isFlagSet(Type.LOGICAL_TYPE))
+    else if (targetType.isFlagSet(Type.LOGICAL_TYPE))
     {
       if (type.isFlagSet(Type.LOGICAL_TYPE))
       {
@@ -483,6 +493,10 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
 
       return convertToLogical(type, value);
+    }
+    else if (targetType.isFlagSet(Type.TEXT_TYPE))
+    {
+      return convertToText(type, value);
     }
 
     // Unknown type - ignore it, crash later :)
@@ -507,34 +521,34 @@ public class DefaultTypeRegistry implements TypeRegistry
     }
     return new TypeValuePair(targetType, target);
   }
-  
+
   public Type guessTypeOfObject(Object o)
   {
-    if(o instanceof Number)
+    if (o instanceof Number)
     {
       return NumberType.GENERIC_NUMBER;
     }
-    else if(o instanceof Date)
+    else if (o instanceof Date)
     {
       return DateTimeType.TYPE;
     }
-    else if(o instanceof Time)
+    else if (o instanceof Time)
     {
       return TimeType.TYPE;
     }
-    else if(o instanceof java.sql.Date)
+    else if (o instanceof java.sql.Date)
     {
       return DateType.TYPE;
     }
-    else if(o instanceof Boolean)
+    else if (o instanceof Boolean)
     {
       return LogicalType.TYPE;
     }
-    else if(o instanceof String)
+    else if (o instanceof String)
     {
       return TextType.TYPE;
     }
-    
+
     return AnyType.TYPE;
   }
 }

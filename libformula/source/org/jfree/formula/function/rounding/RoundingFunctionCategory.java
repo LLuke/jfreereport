@@ -24,28 +24,25 @@
  *
  *
  * ------------
- * $Id: LocalizationContext.java,v 1.3 2007/04/01 13:51:52 taqua Exp $
+ * $Id: FinancialFunctionCategory.java,v 1.3 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
-package org.jfree.formula;
+package org.jfree.formula.function.rounding;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.TimeZone;
-
-import org.jfree.formula.typing.Type;
+import org.jfree.formula.function.AbstractFunctionCategory;
+import org.jfree.formula.function.FunctionCategory;
 
 /**
- * Creation-Date: 03.11.2006, 14:26:26
- *
- * @author Thomas Morgner
+ * 
+ * @author Cedric Pronzato
  */
-public interface LocalizationContext
+public final class RoundingFunctionCategory extends AbstractFunctionCategory
 {
-  public Locale getLocale();
-  public ResourceBundle getBundle (String id);
-  public TimeZone getTimeZone();
-  public List getDateFormats(Type type);
+  public static final FunctionCategory CATEGORY = new RoundingFunctionCategory();
+
+  private RoundingFunctionCategory()
+  {
+    super("org.jfree.formula.function.rounding.category");
+  }
 }

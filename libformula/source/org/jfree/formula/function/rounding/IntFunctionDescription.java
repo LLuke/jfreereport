@@ -24,28 +24,60 @@
  *
  *
  * ------------
- * $Id: LocalizationContext.java,v 1.3 2007/04/01 13:51:52 taqua Exp $
+ * $Id: AverageFunctionDescription.java,v 1.1 2007/05/07 23:00:37 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
-package org.jfree.formula;
+package org.jfree.formula.function.rounding;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.TimeZone;
-
+import org.jfree.formula.function.AbstractFunctionDescription;
+import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
- * Creation-Date: 03.11.2006, 14:26:26
+ * Describes IntFunction function.
+ * @see IntFunction
  *
- * @author Thomas Morgner
+ * @author Cedric Pronzato
+ *
  */
-public interface LocalizationContext
+public class IntFunctionDescription extends AbstractFunctionDescription
 {
-  public Locale getLocale();
-  public ResourceBundle getBundle (String id);
-  public TimeZone getTimeZone();
-  public List getDateFormats(Type type);
+  public IntFunctionDescription()
+  {
+    super("org.jfree.formula.function.rounding.Int-Function");
+  }
+
+  public Type getValueType()
+  {
+    return NumberType.GENERIC_NUMBER;
+  }
+
+  public int getParameterCount()
+  {
+    return 1;
+  }
+
+  public Type getParameterType(int position)
+  {
+    return NumberType.GENERIC_NUMBER;
+  }
+
+  /**
+   * Defines, whether the parameter at the given position is mandatory. A
+   * mandatory parameter must be filled in, while optional parameters need not
+   * to be filled in.
+   *
+   * @return
+   */
+  public boolean isParameterMandatory(int position)
+  {
+    return true;
+  }
+
+  public FunctionCategory getCategory()
+  {
+    return RoundingFunctionCategory.CATEGORY;
+  }
 }
