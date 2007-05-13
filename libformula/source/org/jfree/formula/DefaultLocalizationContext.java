@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultLocalizationContext.java,v 1.3 2007/04/01 13:51:52 taqua Exp $
+ * $Id: DefaultLocalizationContext.java,v 1.4 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -137,7 +137,7 @@ public class DefaultLocalizationContext implements LocalizationContext
       final String format = config.getConfigProperty(key);
       if (split.length == 2)
       {
-        final String type = split[0];
+        final String type = "type."+split[0];
         final String[] locale = createLocale(split[1]);
 
         final SimpleDateFormat df = new SimpleDateFormat(format, new Locale(
