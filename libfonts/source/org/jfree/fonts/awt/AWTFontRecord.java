@@ -29,7 +29,6 @@
  */
 package org.jfree.fonts.awt;
 
-import org.jfree.fonts.io.FontDataInputSource;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontIdentifier;
 import org.jfree.fonts.registry.FontRecord;
@@ -102,63 +101,6 @@ public class AWTFontRecord implements FontRecord, FontIdentifier
   public boolean isOblique()
   {
     return italics;
-  }
-
-  /**
-   * Returns the file name used to load the font.
-   *
-   * @return
-   * @deprecated this is limited to the local filesystem, use the InputSource
-   *             instead
-   */
-  public String getFontFile()
-  {
-    return null;
-  }
-
-  public FontDataInputSource getFontInputSource()
-  {
-    // AWT fonts do not have a datasource
-    return null;
-  }
-
-  public boolean isEmbeddable()
-  {
-    return false;
-  }
-
-  public String getName()
-  {
-    return fontFamily.getFamilyName();
-  }
-
-  public String[] getAllNames()
-  {
-    return new String[] { getName() };
-  }
-
-  public String getVariant()
-  {
-    if (isBold() && isItalic())
-    {
-      return "Bold-Italic";
-    }
-    if (isBold())
-    {
-      return "Bold";
-    }
-    if (isItalic())
-    {
-      return "Italic";
-    }
-    return "Plain";
-  }
-
-  public String[] getAllVariants()
-  {
-    return new String[]{
-        getVariant()
-    };
   }
 
   public FontIdentifier getIdentifier()
