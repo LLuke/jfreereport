@@ -23,35 +23,31 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: TrueTypeFontMetrics.java,v 1.9 2006/12/03 18:11:59 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
-package org.jfree.fonts.truetype;
 
+package org.jfree.fonts.monospace;
+
+import org.jfree.fonts.LibFontsDefaults;
 import org.jfree.fonts.registry.BaselineInfo;
 import org.jfree.fonts.registry.FontMetrics;
 
-
 /**
- * Creation-Date: 15.12.2005, 12:01:13
+ * Creation-Date: 13.05.2007, 13:14:25
  *
  * @author Thomas Morgner
  */
-public class TrueTypeFontMetrics implements FontMetrics
+public class MonospaceFontMetrics implements FontMetrics
 {
-  private ScalableTrueTypeFontMetrics fontMetrics;
-  private double fontSize;
+  private double charHeight;
+  private double charWidth;
 
-  public TrueTypeFontMetrics(final ScalableTrueTypeFontMetrics fontMetrics,
-                             final double fontSize)
+  public MonospaceFontMetrics(final int cpi, final int lpi)
   {
-    if (fontMetrics == null)
-    {
-      throw new NullPointerException("The font must not be null");
-    }
-    this.fontMetrics = fontMetrics;
-    this.fontSize = fontSize;
+    charHeight = (72.0 / lpi);
+    charWidth = (72.0 / cpi);
   }
 
   /**
@@ -61,84 +57,100 @@ public class TrueTypeFontMetrics implements FontMetrics
    */
   public double getAscent()
   {
-    return fontSize * fontMetrics.getAscent();
+    return LibFontsDefaults.DEFAULT_ASCENT_SIZE * charHeight;
   }
 
   public double getDescent()
   {
-    return fontSize * fontMetrics.getDescent();
+    return LibFontsDefaults.DEFAULT_DESCENT_SIZE * charHeight;
   }
 
   public double getLeading()
-  {
-    return fontSize * fontMetrics.getLeading();
-  }
-
-  public double getXHeight()
-  {
-    return fontSize * fontMetrics.getXHeight();
-  }
-
-  public double getOverlinePosition()
-  {
-    return fontSize * fontMetrics.getOverlinePosition();
-  }
-
-  public double getUnderlinePosition()
-  {
-    return fontSize * fontMetrics.getUnderlinePosition();
-  }
-
-  public double getStrikeThroughPosition()
-  {
-    return fontSize * fontMetrics.getStrikeThroughPosition();
-  }
-
-  public double getMaxAscent()
-  {
-    return fontSize * fontMetrics.getAscent();
-  }
-
-  public double getMaxDescent()
-  {
-    return fontSize * fontMetrics.getDescent();
-  }
-
-  public double getMaxLeading()
-  {
-    return fontSize * fontMetrics.getLeading();
-  }
-
-  public double getMaxHeight()
-  {
-    return getMaxAscent() - getMaxDescent() - getMaxLeading();
-  }
-
-  public double getMaxCharAdvance()
-  {
-    return 0;
-  }
-
-  public double getCharWidth(final int character)
-  {
-    return 0;
-  }
-
-  public double getKerning(final int previous, final int character)
   {
     return 0;
   }
 
   /**
-   * Baselines are defined for scripts, not glyphs. A glyph carries script
-   * information most of the time (unless it is a neutral characters or just
-   * weird).
+   * The height of the lowercase 'x'. This is used as hint, which size the lowercase characters will have.
+   *
+   * @return
+   */
+  public double getXHeight()
+  {
+    return LibFontsDefaults.DEFAULT_XHEIGHT_SIZE * charHeight;
+  }
+
+  public double getOverlinePosition()
+  {
+    return getAscent();
+  }
+
+  public double getUnderlinePosition()
+  {
+    return getAscent() + 0.5 * getDescent();
+  }
+
+  public double getStrikeThroughPosition()
+  {
+    return LibFontsDefaults.DEFAULT_STRIKETHROUGH_POSITION * getXHeight();
+  }
+
+  public double getMaxAscent()
+  {
+    return getAscent();
+  }
+
+  public double getMaxDescent()
+  {
+    return getDescent();
+  }
+
+  public double getMaxLeading()
+  {
+    return getLeading();
+  }
+
+  public double getMaxHeight()
+  {
+    return charHeight;
+  }
+
+  public double getMaxCharAdvance()
+  {
+    return charWidth;
+  }
+
+  public double getCharWidth(final int codePoint)
+  {
+    return charWidth;
+  }
+
+  public double getKerning(final int previous, final int codePoint)
+  {
+    return 0;
+  }
+
+  /**
+   * Baselines are defined for scripts, not glyphs. A glyph carries script information most of the time (unless it is a
+   * neutral characters or just weird).
    *
    * @param c
    * @return
    */
-  public BaselineInfo getBaselines(final int c, final BaselineInfo info)
+  public BaselineInfo getBaselines(final int codePoint, BaselineInfo info)
   {
-    throw new UnsupportedOperationException("Not yet implemented.");
+    if (info == null)
+    {
+      info = new BaselineInfo();
+    }
+
+
+    info.setBaseline(BaselineInfo.HANGING, 0);
+    info.setBaseline(BaselineInfo.MATHEMATICAL, charHeight * 0.5);
+    info.setBaseline(BaselineInfo.CENTRAL, charHeight * 0.5);
+    info.setBaseline(BaselineInfo.MIDDLE, charHeight * 0.5);
+    info.setBaseline(BaselineInfo.ALPHABETIC, getMaxAscent());
+    info.setBaseline(BaselineInfo.IDEOGRAPHIC, getMaxHeight());
+    return info;
   }
 }

@@ -23,36 +23,40 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FontType.java,v 1.4 2006/12/03 18:11:59 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
+
 package org.jfree.fonts.registry;
 
+import org.jfree.fonts.io.FontDataInputSource;
+
 /**
- * Creation-Date: 16.12.2005, 19:51:49
+ * Creation-Date: 13.05.2007, 13:43:54
  *
  * @author Thomas Morgner
  */
-public class FontType
+public interface FontSource extends FontRecord
 {
-  public static final FontType OPENTYPE = new FontType("OPENTYPE");
-  public static final FontType AWT = new FontType("AWT");
-  public static final FontType MONOSPACE = new FontType("MONOSPACE");
-
-  private final String myName; // for debug only
 
   /**
-   * We intentionally allow others to derive other font types.
-   * @param name the name.
+   * Returns the file name used to load the font.
+   *
+   * @return this is needed for iText.
    */
-  protected FontType(String name)
-  {
-    myName = name;
-  }
+  public String getFontFile ();
 
-  public String toString()
-  {
-    return myName;
-  }
+  public FontDataInputSource getFontInputSource();
+
+  public boolean isEmbeddable();
+
+  public String getName ();
+
+  public String[] getAllNames ();
+
+  public String getVariant ();
+
+  public String[] getAllVariants ();
+
 }

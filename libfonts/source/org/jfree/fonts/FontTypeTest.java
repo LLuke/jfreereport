@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontTypeTest.java,v 1.7 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -37,6 +37,7 @@ import java.util.Map;
 import org.jfree.fonts.awt.AWTFontRegistry;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.registry.FontSource;
 import org.jfree.fonts.truetype.TrueTypeFontRegistry;
 
 /**
@@ -50,7 +51,7 @@ public class FontTypeTest
   {
   }
 
-  private static void printRecord(final FontRecord record)
+  private static void printRecord(final FontSource record)
   {
     if (record == null)
     {
@@ -100,10 +101,10 @@ public class FontTypeTest
       String fontFamily = fontFamilies[i];
       System.out.println("FontFamily: " + fontFamily);
       final FontFamily family = registry.getFontFamily(fontFamily);
-      printRecord(family.getFontRecord(false, false));
-      printRecord(family.getFontRecord(true, false));
-      printRecord(family.getFontRecord(false, true));
-      printRecord(family.getFontRecord(true, true));
+      printRecord((FontSource) family.getFontRecord(false, false));
+      printRecord((FontSource) family.getFontRecord(true, false));
+      printRecord((FontSource) family.getFontRecord(false, true));
+      printRecord((FontSource) family.getFontRecord(true, true));
 
 
     }

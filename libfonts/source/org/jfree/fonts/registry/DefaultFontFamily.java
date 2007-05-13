@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultFontFamily.java,v 1.7 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -61,7 +61,7 @@ public class DefaultFontFamily implements FontFamily
     return familyName;
   }
 
-  public void addName (String name)
+  public void addName (final String name)
   {
     if (name == null)
     {
@@ -109,7 +109,7 @@ public class DefaultFontFamily implements FontFamily
 
     for (int i = 0; i < fontRecords.length; i++)
     {
-      FontRecord fontRecord = fontRecords[i];
+      final FontRecord fontRecord = fontRecords[i];
       if (fontRecord != null)
       {
         return fontRecord;
@@ -124,7 +124,7 @@ public class DefaultFontFamily implements FontFamily
     final boolean bold = record.isBold();
     final boolean italics = record.isItalic();
 
-    int index;
+    final int index;
     if (bold && italics)
     {
       index = 3;
@@ -147,8 +147,7 @@ public class DefaultFontFamily implements FontFamily
     {
       fontRecords[index] = record;
     }
-    else if (oldRecord.isEmbeddable() == false &&
-             record.isEmbeddable())
+    else
     {
       if (record.isOblique() && oldRecord.isOblique() == false)
       {

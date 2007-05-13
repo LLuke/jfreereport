@@ -23,13 +23,12 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TrueTypeFontRegistryTest.java,v 1.4 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.fonts.truetype.junit;
 
-import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 
@@ -37,16 +36,11 @@ import junit.framework.TestCase;
 import org.jfree.fonts.LibFontBoot;
 import org.jfree.fonts.io.FontDataInputSource;
 import org.jfree.fonts.registry.FontFamily;
-import org.jfree.fonts.registry.FontRecord;
-import org.jfree.fonts.registry.DefaultFontContext;
-import org.jfree.fonts.registry.FontMetrics;
-import org.jfree.fonts.truetype.TrueTypeFontRegistry;
-import org.jfree.fonts.truetype.TrueTypeFontMetricsFactory;
-import org.jfree.fonts.truetype.TrueTypeFont;
-import org.jfree.fonts.truetype.NameTable;
-import org.jfree.fonts.truetype.PostscriptInformationTable;
+import org.jfree.fonts.registry.FontSource;
 import org.jfree.fonts.truetype.FontHeaderTable;
-import org.jfree.util.Log;
+import org.jfree.fonts.truetype.NameTable;
+import org.jfree.fonts.truetype.TrueTypeFont;
+import org.jfree.fonts.truetype.TrueTypeFontRegistry;
 
 /**
  * Creation-Date: 22.03.2006, 17:41:58
@@ -79,7 +73,7 @@ public class TrueTypeFontRegistryTest extends TestCase
       final FontFamily fofam = tfr.getFontFamily(name);
       if (name.equals("AmerType Md BT"))
       {
-        FontRecord fr = fofam.getFontRecord(false, false);
+        FontSource fr = (FontSource) fofam.getFontRecord(false, false);
         FontDataInputSource fs = fr.getFontInputSource();
         TrueTypeFont ttf = new TrueTypeFont(fs);
         NameTable nt = (NameTable) ttf.getTable(NameTable.TABLE_ID);

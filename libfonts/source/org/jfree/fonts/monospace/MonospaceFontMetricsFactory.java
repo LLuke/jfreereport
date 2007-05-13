@@ -23,36 +23,45 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FontType.java,v 1.4 2006/12/03 18:11:59 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
-package org.jfree.fonts.registry;
+
+package org.jfree.fonts.monospace;
+
+import org.jfree.fonts.registry.FontMetricsFactory;
+import org.jfree.fonts.registry.FontMetrics;
+import org.jfree.fonts.registry.FontIdentifier;
+import org.jfree.fonts.registry.FontContext;
 
 /**
- * Creation-Date: 16.12.2005, 19:51:49
+ * Creation-Date: 13.05.2007, 13:14:25
  *
  * @author Thomas Morgner
  */
-public class FontType
+public class MonospaceFontMetricsFactory implements FontMetricsFactory
 {
-  public static final FontType OPENTYPE = new FontType("OPENTYPE");
-  public static final FontType AWT = new FontType("AWT");
-  public static final FontType MONOSPACE = new FontType("MONOSPACE");
+  private int lpi;
+  private int cpi;
+  private MonospaceFontMetrics metrics;
 
-  private final String myName; // for debug only
-
-  /**
-   * We intentionally allow others to derive other font types.
-   * @param name the name.
-   */
-  protected FontType(String name)
+  public MonospaceFontMetricsFactory(final int lpi, final int cpi)
   {
-    myName = name;
+    this.lpi = lpi;
+    this.cpi = cpi;
+    this.metrics = new MonospaceFontMetrics(cpi, lpi);
   }
 
-  public String toString()
+  /**
+   * Loads the font metrics for the font identified by the given identifier.
+   *
+   * @param identifier
+   * @param context
+   * @return
+   */
+  public FontMetrics createMetrics(final FontIdentifier identifier, final FontContext context)
   {
-    return myName;
+    return metrics;
   }
 }

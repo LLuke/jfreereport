@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ListFonts.java,v 1.5 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ package org.jfree.fonts.tools;
 import org.jfree.fonts.truetype.TrueTypeFontRegistry;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.registry.FontSource;
 import org.jfree.fonts.LibFontBoot;
 
 public class ListFonts
@@ -48,19 +49,23 @@ public class ListFonts
       System.out.println("  - (there is no font defined for that style and family.)");
       return;
     }
-    System.out.println("  " + record.getName() + " italics:" + record.isItalic() + " oblique:" + record.isOblique() + " bold: " + record.isBold());
-    String[] allNames = record.getAllNames();
-    for (int i = 0; i < allNames.length; i++)
+    System.out.println("  " + record.getFamily().getFamilyName() + " italics:" + record.isItalic() + " oblique:" + record.isOblique() + " bold: " + record.isBold());
+    if (record instanceof FontSource)
     {
-      String name = allNames[i];
-      System.out.println("  Alias: " + i + " Name:" + name);
-    }
+      final FontSource source = (FontSource) record;
+      final String[] allNames = source.getAllNames();
+      for (int i = 0; i < allNames.length; i++)
+      {
+        final String name = allNames[i];
+        System.out.println("  Alias: " + i + " Name:" + name);
+      }
 
-    String[] allVariants = record.getAllVariants();
-    for (int i = 0; i < allVariants.length; i++)
-    {
-      String name = allVariants[i];
-      System.out.println("  Variant: " + i + " Name:" + name);
+      final String[] allVariants = source.getAllVariants();
+      for (int i = 0; i < allVariants.length; i++)
+      {
+        final String name = allVariants[i];
+        System.out.println("  Variant: " + i + " Name:" + name);
+      }
     }
   }
 

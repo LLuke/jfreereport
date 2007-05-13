@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BaselineInfo.java,v 1.2 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,7 +34,7 @@ package org.jfree.fonts.registry;
  *
  * @author Thomas Morgner
  */
-public class BaselineInfo
+public final class BaselineInfo
 {
   public static final int HANGING = 0;
   public static final int MATHEMATICAL = 1;
@@ -56,21 +56,27 @@ public class BaselineInfo
     return (double[]) baselines.clone();
   }
 
+  public void update(final BaselineInfo parent)
+  {
+    System.arraycopy(parent.baselines, 0, this.baselines, 0, 6);
+    dominantBaseline = parent.dominantBaseline;
+  }
+
   public void setBaselines(final double[] baselines)
   {
     if (baselines.length != 6)
     {
       throw new IllegalArgumentException();
     }
-    this.baselines = (double[]) baselines.clone();
+    System.arraycopy(baselines, 0, this.baselines, 0, 6);
   }
 
-  public double getBaseline (int indx)
+  public double getBaseline (final int indx)
   {
     return baselines[indx];
   }
 
-  public void setBaseline (int idx, double baseline)
+  public void setBaseline (final int idx, final double baseline)
   {
     baselines[idx] = baseline;
   }

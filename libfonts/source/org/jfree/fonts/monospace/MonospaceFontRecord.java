@@ -23,31 +23,30 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AWTFontRecord.java,v 1.5 2006/12/03 18:11:59 taqua Exp $
+ * $Id$
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
-package org.jfree.fonts.awt;
 
-import org.jfree.fonts.io.FontDataInputSource;
+package org.jfree.fonts.monospace;
+
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontIdentifier;
 import org.jfree.fonts.registry.FontRecord;
 import org.jfree.fonts.registry.FontType;
 
 /**
- * Creation-Date: 16.12.2005, 20:06:51
+ * Creation-Date: 13.05.2007, 13:14:16
  *
  * @author Thomas Morgner
  */
-public class AWTFontRecord implements FontRecord, FontIdentifier
+public class MonospaceFontRecord implements FontRecord, FontIdentifier
 {
-  private FontFamily fontFamily;
+  private MonospaceFontFamily fontFamily;
   private boolean bold;
   private boolean italics;
 
-  public AWTFontRecord(final FontFamily fontFamily,
-                       final boolean bold, final boolean italics)
+  public MonospaceFontRecord(final MonospaceFontFamily fontFamily, final boolean bold, final boolean italics)
   {
     if (fontFamily == null)
     {
@@ -69,9 +68,8 @@ public class AWTFontRecord implements FontRecord, FontIdentifier
   }
 
   /**
-   * Returns true, if this font corresponds to a bold version of the font. A
-   * font that does not provide a bold face must emulate the boldness using
-   * other means.
+   * Returns true, if this font corresponds to a bold version of the font. A font that does not provide a bold face must
+   * emulate the boldness using other means.
    *
    * @return true, if the font provides bold glyphs, false otherwise.
    */
@@ -81,23 +79,21 @@ public class AWTFontRecord implements FontRecord, FontIdentifier
   }
 
   /**
-   * Returns true, if this font includes italic glyphs. Italics is different
-   * from oblique, as certain glyphs (most notably the lowercase 'f') will have
-   * a different appearance, making the font look more like a script font.
+   * Returns true, if this font includes italic glyphs. Italics is different from oblique, as certain glyphs (most
+   * notably the lowercase 'f') will have a different appearance, making the font look more like a script font.
    *
    * @return true, if the font is italic.
    */
   public boolean isItalic()
   {
-    return italics;
+    return false;
   }
 
   /**
-   * Returns tue, if this font's italic mode is in fact some sort of being
-   * oblique. An oblique font's glyphs are sheared, but they are not made to
-   * look more script like.
+   * Returns tue, if this font's italic mode is in fact some sort of being oblique. An oblique font's glyphs are
+   * sheared, but they are not made to look more script like.
    *
-   * @return true, if the font is oblique.
+   * @return true, if the font is oblique. All italic fonts are also oblique.
    */
   public boolean isOblique()
   {
@@ -105,82 +101,29 @@ public class AWTFontRecord implements FontRecord, FontIdentifier
   }
 
   /**
-   * Returns the file name used to load the font.
-   *
-   * @return
-   * @deprecated this is limited to the local filesystem, use the InputSource
-   *             instead
-   */
-  public String getFontFile()
-  {
-    return null;
-  }
-
-  public FontDataInputSource getFontInputSource()
-  {
-    // AWT fonts do not have a datasource
-    return null;
-  }
-
-  public boolean isEmbeddable()
-  {
-    return false;
-  }
-
-  public String getName()
-  {
-    return fontFamily.getFamilyName();
-  }
-
-  public String[] getAllNames()
-  {
-    return new String[] { getName() };
-  }
-
-  public String getVariant()
-  {
-    if (isBold() && isItalic())
-    {
-      return "Bold-Italic";
-    }
-    if (isBold())
-    {
-      return "Bold";
-    }
-    if (isItalic())
-    {
-      return "Italic";
-    }
-    return "Plain";
-  }
-
-  public String[] getAllVariants()
-  {
-    return new String[]{
-        getVariant()
-    };
-  }
-
-  public FontIdentifier getIdentifier()
-  {
-    return this;
-  }
-
-  /**
-   * Defines, whether the font identifier represents a scalable font type. Such
-   * fonts usually create one font metric object for each physical font, and
-   * apply the font size afterwards.
+   * Defines, whether the font identifier represents a scalable font type. Such fonts usually create one font metric
+   * object for each physical font, and apply the font size afterwards.
    *
    * @return true, if the font is scalable, false otherwise
    */
   public boolean isScalable()
   {
-    return true;
+    return false;
   }
 
+  /**
+   * Returns the general type of this font identifier. This is for debugging, not for the real world.
+   *
+   * @return
+   */
   public FontType getFontType()
   {
-    return FontType.AWT;
+    return FontType.MONOSPACE;
+  }
+
+  public FontIdentifier getIdentifier()
+  {
+    return this;
   }
 
   public boolean equals(final Object o)
@@ -194,7 +137,7 @@ public class AWTFontRecord implements FontRecord, FontIdentifier
       return false;
     }
 
-    final AWTFontRecord that = (AWTFontRecord) o;
+    final MonospaceFontRecord that = (MonospaceFontRecord) o;
 
     if (bold != that.bold)
     {

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TrueTypeFontRecord.java,v 1.7 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,7 +35,7 @@ import org.jfree.fonts.FontException;
 import org.jfree.fonts.io.FontDataInputSource;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontIdentifier;
-import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.registry.FontSource;
 
 /**
  * A true-type font record. The record contains meta-information about the
@@ -50,7 +50,7 @@ import org.jfree.fonts.registry.FontRecord;
  *
  * @author Thomas Morgner
  */
-public class TrueTypeFontRecord implements FontRecord
+public class TrueTypeFontRecord implements FontSource
 {
   private String fontFile;
   private int collectionIndex;

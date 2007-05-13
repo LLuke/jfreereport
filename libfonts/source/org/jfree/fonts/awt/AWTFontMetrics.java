@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AWTFontMetrics.java,v 1.10 2006/12/03 18:11:59 taqua Exp $
+ * $Id: AWTFontMetrics.java,v 1.11 2007/04/27 11:34:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -63,6 +63,7 @@ public class AWTFontMetrics implements FontMetrics
   private double xheight;
 
   private double[] cachedWidths;
+  private BaselineInfo[] cachedBaselines;
 
   public AWTFontMetrics(final Font font, final FontContext context)
   {
@@ -81,6 +82,7 @@ public class AWTFontMetrics implements FontMetrics
     this.xheight = bounds.getHeight();
 
     this.cpBuffer = new char[4];
+    this.cachedBaselines = new BaselineInfo[256- 32];
     this.cachedWidths = new double[256- 32];
     Arrays.fill(cachedWidths, -1);
   }
@@ -281,7 +283,23 @@ public class AWTFontMetrics implements FontMetrics
    */
   public BaselineInfo getBaselines(final int c, BaselineInfo info)
   {
-    final LineMetrics lm = font.getLineMetrics(((char) (c & 0xFFFF)) + "", frc);
+    final boolean cacheable = (c >=32 && c < 256);
+    if (cacheable)
+    {
+      final BaselineInfo fromCache = cachedBaselines[c - 32];
+      if (fromCache != null)
+      {
+        if (info == null)
+        {
+          info = new BaselineInfo();
+        }
+        info.update(fromCache);
+        return info;
+      }
+    }
+
+    cpBuffer[0] = (char) (c & 0xFFFF);
+    final LineMetrics lm = font.getLineMetrics(cpBuffer, 0, 1, frc);
     final float[] bls = lm.getBaselineOffsets();
     final int idx = lm.getBaselineIndex();
 
@@ -294,8 +312,7 @@ public class AWTFontMetrics implements FontMetrics
     // MaxAscent.
     final double maxAscent = getMaxAscent();
     final double delta = maxAscent - lm.getAscent();
-    info.setBaseline(BaselineInfo.MATHEMATICAL,
-            delta + maxAscent - getXHeight());
+    info.setBaseline(BaselineInfo.MATHEMATICAL, delta + maxAscent - getXHeight());
     info.setBaseline(BaselineInfo.IDEOGRAPHIC, getMaxHeight());
     info.setBaseline(BaselineInfo.MIDDLE, maxAscent / 2);
 
@@ -306,19 +323,15 @@ public class AWTFontMetrics implements FontMetrics
       case Font.CENTER_BASELINE:
       {
         info.setBaseline(BaselineInfo.CENTRAL, base);
-        info.setBaseline(BaselineInfo.ALPHABETIC,
-                base + bls[Font.ROMAN_BASELINE]);
-        info.setBaseline(BaselineInfo.HANGING,
-                base + bls[Font.HANGING_BASELINE]);
+        info.setBaseline(BaselineInfo.ALPHABETIC, base + bls[Font.ROMAN_BASELINE]);
+        info.setBaseline(BaselineInfo.HANGING, base + bls[Font.HANGING_BASELINE]);
         info.setDominantBaseline(BaselineInfo.CENTRAL);
         break;
       }
       case Font.HANGING_BASELINE:
       {
-        info.setBaseline(BaselineInfo.CENTRAL,
-                base + bls[Font.CENTER_BASELINE]);
-        info.setBaseline(BaselineInfo.ALPHABETIC,
-                base + bls[Font.ROMAN_BASELINE]);
+        info.setBaseline(BaselineInfo.CENTRAL, base + bls[Font.CENTER_BASELINE]);
+        info.setBaseline(BaselineInfo.ALPHABETIC, base + bls[Font.ROMAN_BASELINE]);
         info.setBaseline(BaselineInfo.HANGING, base);
         info.setDominantBaseline(BaselineInfo.HANGING);
         break;
@@ -326,13 +339,18 @@ public class AWTFontMetrics implements FontMetrics
       default: // ROMAN Base-line
       {
         info.setBaseline(BaselineInfo.ALPHABETIC, base);
-        info.setBaseline(BaselineInfo.CENTRAL,
-                base + bls[Font.CENTER_BASELINE]);
-        info.setBaseline(BaselineInfo.HANGING,
-                base + bls[Font.HANGING_BASELINE]);
+        info.setBaseline(BaselineInfo.CENTRAL, base + bls[Font.CENTER_BASELINE]);
+        info.setBaseline(BaselineInfo.HANGING, base + bls[Font.HANGING_BASELINE]);
         info.setDominantBaseline(BaselineInfo.ALPHABETIC);
         break;
       }
+    }
+
+    if (cacheable)
+    {
+      final BaselineInfo cached = new BaselineInfo();
+      cached.update(info);
+      cachedBaselines[c - 32] = cached;
     }
 
     return info;

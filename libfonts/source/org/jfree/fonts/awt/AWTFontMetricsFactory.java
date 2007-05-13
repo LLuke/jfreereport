@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AWTFontMetricsFactory.java,v 1.5 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -70,7 +70,7 @@ public class AWTFontMetricsFactory implements FontMetricsFactory
     {
       style |= Font.ITALIC;
     }
-    final Font font = new Font(record.getName(), style, (int) context.getFontSize());
+    final Font font = new Font(record.getFamily().getFamilyName(), style, (int) context.getFontSize());
     return new AWTFontMetrics(font, context);
   }
 }

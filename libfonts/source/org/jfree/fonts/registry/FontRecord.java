@@ -23,15 +23,13 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontRecord.java,v 1.7 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.fonts.registry;
 
 import java.io.Serializable;
-
-import org.jfree.fonts.io.FontDataInputSource;
 
 /**
  * Creation-Date: 07.11.2005, 19:07:09
@@ -73,25 +71,6 @@ public interface FontRecord extends Serializable
    * @return true, if the font is oblique. All italic fonts are also oblique.
    */
   public boolean isOblique ();
-
-  /**
-   * Returns the file name used to load the font.
-   *
-   * @return this is needed for iText.
-   */
-  public String getFontFile ();
-
-  public FontDataInputSource getFontInputSource();
-
-  public boolean isEmbeddable();
-
-  public String getName ();
-
-  public String[] getAllNames ();
-
-  public String getVariant ();
-
-  public String[] getAllVariants ();
 
   public FontIdentifier getIdentifier();
 }
