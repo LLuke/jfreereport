@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: MonospaceFontMetrics.java,v 1.1 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,7 +44,7 @@ public class MonospaceFontMetrics implements FontMetrics
   private double charHeight;
   private double charWidth;
 
-  public MonospaceFontMetrics(final int cpi, final int lpi)
+  public MonospaceFontMetrics(final float cpi, final float lpi)
   {
     charHeight = (72.0 / lpi);
     charWidth = (72.0 / cpi);

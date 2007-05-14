@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: MonospaceFontMetricsFactory.java,v 1.1 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,14 +42,10 @@ import org.jfree.fonts.registry.FontContext;
  */
 public class MonospaceFontMetricsFactory implements FontMetricsFactory
 {
-  private int lpi;
-  private int cpi;
   private MonospaceFontMetrics metrics;
 
-  public MonospaceFontMetricsFactory(final int lpi, final int cpi)
+  public MonospaceFontMetricsFactory(final float lpi, final float cpi)
   {
-    this.lpi = lpi;
-    this.cpi = cpi;
     this.metrics = new MonospaceFontMetrics(cpi, lpi);
   }
 

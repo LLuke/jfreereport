@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: MonospaceFontRegistry.java,v 1.1 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -44,10 +44,10 @@ import org.jfree.fonts.registry.FontMetricsFactory;
 public class MonospaceFontRegistry implements FontRegistry
 {
   private HashMap fontFamilies;
-  private int lpi;
-  private int cpi;
+  private float lpi;
+  private float cpi;
 
-  public MonospaceFontRegistry(final int lpi, final int cpi)
+  public MonospaceFontRegistry(final float lpi, final float cpi)
   {
     this.lpi = lpi;
     this.cpi = cpi;
