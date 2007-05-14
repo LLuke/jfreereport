@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultLocalizationContext.java,v 1.5 2007/05/13 11:26:26 mimil Exp $
+ * $Id: DefaultLocalizationContext.java,v 1.6 2007/05/14 12:25:56 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -77,7 +77,7 @@ public class DefaultLocalizationContext implements LocalizationContext
     return locale;
   }
 
-  public ResourceBundle getBundle(String id)
+  public ResourceBundle getBundle(final String id)
   {
     return ResourceBundle.getBundle(id, getLocale());
   }
@@ -87,7 +87,7 @@ public class DefaultLocalizationContext implements LocalizationContext
     return timeZone;
   }
 
-  public List getDateFormats(Type type)
+  public List getDateFormats(final Type type)
   {
     if (type.isFlagSet(Type.DATE_TYPE))
     {
@@ -104,7 +104,7 @@ public class DefaultLocalizationContext implements LocalizationContext
     return null;
   }
 
-  private String[] createLocale(String locale)
+  private String[] createLocale(final String locale)
   {
     final StringTokenizer strtok = new StringTokenizer(locale, "_");
     final String[] retval = new String[3];
@@ -131,35 +131,48 @@ public class DefaultLocalizationContext implements LocalizationContext
     return retval;
   }
 
-  public void initialize(Configuration config)
+  private String[] createFormatSpec(final String text)
+  {
+    final StringTokenizer strtok = new StringTokenizer(text, ".");
+    if (strtok.countTokens() == 2)
+    {
+      final String[] retval = new String[2];
+      retval[0] = strtok.nextToken();
+      retval[1] = strtok.nextToken();
+      return retval;
+    }
+    return null;
+  }
+
+
+  public void initialize(final Configuration config)
   {
     // setting locale
-    final String loc = config.getConfigProperty(CONFIG_LOCALE_KEY,
-        Locale.getDefault().toString());
-    final String[] loc2 = createLocale(loc);
-    this.locale = new Locale(loc2[0], loc2[1], loc2[2]);
+    final String declaredLocale = config.getConfigProperty(CONFIG_LOCALE_KEY, Locale.getDefault().toString());
+    final String[] declaredLocaleParts = createLocale(declaredLocale);
+    this.locale = new Locale(declaredLocaleParts[0], declaredLocaleParts[1], declaredLocaleParts[2]);
 
     //setting timezone
-    final String timeZoneId = config.getConfigProperty(CONFIG_TIMEZONE_KEY,
-        TimeZone.getDefault().getID());
+    final String timeZoneId = config.getConfigProperty(CONFIG_TIMEZONE_KEY, TimeZone.getDefault().getID());
     timeZone = TimeZone.getTimeZone(timeZoneId);
 
     // adding custom dateformats
-    final Iterator properties = config.findPropertyKeys(CONFIG_DATEFORMAT_KEY);
-    while (properties.hasNext())
+    final Iterator formatKeys = config.findPropertyKeys(CONFIG_DATEFORMAT_KEY);
+    while (formatKeys.hasNext())
     {
-      String property = (String) properties.next();
-      final String key = property.substring(CONFIG_DATEFORMAT_KEY.length(),
-          property.length());
-      final String[] split = key.split(".");
-      final String format = config.getConfigProperty(key);
-      if (split.length == 2)
-      {
-        final String type = "type."+split[0];
-        final String[] locale = createLocale(split[1]);
+      final String formatKey = (String) formatKeys.next();
+      // Lets grab the format string first ...
+      final String format = config.getConfigProperty(formatKey);
 
-        final SimpleDateFormat df = new SimpleDateFormat(format, new Locale(
-            locale[0], locale[1], locale[2]));
+      // The key itself holds information about the format-string type and the locale of that string.
+      final String keySpec = formatKey.substring(CONFIG_DATEFORMAT_KEY.length(), formatKey.length());
+      final String[] formatSpec = createFormatSpec(keySpec);
+      if (formatSpec != null)
+      {
+        final String type = "type."+formatSpec[0];
+        final String[] locale = createLocale(formatSpec[1]);
+
+        final SimpleDateFormat df = new SimpleDateFormat(format, new Locale(locale[0], locale[1], locale[2]));
 
         if (Type.TIME_TYPE.equals(type))
         {
