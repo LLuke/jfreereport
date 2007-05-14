@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ElementLayoutController.java,v 1.10 2007/04/01 18:49:26 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -141,6 +141,18 @@ public abstract class ElementLayoutController
   protected ElementLayoutController()
   {
     this.processingState = ElementLayoutController.NOT_STARTED;
+  }
+
+
+  public String toString()
+  {
+    return "ElementLayoutController{" +
+        "processingState=" + processingState +
+        ", element=" + element +
+        ", precomputing=" + precomputing +
+        ", expressionsCount=" + expressionsCount +
+        ", iterationCount=" + iterationCount +
+        '}';
   }
 
   /**

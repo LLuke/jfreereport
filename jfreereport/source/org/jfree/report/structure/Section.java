@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Section.java,v 1.8 2007/04/01 18:49:33 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -349,6 +349,10 @@ public class Section extends Element
     b.append(this.getClass().getName());
     b.append("={name=\"");
     b.append(getName());
+    b.append("\", namespace=\"");
+    b.append(getNamespace());
+    b.append("\", type=\"");
+    b.append(getType());
     b.append("\", size=\"");
     b.append(allElements.size());
     b.append("\"}");

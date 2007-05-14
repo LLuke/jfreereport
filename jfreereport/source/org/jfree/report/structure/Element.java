@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: Element.java,v 1.12 2007/04/01 18:49:33 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -65,8 +65,7 @@ public abstract class Element extends Node
 {
   private static final Expression[] EMPTY_EXPRESSIONS = new Expression[0];
   private static final String[] EMPTY_STRINGS = new String[0];
-  private static final Map EMPTY_MAP = Collections.unmodifiableMap(
-      new HashMap());
+  private static final Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap());
   public static final String NAME_ATTRIBUTE = "name";
   public static final String ID_ATTRIBUTE = "id";
   /**
@@ -248,8 +247,7 @@ public abstract class Element extends Node
 
   public CSSConstant getVisibility()
   {
-    return (CSSConstant) getStyle().getPropertyCSSValue(
-        BoxStyleKeys.VISIBILITY);
+    return (CSSConstant) getStyle().getPropertyCSSValue(BoxStyleKeys.VISIBILITY);
   }
 
   public void setAttributeExpression(final String attr,

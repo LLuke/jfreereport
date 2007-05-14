@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SectionLayoutController.java,v 1.14 2007/04/10 15:01:40 taqua Exp $
+ * $Id: SectionLayoutController.java,v 1.15 2007/05/04 09:43:04 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -97,8 +97,7 @@ public class SectionLayoutController extends ElementLayoutController
       ReportDataFactoryException
   {
     final ReportContext reportContext = flowController.getReportContext();
-    final LayoutControllerFactory layoutControllerFactory =
-        reportContext.getLayoutControllerFactory();
+    final LayoutControllerFactory layoutControllerFactory = reportContext.getLayoutControllerFactory();
     if (isDisplayable(node))
     {
       derived.setProcessingState(ElementLayoutController.WAITING_FOR_JOIN);
@@ -107,7 +106,7 @@ public class SectionLayoutController extends ElementLayoutController
     else
     {
       derived.setProcessingState(ElementLayoutController.WAITING_FOR_JOIN);
-      LayoutController childLc = layoutControllerFactory.create(flowController, node, derived);
+      final LayoutController childLc = layoutControllerFactory.create(flowController, node, derived);
       return LayoutControllerUtil.skipInvisibleElement(childLc);
 //      derived.setIndex(derived.getIndex() + 1);
 //      return LayoutControllerUtil.skipInvisibleElement(derived);

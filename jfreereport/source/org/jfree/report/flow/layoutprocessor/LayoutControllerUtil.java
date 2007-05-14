@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.11 2007/04/02 13:04:09 taqua Exp $
+ * $Id: LayoutControllerUtil.java,v 1.12 2007/05/04 09:43:04 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -71,6 +71,7 @@ import org.jfree.report.structure.Section;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 24.11.2006, 15:01:22
@@ -510,8 +511,7 @@ public class LayoutControllerUtil
     while (lc.isAdvanceable())
     {
       lc = lc.advance(target);
-      while (layoutController.isAdvanceable() == false &&
-          layoutController.getParent() != null)
+      while (lc.isAdvanceable() == false && lc.getParent() != null)
       {
         final LayoutController parent = lc.getParent();
         lc = parent.join(lc.getFlowController());
