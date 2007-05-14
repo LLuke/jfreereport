@@ -24,15 +24,11 @@
  *
  *
  * ------------
- * $Id: AverageFunction.java,v 1.2 2007/05/08 09:47:09 taqua Exp $
+ * $Id: IntFunction.java,v 1.1 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.function.rounding;
-
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
@@ -45,7 +41,7 @@ import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
  * This function returns a number down to the nearest integer.
- * 
+ *
  * @author Cedric Pronzato
  */
 public class IntFunction implements Function
@@ -83,7 +79,7 @@ public class IntFunction implements Function
     // n = new BigDecimal(result.toString());
     // }
     // Integer ret = null;
-    //    
+    //
     // final BigDecimal round = n.round(new MathContext(1, RoundingMode.FLOOR));
     // System.out.println(n+":"+round);
     // ret = new Integer(round.intValue());

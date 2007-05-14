@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultLocalizationContext.java,v 1.4 2007/05/12 23:53:15 mimil Exp $
+ * $Id: DefaultLocalizationContext.java,v 1.5 2007/05/13 11:26:26 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -37,13 +37,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
+import java.util.StringTokenizer;
 
 import org.jfree.formula.typing.Type;
 import org.jfree.util.Configuration;
 
 /**
  * Creation-Date: 03.11.2006, 14:28:12
- * 
+ *
  * @author Thomas Morgner
  */
 public class DefaultLocalizationContext implements LocalizationContext
@@ -61,7 +62,7 @@ public class DefaultLocalizationContext implements LocalizationContext
   private List timeFormats;
 
   private Locale locale;
-  
+
   private TimeZone timeZone;
 
   public DefaultLocalizationContext()
@@ -102,15 +103,32 @@ public class DefaultLocalizationContext implements LocalizationContext
     }
     return null;
   }
-  
+
   private String[] createLocale(String locale)
   {
-    final String[] split2 = locale.split("_");
-    final String language = split2[0];
-    final String country = split2.length >= 2 ? split2[1] : "";
-    final String variant = split2.length >= 3 ? split2[2] : "";
-    
-    return new String[]{language, country, variant};
+    final StringTokenizer strtok = new StringTokenizer(locale, "_");
+    final String[] retval = new String[3];
+    if (strtok.hasMoreElements())
+    {
+      retval[0] = strtok.nextToken();
+    }
+    if (strtok.hasMoreElements())
+    {
+      retval[1] = strtok.nextToken();
+    }
+    else
+    {
+      retval[1] = "";
+    }
+    if (strtok.hasMoreElements())
+    {
+      retval[2] = strtok.nextToken();
+    }
+    else
+    {
+      retval[2] = "";
+    }
+    return retval;
   }
 
   public void initialize(Configuration config)
@@ -125,7 +143,7 @@ public class DefaultLocalizationContext implements LocalizationContext
     final String timeZoneId = config.getConfigProperty(CONFIG_TIMEZONE_KEY,
         TimeZone.getDefault().getID());
     timeZone = TimeZone.getTimeZone(timeZoneId);
-    
+
     // adding custom dateformats
     final Iterator properties = config.findPropertyKeys(CONFIG_DATEFORMAT_KEY);
     while (properties.hasNext())
