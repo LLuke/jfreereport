@@ -23,13 +23,15 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlOutputProcessorMetaData.java,v 1.6 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 
 package org.jfree.layouting.modules.output.html;
 
+import org.jfree.fonts.awt.AWTFontRegistry;
+import org.jfree.fonts.registry.DefaultFontStorage;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
@@ -47,6 +49,16 @@ public class HtmlOutputProcessorMetaData extends AbstractOutputProcessorMetaData
   public static final int PAGINATION_FULL = 2;
 
   private int paginationMode;
+
+  public HtmlOutputProcessorMetaData(final int paginationMode)
+  {
+    this(createFontStorage(), paginationMode);
+  }
+
+  private static FontStorage createFontStorage()
+  {
+    return new DefaultFontStorage(new AWTFontRegistry());
+  }
 
   public HtmlOutputProcessorMetaData(final FontStorage fontStorage,
                                      final int paginationMode)

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FlowHtmlOutputProcessor.java,v 1.8 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -65,21 +65,30 @@ public class FlowHtmlOutputProcessor extends AbstractOutputProcessor
   {
     super(configuration);
 
-    FontRegistry fontRegistry = new AWTFontRegistry();
-    FontStorage fontStorage = new DefaultFontStorage(fontRegistry);
     this.metaData = new HtmlOutputProcessorMetaData
-        (fontStorage, HtmlOutputProcessorMetaData.PAGINATION_MANUAL);
+        (HtmlOutputProcessorMetaData.PAGINATION_MANUAL);
 
-    ContentLocation contentLocation = new DummyRepository().getRoot();
-    NameGenerator contentNameGenerator = new DefaultNameGenerator(contentLocation);
-    ContentLocation dataLocation = new DummyRepository().getRoot();
-    NameGenerator dataNameGenerator = new DefaultNameGenerator(dataLocation);
+    final ContentLocation contentLocation = new DummyRepository().getRoot();
+    final NameGenerator contentNameGenerator = new DefaultNameGenerator(contentLocation);
+    final ContentLocation dataLocation = new DummyRepository().getRoot();
+    final NameGenerator dataNameGenerator = new DefaultNameGenerator(dataLocation);
 
     this.printer = new HtmlPrinter();
     this.printer.setContentWriter(contentLocation, contentNameGenerator);
     this.printer.setDataWriter(dataLocation, dataNameGenerator);
   }
 
+  public FlowHtmlOutputProcessor(final Configuration configuration, final HtmlPrinter printer)
+  {
+    super(configuration);
+
+    final FontRegistry fontRegistry = new AWTFontRegistry();
+    final FontStorage fontStorage = new DefaultFontStorage(fontRegistry);
+    this.metaData = new HtmlOutputProcessorMetaData
+        (fontStorage, HtmlOutputProcessorMetaData.PAGINATION_MANUAL);
+
+    this.printer = printer;
+  }
 
   public OutputProcessorMetaData getMetaData()
   {
@@ -95,6 +104,11 @@ public class FlowHtmlOutputProcessor extends AbstractOutputProcessor
     }
 
     return new StreamingRenderer(layoutProcess);
+  }
+
+  public void setPrinter(final HtmlPrinter printer)
+  {
+    this.printer = printer;
   }
 
   public HtmlPrinter getPrinter()

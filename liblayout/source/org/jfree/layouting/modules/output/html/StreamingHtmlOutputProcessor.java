@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StreamingHtmlOutputProcessor.java,v 1.9 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -112,5 +112,10 @@ public class StreamingHtmlOutputProcessor extends AbstractOutputProcessor
   public HtmlPrinter getPrinter()
   {
     return printer;
+  }
+
+  public void setPrinter(final HtmlPrinter printer)
+  {
+    this.printer = printer;
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: BaseFontFactory.java,v 1.4 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -317,8 +317,8 @@ public final class BaseFontFactory extends DefaultFontMapper
         }
       }
     }
-    if (LibLayoutBoot.getInstance().getGlobalConfig().getConfigProperty
-            (GC_AFTER_REGISTER, "true").equals("true"))
+    if ("true".equals(LibLayoutBoot.getInstance().getGlobalConfig().getConfigProperty
+        (GC_AFTER_REGISTER, "true")))
     {
       // clean up after the registering ...
       System.gc();
@@ -431,7 +431,7 @@ public final class BaseFontFactory extends DefaultFontMapper
       final String logicalFontname = ffi[3];
       notEmbeddedFonts.setProperty(font, embeddedText);
       if ((fontsByName.containsKey(logicalFontname) == false) ||
-              ((knownFontEmbeddedState.equals("true") == false) &&
+              (("true".equals(knownFontEmbeddedState) == false) &&
                       embeddedText.equals(knownFontEmbeddedState) == false))
       {
         fontsByName.setProperty(logicalFontname, font);
@@ -467,19 +467,6 @@ public final class BaseFontFactory extends DefaultFontMapper
     return treeSet.iterator();
   }
 
-  /**
-   * Returns the name of the font file by looking up the name.
-   *
-   * @param font the font name
-   * @return the font file name.
-   * @deprecated this method does not support font styles.
-   */
-  public String getFontfileForName(final String font)
-  {
-    final FontRecord record = getFontForName(font, false, false);
-    return record.getFontFile();
-  }
-
   public FontRecord getFontForName(final String font,
                                    final boolean bold,
                                    final boolean italics)
@@ -487,8 +474,8 @@ public final class BaseFontFactory extends DefaultFontMapper
     String retval = fontsByName.getProperty(font);
     if (retval != null)
     {
-      boolean embedded = notEmbeddedFonts.getProperty
-                      (retval, "false").equalsIgnoreCase("true");
+      boolean embedded = "true".equalsIgnoreCase(notEmbeddedFonts.getProperty
+          (retval, "false"));
       return new MinimalFontRecord(font, retval, bold, italics, embedded);
     }
     FontFamily family = registry.getFontFamily(font);

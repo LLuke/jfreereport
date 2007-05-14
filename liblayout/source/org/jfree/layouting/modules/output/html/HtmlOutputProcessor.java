@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlOutputProcessor.java,v 1.4 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -40,4 +40,5 @@ import org.jfree.layouting.output.OutputProcessor;
 public interface HtmlOutputProcessor extends OutputProcessor
 {
   public HtmlPrinter getPrinter();
+  public void setPrinter(HtmlPrinter printer);
 }

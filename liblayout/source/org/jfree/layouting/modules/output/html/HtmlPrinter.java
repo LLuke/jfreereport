@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: HtmlPrinter.java,v 1.9 2007/04/02 11:41:15 taqua Exp $
+ * $Id: HtmlPrinter.java,v 1.10 2007/04/10 19:27:08 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -72,6 +72,7 @@ import org.jfree.layouting.layouter.context.LayoutContext;
 import org.jfree.layouting.layouter.context.LayoutStyle;
 import org.jfree.layouting.namespace.Namespaces;
 import org.jfree.layouting.renderer.model.BlockRenderBox;
+import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.InlineRenderBox;
 import org.jfree.layouting.renderer.model.MarkerRenderBox;
 import org.jfree.layouting.renderer.model.NodeLayoutProperties;
@@ -81,8 +82,6 @@ import org.jfree.layouting.renderer.model.RenderNode;
 import org.jfree.layouting.renderer.model.RenderableReplacedContent;
 import org.jfree.layouting.renderer.model.RenderableText;
 import org.jfree.layouting.renderer.model.SpacerRenderNode;
-import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
-import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
@@ -104,13 +103,13 @@ import org.jfree.resourceloader.ResourceLoadingException;
 import org.jfree.resourceloader.ResourceManager;
 import org.jfree.ui.Drawable;
 import org.jfree.util.FastStack;
+import org.jfree.util.Log;
 import org.jfree.util.StackableRuntimeException;
 import org.jfree.util.WaitingImageObserver;
-import org.jfree.util.Log;
 import org.jfree.xmlns.common.AttributeList;
 import org.jfree.xmlns.writer.DefaultTagDescription;
-import org.jfree.xmlns.writer.XmlWriter;
 import org.jfree.xmlns.writer.HtmlCharacterEntities;
+import org.jfree.xmlns.writer.XmlWriter;
 
 /**
  * Creation-Date: 25.11.2006, 18:17:57
@@ -124,7 +123,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     private StyleBuilder builder;
     private boolean omitted;
 
-    public ContextElement(final StyleBuilder builder)
+    protected ContextElement(final StyleBuilder builder)
     {
       this.builder = builder;
     }
@@ -266,7 +265,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
 
     documentContentItem = contentLocation.createItem
         (contentNameGenerator.generateName(null, "text/html"));
-    OutputStream out = documentContentItem.getOutputStream();
+    final OutputStream out = documentContentItem.getOutputStream();
 
     final OutputStreamWriter writer = new OutputStreamWriter(out, encoding);
     xmlWriter = new XmlWriter(writer, tagDescription);
@@ -281,7 +280,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         xmlWriter.writeText(XHTML_HEADER[i]);
         xmlWriter.writeNewLine();
       }
-      AttributeList htmlAttList = new AttributeList();
+      final AttributeList htmlAttList = new AttributeList();
       htmlAttList.addNamespaceDeclaration("", Namespaces.XHTML_NAMESPACE);
 
       xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "html",  XmlWriter.OPEN);
@@ -299,7 +298,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         DocumentContextUtility.getInitialStyle(documentContext);
 
     final StyleBuilder inialBuilder = new StyleBuilder(false);
-    StyleKey[] keys = StyleKeyRegistry.getRegistry().getKeys();
+    final StyleKey[] keys = StyleKeyRegistry.getRegistry().getKeys();
     for (int i = 0; i < keys.length; i++)
     {
       final StyleKey key = keys[i];
@@ -335,7 +334,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     this.generateFragment = generateFragment;
   }
 
-  protected boolean startInlineBox(InlineRenderBox box)
+  protected boolean startInlineBox(final InlineRenderBox box)
   {
     try
     {
@@ -529,7 +528,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
     else
     {
-      ContextElement contextElement = (ContextElement) contexts.peek();
+      final ContextElement contextElement = (ContextElement) contexts.peek();
       builder = new StyleBuilder(true, contextElement.getBuilder());
     }
     return builder;
@@ -623,7 +622,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
   }
 
-  protected boolean startBlockBox(BlockRenderBox box)
+  protected boolean startBlockBox(final BlockRenderBox box)
   {
     try
     {
@@ -636,7 +635,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
       }
       else if (box instanceof TableSectionRenderBox)
       {
-        TableSectionRenderBox section = (TableSectionRenderBox) box;
+        final TableSectionRenderBox section = (TableSectionRenderBox) box;
         final CSSValue displayRole = section.getDisplayRole();
         if (DisplayRole.TABLE_HEADER_GROUP.equals(displayRole))
         {
@@ -684,7 +683,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
   }
 
 
-  protected void finishBlockBox(BlockRenderBox box)
+  protected void finishBlockBox(final BlockRenderBox box)
   {
     try
     {
@@ -694,7 +693,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
       }
       else if (box instanceof TableSectionRenderBox)
       {
-        TableSectionRenderBox section = (TableSectionRenderBox) box;
+        final TableSectionRenderBox section = (TableSectionRenderBox) box;
         final CSSValue displayRole = section.getDisplayRole();
         if (DisplayRole.TABLE_HEADER_GROUP.equals(displayRole))
         {
@@ -784,7 +783,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         startProcessing(node);
       }
 
-      RenderNode next = node.getNext();
+      final RenderNode next = node.getNext();
       if (next == null)
       {
         break;
@@ -816,7 +815,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     xmlWriter.writeCloseTag();
   }
 
-  protected boolean startOtherBlockBox(BlockRenderBox box,
+  protected boolean startOtherBlockBox(final BlockRenderBox box,
                                        final StyleBuilder builder)
       throws IOException
   {
@@ -1017,7 +1016,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
   }
 
 
-  protected void startOtherNode(RenderNode node)
+  protected void startOtherNode(final RenderNode node)
   {
     try
     {
@@ -1035,7 +1034,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
       }
       else if (node instanceof RenderableReplacedContent)
       {
-        RenderableReplacedContent rc = (RenderableReplacedContent) node;
+        final RenderableReplacedContent rc = (RenderableReplacedContent) node;
         final ResourceKey source = rc.getSource();
         // We have to do three things here. First, w have to check what kind
         // of content we deal with.
@@ -1048,7 +1047,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
           {
 
             // Write image reference; return the name of the reference ..
-            String name = writeRaw(source);
+            final String name = writeRaw(source);
             if (name != null)
             {
               // Write image reference ..
@@ -1068,7 +1067,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         {
           // Make it a PNG file ..
           xmlWriter.writeComment("Image content:" + source);
-          String name = writeImage((Image) rawObject);
+          final String name = writeImage((Image) rawObject);
           if (name != null)
           {
             // Write image reference ..
@@ -1082,8 +1081,8 @@ public class HtmlPrinter extends IterateStructuralProcessStep
         {
           // render it into an Buffered image and make it a PNG file.
           xmlWriter.writeComment("Drawable content:" + source);
-          Image image = generateImage(node, (Drawable) rawObject);
-          String name = writeImage(image);
+          final Image image = generateImage(node, (Drawable) rawObject);
+          final String name = writeImage(image);
           if (name != null)
           {
             // Write image reference ..
@@ -1110,7 +1109,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     }
   }
 
-  private String writeRaw(ResourceKey source) throws IOException
+  private String writeRaw(final ResourceKey source) throws IOException
   {
     try
     {
@@ -1157,7 +1156,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     return null;
   }
 
-  private String writeImage(Image image)
+  private String writeImage(final Image image)
       throws ContentIOException, IOException, URLRewriteException
   {
     // encode the image into a PNG
@@ -1182,7 +1181,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     return urlRewriter.rewrite(documentContentItem, dataFile);
   }
 
-  private Image generateImage(RenderNode node, Drawable drawable)
+  private Image generateImage(final RenderNode node, final Drawable drawable)
   {
     final int imageWidthPt = (int) StrictGeomUtility.toExternalValue(node.getWidth());
     final int imageHeightPt = (int) StrictGeomUtility.toExternalValue(node.getHeight());
@@ -1208,7 +1207,7 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     return image;
   }
 
-  private String extractFilename(ResourceData resourceData)
+  private String extractFilename(final ResourceData resourceData)
   {
     final String filename = (String)
         resourceData.getAttribute(ResourceData.FILENAME);
@@ -1305,12 +1304,12 @@ public class HtmlPrinter extends IterateStructuralProcessStep
     return true;
   }
 
-  private boolean isValidImage(String data)
+  private boolean isValidImage(final String data)
   {
     return validRawTypes.contains(data);
   }
 
-  protected boolean startOtherBox(RenderBox box)
+  protected boolean startOtherBox(final RenderBox box)
   {
 //    try
 //    {

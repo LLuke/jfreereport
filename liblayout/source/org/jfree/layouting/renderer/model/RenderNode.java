@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: RenderNode.java,v 1.30 2007/04/02 11:41:18 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -100,7 +100,7 @@ public abstract class RenderNode implements Cloneable
     this.layoutProperties = new NodeLayoutProperties();
   }
 
-  public void appyStyle(LayoutContext context, OutputProcessorMetaData metaData)
+  public void appyStyle(final LayoutContext context, final OutputProcessorMetaData metaData)
   {
     this.layoutProperties.setAlignmentBaseline
         (context.getValue(LineStyleKeys.ALIGNMENT_BASELINE));
@@ -111,7 +111,7 @@ public abstract class RenderNode implements Cloneable
       this.layoutProperties.setAlignmentAdjustResolved
           (RenderLength.convertToInternal (alignmentAdjust, context, metaData));
     }
-    CSSValue baselineShift = context.getValue(LineStyleKeys.BASELINE_SHIFT);
+    final CSSValue baselineShift = context.getValue(LineStyleKeys.BASELINE_SHIFT);
     this.layoutProperties.setBaselineShift(baselineShift);
     if (baselineShift instanceof CSSNumericValue)
     {
@@ -163,7 +163,7 @@ public abstract class RenderNode implements Cloneable
     return layoutProperties.getTagName();
   }
 
-  protected CSSValue normalizeAlignment(CSSValue verticalAlignment)
+  protected CSSValue normalizeAlignment(final CSSValue verticalAlignment)
   {
     return verticalAlignment;
   }
@@ -234,7 +234,7 @@ public abstract class RenderNode implements Cloneable
     this.updateChangeTracker();
   }
 
-  public void setWidth(long width)
+  public void setWidth(final long width)
   {
     if (width < 0)
     {
@@ -250,7 +250,7 @@ public abstract class RenderNode implements Cloneable
     return width;
   }
 
-  public void setHeight(long height)
+  public void setHeight(final long height)
   {
     if (height < 0)
     {
@@ -276,7 +276,7 @@ public abstract class RenderNode implements Cloneable
     this.updateChangeTracker();
   }
 
-  public final void setPosition(int axis, long value)
+  public final void setPosition(final int axis, final long value)
   {
     if (axis == HORIZONTAL_AXIS)
     {
@@ -288,7 +288,7 @@ public abstract class RenderNode implements Cloneable
     }
   }
 
-  public final long getPosition(int axis)
+  public final long getPosition(final int axis)
   {
     if (axis == HORIZONTAL_AXIS)
     {
@@ -300,7 +300,7 @@ public abstract class RenderNode implements Cloneable
     }
   }
 
-  public final void setDimension(int axis, long value)
+  public final void setDimension(final int axis, final long value)
   {
     if (axis == HORIZONTAL_AXIS)
     {
@@ -312,7 +312,7 @@ public abstract class RenderNode implements Cloneable
     }
   }
 
-  public final long getDimension(int axis)
+  public final long getDimension(final int axis)
   {
     if (axis == HORIZONTAL_AXIS)
     {
@@ -449,7 +449,7 @@ public abstract class RenderNode implements Cloneable
    *
    * @return
    */
-  public RenderNode derive(boolean deep)
+  public RenderNode derive(final boolean deep)
   {
     final RenderNode node = (RenderNode) clone();
     node.parent = null;
@@ -468,7 +468,7 @@ public abstract class RenderNode implements Cloneable
    */
   public RenderNode hibernate ()
   {
-    RenderNode node = (RenderNode) clone();
+    final RenderNode node = (RenderNode) clone();
     node.parent = null;
     node.next = null;
     node.prev = null;
@@ -478,7 +478,7 @@ public abstract class RenderNode implements Cloneable
 
   public RenderNode deriveFrozen(boolean deep)
   {
-    RenderNode node = (RenderNode) clone();
+    final RenderNode node = (RenderNode) clone();
     node.parent = null;
     node.next = null;
     node.prev = null;
@@ -502,7 +502,7 @@ public abstract class RenderNode implements Cloneable
     this.hibernated = hibernated;
   }
 
-  public RenderNode findNodeById(Object instanceId)
+  public RenderNode findNodeById(final Object instanceId)
   {
     if (instanceId == getInstanceId())
     {

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: BaseFontSupport.java,v 1.4 2007/04/02 11:41:16 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.5 2007/04/10 19:27:08 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -39,6 +39,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.FontMapper;
 import org.jfree.fonts.registry.FontRecord;
+import org.jfree.fonts.registry.FontSource;
 import org.jfree.fonts.truetype.TrueTypeFontRecord;
 import org.jfree.layouting.LibLayoutBoot;
 import org.jfree.resourceloader.ResourceManager;
@@ -206,11 +207,15 @@ public class BaseFontSupport implements FontMapper
         // we create one..
 
         boolean embeddedOverride = embedded;
-        if (embedded == true && registryFontRecord.isEmbeddable() == false)
+        if (embedded == true && registryFontRecord instanceof FontSource)
         {
-          Log.warn("License of font forbids embedded usage for font: " + fontKey);
-          // strict mode here?
-          embeddedOverride = false;
+          final FontSource source = (FontSource) registryFontRecord;
+          if (source.isEmbeddable() == false)
+          {
+            Log.warn("License of font forbids embedded usage for font: " + fontKey);
+            // strict mode here?
+            embeddedOverride = false;
+          }
         }
         final BaseFontRecord fontRecord = createFontFromTTF
                 (registryFontRecord, bold, italic,
@@ -329,9 +334,14 @@ public class BaseFontSupport implements FontMapper
         rawFilename = ttfRecord.getFontFile();
       }
     }
+    else if (fontRecord instanceof FontSource)
+    {
+      final FontSource source = (FontSource) fontRecord;
+      rawFilename = source.getFontFile();
+    }
     else
     {
-      rawFilename = fontRecord.getFontFile();
+      return null;
     }
 
     final String filename;

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: StyleBuilder.java,v 1.4 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.jfree.layouting.input.style.StyleKey;
-import org.jfree.layouting.input.style.keys.border.BorderStyleKeys;
 import org.jfree.layouting.input.style.keys.box.BoxStyleKeys;
 import org.jfree.layouting.input.style.values.CSSValue;
 import org.jfree.util.ObjectUtilities;
@@ -48,9 +47,9 @@ import org.jfree.util.StringUtils;
  */
 public class StyleBuilder
 {
-  private boolean compact;
+  private static final String INDENT = "    ";
 
-  private final static String INDENT = "    ";
+  private boolean compact;
   private Map backend;
   private Map parentBackend;
 
@@ -176,7 +175,7 @@ public class StyleBuilder
     final StringBuffer style = new StringBuffer();
     if (compact == false)
     {
-      Iterator it = backend.entrySet().iterator();
+      final Iterator it = backend.entrySet().iterator();
       while (it.hasNext())
       {
         if (style.length() != 0)
@@ -185,7 +184,7 @@ public class StyleBuilder
         }
         style.append(INDENT);
 
-        Map.Entry entry = (Map.Entry) it.next();
+        final Map.Entry entry = (Map.Entry) it.next();
         style.append(entry.getKey());
         style.append(": ");
         style.append(entry.getValue());
@@ -194,10 +193,10 @@ public class StyleBuilder
     }
     else
     {
-      Iterator it = backend.entrySet().iterator();
+      final Iterator it = backend.entrySet().iterator();
       while (it.hasNext())
       {
-        Map.Entry entry = (Map.Entry) it.next();
+        final Map.Entry entry = (Map.Entry) it.next();
         style.append(entry.getKey());
         style.append(": ");
         style.append(entry.getValue());
@@ -209,13 +208,13 @@ public class StyleBuilder
 
   public static void main(String[] args)
   {
-    StyleBuilder level1 = new StyleBuilder(false);
+    final StyleBuilder level1 = new StyleBuilder(false);
     level1.append(BoxStyleKeys.PADDING_TOP, "red");
 
-    StyleBuilder level2 = new StyleBuilder(false, level1);
+    final StyleBuilder level2 = new StyleBuilder(false, level1);
     level2.append(BoxStyleKeys.PADDING_TOP, "red");
 
-    StyleBuilder level3 = new StyleBuilder(false, level2);
+    final StyleBuilder level3 = new StyleBuilder(false, level2);
     level3.append(BoxStyleKeys.PADDING_TOP, "red");
   }
 
