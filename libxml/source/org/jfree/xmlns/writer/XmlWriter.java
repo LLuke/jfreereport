@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: XmlWriter.java,v 1.6 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,8 +33,10 @@ package org.jfree.xmlns.writer;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.Reader;
 
 import org.jfree.xmlns.common.AttributeList;
+import org.jfree.io.IOUtils;
 
 
 /**
@@ -213,6 +215,12 @@ public class XmlWriter extends XmlWriterSupport
       throws IOException
   {
     this.writer.write(text);
+    setLineEmpty(false);
+  }
+
+  public void writeStream (final Reader reader) throws IOException
+  {
+    IOUtils.getInstance().copyWriter(reader, writer);
     setLineEmpty(false);
   }
 

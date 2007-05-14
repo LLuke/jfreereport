@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: XmlWriterSupport.java,v 1.16 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -148,8 +148,8 @@ public class XmlWriterSupport
   private boolean writeFinalLinebreak;
 
   /**
-   * Default Constructor. The created XMLWriterSupport will not have no safe
-   * tags and starts with an indention level of 0.
+   * Default Constructor. The created XMLWriterSupport will not have no safe tags and starts with an indention level of
+   * 0.
    */
   public XmlWriterSupport()
   {
@@ -298,11 +298,9 @@ public class XmlWriterSupport
   }
 
   /**
-   * A marker flag to track, wether the current line is empty. This influences
-   * the indention.
+   * A marker flag to track, wether the current line is empty. This influences the indention.
    *
-   * @param lineEmpty defines, whether the current line should be treated as
-   *                  empty line.
+   * @param lineEmpty defines, whether the current line should be treated as empty line.
    */
   public void setLineEmpty(final boolean lineEmpty)
   {
@@ -341,10 +339,9 @@ public class XmlWriterSupport
   }
 
   /**
-   * Adds an implied namespace to the document. Such a namespace is not
-   * explicitly declared, it is assumed that the xml-parser knows the prefix by
-   * some other means. Using implied namespaces for standalone documents is
-   * almost always a bad idea.
+   * Adds an implied namespace to the document. Such a namespace is not explicitly declared, it is assumed that the
+   * xml-parser knows the prefix by some other means. Using implied namespaces for standalone documents is almost always
+   * a bad idea.
    *
    * @param uri    the uri of the namespace.
    * @param prefix the defined prefix.
@@ -370,11 +367,10 @@ public class XmlWriterSupport
   }
 
   /**
-   * Copies all currently declared namespaces of the given XmlWriterSupport
-   * instance as new implied namespaces into this instance.
+   * Copies all currently declared namespaces of the given XmlWriterSupport instance as new implied namespaces into this
+   * instance.
    *
-   * @param writerSupport the Xml-writer from where to copy the declared
-   *                      namespaces.
+   * @param writerSupport the Xml-writer from where to copy the declared namespaces.
    */
   public void copyNamespaces(final XmlWriterSupport writerSupport)
   {
@@ -561,10 +557,9 @@ public class XmlWriterSupport
   }
 
   /**
-   * Conditionally writes an end-of-line character. The End-Of-Line is only
-   * written, if the tag description indicates that the currently open element
-   * does not expect any CDATA inside. Writing a newline for CDATA-elements may
-   * have sideeffects.
+   * Conditionally writes an end-of-line character. The End-Of-Line is only written, if the tag description indicates
+   * that the currently open element does not expect any CDATA inside. Writing a newline for CDATA-elements may have
+   * sideeffects.
    *
    * @param w the writer.
    * @throws java.io.IOException if there is an I/O problem.
@@ -591,10 +586,9 @@ public class XmlWriterSupport
   }
 
   /**
-   * Processes a single attribute and searches for namespace declarations. If a
-   * namespace declaration is found, it is returned in a normalized way. If
-   * namespace processing is active, the attribute name will be fully qualified
-   * with the prefix registered for the attribute's namespace URI.
+   * Processes a single attribute and searches for namespace declarations. If a namespace declaration is found, it is
+   * returned in a normalized way. If namespace processing is active, the attribute name will be fully qualified with
+   * the prefix registered for the attribute's namespace URI.
    *
    * @param entry      the attribute enty.
    * @param namespaces the currently known namespaces.
@@ -644,12 +638,11 @@ public class XmlWriterSupport
   }
 
   /**
-   * Normalises a string, replacing certain characters with their escape
-   * sequences so that the XML text is not corrupted.
+   * Normalises a string, replacing certain characters with their escape sequences so that the XML text is not
+   * corrupted.
    *
    * @param s                the string.
-   * @param transformNewLine true, if a newline in the string should be
-   *                         converted into a character entity.
+   * @param transformNewLine true, if a newline in the string should be converted into a character entity.
    * @return the normalised string.
    */
   public static String normalize(final String s,
@@ -848,14 +841,12 @@ public class XmlWriterSupport
   }
 
   /**
-   * Checks, whether attributes of the same namespace as the current element
-   * should be written without a prefix. Attributes without a prefix are
-   * considered to be not in any namespace at all. How to treat such attributes
-   * is implementation dependent. (Appendix A; Section 6.2 of the XmlNamespaces
-   * recommendation)
+   * Checks, whether attributes of the same namespace as the current element should be written without a prefix.
+   * Attributes without a prefix are considered to be not in any namespace at all. How to treat such attributes is
+   * implementation dependent. (Appendix A; Section 6.2 of the XmlNamespaces recommendation)
    *
-   * @return true, if attributes in the element's namespace should be written
-   *         without a prefix, false to write all attributes with a prefix.
+   * @return true, if attributes in the element's namespace should be written without a prefix, false to write all
+   *         attributes with a prefix.
    */
   public boolean isAssumeDefaultNamespace()
   {
@@ -863,14 +854,11 @@ public class XmlWriterSupport
   }
 
   /**
-   * Defines, whether attributes of the same namespace as the current element
-   * should be written without a prefix. Attributes without a prefix are
-   * considered to be not in any namespace at all. How to treat such attributes
-   * is implementation dependent. (Appendix A; Section 6.2 of the XmlNamespaces
-   * recommendation)
+   * Defines, whether attributes of the same namespace as the current element should be written without a prefix.
+   * Attributes without a prefix are considered to be not in any namespace at all. How to treat such attributes is
+   * implementation dependent. (Appendix A; Section 6.2 of the XmlNamespaces recommendation)
    *
-   * @param assumeDefaultNamespace true, if attributes in the element's
-   *                               namespace should be written without a prefix,
+   * @param assumeDefaultNamespace true, if attributes in the element's namespace should be written without a prefix,
    *                               false to write all attributes with a prefix.
    */
   public void setAssumeDefaultNamespace(final boolean assumeDefaultNamespace)
