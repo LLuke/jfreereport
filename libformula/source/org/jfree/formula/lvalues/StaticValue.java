@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: StaticValue.java,v 1.5 2007/04/01 13:51:54 taqua Exp $
+ * $Id: StaticValue.java,v 1.6 2007/05/07 22:51:12 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -85,5 +85,17 @@ public class StaticValue extends AbstractLValue
   public Object getValue()
   {
     return value;
+  }
+
+  /**
+   * This function allows a program traversing the LibFormula object model
+   * to know what type this static value is.
+   *
+   * @return the type of the static value
+   *
+   */ 
+  public Type getValueType()
+  {
+    return type;
   }
 }
