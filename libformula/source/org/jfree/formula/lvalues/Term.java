@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: Term.java,v 1.7 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -306,5 +306,37 @@ public class Term extends AbstractLValue
   public LValue getHeadValue()
   {
     return headValue;
+  }
+  
+  /**
+   * Allows access to the post optimized head value
+   * note that without the optimization, it's difficult to traverse
+   * libformula's object model.
+   *
+   * @return optimized head value
+   */
+  public LValue getOptimizedHeadValue()
+  {
+    return optimizedHeadValue;
+  }
+  
+  /**
+   * Allows access to the post optimized operator array
+   * 
+   * @return optimized operator array
+   */
+  public InfixOperator[] getOptimizedOperators()
+  {
+    return operatorArray;
+  }
+  
+  /**
+   * Allows access to the post optimized operand array
+   *
+   * @return optimized operand array
+   */
+  public LValue[] getOptimizedOperands()
+  {
+    return operandsArray;
   }
 }
