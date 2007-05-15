@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: LesserOperator.java,v 1.5 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -100,5 +100,15 @@ public class LesserOperator implements InfixOperator
   public boolean isAssociative()
   {
     return false;
+  }
+  
+  /**
+   * returns the string representation of this operator.
+   *
+   * @return string
+   */
+  public String toString()
+  {
+    return "<";
   }
 }
