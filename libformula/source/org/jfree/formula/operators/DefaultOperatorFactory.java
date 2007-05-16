@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultOperatorFactory.java,v 1.4 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -92,10 +92,12 @@ public class DefaultOperatorFactory implements OperatorFactory
         continue;
       }
       final String tokenTrimmed = token.trim();
-      if (tokenTrimmed.length() != 1)
-      {
-        continue;
-      }
+      
+      // this assumption was breaking >=, <=, and <>
+      // if (tokenTrimmed.length() != 1)
+      // {
+      //   continue;
+      // }
 
       final Object operator = ObjectUtilities.loadAndInstantiate
           (operatorClass, DefaultOperatorFactory.class, InfixOperator.class);
@@ -134,10 +136,12 @@ public class DefaultOperatorFactory implements OperatorFactory
         continue;
       }
       final String tokenTrimmed = token.trim();
-      if (tokenTrimmed.length() != 1)
-      {
-        continue;
-      }
+      
+      // this is an invalid assumption
+      // if (tokenTrimmed.length() != 1)
+      // {
+      //  continue;
+      // }
 
       final Object operator = ObjectUtilities.loadAndInstantiate
           (operatorClass, DefaultOperatorFactory.class, PrefixOperator.class);
@@ -176,10 +180,11 @@ public class DefaultOperatorFactory implements OperatorFactory
         continue;
       }
       final String tokenTrimmed = token.trim();
-      if (tokenTrimmed.length() != 1)
-      {
-        continue;
-      }
+      // this is an invalid assumption
+      // if (tokenTrimmed.length() != 1)
+      // {
+      //   continue;
+      // }
 
       final Object operator = ObjectUtilities.loadAndInstantiate
           (operatorClass, DefaultOperatorFactory.class, PostfixOperator.class);
