@@ -4,6 +4,10 @@
 
 A list of changes in recent versions:
 
+0.3.4:  (21-May-2007)
+        * A byte[] resource-key now compares its key-data correctly. This way
+          keys from byte-array resources can be cached.
+
 0.3.3:  (27-Apr-2007)
         * [BUG] The ResourceManager's search for usable factories also included
           factories which were no longer assignable to the requested target
