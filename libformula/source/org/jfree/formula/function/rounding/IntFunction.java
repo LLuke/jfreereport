@@ -30,6 +30,8 @@
  */
 package org.jfree.formula.function.rounding;
 
+import java.math.BigDecimal;
+
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaErrorValue;
@@ -41,11 +43,12 @@ import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
  * This function returns a number down to the nearest integer.
- *
+ * 
  * @author Cedric Pronzato
  */
 public class IntFunction implements Function
 {
+  final BigDecimal DELTA = new BigDecimal("0.000000000000000000000000000005");
 
   public IntFunction()
   {
@@ -69,34 +72,40 @@ public class IntFunction implements Function
     final Number result = context.getTypeRegistry().convertToNumber(type1,
         value1);
 
-    // BigDecimal n = null;
-    // if (result instanceof BigDecimal)
-    // {
-    // n = (BigDecimal) result;
-    // }
-    // else
-    // {
-    // n = new BigDecimal(result.toString());
-    // }
-    // Integer ret = null;
-    //
-    // final BigDecimal round = n.round(new MathContext(1, RoundingMode.FLOOR));
-    // System.out.println(n+":"+round);
-    // ret = new Integer(round.intValue());
-
-    // final int intValue = result.intValue();
-    // final double doubleValue = result.doubleValue();
-    // ret = new Integer((int)Math.round(doubleValue));
-    // if(doubleValue-intValue < 0)
-    // {
-    // ret = new Integer(intValue-1);
-    // }
-    // else
-    // {
-    // ret = new Integer(intValue);
-    // }
-
-    return new TypeValuePair(NumberType.GENERIC_NUMBER, new Integer(result
-        .intValue()));
+    BigDecimal n = null;
+    if (result instanceof BigDecimal)
+    {
+      n = (BigDecimal) result;
+    }
+    else
+    {
+      n = new BigDecimal(result.toString());
+    }
+    BigDecimal round = null;
+    
+    try
+    {
+      // no need to go further if the value is already an integer
+      final Integer integer = new Integer(n.intValueExact());
+      return new TypeValuePair(NumberType.GENERIC_NUMBER, integer);
+    }
+    catch(ArithmeticException e)
+    {
+      //ignore and continue
+    }
+    
+    if(n.signum()<0)
+    {
+      n = n.subtract(DELTA);
+      round = n.setScale(0, BigDecimal.ROUND_UP);
+    }
+    else
+    {
+      n = n.add(DELTA);
+      round = n.setScale(1, BigDecimal.ROUND_DOWN);
+    }
+    Integer ret = new Integer(round.intValue());
+    
+    return new TypeValuePair(NumberType.GENERIC_NUMBER, ret);
   }
 }

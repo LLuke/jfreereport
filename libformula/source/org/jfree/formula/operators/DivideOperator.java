@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DivideOperator.java,v 1.7 2007/04/01 13:51:54 taqua Exp $
+ * $Id: DivideOperator.java,v 1.8 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -56,7 +56,9 @@ public class DivideOperator extends AbstractNumericOperator
       // prevent a division by zero ..
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE);
     }
-    return bd1.divide(bd2, BigDecimal.ROUND_HALF_UP);
+    BigDecimal divide = bd1.divide(bd2, 40, BigDecimal.ROUND_HALF_UP);
+    divide = divide.stripTrailingZeros();
+    return divide;
   }
 
   public int getLevel()
