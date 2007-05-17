@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: OperatorTest.java,v 1.1 2007/05/16 03:05:16 willgorman Exp $
  * ------------
  * (C) Copyright 2007, by Pentaho Corporation.
  */
@@ -61,7 +61,7 @@ public class OperatorTest {
         {"1 * 1", new BigDecimal(1)},
         {"1 ^ 1", new Double(1.0)},
         {"1 / 1", new BigDecimal(1)},
-        {"1%", new BigDecimal(0.01)}
+        {"1%", new BigDecimal("0.01")}
     };
   }
   
