@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: IntFunction.java,v 1.1 2007/05/12 23:53:15 mimil Exp $
+ * $Id: IntFunction.java,v 1.3 2007/05/17 21:46:16 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -86,7 +86,8 @@ public class IntFunction implements Function
     try
     {
       // no need to go further if the value is already an integer
-      final Integer integer = new Integer(n.intValueExact());
+      n.setScale(0);
+      final Integer integer = new Integer(n.intValue());
       return new TypeValuePair(NumberType.GENERIC_NUMBER, integer);
     }
     catch(ArithmeticException e)
