@@ -40,16 +40,16 @@ import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
- * This function returns the rounding a number up to the nearest odd integer,
- * where "up" means "away from 0".
+ * This function returns the rounding of a number up to the nearest even
+ * integer.
  * 
  * @author Cedric Pronzato
  * 
  */
-public class OddFunction implements Function
+public class EvenFunction implements Function
 {
 
-  public OddFunction()
+  public EvenFunction()
   {
   }
 
@@ -75,11 +75,30 @@ public class OddFunction implements Function
       test = intValue * -1;
     }
 
-    if (test % 2 == 1)
+    if (test % 2 == 0) // even
     {
-      ret = new Integer(intValue);
+      if (intValue == 0)
+      {
+        if (result.doubleValue() < 0)
+        {
+          ret = new Integer(-2);
+        }
+        else if (result.doubleValue() > 0)
+        {
+          ret = new Integer(2);
+        }
+        else
+        {
+          ret = new Integer(0);
+        }
+      }
+      else
+      {
+        ret = new Integer(intValue);
+      }
     }
     else
+    // odd
     {
       if (result.doubleValue() < 0)
       {
@@ -96,7 +115,7 @@ public class OddFunction implements Function
 
   public String getCanonicalName()
   {
-    return "ODD";
+    return "EVEN";
   }
 
 }
