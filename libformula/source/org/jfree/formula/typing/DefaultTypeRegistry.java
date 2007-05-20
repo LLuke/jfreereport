@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.13 2007/05/07 22:57:01 mimil Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.14 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -71,8 +71,6 @@ public class DefaultTypeRegistry implements TypeRegistry
 
   private static final BigDecimal ZERO = new BigDecimal(0);
 
-  private static final BigDecimal MILLISECS = new BigDecimal(MILLISECS_PER_DAY);
-
   private NumberFormat[] numberFormats;
 
   public DefaultTypeRegistry()
@@ -117,7 +115,7 @@ public class DefaultTypeRegistry implements TypeRegistry
         {
           final Number serial = DateUtil.toSerialDate((Date) value, context
               .getLocalizationContext());
-          // System.out.println(serial);
+//           System.out.println(serial);
           final Number ret = DateUtil.normalizeDate(serial, type1);
           // System.out.println(ret);
           return ret;
@@ -480,8 +478,9 @@ public class DefaultTypeRegistry implements TypeRegistry
       {
         final Number normalizedSerial = DateUtil.normalizeDate(serial,
             targetType);
-        return DateUtil.toJavaDate(normalizedSerial, context
-            .getLocalizationContext());
+        final Date toJavaDate = DateUtil.toJavaDate(normalizedSerial, context
+                    .getLocalizationContext());
+        return DateUtil.normalizeDate(toJavaDate, targetType, false);
       }
       return serial;
     }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateUtil.java,v 1.2 2007/05/08 09:47:09 taqua Exp $
+ * $Id: DateUtil.java,v 1.3 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -42,9 +42,9 @@ import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.DateType;
 
 /**
- *
+ * 
  * @author Cedric Pronzato
- *
+ * 
  */
 public class DateUtil
 {
@@ -55,29 +55,36 @@ public class DateUtil
    * <code>Type</code> to the proper <code>Date</code> subclasses (<code>java.sql.Time</code>,
    * <code>java.sql.Date</code>) if needed. If the requested type is unknown,
    * no conversion takes place and the input date is returned.
-   *
+   * 
    * @param fromDate
    *          The date to convert.
    * @param toType
    *          The requested type of date.
-   * @param loosePrecision
-   *          if the conversion should keep the original the "date" as is.
    * @return The converted date.
    */
   public static Date normalizeDate(Date fromDate, Type toType)
+  {
+    return normalizeDate(fromDate, toType, true);
+  }
+
+  public static Date normalizeDate(Date fromDate, Type toType,
+      boolean convertSerial)
   {
     if (fromDate == null || toType == null)
     {
       throw new IllegalArgumentException();
     }
 
-    Number serial = toSerialDate(fromDate, null);
-    serial = normalizeDate(serial, toType);
-    fromDate = toJavaDate(serial, null);
-//    final GregorianCalendar gc = new GregorianCalendar();
-//    gc.setTime(fromDate);
-//    gc.set(GregorianCalendar.MILLISECOND, 0);
-//    fromDate = gc.getTime();
+    if (convertSerial)
+    {
+      Number serial = toSerialDate(fromDate, null);
+      serial = normalizeDate(serial, toType);
+      fromDate = toJavaDate(serial, null);
+    }
+    // final GregorianCalendar gc = new GregorianCalendar();
+    // gc.setTime(fromDate);
+    // gc.set(GregorianCalendar.MILLISECOND, 0);
+    // fromDate = gc.getTime();
     if (toType.isFlagSet(Type.TIME_TYPE))
     {
       return new Time(fromDate.getTime());
@@ -101,21 +108,22 @@ public class DateUtil
       throw new IllegalArgumentException();
     }
 
-    final BigDecimal o = new BigDecimal(fromSerialDate.doubleValue()).setScale(5, BigDecimal.ROUND_UP);
+    final BigDecimal o = new BigDecimal(fromSerialDate.doubleValue()).setScale(
+        5, BigDecimal.ROUND_UP);
 
     if (toType.isFlagSet(Type.TIME_TYPE))
     {
       return o.subtract(new BigDecimal(o.intValue()));
       // only return the decimal part
-//      final Double d = new Double(fromSerialDate.doubleValue()
-//          - fromSerialDate.intValue());
-//      return d;
+      // final Double d = new Double(fromSerialDate.doubleValue()
+      // - fromSerialDate.intValue());
+      // return d;
     }
     else if (toType.isFlagSet(Type.DATE_TYPE))
     {
       return new Integer(fromSerialDate.intValue());
     }
-    //datetime (java.util.Date)
+    // datetime (java.util.Date)
     else
     {
       return o;
@@ -125,8 +133,8 @@ public class DateUtil
   public static Date toJavaDate(Number serialDate, LocalizationContext context)
   {
     final Date javaDate = HSSFDateUtil.getJavaDate(serialDate.doubleValue());
-    //check for null (error)
-    final long l = (javaDate.getTime()/1000)*1000;
+    // check for null (error)
+    final long l = (javaDate.getTime() / 1000) * 1000;
     // final GregorianCalendar gc = new GregorianCalendar(context.getTimeZone(),
     // context.getLocale());
     // gc.setTimeInMillis(serialDate.longValue() * MILLISECS_PER_DAY);
@@ -162,13 +170,13 @@ public class DateUtil
     System.out.println(toJavaDate);
     System.out.println(HSSFDateUtil.getJavaDate(serial.doubleValue()));
   }
-  
+
   public static Date now(LocalizationContext context)
   {
     final GregorianCalendar gc = new GregorianCalendar(context.getTimeZone(),
         context.getLocale());
     gc.set(Calendar.MILLISECOND, 0);
-    
+
     return gc.getTime();
   }
 
@@ -213,6 +221,14 @@ public class DateUtil
     gc.set(Calendar.MINUTE, 0);
     gc.set(Calendar.SECOND, 0);
     return new java.sql.Date(gc.getTime().getTime());
+  }
+
+  public static Calendar createCalendar(Date date, LocalizationContext context)
+  {
+    final GregorianCalendar gc = new GregorianCalendar(context.getTimeZone(),
+        context.getLocale());
+    gc.setTime(date);
+    return gc;
   }
 
 }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: HSSFDateUtil.java,v 1.2 2007/05/08 09:47:09 taqua Exp $
+ * $Id: HSSFDateUtil.java,v 1.1 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -98,12 +98,12 @@ public class HSSFDateUtil
 
         calStart.setTime(
             date);   // If date includes hours, minutes, and seconds, set them to 0
-        if (calStart.get(Calendar.YEAR) < 1900)
-        {
-            return BAD_DATE;
-        }
-        else
-        {
+//        if (calStart.get(Calendar.YEAR) < 1900)
+//        {
+//            return BAD_DATE;
+//        }
+//        else
+//        {
 	    // Because of daylight time saving we cannot use
 	    //     date.getTime() - calStart.getTimeInMillis()
 	    // as the difference in milliseconds between 00:00 and 04:00
@@ -121,7 +121,7 @@ public class HSSFDateUtil
             return fraction + ( double ) absoluteDay(calStart)
                    - CAL_1900_ABSOLUTE;
         }
-    }
+//    }
 
     /**
      * Given a excel date, converts it into a Date.
