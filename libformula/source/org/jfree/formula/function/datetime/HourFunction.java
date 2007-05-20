@@ -24,11 +24,11 @@
  *
  *
  * ------------
- * $Id: IntFunction.java,v 1.4 2007/05/18 13:46:48 mimil Exp $
+ * $Id: DateFunction.java,v 1.14 2007/05/07 22:57:01 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
-package org.jfree.formula.function.rounding;
+package org.jfree.formula.function.datetime;
 
 import java.math.BigDecimal;
 
@@ -38,25 +38,26 @@ import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.coretypes.NumberType;
 import org.jfree.formula.util.NumberUtil;
 
 /**
- * This function returns a number down to the nearest integer.
+ * This function extracts the hour (0 through 23) from a time.
  * 
  * @author Cedric Pronzato
  */
-public class IntFunction implements Function
+public class HourFunction implements Function
 {
+  private static final BigDecimal HOUR_24 = new BigDecimal(24);
 
-  public IntFunction()
+  public HourFunction()
   {
   }
 
   public String getCanonicalName()
   {
-    return "INT";
+    return "HOUR";
   }
 
   public TypeValuePair evaluate(final FormulaContext context,
@@ -67,23 +68,23 @@ public class IntFunction implements Function
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
 
-    final Type type1 = parameters.getType(0);
-    final Object value1 = parameters.getValue(0);
-    final Number result = context.getTypeRegistry().convertToNumber(type1,
-        value1);
+    final TypeRegistry typeRegistry = context.getTypeRegistry();
+    final Number n = typeRegistry.convertToNumber(parameters.getType(0),
+        parameters.getValue(0));
 
-    BigDecimal n = null;
-    if (result instanceof BigDecimal)
+    if (n == null)
     {
-      n = (BigDecimal) result;
+      throw new EvaluationException(
+          LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
     }
-    else
-    {
-      n = new BigDecimal(result.toString());
-    }
-    Integer ret = NumberUtil.performIntRounding(n);
 
-    return new TypeValuePair(NumberType.GENERIC_NUMBER, ret);
+    final BigDecimal bd = NumberUtil.getAsBigDecimal(n);
+    final BigDecimal round1 = new BigDecimal(NumberUtil
+            .performIntRounding(bd).intValue());
+    final BigDecimal dayFraction = bd.subtract(round1);
+    final Integer hour = NumberUtil.performIntRounding(dayFraction
+        .multiply(HOUR_24));
+
+    return new TypeValuePair(NumberType.GENERIC_NUMBER, hour);
   }
-
 }
