@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DivideOperator.java,v 1.9 2007/05/17 21:46:16 mimil Exp $
+ * $Id: DivideOperator.java,v 1.10 2007/05/18 13:46:48 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -34,6 +34,7 @@ import java.math.BigDecimal;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.util.NumberUtil;
 
 /**
  * A division operation. This operation expects two valid numbers.
@@ -56,9 +57,8 @@ public class DivideOperator extends AbstractNumericOperator
       // prevent a division by zero ..
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE);
     }
-    BigDecimal divide = bd1.divide(bd2, 40, BigDecimal.ROUND_HALF_UP);
-    //divide = divide.stripTrailingZeros();
-    return divide;
+    final BigDecimal divide = bd1.divide(bd2, 40, BigDecimal.ROUND_HALF_UP);
+    return NumberUtil.removeTrailingZeros(divide);
   }
 
   public int getLevel()

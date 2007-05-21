@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TestFormulaContext.java,v 1.8 2007/05/07 22:57:01 mimil Exp $
+ * $Id: TestFormulaContext.java,v 1.9 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -57,11 +57,11 @@ import org.jfree.util.Configuration;
 public class TestFormulaContext implements FormulaContext
 {
 
-
   private static class TestCaseTableModel extends AbstractTableModel
   {
 
-    public static Date createDate1(int year, int month, int day, int hour, int minute, int sec, int millisec)
+    public static Date createDate1(int year, int month, int day, int hour,
+        int minute, int sec, int millisec)
     {
       Calendar cal = GregorianCalendar.getInstance();
       cal.set(GregorianCalendar.YEAR, year);
@@ -73,25 +73,14 @@ public class TestFormulaContext implements FormulaContext
       cal.set(GregorianCalendar.MILLISECOND, millisec);
       return cal.getTime();
     }
-/*
-id B C
-3 ="7"
-4 =2 4
-5 =3 5
-6 =1=1 7
-7 ="Hello" 2005-01-31
-8 2006-01-31
-9 =1/0 02:00:00
-10 =0 23:00:00
-11 3 5
-12 4 6
-13 2005-01-31T01:00:00 8
-14 1 4
-15 2 3
-16 3 2
-17 4 1
- */
-    private Date createDate1() {
+
+    /*
+     * id B C 3 ="7" 4 =2 4 5 =3 5 6 =1=1 7 7 ="Hello" 2005-01-31 8 2006-01-31 9
+     * =1/0 02:00:00 10 =0 23:00:00 11 3 5 12 4 6 13 2005-01-31T01:00:00 8 14 1
+     * 4 15 2 3 16 3 2 17 4 1
+     */
+    private Date createDate1()
+    {
       Calendar cal = GregorianCalendar.getInstance();
       cal.set(GregorianCalendar.YEAR, 2005);
       cal.set(GregorianCalendar.MONTH, GregorianCalendar.JANUARY);
@@ -102,7 +91,9 @@ id B C
       cal.set(GregorianCalendar.SECOND, 0);
       return cal.getTime();
     }
-    private java.sql.Date createDate(int year, int month, int day) {
+
+    private java.sql.Date createDate(int year, int month, int day)
+    {
       Calendar cal = GregorianCalendar.getInstance();
       cal.set(GregorianCalendar.YEAR, year);
       cal.set(GregorianCalendar.MONTH, month);
@@ -114,26 +105,27 @@ id B C
       return new java.sql.Date(cal.getTime().getTime());
     }
 
-    private Object[][] data = new Object[][]{
-        {null, null},
-        {null, null},
-        {null, null},
-        {"7", null},
-        {new BigDecimal(2), new BigDecimal(4)},
-        {new BigDecimal(3), new BigDecimal(5)},
-        {Boolean.TRUE, new BigDecimal(7)},
-        {"Hello", createDate(2005, Calendar.JANUARY, 31)},
-        {null, createDate1(2006, Calendar.JANUARY, 31, 0, 0, 0, 0)},
-        {LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE, createDate1(0, 0, 0, 2, 0, 0, 0)},
-        {new BigDecimal(0), createDate1(0, 0, 0, 23, 0, 0, 0)},
-        {new BigDecimal(3), new BigDecimal(5)},
-        {new BigDecimal(4), new BigDecimal(6)},
-        {null, null},
-        {new BigDecimal(1), new BigDecimal(4)},
-        {new BigDecimal(2), new BigDecimal(3)},
-        {new BigDecimal(3), new BigDecimal(2)},
-        {new BigDecimal(4), new BigDecimal(1)},
-    };
+    private Object[][] data = new Object[][]
+    {
+        { null, null },
+        { null, null },
+        { null, null },
+        { "7", null },
+        { new BigDecimal(2), new BigDecimal(4) },
+        { new BigDecimal(3), new BigDecimal(5) },
+        { Boolean.TRUE, new BigDecimal(7) },
+        { "Hello", createDate(2005, Calendar.JANUARY, 31) },
+        { null, createDate1(2006, Calendar.JANUARY, 31, 0, 0, 0, 0) },
+        { LibFormulaErrorValue.ERROR_ARITHMETIC_VALUE,
+            createDate1(0, 0, 0, 2, 0, 0, 0) },
+        { new BigDecimal(0), createDate1(0, 0, 0, 23, 0, 0, 0) },
+        { new BigDecimal(3), new BigDecimal(5) },
+        { new BigDecimal(4), new BigDecimal(6) },
+        { null, null },
+        { new BigDecimal(1), new BigDecimal(4) },
+        { new BigDecimal(2), new BigDecimal(3) },
+        { new BigDecimal(3), new BigDecimal(2) },
+        { new BigDecimal(4), new BigDecimal(1) }, };
 
     public int getColumnCount()
     {
@@ -166,12 +158,14 @@ id B C
   }
 
   private FormulaContext formulaContext;
+
   private TableModel model;
-  /*public static final TableModel testCaseDataset;
-  static {
-    testCaseDataset = new DefaultTableModel(18, 2);
-    testCaseDataset.setValueAt(aValue, rowIndex, columnIndex)
-  }*/
+
+  /*
+   * public static final TableModel testCaseDataset; static { testCaseDataset =
+   * new DefaultTableModel(18, 2); testCaseDataset.setValueAt(aValue, rowIndex,
+   * columnIndex) }
+   */
 
   public static final TableModel testCaseDataset = new TestCaseTableModel();
 
@@ -211,7 +205,8 @@ id B C
     return formulaContext.getTypeRegistry();
   }
 
-  public boolean isReferenceDirty(Object name) throws ContextEvaluationException
+  public boolean isReferenceDirty(Object name)
+      throws ContextEvaluationException
   {
     return formulaContext.isReferenceDirty(name);
   }
@@ -220,28 +215,60 @@ id B C
   {
     if (name instanceof String)
     {
-      String ref = ((String) name);
-      final String columnName = ref.substring(1, 2);
-      int col = -1;
+      final String ref = (String) name;
+      final String[] split = ref.split(":");
+      if (split.length == 0)
+      {
+        return null;
+      }
+      // assuming references with the following format:
+      // - starting with a .
+      // - followed by the column name identified by one letter
+      // - followed by digits representing the row number
+
+      final String firstColumnName = split[0].substring(1, 2);
+      int firstCol = -1;
       for (int i = 0; i < model.getColumnCount(); i++)
       {
-        if (columnName.equalsIgnoreCase(model.getColumnName(i)))
+        if (firstColumnName.equalsIgnoreCase(model.getColumnName(i)))
         {
-          col = i;
+          firstCol = i;
           break;
         }
       }
-      final int row = Integer.parseInt(ref.substring(2));
-      //System.out.println("Fetching row:"+row+", col:"+col+"["+columnName+"]");
-      return model.getValueAt(row, col);
+      int firstRow = Integer.parseInt(split[0].substring(2));
+
+      if (split.length == 2)
+      {
+        // array of reference assuming same column name
+        int secondRow = Integer.parseInt(split[1].substring(2));
+
+        final int count = secondRow - firstRow;
+        if (count >= 0)
+        {
+          final Object[] list = new Object[count+1];
+          for (int i = firstRow, j = 0; i <= secondRow; i++, j++)
+          {
+            list[j] = model.getValueAt(i, firstCol);
+          }
+          return list;
+        } // else error
+      }
+      else
+      {
+        // one reference
+        return model.getValueAt(firstRow, firstCol);
+      }
     }
+
     return null;
   }
 
-  public Type resolveReferenceType(Object name) throws ContextEvaluationException
+  public Type resolveReferenceType(Object name)
+      throws ContextEvaluationException
   {
     return AnyType.TYPE;
-    //return getTypeRegistry().guessTypeOfObject(name);
+    // return getTypeRegistry().guessTypeOfObject(name);
   }
 
 }

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: PercentageOperator.java,v 1.7 2007/04/10 14:10:41 taqua Exp $
+ * $Id: PercentageOperator.java,v 1.8 2007/05/17 21:29:48 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -69,7 +69,7 @@ public class PercentageOperator implements PostfixOperator
     // return the same as zero minus value.
     final Number number = typeRegistry.convertToNumber(type, value1.getValue());
     final BigDecimal value = OperatorUtility.getAsBigDecimal(number);
-    final BigDecimal divide = value.divide(HUNDRED, 2,BigDecimal.ROUND_HALF_UP);
+    final BigDecimal divide = value.divide(HUNDRED, value.scale()+2,BigDecimal.ROUND_HALF_UP);
     return new TypeValuePair(type, divide);
   }
 

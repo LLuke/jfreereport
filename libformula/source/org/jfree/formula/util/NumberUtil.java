@@ -54,4 +54,25 @@ public class NumberUtil
     }
     return new Integer(round.intValue());
   }
+  
+  public static BigDecimal removeTrailingZeros(BigDecimal bd)
+  {
+    if(bd.signum() == 0)
+    {
+      return bd.setScale(0);
+    }
+    
+    try
+    {
+      while(true)
+      {
+        final int scale = bd.scale();
+        bd = bd.setScale(scale-1);
+      }
+    }
+    catch(ArithmeticException ae)
+    {
+      return bd;
+    }
+  }
 }
