@@ -3,6 +3,35 @@
 ---------------
 A list of changes in recent versions:
 
+0.1.8: (21-May-2007)
+        * [BUG] The automatic type conversion was not always working.
+        
+        * [BUG] The 'greater equal', 'lower equal' and 'not equal' 
+          operators did not work as expected.
+          
+        * The date-formats used in the automatic conversion can now 
+          be configured using the global configuration.
+
+        * New functions added
+          Date:
+          - DAY()
+          - HOUR()
+          - MONTH()
+          - WEEKDAY()
+          - YEAR()
+          
+          Math:
+          - EVEN()
+          - ODD()
+          - AVERAGE()
+          
+          Information:
+          - ISNONTEXTFUNCTION()
+          - ISEVEN()
+          - ISODD()
+          - ISNUMBER()
+          - ISREF()
+
 0.1.7: (27-Apr-2007)
         * [BUG] Fixed a couple of type-conversion issues when converting from and
           to numeric types. Now, if a value is not convertible, a 
