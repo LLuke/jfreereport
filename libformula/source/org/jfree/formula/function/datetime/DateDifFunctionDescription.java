@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DateDifFunctionDescription.java,v 1.3 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -33,7 +33,7 @@ package org.jfree.formula.function.datetime;
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.DateType;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 import org.jfree.formula.typing.coretypes.NumberType;
 import org.jfree.formula.typing.coretypes.TextType;
 
@@ -66,7 +66,7 @@ public class DateDifFunctionDescription extends AbstractFunctionDescription
     {
       return TextType.TYPE;
     }
-    return DateType.TYPE;
+    return DateTimeType.DATE_TYPE;
   }
 
   public boolean isParameterMandatory(int position)

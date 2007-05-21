@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: NowFunctionDescription.java,v 1.2 2007/04/01 13:51:52 taqua Exp $
+ * $Id: NowFunctionDescription.java,v 1.3 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -50,7 +50,7 @@ public class NowFunctionDescription extends AbstractFunctionDescription
 
   public Type getValueType()
   {
-    return DateTimeType.TYPE;
+    return DateTimeType.DATETIME_TYPE;
   }
 
 

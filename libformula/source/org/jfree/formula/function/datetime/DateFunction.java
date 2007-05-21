@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunction.java,v 1.13 2007/04/10 14:10:41 taqua Exp $
+ * $Id: DateFunction.java,v 1.14 2007/05/07 22:57:01 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -38,7 +38,7 @@ import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.DateType;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 import org.jfree.formula.util.DateUtil;
 
 /**
@@ -85,6 +85,6 @@ public class DateFunction implements Function
     final java.sql.Date date = DateUtil.createDate(n1.intValue(),
         n2.intValue(), n3.intValue(), localizationContext);
 
-    return new TypeValuePair(DateType.TYPE, date);
+    return new TypeValuePair(DateTimeType.DATE_TYPE, date);
   }
 }

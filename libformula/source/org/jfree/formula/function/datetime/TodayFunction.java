@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TodayFunction.java,v 1.2 2007/04/01 13:51:52 taqua Exp $
+ * $Id: TodayFunction.java,v 1.3 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -39,7 +39,7 @@ import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.typing.coretypes.DateType;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 import org.jfree.formula.util.DateUtil;
 
 /**
@@ -66,7 +66,7 @@ public class TodayFunction implements Function
     final LocalizationContext localizationContext = context.getLocalizationContext();
     final Date now = DateUtil.now(localizationContext);
 
-    final Date date = DateUtil.normalizeDate(now, DateType.TYPE);
-    return new TypeValuePair(DateType.TYPE, date);
+    final Date date = DateUtil.normalizeDate(now, DateTimeType.DATE_TYPE);
+    return new TypeValuePair(DateTimeType.DATE_TYPE, date);
   }
 }

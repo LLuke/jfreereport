@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TimeFunction.java,v 1.1 2007/04/27 22:00:47 mimil Exp $
+ * $Id: TimeFunction.java,v 1.2 2007/05/07 22:57:01 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,7 +40,7 @@ import org.jfree.formula.function.Function;
 import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.TimeType;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 import org.jfree.formula.util.DateUtil;
 
 /**
@@ -98,6 +98,6 @@ public class TimeFunction implements Function
     final Time time = DateUtil.createTime(hours, minutes, seconds,
         localizationContext);
 
-    return new TypeValuePair(TimeType.TYPE, time);
+    return new TypeValuePair(DateTimeType.TIME_TYPE, time);
   }
 }

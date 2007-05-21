@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateTimeType.java,v 1.1 2007/04/27 22:00:47 mimil Exp $
+ * $Id: DateTimeType.java,v 1.2 2007/05/07 22:57:01 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,11 +39,27 @@ import org.jfree.formula.typing.Type;
  */
 public class DateTimeType extends DefaultType
 {
-  public static final DateTimeType TYPE = new DateTimeType();
-
-  public DateTimeType()
+  public static final DateTimeType DATETIME_TYPE;
+  public static final DateTimeType DATE_TYPE;
+  public static final DateTimeType TIME_TYPE;
+  
+  static
   {
-    addFlag(Type.DATETIME_TYPE);
+    DATE_TYPE = new DateTimeType();
+    DATE_TYPE.addFlag(Type.DATE_TYPE);
+    DATE_TYPE.lock();
+    
+    TIME_TYPE = new DateTimeType();
+    TIME_TYPE.addFlag(Type.TIME_TYPE);
+    TIME_TYPE.lock();
+    
+    DATETIME_TYPE = new DateTimeType();
+    DATETIME_TYPE.addFlag(Type.DATETIME_TYPE);
+    DATE_TYPE.lock();
+  }
+
+  private DateTimeType()
+  {
     addFlag(Type.NUMERIC_TYPE);
     addFlag(Type.SCALAR_TYPE);
   }

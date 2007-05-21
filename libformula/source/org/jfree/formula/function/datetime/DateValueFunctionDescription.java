@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateDifFunctionDescription.java,v 1.1 2007/02/22 21:34:46 mimil Exp $
+ * $Id: DateValueFunctionDescription.java,v 1.1 2007/04/27 22:00:43 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,7 +33,7 @@ package org.jfree.formula.function.datetime;
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.DateType;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 import org.jfree.formula.typing.coretypes.TextType;
 
 /**
@@ -51,7 +51,7 @@ public class DateValueFunctionDescription extends AbstractFunctionDescription
 
   public Type getValueType()
   {
-    return DateType.TYPE;
+    return DateTimeType.DATE_TYPE;
   }
 
   public int getParameterCount()

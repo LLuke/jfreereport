@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateUtil.java,v 1.3 2007/05/12 23:53:15 mimil Exp $
+ * $Id: DateUtil.java,v 1.4 2007/05/20 21:45:54 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -39,7 +39,7 @@ import java.util.GregorianCalendar;
 import org.jfree.formula.DefaultLocalizationContext;
 import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.typing.Type;
-import org.jfree.formula.typing.coretypes.DateType;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 
 /**
  * 
@@ -166,7 +166,7 @@ public class DateUtil
     System.out.println(createDate);
     System.out.println(serial);
     final Date toJavaDate = toJavaDate(serial, context);
-    System.out.println(normalizeDate(toJavaDate, DateType.TYPE));
+    System.out.println(normalizeDate(toJavaDate, DateTimeType.DATE_TYPE));
     System.out.println(toJavaDate);
     System.out.println(HSSFDateUtil.getJavaDate(serial.doubleValue()));
   }

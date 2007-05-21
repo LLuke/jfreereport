@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: NowFunction.java,v 1.3 2007/05/08 11:12:24 taqua Exp $
+ * $Id: NowFunction.java,v 1.4 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -67,7 +67,7 @@ public class NowFunction implements Function
     final LocalizationContext localizationContext = context.getLocalizationContext();
     final Date now = DateUtil.now(localizationContext);
 
-    final Date date = DateUtil.normalizeDate(now, DateTimeType.TYPE);
-    return new TypeValuePair(DateTimeType.TYPE, date);
+    final Date date = DateUtil.normalizeDate(now, DateTimeType.DATETIME_TYPE);
+    return new TypeValuePair(DateTimeType.DATETIME_TYPE, date);
   }
 }

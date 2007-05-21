@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateFunctionDescription.java,v 1.3 2006/12/03 19:22:27 taqua Exp $
+ * $Id: TimeFunctionDescription.java,v 1.1 2007/04/27 22:00:47 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -33,8 +33,8 @@ package org.jfree.formula.function.datetime;
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 import org.jfree.formula.typing.coretypes.NumberType;
-import org.jfree.formula.typing.coretypes.TimeType;
 
 /**
  * Describes the TimeFunction function
@@ -51,7 +51,7 @@ public class TimeFunctionDescription extends AbstractFunctionDescription
 
   public Type getValueType()
   {
-    return TimeType.TYPE;
+    return DateTimeType.TIME_TYPE;
   }
 
   public int getParameterCount()

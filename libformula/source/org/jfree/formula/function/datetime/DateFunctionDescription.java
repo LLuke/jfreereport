@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DateFunctionDescription.java,v 1.4 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -33,8 +33,8 @@ package org.jfree.formula.function.datetime;
 import org.jfree.formula.function.AbstractFunctionDescription;
 import org.jfree.formula.function.FunctionCategory;
 import org.jfree.formula.typing.Type;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 import org.jfree.formula.typing.coretypes.NumberType;
-import org.jfree.formula.typing.coretypes.DateType;
 
 /**
  * Creation-Date: 04.11.2006, 18:59:11
@@ -50,7 +50,7 @@ public class DateFunctionDescription extends AbstractFunctionDescription
 
   public Type getValueType()
   {
-    return DateType.TYPE;
+    return DateTimeType.DATE_TYPE;
   }
 
   public int getParameterCount()

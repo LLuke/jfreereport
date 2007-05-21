@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: TypeRegisteryTest.java,v 1.6 2007/04/27 22:00:47 mimil Exp $
+ * $Id: TypeRegisteryTest.java,v 1.7 2007/05/07 22:57:01 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,9 +38,6 @@ import org.jfree.formula.FormulaContext;
 import org.jfree.formula.LibFormulaBoot;
 import org.jfree.formula.common.TestFormulaContext;
 import org.jfree.formula.typing.coretypes.DateTimeType;
-import org.jfree.formula.typing.coretypes.DateType;
-import org.jfree.formula.typing.coretypes.NumberType;
-import org.jfree.formula.typing.coretypes.TextType;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -74,7 +71,7 @@ public class TypeRegisteryTest
     Number n = null;
     try
     {
-      n = context.getTypeRegistry().convertToNumber(DateTimeType.TYPE, d);
+      n = context.getTypeRegistry().convertToNumber(DateTimeType.DATETIME_TYPE, d);
       Assert.assertNotNull(n, "The date has not been converted to a number");
     } catch (TypeConversionException e)
     {
@@ -84,7 +81,7 @@ public class TypeRegisteryTest
     Date d1 = null;
     try
     {
-      d1 = context.getTypeRegistry().convertToDate(DateTimeType.TYPE, n);
+      d1 = context.getTypeRegistry().convertToDate(DateTimeType.DATETIME_TYPE, n);
       Assert.assertNotNull(d1, "The number has not been converted to a date");
     } catch (TypeConversionException e)
     {

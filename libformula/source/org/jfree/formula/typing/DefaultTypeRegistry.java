@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.14 2007/05/12 23:53:15 mimil Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.15 2007/05/20 21:45:54 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -49,11 +49,9 @@ import org.jfree.formula.FormulaContext;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.formula.typing.coretypes.DateTimeType;
-import org.jfree.formula.typing.coretypes.DateType;
 import org.jfree.formula.typing.coretypes.LogicalType;
 import org.jfree.formula.typing.coretypes.NumberType;
 import org.jfree.formula.typing.coretypes.TextType;
-import org.jfree.formula.typing.coretypes.TimeType;
 import org.jfree.formula.util.DateUtil;
 import org.jfree.util.Configuration;
 import org.jfree.util.ObjectUtilities;
@@ -159,7 +157,7 @@ public class DefaultTypeRegistry implements TypeRegistry
 
       // then checking for datetimes
       final Iterator datetimeIterator = context.getLocalizationContext()
-          .getDateFormats(DateTimeType.TYPE).iterator();
+          .getDateFormats(DateTimeType.DATETIME_TYPE).iterator();
       while (datetimeIterator.hasNext())
       {
         final DateFormat df = (DateFormat) datetimeIterator.next();
@@ -178,7 +176,7 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
       // then checking for datetimes
       final Iterator dateIterator = context.getLocalizationContext()
-          .getDateFormats(DateType.TYPE).iterator();
+          .getDateFormats(DateTimeType.DATE_TYPE).iterator();
       while (dateIterator.hasNext())
       {
         final DateFormat df = (DateFormat) dateIterator.next();
@@ -197,7 +195,7 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
       // then checking for datetimes
       final Iterator timeIterator = context.getLocalizationContext()
-          .getDateFormats(TimeType.TYPE).iterator();
+          .getDateFormats(DateTimeType.TIME_TYPE).iterator();
       while (timeIterator.hasNext())
       {
         final DateFormat df = (DateFormat) timeIterator.next();
@@ -529,15 +527,15 @@ public class DefaultTypeRegistry implements TypeRegistry
     }
     else if (o instanceof Date)
     {
-      return DateTimeType.TYPE;
+      return DateTimeType.DATETIME_TYPE;
     }
     else if (o instanceof Time)
     {
-      return TimeType.TYPE;
+      return DateTimeType.TIME_TYPE;
     }
     else if (o instanceof java.sql.Date)
     {
-      return DateType.TYPE;
+      return DateTimeType.DATE_TYPE;
     }
     else if (o instanceof Boolean)
     {

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DateValueFunction.java,v 1.1 2007/04/27 22:00:43 mimil Exp $
+ * $Id: DateValueFunction.java,v 1.2 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,7 +40,7 @@ import org.jfree.formula.function.ParameterCallback;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.coretypes.DateType;
+import org.jfree.formula.typing.coretypes.DateTimeType;
 
 /**
  * This function returns
@@ -73,7 +73,7 @@ public class DateValueFunction implements Function
     final Object value = parameters.getValue(0);
 
     final Date date1 = typeRegistry.convertToDate(type, value);
-    return new TypeValuePair(DateType.TYPE, date1);
+    return new TypeValuePair(DateTimeType.DATE_TYPE, date1);
 
   }
 }
