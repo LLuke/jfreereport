@@ -3,6 +3,10 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.5: (21-May-2007)
+        * Added explicit monospace-font support. This is faster than rerouting all
+          requests to a real monospaced-font.
+
 0.2.4: (27-Apr-2007)
         * Added Font-Metrics caching to the AWT-FontMetrics for ASCII and ISO-8859-1
           characters.

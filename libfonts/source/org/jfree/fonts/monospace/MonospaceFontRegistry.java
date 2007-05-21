@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: MonospaceFontRegistry.java,v 1.1 2007/05/13 12:44:09 taqua Exp $
+ * $Id: MonospaceFontRegistry.java,v 1.2 2007/05/14 09:00:06 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -46,17 +46,29 @@ public class MonospaceFontRegistry implements FontRegistry
   private HashMap fontFamilies;
   private float lpi;
   private float cpi;
+  private MonospaceFontFamily fallback;
 
   public MonospaceFontRegistry(final float lpi, final float cpi)
   {
     this.lpi = lpi;
     this.cpi = cpi;
     this.fontFamilies = new HashMap();
+    this.fallback = new MonospaceFontFamily("Monospace");
   }
 
   public void add (final MonospaceFontFamily family)
   {
     this.fontFamilies.put (family.getFamilyName(), family);
+  }
+
+  public MonospaceFontFamily getFallback()
+  {
+    return fallback;
+  }
+
+  public void setFallback(final MonospaceFontFamily fallback)
+  {
+    this.fallback = fallback;
   }
 
   public void initialize()
@@ -72,7 +84,12 @@ public class MonospaceFontRegistry implements FontRegistry
    */
   public FontFamily getFontFamily(final String name)
   {
-    return (FontFamily) fontFamilies.get(name);
+    final FontFamily fontFamily = (FontFamily) fontFamilies.get(name);
+    if (fontFamily != null)
+    {
+      return fontFamily;
+    }
+    return fallback;
   }
 
   public String[] getRegisteredFamilies()
