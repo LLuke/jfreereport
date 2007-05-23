@@ -27,6 +27,8 @@ import org.jfree.formula.operators.InfixOperator;
 import org.jfree.formula.operators.OperatorFactory;
 import org.jfree.formula.operators.PostfixOperator;
 import org.jfree.formula.operators.PrefixOperator;
+import org.jfree.formula.typing.coretypes.NumberType;
+import org.jfree.formula.typing.coretypes.TextType;
 
 public abstract class GeneratedFormulaParser
 {
@@ -206,9 +208,9 @@ LValue getLValue (int level):
   )?
   (
       value = <COLUMN_LOOKUP> { retval = new ContextLookup (ParserTools.stripQuote(value.image)); }
-    | value = <STRING_LITERAL> { retval = new StaticValue (ParserTools.stripQuote(value.image)); }
-    | value = <UNSIGNED_NUMERIC_LITERAL> { retval = new StaticValue (new BigDecimal (value.image)); }
-    | value = <UNSIGNED_INTEGER> { retval = new StaticValue (new BigDecimal (value.image)); }
+    | value = <STRING_LITERAL> { retval = new StaticValue (ParserTools.stripQuote(value.image), TextType.TYPE); }
+    | value = <UNSIGNED_NUMERIC_LITERAL> { retval = new StaticValue (new BigDecimal (value.image), NumberType.GENERIC_NUMBER); }
+    | value = <UNSIGNED_INTEGER> { retval = new StaticValue (new BigDecimal (value.image), NumberType.GENERIC_NUMBER); }
     | value = <NULL> { retval = new StaticValue (null); }
     | value = <IDENTIFIER> <L_PAREN> retval = parseFunction(value.image) <R_PAREN>
     | <L_PAREN> retval = maybeFunction(level)
