@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: CodePointUtilities.java,v 1.4 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,7 +38,7 @@ import org.jfree.fonts.encoding.manual.Utf16LE;
  */
 public class CodePointUtilities
 {
-  public static boolean isValidCodePoint(int cp)
+  public static boolean isValidCodePoint(final int cp)
   {
     if (cp > 0x10FFFF)
     {
@@ -73,7 +73,7 @@ public class CodePointUtilities
    * @return the number of chars added or the number of additional chars
    *         required.
    */
-  public static int toChars(int cp, char[] buffer, int offset)
+  public static int toChars(final int cp, final char[] buffer, final int offset)
   {
 
     if (cp < 0x10000)
@@ -130,15 +130,16 @@ public class CodePointUtilities
     }
   }
 
-  public static int[] charsToCodepoint(String text)
+  public static int[] charsToCodepoint(final String text)
   {
-    CodePointBuffer buffer = Utf16LE.getInstance().decodeString(text, null);
-    return buffer.getData();
+    final CodePointBuffer buffer = Utf16LE.getInstance().decodeString(text, null);
+    return buffer.getBuffer();
   }
 
-  public static String codepointToChars(int[] text)
+  public static String codepointToChars(final int[] text)
   {
-    CodePointBuffer buffer = new CodePointBuffer(text);
+    final CodePointBuffer buffer = new CodePointBuffer(text);
+    buffer.setCursor(text.length);
     return Utf16LE.getInstance().encodeString(buffer);
   }
 

@@ -23,18 +23,25 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: GraphemeClassifier.java,v 1.4 2007/04/02 11:41:20 taqua Exp $
+ * $Id: GraphemeClassifier.java,v 1.1 2007/04/03 14:13:56 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.fonts.text;
+
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
+
+import org.jfree.fonts.tools.ByteTable;
+import org.jfree.util.Log;
 
 /**
  * Creation-Date: 11.06.2006, 17:11:16
  *
  * @author Thomas Morgner
  */
-public class GraphemeClassifier
+public final class GraphemeClassifier
 {
   public static final int OTHER = 0;
 
@@ -55,12 +62,50 @@ public class GraphemeClassifier
   public static final int   V_OR_T_MASK = 0x28;
   public static final int LVT_OR_T_MASK = 0x48;
 
-  public GraphemeClassifier()
+  private ByteTable classificationData;
+  private static GraphemeClassifier classifier;
+
+  private GraphemeClassifier()
   {
+    InputStream in = getClass().getResourceAsStream("/org/jfree/fonts/text/generated/grapheme-classification.ser");
+    if (in != null)
+    {
+      try
+      {
+        final ObjectInputStream oin = new ObjectInputStream(in);
+        classificationData = (ByteTable) oin.readObject();
+        oin.close();
+        in = null;
+      }
+      catch(Exception e)
+      {
+        Log.warn ("Unable to load the pre-generated classification data.", e);
+      }
+      finally
+      {
+        if (in != null)
+        {
+          try
+          {
+            in.close();
+          }
+          catch (IOException e)
+          {
+            // ignore ..
+          }
+        }
+      }
+    }
   }
 
-  public int getGraphemeClassification(int codePoint)
+  public int getGraphemeClassification(final int codePoint)
   {
+    if (classificationData != null)
+    {
+      final int row = codePoint >> 8;
+      final int col = codePoint & 0xFF;
+      return classificationData.getByte(row, col, (byte) OTHER);
+    }
     if (codePoint == 0x0D)
     {
       return CR;
@@ -70,5 +115,14 @@ public class GraphemeClassifier
       return LF;
     }
     return OTHER;
+  }
+
+  public static synchronized GraphemeClassifier getClassifier()
+  {
+    if (classifier == null)
+    {
+      classifier = new GraphemeClassifier();
+    }
+    return classifier;
   }
 }

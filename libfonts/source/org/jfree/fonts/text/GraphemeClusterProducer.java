@@ -23,14 +23,11 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: GraphemeClusterProducer.java,v 1.5 2007/04/02 11:41:20 taqua Exp $
+ * $Id: GraphemeClusterProducer.java,v 1.1 2007/04/03 14:13:56 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.fonts.text;
-
-import org.jfree.fonts.text.ClassificationProducer;
-import org.jfree.fonts.text.GraphemeClassifier;
 
 /**
  * Creation-Date: 11.06.2006, 17:02:27
@@ -44,7 +41,7 @@ public class GraphemeClusterProducer implements ClassificationProducer
 
   public GraphemeClusterProducer()
   {
-    classifier = new GraphemeClassifier();
+    classifier = GraphemeClassifier.getClassifier();
   }
 
   /**
@@ -58,7 +55,7 @@ public class GraphemeClusterProducer implements ClassificationProducer
   public boolean createGraphemeCluster (final int codePoint)
   {
     final int classification = classifier.getGraphemeClassification(codePoint);
-    if (codePoint == GraphemeClassifier.EXTEND)
+    if (classification == GraphemeClassifier.EXTEND)
     {
       lastClassification = classification;
       return false;
@@ -73,7 +70,7 @@ public class GraphemeClusterProducer implements ClassificationProducer
 
     if (lastClassification == GraphemeClassifier.L)
     {
-      if ((codePoint & GraphemeClassifier.ANY_HANGUL_MASK) ==
+      if ((classification & GraphemeClassifier.ANY_HANGUL_MASK) ==
               GraphemeClassifier.ANY_HANGUL_MASK)
       {
         lastClassification = classification;
@@ -85,7 +82,7 @@ public class GraphemeClusterProducer implements ClassificationProducer
             (lastClassification & GraphemeClassifier.V_OR_LV_MASK) ==
               GraphemeClassifier.V_OR_LV_MASK;
     final boolean newVorT =
-            (codePoint & GraphemeClassifier.V_OR_T_MASK) ==
+            (classification & GraphemeClassifier.V_OR_T_MASK) ==
                     GraphemeClassifier.V_OR_T_MASK;
     if (oldLVorV && newVorT)
     {
@@ -96,7 +93,7 @@ public class GraphemeClusterProducer implements ClassificationProducer
     final boolean oldLVTorT =
             (lastClassification & GraphemeClassifier.LVT_OR_T_MASK) ==
               GraphemeClassifier.LVT_OR_T_MASK;
-    if (oldLVTorT && codePoint == GraphemeClassifier.T)
+    if (oldLVTorT && classification == GraphemeClassifier.T)
     {
       lastClassification = classification;
       return false;

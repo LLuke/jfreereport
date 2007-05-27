@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: EncodingGenerator.java,v 1.3 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -92,7 +92,7 @@ public class EncodingGenerator
     this.sourceDirectory = sourceDirectory;
     this.targetDirectory = targetDirectory;
 
-    InputStream propIn = ObjectUtilities.getResourceRelativeAsStream
+    final InputStream propIn = ObjectUtilities.getResourceRelativeAsStream
             ("encodings.properties", EncodingGenerator.class);
     propertySet = new DefaultConfiguration();
     propertySet.load(propIn);
@@ -128,7 +128,7 @@ public class EncodingGenerator
         continue;
       }
 
-      StringTokenizer strtok = new StringTokenizer(s);
+      final StringTokenizer strtok = new StringTokenizer(s);
       if (strtok.hasMoreTokens() == false)
       {
         s = input.readLine();
@@ -154,21 +154,21 @@ public class EncodingGenerator
       s = input.readLine();
     }
 
-    int[] indices = new int[256];
-    int[] values = new int[256];
+    final int[] indices = new int[256];
+    final int[] values = new int[256];
 
     int index = 0;
     int prevIdx = 0;
     for (int i = 1; i < data.length; i++)
     {
-      Integer integer = data[i];
+      final Integer integer = data[i];
       if (integer == null)
       {
         // no entry ... this means, we use the standard mapping ..
         continue;
       }
 
-      Integer prev = data[prevIdx];
+      final Integer prev = data[prevIdx];
       values[index] = integer.intValue() - prev.intValue();
       indices[index] = i - prevIdx;
 
@@ -176,7 +176,7 @@ public class EncodingGenerator
       index += 1;
     }
 
-    ObjectOutputStream oout = new ObjectOutputStream(output);
+    final ObjectOutputStream oout = new ObjectOutputStream(output);
     oout.writeObject(new External8BitEncodingData(indices, values));
     oout.flush();
   }
@@ -186,7 +186,7 @@ public class EncodingGenerator
     final Iterator keys = propertySet.keySet().iterator();
     while (keys.hasNext())
     {
-      String key = (String) keys.next();
+      final String key = (String) keys.next();
       if (key.startsWith("encodings.") == false)
       {
         Log.info("Encoding prefix not found.");
@@ -207,11 +207,11 @@ public class EncodingGenerator
     }
   }
 
-  public void generate(String prefix) throws IOException
+  public void generate(final String prefix) throws IOException
   {
-    String filename = propertySet.getConfigProperty(prefix + "Filename");
-    String className = propertySet.getConfigProperty(prefix + "ClassName");
-    String encoding = propertySet.getConfigProperty(prefix + "Encoding");
+    final String filename = propertySet.getConfigProperty(prefix + "Filename");
+    final String className = propertySet.getConfigProperty(prefix + "ClassName");
+    final String encoding = propertySet.getConfigProperty(prefix + "Encoding");
 
     if (filename == null)
     {
@@ -255,7 +255,7 @@ public class EncodingGenerator
     final Iterator keys = propertySet.keySet().iterator();
     while (keys.hasNext())
     {
-      String key = (String) keys.next();
+      final String key = (String) keys.next();
       if (key.startsWith("encodings.") == false)
       {
         Log.info("Encoding prefix not found.");
@@ -281,10 +281,10 @@ public class EncodingGenerator
     fout.close();
   }
 
-  private void generateEncodingEntry (Properties props, String prefix)
+  private void generateEncodingEntry (final Properties props, final String prefix)
   {
-    String className = propertySet.getConfigProperty(prefix + "ClassName");
-    String encoding = propertySet.getConfigProperty(prefix + "Encoding");
+    final String className = propertySet.getConfigProperty(prefix + "ClassName");
+    final String encoding = propertySet.getConfigProperty(prefix + "Encoding");
 
     if (className == null)
     {
@@ -299,24 +299,22 @@ public class EncodingGenerator
     props.setProperty(encoding, className + ".ser");
   }
 
-  public static void main(String[] args) throws IOException
+  public static void main(final String[] args) throws IOException
   {
+    if (args.length < 2)
+    {
+      throw new IllegalArgumentException("Need two parameters: SourceDirectory and targetDirectory");
+    }
+
+    final String sourceDirectory = args[0];
+    final String targetDirectory = args[1];
+
     LibFontBoot.getInstance().start();
-    final File encodingsDir =
-            new File("/home/src/jfreereport/head/libfonts/encodings").getAbsoluteFile();
-    final File sourceDir = new File
-            ("/home/src/jfreereport/head/libfonts/source/org/jfree/fonts/encoding/generated/")
-            .getAbsoluteFile();
-    EncodingGenerator gen = new EncodingGenerator (encodingsDir, sourceDir);
+    final File encodingsDir = new File(sourceDirectory).getAbsoluteFile();
+    final File sourceDir = new File (targetDirectory).getAbsoluteFile();
+    final EncodingGenerator gen = new EncodingGenerator (encodingsDir, sourceDir);
     gen.generateAll();
     gen.generatePropertyIndex();
   }
 
 }
-//      byteSequence.append("    ");
-//      byteSequence.append("BYTE_TO_CHAR[");
-//      byteSequence.append(i);
-//      byteSequence.append("] = (char) ");
-//      byteSequence.append(integer);
-//      byteSequence.append(";\n");
-// /home/src/jfreereport/head/libfonts/encodings/VENDORS/MISC/KOI8-R.TXT
