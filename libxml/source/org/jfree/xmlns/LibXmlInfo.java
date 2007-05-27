@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LibXmlInfo.java,v 1.8 2007/05/04 14:21:00 taqua Exp $
+ * $Id: LibXmlInfo.java,v 1.9 2007/05/21 17:33:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -48,7 +48,7 @@ public class LibXmlInfo extends ProjectInfo
   public LibXmlInfo ()
   {
     setName("LibXML");
-    setVersion("0.9.4");
+    setVersion("0.9.5");
     setInfo("http://reporting.pentaho.org/libxml/");
     setCopyright ("(C)opyright 2007, by Object Refinery Limited, Pentaho Corporation and Contributors");
 

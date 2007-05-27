@@ -3,11 +3,15 @@
 ---------------
 A list of changes in recent versions:
 
+0.9.5: (27-May-2007)
+    * Added an HTML-Compatibility mode, so that short empty tags have a space before
+      close-marker.
+
 0.9.4: (21-May-2007)
     * Added support for streaming large Chunks of character-data using a
       java.io.Reader. This avoids the creation of temporary strings and reduces
       the memory footprint in some cases.
-      
+
     * Added a way to directly parse an XML document without the need to go
       through LibLoader's interfaces.
 

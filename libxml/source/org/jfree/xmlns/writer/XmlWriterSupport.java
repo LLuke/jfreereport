@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.16 2007/04/01 13:46:34 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.17 2007/05/14 09:02:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -54,7 +54,7 @@ public class XmlWriterSupport
     private String tagName;
     private Properties namespaces;
 
-    public ElementLevel(final String namespace,
+    protected ElementLevel(final String namespace,
                         final String prefix,
                         final String tagName,
                         final Properties namespaces)
@@ -65,7 +65,7 @@ public class XmlWriterSupport
       this.namespaces = namespaces;
     }
 
-    public ElementLevel(final String tagName,
+    protected ElementLevel(final String tagName,
                         final Properties namespaces)
     {
       this.namespaces = namespaces;
@@ -146,6 +146,7 @@ public class XmlWriterSupport
   private boolean assumeDefaultNamespace;
   private Properties impliedNamespaces;
   private boolean writeFinalLinebreak;
+  private boolean htmlCompatiblityMode;
 
   /**
    * Default Constructor. The created XMLWriterSupport will not have no safe tags and starts with an indention level of
@@ -180,6 +181,16 @@ public class XmlWriterSupport
     this.indentString = indentString;
     this.lineEmpty = true;
     this.writeFinalLinebreak = true;
+  }
+
+  public boolean isHtmlCompatiblityMode()
+  {
+    return htmlCompatiblityMode;
+  }
+
+  public void setHtmlCompatiblityMode(final boolean htmlCompatiblityMode)
+  {
+    this.htmlCompatiblityMode = htmlCompatiblityMode;
   }
 
   public boolean isAlwaysAddNamespace()
@@ -544,7 +555,14 @@ public class XmlWriterSupport
 
     if (close)
     {
-      w.write("/>");
+      if (isHtmlCompatiblityMode())
+      {
+        w.write(" />");
+      }
+      else
+      {
+        w.write("/>");
+      }
 
       openTags.pop();
       doEndOfLine(w);
