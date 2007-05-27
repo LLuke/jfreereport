@@ -3,6 +3,10 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.6: (27-May-2007)
+        * Implemented the Grapheme-Cluster algorithm as specified by the Unicode
+          UAX#29 document.
+
 0.2.5: (21-May-2007)
         * Added explicit monospace-font support. This is faster than rerouting all
           requests to a real monospaced-font.
@@ -10,7 +14,7 @@ A list of changes in recent versions:
 0.2.4: (27-Apr-2007)
         * Added Font-Metrics caching to the AWT-FontMetrics for ASCII and ISO-8859-1
           characters.
-          
+
         * Moved the Text-Classifiers implementations from LibLayout into LibFonts.
 
 0.2.3: (01-Mar-2007)
@@ -18,7 +22,7 @@ A list of changes in recent versions:
 
 0.2.2: (03-Dec-2006)
         * AWT-FontMetrics caching
-        
+
         * Encoding API fixes
 
 0.2.1: (26-Sep-2006)
@@ -29,10 +33,10 @@ A list of changes in recent versions:
 
         * [BUG] CodePointBuffer and ByteBuffer classes made a boo on copying the
           internal buffers.
-        
+
 0.1.8: (30-May-2006)
         * Updated the libraries and all code that depends on them.
-        
+
 0.1.7: (30-Apr-2006)
         * [BUG] Missing or invalid encoding implementations interrupted the
           font registration process. Missing encodings are now replaced by
