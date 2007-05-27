@@ -75,10 +75,10 @@ public class DefaultNameGenerator implements NameGenerator
    *                 repository.
    * @return the generated, fully qualified name.
    */
-  public String generateName(String nameHint, String mimeType)
+  public String generateName(final String nameHint, final String mimeType)
       throws ContentIOException
   {
-    String name;
+    final String name;
     if (nameHint != null)
     {
       name = nameHint;
@@ -88,7 +88,7 @@ public class DefaultNameGenerator implements NameGenerator
       name = defaultNameHint;
     }
 
-    String suffix;
+    final String suffix;
     if (defaultSuffix != null)
     {
       suffix = defaultSuffix;
@@ -98,7 +98,7 @@ public class DefaultNameGenerator implements NameGenerator
       suffix = getSuffixForType(mimeType, location);
     }
 
-    String firstFileName = name + "." + suffix;
+    final String firstFileName = name + "." + suffix;
     if (location.exists(firstFileName) == false)
     {
       return firstFileName;

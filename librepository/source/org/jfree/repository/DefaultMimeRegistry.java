@@ -43,16 +43,12 @@ public class DefaultMimeRegistry implements MimeRegistry
   {
   }
 
-  public String getMimeType(ContentItem item)
+  public String getMimeType(final ContentItem item)
   {
     final String name = item.getName();
     if (name == null)
     {
       return "application/octet-stream";
-    }
-    if (StringUtils.endsWithIgnoreCase(name, ".png"))
-    {
-      return "image/png";
     }
     if (StringUtils.endsWithIgnoreCase(name, ".png"))
     {
@@ -86,10 +82,14 @@ public class DefaultMimeRegistry implements MimeRegistry
     {
       return "text/html";
     }
+    if (StringUtils.endsWithIgnoreCase(name, ".css"))
+    {
+      return "text/css";
+    }
     return "application/octet-stream";
   }
 
-  public String getSuffix(String mimeType)
+  public String getSuffix(final String mimeType)
   {
     // needs 'libMagic'
     if ("image/png".equals(mimeType))
@@ -115,6 +115,10 @@ public class DefaultMimeRegistry implements MimeRegistry
     if ("text/plain".equals(mimeType))
     {
       return "txt";
+    }
+    if ("text/css".equals(mimeType))
+    {
+      return "css";
     }
     if ("application/pdf".equals(mimeType))
     {

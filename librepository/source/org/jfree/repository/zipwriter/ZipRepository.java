@@ -89,7 +89,7 @@ public class ZipRepository implements Repository
 
   public void close() throws IOException
   {
-    zipOutputStream.close();
+    zipOutputStream.flush();
   }
 
   public void writeDirectory (ZipEntry entry) throws IOException
