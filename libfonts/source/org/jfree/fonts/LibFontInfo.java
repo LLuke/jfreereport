@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LibFontInfo.java,v 1.14 2007/03/01 18:57:32 taqua Exp $
+ * $Id: LibFontInfo.java,v 1.15 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -58,13 +58,13 @@ public class LibFontInfo extends ProjectInfo
   public LibFontInfo()
   {
     setName("LibFonts");
-    setVersion("0.2.4");
+    setVersion("0.2.6");
 
     setLicenceName("LGPL");
     setLicenceText(Licences.getInstance().getLGPL());
 
     setInfo("http://reporting.pentaho.org/libfonts/");
-    setCopyright ("(C)opyright 2006, by Pentaho Corporation and Contributors");
+    setCopyright ("(C)opyright 2006-2007, by Pentaho Corporation and Contributors");
     setLicenceText(Licences.getInstance().getLGPL());
 
     setContributors(Arrays.asList(new Contributor[]
