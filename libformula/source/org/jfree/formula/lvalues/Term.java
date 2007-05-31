@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: Term.java,v 1.7 2007/04/01 13:51:54 taqua Exp $
+ * $Id: Term.java,v 1.8 2007/05/15 23:32:34 willgorman Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -102,6 +102,8 @@ public class Term extends AbstractLValue
     super.initialize(context);
     if (operands == null || operators == null)
     {
+      this.optimizedHeadValue = headValue;
+      this.optimizedHeadValue.initialize(context);
       this.operandsArray = new LValue[0];
       this.operatorArray = new InfixOperator[0];
       return;

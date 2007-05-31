@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AbstractNumericOperator.java,v 1.1 2007/04/10 14:12:55 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -52,11 +52,17 @@ public abstract class AbstractNumericOperator implements InfixOperator
   {
   }
 
-  public final TypeValuePair evaluate(final FormulaContext context, TypeValuePair value1, TypeValuePair value2)
+  public final TypeValuePair evaluate(final FormulaContext context,
+                                      TypeValuePair value1,
+                                      TypeValuePair value2)
       throws EvaluationException
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
+    if (value1 == null || value2 == null)
+    {
+      return null; // todo: Maybe we should return a NA? or so ..
+    }
     final Object raw1 = value1.getValue();
     final Object raw2 = value2.getValue();
     if (raw1 == null && raw2 == null)

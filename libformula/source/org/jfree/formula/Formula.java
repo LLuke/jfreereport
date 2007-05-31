@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: Formula.java,v 1.11 2007/04/10 14:10:41 taqua Exp $
+ * $Id: Formula.java,v 1.12 2007/05/12 23:53:15 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -90,6 +90,11 @@ public class Formula implements Serializable, Cloneable
     try
     {
       final TypeValuePair typeValuePair = rootReference.evaluate();
+      if (typeValuePair == null)
+      {
+        return new TypeValuePair
+            (ErrorType.TYPE, LibFormulaErrorValue.ERROR_NA_VALUE);
+      }
       if(typeValuePair.getType().isFlagSet(Type.ERROR_TYPE))
       {
         Log.debug ("Error: " + typeValuePair.getValue());
