@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultDataTable.java,v 1.4 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.formula.lvalues;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.DataTableType;
 import org.jfree.util.ObjectTable;
@@ -40,6 +41,7 @@ import org.jfree.util.ObjectTable;
  * Creation-Date: 05.11.2006, 13:34:01
  *
  * @author Thomas Morgner
+ * @author Cedric Pronzato
  */
 public class DefaultDataTable extends ObjectTable implements DataTable
 {
@@ -50,6 +52,16 @@ public class DefaultDataTable extends ObjectTable implements DataTable
    */
   public DefaultDataTable()
   {
+  }
+
+  public DefaultDataTable(LValue[][] array)
+  {
+    if(array != null && array.length > 0)
+    {
+      int colCount = array[0].length;
+      //TODO: check if it is safe to do that
+      setData(array, colCount);
+    }
   }
 
   public String getColumnName(int column)
@@ -90,13 +102,31 @@ public class DefaultDataTable extends ObjectTable implements DataTable
       for (int col = 0; col < cols; col++)
       {
         LValue value = getValueAt(row, col);
-        value.initialize(context);
+        if(value != null)
+        {
+          value.initialize(context);
+        }
       }
     }
   }
 
   public TypeValuePair evaluate() throws EvaluationException
   {
+    int colCount = -1;
+    LValue[][] array = (LValue[][])getData();
+    for(int i=0; i<array.length; i++)
+    {
+      LValue[] row = array[i];
+      if(colCount > 0 && row.length != colCount)
+      {
+        // error, different column count is not allowed
+        throw new EvaluationException(LibFormulaErrorValue.ERROR_ILLEGAL_ARRAY_VALUE);
+      }
+      else
+      {
+        colCount = row.length;
+      }
+    }
     return new TypeValuePair(DataTableType.TYPE, this);
   }
 

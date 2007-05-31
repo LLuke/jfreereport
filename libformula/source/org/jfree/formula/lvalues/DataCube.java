@@ -24,19 +24,21 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DataCube.java,v 1.3 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.lvalues;
 
 /**
- * A multi-dimensional data collection. It should return LValues, but for
- * now, this remains totally undefined until I have a clue about what I'm doing
- * here.
- *
+ * A multi-dimensional data collection. It should return LValues, but for now,
+ * this remains totally undefined until I have a clue about what I'm doing here.
+ * 
  * @author Thomas Morgner
  */
+// I guess we are talking about a range functionality as in this example:
+// SUM([Sheet1.B4:Sheet2.C5]) : Simple 3D range, naturally with explicit sheet
+// names
 public interface DataCube
 {
 }

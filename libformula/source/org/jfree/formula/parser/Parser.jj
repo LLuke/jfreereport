@@ -23,6 +23,7 @@ import org.jfree.formula.lvalues.PostfixTerm;
 import org.jfree.formula.lvalues.PrefixTerm;
 import org.jfree.formula.lvalues.StaticValue;
 import org.jfree.formula.lvalues.Term;
+import org.jfree.formula.lvalues.DefaultDataTable;
 import org.jfree.formula.operators.InfixOperator;
 import org.jfree.formula.operators.OperatorFactory;
 import org.jfree.formula.operators.PostfixOperator;
@@ -79,6 +80,9 @@ TOKEN:
   | <L_BRACKET:          "[" >
   | <R_BRACKET:          "]" >
   | <QUEST:              "?" >
+  | <L_BRACE:            "{" >
+  | <R_BRACE:            "}" >
+  | <PIPE:				 "|" >
 
 //  | <#COMMENT_INTRODUCER:          "--">
 }
@@ -212,6 +216,7 @@ LValue getLValue (int level):
     | value = <UNSIGNED_NUMERIC_LITERAL> { retval = new StaticValue (new BigDecimal (value.image), NumberType.GENERIC_NUMBER); }
     | value = <UNSIGNED_INTEGER> { retval = new StaticValue (new BigDecimal (value.image), NumberType.GENERIC_NUMBER); }
     | value = <NULL> { retval = new StaticValue (null); }
+    | value = <L_BRACE> retval = parseArray() <R_BRACE>
     | value = <IDENTIFIER> <L_PAREN> retval = parseFunction(value.image) <R_PAREN>
     | <L_PAREN> retval = maybeFunction(level)
       {
@@ -250,6 +255,61 @@ LValue maybeFunction (int level):
      return retval;
    }
 }
+
+
+LValue parseArray() :
+{
+	ArrayList rows = null;
+	LValue[] row = null;
+}
+{
+    (
+		row = parseRow()
+		{
+			rows = new ArrayList();
+			rows.add(row);	
+		}	
+	)
+	(
+		<PIPE>
+		row = parseRow()
+		{
+	       	// should we check here for column count equality to the first row column count?
+	       	// or do we give this responsability to a DefaultDataTable constructor?
+			rows.add(row);	
+		}
+	)*
+	{
+		LValue[][] table = (LValue[][])rows.toArray(new LValue[rows.size()][]);
+		return new DefaultDataTable(table);
+	}
+}
+
+LValue[] parseRow():
+{
+	ArrayList cols = null;
+	LValue column = null;
+}
+{
+	(
+      column = getExpression(0)
+      {
+        cols = new ArrayList();
+        cols.add(column);
+      }
+    )
+    (
+      <SEMICOLON>
+        column = getExpression(0)
+        {
+           cols.add(column);
+        }
+    )*
+    {
+		return (LValue[]) cols.toArray(new LValue[cols.size()]);
+    }
+}
+
 
 LValue parseFunction (String name) :
 {

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DataTableType.java,v 1.3 2007/04/01 13:51:58 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -34,8 +34,9 @@ import org.jfree.formula.typing.DefaultType;
 import org.jfree.formula.typing.Type;
 
 /**
- * Creation-Date: 02.11.2006, 09:37:54
- *
+ * This class regroups all Types related to an organized set of scrollable
+ * data.
+ * 
  * @author Thomas Morgner
  */
 public final class DataTableType extends DefaultType
