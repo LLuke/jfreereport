@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: AbstractReadHandlerFactory.java,v 1.2 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -39,23 +39,42 @@ import org.jfree.util.ObjectUtilities;
 import org.xml.sax.SAXException;
 
 /**
- * Creation-Date: Dec 17, 2006, 9:01:38 PM
+ * The AbstractReadHandlerFactory provides a base implementation for all
+ * read-handler factories. A read-handler factory decouples the tag-handlers
+ * of a SAX parser and allows to configure alternate parser configuations
+ * at runtime, resulting in a more flexible parsing process.
  *
  * @author Thomas Morgner
  */
 public abstract class AbstractReadHandlerFactory
 {
-  protected static class TagDefinitionKey
+  /**
+   * The TagDefinitionKey is a compund key to lookup handler implementations
+   * using a namespace and tagname.
+   */
+  private static class TagDefinitionKey
   {
     private String namespace;
     private String tagName;
 
+    /**
+     * Creates a new key.
+     *
+     * @param namespace the namespace (can be null for undefined).
+     * @param tagName the tagname (can be null for undefined).
+     */
     public TagDefinitionKey(String namespace, String tagName)
     {
       this.namespace = namespace;
       this.tagName = tagName;
     }
 
+    /**
+     * Compares this key for equality with an other object.
+     *
+     * @param o the other object.
+     * @return true, if this key is the same as the given object, false otherwise.
+     */
     public boolean equals(Object o)
     {
       if (this == o)
@@ -81,6 +100,11 @@ public abstract class AbstractReadHandlerFactory
       return true;
     }
 
+    /**
+     * Computes the hashcode for this key.
+     *
+     * @return the hashcode.
+     */
     public int hashCode()
     {
       int result = (namespace != null ? namespace.hashCode() : 0);
@@ -93,12 +117,22 @@ public abstract class AbstractReadHandlerFactory
   private HashMap tagData;
   private String defaultNamespace;
 
-  public AbstractReadHandlerFactory()
+  /**
+   * A default-constructor.
+   */
+  protected AbstractReadHandlerFactory()
   {
     defaultDefinitions = new HashMap();
     tagData = new HashMap();
   }
 
+  /**
+   * Configures this factory from the given configuration using the speoified
+   * prefix as filter.
+   *
+   * @param conf   the configuration.
+   * @param prefix the key-prefix.
+   */
   public void configure(Configuration conf, String prefix)
   {
     final HashMap knownNamespaces = new HashMap();
@@ -192,7 +226,13 @@ public abstract class AbstractReadHandlerFactory
     }
   }
 
-
+  /**
+   * Checks, whether the given handler classname can be instantiated
+   * and is in fact an object of the required target-type.
+   *
+   * @param className the classname that should be checked.
+   * @return true, if the handler is valid, false otherwise.
+   */
   private boolean isValidHandler(String className)
   {
     if (className == null)
@@ -204,15 +244,21 @@ public abstract class AbstractReadHandlerFactory
     return o != null;
   }
 
+  /**
+   * Returns the implementation class for this read-handler factory.
+   *
+   * @return the implementation class.
+   */
   protected abstract Class getTargetClass();
 
   /**
    * The returned handler can be null, in case no handler is registered.
    *
-   * @param namespace
-   * @param tagname
-   * @return
-   * @throws org.xml.sax.SAXException
+   * @param namespace the namespace of the xml-tag for which a handler should be returned.
+   * @param tagname   the tagname of the xml-tag.
+   * @return the instantiated read handler, never null.
+   * @throws org.xml.sax.SAXException if the handler cannot be instantiated or
+   *                                  if there is no handler defined at all.
    */
   public XmlReadHandler getHandler(String namespace, String tagname)
       throws SAXException
@@ -249,7 +295,6 @@ public abstract class AbstractReadHandlerFactory
 
     return null;
   }
-
 
 
 }

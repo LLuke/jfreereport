@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: DefaultTagDescription.java,v 1.3 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,19 +36,42 @@ import java.util.Iterator;
 
 import org.jfree.util.Configuration;
 
+/**
+ * A tag-description provides information about xml tags. At the moment, we
+ * simply care whether an element can contain CDATA. In such cases, we do not
+ * indent the inner elements.
+ *
+ * @author Thomas Morgner
+ */
 public class DefaultTagDescription implements TagDescription
 {
+  /**
+   * The TagDefinitionKey is a compund key to lookup tag-specifications
+   * using a namespace and tagname.
+   */
   private static class TagDefinitionKey
   {
     private String namespace;
     private String tagName;
 
+    /**
+     * Creates a new key.
+     *
+     * @param namespace the namespace (can be null for undefined).
+     * @param tagName the tagname (can be null for undefined).
+     */
     public TagDefinitionKey(String namespace, String tagName)
     {
       this.namespace = namespace;
       this.tagName = tagName;
     }
 
+    /**
+     * Compares this key for equality with an other object.
+     *
+     * @param o the other object.
+     * @return true, if this key is the same as the given object, false otherwise.
+     */
     public boolean equals(Object o)
     {
       if (this == o)
@@ -82,7 +105,11 @@ public class DefaultTagDescription implements TagDescription
       return result;
     }
 
-
+    /**
+     * Computes the hashcode for this key.
+     *
+     * @return the hashcode.
+     */
     public String toString()
     {
       return "TagDefinitionKey{" +
@@ -96,12 +123,22 @@ public class DefaultTagDescription implements TagDescription
   private HashMap tagData;
   private String defaultNamespace;
 
+  /**
+   * A default-constructor.
+   */
   public DefaultTagDescription()
   {
     defaultDefinitions = new HashMap();
     tagData = new HashMap();
   }
 
+  /**
+   * Configures this factory from the given configuration using the speoified
+   * prefix as filter.
+   *
+   * @param conf   the configuration.
+   * @param prefix the key-prefix.
+   */
   public void configure(Configuration conf, String prefix)
   {
     final HashMap knownNamespaces = new HashMap();
@@ -167,7 +204,14 @@ public class DefaultTagDescription implements TagDescription
     }
   }
 
-
+  /**
+   * Queries the defined tag-descriptions whether the given tag and namespace
+   * is defined to allow character-data.
+   *
+   * @param namespace the namespace.
+   * @param tagname the xml-tagname.
+   * @return true, if the element may contain character data, false otherwise.
+   */
   public boolean hasCData(String namespace, String tagname)
   {
     if (namespace == null)

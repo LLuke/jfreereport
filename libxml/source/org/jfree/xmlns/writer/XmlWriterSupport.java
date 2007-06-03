@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.17 2007/05/14 09:02:09 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.18 2007/05/27 18:44:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -47,6 +47,10 @@ import org.jfree.xmlns.common.AttributeList;
  */
 public class XmlWriterSupport
 {
+  /**
+   * An internal state-management class containing the state for nested
+   * tags.
+   */
   private static class ElementLevel
   {
     private String namespace;
@@ -54,6 +58,14 @@ public class XmlWriterSupport
     private String tagName;
     private Properties namespaces;
 
+    /**
+     * Creates a new ElementLevel object.
+     *
+     * @param namespace the namespace of the current tag.
+     * @param prefix the namespace prefix of the current tag.
+     * @param tagName the tagname.
+     * @param namespaces the collection of all currently known namespaces.
+     */
     protected ElementLevel(final String namespace,
                         final String prefix,
                         final String tagName,
@@ -65,6 +77,12 @@ public class XmlWriterSupport
       this.namespaces = namespaces;
     }
 
+    /**
+     * Creates a new ElementLevel with no namespace information.
+     *
+     * @param tagName the xml-tagname.
+     * @param namespaces the currently known namespaces.
+     */
     protected ElementLevel(final String tagName,
                         final Properties namespaces)
     {
@@ -72,21 +90,37 @@ public class XmlWriterSupport
       this.tagName = tagName;
     }
 
+    /**
+     * Returns the defined namespace prefix for this entry.
+     * @return the namespace prefix.
+     */
     public String getPrefix()
     {
       return prefix;
     }
 
+    /**
+     * Returns the defined namespace uri for this entry.
+     * @return the namespace uri.
+     */
     public String getNamespace()
     {
       return namespace;
     }
 
+    /**
+     * Returns the tagname for this entry.
+     * @return the tagname.
+     */
     public String getTagName()
     {
       return tagName;
     }
 
+    /**
+     * Returns the map of defined namespace for this entry.
+     * @return the namespaces.
+     */
     public Properties getNamespaces()
     {
       return namespaces;
@@ -183,32 +217,76 @@ public class XmlWriterSupport
     this.writeFinalLinebreak = true;
   }
 
+  /**
+   * Checks, whether the HTML compatibility mode is enabled. In HTML compatibility
+   * mode, closed empty tags will have a space between the tagname and the
+   * close-indicator.
+   *
+   * @return true, if the HTML compatiblity mode is enabled, false otherwise.
+   */
   public boolean isHtmlCompatiblityMode()
   {
     return htmlCompatiblityMode;
   }
 
+  /**
+   * Enables or disables the HTML Compatibility mode. In HTML compatibility
+   * mode, closed empty tags will have a space between the tagname and the
+   * close-indicator.
+   *
+   * @param htmlCompatiblityMode  true, if the HTML compatiblity mode is enabled, false otherwise.
+   *
+   */
   public void setHtmlCompatiblityMode(final boolean htmlCompatiblityMode)
   {
     this.htmlCompatiblityMode = htmlCompatiblityMode;
   }
 
+  /**
+   * Checks, whether the XML writer should always add a namespace prefix to
+   * the attributes. The XML specification leaves it up to the application on
+   * how to handle unqualified attributes. If this mode is enabled, all
+   * attributes will always be fully qualified - which removed the ambugity
+   * but may not be compatible with simple, non namespace aware parsers.
+   *
+   * @return true, if all attributes should be qualified, false otherwise.
+   */
   public boolean isAlwaysAddNamespace()
   {
     return alwaysAddNamespace;
   }
 
+  /**
+   * Defines, whether the XML writer should always add a namespace prefix to
+   * the attributes. The XML specification leaves it up to the application on
+   * how to handle unqualified attributes. If this mode is enabled, all
+   * attributes will always be fully qualified - which removed the ambugity
+   * but may not be compatible with simple, non namespace aware parsers.
+   *
+   * @param alwaysAddNamespace set to true, if all attributes should be qualified, false otherwise.
+   */
   public void setAlwaysAddNamespace(final boolean alwaysAddNamespace)
   {
     this.alwaysAddNamespace = alwaysAddNamespace;
   }
 
-
+  /**
+   * Returns the indent level that should be added to the automaticly
+   * computed indentation.
+   *
+   * @return the indent level.
+   */
   public int getAdditionalIndent()
   {
     return additionalIndent;
   }
 
+  /**
+   * Defines the indent level that should be added to the automaticly
+   * computed indentation.
+   *
+   * @param additionalIndent the indent level.
+   */
   public void setAdditionalIndent(final int additionalIndent)
   {
     this.additionalIndent = additionalIndent;
@@ -219,7 +297,7 @@ public class XmlWriterSupport
    *
    * @return the line separator.
    */
-  public static String getLineSeparator()
+  public synchronized static String getLineSeparator()
   {
     if (lineSeparator == null)
     {
@@ -404,6 +482,12 @@ public class XmlWriterSupport
     }
   }
 
+  /**
+   * Checks, whether the given URI is defined as valid namespace.
+   *
+   * @param uri the uri of the namespace.
+   * @return true, if there's a namespace defined, false otherwise.
+   */
   public boolean isNamespaceDefined(final String uri)
   {
     if (impliedNamespaces != null)
@@ -421,6 +505,12 @@ public class XmlWriterSupport
     return parent.getNamespaces().containsKey(uri);
   }
 
+  /**
+   * Checks, whether the given namespace prefix is defined.
+   *
+   * @param prefix the namespace prefix.
+   * @return true, if the prefix is defined, false otherwise.
+   */
   public boolean isNamespacePrefixDefined(final String prefix)
   {
     if (impliedNamespaces != null)
@@ -438,7 +528,10 @@ public class XmlWriterSupport
     return parent.getNamespaces().containsValue(prefix);
   }
 
-
+  /**
+   * Returns all namespaces as properties-collection.
+   * @return the defined namespaces.
+   */
   public Properties getNamespaces()
   {
     if (openTags.isEmpty())
@@ -894,12 +987,23 @@ public class XmlWriterSupport
     return additionalIndent + openTags.size();
   }
 
-
+  /**
+   * Defines, whether the written XML file should end with an empty line.
+   *
+   * @param writeFinalLinebreak true, if an linebreak should be added at the
+   * end of the file, false otherwise.
+   */
   public void setWriteFinalLinebreak(final boolean writeFinalLinebreak)
   {
     this.writeFinalLinebreak = writeFinalLinebreak;
   }
 
+  /**
+   * Checks, whether the written XML file should end with an empty line.
+   *
+   * @return true, if an linebreak should be added at the 
+   * end of the file, false otherwise.
+   */
   public boolean isWriteFinalLinebreak()
   {
     return writeFinalLinebreak;

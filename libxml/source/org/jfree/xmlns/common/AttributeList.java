@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: AttributeList.java,v 1.7 2007/04/01 13:46:34 taqua Exp $
+ * $Id: AttributeList.java,v 1.8 2007/04/09 14:53:55 mdamour1976 Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,7 +45,9 @@ import org.jfree.util.ObjectUtilities;
  */
 public class AttributeList
 {
+  /** A constant containing the XML-Namespace namespace identifier. */
   public static final String XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
+  /** A constant containing the XML namespace identifier. */
   public static final String XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
 
   /**
@@ -53,6 +55,9 @@ public class AttributeList
    */
   public static class AttributeEntry
   {
+    /**
+     * The namespace of the attribute entry.
+     */
     private String namespace;
 
     /**
@@ -110,11 +115,22 @@ public class AttributeList
       return this.value;
     }
 
+    /**
+     * Returns the attribute namespace (which can be null).
+     *
+     * @return the namespace.
+     */
     public String getNamespace()
     {
       return namespace;
     }
 
+    /**
+     * Compares this attribute entry for equality with an other object.
+     *
+     * @param o the other object.
+     * @return true, if this object is equal, false otherwise.
+     */
     public boolean equals(Object o)
     {
       if (this == o)
@@ -141,6 +157,11 @@ public class AttributeList
       return true;
     }
 
+    /**
+     * Computes a hashcode for this attribute entry.
+     *
+     * @return the attribute entry's hashcode.
+     */
     public int hashCode()
     {
       int result;
@@ -163,6 +184,12 @@ public class AttributeList
     this.entryList = new ArrayList();
   }
 
+  /**
+   * Returns an iterator over the entry list. The iterator returns
+   * AttributeList.AttributeEntry objects.
+   *
+   * @return the iterator over the entries contained in this list.
+   */
   public Iterator iterator()
   {
     return entryList.iterator();
@@ -246,14 +273,34 @@ public class AttributeList
     }
   }
 
+  /**
+   * Checks, whether this list is empty.
+   *
+   * @return true, if the list is empty, false otherwise.
+   */
   public boolean isEmpty()
   {
     return this.entryList.isEmpty();
   }
 
+  /**
+   * Adds a namespace declaration. In XML, Namespaces are declared by
+   * using a special attribute-syntax. As this syntax is confusing and
+   * complicated, this method encapsulates this and make defining
+   * namespaces less confusing.
+   *
+   * @param prefix the desired namespace prefix (can be null or empty to
+   * define the default namespace.
+   * @param namespaceUri the URI of the namespace.
+   */
   public void addNamespaceDeclaration(final String prefix,
                                       final String namespaceUri)
   {
+    if (namespaceUri == null)
+    {
+      throw new NullPointerException();
+    }
+
     if (prefix == null || "".equals(prefix))
     {
       setAttribute(AttributeList.XMLNS_NAMESPACE, "", namespaceUri);
@@ -264,11 +311,42 @@ public class AttributeList
     }
   }
 
+  /**
+   * Removes a namespace declaration from this attribute list.
+   *
+   * @param prefix the declared namespace prefix.
+   */
+  public void removeNamespaceDeclaration (final String prefix)
+  {
+    if (prefix == null || "".equals(prefix))
+    {
+      removeAttribute(AttributeList.XMLNS_NAMESPACE, "");
+    }
+    else
+    {
+      removeAttribute(AttributeList.XMLNS_NAMESPACE, prefix);
+    }
+  }
+
+  /**
+   * Checks, whether the given prefix is defined.
+   *
+   * @param prefix the namespace prefix.
+   * @return true, if the prefix is defined, false otherwise.
+   */
   public boolean isNamespacePrefixDefined(final String prefix)
   {
     return getAttribute(AttributeList.XMLNS_NAMESPACE, prefix) != null;
   }
 
+  /**
+   * Checks, whether the given namespace URI has a defined prefix.
+   *
+   *
+   * @param uri the uri.
+   * @return true, if there is at least one namespace declaration matching
+   * the given URI, false otherwise.
+   */
   public boolean isNamespaceUriDefined(final String uri)
   {
     for (int i = 0; i < this.entryList.size(); i++)

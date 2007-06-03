@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ResourceDataInputSource.java,v 1.6 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,7 +38,7 @@ import org.jfree.resourceloader.ResourceManager;
 import org.xml.sax.InputSource;
 
 /**
- * Creation-Date: 08.04.2006, 14:16:06
+ * A SAX InputSource implementation that reads 
  *
  * @author Thomas Morgner
  */

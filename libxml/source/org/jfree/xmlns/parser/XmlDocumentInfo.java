@@ -24,27 +24,51 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: XmlDocumentInfo.java,v 1.4 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.xmlns.parser;
 
 /**
- * Creation-Date: 07.04.2006, 16:40:13
+ * The XmlDocumentInfo class collects basic information about the document
+ * that should be parsed.
  *
  * @author Thomas Morgner
  */
 public interface XmlDocumentInfo
 {
-  String getRootElement();
+  /**
+   * Returns the tag name of the root-level element.
+   * @return the root-tag-name.
+   */
+  public String getRootElement();
 
-  String getRootElementNameSpace();
+  /**
+   * Returns the namespace URI for the root-element of the document.
+   * @return the namespace of the root-element.
+   */
+  public String getRootElementNameSpace();
 
-  String getPublicDTDId();
+  /**
+   * Returns the Public-ID of the Document's DTD (if there's any).
+   * @return the public id.
+   */
+  public String getPublicDTDId();
 
-  String getSystemDTDId();
+  /**
+   * Returns the System-ID of the document's DTD.
+   * @return the system-id.
+   */
+  public String getSystemDTDId();
 
+  /**
+   * Returns the default-namespace declared on the root-element. It is
+   * not guaranteed that this information is filled until a XmlFactoryModule
+   * has been selected.
+   * 
+   * @return the default-namespace.
+   */
   public String getDefaultNameSpace();
 
 }

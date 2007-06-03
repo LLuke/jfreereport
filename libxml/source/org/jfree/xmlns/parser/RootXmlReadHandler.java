@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: RootXmlReadHandler.java,v 1.7 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -45,6 +45,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * A base root SAX handler.
+ *
+ * @author Peter Becker
+ * @author Thomas Morgner
  */
 public class RootXmlReadHandler extends DefaultHandler
 {
@@ -64,7 +67,7 @@ public class RootXmlReadHandler extends DefaultHandler
   private FastStack currentHandlers;
 
   /**
-   * ??.
+   * The list of parent handlers.
    */
   private FastStack outerScopes;
 
@@ -78,6 +81,9 @@ public class RootXmlReadHandler extends DefaultHandler
    */
   private HashMap objectRegistry;
 
+  /**
+   * A flag indicating whether this handler has initialized the root-element.
+   */
   private boolean rootHandlerInitialized;
 
   /**
@@ -92,6 +98,14 @@ public class RootXmlReadHandler extends DefaultHandler
   private FastStack namespaces;
   private boolean firstCall;
 
+  /**
+   * Creates a new root-handler using the given versioning information and
+   * resource-manager.
+   *
+   * @param manager the resource manager that loaded this xml-file.
+   * @param source the source-key that idenfies from where the file was loaded.
+   * @param version the versioning information for the root-file.
+   */
   public RootXmlReadHandler(final ResourceManager manager,
                             final ResourceKey source,
                             final long version)
@@ -99,6 +113,15 @@ public class RootXmlReadHandler extends DefaultHandler
     this(manager, source, source, version);
   }
 
+  /**
+   * Creates a new root-handler using the given versioning information and
+   * resource-manager.
+   *
+   * @param manager the resource manager that loaded this xml-file.
+   * @param source the source-key that idenfies from where the file was loaded.
+   * @param context the key that should be used to resolve relative paths.
+   * @param version the versioning information for the root-file.
+   */
   public RootXmlReadHandler(final ResourceManager manager,
                             final ResourceKey source,
                             final ResourceKey context,
@@ -136,11 +159,20 @@ public class RootXmlReadHandler extends DefaultHandler
     return context;
   }
 
+  /**
+   * Returns the resource-manager that is used to load external resources.
+   *
+   * @return the resource-manager.
+   */
   public ResourceManager getResourceManager()
   {
     return manager;
   }
 
+  /**
+   * Checks, whether this is the first call to the handler.
+   * @return true, if this is the first call, false otherwise.
+   */
   public boolean isFirstCall()
   {
     return firstCall;
@@ -157,6 +189,12 @@ public class RootXmlReadHandler extends DefaultHandler
     return source;
   }
 
+  /**
+   * Returns the current dependency collector for this parse-operation.
+   * The Collector allows to check compound-keys for changes.
+   *
+   * @return the dependency collector.
+   */
   public DependencyCollector getDependencyCollector()
   {
     return dependencyCollector;
@@ -172,6 +210,12 @@ public class RootXmlReadHandler extends DefaultHandler
     return this.commentHandler;
   }
 
+  /**
+   * Returns the parser-configuration. This can be use to configure
+   * the parsing process.
+   *
+   * @return the parser's configuration.
+   */
   public DefaultConfiguration getParserConfiguration()
   {
     return parserConfiguration;
@@ -233,6 +277,13 @@ public class RootXmlReadHandler extends DefaultHandler
     return this.objectRegistry.get(key);
   }
 
+  /**
+   * Returns the array of all currently registered helper-objects. Helper
+   * objects are used as simple communication process between the various
+   * handler implementations.
+   *
+   * @return the helper object names.
+   */
   public String[] getHelperObjectNames()
   {
     return (String[]) this.objectRegistry.keySet().toArray
@@ -268,6 +319,7 @@ public class RootXmlReadHandler extends DefaultHandler
    * Start a new handler stack and delegate to another handler.
    *
    * @param handler the handler.
+   * @param uri the namespace uri of the current tag.
    * @param tagName the tag name.
    * @param attrs   the attributes.
    * @throws SAXException if there is a problem with the parser.
@@ -295,6 +347,7 @@ public class RootXmlReadHandler extends DefaultHandler
    *
    * @param handler the new handler.
    * @param tagName the tag name.
+   * @param uri the namespace uri of the current tag.
    * @param attrs   the attributes.
    * @throws SAXException if there is a problem with the parser.
    */
@@ -317,6 +370,7 @@ public class RootXmlReadHandler extends DefaultHandler
    * Hand control back to the previous handler.
    *
    * @param tagName the tagname.
+   * @param uri the namespace uri of the current tag.
    * @throws SAXException if there is a problem with the parser.
    */
   public void unwind(final String uri, final String tagName)
@@ -368,7 +422,7 @@ public class RootXmlReadHandler extends DefaultHandler
   /**
    * Starts processing an element.
    *
-   * @param uri        the URI.
+   * @param originalUri the URI.
    * @param localName  the local name.
    * @param qName      the qName.
    * @param attributes the attributes.
@@ -427,20 +481,45 @@ public class RootXmlReadHandler extends DefaultHandler
         new FixNamespaceUriAttributes(uri, attributes));
   }
 
-  protected void interceptFirstStartElement(final String originalUri,
+  /**
+   * A helper call that allows to override the first call to the startElememt
+   * method. This allows the implementation of an multiplexing parser, which
+   * requires the information from the root-level elements.
+   *
+   * @param uri the namespace uri of the current tag.
+   * @param localName the unqualified tag-name.
+   * @param qName the qualified tag-name.
+   * @param attributes the attributes of the current element.
+   * @throws SAXException if something goes wrong.
+   */
+  protected void interceptFirstStartElement(final String uri,
                                             final String localName,
                                             final String qName,
-                                            Attributes attributes)
+                                            final Attributes attributes)
       throws SAXException
   {
-    startElement(originalUri, localName, qName, attributes);
+    startElement(uri, localName, qName, attributes);
   }
 
+  /**
+   * Updates the current default namespace.
+   *
+   * @param nsuri the uri of the current namespace.
+   */
   protected final void pushDefaultNamespace(String nsuri)
   {
     namespaces.push(nsuri);
   }
 
+  /**
+   * Sets and configures the root handle for the given root-level element.
+   *
+   * @param handler the read handler for the root element.
+   * @param uri the uri of the root elements namespace.
+   * @param localName the local tagname of the root element.
+   * @param attributes the attributes of the root element.
+   * @throws SAXException if something goes wrong.
+   */
   protected void installRootHandler(final XmlReadHandler handler,
                                     final String uri,
                                     final String localName,
@@ -479,15 +558,15 @@ public class RootXmlReadHandler extends DefaultHandler
     }
     catch (Exception e)
     {
-      throw new SAXParseException
-          ("Failed at handling character data", getDocumentLocator(), e);
+      throw new ParseException
+          ("Failed at handling character data", e, getDocumentLocator());
     }
   }
 
   /**
    * Finish processing an element.
    *
-   * @param uri       the URI.
+   * @param originalUri       the URI.
    * @param localName the local name.
    * @param qName     the qName.
    * @throws SAXException if there is a parsing error.
@@ -513,6 +592,11 @@ public class RootXmlReadHandler extends DefaultHandler
     currentHandler.endElement(uri, localName);
   }
 
+  /**
+   * Tries to return the parse-result of the selected root-handler.
+   * @return the parse-result.
+   * @throws SAXException if an error occurs.
+   */
   public Object getResult() throws SAXException
   {
     if (this.rootHandler != null)

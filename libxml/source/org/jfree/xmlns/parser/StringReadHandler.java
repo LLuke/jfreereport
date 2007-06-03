@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: StringReadHandler.java,v 1.4 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,13 +34,15 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Required for list contents ...
+ * A XmlReadHandler that reads character-data for the given element.
+ *
+ * @author Thomas Morgner
  */
 public class StringReadHandler extends AbstractXmlReadHandler
 {
 
   /**
-   * A string buffer.
+   * A buffer containing the characters read so far.
    */
   private StringBuffer buffer;
 
@@ -87,7 +89,6 @@ public class StringReadHandler extends AbstractXmlReadHandler
    * Done parsing.
    *
    * @throws SAXException       if there is a parsing error.
-   * @throws XmlReaderException if there is a reader error.
    */
   protected void doneParsing ()
           throws SAXException
@@ -96,6 +97,11 @@ public class StringReadHandler extends AbstractXmlReadHandler
     this.buffer = null;
   }
 
+  /**
+   * Returns the result as string.
+   *
+   * @return the parse-result as string.
+   */
   public String getResult ()
   {
     return result;

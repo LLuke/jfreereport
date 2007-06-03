@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: PropertyReadHandler.java,v 1.4 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,7 +34,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Creation-Date: 07.04.2006, 17:50:34
+ * The Property-ReadHandler reads character data from an element along with
+ * a 'name' attribute. This way, this class is most suitable for creating
+ * name-value-pairs.
  *
  * @author Thomas Morgner
  */
@@ -42,6 +44,9 @@ public class PropertyReadHandler extends StringReadHandler
 {
   private String name;
 
+  /**
+   * The Default-Constructor.
+   */
   public PropertyReadHandler()
   {
   }
@@ -62,6 +67,11 @@ public class PropertyReadHandler extends StringReadHandler
     }
   }
 
+  /**
+   * Returns the declared property-name.
+   *
+   * @return the property name.
+   */
   public String getName()
   {
     return name;

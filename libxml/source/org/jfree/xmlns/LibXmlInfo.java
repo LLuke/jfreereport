@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LibXmlInfo.java,v 1.9 2007/05/21 17:33:58 taqua Exp $
+ * $Id: LibXmlInfo.java,v 1.10 2007/05/27 18:44:28 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,6 +38,13 @@ import org.jfree.resourceloader.LibLoaderInfo;
 import org.jfree.ui.about.Contributor;
 import org.jfree.ui.about.ProjectInfo;
 
+/**
+ * The LibXmlInfo class contains all dependency information and some
+ * common information like version, license and contributors about the
+ * library itself.
+ *
+ * @author Thomas Morgner
+ */
 public class LibXmlInfo extends ProjectInfo
 {
   private static LibXmlInfo info;
@@ -45,7 +52,7 @@ public class LibXmlInfo extends ProjectInfo
   /**
    * Constructs an empty project info object.
    */
-  public LibXmlInfo ()
+  private LibXmlInfo ()
   {
     setName("LibXML");
     setVersion("0.9.5");
@@ -68,7 +75,11 @@ public class LibXmlInfo extends ProjectInfo
     setAutoBoot(true);
   }
 
-
+  /**
+   * Returns the singleton instance of the boot-class.
+   *
+   * @return the singleton booter.
+   */
   public static synchronized ProjectInfo getInstance()
   {
     if (info == null)

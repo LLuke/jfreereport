@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriter.java,v 1.6 2007/04/01 13:46:34 taqua Exp $
+ * $Id: XmlWriter.java,v 1.7 2007/05/14 09:02:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,6 +41,8 @@ import org.jfree.io.IOUtils;
 
 /**
  * A class for writing XML to a character stream.
+ *
+ * @author Thomas Morgner
  */
 public class XmlWriter extends XmlWriterSupport
 {
@@ -218,6 +220,13 @@ public class XmlWriter extends XmlWriterSupport
     setLineEmpty(false);
   }
 
+  /**
+   * Copies the given reader to the character stream. This method should be used
+   * for large chunks of data.
+   *
+   * @param reader the reader providing the text.
+   * @throws IOException if there is a problem writing to the character stream.
+   */
   public void writeStream (final Reader reader) throws IOException
   {
     IOUtils.getInstance().copyWriter(reader, writer);
@@ -258,6 +267,11 @@ public class XmlWriter extends XmlWriterSupport
     super.writeNewLine(writer);
   }
 
+  /**
+   * Flushs the underlying writer.
+   *
+   * @throws IOException if something goes wrong.
+   */
   public void flush ()
       throws IOException
   {

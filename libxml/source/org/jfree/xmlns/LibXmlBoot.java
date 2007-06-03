@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: LibXmlBoot.java,v 1.3 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,10 +35,24 @@ import org.jfree.base.AbstractBoot;
 import org.jfree.base.BootableProjectInfo;
 import org.jfree.util.Configuration;
 
+/**
+ * The LibXmlBoot class is used to initialize the library before it is
+ * first used. This loads all configurations and initializes all factories.
+ *
+ * Without booting, basic services like logging and the global configuration
+ * will not be availble.
+ *
+ * @author Thomas Morgner
+ */
 public class LibXmlBoot extends AbstractBoot
 {
   private static LibXmlBoot singleton;
 
+  /**
+   * Returns the singleton instance of the boot-class.
+   *
+   * @return the singleton booter.
+   */
   public static synchronized LibXmlBoot getInstance()
   {
     if (singleton == null)
@@ -48,6 +62,9 @@ public class LibXmlBoot extends AbstractBoot
     return singleton;
   }
 
+  /**
+   * Private constructor prevents object creation.
+   */
   private LibXmlBoot ()
   {
   }

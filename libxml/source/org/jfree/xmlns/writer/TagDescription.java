@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: TagDescription.java,v 1.3 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -35,6 +35,8 @@ package org.jfree.xmlns.writer;
  * A tag-description provides information about xml tags. At the moment, we
  * simply care whether an element can contain CDATA. In such cases, we do not
  * indent the inner elements.
+ *
+ * @author Thomas Morgner
  */
 public interface TagDescription
 {

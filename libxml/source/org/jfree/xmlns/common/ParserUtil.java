@@ -24,16 +24,15 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ParserUtil.java,v 1.3 2007/04/01 13:46:34 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 package org.jfree.xmlns.common;
 
+import org.jfree.xmlns.parser.ParseException;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.jfree.xmlns.parser.ParseException;
 
 /**
  * Basic helper functions to ease up the process of parsing.
@@ -43,6 +42,9 @@ import org.jfree.xmlns.parser.ParseException;
 public class ParserUtil
 {
 
+  /**
+   * Private constructors prevent initializations of utility classes.
+   */
   private ParserUtil()
   {
   }
@@ -54,6 +56,7 @@ public class ParserUtil
    *
    * @param text    the text to parse.
    * @param message the error message if parsing fails.
+   * @param locator the SAX locator to print meaningfull error messages.
    * @return the int value.
    * @throws SAXException if there is a problem with the parsing.
    */
@@ -136,8 +139,9 @@ public class ParserUtil
    *
    * @param text    the text to parse.
    * @param message the error message if parsing fails.
+   * @param locator the SAX locator to print meaningfull error messages.
    * @return the float value.
-   * @throws SAXParseException if there is a problem with the parsing.
+   * @throws ParseException if the text is no valid float number.
    */
   public static float parseFloat(final String text,
                                  final String message,
@@ -234,12 +238,14 @@ public class ParserUtil
    * object.
    *
    * @param value the string that represents the boolean.
+   * @param locator the SAX locator to print meaningfull error messages.
    * @return Boolean.TRUE or Boolean.FALSE
    *
-   * @throws SAXException if an parse error occured.
+   * @throws ParseException if an parse error occured or the string is not
+   * 'true' or 'false'.
    */
   public static Boolean parseBoolean (final String value, Locator locator)
-          throws SAXException
+          throws ParseException
   {
     if (value == null)
     {
