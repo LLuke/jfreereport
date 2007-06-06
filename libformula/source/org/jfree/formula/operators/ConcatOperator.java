@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: ConcatOperator.java,v 1.7 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -55,17 +55,16 @@ public class ConcatOperator implements InfixOperator
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
+    // Error or empty string, that's the question ..
     final Object raw1 = value1.getValue();
     final Object raw2 = value2.getValue();
-    if (raw1 == null && raw2 == null)
+    if (raw1 == null || raw2 == null)
     {
-      return null;
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_NA_VALUE);
     }
 
-    final String text1 =
-        typeRegistry.convertToText(value1.getType(), raw1);
-    final String text2 =
-        typeRegistry.convertToText(value2.getType(), raw2);
+    final String text1 = typeRegistry.convertToText(value1.getType(), raw1);
+    final String text2 = typeRegistry.convertToText(value2.getType(), raw2);
     if (text1 == null && text2 == null)
     {
       throw new EvaluationException

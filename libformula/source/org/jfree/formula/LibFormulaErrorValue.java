@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: LibFormulaErrorValue.java,v 1.9 2007/05/07 22:51:12 mimil Exp $
+ * $Id: LibFormulaErrorValue.java,v 1.10 2007/05/31 20:14:36 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -72,7 +72,7 @@ public class LibFormulaErrorValue implements ErrorValue
   /** Occurence not found error */
   public static final LibFormulaErrorValue ERROR_NOT_FOUND_VALUE = new LibFormulaErrorValue(ERROR_NOT_FOUND);
   /** NA error code*/
-  public static final int ERROR_NA = 7;
+  public static final int ERROR_NA = 522;
   /** NA error*/
   public static final LibFormulaErrorValue ERROR_NA_VALUE = new LibFormulaErrorValue(ERROR_NA);
   /** Unexpected error code */

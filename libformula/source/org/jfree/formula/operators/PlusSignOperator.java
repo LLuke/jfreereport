@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: PlusSignOperator.java,v 1.3 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,6 +32,7 @@ package org.jfree.formula.operators;
 
 import org.jfree.formula.EvaluationException;
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
 import org.jfree.formula.lvalues.TypeValuePair;
 
 /**
@@ -46,8 +47,13 @@ public class PlusSignOperator implements PrefixOperator
   }
 
   public TypeValuePair evaluate(final FormulaContext context,
-                                TypeValuePair value1) throws EvaluationException
+                                final TypeValuePair value1) throws EvaluationException
   {
+    if (value1 == null)
+    {
+      // This is fatal, but should never happen.
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_UNEXPECTED_VALUE);
+    }
     return value1;
   }
 

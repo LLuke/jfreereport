@@ -24,19 +24,19 @@
  *
  *
  * ------------
- * $Id: AbstractNumericOperator.java,v 1.1 2007/04/10 14:12:55 taqua Exp $
+ * $Id: AbstractNumericOperator.java,v 1.2 2007/05/31 14:58:35 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 
 package org.jfree.formula.operators;
 
-import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.FormulaContext;
 import org.jfree.formula.EvaluationException;
+import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LibFormulaErrorValue;
+import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.TypeRegistry;
 import org.jfree.formula.typing.TypeRegistryUtility;
-import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.NumberType;
 
 /**
@@ -53,21 +53,23 @@ public abstract class AbstractNumericOperator implements InfixOperator
   }
 
   public final TypeValuePair evaluate(final FormulaContext context,
-                                      TypeValuePair value1,
-                                      TypeValuePair value2)
+                                      final TypeValuePair value1,
+                                      final TypeValuePair value2)
       throws EvaluationException
   {
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
     if (value1 == null || value2 == null)
     {
-      return null; // todo: Maybe we should return a NA? or so ..
+      // If this happens, then one of the implementations has messed up.
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_UNEXPECTED_VALUE);
     }
+
     final Object raw1 = value1.getValue();
     final Object raw2 = value2.getValue();
-    if (raw1 == null && raw2 == null)
+    if (raw1 == null || raw2 == null)
     {
-      return null;
+      throw new EvaluationException (LibFormulaErrorValue.ERROR_NA_VALUE);
     }
 
     final Number number1 = TypeRegistryUtility.convertToNumber(typeRegistry, value1.getType(), raw1, ZERO);

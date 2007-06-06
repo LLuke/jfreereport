@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.15 2007/05/20 21:45:54 mimil Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.16 2007/05/21 18:57:59 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.jfree.formula.FormulaContext;
+import org.jfree.formula.LocalizationContext;
 import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.coretypes.AnyType;
 import org.jfree.formula.typing.coretypes.DateTimeType;
@@ -103,6 +104,14 @@ public class DefaultTypeRegistry implements TypeRegistry
   public Number convertToNumber(final Type type1, final Object value)
       throws TypeConversionException
   {
+    final LocalizationContext localizationContext = context.getLocalizationContext();
+
+    if (value == null)
+    {
+      // there's no point in digging deeper - there *is* no value ..
+      throw new TypeConversionException();
+    }
+
     if (type1.isFlagSet(Type.NUMERIC_TYPE) || type1.isFlagSet(Type.ANY_TYPE))
     {
       if (type1.isFlagSet(Type.DATETIME_TYPE)
@@ -111,8 +120,7 @@ public class DefaultTypeRegistry implements TypeRegistry
       {
         if (value instanceof Date)
         {
-          final Number serial = DateUtil.toSerialDate((Date) value, context
-              .getLocalizationContext());
+          final Number serial = DateUtil.toSerialDate((Date) value, localizationContext);
 //           System.out.println(serial);
           final Number ret = DateUtil.normalizeDate(serial, type1);
           // System.out.println(ret);
@@ -156,16 +164,14 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
 
       // then checking for datetimes
-      final Iterator datetimeIterator = context.getLocalizationContext()
-          .getDateFormats(DateTimeType.DATETIME_TYPE).iterator();
+      final Iterator datetimeIterator = localizationContext.getDateFormats(DateTimeType.DATETIME_TYPE).iterator();
       while (datetimeIterator.hasNext())
       {
         final DateFormat df = (DateFormat) datetimeIterator.next();
         try
         {
           final Date date = df.parse(val);
-          final Number serial = DateUtil.toSerialDate(date, context
-              .getLocalizationContext());
+          final Number serial = DateUtil.toSerialDate(date, localizationContext);
           // return DateUtil.normalizeDate(serial, DateTimeType.TYPE);
           return serial;
         }
@@ -175,16 +181,14 @@ public class DefaultTypeRegistry implements TypeRegistry
         }
       }
       // then checking for datetimes
-      final Iterator dateIterator = context.getLocalizationContext()
-          .getDateFormats(DateTimeType.DATE_TYPE).iterator();
+      final Iterator dateIterator = localizationContext.getDateFormats(DateTimeType.DATE_TYPE).iterator();
       while (dateIterator.hasNext())
       {
         final DateFormat df = (DateFormat) dateIterator.next();
         try
         {
           final Date date = df.parse(val);
-          final Number serial = DateUtil.toSerialDate(date, context
-              .getLocalizationContext());
+          final Number serial = DateUtil.toSerialDate(date, localizationContext);
           // return DateUtil.normalizeDate(serial, DateType.TYPE);
           return serial;
         }
@@ -194,7 +198,7 @@ public class DefaultTypeRegistry implements TypeRegistry
         }
       }
       // then checking for datetimes
-      final Iterator timeIterator = context.getLocalizationContext()
+      final Iterator timeIterator = localizationContext
           .getDateFormats(DateTimeType.TIME_TYPE).iterator();
       while (timeIterator.hasNext())
       {
@@ -202,8 +206,7 @@ public class DefaultTypeRegistry implements TypeRegistry
         try
         {
           final Date date = df.parse(val);
-          final Number serial = DateUtil.toSerialDate(date, context
-              .getLocalizationContext());
+          final Number serial = DateUtil.toSerialDate(date, localizationContext);
           // return DateUtil.normalizeDate(serial, TimeType.TYPE);
           return serial;
         }

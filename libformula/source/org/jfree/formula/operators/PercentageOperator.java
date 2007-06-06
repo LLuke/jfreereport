@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: PercentageOperator.java,v 1.8 2007/05/17 21:29:48 mimil Exp $
+ * $Id: PercentageOperator.java,v 1.9 2007/05/21 21:39:41 mimil Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -57,6 +57,12 @@ public class PercentageOperator implements PostfixOperator
   public TypeValuePair evaluate(final FormulaContext context, final TypeValuePair value1)
       throws EvaluationException
   {
+    final Object rawValue = value1.getValue();
+    if (rawValue == null)
+    {
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_NA_VALUE);
+    }
+
     final Type type = value1.getType();
     final TypeRegistry typeRegistry = context.getTypeRegistry();
 
@@ -67,7 +73,7 @@ public class PercentageOperator implements PostfixOperator
     }
 
     // return the same as zero minus value.
-    final Number number = typeRegistry.convertToNumber(type, value1.getValue());
+    final Number number = typeRegistry.convertToNumber(type, rawValue);
     final BigDecimal value = OperatorUtility.getAsBigDecimal(number);
     final BigDecimal divide = value.divide(HUNDRED, value.scale()+2,BigDecimal.ROUND_HALF_UP);
     return new TypeValuePair(type, divide);

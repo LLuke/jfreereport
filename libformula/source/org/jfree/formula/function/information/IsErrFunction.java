@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: IsErrFunction.java,v 1.3 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -40,12 +40,12 @@ import org.jfree.formula.lvalues.TypeValuePair;
 import org.jfree.formula.typing.Type;
 import org.jfree.formula.typing.coretypes.ErrorType;
 import org.jfree.formula.typing.coretypes.LogicalType;
+import org.jfree.util.Log;
 
 /**
  * This function returns true if the parameter is of error and not of error type NA.
  *
  * @author Cedric Pronzato
- *
  */
 public class IsErrFunction implements Function
 {
@@ -53,9 +53,14 @@ public class IsErrFunction implements Function
   private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
   private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
 
-  public TypeValuePair evaluate(FormulaContext context, ParameterCallback parameters) throws EvaluationException
+  public IsErrFunction()
   {
-    if(parameters.getParameterCount() != 1)
+  }
+
+  public TypeValuePair evaluate(final FormulaContext context,
+                                final ParameterCallback parameters) throws EvaluationException
+  {
+    if (parameters.getParameterCount() != 1)
     {
       throw new EvaluationException(LibFormulaErrorValue.ERROR_ARGUMENTS_VALUE);
     }
@@ -63,12 +68,13 @@ public class IsErrFunction implements Function
     try
     {
       final Type type = parameters.getType(0);
-      Object value = parameters.getValue(0);
+      final Object value = parameters.getValue(0);
 
-      if(ErrorType.TYPE.equals(type) && value instanceof ErrorValue)
+      if (ErrorType.TYPE.equals(type) && value instanceof ErrorValue)
       {
-        final ErrorValue na = (ErrorValue)value;
-        if(na.getErrorCode() == LibFormulaErrorValue.ERROR_NA)
+        Log.warn ("Passing errors around is deprecated. Throw exceptions instead.");
+        final ErrorValue na = (ErrorValue) value;
+        if (na.getErrorCode() == LibFormulaErrorValue.ERROR_NA)
         {
           return RETURN_FALSE;
         }
@@ -77,9 +83,10 @@ public class IsErrFunction implements Function
           return RETURN_TRUE;
         }
       }
-    } catch (EvaluationException e)
+    }
+    catch (EvaluationException e)
     {
-      if(e.getErrorValue().getErrorCode() == LibFormulaErrorValue.ERROR_NA)
+      if (e.getErrorValue().getErrorCode() == LibFormulaErrorValue.ERROR_NA)
       {
         return RETURN_FALSE;
       }

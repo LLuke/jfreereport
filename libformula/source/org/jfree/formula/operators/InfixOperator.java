@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: InfixOperator.java,v 1.4 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -44,7 +44,16 @@ import org.jfree.formula.lvalues.TypeValuePair;
  */
 public interface InfixOperator extends Serializable
 {
-  public TypeValuePair evaluate(final FormulaContext context,
+  /**
+   * Evaluates the comptuation for both parameters. This method must never return null.
+   *
+   * @param context
+   * @param value1
+   * @param value2
+   * @return
+   * @throws EvaluationException
+   */
+  public TypeValuePair evaluate(FormulaContext context,
                                 TypeValuePair value1, TypeValuePair value2)
       throws EvaluationException;
 

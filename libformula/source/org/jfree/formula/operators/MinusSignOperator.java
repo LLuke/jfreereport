@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: MinusSignOperator.java,v 1.7 2007/04/01 13:51:54 taqua Exp $
+ * $Id: MinusSignOperator.java,v 1.8 2007/04/10 14:10:41 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -59,7 +59,11 @@ public class MinusSignOperator implements PrefixOperator
   {
     final Type type = value1.getType();
     final Object val = value1.getValue();
-
+    if (val == null)
+    {
+      throw new EvaluationException(LibFormulaErrorValue.ERROR_NA_VALUE);
+    }
+    
     if (type.isFlagSet(Type.NUMERIC_TYPE))
     {
       final TypeRegistry typeRegistry = context.getTypeRegistry();

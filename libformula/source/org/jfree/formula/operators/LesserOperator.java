@@ -24,58 +24,26 @@
  *
  *
  * ------------
- * $Id: LesserOperator.java,v 1.5 2007/04/01 13:51:54 taqua Exp $
+ * $Id: LesserOperator.java,v 1.6 2007/05/15 23:34:32 willgorman Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 package org.jfree.formula.operators;
-
-import org.jfree.formula.lvalues.TypeValuePair;
-import org.jfree.formula.EvaluationException;
-import org.jfree.formula.FormulaContext;
-import org.jfree.formula.LibFormulaErrorValue;
-import org.jfree.formula.typing.TypeRegistry;
-import org.jfree.formula.typing.ExtendedComparator;
-import org.jfree.formula.typing.coretypes.LogicalType;
 
 /**
  * Creation-Date: 31.10.2006, 16:34:11
  *
  * @author Thomas Morgner
  */
-public class LesserOperator implements InfixOperator
+public class LesserOperator extends AbstractCompareOperator
 {
-  private static final TypeValuePair RETURN_TRUE = new TypeValuePair(LogicalType.TYPE, Boolean.TRUE);
-  private static final TypeValuePair RETURN_FALSE = new TypeValuePair(LogicalType.TYPE, Boolean.FALSE);
-
   public LesserOperator()
   {
   }
 
-  public TypeValuePair evaluate(final FormulaContext context,
-                                TypeValuePair value1, TypeValuePair value2)
-      throws EvaluationException
+  protected boolean evaluate(final int compareResult)
   {
-    final TypeRegistry typeRegistry = context.getTypeRegistry();
-    final ExtendedComparator comparator =
-        typeRegistry.getComparator(value1.getType(), value2.getType());
-    final Integer result = comparator.compare
-        (value1.getType(), value1.getValue(),
-            value2.getType(), value2.getValue());
-    if (result == null)
-    {
-      throw new EvaluationException
-          (LibFormulaErrorValue.ERROR_INVALID_ARGUMENT_VALUE);
-    }
-
-    if (result.intValue() < 0)
-    {
-      return RETURN_TRUE;
-    }
-    else
-    {
-      return RETURN_FALSE;
-    }
+    return compareResult < 0;
   }
 
   public int getLevel()
@@ -101,7 +69,7 @@ public class LesserOperator implements InfixOperator
   {
     return false;
   }
-  
+
   /**
    * returns the string representation of this operator.
    *

@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: EvaluationException.java,v 1.3 2007/04/01 13:51:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -46,6 +46,7 @@ public class EvaluationException extends StackableException
    */
   public EvaluationException(final ErrorValue errorValue)
   {
+    super(String.valueOf(errorValue));
     this.errorValue = errorValue;
   }
 
