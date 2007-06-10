@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id$
+ * $Id: FormulaParser.java,v 1.7 2007/04/01 13:51:54 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -63,7 +63,7 @@ public class FormulaParser extends GeneratedFormulaParser
       throw new NullPointerException("Formula-text given must not be null.");
     }
     ReInit(new StringReader(formula));
-    return getExpression(0);
+    return getExpression();
   }
 
   public static void main(String[] args)
@@ -71,18 +71,25 @@ public class FormulaParser extends GeneratedFormulaParser
   {
     FormulaParser parser = new FormulaParser();
 
-    LValue x = parser.parse("1 * 2 + 3 * 4");
+    LValue x;
+//    x = parser.parse("1 * 2 + 3 * 4");
+//    x.initialize(new DefaultFormulaContext());
+//    System.out.println(x);
+//
+//    x = parser.parse("[a] * [b] + [c] * [d]");
+//    x.initialize(new DefaultFormulaContext());
+//    System.out.println(x);
+//
+//    x = parser.parse("IF([A];[B];[C])");
+//    x.initialize(new DefaultFormulaContext());
+//    System.out.println(x);
+//
+//    x = parser.parse("1 + ( 2+ (3 + (400 + 200)))");
+//    x.initialize(new DefaultFormulaContext());
+//    System.out.println(x);
+
+    x = parser.parse("(1)()");
     x.initialize(new DefaultFormulaContext());
     System.out.println(x);
-
-    x = parser.parse("[a] * [b] + [c] * [d]");
-    x.initialize(new DefaultFormulaContext());
-    System.out.println(x);
-
-    x = parser.parse("IF([A];[B];[C])");
-    x.initialize(new DefaultFormulaContext());
-    System.out.println(x);
-
-
   }
 }

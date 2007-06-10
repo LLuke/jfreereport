@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: Term.java,v 1.8 2007/05/15 23:32:34 willgorman Exp $
+ * $Id: Term.java,v 1.9 2007/05/31 14:58:35 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -222,32 +222,32 @@ public class Term extends AbstractLValue
     StringBuffer b = new StringBuffer();
 
     b.append("(");
-//    b.append(headValue);
-//    if (operands != null && operators != null)
-//    {
-//      for (int i = 0; i < operands.size(); i++)
-//      {
-//        InfixOperator op = (InfixOperator) operators.get(i);
-//        LValue value = (LValue) operands.get(i);
-//        b.append(op);
-//        b.append(value);
-//      }
-//    }
-//    b.append(")");
-//
-//    b.append(";OPTIMIZED(");
-    b.append(optimizedHeadValue);
-    if (operandsArray != null && operatorArray != null)
+    b.append(headValue);
+    if (operands != null && operators != null)
     {
-      for (int i = 0; i < operandsArray.length; i++)
+      for (int i = 0; i < operands.size(); i++)
       {
-        InfixOperator op = operatorArray[i];
-        LValue value = operandsArray[i];
+        InfixOperator op = (InfixOperator) operators.get(i);
+        LValue value = (LValue) operands.get(i);
         b.append(op);
         b.append(value);
       }
     }
     b.append(")");
+//
+//    b.append(";OPTIMIZED(");
+//    b.append(optimizedHeadValue);
+//    if (operandsArray != null && operatorArray != null)
+//    {
+//      for (int i = 0; i < operandsArray.length; i++)
+//      {
+//        final InfixOperator op = operatorArray[i];
+//        final LValue value = operandsArray[i];
+//        b.append(op);
+//        b.append(value);
+//      }
+//    }
+//    b.append(")");
 
     return b.toString();
   }

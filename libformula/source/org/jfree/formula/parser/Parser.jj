@@ -125,74 +125,45 @@ TOKEN [IGNORE_CASE]:
   | <NULL:                         "null">
 }
 
-LValue getExpression (int level) :
+LValue getExpression () :
 {
   LValue retval = null;
-  Term ex = null;
-  if (level == -1) level = -2;
+  Term term = null;
 }
 {
-  retval = getLValue (level + 1)
+  retval = getLValue ()
   (
-    ex = startTail (retval, ex)
-  )*
+    term = startTail (new Term(retval))
+    (
+      term = startTail (term)
+    )*
+  )?
   {
-    if (ex != null)
+    if (term != null)
     {
-      return ex;
-    }
-    if ((level == 0) && (retval instanceof Term))
-    {
-      ex = (Term) retval;
+      return term;
     }
     return retval;
   }
 }
 
-InfixOperator getInfixOperator () :
-{
-  InfixOperator op = null;
-  Token value = null;
-}
-{
-  (
-    value = <PLUS>
-  | value = <MINUS>
-  | value = <MULT>
-  | value = <DIV>
-  | value = <POW>
-  | value = <EQUALS>
-  | value = <NOT_EQUALS>
-  | value = <LT_EQUALS>
-  | value = <GT_EQUALS>
-  | value = <LT>
-  | value = <GT>
-  | value = <CONCAT>
-  )
-  {
-    return getOperatorFactory().createInfixOperator(value.image);
-  }
-}
-
-Term startTail (LValue retval, Term ex) :
+Term startTail (LValue retval) :
 {
   LValue val = null;
   InfixOperator op = null;
+  Term ex = null;
 }
 {
     op  = getInfixOperator()
-    val = getLValue (-1)
+    val = getLValue ()
     {
-      if (ex == null)
+      if (retval instanceof Term)
       {
-        if (retval instanceof Term)
-        {
-          ex = (Term) retval;
-        }
-        else
-        {
-          ex = new Term (retval);
-        }
+        ex = (Term) retval;
+      }
+      else
+      {
+        ex = new Term (retval);
       }
       ex.add (op, val);
 
@@ -200,9 +171,10 @@ Term startTail (LValue retval, Term ex) :
     }
 }
 
-LValue getLValue (int level):
+LValue getLValue ():
 {
-  Token value = null; LValue retval = null; LValue lval;
+  Token value = null;
+  LValue retval = null;
   PrefixOperator prefixOp = null;
   PostfixOperator postfixOp = null;
 }
@@ -215,16 +187,17 @@ LValue getLValue (int level):
     | value = <STRING_LITERAL> { retval = new StaticValue (ParserTools.stripQuote(value.image), TextType.TYPE); }
     | value = <UNSIGNED_NUMERIC_LITERAL> { retval = new StaticValue (new BigDecimal (value.image), NumberType.GENERIC_NUMBER); }
     | value = <UNSIGNED_INTEGER> { retval = new StaticValue (new BigDecimal (value.image), NumberType.GENERIC_NUMBER); }
-    | value = <NULL> { retval = new StaticValue (null); }
-    | value = <L_BRACE> retval = parseArray() <R_BRACE>
-    | value = <IDENTIFIER> <L_PAREN> retval = parseFunction(value.image) <R_PAREN>
-    | <L_PAREN> retval = maybeFunction(level)
+    | <NULL> { retval = new StaticValue (null); }
+    | <L_BRACE> retval = parseArray() <R_BRACE>
+    | value = <IDENTIFIER> <L_PAREN> { retval = parseFunction(value.image); } <R_PAREN>
+    | <L_PAREN> { retval = getExpression (); } <R_PAREN>
+    {
+      if (retval instanceof Term == false)
       {
-        if (level != -1 && retval != null)
-        {
-          retval = new Term (retval);
-        }
+        System.out.println ("AUTOGEN: TERM: " + retval);
+        retval = new Term (retval);
       }
+    }
   )
   (
      postfixOp = getPostfixOperator()
@@ -242,32 +215,16 @@ LValue getLValue (int level):
   }
 }
 
-LValue maybeFunction (int level):
-{
-  LValue retval = null;
-}
-{
-   (
-        retval = getExpression (level) <R_PAREN>
-      | <R_PAREN>
-   )
-   {
-     return retval;
-   }
-}
-
-
 LValue parseArray() :
 {
-	ArrayList rows = null;
+	ArrayList rows = new ArrayList();
 	LValue[] row = null;
 }
 {
     (
 		row = parseRow()
 		{
-			rows = new ArrayList();
-			rows.add(row);	
+			rows.add(row);
 		}	
 	)
 	(
@@ -287,20 +244,19 @@ LValue parseArray() :
 
 LValue[] parseRow():
 {
-	ArrayList cols = null;
+	ArrayList cols = new ArrayList();;
 	LValue column = null;
 }
 {
 	(
-      column = getExpression(0)
+      column = getExpression()
       {
-        cols = new ArrayList();
         cols.add(column);
       }
     )
     (
       <SEMICOLON>
-        column = getExpression(0)
+        column = getExpression()
         {
            cols.add(column);
         }
@@ -313,36 +269,34 @@ LValue[] parseRow():
 
 LValue parseFunction (String name) :
 {
-   ArrayList params = null;
+   ArrayList params = new ArrayList();
    LValue parameter = null;
 }
 {
    (
      (
-      (
-        <SEMICOLON>
-        {
-          params = new ArrayList();
-          params.add(new StaticValue(null));
-        }
-      )
-    | (
-        parameter = getExpression(0)
-        {
-          params = new ArrayList();
-          params.add(parameter);
-        }
-      )
-     )
-      (
-        <SEMICOLON>
        (
-          parameter = getExpression(0)
-          {
-            params.add(parameter);
-          }
-        )?
-      )*
+         <SEMICOLON>
+         {
+           params.add(new StaticValue(null));
+         }
+       )
+    |  (
+         parameter = getExpression()
+         {
+           params.add(parameter);
+         }
+       )
+     )
+     (
+       <SEMICOLON>
+       (
+         parameter = getExpression()
+         {
+           params.add(parameter);
+         }
+       )?
+     )*
    )?
    {
      if (params == null)
@@ -379,6 +333,31 @@ PostfixOperator getPostfixOperator () :
   )
   {
      return getOperatorFactory().createPostfixOperator(value.image);
+  }
+}
+
+InfixOperator getInfixOperator () :
+{
+  InfixOperator op = null;
+  Token value = null;
+}
+{
+  (
+    value = <PLUS>
+  | value = <MINUS>
+  | value = <MULT>
+  | value = <DIV>
+  | value = <POW>
+  | value = <EQUALS>
+  | value = <NOT_EQUALS>
+  | value = <LT_EQUALS>
+  | value = <GT_EQUALS>
+  | value = <LT>
+  | value = <GT>
+  | value = <CONCAT>
+  )
+  {
+    return getOperatorFactory().createInfixOperator(value.image);
   }
 }
 

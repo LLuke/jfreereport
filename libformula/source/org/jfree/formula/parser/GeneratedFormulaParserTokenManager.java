@@ -639,12 +639,14 @@ protected JavaCharStream input_stream;
 private final int[] jjrounds = new int[45];
 private final int[] jjstateSet = new int[90];
 protected char curChar;
-public GeneratedFormulaParserTokenManager(JavaCharStream stream){
+public GeneratedFormulaParserTokenManager(JavaCharStream stream)
+{
    if (JavaCharStream.staticFlag)
       throw new Error("ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
    input_stream = stream;
 }
-public GeneratedFormulaParserTokenManager(JavaCharStream stream, int lexState){
+public GeneratedFormulaParserTokenManager(JavaCharStream stream, int lexState)
+{
    this(stream);
    SwitchTo(lexState);
 }
