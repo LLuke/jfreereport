@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: SQLReportData.java,v 1.5 2007/04/01 18:49:26 taqua Exp $
+ * $Id: SQLReportData.java,v 1.6 2007/05/09 12:28:24 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -117,7 +117,7 @@ public class SQLReportData implements ReportData
    */
   public boolean isAdvanceable() throws DataSourceException
   {
-    return cursor < (rowCount - 1);
+    return cursor < rowCount;
   }
 
   public int getColumnCount() throws DataSourceException
@@ -125,25 +125,27 @@ public class SQLReportData implements ReportData
     return columnCount;
   }
 
-  public boolean setCursorPosition(int row) throws DataSourceException
+  public boolean setCursorPosition(final int row) throws DataSourceException
   {
     if (row < 0)
     {
       throw new DataSourceException("Negative row number is not valid");
     }
-    if (row >= rowCount)
+    if (row > rowCount)
     {
       return false;
       // throw new DataSourceException("OutOfBounds:");
     }
-    if (isEmpty())
-    {
-      return false;
-    }
 
     try
     {
-      if (resultSet.absolute(row + 1))
+      if (cursor == 0)
+      {
+        resultSet.beforeFirst();
+        return true;
+      }
+
+      if (resultSet.absolute(row))
       {
         cursor = row;
         return true;
@@ -189,16 +191,16 @@ public class SQLReportData implements ReportData
     }
   }
 
-  public String getColumnName(int column) throws DataSourceException
+  public String getColumnName(final int column) throws DataSourceException
   {
     return columnNames[column];
   }
 
-  public Object get(int column) throws DataSourceException
+  public Object get(final int column) throws DataSourceException
   {
-    if (isEmpty())
+    if (isReadable() == false)
     {
-      return null;
+      throw new DataSourceException("Cannot read from this datasource");
     }
 
     try
@@ -221,8 +223,8 @@ public class SQLReportData implements ReportData
     return cursor;
   }
 
-  public boolean isEmpty() throws DataSourceException
+  public boolean isReadable() throws DataSourceException
   {
-    return rowCount == 0;
+    return cursor > 0 && rowCount > 0;
   }
 }

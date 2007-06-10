@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: EmptyReportData.java,v 1.6 2007/04/01 18:49:23 taqua Exp $
+ * $Id: EmptyReportData.java,v 1.7 2007/05/09 12:28:23 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -46,22 +46,26 @@ public class EmptyReportData implements ReportData
     return 0;
   }
 
-  public boolean isEmpty() throws DataSourceException
-  {
-    return true;
-  }
-
-  public boolean setCursorPosition(int cursor) throws DataSourceException
+  public boolean isReadable() throws DataSourceException
   {
     return false;
   }
 
+  public boolean setCursorPosition(final int cursor) throws DataSourceException
+  {
+    if (cursor == ReportData.BEFORE_FIRST_ROW)
+    {
+      return true;
+    }
+    return false;
+  }
+
   /**
-   * This operation checks, whether a call to next will be likely to succeed. If
-   * there is a next data row, this should return true.
+   * This operation checks, whether a call to next will be likely to succeed. If there is a next data row, this should
+   * return true.
    *
    * @return
-   * @throws org.jfree.report.DataSourceException
+   * @throws DataSourceException
    *
    */
   public boolean isAdvanceable() throws DataSourceException
@@ -84,12 +88,12 @@ public class EmptyReportData implements ReportData
     return 0;
   }
 
-  public String getColumnName(int column) throws DataSourceException
+  public String getColumnName(final int column) throws DataSourceException
   {
     return null;
   }
 
-  public Object get(int column) throws DataSourceException
+  public Object get(final int column) throws DataSourceException
   {
     return null;
   }

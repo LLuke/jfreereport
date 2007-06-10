@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: CachingReportDataFactory.java,v 1.3 2007/04/01 18:49:23 taqua Exp $
+ * $Id: CachingReportDataFactory.java,v 1.4 2007/05/09 12:28:24 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -187,10 +187,7 @@ public class CachingReportDataFactory implements ReportDataFactory
         final Parameters params = new Parameters(parameters);
         final ReportData newData = backend.queryData(query, params);
         newParams.put(params, newData);
-        if (newData.isEmpty() == false)
-        {
-          newData.setCursorPosition(0);
-        }
+        newData.setCursorPosition(ReportData.BEFORE_FIRST_ROW);
         return newData;
       }
       else
@@ -200,19 +197,13 @@ public class CachingReportDataFactory implements ReportDataFactory
         final ReportData data = (ReportData) parameterCache.get(params);
         if (data != null)
         {
-          if (data.isEmpty() == false)
-          {
-            data.setCursorPosition(0);
-          }
+          data.setCursorPosition(ReportData.BEFORE_FIRST_ROW);
           return data;
         }
 
         final ReportData newData = backend.queryData(query, params);
         parameterCache.put(params, newData);
-        if (newData.isEmpty() == false)
-        {
-          newData.setCursorPosition(0);
-        }
+        newData.setCursorPosition(ReportData.BEFORE_FIRST_ROW);
         return newData;
       }
     }

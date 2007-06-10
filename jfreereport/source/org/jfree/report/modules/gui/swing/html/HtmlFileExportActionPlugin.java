@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlFileExportActionPlugin.java,v 1.3 2007/04/01 18:49:30 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -59,11 +59,12 @@ public class HtmlFileExportActionPlugin extends AbstractExportActionPlugin
     return "org.jfree.report.modules.gui.swing.html.export.file.";
   }
 
-  public void initialize(SwingGuiContext context)
+  public boolean initialize(SwingGuiContext context)
   {
     super.initialize(context);
     resources = new ResourceBundleSupport(context.getLocale(),
         SwingHtmlModule.BUNDLE_NAME);
+    return true;
   }
 
   /**

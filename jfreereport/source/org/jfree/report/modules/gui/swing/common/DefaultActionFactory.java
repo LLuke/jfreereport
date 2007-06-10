@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultActionFactory.java,v 1.4 2007/04/01 18:49:30 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -82,8 +82,11 @@ public class DefaultActionFactory implements ActionFactory
         continue;
       }
 
-      ActionPlugin plugin = (ActionPlugin) maybeActionPlugin;
-      plugin.initialize(context);
+      final ActionPlugin plugin = (ActionPlugin) maybeActionPlugin;
+      if (plugin.initialize(context) == false)
+      {
+        continue;
+      }
       final String role = plugin.getRole();
       if (role == null)
       {

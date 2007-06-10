@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AbstractActionPlugin.java,v 1.4 2007/04/01 18:49:30 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -74,7 +74,7 @@ public abstract class AbstractActionPlugin implements ActionPlugin
     propertyChangeSupport = new PropertyChangeSupport(this);
   }
 
-  public void initialize(SwingGuiContext context)
+  public boolean initialize(final SwingGuiContext context)
   {
     this.context = context;
     this.baseResources = new ResourceBundleSupport
@@ -82,6 +82,7 @@ public abstract class AbstractActionPlugin implements ActionPlugin
     this.iconTheme = context.getIconTheme();
     this.configuration = new ExtendedConfigurationWrapper
         (context.getConfiguration());
+    return true;
   }
 
   protected PropertyChangeSupport getPropertyChangeSupport()

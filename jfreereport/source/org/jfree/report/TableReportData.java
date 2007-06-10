@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: TableReportData.java,v 1.5 2007/04/01 18:49:23 taqua Exp $
+ * $Id: TableReportData.java,v 1.6 2007/05/09 12:28:24 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -43,17 +43,19 @@ public class TableReportData implements ReportData
   private int cursor;
   private int rowMax;
   private int rowMin;
+  private int cursorMaxPosition;
 
   public TableReportData(final TableModel tableModel)
   {
     this(tableModel, 0, tableModel.getRowCount());
   }
 
-  public TableReportData(final TableModel tableModel, int start, int length)
+  public TableReportData(final TableModel tableModel, final int start, final int length)
   {
     this.tableModel = tableModel;
     this.rowMax = start + length;
     this.rowMin = start;
+    this.cursorMaxPosition = length;
   }
 
   public int getColumnCount() throws DataSourceException
@@ -61,28 +63,20 @@ public class TableReportData implements ReportData
     return tableModel.getColumnCount();
   }
 
-  public boolean isEmpty() throws DataSourceException
+  public boolean isReadable() throws DataSourceException
   {
-    return tableModel.getRowCount() == 0;
+    return cursor > 0 && cursor <= cursorMaxPosition ;
   }
 
-  public boolean setCursorPosition(int row) throws DataSourceException
+  public boolean setCursorPosition(final int row) throws DataSourceException
   {
-    if (isEmpty())
+    if (row > cursorMaxPosition)
     {
-      cursor = 0;
       return false;
     }
-
-    if (row >= rowMax)
-    {
-      // throw new DataSourceException("> Max");
-      return false;
-    }
-    else if (row < rowMin)
+    else if (row < 0)
     {
       return false;
-      //throw new DataSourceException("< Min");
     }
     cursor = row;
     return true;
@@ -98,29 +92,30 @@ public class TableReportData implements ReportData
    */
   public boolean isAdvanceable() throws DataSourceException
   {
-    return cursor < (tableModel.getRowCount() - 1);
+    return cursor < cursorMaxPosition;
   }
 
-  public String getColumnName(int column) throws DataSourceException
+  public String getColumnName(final int column) throws DataSourceException
   {
     return tableModel.getColumnName(column);
   }
 
-  public Object get(int column) throws DataSourceException
+  public Object get(final int column) throws DataSourceException
   {
-    if (isEmpty())
+    if (isReadable() == false)
     {
-      return null;
+      throw new DataSourceException("Unable to read from datasource");
     }
-    return tableModel.getValueAt(cursor, column);
+    return tableModel.getValueAt(cursor - 1, column);
   }
 
   public boolean next() throws DataSourceException
   {
-    if (cursor == rowMax)
+    if (cursor >= cursorMaxPosition)
     {
       return false;
     }
+
     cursor += 1;
     return true;
   }

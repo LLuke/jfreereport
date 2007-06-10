@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PdfExportTask.java,v 1.6 2007/04/01 18:49:31 taqua Exp $
+ * $Id: PdfExportTask.java,v 1.7 2007/05/04 09:43:04 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -67,8 +67,7 @@ public class PdfExportTask implements Runnable
     {
       if (targetFile.delete())
       {
-        throw new ReportConfigurationException
-            ("Target-File exists, but cannot be removed.");
+        throw new ReportConfigurationException("Target-File exists, but cannot be removed.");
       }
     }
   }

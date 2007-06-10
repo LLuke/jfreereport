@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ActionPlugin.java,v 1.4 2007/04/01 18:49:30 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -124,5 +124,5 @@ public interface ActionPlugin
 
   public int getRolePreference ();
 
-  public void initialize(final SwingGuiContext context);
+  public boolean initialize(final SwingGuiContext context);
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrintTask.java,v 1.5 2007/04/01 18:49:31 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -70,6 +70,5 @@ public class PrintTask implements Runnable
     {
       Log.error ("Failed");
     }
-
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PrintActionPlugin.java,v 1.6 2007/04/01 18:49:31 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -60,11 +60,12 @@ public class PrintActionPlugin extends AbstractActionPlugin
     return "org.jfree.report.modules.gui.swing.printing.print.";
   }
 
-  public void initialize(SwingGuiContext context)
+  public boolean initialize(SwingGuiContext context)
   {
     super.initialize(context);
     resources = new ResourceBundleSupport(context.getLocale(),
         SwingPrintingModule.BUNDLE_NAME);
+    return true;
   }
 
   /**
@@ -135,10 +136,10 @@ public class PrintActionPlugin extends AbstractActionPlugin
    * @param report the report.
    * @return A boolean.
    */
-  public boolean performExport(ReportJob job)
+  public boolean performExport(final ReportJob job)
   {
     final PrintTask task = new PrintTask(job);
-    Thread worker = new Thread(task);
+    final Thread worker = new Thread(task);
     setStatusText("Started Job");
     worker.start();
     return true;

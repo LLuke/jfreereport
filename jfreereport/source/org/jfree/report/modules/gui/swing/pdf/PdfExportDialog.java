@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfExportDialog.java,v 1.6 2007/04/01 18:49:31 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -100,7 +100,7 @@ public class PdfExportDialog extends AbstractExportDialog
   private class ActionSecuritySelection extends AbstractAction
   {
     /** Default constructor. */
-    public ActionSecuritySelection()
+    protected ActionSecuritySelection()
     {
     }
 
@@ -119,7 +119,7 @@ public class PdfExportDialog extends AbstractExportDialog
   private class ActionSelectFile extends AbstractAction
   {
     /** Default constructor. */
-    public ActionSelectFile(final ResourceBundle resources)
+    protected ActionSelectFile(final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("pdfsavedialog.selectFile"));
     }
@@ -177,9 +177,6 @@ public class PdfExportDialog extends AbstractExportDialog
   /** Allow fill in check box. */
   private JCheckBox cxAllowFillIn;
 
-  /** A combo-box for selecting the encoding. */
-  private JComboBox cbEncoding;
-
   /** A model for the available encodings. */
   private EncodingComboBoxModel encodingModel;
 
@@ -233,10 +230,8 @@ public class PdfExportDialog extends AbstractExportDialog
     mainPanel.setLayout(new GridBagLayout());
     mainPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
-    final JLabel lblFileName = new JLabel(getResources().getString(
-            "pdfsavedialog.filename"));
-    final JLabel lblEncoding = new JLabel(getResources().getString(
-            "pdfsavedialog.encoding"));
+    final JLabel lblFileName = new JLabel(getResources().getString("pdfsavedialog.filename"));
+    final JLabel lblEncoding = new JLabel(getResources().getString("pdfsavedialog.encoding"));
 
     final JButton btnSelect = new ActionButton(new ActionSelectFile(getResources()));
     txFilename = new JTextField();
@@ -246,7 +241,8 @@ public class PdfExportDialog extends AbstractExportDialog
     encodingModel.addEncodingUnchecked("Identity-H", "PDF-Unicode encoding");
     encodingModel.addEncodingUnchecked("Identity-V", "PDF-Unicode encoding");
     encodingModel.sort();
-    cbEncoding = new JComboBox(encodingModel);
+
+    final JComboBox cbEncoding = new JComboBox(encodingModel);
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -445,7 +441,7 @@ public class PdfExportDialog extends AbstractExportDialog
     return true;
   }
 
-  protected void initializeFromJob(ReportJob job, final GuiContext guiContext)
+  protected void initializeFromJob(final ReportJob job, final GuiContext guiContext)
   {
     statusBar.setIconTheme(guiContext.getIconTheme());
 
@@ -467,7 +463,7 @@ public class PdfExportDialog extends AbstractExportDialog
    *
    * @param full
    */
-  protected Configuration grabDialogContents(boolean full)
+  protected Configuration grabDialogContents(final boolean full)
   {
     final DefaultConfiguration config = new DefaultConfiguration();
 
@@ -496,7 +492,7 @@ public class PdfExportDialog extends AbstractExportDialog
     return config;
   }
 
-  protected void setDialogContents(Configuration config)
+  protected void setDialogContents(final Configuration config)
   {
     final String prefix = getConfigurationPrefix();
     txFilename.setText(config.getConfigProperty(prefix + "TargetFileName"));

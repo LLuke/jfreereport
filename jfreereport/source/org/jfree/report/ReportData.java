@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportData.java,v 1.5 2007/04/01 18:49:23 taqua Exp $
+ * $Id: ReportData.java,v 1.6 2007/05/09 12:28:24 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -46,6 +46,8 @@ package org.jfree.report;
  */
 public interface ReportData extends DataSet
 {
+  public static final int BEFORE_FIRST_ROW = 0;
+
   public int getCursorPosition() throws DataSourceException;
 
   /**
@@ -53,7 +55,7 @@ public interface ReportData extends DataSet
    * for an row number that has not yet been read using 'next' is undefined,
    * whether that call succeeds is implementation dependent.
    *
-   * Calls to position zero will always succeeed (unless there is a physical
+   * Calls to position zero (aka BEFORE_FIRST_ROW) will always succeeed (unless there is a physical
    * error, which invalidated the whole report-data object).
    *
    * @param cursor
@@ -89,5 +91,13 @@ public interface ReportData extends DataSet
    */
   public void close() throws DataSourceException;
 
-  public boolean isEmpty() throws DataSourceException;
+  /**
+   * Checks, whether this report-data instance is currently readable. A report-data instance cannot be
+   * readable if it is positioned before the first row. (The look-ahead system of 'isAdvanceable()' will
+   * prevent that the datasource is positioned behind the last row.)
+   *
+   * @return true, if the datarow is valid, false otherwise.
+   * @throws DataSourceException
+   */
+  public boolean isReadable() throws DataSourceException;
 }

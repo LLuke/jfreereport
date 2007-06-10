@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: AutoTableLayoutController.java,v 1.4 2007/04/01 18:49:32 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -35,6 +35,7 @@ import org.jfree.layouting.util.AttributeMap;
 import org.jfree.report.DataSourceException;
 import org.jfree.report.ReportDataFactoryException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.data.ReportDataRow;
 import org.jfree.report.flow.FlowControlOperation;
 import org.jfree.report.flow.FlowController;
 import org.jfree.report.flow.ReportContext;
@@ -65,15 +66,28 @@ public class AutoTableLayoutController extends ElementLayoutController
   {
   }
 
+  public void initialize(final Object node, final FlowController flowController, final LayoutController parent)
+      throws DataSourceException, ReportDataFactoryException, ReportProcessingException
+  {
+    super.initialize(node, flowController, parent);
+    final ReportDataRow reportDataRow =
+        flowController.getMasterRow().getReportDataRow();
+    this.columnCount = reportDataRow.getColumnCount();
+  }
+
   protected LayoutController processContent(final ReportTarget target)
       throws DataSourceException, ReportProcessingException, ReportDataFactoryException
   {
-    switch(processingState)
+    switch (processingState)
     {
-      case AutoTableLayoutController.HANDLING_HEADER: return processHeader(target);
-      case AutoTableLayoutController.HANDLING_FOOTER: return processFooter(target);
-      case AutoTableLayoutController.HANDLING_DATA: return processData(target);
-      default: throw new ReportProcessingException("No such state.");
+      case AutoTableLayoutController.HANDLING_HEADER:
+        return processHeader(target);
+      case AutoTableLayoutController.HANDLING_FOOTER:
+        return processFooter(target);
+      case AutoTableLayoutController.HANDLING_DATA:
+        return processData(target);
+      default:
+        throw new ReportProcessingException("No such state.");
     }
 
   }
@@ -128,7 +142,6 @@ public class AutoTableLayoutController extends ElementLayoutController
       derived.currentColumn = 0;
       return derived;
     }
-
 
     // Advance is impossible, that means we reached the end of the group or
     // the end of the table ..
@@ -231,13 +244,11 @@ public class AutoTableLayoutController extends ElementLayoutController
   }
 
   /**
-   * Joins with a delegated process flow. This is generally called from a child
-   * flow and should *not* (I mean it!) be called from outside. If you do,
-   * you'll suffer.
+   * Joins with a delegated process flow. This is generally called from a child flow and should *not* (I mean it!) be
+   * called from outside. If you do, you'll suffer.
    *
    * @param flowController the flow controller of the parent.
-   * @return the joined layout controller that incorperates all changes from
-   * the delegate.
+   * @return the joined layout controller that incorperates all changes from the delegate.
    */
   public LayoutController join(final FlowController flowController)
   {
@@ -247,7 +258,7 @@ public class AutoTableLayoutController extends ElementLayoutController
     return derived;
   }
 
-  public int getCurrentColumn ()
+  public int getCurrentColumn()
   {
     return currentColumn;
   }

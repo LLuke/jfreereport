@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ReportDataRow.java,v 1.6 2007/04/01 18:49:24 taqua Exp $
+ * $Id: ReportDataRow.java,v 1.7 2007/05/09 12:28:24 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -53,7 +53,7 @@ public final class ReportDataRow implements DataRow
 {
   private Map nameCache;
   private DataFlags[] data;
-  private final ReportData reportData;
+  private ReportData reportData;
   private int cursor;
 
   private ReportDataRow(final ReportData reportData) throws DataSourceException
@@ -62,45 +62,58 @@ public final class ReportDataRow implements DataRow
     {
       throw new NullPointerException();
     }
+
     synchronized (reportData)
     {
       this.reportData = reportData;
-      this.cursor = reportData.getCursorPosition();
-    }
-  }
 
-  private void rebuildFromScratch() throws DataSourceException
-  {
-    final int columnCount = reportData.getColumnCount();
-    this.data = new DataFlags[columnCount];
-
-    final HashMap nameCache = new HashMap();
-    for (int i = 0; i < columnCount; i++)
-    {
-      final String columnName = reportData.getColumnName(i);
-      if (columnName != null)
+      reportData.setCursorPosition(ReportData.BEFORE_FIRST_ROW);
+      final boolean readable;
+      if (reportData.isAdvanceable())
       {
-        nameCache.put(columnName, IntegerCache.getInteger(i));
-      }
-
-      if (reportData.isEmpty() == false)
-      {
-        final Object value = reportData.get(i);
-        this.data[i] = new DefaultDataFlags(columnName, value, true);
+        readable = reportData.next() && reportData.isReadable();
+        cursor = reportData.getCursorPosition();
       }
       else
       {
-        this.data[i] = new DefaultDataFlags(columnName, null, true);
+        readable = false;
+        cursor = 0;
       }
+
+      final HashMap nameCache = new HashMap();
+      final int columnCount = reportData.getColumnCount();
+      this.data = new DataFlags[columnCount];
+
+      for (int i = 0; i < columnCount; i++)
+      {
+        final String columnName = reportData.getColumnName(i);
+        if (columnName != null)
+        {
+          nameCache.put(columnName, IntegerCache.getInteger(i));
+        }
+
+        if (readable)
+        {
+          final Object value = reportData.get(i);
+          this.data[i] = new DefaultDataFlags(columnName, value, true);
+        }
+        else
+        {
+          this.data[i] = new DefaultDataFlags(columnName, null, true);
+        }
+      }
+      this.nameCache = Collections.unmodifiableMap(nameCache);
     }
-    this.nameCache = Collections.unmodifiableMap(nameCache);
   }
 
   private ReportDataRow(final ReportData reportData,
                         final ReportDataRow reportDataRow)
       throws DataSourceException
   {
-    this(reportData);
+    if (reportData == null)
+    {
+      throw new NullPointerException();
+    }
 
     if (reportDataRow == null)
     {
@@ -109,6 +122,8 @@ public final class ReportDataRow implements DataRow
 
     synchronized (reportData)
     {
+      this.reportData = reportData;
+      this.cursor = reportData.getCursorPosition();
       final int columnCount = reportData.getColumnCount();
       this.data = new DataFlags[columnCount];
 
@@ -117,8 +132,7 @@ public final class ReportDataRow implements DataRow
         final String columnName = reportData.getColumnName(i);
         final Object value = reportData.get(i);
         final boolean changed = ObjectUtilities.equal(value, reportDataRow.get(i));
-        this.data[i] = new DefaultDataFlags
-            (columnName, value, changed);
+        this.data[i] = new DefaultDataFlags(columnName, value, changed);
       }
       this.nameCache = reportDataRow.nameCache;
     }
@@ -130,9 +144,7 @@ public final class ReportDataRow implements DataRow
       throws DataSourceException, ReportDataFactoryException
   {
     final ReportData reportData = dataFactory.queryData(query, parameters);
-    final ReportDataRow dataRow = new ReportDataRow(reportData);
-    dataRow.rebuildFromScratch();
-    return dataRow;
+    return new ReportDataRow(reportData);
   }
 
   /**
@@ -144,7 +156,7 @@ public final class ReportDataRow implements DataRow
    * @return the value.
    * @throws IllegalStateException if the datarow detected a deadlock.
    */
-  public Object get(int col) throws DataSourceException
+  public Object get(final int col) throws DataSourceException
   {
     return data[col].getValue();
   }
@@ -159,9 +171,9 @@ public final class ReportDataRow implements DataRow
    * @return the value.
    * @throws IllegalStateException if the datarow detected a deadlock.
    */
-  public Object get(String col) throws DataSourceException
+  public Object get(final String col) throws DataSourceException
   {
-    Integer colIdx = (Integer) nameCache.get(col);
+    final Integer colIdx = (Integer) nameCache.get(col);
     if (colIdx == null)
     {
       throw new DataSourceException
@@ -179,7 +191,7 @@ public final class ReportDataRow implements DataRow
    * @param col the item index.
    * @return the name.
    */
-  public String getColumnName(int col)
+  public String getColumnName(final int col)
   {
     return data[col].getName();
   }
@@ -194,9 +206,9 @@ public final class ReportDataRow implements DataRow
     return data.length;
   }
 
-  public DataFlags getFlags(String col) throws DataSourceException
+  public DataFlags getFlags(final String col) throws DataSourceException
   {
-    Integer colIdx = (Integer) nameCache.get(col);
+    final Integer colIdx = (Integer) nameCache.get(col);
     if (colIdx == null)
     {
       throw new DataSourceException
@@ -206,7 +218,7 @@ public final class ReportDataRow implements DataRow
     return data[colIdx.intValue()];
   }
 
-  public DataFlags getFlags(int col)
+  public DataFlags getFlags(final int col)
   {
     return data[col];
   }

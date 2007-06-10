@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: HtmlFileExportTask.java,v 1.5 2007/04/01 18:49:31 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -62,7 +62,6 @@ public class HtmlFileExportTask implements Runnable
   private String exportMethod;
   private String suffix;
   private String filename;
-  private File targetFile;
   private String encoding;
 
   public HtmlFileExportTask(final ReportJob job)
@@ -75,16 +74,16 @@ public class HtmlFileExportTask implements Runnable
     this.job = job;
 
     final Configuration config = job.getConfiguration();
-    String dataDirectoryName = config.getConfigProperty
+    final String dataDirectoryName = config.getConfigProperty
         ("org.jfree.report.modules.gui.common.html.file.DataDirectory");
-    String targetFileName = config.getConfigProperty
+    final String targetFileName = config.getConfigProperty
         ("org.jfree.report.modules.gui.common.html.file.TargetFileName");
     exportMethod = config.getConfigProperty
         ("org.jfree.report.modules.gui.common.html.file.ExportMethod");
     encoding = config.getConfigProperty
         ("org.jfree.report.modules.gui.common.html.file.Encoding", "ASCII");
 
-    targetFile = new File(targetFileName);
+    final File targetFile = new File(targetFileName);
     targetDirectory = targetFile.getParentFile();
 
     dataDirectory = new File(targetFile, dataDirectoryName);
