@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfExportActonPlugin.java,v 1.3 2007/04/01 18:49:31 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -45,13 +45,13 @@ import org.jfree.util.ResourceBundleSupport;
  *
  * @author Thomas Morgner
  */
-public class PdfExportActonPlugin extends AbstractExportActionPlugin
+public class PdfExportActionPlugin extends AbstractExportActionPlugin
 {
   private ResourceBundleSupport resources;
   private static final String EXPORT_DIALOG_KEY =
       "org.jfree.report.modules.gui.swing.pdf.ExportDialog";
 
-  public PdfExportActonPlugin()
+  public PdfExportActionPlugin()
   {
   }
 
@@ -60,11 +60,12 @@ public class PdfExportActonPlugin extends AbstractExportActionPlugin
     return "org.jfree.report.modules.gui.swing.pdf.export.";
   }
 
-  public void initialize(SwingGuiContext context)
+  public boolean initialize(SwingGuiContext context)
   {
     super.initialize(context);
     resources = new ResourceBundleSupport(context.getLocale(),
         SwingPdfModule.BUNDLE_NAME);
+    return true;
   }
 
   /**
