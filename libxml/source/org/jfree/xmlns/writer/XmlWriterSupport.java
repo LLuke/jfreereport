@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.18 2007/05/27 18:44:28 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.19 2007/06/03 17:07:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,6 +38,7 @@ import java.util.Properties;
 
 import org.jfree.util.FastStack;
 import org.jfree.util.ObjectUtilities;
+import org.jfree.util.Log;
 import org.jfree.xmlns.common.AttributeList;
 
 /**
@@ -356,7 +357,6 @@ public class XmlWriterSupport
       w.write(level.getTagName());
     }
     w.write(">");
-
     doEndOfLine(w);
   }
 
@@ -796,7 +796,7 @@ public class XmlWriterSupport
         {
           if (transformNewLine)
           {
-            str.append("&#000a");
+            str.append("&#000a;");
           }
           else
           {
@@ -807,7 +807,7 @@ public class XmlWriterSupport
         {
           if (transformNewLine)
           {
-            str.append("&#000d");
+            str.append("&#000d;");
           }
           else
           {
