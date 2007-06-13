@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.12 2007/05/04 09:43:04 taqua Exp $
+ * $Id: LayoutControllerUtil.java,v 1.13 2007/05/14 08:55:52 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -477,9 +477,9 @@ public class LayoutControllerUtil
     final PrecomputedValueRegistry pcvr = fc.getPrecomputedValueRegistry();
 
     pcvr.startElementPrecomputation(nodeKey);
-    final PrecomputeNode startNode = pcvr.currentNode();
+    //final PrecomputeNode startNode = pcvr.currentNode();
     final LayoutController rootLc = layoutController.createPrecomputeInstance(fc);
-
+    final LayoutController rootParent = rootLc.getParent();
     final ReportTarget target = new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
 
     LayoutController lc = rootLc;
@@ -490,14 +490,20 @@ public class LayoutControllerUtil
       {
         final LayoutController parent = lc.getParent();
         lc = parent.join(lc.getFlowController());
+
+        if (parent == rootParent)
+        {
+          target.commit();
+          final PrecomputeNode precomputeNode = pcvr.currentNode();
+          final Object functionResult = precomputeNode.getFunctionResult(expressionPosition);
+          pcvr.finishElementPrecomputation(nodeKey);
+          return functionResult;
+        }
       }
     }
-    target.commit();
 
-    final PrecomputeNode precomputeNode = pcvr.currentNode();
-    final Object functionResult = precomputeNode.getFunctionResult(expressionPosition);
-    pcvr.finishElementPrecomputation(nodeKey);
-    return functionResult;
+    throw new IllegalStateException
+        ("Ups - we did not get to the root parent again. This is awful and we cannot continue.");
   }
 
 
@@ -506,7 +512,10 @@ public class LayoutControllerUtil
   {
     final FlowController fc = layoutController.getFlowController();
     final ReportTarget target = new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
+    final LayoutController rootParent = layoutController.getParent();
 
+    // Now start to iterate until the derived layout controller 'lc' that has this given parent
+    // wants to join.
     LayoutController lc = layoutController;
     while (lc.isAdvanceable())
     {
@@ -515,11 +524,17 @@ public class LayoutControllerUtil
       {
         final LayoutController parent = lc.getParent();
         lc = parent.join(lc.getFlowController());
+        if (parent == rootParent)
+        {
+          target.commit();
+          return lc;
+        }
       }
     }
     target.commit();
-
-    return lc;
+    throw new IllegalStateException
+        ("Ups - we did not get to the root parent again. This is awful and we cannot continue.");
+//    return lc;
   }
 
   public static Object evaluateExpression(final FlowController flowController,
