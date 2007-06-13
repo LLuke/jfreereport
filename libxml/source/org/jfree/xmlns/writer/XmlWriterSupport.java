@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: XmlWriterSupport.java,v 1.19 2007/06/03 17:07:09 taqua Exp $
+ * $Id: XmlWriterSupport.java,v 1.20 2007/06/13 11:21:11 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -796,23 +796,25 @@ public class XmlWriterSupport
         {
           if (transformNewLine)
           {
-            str.append("&#000a;");
+            str.append("&#x000a;");
           }
           else
           {
             str.append('\n');
           }
+          break;
         }
         case'\r':
         {
           if (transformNewLine)
           {
-            str.append("&#000d;");
+            str.append("&#x000d;");
           }
           else
           {
             str.append('\r');
           }
+          break;
         }
         default:
         {
@@ -1001,7 +1003,7 @@ public class XmlWriterSupport
   /**
    * Checks, whether the written XML file should end with an empty line.
    *
-   * @return true, if an linebreak should be added at the 
+   * @return true, if an linebreak should be added at the
    * end of the file, false otherwise.
    */
   public boolean isWriteFinalLinebreak()
