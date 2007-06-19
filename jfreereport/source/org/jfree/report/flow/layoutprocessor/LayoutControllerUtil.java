@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.13 2007/05/14 08:55:52 taqua Exp $
+ * $Id: LayoutControllerUtil.java,v 1.14 2007/06/13 12:04:10 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -71,7 +71,6 @@ import org.jfree.report.structure.Section;
 import org.jfree.resourceloader.Resource;
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
-import org.jfree.util.Log;
 
 /**
  * Creation-Date: 24.11.2006, 15:01:22
