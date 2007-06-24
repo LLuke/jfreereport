@@ -55,7 +55,7 @@ information that you think is relevant.
 We use an open source build tool called Ant to build LibFonts.  An
 Ant script (tested using Ant 1.6) is included in the distribution:
 
-    <libfonts-directory>/ant/build.xml
+    <libfonts-directory>/build.xml
 
 You can find out more about Ant at:
 
