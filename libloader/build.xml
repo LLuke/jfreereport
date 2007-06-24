@@ -1,0 +1,388 @@
+<!-- An ANT build file for libloader. -->
+
+<!-- Written by David Gilbert and modified for libLoader by Thomas Morgner. -->
+<!-- 09-Nov-2005 -->
+
+<!-- This script has been tested with Ant version 1.6.2. -->
+
+<!-- Several temporary directories are created while the script is -->
+<!-- running: "./build" and "./distribution".  -->
+
+<!-- A "./javadoc" directory will be created for the Javadoc -->
+<!-- HTML pages. -->
+
+<!-- The script should work for the distribution and also the CVS -->
+<!-- repository. -->
+
+<project name="libloader" default="all" basedir=".">
+
+  <import file="ant/build-lib.xml"/>
+
+  <!-- Initialisation. -->
+  <target name="initialise-do" description="Initialise required settings.">
+    <tstamp/>
+
+    <property name="builddir" value="build"/>
+
+    <property file="${user.home}/.build-pentaho-reporting-libxml.properties"/>
+    <property file="build.properties"/>
+
+    <path id="core.Classpath">
+      <pathelement location="${libdir}/${jcommon-jar-file}"/>
+    </path>
+    <isClassAndFileAvailable class-name="org.jfree.JCommon"
+                             property-name="core.Enabled"
+                             file-name="${libdir}/${jcommon-jar-file}"
+                             classpath-id="core.Classpath"/>
+    <fail unless="core.Enabled"/>
+
+    <path id="module.cache.oscache.Classpath">
+      <path refid="core.Classpath"/>
+      <pathelement location="${libdir}/${oscache-jar-file}"/>
+      <pathelement location="${libdir}/${commons-logging-jar-file}"/>
+    </path>
+    <isClassAndFileAvailable
+            class-name="com.opensymphony.oscache.general.GeneralCacheAdministrator"
+            property-name="module.cache.oscache.Enabled"
+            file-name="${libdir}/${oscache-jar-file}"
+            classpath-id="module.cache.oscache.Classpath"/>
+
+
+    <path id="module.factory.wmf.Classpath">
+      <path refid="core.Classpath"/>
+      <pathelement location="${libdir}/${pixie-jar-file}"/>
+    </path>
+    <isClassAndFileAvailable
+            class-name="org.jfree.pixie.PixieInfo"
+            property-name="module.factory.wmf.Enabled"
+            file-name="${libdir}/${pixie-jar-file}"
+            classpath-id="module.factory.wmf.Classpath">
+     </isClassAndFileAvailable>
+
+
+    <!-- EH-Cache needs JDK 1.4 -->
+    <path id="module.cache.ehcache.Classpath">
+      <path refid="core.Classpath"/>
+      <pathelement location="${libdir}/${commons-logging-jar-file}"/>
+      <pathelement location="${libdir}/${ehcache-jar-file}"/>
+    </path>
+    <isClassAvailableEx
+            class-name="net.sf.ehcache.CacheManager"
+            property-name="module.cache.ehcache.Enabled"
+            classpath-id="module.cache.ehcache.Classpath">
+      <additional-tests>
+        <!-- This class is part of the JDK 1.4 -->
+        <available classname="java.util.LinkedHashMap"/>
+        <available file="${libdir}/${ehcache-jar-file}"/>
+        <available file="${libdir}/${commons-logging-jar-file}"/>
+      </additional-tests>
+    </isClassAvailableEx>
+
+    <echo>
+      Configuration:
+      --------------
+      module.cache.ehcache.Enabled = ${module.cache.ehcache.Enabled}
+      module.cache.oscache.Enabled = ${module.cache.oscache.Enabled}
+      module.factory.wmf.Enabled = ${module.factory.wmf.Enabled}
+    </echo>
+  </target>
+
+  <target name="initialise-no-ehcache" unless="module.cache.ehcache.Enabled">
+    <path id="module.cache.ehcache.Classpath"></path>
+    <path id="all.Classpath">
+      <path refid="core.Classpath"/>
+      <path refid="module.cache.oscache.Classpath"/>
+      <path refid="module.factory.wmf.Classpath"/>
+    </path>
+  </target>
+
+  <target name="initialise-ehcache" if="module.cache.ehcache.Enabled">
+    <path id="all.Classpath">
+      <path refid="core.Classpath"/>
+      <path refid="module.cache.ehcache.Classpath"/>
+      <path refid="module.cache.oscache.Classpath"/>
+      <path refid="module.factory.wmf.Classpath"/>
+    </path>
+  </target>
+
+  <target name="initialise" depends="initialise-do,initialise-no-ehcache,initialise-ehcache">
+  </target>
+
+  <target name="compile-core" depends="initialise">
+
+    <fileset dir="source/" id="core.SourceFiles">
+      <exclude name="**/junit/**"/>
+      <exclude name="org/jfree/resourceloader/modules/**"/>
+      <include name="**/*.java"/>
+    </fileset>
+
+    <fileset dir="source/" id="core.ResourceFiles">
+      <exclude name="**/junit/**"/>
+      <exclude name="org/jfree/resourceloader/modules/**"/>
+      <include name="**/*.properties"/>
+    </fileset>
+
+    <build-core target-jar="${libloader-core-jar-file}"
+                source-files-id="core.SourceFiles"
+                resource-files-id="core.ResourceFiles"
+                classpath-id="core.Classpath">
+    </build-core>
+  </target>
+
+  <target name="compile-all" depends="initialise">
+
+    <fileset dir="source/" id="all.SourceFiles">
+      <exclude name="**/junit/**"/>
+      <exclude name="org/jfree/resourceloader/modules/cache/oscache/**"
+               unless="module.cache.oscache.Enabled"/>
+      <exclude name="org/jfree/resourceloader/modules/cache/ehcache/**"
+               unless="module.cache.ehcache.Enabled"/>
+      <exclude name="org/jfree/resourceloader/modules/factory/wmf/**"
+               unless="module.factory.wmf.Enabled"/>
+      <include name="**/*.java"/>
+    </fileset>
+
+    <fileset dir="source/" id="all.ResourceFiles">
+      <exclude name="org/jfree/resourceloader/modules/cache/oscache/**"
+               unless="module.cache.oscache.Enabled"/>
+      <exclude name="org/jfree/resourceloader/modules/cache/ehcache/**"
+               unless="module.cache.ehcache.Enabled"/>
+      <exclude name="org/jfree/resourceloader/modules/factory/wmf/**"
+               unless="module.factory.wmf.Enabled"/>
+      <exclude name="**/junit/**"/>
+      <include name="**/*.properties"/>
+    </fileset>
+
+    <build-core target-jar="${libloader-jar-file}"
+                source-files-id="all.SourceFiles"
+                resource-files-id="all.ResourceFiles"
+                classpath-id="all.Classpath">
+    </build-core>
+  </target>
+
+
+  <target name="compile-retro" depends="initialise">
+
+    <fileset dir="source/" id="all.SourceFiles">
+      <exclude name="**/junit/**"/>
+      <exclude name="org/jfree/resourceloader/modules/cache/oscache/**"
+               unless="module.cache.oscache.Enabled"/>
+      <exclude name="org/jfree/resourceloader/modules/cache/ehcache/**"
+               unless="module.cache.ehcache.Enabled"/>
+      <exclude name="org/jfree/resourceloader/modules/factory/wmf/**"
+               unless="module.factory.wmf.Enabled"/>
+      <include name="**/*.java"/>
+    </fileset>
+
+    <fileset dir="source/" id="all.ResourceFiles">
+      <exclude name="org/jfree/resourceloader/modules/cache/oscache/**"
+               unless="module.cache.oscache.Enabled"/>
+      <exclude name="org/jfree/resourceloader/modules/cache/ehcache/**"
+               unless="module.cache.ehcache.Enabled"/>
+      <exclude name="org/jfree/resourceloader/modules/factory/wmf/**"
+               unless="module.factory.wmf.Enabled"/>
+      <exclude name="**/junit/**"/>
+      <include name="**/*.properties"/>
+    </fileset>
+
+    <build-retro target-jar="${libloader-jar-file}"
+                source-files-id="all.SourceFiles"
+                resource-files-id="all.ResourceFiles"
+                classpath-id="all.Classpath"
+                jdk-dir="${build.retro.jdk}">
+    </build-retro>
+  </target>
+
+  <target name="compile-module-cache-oscache"
+          depends="initialise,compile-core"
+          if="module.cache.oscache.Enabled">
+    <fileset dir="source"
+             id="module.cache.oscache.SourceFiles">
+      <include name="org/jfree/resourceloader/modules/cache/oscache/**/*.java"/>
+      <include name="org/jfree/resourceloader/modules/cache/oscache/*.java"/>
+    </fileset>
+
+    <fileset dir="source"
+             id="module.cache.oscache.ResourceFiles">
+      <include name="org/jfree/resourceloader/modules/cache/oscache/**/*.properties"/>
+      <include name="org/jfree/resourceloader/modules/cache/oscache/*.properties"/>
+    </fileset>
+
+    <path id="module.cache.oscache.BuildClasspath">
+      <path refid="module.cache.oscache.Classpath"/>
+      <pathelement location="${libloader-core-jar-file}"/>
+    </path>
+
+    <build-core source-files-id="module.cache.oscache.SourceFiles"
+                resource-files-id="module.cache.oscache.ResourceFiles"
+                target-jar="${module-cache-oscache-jar-file}"
+                classpath-id="module.cache.oscache.BuildClasspath"/>
+  </target>
+
+  <target name="compile-module-cache-ehcache"
+          depends="initialise,compile-core"
+          if="module.cache.ehcache.Enabled">
+    <fileset dir="source"
+             id="module.cache.ehcache.SourceFiles">
+      <include name="org/jfree/resourceloader/modules/cache/ehcache/**/*.java"/>
+      <include name="org/jfree/resourceloader/modules/cache/ehcache/*.java"/>
+    </fileset>
+
+    <fileset dir="source"
+             id="module.cache.ehcache.ResourceFiles">
+      <include name="org/jfree/resourceloader/modules/cache/ehcache/**/*.properties"/>
+      <include name="org/jfree/resourceloader/modules/cache/ehcache/*.properties"/>
+    </fileset>
+
+    <path id="module.cache.ehcache.BuildClasspath">
+      <path refid="module.cache.ehcache.Classpath"/>
+      <pathelement location="${libloader-core-jar-file}"/>
+    </path>
+
+    <build-core source-files-id="module.cache.ehcache.SourceFiles"
+                resource-files-id="module.cache.ehcache.ResourceFiles"
+                target-jar="${module-cache-ehcache-jar-file}"
+                classpath-id="module.cache.ehcache.BuildClasspath"/>
+  </target>
+
+  <target name="compile-module-factory-wmf"
+          depends="initialise,compile-core"
+          if="module.factory.wmf.Enabled">
+    <fileset dir="source"
+             id="module.factory.wmf.SourceFiles">
+      <include name="org/jfree/resourceloader/modules/factory/wmf/**/*.java"/>
+      <include name="org/jfree/resourceloader/modules/factory/wmf/*.java"/>
+    </fileset>
+
+    <fileset dir="source"
+             id="module.factory.wmf.ResourceFiles">
+      <include name="org/jfree/resourceloader/modules/factory/wmf/**/*.properties"/>
+      <include name="org/jfree/resourceloader/modules/factory/wmf/*.properties"/>
+    </fileset>
+
+    <path id="module.factory.wmf.BuildClasspath">
+      <path refid="module.factory.wmf.Classpath"/>
+      <pathelement location="${libloader-core-jar-file}"/>
+    </path>
+
+    <build-core source-files-id="module.factory.wmf.SourceFiles"
+                resource-files-id="module.factory.wmf.ResourceFiles"
+                target-jar="${module-factory-wmf-jar-file}"
+                classpath-id="module.factory.wmf.BuildClasspath"/>
+  </target>
+
+
+  <target name="compile"
+          depends="compile-core,
+          compile-all,
+          compile-module-cache-ehcache,
+          compile-module-cache-oscache,
+          compile-module-factory-wmf">
+    <description>
+      Compile the LibLoader source code.
+    </description>
+  </target>
+
+  <target name="javadoc" depends="initialise">
+    <description>
+      Generate the LibLoader JavaDoc HTML pages
+    </description>
+
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+             windowtitle="LibLoader Class Library (version ${libloader.version})"
+             linksource="true">
+      <classpath refid="all.Classpath"/>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/resourceloader"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="fill-dist-dir">
+    <!-- copy across README -->
+    <copy file="README.txt"
+          tofile="${dist-dir}/README.txt"/>
+    <copy file="ChangeLog.txt"
+          tofile="${dist-dir}/ChangeLog.txt"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt"
+          tofile="${dist-dir}/licence-LGPL.txt"/>
+
+    <!-- copy across runtime jar file -->
+    <copy file="${libloader-jar-file}"
+          tofile="${dist-dir}/${libloader-jar-file}"/>
+    <copy file="${libloader-core-jar-file}"
+          tofile="${dist-dir}/${libloader-core-jar-file}"/>
+    <copy file="${module-cache-oscache-jar-file}"
+          tofile="${dist-dir}/${module-cache-oscache-jar-file}"
+          failonerror="false"/>
+    <copy file="${module-cache-ehcache-jar-file}"
+          tofile="${dist-dir}/${module-cache-ehcache-jar-file}"
+          failonerror="false"/>
+    <copy file="${module-factory-wmf-jar-file}"
+          tofile="${dist-dir}/${module-factory-wmf-jar-file}"
+          failonerror="false"/>
+
+    <!-- copy across maven xml files -->
+    <copy file="maven-libloader-project.xml"
+          tofile="${dist-dir}/maven-libloader-project.xml"/>
+
+    <!-- copy across source files -->
+    <copy todir="${dist-dir}/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <copy todir="${dist-dir}/lib">
+      <fileset dir="lib"/>
+    </copy>
+    <copy todir="${dist-dir}/resources">
+      <fileset dir="resources"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy file="ant/build.xml"
+          tofile="${dist-dir}/ant/build.xml" failonerror="false"/>
+    <copy file="ant/build-lib.xml"
+          tofile="${dist-dir}/ant/build-lib.xml" failonerror="false"/>
+
+    <copy file="ant/build.properties"
+          tofile="${dist-dir}/ant/build.properties"/>
+  </target>
+
+
+  <!-- Make .zip distribution for libfonts -->
+  <target name="zip" depends="compile">
+
+    <make-zip lib.version="${libloader.version}" lib.name="${libloader.name}"/>
+
+  </target>
+
+  <!-- Make .tar.gz distribution for libfonts -->
+  <target name="targz" depends="compile">
+
+    <make-targz lib.version="${libloader.version}"
+                lib.name="${libloader.name}"/>
+
+  </target>
+
+  <target name="maven-bundle" depends="compile-all">
+    <make-maven-bundle lib.version="${libloader.version}"
+                       lib.name="${libloader.name}"
+                       lib.file="${libloader-jar-file}"
+                       target="${libloader-bundle-file}"/>
+  </target>
+
+
+  <!-- ALL -->
+  <target name="all"
+          depends="compile,javadoc,zip,targz,maven-bundle">
+    <description>
+      Compiles libloader, builds the jar files, generates the Javadoc HTML
+      pages and creates distribution files (.zip and .tar.gz).
+    </description>
+  </target>
+
+</project>
