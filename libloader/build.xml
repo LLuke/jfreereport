@@ -162,6 +162,9 @@
 
 
   <target name="compile-retro" depends="initialise">
+    <description>
+      Compiles the sources using JIKES and a specified Java-Class-Library.
+    </description>
 
     <fileset dir="source/" id="all.SourceFiles">
       <exclude name="**/junit/**"/>
@@ -355,6 +358,9 @@
 
   <!-- Make .zip distribution for libfonts -->
   <target name="zip" depends="compile">
+    <description>
+      Creates a ZIP distribution archive.
+    </description>
 
     <make-zip lib.version="${libloader.version}" lib.name="${libloader.name}"/>
 
@@ -362,6 +368,9 @@
 
   <!-- Make .tar.gz distribution for libfonts -->
   <target name="targz" depends="compile">
+    <description>
+      Creates a tar-gz distribution archive.
+    </description>
 
     <make-targz lib.version="${libloader.version}"
                 lib.name="${libloader.name}"/>
@@ -369,6 +378,9 @@
   </target>
 
   <target name="maven-bundle" depends="compile-all">
+    <description>
+      Creates a Maven-Bundle JAR ready for upload to the Maven-Repository.
+    </description>
     <make-maven-bundle lib.version="${libloader.version}"
                        lib.name="${libloader.name}"
                        lib.file="${libloader-jar-file}"
