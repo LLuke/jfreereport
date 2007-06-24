@@ -2,9 +2,9 @@
   ~ Copyright (c) 2006, Pentaho Corporation. All Rights Reserved.
   -->
 
-<project name="librepository" default="all" basedir="..">
+<project name="librepository" default="all" basedir=".">
 
-  <import file="build-lib.xml"/>
+  <import file="ant/build-lib.xml"/>
 
   <!-- Initialisation. -->
   <target name="initialise">
@@ -13,7 +13,8 @@
     <property name="builddir" value="build"/>
 
     <dirname property="antfile.dir" file="${ant.file}"/>
-    <property file="ant/build.properties"/>
+    <property file="${user.home}/.build-pentaho-reporting-librepository.properties"/>
+    <property file="build.properties"/>
 
     <path id="core.Classpath">
       <pathelement location="${libdir}/${jcommon-jar-file}"/>
@@ -47,6 +48,27 @@
     </build-core>
   </target>
 
+  <target name="compile-retro" depends="initialise">
+
+    <fileset dir="source/" id="core.SourceFiles">
+      <exclude name="**/junit/**"/>
+      <include name="**/*.java"/>
+    </fileset>
+
+    <fileset dir="source/" id="core.ResourceFiles">
+      <exclude name="**/junit/**"/>
+      <include name="**/*.properties"/>
+      <include name="**/*.jj"/>
+    </fileset>
+
+    <build-retro target-jar="${librepository-jar-file}"
+                source-files-id="core.SourceFiles"
+                resource-files-id="core.ResourceFiles"
+                classpath-id="core.Classpath"
+                jdk-dir="${build.retro.jdk}">
+    </build-retro>
+  </target>
+
 
   <target name="javadoc" depends="initialise">
     <description>
@@ -69,6 +91,8 @@
     <!-- copy across README -->
     <copy file="README.txt"
           tofile="${dist-dir}/README.txt"/>
+    <copy file="ChangeLog.txt"
+          tofile="${dist-dir}/ChangeLog.txt"/>
 
     <!-- copy across LICENCE -->
     <copy file="licence-LGPL.txt"
@@ -88,13 +112,13 @@
     </copy>
 
     <!-- copy across ant build file (this file) -->
-    <copy file="ant/build.xml"
-          tofile="${dist-dir}/ant/build.xml"/>
+    <copy file="build.xml"
+          tofile="${dist-dir}/build.xml"/>
     <copy file="ant/build-lib.xml"
           tofile="${dist-dir}/ant/build-lib.xml"/>
 
-    <copy file="ant/build.properties"
-          tofile="${dist-dir}/ant/build.properties"/>
+    <copy file="build.properties"
+          tofile="${dist-dir}/build.properties"/>
   </target>
 
 

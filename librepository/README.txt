@@ -25,7 +25,7 @@ For the latest news and information about LibRepository, please refer to:
 
 2. SUPPORT
 ----------
-Free support is available via the JFreeReport forum, follow the link
+Free support is available via the Pentaho Reporting forum, follow the link
 from the LibRepository home page.  Please note that questions are
 answered by volunteers, so there is no guaranteed response time or
 level of service.
@@ -52,9 +52,9 @@ information that you think is relevant.
 4. ANT
 ------
 We use an open source build tool called Ant to build LibRepository.  An
-Ant script (tested using Ant 1.5.4) is included in the distribution:
+Ant script (tested using Ant 1.6.2) is included in the distribution:
 
-    <librepository-directory>/ant/build.xml
+    <librepository-directory>/build.xml
 
 You can find out more about Ant at:
 
