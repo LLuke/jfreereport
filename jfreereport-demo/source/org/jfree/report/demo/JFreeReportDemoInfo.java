@@ -53,10 +53,10 @@ public class JFreeReportDemoInfo extends ProjectInfo
   public JFreeReportDemoInfo ()
   {
     setName("JFreeReport-Demo");
-    setVersion("0.9.0-05");
+    setVersion("0.9.1");
     setInfo("http://reporting.pentaho.org");
-    setCopyright ("(C)opyright 2006, by Thomas Morgner, " +
-            "Object Refinery Limited and Contributors");
+    setCopyright ("(C)opyright 2006, 2007, by Thomas Morgner, " +
+            "Pentaho Corporation, Object Refinery Limited and Contributors");
 
     setContributors(Arrays.asList(
         new Contributor[]

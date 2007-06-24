@@ -2,23 +2,15 @@
   ~ Copyright (c) 2007, Pentaho Corporation. All Rights Reserved.
   -->
 
-<!-- An ANT build file for JFreeReport. -->
+<!-- An ANT build file for Pentaho Reporting Flow Engine. -->
 
-<!-- Written by David Gilbert and modified for libFonts by Thomas Morgner. -->
-<!-- 09-Nov-2005 -->
-
+<!-- Written by David Gilbert and modified for Pentaho Reporting Flow Engine by Thomas Morgner. -->
 <!-- This script has been tested with Ant version 1.6.2. -->
-
-<!-- Several temporary directories are created while the script is -->
-<!-- running: "../build" and "../distribution".  -->
-
-<!-- A "../javadoc" directory will be created for the Javadoc -->
-<!-- HTML pages. -->
 
 <!-- The script should work for the distribution and also the CVS -->
 <!-- repository. -->
 
-<project name="jfreereport" default="all" basedir=".">
+<project name="Pentaho Reporting Flow Engine Demo" default="all" basedir=".">
 
   <import file="ant/build-lib.xml"/>
 
@@ -52,7 +44,7 @@
         <pathelement location="${libdir}/${jaxp-jar-file}"/>
         <pathelement location="${libdir}/${librepository-jar-file}"/>
         <pathelement location="${libdir}/${flute-jar-file}"/>
-        <pathelement location="${libdir}/${jfreereport-jar-file}"/>
+        <pathelement location="${libdir}/${pref-jar-file}"/>
         <pathelement location="${libdir}/${sac-jar-file}"/>
       </all-classpath>
       <all-resources>
@@ -93,7 +85,7 @@
     <delete dir="javadoc"/>
     <mkdir dir="javadoc"/>
     <javadoc destdir="javadoc"
-      windowtitle="JFreeReport (version ${pref.version})"
+      windowtitle="Pentaho Reporting Flow Engine - Demo (version ${pref.version})"
       overview="source/overview.html"
       linksource="true">
       <classpath>
@@ -107,7 +99,7 @@
         <pathelement location="${libdir}/${jaxp-jar-file}"/>
         <pathelement location="${libdir}/${librepository-jar-file}"/>
         <pathelement location="${libdir}/${flute-jar-file}"/>
-        <pathelement location="${libdir}/${jfreereport-jar-file}"/>
+        <pathelement location="${libdir}/${pref-jar-file}"/>
         <pathelement location="${libdir}/${sac-jar-file}"/>
       </classpath>
       <packageset dir="source" defaultexcludes="yes">
@@ -172,7 +164,7 @@
   <!-- ALL -->
   <target name="all"
     depends="compile,javadoc,zip,targz"
-    description="Compiles JFreeReport, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+    description="Compiles Pentaho Reporting Flow Engine Demo, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
   </target>
 
 </project>

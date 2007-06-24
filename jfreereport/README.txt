@@ -2,7 +2,6 @@ Pentaho Reporting Flow Engine 0.9.1                               24 Jun 2007
    .. the reporting engine formerly known as 'JFreeReport' ..
 =============================================================================
 
-24 June 2007
 
 1. INTRODUCTION
 ---------------
