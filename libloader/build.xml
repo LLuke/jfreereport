@@ -24,7 +24,7 @@
 
     <property name="builddir" value="build"/>
 
-    <property file="${user.home}/.build-pentaho-reporting-libxml.properties"/>
+    <property file="${user.home}/.build-pentaho-reporting-libloader.properties"/>
     <property file="build.properties"/>
 
     <path id="core.Classpath">

@@ -56,9 +56,9 @@ information that you think is relevant.
 5. ANT
 ------
 We use an open source build tool called Ant to build LibLoader.  An
-Ant script (tested using Ant 1.5.4) is included in the distribution:
+Ant script (tested using Ant 1.6.2) is included in the distribution:
 
-    <libloader-directory>/ant/build.xml
+    <libloader-directory>/build.xml
 
 You can find out more about Ant at:
 
