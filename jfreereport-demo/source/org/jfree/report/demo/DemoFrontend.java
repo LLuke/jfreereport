@@ -43,6 +43,7 @@ import org.jfree.report.demo.world.WorldAPIDemoHandler;
 import org.jfree.report.demo.loader.DemoLoaderDemoHandler;
 import org.jfree.report.demo.autotable.AutoTableDemoHandler;
 import org.jfree.report.demo.layoutcontroller.HelloWorldComponentDemoHandler;
+import org.jfree.report.demo.pivoting.PivotDemoHandler;
 import org.jfree.base.config.ModifiableConfiguration;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.ui.RefineryUtilities;
@@ -65,6 +66,7 @@ public class DemoFrontend extends CompoundDemoFrame
   {
     final DefaultDemoSelector rootSelector =
         new DefaultDemoSelector("All JFreeReport Demos");
+    rootSelector.addDemo(new PivotDemoHandler());
     rootSelector.addDemo(new QuadrantDemoHandler());
     rootSelector.addDemo(new QuadrantSubReportDemoHandler());
     rootSelector.addDemo(new WorldDemoHandler());
