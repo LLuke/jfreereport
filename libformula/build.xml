@@ -2,18 +2,17 @@
   ~ Copyright (c) 2007, Pentaho Corporation. All Rights Reserved.
   -->
 
-<project name="libformula" default="all" basedir="..">
+<project name="libformula" default="all" basedir=".">
 
-  <import file="build-lib.xml"/>
+  <import file="ant/build-lib.xml"/>
 
   <!-- Initialisation. -->
   <target name="initialise">
     <tstamp/>
 
     <property name="builddir" value="build"/>
-
-    <dirname property="antfile.dir" file="${ant.file}"/>
-    <property file="ant/build.properties"/>
+    <property file="${user.home}/.build-pentaho-reporting-libformula.properties"/>
+    <property file="build.properties"/>
 
     <path id="core.Classpath">
       <pathelement location="${libdir}/${jcommon-jar-file}"/>
@@ -25,8 +24,8 @@
                              classpath-id="core.Classpath"/>
     <fail unless="lib.jcommon.present"/>
 
-	<available property="jdk1.4+" classname="java.lang.CharSequence"/>
-	<available property="jdk1.5+" classname="java.lang.StringBuilder"/>
+	  <available property="jdk1.4+" classname="java.lang.CharSequence"/>
+	  <available property="jdk1.5+" classname="java.lang.StringBuilder"/>
   </target>
 
   <!-- Compile the JCommon classes -->
@@ -39,8 +38,10 @@
     />
   </target>
 
-
   <target name="compile" depends="initialise">
+    <description>
+      Compiles the sources and creates a JAR-file.
+    </description>
 
     <fileset dir="source/" id="core.SourceFiles">
       <exclude name="**/junit/**"/>
@@ -59,6 +60,31 @@
                 classpath-id="core.Classpath">
     </build-core>
   </target>
+
+
+  <target name="compile-retro" depends="initialise">
+    <description>
+      Compiles the sources using JIKES and a specified Java-Class-Library.
+    </description>
+
+    <fileset dir="source/" id="core.SourceFiles">
+      <exclude name="**/junit/**"/>
+      <include name="**/*.java"/>
+    </fileset>
+
+    <fileset dir="source/" id="core.ResourceFiles">
+      <exclude name="**/junit/**"/>
+      <include name="**/*.properties"/>
+      <include name="**/*.jj"/>
+    </fileset>
+
+    <build-retro target-jar="${libformula-jar-file}"
+                source-files-id="core.SourceFiles"
+                resource-files-id="core.ResourceFiles"
+                classpath-id="core.Classpath"
+                jdk-dir="${build.retro.jdk}">
+    </build-retro>
+  </target>
 	
   <target name="fix-tests" description="Fix jdk 1.5 nature of test classes for compilation">
 		<property name="build.target" value="1.5"></property>
@@ -66,30 +92,29 @@
   </target>
 	
   <target name="compile-tests" depends="fix-tests,initialise" if="jdk1.5+">
-	<antcall target="compile" inheritall="false" inheritrefs="false"></antcall>
-	<property name="testng.libformula-jar-file" value="testng.${libformula-jar-file}"/>
+	  <antcall target="compile" inheritall="false" inheritrefs="false"/>
+	  <property name="testng.libformula-jar-file" value="testng.${libformula-jar-file}"/>
 	
-	<path id="test.Classpath">
-	      <pathelement location="${libdir}/${jcommon-jar-file}"/>
+  	<path id="test.Classpath">
+	    <pathelement location="${libdir}/${jcommon-jar-file}"/>
 		  <pathelement location="${testng-dir}/testng-5.4-jdk15.jar"/>
-	      <pathelement location="${libformula-jar-file}"/>
-	</path>
+	    <pathelement location="${libformula-jar-file}"/>
+	  </path>
 	
-	<fileset dir="test/" id="test.SourceFiles">
-	      <include name="**/*.java"/>
-	</fileset>
+	  <fileset dir="test/" id="test.SourceFiles">
+	    <include name="**/*.java"/>
+	  </fileset>
 	
-	<fileset dir="test/" id="test.ResourceFiles">
-	      <include name="**/*.properties"/>
-	</fileset>
+	  <fileset dir="test/" id="test.ResourceFiles">
+	    <include name="**/*.properties"/>
+	  </fileset>
 	
 	
-	<build-core target-jar="${testng.libformula-jar-file}"
-	                source-files-id="test.SourceFiles"
-	                resource-files-id="test.ResourceFiles"
-	                classpath-id="test.Classpath">
-   </build-core>
-	
+    <build-core target-jar="${testng.libformula-jar-file}"
+                    source-files-id="test.SourceFiles"
+                    resource-files-id="test.ResourceFiles"
+                    classpath-id="test.Classpath"/>
+
   </target>
 
   <target name="tests" depends="compile-tests">
@@ -126,6 +151,8 @@
     <!-- copy across README -->
     <copy file="README.txt"
           tofile="${dist-dir}/README.txt"/>
+    <copy file="ChangeLog.txt"
+          tofile="${dist-dir}/ChangeLog.txt"/>
 
     <!-- copy across LICENCE -->
     <copy file="licence-LGPL.txt"
@@ -145,18 +172,21 @@
     </copy>
 
     <!-- copy across ant build file (this file) -->
-    <copy file="ant/build.xml"
-          tofile="${dist-dir}/ant/build.xml"/>
+    <copy file="build.xml"
+          tofile="${dist-dir}/build.xml"/>
     <copy file="ant/build-lib.xml"
           tofile="${dist-dir}/ant/build-lib.xml"/>
 
-    <copy file="ant/build.properties"
-          tofile="${dist-dir}/ant/build.properties"/>
+    <copy file="build.properties"
+          tofile="${dist-dir}/build.properties"/>
   </target>
 
 
   <!-- Make .zip distribution for libfonts -->
   <target name="zip" depends="compile">
+    <description>
+      Creates a ZIP distribution archive.
+    </description>
 
     <make-zip lib.version="${libformula.version}" lib.name="${libformula.name}"/>
 
@@ -164,11 +194,19 @@
 
   <!-- Make .tar.gz distribution for libformula -->
   <target name="targz" depends="compile">
+    <description>
+      Creates a tar-gz distribution archive.
+    </description>
 
     <make-targz lib.version="${libformula.version}"
                 lib.name="${libformula.name}"/>
 
   </target>
 
-  <target name="all" depends="compile,javadoc,zip,targz"/>
+  <target name="all" depends="compile,javadoc,zip,targz">
+    <description>
+      Compiles LibFormula, builds the jar files, generates the Javadoc HTML
+      pages and creates distribution files (.zip and .tar.gz).
+    </description>
+  </target>
 </project>
