@@ -93,7 +93,6 @@
       linksource="true">
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}"/>
-        <pathelement location="${libdir}/${libfonts-jar-file}"/>
         <pathelement location="${libdir}/${libloader-jar-file}"/>
       </classpath>
       <packageset dir="source" defaultexcludes="yes">
@@ -106,6 +105,10 @@
     <!-- copy across README -->
     <copy file="README"
       tofile="distribution/README"/>
+
+    <!-- copy across the ChangeLog -->
+    <copy file="ChangeLog"
+      tofile="distribution/ChangeLog"/>
 
     <!-- copy across LICENCE -->
     <copy file="licence-LGPL.txt"
