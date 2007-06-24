@@ -142,10 +142,6 @@
       tofile="distribution/migration.txt"/>
 
     <!-- copy across LICENCE -->
-    <copy file="ChangeLog"
-      tofile="distribution/ChangeLog"/>
-
-    <!-- copy across LICENCE -->
     <copy file="licence-LGPL.txt"
       tofile="distribution/licence-LGPL.txt"/>
 
