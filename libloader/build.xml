@@ -343,13 +343,13 @@
     </copy>
 
     <!-- copy across ant build file (this file) -->
-    <copy file="ant/build.xml"
-          tofile="${dist-dir}/ant/build.xml" failonerror="false"/>
+    <copy file="build.xml"
+          tofile="${dist-dir}/build.xml"/>
     <copy file="ant/build-lib.xml"
-          tofile="${dist-dir}/ant/build-lib.xml" failonerror="false"/>
+          tofile="${dist-dir}/ant/build-lib.xml"/>
 
-    <copy file="ant/build.properties"
-          tofile="${dist-dir}/ant/build.properties"/>
+    <copy file="build.properties"
+          tofile="${dist-dir}/build.properties"/>
   </target>
 
 
