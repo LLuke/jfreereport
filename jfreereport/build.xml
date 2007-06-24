@@ -1,4 +1,4 @@
-<!-- An ANT build file for JFreeReport. -->
+<!-- An ANT build file for Pentaho Reporting. -->
 
 <!-- Written by David Gilbert and modified for the Pentaho Reporting Flow Engine by Thomas Morgner. -->
 <!-- 09-Nov-2005 -->
@@ -198,7 +198,7 @@
   <!-- ALL -->
   <target name="all"
     depends="compile,javadoc,zip,targz,maven-bundle"
-    description="Compiles JFreeReport, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+    description="Compiles the Pentaho Reporting Flow Engine, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
   </target>
 
 </project>

@@ -3,6 +3,16 @@
 ---------------
 A list of changes in recent versions:
 
+0.9.1:    (24-Jun-2007)
+        * [BUG] Empty data-sources were not handled correctly and the system
+          tried to query the first (but non-existent) row anyway. To fix this
+          is a sane way, all datasources now start counting their rows at 1,
+          and row zero is reserved for the special state 'BEFORE_FIRST_ROW'.
+
+        * [BUG] Skipping invisible elements using a display-condition caused
+          state-bugs. The system forwarded to the end of the report, while it
+          should only skip to the end of the hidden element itself.
+
 0.9.0-05: (27-Apr-2007)
         * SectionLayoutController has been changed to be more extensible when
           subclasses try to implement different iteration patterns.

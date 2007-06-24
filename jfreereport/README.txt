@@ -1,27 +1,28 @@
-************************
-* JFREEREPORT 0.9.0-05 *
-************************
+Pentaho Reporting Flow Engine 0.9.1                               24 Jun 2007
+   .. the reporting engine formerly known as 'JFreeReport' ..
+=============================================================================
 
 27 April 2007
 
 1. INTRODUCTION
 ---------------
-JFreeReport is a free Java report library, distributed under the terms
-of the GNU Lesser General Public License (see license-LGPL.txt for
-details).  JFreeReport is developed by Thomas Morgner, David Gilbert
-and others.
+Pentaho Reporting Flow Engine is a free Java report library, distributed
+under the terms of the GNU Lesser General Public License (see license-LGPL.txt
+for details). Pentaho Reporting Flow Engine is developed by Thomas Morgner,
+David Gilbert and others.
 
-JFreeReport requires JDK 1.2.2.
+Pentaho Reporting Flow Engine requires JDK 1.2.2.
 
-For the latest news and information about JFreeReport, please refer to:
+For the latest news and information about Pentaho Reporting Flow Engine,
+please refer to:
 
     http://reporting.pentaho.org/
 
 
 2. SUPPORT
 ----------
-Free support is available via the JFreeReport forum, follow the link
-from the JFreeReport home page.  Please note that questions are
+Free support is available via the Pentaho Reporting forum, follow the link
+from the Pentaho Reporting home page.  Please note that questions are
 answered by volunteers, so there is no guaranteed response time or
 level of service.
 
@@ -32,24 +33,24 @@ question, and everyone can see the answer.
 
 3. REPORTING BUGS
 -----------------
-If you find bugs in JFreeReport, we'd like to hear about it so that we
-can improve future releases of JFreeReport.  Please post a bug report
-at the JFreeReport project page on SourceForge:
+If you find bugs in Pentaho Reporting Flow Engine, we'd like to hear about
+it so that we can improve future releases of Pentaho Reporting Flow Engine.
+Please post a bug report at the Pentaho Reporting project page on SourceForge:
 
     http://sourceforge.net/projects/jfreereport
 
 Please be sure to provide as much information as you can.  We need to
-know the version of JFreeReport that you are using, the JDK version,
-and the steps required to replicate the bug.  Include any other
+know the version of Pentaho Reporting Flow Engine that you are using,
+the JDK version, and the steps required to replicate the bug.  Include any other
 information that you think is relevant.
 
 
 4. ANT
 ------
-We use an open source build tool called Ant to build JFreeReport.  An
-Ant script (tested using Ant 1.6) is included in the distribution:
+We use an open source build tool called Ant to build Pentaho Reporting Flow Engine.
+An Ant script (tested using Ant 1.6) is included in the distribution:
 
-    <jfreereport-directory>/ant/build.xml
+    <jfreereport-directory>/build.xml
 
 You can find out more about Ant at:
 
@@ -62,6 +63,6 @@ popular open source software license).
 5. OTHER FEEDBACK
 -----------------
 For other feedback and comments, please post a message on the
-JFreeReport forum. The Forum is available at
+Pentaho Reporting forum. The Forum is available at
 
   http://forums.pentaho.org/
