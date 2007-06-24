@@ -14,9 +14,9 @@
 <!-- The script should work for the distribution and also the CVS -->
 <!-- repository. -->
 
-<project name="jfreereport" default="all" basedir="..">
+<project name="jfreereport" default="all" basedir=".">
 
-  <import file="build-lib.xml"/>
+  <import file="ant/build-lib.xml"/>
 
   <!-- Initialisation. -->
   <target name="initialise" description="Initialise required settings.">
@@ -24,8 +24,8 @@
 
     <property name="builddir" value="build"/>
 
-    <dirname property="antfile.dir" file="${ant.file}"/>
-    <property file="ant/build.properties"/>
+    <property file="${user.home}/.build-pentaho-reporting-flow.properties"/>
+    <property file="build.properties"/>
 
     <isClassAndFileAvailable class-name="org.jfree.JCommon"
                              property-name="lib.jcommon.present"
@@ -98,8 +98,10 @@
 
   <target name="fill-dist-dir">
     <!-- copy across README -->
-    <copy file="README"
-      tofile="distribution/README"/>
+    <copy file="README.txt"
+      tofile="distribution/README.txt"/>
+    <copy file="ChangeLog.txt"
+      tofile="distribution/ChangeLog.txt"/>
 
     <!-- copy across LICENCE -->
     <copy file="migration.txt"
@@ -132,13 +134,13 @@
     </copy>
 
     <!-- copy across ant build file (this file) -->
-    <copy file="ant/build.xml"
-      tofile="distribution/ant/build.xml" failonerror="false"/>
+    <copy file="build.xml"
+      tofile="distribution/build.xml" />
     <copy file="ant/build-lib.xml"
       tofile="distribution/ant/build-lib.xml"/>
 
-    <copy file="ant/build.properties"
-      tofile="distribution/ant/build.properties"/>
+    <copy file="build.properties"
+      tofile="distribution/build.properties"/>
   </target>
 
   <!-- Make .zip distribution for libfonts -->
