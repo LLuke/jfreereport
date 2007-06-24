@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ByteBuffer.java,v 1.3 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,7 +42,7 @@ public class ByteBuffer implements Serializable
   private int offset;
   private int cursor;
 
-  public ByteBuffer(int length)
+  public ByteBuffer(final int length)
   {
     if (length < 0)
     {
@@ -53,7 +53,7 @@ public class ByteBuffer implements Serializable
     this.cursor = 0;
   }
 
-  public ByteBuffer(byte[] data)
+  public ByteBuffer(final byte[] data)
   {
     if (data == null)
     {
@@ -64,7 +64,7 @@ public class ByteBuffer implements Serializable
     this.cursor = data.length;
   }
 
-  public ByteBuffer(byte[] data, int offset, int length)
+  public ByteBuffer(final byte[] data, final int offset, final int length)
   {
     if (length < 0)
     {
@@ -134,7 +134,7 @@ public class ByteBuffer implements Serializable
   {
     if (data.length < (offset + length))
     {
-      byte[] newdata = new byte[offset + length];
+      final byte[] newdata = new byte[offset + length];
       System.arraycopy(data, 0, newdata, 0, data.length);
       data = newdata;
     }

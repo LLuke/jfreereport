@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: CodePointBuffer.java,v 1.4 2006/12/03 18:11:59 taqua Exp $
+ * $Id: CodePointBuffer.java,v 1.5 2007/04/27 11:34:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,15 +42,18 @@ public class CodePointBuffer implements Serializable
   private int offset;
   private int cursor;
 
-  public CodePointBuffer(int[] data)
+  public CodePointBuffer(final int[] data)
   {
-    if (data == null) throw new NullPointerException();
+    if (data == null)
+    {
+      throw new NullPointerException();
+    }
     this.data = data;
     this.offset = 0;
     this.cursor = 0;
   }
 
-  public CodePointBuffer(int length)
+  public CodePointBuffer(final int length)
   {
     this.data = new int[length];
     this.offset = 0;
@@ -60,7 +63,7 @@ public class CodePointBuffer implements Serializable
   public int[] getBuffer()
   {
     final int length = getLength();
-    int[] retval = new int[length];
+    final int[] retval = new int[length];
     System.arraycopy(data, offset, retval, 0, length);
     return retval;
   }
@@ -113,7 +116,7 @@ public class CodePointBuffer implements Serializable
   {
     if (data.length < (offset + length))
     {
-      int[] newdata = new int[offset + length];
+      final int[] newdata = new int[offset + length];
       System.arraycopy(data, 0, newdata, 0, data.length);
       data = newdata;
     }
@@ -121,8 +124,14 @@ public class CodePointBuffer implements Serializable
 
   public void setCursor(final int cursor)
   {
-    if (cursor < offset) throw new IndexOutOfBoundsException();
-    if (cursor > data.length) throw new IndexOutOfBoundsException();
+    if (cursor < offset)
+    {
+      throw new IndexOutOfBoundsException();
+    }
+    if (cursor > data.length)
+    {
+      throw new IndexOutOfBoundsException();
+    }
     this.cursor = cursor;
   }
 }
