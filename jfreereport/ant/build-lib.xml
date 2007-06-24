@@ -278,6 +278,78 @@
     </sequential>
   </macrodef>
 
+
+
+  <!--
+      This target builds the complete project.
+   -->
+  <macrodef name="build-retro">
+    <attribute name="source-dir" description="The source directory"/>
+    <attribute name="jdk-dir" description="The directory where you installed JDK 1.2.2 (or whatever you are testing against)"/>
+    <attribute name="target-jar"
+               description="The name of the resulting jar-file"/>
+    <element name="all-classpath"
+             description="The classpath for the build process"/>
+    <element name="all-resources"
+             description="The resources to be included in the file jar file."/>
+    <element name="jar-args" optional="true"
+            description="Parameters for the 'jar' task"/>
+    <sequential>
+      <!-- prune possibly existing entries from temp build directory -->
+      <delete dir="${builddir}"/>
+
+      <!-- create a temp build directory -->
+      <mkdir dir="${builddir}"/>
+      <mkdir dir="${builddir}/src"/>
+      <mkdir dir="${builddir}/bin"/>
+
+      <!-- import all java files for compilation -->
+      <copy todir="${builddir}/src">
+        <fileset dir="@{source-dir}">
+          <exclude name="**/junit/**"/>
+          <include name="**/*.java"/>
+        </fileset>
+      </copy>
+
+      <javac  fork="true"
+              memoryInitialSize="160m"
+              memoryMaximumSize="160m"
+              srcdir="${builddir}/src"
+              destdir="${builddir}/bin"
+              compiler="jikes"
+              nowarn="on"
+	      includeAntRuntime="false"
+	      includeJavaRuntime="false"
+              deprecation="${build.deprecation}"
+              debug="${build.debug}"
+              optimize="${build.optimize}"
+              target="${build.target}">
+        <bootclasspath>
+	  <pathelement location="@{jdk-dir}/jre/lib/rt.jar"/>
+	</bootclasspath>
+        <classpath>
+          <all-classpath/>
+        </classpath>
+      </javac>
+
+
+      <copy todir="${builddir}/bin">
+        <fileset dir="@{source-dir}">
+          <all-resources/>
+        </fileset>
+      </copy>
+
+
+      <jar jarfile="@{target-jar}" basedir="${builddir}/bin">
+        <jar-args/>
+      </jar>
+
+
+      <!-- delete the temp directory -->
+      <delete dir="${builddir}"/>
+    </sequential>
+  </macrodef>
+
   <!--
     This target builds the distribution-zip file. It depends on the existence
     of a 'fill-dist-dir' target.

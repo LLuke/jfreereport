@@ -1,6 +1,6 @@
 <!-- An ANT build file for JFreeReport. -->
 
-<!-- Written by David Gilbert and modified for libFonts by Thomas Morgner. -->
+<!-- Written by David Gilbert and modified for the Pentaho Reporting Flow Engine by Thomas Morgner. -->
 <!-- 09-Nov-2005 -->
 
 <!-- This script has been tested with Ant version 1.6.2. -->
@@ -14,7 +14,7 @@
 <!-- The script should work for the distribution and also the CVS -->
 <!-- repository. -->
 
-<project name="jfreereport" default="all" basedir=".">
+<project name="flow-engine" default="all" basedir=".">
 
   <import file="ant/build-lib.xml"/>
 
@@ -33,10 +33,9 @@
     <fail unless="lib.jcommon.present"/>
   </target>
 
-  <!-- Compile the libfonts classes -->
   <target name="compile" depends="initialise">
 
-    <build-all target-jar="${jfreereport-jar-file}"
+    <build-all target-jar="${pref-jar-file}"
                source-dir="source">
       <all-classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}"/>
@@ -69,12 +68,47 @@
     </build-all>
   </target>
 
-  <!-- Generate the libfonts JavaDoc HTML pages -->
+  <target name="compile-retro" depends="initialise">
+
+    <build-retro target-jar="${pref-jar-file}"
+                 source-dir="source"
+                 jdk-dir="${build.retro.jdk}">
+      <all-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${jcommon-serializer-jar-file}"/>
+        <pathelement location="${libdir}/${libfonts-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+        <pathelement location="${libdir}/${liblayout-jar-file}"/>
+        <pathelement location="${libdir}/${libformula-jar-file}"/>
+        <pathelement location="${libdir}/${libxml-jar-file}"/>
+        <pathelement location="${libdir}/${jaxp-jar-file}"/>
+        <pathelement location="${libdir}/${librepository-jar-file}"/>
+        <pathelement location="${libdir}/${flute-jar-file}"/>
+      </all-classpath>
+      <all-resources>
+        <include name="*.properties"/>
+        <include name="**/*.properties"/>
+        <include name="*.xsd"/>
+        <include name="**/*.xsd"/>
+        <include name="*.css"/>
+        <include name="**/*.css"/>
+        <include name="*.xml"/>
+        <include name="**/*.xml"/>
+        <include name="*.gif"/>
+        <include name="**/*.gif"/>
+        <include name="*.png"/>
+        <include name="**/*.png"/>
+        <include name="*.jpg"/>
+        <include name="**/*.jpg"/>
+      </all-resources>
+    </build-retro>
+  </target>
+
   <target name="javadoc" depends="initialise">
     <delete dir="javadoc"/>
     <mkdir dir="javadoc"/>
     <javadoc destdir="javadoc"
-      windowtitle="JFreeReport (version ${jfreereport.version})"
+      windowtitle="Pentaho Reporting Flow Engine (version ${pref.version})"
       overview="source/overview.html"
       linksource="true">
       <classpath>
@@ -116,12 +150,12 @@
       tofile="distribution/licence-LGPL.txt"/>
 
     <!-- copy across runtime jar file -->
-    <copy file="${jfreereport-jar-file}"
-      tofile="distribution/${jfreereport-jar-file}"/>
+    <copy file="${pref-jar-file}"
+      tofile="distribution/${pref-jar-file}"/>
 
     <!-- copy across maven xml files -->
-    <copy file="maven-jfreereport-project.xml"
-      tofile="distribution/maven-jfreereport-project.xml"/>
+    <copy file="maven-project.xml"
+      tofile="distribution/maven-project.xml"/>
 
     <!-- copy across source files -->
     <copy todir="distribution/source">
@@ -143,21 +177,21 @@
       tofile="distribution/build.properties"/>
   </target>
 
-  <!-- Make .zip distribution for libfonts -->
+
   <target name="zip" depends="compile">
-    <make-zip lib.version="${jfreereport.version}" lib.name="${jfreereport.name}"/>
+    <make-zip lib.version="${pref.version}" lib.name="${pref.name}"/>
   </target>
 
-  <!-- Make .tar.gz distribution for libfonts -->
+
   <target name="targz" depends="compile">
-    <make-targz lib.version="${jfreereport.version}" lib.name="${jfreereport.name}"/>
+    <make-targz lib.version="${pref.version}" lib.name="${pref.name}"/>
   </target>
 
   <target name="maven-bundle" depends="compile" >
-    <make-maven-bundle lib.version="${jfreereport.version}"
-                       lib.name="${jfreereport.name}"
-                       lib.file="${jfreereport-jar-file}"
-                       target="${jfreereport-bundle-jar-file}"/>
+    <make-maven-bundle lib.version="${pref.version}"
+                       lib.name="${pref.name}"
+                       lib.file="${pref-jar-file}"
+                       target="${pref-bundle-jar-file}"/>
   </target>
 
 
