@@ -1,8 +1,8 @@
 ***********************
-* LibFormula - 0.1.7  *
+* LibFormula - 0.1.9  *
 ***********************
 
-27 Apr 2007
+24 Jun 2007
 
 1. INTRODUCTION
 ---------------
@@ -21,7 +21,7 @@ For the latest news and information about LibFormula, please refer to:
 
 2. SUPPORT
 ----------
-Free support is available via the JFreeReport forum, follow the link
+Free support is available via the Pentaho Reporting forum, follow the link
 from the LibFormula home page.  Please note that questions are
 answered by volunteers, so there is no guaranteed response time or
 level of service.
@@ -50,7 +50,7 @@ information that you think is relevant.
 We use an open source build tool called Ant to build LibFormula.  An
 Ant script (tested using Ant 1.6) is included in the distribution:
 
-    <libformula-directory>/ant/build.xml
+    <libformula-directory>/build.xml
 
 You can find out more about Ant at:
 

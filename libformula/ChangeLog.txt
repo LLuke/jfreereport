@@ -3,6 +3,24 @@
 ---------------
 A list of changes in recent versions:
 
+0.1.9: (24-Jun-2007)
+        * [BUG] Percentage Operator did not set the scale correctly
+
+        * [BUG] Divide operator did not remove unneccessary trailing zeros.
+
+        * [BUG] Fixed a NullPointerException in the Numeric-Operators.
+
+        * [BUG] Some operations returned 'null' instead of a NA()-TypeValue-Pair.
+
+        * [BUG] The parser did not handle parenthesis correctly resulting in
+          invalid results in computations.
+
+        * Added support for inline arrays to the parser.
+
+        * NULL-Values (aka NA()) are now treated like in Excel. Any operation
+          performed on an NA() value results in NA(). There is no implicit
+          conversion into ZERO for numeric operations anymore.
+
 0.1.8: (21-May-2007)
         * [BUG] The automatic type conversion was not always working.
         
