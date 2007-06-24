@@ -14,9 +14,9 @@
 <!-- The script should work for the distribution and also the CVS -->
 <!-- repository. -->
 
-<project name="libxml" default="all" basedir="..">
+<project name="libxml" default="all" basedir=".">
 
-  <import file="build-lib.xml"/>
+  <import file="ant/build-lib.xml"/>
 
 
   <!-- Initialisation. -->
@@ -26,7 +26,8 @@
     <property name="builddir" value="build"/>
 
     <dirname property="antfile.dir" file="${ant.file}"/>
-    <property file="${antfile.dir}/build.properties"/>
+    <property file="${user.home}/.build-pentaho-reporting-libxml.properties"/>
+    <property file="build.properties"/>
 
     <isClassAndFileAvailable class-name="org.jfree.JCommon"
                              property-name="lib.jcommon.present"
@@ -44,7 +45,27 @@
 
   </target>
 
-  <!-- Compile the libfonts classes -->
+
+  <target name="compile-retro" depends="initialise"
+    description="Compile the LibXML source code using a custom JIKES setup.">
+
+    <build-retro target-jar="${libxml-jar-file}"
+                 source-dir="source"
+                 jdk-dir="${build.retro.jdk}">
+      <all-classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${libdir}/${libloader-jar-file}"/>
+      </all-classpath>
+      <all-resources>
+        <include name="*.properties"/>
+        <include name="**/*.properties"/>
+        <include name="*.css"/>
+        <include name="**/*.css"/>
+      </all-resources>
+    </build-retro>
+  </target>
+
+
   <target name="compile" depends="initialise"
     description="Compile the libFonts source code.">
 
