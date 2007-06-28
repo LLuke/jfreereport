@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ComputeStaticPropertiesStep.java,v 1.7 2007/04/05 10:01:12 taqua Exp $
+ * $Id: ComputeStaticPropertiesStep.java,v 1.8 2007/04/10 19:27:09 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -38,7 +38,6 @@ import org.jfree.layouting.renderer.model.ComputedLayoutProperties;
 import org.jfree.layouting.renderer.model.ParagraphRenderBox;
 import org.jfree.layouting.renderer.model.RenderBox;
 import org.jfree.layouting.renderer.model.RenderNode;
-import org.jfree.layouting.renderer.model.StaticBoxLayoutProperties;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
 import org.jfree.layouting.renderer.model.table.TableCellRenderBox;
 import org.jfree.layouting.renderer.model.table.TableRenderBox;
@@ -71,7 +70,7 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
   {
   }
 
-  public void compute(LogicalPageBox root)
+  public void compute(final LogicalPageBox root)
   {
     this.root = root;
     startProcessing(root);
@@ -92,7 +91,7 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
 
     //ComputedLayoutProperties nlp = new ComputedLayoutProperties()
     final RenderLength bcw = computeBlockContextWidth(box);
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+//    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     final long rbcw = bcw.resolve(0);
     final BoxDefinition boxDefinition = box.getBoxDefinition();
     final ComputedLayoutProperties clp = new ComputedLayoutProperties();
@@ -195,6 +194,9 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     // the margin resolves to zero
     clp.setMarginTop(boxDefinition.getMarginTop().resolve(rbcw));
     clp.setMarginBottom(boxDefinition.getMarginBottom().resolve(rbcw));
+
+    // Docmark: This implementation does not take Paddings and Borders into account when computing the
+    // block context. Therefore this implementation is wrong/incomplete
 
     // According to the box-model, there are five cases
     // Case1: None of Width and Margin-left-right is auto.
@@ -328,7 +330,7 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     }
 
     final RenderLength bcw = computeBlockContextWidth(box);
-    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
+//    final StaticBoxLayoutProperties blp = box.getStaticBoxLayoutProperties();
     final long rbcw = bcw.resolve(0);
     final BoxDefinition boxDefinition = box.getBoxDefinition();
 
@@ -377,7 +379,7 @@ public class ComputeStaticPropertiesStep extends IterateVisualProcessStep
     slp.setPaddingRight(boxDefinition.getPaddingRight().resolve(bcw));
   }
 
-  protected RenderLength computeBlockContextWidth (RenderNode node)
+  protected RenderLength computeBlockContextWidth (final RenderNode node)
   {
     // grab the block-context width ..
     final RenderBox blockContext = node.getParentBlockContext();

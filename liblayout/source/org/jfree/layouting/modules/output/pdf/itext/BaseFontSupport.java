@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: BaseFontSupport.java,v 1.5 2007/04/10 19:27:08 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.6 2007/05/14 09:01:01 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -76,7 +76,7 @@ public class BaseFontSupport implements FontMapper
 
   private boolean useGlobalCache;
   private boolean embedFonts;
-  private BaseFontFactory baseFontFactory;
+  private static BaseFontFactory baseFontFactory;
 
   /**
    * Creates a new support instance.
@@ -95,9 +95,17 @@ public class BaseFontSupport implements FontMapper
     this.useGlobalCache = extendedConfig.getBoolProperty
             ("org.jfree.layouting.modules.output.pdf.itext.UseGlobalFontCache");
 
-    this.baseFontFactory = new BaseFontFactory();
-    this.baseFontFactory.registerDefaultFontPath(defaultEncoding);
+    synchronized(BaseFontSupport.class)
+    {
+      if (baseFontFactory == null)
+      {
+        baseFontFactory = new BaseFontFactory();
+        baseFontFactory.registerDefaultFontPath(defaultEncoding);
+      }
+    }
   }
+
+
 
   public String getDefaultEncoding ()
   {

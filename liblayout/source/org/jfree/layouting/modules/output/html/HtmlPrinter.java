@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: HtmlPrinter.java,v 1.10 2007/04/10 19:27:08 taqua Exp $
+ * $Id: HtmlPrinter.java,v 1.11 2007/05/14 09:01:00 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -290,6 +290,10 @@ public class HtmlPrinter extends IterateStructuralProcessStep
       xmlWriter.writeCloseTag();
       xmlWriter.writeCloseTag();
       xmlWriter.writeTag(Namespaces.XHTML_NAMESPACE, "body", XmlWriter.OPEN);
+    }
+    else
+    {
+      xmlWriter.addImpliedNamespace(Namespaces.XHTML_NAMESPACE, "");
     }
 
     contexts.clear();
