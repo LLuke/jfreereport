@@ -2,12 +2,20 @@
 1.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+
+0.9.1:    (27-Jun-2007)
+        * Normalized the build-files so that the build.xml file now sits in
+	  the root directory. 
+	  
+	! As liblayout is still broken, the demos will show very strange 
+	  results. 
+
 0.9.0-01  (11-Dec-2006)
         * A couple of new demos:
         
           - Quadrant-Subreport: Shows how to use sub-reports
           
-          - Auto-Table: Demonstrates the 'Auto-Table' capabilities
+           Auto-Table: Demonstrates the 'Auto-Table' capabilities
           
           - LayoutController: Shows how to build a custom layout-controller
             and how to register it in the XML-Parsers and the central

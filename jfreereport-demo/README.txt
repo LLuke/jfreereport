@@ -1,8 +1,8 @@
 ****************************************
-* JFREEREPORT 0.9.0-04 (Demo-Package)  *
+* JFREEREPORT 0.9.1    (Demo-Package)  *
 ****************************************
 
-01 April 2007
+27 Jun 2007
 
 1. INTRODUCTION
 ---------------
@@ -47,7 +47,7 @@ information that you think is relevant.
 We use an open source build tool called Ant to build JFreeReport.  An
 Ant script (tested using Ant 1.6) is included in the distribution:
 
-    <jfreereport-demo-directory>/ant/build.xml
+    <jfreereport-demo-directory>/build.xml
 
 You can find out more about Ant at:
 
