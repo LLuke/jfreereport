@@ -108,17 +108,19 @@ public class ZipContentLocation implements ContentLocation
 
     final ZipContentLocation item = new ZipContentLocation(repository, this, name);
     entries.put (name, item);
-
-    try
+    if ("/".equals(this.contentId) == false)
     {
-      final ZipEntry entry = new ZipEntry(contentId);
-      repository.writeDirectory(entry);
-      return item;
+      try
+      {
+        final ZipEntry entry = new ZipEntry(contentId);
+        repository.writeDirectory(entry);
+      }
+      catch (IOException e)
+      {
+        throw new ContentCreationException("Failed to create directory.");
+      }
     }
-    catch (IOException e)
-    {
-      throw new ContentCreationException("Failed to create directory.");
-    }
+    return item;
   }
 
   public boolean exists(final String name)

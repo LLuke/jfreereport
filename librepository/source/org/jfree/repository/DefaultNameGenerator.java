@@ -61,8 +61,27 @@ public class DefaultNameGenerator implements NameGenerator
     }
 
     this.location = location;
-    this.defaultNameHint = defaultNameHint;
-    this.defaultSuffix = defaultSuffix;
+
+    // a leading point is not a sufix!
+    final int pos = defaultNameHint.lastIndexOf('.');
+    if (defaultSuffix == null && pos > 0)
+    {
+      if (pos < (defaultNameHint.length() - 1))
+      {
+        this.defaultNameHint = defaultNameHint.substring(0, pos - 1);
+        this.defaultSuffix = defaultNameHint.substring(pos + 1);
+      }
+      else
+      {
+        this.defaultNameHint = defaultNameHint.substring(0, pos - 1);
+        this.defaultSuffix = null;
+      }
+    }
+    else
+    {
+      this.defaultNameHint = defaultNameHint;
+      this.defaultSuffix = defaultSuffix;
+    }
   }
 
   /**
