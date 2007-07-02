@@ -24,7 +24,7 @@
  *
  *
  * ------------
- * $Id: DefaultTypeRegistry.java,v 1.16 2007/05/21 18:57:59 mimil Exp $
+ * $Id: DefaultTypeRegistry.java,v 1.17 2007/06/06 17:07:52 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -65,8 +65,6 @@ import org.jfree.util.ObjectUtilities;
 public class DefaultTypeRegistry implements TypeRegistry
 {
   private FormulaContext context;
-
-  private static final long MILLISECS_PER_DAY = 24 * 60 * 60 * 1000;
 
   private static final BigDecimal ZERO = new BigDecimal(0);
 
@@ -363,7 +361,11 @@ public class DefaultTypeRegistry implements TypeRegistry
       }
 
       // fallback
-      return new Boolean(value.toString());
+      if ("true".equalsIgnoreCase(String.valueOf(value)))
+      {
+        return Boolean.TRUE;
+      }
+      return Boolean.FALSE;
     }
 
     if (type1.isFlagSet(Type.NUMERIC_TYPE))
@@ -522,15 +524,11 @@ public class DefaultTypeRegistry implements TypeRegistry
     return new TypeValuePair(targetType, target);
   }
 
-  public Type guessTypeOfObject(Object o)
+  public Type guessTypeOfObject(final Object o)
   {
     if (o instanceof Number)
     {
       return NumberType.GENERIC_NUMBER;
-    }
-    else if (o instanceof Date)
-    {
-      return DateTimeType.DATETIME_TYPE;
     }
     else if (o instanceof Time)
     {
@@ -539,6 +537,10 @@ public class DefaultTypeRegistry implements TypeRegistry
     else if (o instanceof java.sql.Date)
     {
       return DateTimeType.DATE_TYPE;
+    }
+    else if (o instanceof Date)
+    {
+      return DateTimeType.DATETIME_TYPE;
     }
     else if (o instanceof Boolean)
     {
