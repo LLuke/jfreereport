@@ -2,7 +2,7 @@
 * LibFonts - A JFreeReport Utility Library  *
 *********************************************
 
-27 May 2007
+22 Jul 2007
 
 1. INTRODUCTION
 ---------------

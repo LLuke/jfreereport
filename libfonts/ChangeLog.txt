@@ -3,6 +3,11 @@
 ---------------
 A list of changes in recent versions:
 
+0.2.7: (22-Jul-2007)
+        * Added support for iText fonts, AFM fonts and PFM fonts. The AFM and PFM
+	  fonts have no valid font-metrics system yet, use the iText font system
+	  instead.
+
 0.2.6: (27-May-2007)
         * Implemented the Grapheme-Cluster algorithm as specified by the Unicode
           UAX#29 document.
