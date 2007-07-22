@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: TrueTypeFontMetrics.java,v 1.9 2006/12/03 18:11:59 taqua Exp $
+ * $Id: TrueTypeFontMetrics.java,v 1.10 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -96,6 +96,7 @@ public class TrueTypeFontMetrics implements FontMetrics
 
   public double getMaxAscent()
   {
+    // todo: Most likely not correct ..
     return fontSize * fontMetrics.getAscent();
   }
 

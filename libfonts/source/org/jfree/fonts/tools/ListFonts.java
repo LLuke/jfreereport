@@ -23,18 +23,21 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ListFonts.java,v 1.5 2006/12/03 18:11:59 taqua Exp $
+ * $Id: ListFonts.java,v 1.6 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
 
 package org.jfree.fonts.tools;
 
-import org.jfree.fonts.truetype.TrueTypeFontRegistry;
+import org.jfree.fonts.LibFontBoot;
+import org.jfree.fonts.afm.AfmFontRegistry;
+import org.jfree.fonts.pfm.PfmFontRegistry;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontRecord;
 import org.jfree.fonts.registry.FontSource;
-import org.jfree.fonts.LibFontBoot;
+import org.jfree.fonts.registry.FontRegistry;
+import org.jfree.fonts.truetype.TrueTypeFontRegistry;
 
 public class ListFonts
 {
@@ -49,23 +52,14 @@ public class ListFonts
       System.out.println("  - (there is no font defined for that style and family.)");
       return;
     }
-    System.out.println("  " + record.getFamily().getFamilyName() + " italics:" + record.isItalic() + " oblique:" + record.isOblique() + " bold: " + record.isBold());
     if (record instanceof FontSource)
     {
-      final FontSource source = (FontSource) record;
-      final String[] allNames = source.getAllNames();
-      for (int i = 0; i < allNames.length; i++)
-      {
-        final String name = allNames[i];
-        System.out.println("  Alias: " + i + " Name:" + name);
-      }
-
-      final String[] allVariants = source.getAllVariants();
-      for (int i = 0; i < allVariants.length; i++)
-      {
-        final String name = allVariants[i];
-        System.out.println("  Variant: " + i + " Name:" + name);
-      }
+      FontSource fs = (FontSource) record;
+      System.out.println("  " + record.getFamily().getFamilyName() + " italics:" + record.isItalic() + " oblique:" + record.isOblique() + " bold: " + record.isBold() + " " + fs.getFontFile());
+    }
+    else
+    {
+      System.out.println("  " + record.getFamily().getFamilyName() + " italics:" + record.isItalic() + " oblique:" + record.isOblique() + " bold: " + record.isBold());
     }
   }
 
@@ -73,7 +67,24 @@ public class ListFonts
   {
     LibFontBoot.getInstance().start();
 
-    final TrueTypeFontRegistry registry = new TrueTypeFontRegistry();
+//    final TrueTypeFontRegistry registry = new TrueTypeFontRegistry();
+//    registry.initialize();
+//    final String[] fontFamilies = registry.getRegisteredFamilies();
+//    for (int i = 0; i < fontFamilies.length; i++)
+//    {
+//      String fontFamily = fontFamilies[i];
+//      final FontFamily family = registry.getFontFamily(fontFamily);
+//      String[] names = family.getAllNames();
+//      printRecord(family.getFontRecord(true, false));
+//    }
+//
+
+    listFontS(new AfmFontRegistry());
+    listFontS(new PfmFontRegistry());
+  }
+
+  private static void listFontS(final FontRegistry registry)
+  {
     registry.initialize();
     final String[] fontFamilies = registry.getRegisteredFamilies();
     for (int i = 0; i < fontFamilies.length; i++)
@@ -81,17 +92,10 @@ public class ListFonts
       String fontFamily = fontFamilies[i];
       final FontFamily family = registry.getFontFamily(fontFamily);
       String[] names = family.getAllNames();
-//      for (int j = 0; j < names.length; j++)
-//      {
-//        String name = names[j];
-//        System.out.println("  Alias: " + j + " Name:" + name);
-//      }
-
-//      printRecord(family.getFontRecord(false, false));
+      printRecord(family.getFontRecord(false, false));
       printRecord(family.getFontRecord(true, false));
-//      printRecord(family.getFontRecord(false, true));
-//      printRecord(family.getFontRecord(true, true));
-
+      printRecord(family.getFontRecord(false, true));
+      printRecord(family.getFontRecord(true, true));
     }
   }
 }

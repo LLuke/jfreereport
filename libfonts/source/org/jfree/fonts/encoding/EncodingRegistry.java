@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: EncodingRegistry.java,v 1.6 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -87,7 +87,7 @@ public final class EncodingRegistry
   private static EncodingRegistry instance;
   public static final String ENCODING_ALIAS_PREFIX = "org.jfree.fonts.encoding.alias.";
 
-  public synchronized static EncodingRegistry getInstance()
+  public static synchronized EncodingRegistry getInstance()
   {
     if (instance == null)
     {

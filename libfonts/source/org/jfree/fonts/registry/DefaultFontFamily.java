@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: DefaultFontFamily.java,v 1.7 2006/12/03 18:11:59 taqua Exp $
+ * $Id: DefaultFontFamily.java,v 1.8 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -119,7 +119,7 @@ public class DefaultFontFamily implements FontFamily
     return null;
   }
 
-  public void setFontRecord (final FontRecord record)
+  public void addFontRecord (final FontRecord record)
   {
     final boolean bold = record.isBold();
     final boolean italics = record.isItalic();
@@ -156,6 +156,31 @@ public class DefaultFontFamily implements FontFamily
       }
       fontRecords[index] = record;
     }
+  }
 
+  public boolean equals(final Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass())
+    {
+      return false;
+    }
+
+    final DefaultFontFamily that = (DefaultFontFamily) o;
+
+    if (!familyName.equals(that.familyName))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    return familyName.hashCode();
   }
 }

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FontType.java,v 1.4 2006/12/03 18:11:59 taqua Exp $
+ * $Id: FontType.java,v 1.5 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -36,6 +36,9 @@ package org.jfree.fonts.registry;
  */
 public class FontType
 {
+  public static final FontType PFM = new FontType("PFM");
+  public static final FontType AFM = new FontType("AFM");
+  public static final FontType OTHER = new FontType("OTHER");
   public static final FontType OPENTYPE = new FontType("OPENTYPE");
   public static final FontType AWT = new FontType("AWT");
   public static final FontType MONOSPACE = new FontType("MONOSPACE");

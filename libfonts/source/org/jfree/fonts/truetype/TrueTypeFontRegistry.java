@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: TrueTypeFontRegistry.java,v 1.7 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -34,25 +34,21 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
 
 import org.jfree.fonts.FontException;
-import org.jfree.fonts.StringUtilities;
+import org.jfree.fonts.registry.AbstractFontFileRegistry;
 import org.jfree.fonts.registry.DefaultFontFamily;
 import org.jfree.fonts.registry.FontFamily;
 import org.jfree.fonts.registry.FontMetricsFactory;
-import org.jfree.fonts.registry.FontRegistry;
 import org.jfree.util.Log;
-import org.jfree.util.LogContext;
-import org.jfree.util.ObjectUtilities;
+import org.jfree.util.StringUtils;
 
 /**
  * Creation-Date: 07.11.2005, 19:05:46
  *
  * @author Thomas Morgner
  */
-public class TrueTypeFontRegistry implements FontRegistry, Serializable
+public class TrueTypeFontRegistry extends AbstractFontFileRegistry
 {
   private static class FontFileRecord implements Serializable
   {
@@ -60,14 +56,14 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
     private long fileSize;
     private String filename;
 
-    public FontFileRecord(final File file) throws IOException
+    protected FontFileRecord(final File file) throws IOException
     {
       this(file.getCanonicalPath(), file.length(), file.lastModified());
     }
 
-    public FontFileRecord(final String filename,
-                          final long fileSize,
-                          final long lastAccessTime)
+    protected FontFileRecord(final String filename,
+                             final long fileSize,
+                             final long lastAccessTime)
     {
       if (filename == null)
       {
@@ -124,8 +120,7 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
 
     public int hashCode()
     {
-      int result;
-      result = (int) (lastAccessTime ^ (lastAccessTime >>> 32));
+      int result = (int) (lastAccessTime ^ (lastAccessTime >>> 32));
       result = 29 * result + (int) (fileSize ^ (fileSize >>> 32));
       result = 29 * result + filename.hashCode();
       return result;
@@ -139,7 +134,7 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
   private static class FontPathFilter implements FileFilter, Serializable
   {
     /** Default Constructor. */
-    public FontPathFilter()
+    protected FontPathFilter()
     {
     }
 
@@ -162,15 +157,15 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
         return true;
       }
       final String name = pathname.getName();
-      if (StringUtilities.endsWithIgnoreCase(name, ".ttf"))
+      if (StringUtils.endsWithIgnoreCase(name, ".ttf"))
       {
         return true;
       }
-      if (StringUtilities.endsWithIgnoreCase(name, ".ttc"))
+      if (StringUtils.endsWithIgnoreCase(name, ".ttc"))
       {
         return true;
       }
-      if (StringUtilities.endsWithIgnoreCase(name, ".otf"))
+      if (StringUtils.endsWithIgnoreCase(name, ".otf"))
       {
         return true;
       }
@@ -181,191 +176,56 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
 
   /** The singleton instance of the font path filter. */
   private static final FontPathFilter FONTPATHFILTER = new FontPathFilter();
-  private static final LogContext logger = Log.createContext(
-          TrueTypeFontRegistry.class);
 
   private HashMap seenFiles;
-  private TreeMap fontFamilies;
-  private TreeMap alternateFamilyNames;
-  private TreeMap fullFontNames;
+  private HashMap fontFamilies;
+  private HashMap alternateFamilyNames;
+  private HashMap fullFontNames;
 
   public TrueTypeFontRegistry()
   {
     this.seenFiles = new HashMap();
-    this.fontFamilies = new TreeMap();
-    this.alternateFamilyNames = new TreeMap();
-    this.fullFontNames = new TreeMap();
+    this.fontFamilies = new HashMap();
+    this.alternateFamilyNames = new HashMap();
+    this.fullFontNames = new HashMap();
   }
 
-
-  /**
-   * Register os-specific font paths to the PDF-FontFactory. For unix-like
-   * operating systems, X11 is searched in /usr/X11R6 and the default truetype
-   * fontpath is added. For windows the system font path is added
-   * (%windir%/fonts)
-   */
-  public synchronized void registerDefaultFontPath()
+  protected FileFilter getFileFilter()
   {
-    final String osname = safeSystemGetProperty("os.name",
-            "<protected by system security>");
-    final String jrepath = safeSystemGetProperty("java.home", ".");
-    final String fs = safeSystemGetProperty("file.separator", File.separator);
-
-    logger.debug("Running on operating system: " + osname);
-
-    if (safeSystemGetProperty("mrj.version", null) != null)
-    {
-      final String userhome = safeSystemGetProperty("user.home", ".");
-      logger.debug("Detected MacOS (Property 'mrj.version' is present.");
-      internalRegisterFontPath(new File(userhome + "/Library/Fonts"));
-      internalRegisterFontPath(new File("/Library/Fonts"));
-      internalRegisterFontPath(new File("/Network/Library/Fonts"));
-      internalRegisterFontPath(new File("/System/Library/Fonts"));
-    }
-    else if (StringUtilities.startsWithIgnoreCase(osname, "windows"))
-    {
-      registerWindowsFontPath();
-    }
-    else
-    {
-      logger.debug("Assuming unix like file structures");
-      // Assume X11 is installed in the default location.
-      internalRegisterFontPath(new File("/usr/X11R6/lib/X11/fonts"));
-      internalRegisterFontPath(new File("/usr/share/fonts"));
-    }
-
-    internalRegisterFontPath(new File(jrepath, "lib" + fs + "fonts"));
+    return FONTPATHFILTER;
   }
 
-  private String safeSystemGetProperty(final String name,
-                                       final String defaultValue)
+  protected boolean isCached(final File file)
   {
     try
     {
-      return System.getProperty(name, defaultValue);
-    }
-    catch (SecurityException se)
-    {
-      return defaultValue;
-    }
-  }
-
-  /**
-   * Registers the default windows font path. Once a font was found in the old
-   * seenFiles map and confirmed, that this font still exists, it gets copied
-   * into the confirmedFiles map.
-   */
-  private void registerWindowsFontPath()
-  {
-    logger.debug("Found windows in os name, assuming DOS/Win32 structures");
-    // Assume windows
-    // If you are not using windows, ignore this. This just checks if a windows system
-    // directory exist and includes a font dir.
-
-    String fontPath = null;
-    final String windirs = safeSystemGetProperty("java.library.path", null);
-    final String fs = safeSystemGetProperty("file.separator", File.separator);
-
-    if (windirs != null)
-    {
-      final StringTokenizer strtok = new StringTokenizer
-              (windirs, safeSystemGetProperty("path.separator",
-                      File.pathSeparator));
-      while (strtok.hasMoreTokens())
+      final FontFileRecord stored = (FontFileRecord) seenFiles.get(file.getCanonicalPath());
+      if (stored == null)
       {
-        final String token = strtok.nextToken();
-
-        if (StringUtilities.endsWithIgnoreCase(token, "System32"))
-        {
-          // found windows folder ;-)
-          final int lastBackslash = token.lastIndexOf(fs);
-          fontPath = token.substring(0, lastBackslash) + fs + "Fonts";
-
-          break;
-        }
+        return false;
       }
-    }
-    logger.debug("Fonts located in \"" + fontPath + "\"");
-    if (fontPath != null)
-    {
-      final File file = new File(fontPath);
-      internalRegisterFontPath(file);
-    }
-  }
 
-  /**
-   * Register all fonts (*.ttf files) in the given path.
-   *
-   * @param file the directory that contains the font files.
-   */
-  public synchronized void registerFontPath(final File file)
-  {
-    internalRegisterFontPath(file);
-  }
-
-  /**
-   * Register all fonts (*.ttf files) in the given path.
-   *
-   * @param file the directory that contains the font files.
-   */
-  private synchronized void internalRegisterFontPath(final File file)
-  {
-    if (file.exists() == false)
-    {
-      return;
-    }
-    if (file.isDirectory() == false)
-    {
-      return;
-    }
-    if (file.canRead() == false)
-    {
-      return;
-    }
-
-    final File[] files = file.listFiles(FONTPATHFILTER);
-    for (int i = 0; i < files.length; i++)
-    {
-      final File currentFile = files[i];
-      if (currentFile.isDirectory())
+      final FontFileRecord rec = new FontFileRecord(file);
+      if (stored.equals(rec) == false)
       {
-        internalRegisterFontPath(currentFile);
+        seenFiles.remove(rec);
+        return false;
       }
-      else
-      {
-        try
-        {
-          registerFontFile(currentFile);
-        }
-        catch (IOException e)
-        {
-          // Ignore that font ...
-        }
-      }
+      return true;
     }
-  }
-
-  public void registerFontFile(final File currentFile) throws IOException
-  {
-    final FontFileRecord record = new FontFileRecord(currentFile);
-
-    final FontFileRecord cachedRecord = (FontFileRecord)
-            seenFiles.get(record.getFilename());
-    if (ObjectUtilities.equal(record, cachedRecord))
+    catch (IOException e)
     {
-      return;
+      return false;
     }
-    internalRegisterFontFile(currentFile);
-    seenFiles.put(record.getFilename(), record);
   }
 
-  private void internalRegisterFontFile(final File file)
+  protected void addFont(final File file, final String encoding) throws IOException
   {
     try
     {
-      if (StringUtilities.endsWithIgnoreCase(file.getName(), ".ttc"))
+      if (StringUtils.endsWithIgnoreCase(file.getName(), ".ttc"))
       {
-        TrueTypeCollection ttc = new TrueTypeCollection(file);
+        final TrueTypeCollection ttc = new TrueTypeCollection(file);
         for (int i = 0; i < ttc.getNumFonts(); i++)
         {
           final TrueTypeFont font = ttc.getFont(i);
@@ -375,10 +235,12 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
       }
       else
       {
-        TrueTypeFont font = new TrueTypeFont(file);
+        final TrueTypeFont font = new TrueTypeFont(file);
         registerTrueTypeFont(font);
         font.dispose();
       }
+      final FontFileRecord value = new FontFileRecord(file);
+      seenFiles.put(file.getCanonicalPath(), value);
     }
     catch (Exception e)
     {
@@ -390,7 +252,7 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
   private void registerTrueTypeFont(final TrueTypeFont font)
           throws IOException
   {
-    NameTable table = (NameTable) font.getTable(NameTable.TABLE_ID);
+    final NameTable table = (NameTable) font.getTable(NameTable.TABLE_ID);
     if (table == null)
     {
       throw new IOException(
@@ -419,8 +281,8 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
 
     try
     {
-      TrueTypeFontRecord record = new TrueTypeFontRecord(font, fontFamily);
-      fontFamily.setFontRecord(record);
+      final TrueTypeFontRecord record = new TrueTypeFontRecord(font, fontFamily);
+      fontFamily.addFontRecord(record);
     }
     catch (FontException e)
     {
@@ -428,7 +290,7 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
     }
   }
 
-  private DefaultFontFamily createFamily(String name)
+  private DefaultFontFamily createFamily(final String name)
   {
     final DefaultFontFamily fontFamily = (DefaultFontFamily)
             this.fontFamilies.get(name);
@@ -454,12 +316,7 @@ public class TrueTypeFontRegistry implements FontRegistry, Serializable
             (new String[alternateFamilyNames.size()]);
   }
 
-  public void initialize()
-  {
-    registerDefaultFontPath();
-  }
-
-  public FontFamily getFontFamily(String name)
+  public FontFamily getFontFamily(final String name)
   {
     final FontFamily primary = (FontFamily) this.fontFamilies.get(name);
     if (primary != null)

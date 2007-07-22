@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: TrueTypeFontRecord.java,v 1.7 2006/12/03 18:11:59 taqua Exp $
+ * $Id: TrueTypeFontRecord.java,v 1.8 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -63,11 +63,9 @@ public class TrueTypeFontRecord implements FontSource
   private boolean nonWindows; // the font does not have an OS2-Table
   private FontIdentifier identifier;
 
+  private FontDataInputSource fontInputSource;
   private String name;
   private String variant;
-  private String[] allNames;
-  private String[] allVariants;
-  private FontDataInputSource fontInputSource;
 
   public TrueTypeFontRecord(final TrueTypeFont trueTypeFont,
                             final FontFamily family) throws IOException,
@@ -105,10 +103,10 @@ public class TrueTypeFontRecord implements FontSource
               ("This font does not have a 'name' table. It is not valid.");
     }
 
-    this.name = nameTable.getPrimaryName(NameTable.NAME_FULLNAME);
-    this.allNames = nameTable.getAllNames(NameTable.NAME_FULLNAME);
-    this.variant = nameTable.getPrimaryName(NameTable.NAME_SUBFAMILY);
-    this.allVariants = nameTable.getAllNames(NameTable.NAME_SUBFAMILY);
+    name = nameTable.getPrimaryName(NameTable.NAME_FULLNAME);
+//    this.allNames = nameTable.getAllNames(NameTable.NAME_FULLNAME);
+    variant = nameTable.getPrimaryName(NameTable.NAME_SUBFAMILY);
+//    this.allVariants = nameTable.getAllNames(NameTable.NAME_SUBFAMILY);
 
     final FontHeaderTable headTable = (FontHeaderTable)
             trueTypeFont.getTable(FontHeaderTable.TABLE_ID);
@@ -163,26 +161,6 @@ public class TrueTypeFontRecord implements FontSource
   public boolean isEmbeddable()
   {
     return embeddable;
-  }
-
-  public String getName()
-  {
-    return name;
-  }
-
-  public String[] getAllNames()
-  {
-    return (String[]) allNames.clone();
-  }
-
-  public String getVariant()
-  {
-    return variant;
-  }
-
-  public String[] getAllVariants()
-  {
-    return (String[]) allVariants.clone();
   }
 
   public boolean isBold()

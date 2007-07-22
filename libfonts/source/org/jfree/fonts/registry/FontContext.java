@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontContext.java,v 1.4 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -38,6 +38,10 @@ package org.jfree.fonts.registry;
  */
 public interface FontContext
 {
+  public String getEncoding(); 
+
+  public boolean isEmbedded();
+
   /**
    * This is controlled by the output target and the stylesheet. If the
    * output target does not support aliasing, it makes no sense to enable

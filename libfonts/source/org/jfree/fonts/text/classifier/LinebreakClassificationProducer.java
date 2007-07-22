@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LinebreakClassificationProducer.java,v 1.1 2007/04/03 14:13:56 taqua Exp $
+ * $Id: LinebreakClassificationProducer.java,v 1.2 2007/04/27 11:34:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -42,7 +42,7 @@ public class LinebreakClassificationProducer implements GlyphClassificationProdu
   {
   }
 
-  public int getClassification(int codepoint)
+  public int getClassification(final int codepoint)
   {
     if (isLinebreak(codepoint))
     {
@@ -51,7 +51,7 @@ public class LinebreakClassificationProducer implements GlyphClassificationProdu
     return GlyphClassificationProducer.LETTER;
   }
 
-  protected boolean isLinebreak (int codepoint)
+  protected boolean isLinebreak (final int codepoint)
   {
     if (codepoint == 0xa || codepoint == 0xd)
     {

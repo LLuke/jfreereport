@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontSource.java,v 1.1 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -50,13 +50,4 @@ public interface FontSource extends FontRecord
   public FontDataInputSource getFontInputSource();
 
   public boolean isEmbeddable();
-
-  public String getName ();
-
-  public String[] getAllNames ();
-
-  public String getVariant ();
-
-  public String[] getAllVariants ();
-
 }

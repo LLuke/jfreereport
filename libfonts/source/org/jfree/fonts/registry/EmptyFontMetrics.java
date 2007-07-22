@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: EmptyFontMetrics.java,v 1.4 2006/12/03 18:11:59 taqua Exp $
+ * $Id: EmptyFontMetrics.java,v 1.5 2007/04/27 11:34:23 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -148,7 +148,7 @@ public class EmptyFontMetrics implements FontMetrics
     }
 
     // this is the most dilletantic baseline computation on this planet.
-    // But without any font metrics, it is also the base baseline computation :)
+    // But without any font metrics, it is also the best baseline computation :)
 
     // The ascent is local - but we need the global baseline, relative to the
     // MaxAscent.
@@ -160,7 +160,6 @@ public class EmptyFontMetrics implements FontMetrics
     info.setBaseline(BaselineInfo.CENTRAL, maxAscent / 2);
     info.setBaseline(BaselineInfo.HANGING, maxAscent - getXHeight());
     info.setDominantBaseline(BaselineInfo.ALPHABETIC);
-
     return info;
   }
 }

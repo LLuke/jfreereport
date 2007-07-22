@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: ResourceFontDataInputSource.java,v 1.2 2006/12/03 18:11:59 taqua Exp $
+ * $Id: ResourceFontDataInputSource.java,v 1.3 2007/03/01 18:54:27 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -31,6 +31,7 @@ package org.jfree.fonts.io;
 
 import java.io.IOException;
 import java.io.File;
+import java.io.EOFException;
 
 import org.jfree.resourceloader.ResourceKey;
 import org.jfree.resourceloader.ResourceManager;
@@ -64,7 +65,7 @@ public class ResourceFontDataInputSource implements FontDataInputSource
     this.source = source;
   }
 
-  public void readFullyAt(long position, byte[] buffer, int offset, int length)
+  public void readFullyAt(final long position, final byte[] buffer, final int offset, final int length)
           throws IOException
   {
     if (rawData == null)
@@ -81,7 +82,56 @@ public class ResourceFontDataInputSource implements FontDataInputSource
     }
 
     final int iPos = (int) (position & 0x7fffffff);
+    final int endPos = iPos + length;
+    if (endPos < 0 || endPos > rawData.length)
+    {
+      throw new EOFException("The input source reached the End-Of-Stream.");
+    }
     System.arraycopy(rawData, iPos, buffer, offset, length);
+  }
+
+  public int readAt(final long position, final byte[] buffer, final int offset, final int length) throws IOException
+  {
+    if (rawData == null)
+    {
+      try
+      {
+        final ResourceData data = loader.load(source);
+        rawData = data.getResource(loader);
+      }
+      catch (ResourceLoadingException e)
+      {
+        throw new IOException("Failed to load the raw data.");
+      }
+    }
+
+    final int iPos = (int) (position & 0x7fffffff);
+    final int readLength = Math.min (length, rawData.length - iPos);
+    System.arraycopy(rawData, iPos, buffer, offset, readLength);
+    return readLength;
+  }
+
+  public int readAt(final long position) throws IOException
+  {
+    if (rawData == null)
+    {
+      try
+      {
+        final ResourceData data = loader.load(source);
+        rawData = data.getResource(loader);
+      }
+      catch (ResourceLoadingException e)
+      {
+        throw new IOException("Failed to load the raw data.");
+      }
+    }
+
+    final int iPos = (int) (position & 0x7fffffff);
+    if (iPos >= rawData.length)
+    {
+      return -1;
+    }
+    return rawData[iPos];
   }
 
   public void dispose()
@@ -94,7 +144,7 @@ public class ResourceFontDataInputSource implements FontDataInputSource
     final Object identifier = source.getIdentifier();
     if (identifier instanceof File)
     {
-      File f = (File) identifier;
+      final File f = (File) identifier;
       return f.getPath();
     }
     return null;
@@ -127,8 +177,7 @@ public class ResourceFontDataInputSource implements FontDataInputSource
 
   public int hashCode()
   {
-    int result;
-    result = loader.hashCode();
+    int result = loader.hashCode();
     result = 29 * result + source.hashCode();
     return result;
   }

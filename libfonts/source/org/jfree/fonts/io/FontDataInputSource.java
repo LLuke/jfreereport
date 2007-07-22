@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontDataInputSource.java,v 1.5 2006/12/03 18:11:59 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -40,6 +40,16 @@ public interface FontDataInputSource
 {
   public void readFullyAt (long position, byte[] buffer, int offset, int length)
           throws IOException;
+
+  /**
+   * Reads a single byte, returns -1 if the end of the stream as been reached.
+   * @param position
+   * @return
+   * @throws IOException
+   */
+  public int readAt (long position) throws IOException;
+
+  public int readAt (long position, byte[] buffer, int offset, int length) throws IOException;
 
   public void dispose();
 

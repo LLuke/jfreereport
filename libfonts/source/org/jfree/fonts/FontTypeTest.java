@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: FontTypeTest.java,v 1.7 2006/12/03 18:11:59 taqua Exp $
+ * $Id: FontTypeTest.java,v 1.8 2007/05/13 12:44:09 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -59,7 +59,7 @@ public class FontTypeTest
     }
     else if (record.isItalic() || record.isOblique())
     {
-      System.out.println("  " + record.getName() + " it:" + record.isItalic() + " ob:" + record.isOblique());
+      System.out.println("  " + record);
     }
   }
 

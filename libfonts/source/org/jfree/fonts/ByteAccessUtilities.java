@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ByteAccessUtilities.java,v 1.7 2006/12/03 18:11:58 taqua Exp $
  * ------------
  * (C) Copyright 2006, by Pentaho Corporation.
  */
@@ -41,7 +41,7 @@ import org.jfree.fonts.encoding.manual.Utf16LE;
 import org.jfree.util.Log;
 
 /**
- * Creation-Date: 06.11.2005, 18:46:43
+ * Reads byte-data using a Big-Endian access schema. Big-Endian is used for TrueType fonts.
  *
  * @author Thomas Morgner
  */
@@ -115,14 +115,35 @@ public class ByteAccessUtilities
     return retval;
   }
 
-//  public static String readUnicode (final byte[] data, final int pos,
-//                                    final int length)
-//  {
-//    final ByteBuffer byteBuffer = new ByteBuffer(data, pos, length);
-//    final CodePointBuffer cp = Utf16LE.getInstance().decode(byteBuffer, null);
-//    return Utf16LE.getInstance().encodeString(cp);
-//  }
-//
+  public static int readZStringOffset (final byte[] data, final int pos, final int maxLength)
+  {
+    final int lastPos = Math.min (pos + maxLength, pos + data.length);
+    for (int i = pos; i < lastPos; i++)
+    {
+      if (data[i] == 0)
+      {
+        return i;
+      }
+    }
+
+    return lastPos;
+  }
+
+  public static String readZString (final byte[] data, final int pos, final int maxLength, final String encoding)
+      throws EncodingException
+  {
+    final int lastPos = Math.min (pos + maxLength, pos + data.length);
+    for (int i = pos; i < lastPos; i++)
+    {
+      if (data[i] == 0)
+      {
+        return readString(data, pos, i - pos, encoding);
+      }
+    }
+
+    return readString(data, pos, lastPos, encoding);
+  }
+
   public static String readString (final byte[] data, final int pos,
                                    final int length, final String encoding)
           throws EncodingException
@@ -136,7 +157,6 @@ public class ByteAccessUtilities
     {
       enc = EncodingRegistry.getInstance().getEncoding(encoding);
     }
-//    Log.debug ("Encoding: " + enc);
     final ByteBuffer byteBuffer = new ByteBuffer(data, pos, length);
     final CodePointBuffer cp = enc.decode(byteBuffer, null);
     return Utf16LE.getInstance().encodeString(cp);
