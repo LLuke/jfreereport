@@ -28,8 +28,8 @@ import org.w3c.flute.util.Encoding;
 /**
  * A CSS2 parser
  *
- * @author Philippe Le Hégaret
- * @version $Revision: 1.3 $
+ * @author Philippe Le Hegaret 
+ * @version $Revision: 1.4 $
  */
 public class Parser implements org.w3c.css.sac.Parser, ParserConstants {
 
