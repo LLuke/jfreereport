@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfOutputModule.java,v 1.4 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -33,6 +33,7 @@ package org.jfree.layouting.modules.output.pdf;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.SubSystem;
 import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.fonts.itext.ITextFontRegistry;
 
 /**
  * Creation-Date: 02.12.2006, 17:02:40
@@ -55,6 +56,7 @@ public class PdfOutputModule extends AbstractModule
    * A constant for the encryption type (128 bit).
    */
   public static final String SECURITY_ENCRYPTION_128BIT = "128bit";
+  private static ITextFontRegistry fontRegistry;
 
 
   public PdfOutputModule() throws ModuleInitializeException
@@ -62,18 +64,36 @@ public class PdfOutputModule extends AbstractModule
     loadModuleInfo();
   }
 
-  /**
-   * Initializes the module. Use this method to perform all initial setup
-   * operations. This method is called only once in a modules lifetime. If the
-   * initializing cannot be completed, throw a ModuleInitializeException to
-   * indicate the error,. The module will not be available to the system.
-   *
-   * @param subSystem the subSystem.
-   * @throws org.jfree.base.modules.ModuleInitializeException
-   *          if an error ocurred while initializing the module.
-   */
-  public void initialize(SubSystem subSystem) throws ModuleInitializeException
+  public static synchronized ITextFontRegistry getFontRegistry()
   {
+    if (fontRegistry == null)
+    {
+      fontRegistry = new ITextFontRegistry();
+      fontRegistry.initialize();
+    }
+    return fontRegistry;
+  }
 
+  /**
+   * Initialialize the font factory when this class is loaded and the system property of
+   * <code>"org.jfree.report.modules.output.pageable.itext.PDFOutputTarget.AutoInit"</code>
+   * is set to <code>true</code>.
+   *
+   * @throws ModuleInitializeException if an error occured.
+   */
+  public void initialize (final SubSystem subSystem)
+          throws ModuleInitializeException
+  {
+    if (isClassLoadable("com.lowagie.text.Document") == false)
+    {
+      throw new ModuleInitializeException("Unable to load iText classes. " +
+              "Check your classpath configuration.");
+    }
+
+    if ("onInit".equals(subSystem.getGlobalConfig().getConfigProperty
+        ("org.jfree.layouting.modules.output.pdf.AutoInit")))
+    {
+      getFontRegistry();
+    }
   }
 }

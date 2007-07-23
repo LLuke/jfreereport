@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: DefaultFontContext.java,v 1.4 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -41,10 +41,14 @@ public class DefaultFontContext implements FontContext
   private double size;
   private boolean fractionalMetrics;
   private boolean antiAliasing;
+  private String encoding;
+  private boolean embedded;
 
   public DefaultFontContext(final OutputProcessorMetaData metaData,
                             final boolean antiAliased,
-                            final double size)
+                            final double size,
+                            final String encoding,
+                            final boolean embedded)
   {
     this.size = size;
     this.fractionalMetrics =
@@ -54,6 +58,19 @@ public class DefaultFontContext implements FontContext
     this.antiAliasing =
             antiAliased && metaData.isFeatureSupported
                     (OutputProcessorFeature.FONT_SUPPORTS_ANTI_ALIASING);
+
+    this.encoding = encoding;
+    this.embedded = embedded;
+  }
+
+  public String getEncoding()
+  {
+    return encoding;
+  }
+
+  public boolean isEmbedded()
+  {
+    return embedded;
   }
 
   /**

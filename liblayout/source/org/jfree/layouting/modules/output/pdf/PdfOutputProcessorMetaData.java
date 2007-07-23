@@ -23,15 +23,16 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfOutputProcessorMetaData.java,v 1.6 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
 
 package org.jfree.layouting.modules.output.pdf;
 
+import org.jfree.fonts.FontMappingUtility;
+import org.jfree.fonts.itext.ITextFontStorage;
 import org.jfree.fonts.registry.FontFamily;
-import org.jfree.fonts.registry.FontStorage;
 import org.jfree.layouting.input.style.keys.font.FontFamilyValues;
 import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
 
@@ -42,7 +43,7 @@ import org.jfree.layouting.output.AbstractOutputProcessorMetaData;
  */
 public class PdfOutputProcessorMetaData extends AbstractOutputProcessorMetaData
 {
-  public PdfOutputProcessorMetaData(final FontStorage fontStorage)
+  public PdfOutputProcessorMetaData(final ITextFontStorage fontStorage)
   {
     super(fontStorage);
 
@@ -61,6 +62,33 @@ public class PdfOutputProcessorMetaData extends AbstractOutputProcessorMetaData
   public String getExportDescriptor()
   {
     return "pageable/pdf";
+  }
+
+  public String getNormalizedFontFamilyName(final String name)
+  {
+    final String mappedName = super.getNormalizedFontFamilyName(name);
+    if (FontMappingUtility.isSerif(mappedName))
+    {
+      return "Times";
+    }
+    if (FontMappingUtility.isSansSerif(mappedName))
+    {
+      return "Helvetica";
+    }
+    if (FontMappingUtility.isCourier(mappedName))
+    {
+      return "Courier";
+    }
+    if (FontMappingUtility.isSymbol(mappedName))
+    {
+      return "Symbol";
+    }
+    return mappedName;
+  }
+
+  public ITextFontStorage getITextFontStorage()
+  {
+    return (ITextFontStorage) getFontStorage();
   }
 
   /**

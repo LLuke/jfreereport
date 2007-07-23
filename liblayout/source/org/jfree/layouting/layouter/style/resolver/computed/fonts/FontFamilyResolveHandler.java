@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: FontFamilyResolveHandler.java,v 1.9 2007/04/02 11:41:14 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -102,7 +102,7 @@ public class FontFamilyResolveHandler extends ConstantsResolveHandler
         if (item instanceof CSSConstant)
         {
           final CSSConstant c = (CSSConstant) lookupValue((CSSConstant) item);
-          final FontFamily family = outputMetaData.getFontFamily(c);
+          final FontFamily family = outputMetaData.getFontFamilyForGenericName(c);
           fs.setFontFamily(family.getFamilyName());
           if (process.getOutputMetaData().isValid(fs))
           {

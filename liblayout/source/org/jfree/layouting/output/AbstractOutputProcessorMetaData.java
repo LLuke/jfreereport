@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: AbstractOutputProcessorMetaData.java,v 1.16 2007/04/05 10:01:12 taqua Exp $
+ * $Id: AbstractOutputProcessorMetaData.java,v 1.17 2007/04/10 19:27:08 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -203,7 +203,17 @@ public abstract class AbstractOutputProcessorMetaData
     return fontStorage;
   }
 
-  public FontFamily getFontFamily(CSSConstant genericName)
+  public String getNormalizedFontFamilyName (final String name)
+  {
+    final String normalizedFontFamily = (String) fontFamilies.get(name);
+    if (normalizedFontFamily == null)
+    {
+      return name;
+    }
+    return normalizedFontFamily;
+  }
+
+  public FontFamily getFontFamilyForGenericName(final CSSConstant genericName)
   {
     if (FontFamilyValues.NONE.equals(genericName))
     {
@@ -216,7 +226,7 @@ public abstract class AbstractOutputProcessorMetaData
       return getDefaultFontFamily();
     }
 
-    FontFamily ff = fontStorage.getFontRegistry().getFontFamily(name);
+    final FontFamily ff = fontStorage.getFontRegistry().getFontFamily(name);
     if (ff != null)
     {
       return ff;
@@ -256,7 +266,7 @@ public abstract class AbstractOutputProcessorMetaData
     return "print";
   }
 
-  public boolean isValid(FontSpecification spec)
+  public boolean isValid(final FontSpecification spec)
   {
     final FontRegistry registry = getFontRegistry();
     final String fontFamily = spec.getFontFamily();
@@ -269,7 +279,7 @@ public abstract class AbstractOutputProcessorMetaData
 
   }
 
-  public FontMetrics getFontMetrics(FontSpecification spec)
+  public FontMetrics getFontMetrics(final FontSpecification spec)
   {
     final String fontFamily = spec.getFontFamily();
     if (fontFamily == null)
@@ -284,7 +294,9 @@ public abstract class AbstractOutputProcessorMetaData
       Log.warn("Unable to lookup the font family.");
       return null;
     }
-    final DefaultFontContext fontContext = new DefaultFontContext (this, spec.isAntiAliasing(), spec.getFontSize());
+    // todo
+    final DefaultFontContext fontContext =
+        new DefaultFontContext (this, spec.isAntiAliasing(), spec.getFontSize(), "UTF-8", false);
 
     final FontRecord record = family.getFontRecord
             (spec.getFontWeight() > 600, spec.isItalic() || spec.isOblique());

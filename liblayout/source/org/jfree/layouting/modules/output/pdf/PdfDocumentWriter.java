@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: PdfDocumentWriter.java,v 1.4 2007/04/02 11:41:15 taqua Exp $
+ * $Id: PdfDocumentWriter.java,v 1.5 2007/04/10 19:27:08 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -43,7 +43,6 @@ import com.lowagie.text.pdf.PdfWriter;
 import org.jfree.layouting.LibLayoutInfo;
 import org.jfree.layouting.modules.output.graphics.LogicalPageDrawable;
 import org.jfree.layouting.modules.output.graphics.PhysicalPageDrawable;
-import org.jfree.layouting.modules.output.pdf.itext.BaseFontSupport;
 import org.jfree.layouting.output.pageable.LogicalPageKey;
 import org.jfree.layouting.output.pageable.PhysicalPageKey;
 import org.jfree.layouting.renderer.model.page.LogicalPageBox;
@@ -52,6 +51,7 @@ import org.jfree.layouting.renderer.model.page.PhysicalPageBox;
 import org.jfree.layouting.util.geom.StrictGeomUtility;
 import org.jfree.util.Configuration;
 import org.jfree.util.Log;
+import org.jfree.fonts.itext.BaseFontSupport;
 
 /**
  * Creation-Date: 02.12.2006, 17:49:47
@@ -92,11 +92,12 @@ public class PdfDocumentWriter
   private BaseFontSupport fontSupport;
 
   public PdfDocumentWriter(final Configuration config,
-                           final OutputStream out)
+                           final OutputStream out,
+                           final PdfOutputProcessorMetaData metaData)
   {
     this.out = out;
     this.config = config;
-    this.fontSupport = new BaseFontSupport();
+    this.fontSupport = metaData.getITextFontStorage().getBaseFontSupport();
   }
 
   public Document getDocument()
@@ -143,20 +144,31 @@ public class PdfDocumentWriter
       }
     }
 
-//    /**
-//     * MetaData can be set when the writer is registered to the document.
-//     */
-//    final String title = getProperty(TITLE);
-//    final String author = getProperty(AUTHOR);
-//
-//    if (title != null)
-//    {
-//      getDocument().addTitle(title);
-//    }
-//    if (author != null)
-//    {
-//      getDocument().addAuthor(author);
-//    }
+    /**
+     * MetaData can be set when the writer is registered to the document.
+     */
+    final String title = config.getConfigProperty("org.jfree.layouting.modules.output.pdf.Title");
+    final String subject = config.getConfigProperty("org.jfree.layouting.modules.output.pdf.Subject");
+    final String author = config.getConfigProperty("org.jfree.layouting.modules.output.pdf.Author");
+    final String keyWords = config.getConfigProperty("org.jfree.layouting.modules.output.pdf.Keywords");
+
+    if (title != null)
+    {
+      document.addTitle(title);
+    }
+    if (author != null)
+    {
+      document.addAuthor(author);
+    }
+    if (keyWords != null)
+    {
+      document.addKeywords(keyWords);
+    }
+    if (keyWords != null)
+    {
+      document.addSubject(subject);
+    }
+
     getDocument().addCreator(CREATOR);
     getDocument().addCreationDate();
 

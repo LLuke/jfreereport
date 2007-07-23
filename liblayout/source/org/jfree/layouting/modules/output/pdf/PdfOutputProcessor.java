@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: PdfOutputProcessor.java,v 1.7 2007/04/02 11:41:15 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -32,8 +32,8 @@ package org.jfree.layouting.modules.output.pdf;
 
 import java.io.OutputStream;
 
-import org.jfree.fonts.awt.AWTFontRegistry;
-import org.jfree.fonts.registry.DefaultFontStorage;
+import org.jfree.fonts.encoding.EncodingRegistry;
+import org.jfree.fonts.itext.ITextFontStorage;
 import org.jfree.layouting.layouter.context.DocumentContext;
 import org.jfree.layouting.output.OutputProcessorMetaData;
 import org.jfree.layouting.output.pageable.AbstractPageableProcessor;
@@ -73,8 +73,10 @@ public class PdfOutputProcessor extends AbstractPageableProcessor
     // This is less accurate than using the iText fonts, but completing
     // the TrueType registry or implementing an iText registry is too expensive
     // for now.
-    final DefaultFontStorage fontStorage =
-        new DefaultFontStorage(new AWTFontRegistry());
+    final String encoding = configuration.getConfigProperty
+        ("org.jfree.report.modules.output.pageable.pdf.Encoding", EncodingRegistry.getPlattformDefaultEncoding());
+    final ITextFontStorage fontStorage = new ITextFontStorage(PdfOutputModule.getFontRegistry(), encoding);
+
     metaData = new PdfOutputProcessorMetaData(fontStorage);
 
   }
@@ -99,7 +101,7 @@ public class PdfOutputProcessor extends AbstractPageableProcessor
     this.flowSelector = flowSelector;
   }
 
-  public void processDocumentMetaData(DocumentContext documentContext)
+  public void processDocumentMetaData(final DocumentContext documentContext)
   {
     super.processDocumentMetaData(documentContext);
     // we grab a few of them later ... like author, title etc
@@ -123,7 +125,7 @@ public class PdfOutputProcessor extends AbstractPageableProcessor
     {
       if (writer == null)
       {
-        writer = new PdfDocumentWriter(getConfiguration(), outputStream);
+        writer = new PdfDocumentWriter(getConfiguration(), outputStream, metaData);
         writer.open();
       }
       writer.processPhysicalPage(pageGrid,  logicalPage, row, col, pageKey);
@@ -134,14 +136,14 @@ public class PdfOutputProcessor extends AbstractPageableProcessor
     }
   }
 
-  protected void processLogicalPage(LogicalPageKey key,
-                                    LogicalPageBox logicalPage)
+  protected void processLogicalPage(final LogicalPageKey key,
+                                    final LogicalPageBox logicalPage)
   {
     try
     {
       if (writer == null)
       {
-        writer = new PdfDocumentWriter(getConfiguration(), outputStream);
+        writer = new PdfDocumentWriter(getConfiguration(), outputStream, metaData);
         writer.open();
       }
       writer.processLogicalPage(key, logicalPage);

@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: OutputProcessorMetaData.java,v 1.11 2007/04/02 11:41:16 taqua Exp $
  * ------------
  * (C) Copyright 2006-2007, by Pentaho Corporation.
  */
@@ -46,8 +46,9 @@ public interface OutputProcessorMetaData
   public boolean isFeatureSupported (OutputProcessorFeature.BooleanOutputProcessorFeature feature);
   public double getNumericFeatureValue (OutputProcessorFeature.NumericOutputProcessorFeature feature);
 
+  public String getNormalizedFontFamilyName (final String name);
   public FontFamily getDefaultFontFamily();
-  public FontFamily getFontFamily(CSSConstant genericName);
+  public FontFamily getFontFamilyForGenericName(CSSConstant genericName);
 
   /**
    * Although most font systems are global, some may have some issues with
