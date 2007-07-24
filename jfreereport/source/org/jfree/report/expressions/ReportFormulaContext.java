@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id$
+ * $Id: ReportFormulaContext.java,v 1.5 2007/04/01 18:49:25 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -94,6 +94,11 @@ public class ReportFormulaContext implements FormulaContext
     try
     {
       final DataFlags flags = dataRow.getFlags(String.valueOf(name));
+      if (flags == null)
+      {
+        throw new ContextEvaluationException
+            (new LibFormulaErrorValue(LibFormulaErrorValue.ERROR_REFERENCE_NOT_RESOLVABLE));
+      }
       return flags.isChanged();
     }
     catch(Exception e)

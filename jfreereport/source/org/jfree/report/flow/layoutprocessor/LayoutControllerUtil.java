@@ -23,7 +23,7 @@
  * in the United States and other countries.]
  *
  * ------------
- * $Id: LayoutControllerUtil.java,v 1.14 2007/06/13 12:04:10 taqua Exp $
+ * $Id: LayoutControllerUtil.java,v 1.15 2007/06/19 07:22:53 taqua Exp $
  * ------------
  * (C) Copyright 2000-2005, by Object Refinery Limited.
  * (C) Copyright 2005-2007, by Pentaho Corporation.
@@ -476,7 +476,7 @@ public class LayoutControllerUtil
     final PrecomputedValueRegistry pcvr = fc.getPrecomputedValueRegistry();
 
     pcvr.startElementPrecomputation(nodeKey);
-    //final PrecomputeNode startNode = pcvr.currentNode();
+
     final LayoutController rootLc = layoutController.createPrecomputeInstance(fc);
     final LayoutController rootParent = rootLc.getParent();
     final ReportTarget target = new EmptyReportTarget(fc.getReportJob(), fc.getExportDescriptor());
@@ -489,20 +489,16 @@ public class LayoutControllerUtil
       {
         final LayoutController parent = lc.getParent();
         lc = parent.join(lc.getFlowController());
-
-        if (parent == rootParent)
-        {
-          target.commit();
-          final PrecomputeNode precomputeNode = pcvr.currentNode();
-          final Object functionResult = precomputeNode.getFunctionResult(expressionPosition);
-          pcvr.finishElementPrecomputation(nodeKey);
-          return functionResult;
-        }
       }
     }
 
-    throw new IllegalStateException
-        ("Ups - we did not get to the root parent again. This is awful and we cannot continue.");
+    target.commit();
+    final PrecomputeNode precomputeNode = pcvr.currentNode();
+    final Object functionResult = precomputeNode.getFunctionResult(expressionPosition);
+    pcvr.finishElementPrecomputation(nodeKey);
+    return functionResult;
+//    throw new IllegalStateException
+//        ("Ups - we did not get to the root parent again. This is awful and we cannot continue.");
   }
 
 
